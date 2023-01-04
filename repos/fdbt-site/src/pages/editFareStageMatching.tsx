@@ -26,7 +26,7 @@ import WarningSummary from '../components/WarningSummary';
 
 const title = 'Edit fare stages - Create Fares Data Service ';
 const description = 'Edit fare stages page of the Create Fares Data Service';
-const errorId = 'radio-option-single';
+const errorId = 'option-0';
 
 interface EditStagesProps {
     fareStages: string[];
@@ -38,11 +38,16 @@ interface EditStagesProps {
     warning: boolean;
 }
 
-export const getFareStagesFromTicket = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>): string[] => {
+export const getFareStagesFromTicket = (
+    ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>,
+    direction: string,
+): string[] => {
     if (isReturnTicket(ticket)) {
+        if (direction === 'inbound') {
+            return ticket.inboundFareZones.map((fareZone) => fareZone.name);
+        }
         return ticket.outboundFareZones.map((fareZone) => fareZone.name);
     }
-
     return (ticket as WithIds<SingleTicket>).fareZones.map((fareZone) => fareZone.name);
 };
 
@@ -50,30 +55,30 @@ const getSelectedFareStagesFromTicket = (
     ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>,
     direction: string,
 ): { [key: string]: string } => {
-    const obj: { [key: string]: string } = {};
+    const selectedFareStages: { [key: string]: string } = {}; // {stop.atcode: fareZoneName}
 
     if (isReturnTicket(ticket)) {
         if (direction === 'inbound') {
             ticket.inboundFareZones.forEach((fareZone) => {
                 fareZone.stops.forEach((stop) => {
-                    obj[stop.atcoCode] = fareZone.name;
+                    selectedFareStages[stop.atcoCode] = fareZone.name;
                 });
             });
         } else {
             ticket.outboundFareZones.forEach((fareZone) => {
                 fareZone.stops.forEach((stop) => {
-                    obj[stop.atcoCode] = fareZone.name;
+                    selectedFareStages[stop.atcoCode] = fareZone.name;
                 });
             });
         }
     } else {
         (ticket as WithIds<SingleTicket>).fareZones.forEach((fareZone) => {
             fareZone.stops.forEach((stop) => {
-                obj[stop.atcoCode] = fareZone.name;
+                selectedFareStages[stop.atcoCode] = fareZone.name;
             });
         });
     }
-    return obj;
+    return selectedFareStages;
 };
 
 const getStopItems = (
@@ -316,7 +321,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         | WithIds<ReturnTicket>
         | undefined;
 
-    //updateSessionAttribute(ctx.req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, undefined);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
     const editFareStageMatchingAttribute = getSessionAttribute(ctx.req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE);
     const directionAttribute = getSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE);
@@ -324,9 +328,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if (!ticket || !matchingJsonMetaData) {
         throw new Error('Ticket not found in session.');
     }
-    const fareStages = getFareStagesFromTicket(ticket);
-    const nocCode = getAndValidateNoc(ctx);
 
+    const nocCode = getAndValidateNoc(ctx);
     const dataSource = 'bods';
     const serviceId = matchingJsonMetaData.serviceId;
     const service = await getServiceByIdAndDataSource(nocCode, Number(serviceId), dataSource);
@@ -341,7 +344,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             direction = directionAttribute.direction;
         }
     }
-
+    const fareStages = getFareStagesFromTicket(ticket, direction);
     // find journey patterns for direction (inbound or outbound)
     const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === direction);
 

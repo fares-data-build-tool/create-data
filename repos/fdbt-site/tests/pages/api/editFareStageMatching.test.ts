@@ -88,7 +88,7 @@ describe('Edit fare stage matching API', () => {
             res,
             'There was a problem mapping the fare stage for edit ticket',
             'api.editFareStageMatching',
-            new Error('Ticket details not found'),
+            new Error('Ticket invalid or not found'),
         );
     });
 
@@ -109,7 +109,7 @@ describe('Edit fare stage matching API', () => {
             res,
             'There was a problem mapping the fare stage for edit ticket',
             'api.editFareStageMatching',
-            new Error('Invalid ticket'),
+            new Error('Ticket invalid or not found'),
         );
     });
 
@@ -122,6 +122,7 @@ describe('Edit fare stage matching API', () => {
                 },
             ],
             selectedFareStages: {},
+            warning: false,
         };
         const { req, res } = getMockRequestAndResponse({
             body: {
@@ -152,6 +153,7 @@ describe('Edit fare stage matching API', () => {
         const expectedMatchingError: EditFareStageMatchingWithErrors = {
             warning: true,
             selectedFareStages: expect.any(Object),
+            errors: [],
         };
         const { req, res } = getMockRequestAndResponse({
             body: {

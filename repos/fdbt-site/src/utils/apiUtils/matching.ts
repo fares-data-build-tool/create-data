@@ -104,7 +104,7 @@ export const getMatchingFareZonesAndUnassignedStopsFromForm = (
 export const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some((stage) => !matchingFareZones[stage.stageName]);
 
-export const isFareStageUnassignedEditTicket = (fareStages: string[], matchingFareZones: MatchingFareZones): boolean =>
+export const isAnyFareStageUnassigned = (fareStages: string[], matchingFareZones: MatchingFareZones): boolean =>
     fareStages.some((stage) => !matchingFareZones[stage]);
 
 export const fareStageIsUnused = (userFareStageNames: string[], uploadedFareStages: UserFareStages): boolean => {

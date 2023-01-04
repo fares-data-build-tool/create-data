@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import {
     getFareZonesEditTicket,
     getMatchingFareZonesAndUnassignedStopsFromForm,
-    isFareStageUnassignedEditTicket,
+    isAnyFareStageUnassigned,
 } from '../../utils/apiUtils/matching';
 import {
     MATCHING_JSON_ATTRIBUTE,
@@ -38,21 +38,29 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             | undefined;
         const ticketMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
         const { overrideWarning } = req.body;
+        const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
 
         // edit mode
-        if (!ticket || !ticketMetaData) {
-            throw new Error('Ticket details not found');
+        if (!ticket || !ticketMetaData || !(ticket.type === 'single' || isReturnTicket(ticket))) {
+            throw new Error('Ticket invalid or not found');
         }
 
-        if (!(ticket.type === 'single' || isReturnTicket(ticket))) {
-            throw new Error('Invalid ticket');
-        }
         const parsedInputs = getMatchingFareZonesAndUnassignedStopsFromForm(req);
 
         const { matchingFareZones, unassignedStops } = parsedInputs;
-        const userFareStages = getFareStagesFromTicket(ticket);
+        let direction = 'outbound';
 
-        if (isFareStageUnassignedEditTicket(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
+        if (ticket.type === 'single') {
+            direction = ticket.journeyDirection;
+        } else {
+            if (directionAttribute && 'direction' in directionAttribute) {
+                direction = directionAttribute.direction;
+            }
+        }
+
+        const userFareStages = getFareStagesFromTicket(ticket, direction);
+
+        if (isAnyFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const errors: ErrorInfo[] = [
                 {
                     errorMessage: 'One or more fare stages have not been assigned, assign each fare stage to a stop',
@@ -61,38 +69,45 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             ];
 
             const selectedFareStages = getSelectedFareStages(Object.values(matchingFareZones));
-            if (ticket && isReturnTicket(ticket)) {
+            if (isReturnTicket(ticket)) {
                 if (!overrideWarning) {
                     updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, {
                         selectedFareStages,
                         warning: true,
+                        errors: [],
                     });
                     redirectTo(res, '/editFareStageMatching');
                     return;
                 }
             } else {
-                updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, { selectedFareStages, errors });
+                updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, {
+                    selectedFareStages,
+                    errors,
+                    warning: false,
+                });
                 redirectTo(res, '/editFareStageMatching');
                 return;
             }
         }
 
         if (ticket.type === 'single') {
-            const formatMatchingFareZones = getFareZonesEditTicket(userFareStages, matchingFareZones, ticket.fareZones);
+            const formattedMatchingFareZones = getFareZonesEditTicket(
+                userFareStages,
+                matchingFareZones,
+                ticket.fareZones,
+            );
 
             const updatedTicket = {
                 ...ticket,
-                fareZones: formatMatchingFareZones,
+                fareZones: formattedMatchingFareZones,
                 unassignedStops: {
                     singleUnassignedStops: unassignedStops,
                 },
             };
             await putUserDataInProductsBucketWithFilePath(updatedTicket, ticketMetaData.matchingJsonLink);
         } else {
-            const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
-
             if (directionAttribute && 'direction' in directionAttribute && directionAttribute.direction === 'inbound') {
-                const formatMatchingFareZones = getFareZonesEditTicket(
+                const formattedMatchingFareZones = getFareZonesEditTicket(
                     userFareStages,
                     matchingFareZones,
                     ticket.inboundFareZones,
@@ -100,14 +115,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 const updatedTicket = {
                     ...ticket,
-                    inboundFareZones: formatMatchingFareZones,
+                    inboundFareZones: formattedMatchingFareZones,
                     unassignedStops: {
                         inboundUnassignedStops: unassignedStops,
                     },
                 };
                 await putUserDataInProductsBucketWithFilePath(updatedTicket, ticketMetaData.matchingJsonLink);
             } else {
-                const formatMatchingFareZones = getFareZonesEditTicket(
+                const formattedMatchingFareZones = getFareZonesEditTicket(
                     userFareStages,
                     matchingFareZones,
                     ticket.outboundFareZones,
@@ -115,7 +130,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
                 const updatedTicket: WithIds<ReturnTicket> = {
                     ...ticket,
-                    outboundFareZones: formatMatchingFareZones,
+                    outboundFareZones: formattedMatchingFareZones,
                     unassignedStops: {
                         outboundUnassignedStops: unassignedStops,
                     },

@@ -84,7 +84,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
         </div>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="radio-option-single"
+          errorId="option-0"
           errors={Array []}
         >
           <table
@@ -1215,7 +1215,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
         </div>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="radio-option-single"
+          errorId="option-0"
           errors={
             Array [
               Object {
@@ -2346,7 +2346,7 @@ exports[`Edit Fare Stage Matching Page should render with warning 1`] = `
         </div>
         <FormElementWrapper
           errorClass="govuk-radios--error"
-          errorId="radio-option-single"
+          errorId="option-0"
           errors={Array []}
         >
           <table

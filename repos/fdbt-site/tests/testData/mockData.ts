@@ -803,7 +803,7 @@ export const userFareStages: UserFareStages = {
     ],
 };
 
-export const fareStagesEditTicket: string[] = ['Acomb Green Lane', 'Mattison Way', 'Nursery Drive'];
+export const fareStageNames: string[] = ['Acomb Green Lane', 'Mattison Way', 'Nursery Drive'];
 
 export const zoneStops: Stop[] = [
     {

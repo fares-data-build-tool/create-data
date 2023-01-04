@@ -3,13 +3,7 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import * as auroradb from '../../src/data/auroradb';
 import * as s3 from '../../src/data/s3';
-import {
-    mockRawService,
-    userFareStages,
-    fareStagesEditTicket,
-    zoneStops,
-    selectedFareStages,
-} from '../testData/mockData';
+import { mockRawService, userFareStages, fareStageNames, zoneStops, selectedFareStages } from '../testData/mockData';
 
 import EditFareStageMatching from '../../src/pages/editFareStageMatching';
 
@@ -33,7 +27,7 @@ describe('Edit Fare Stage Matching Page', () => {
 
         wrapper = shallow(
             <EditFareStageMatching
-                fareStages={fareStagesEditTicket}
+                fareStages={fareStageNames}
                 stops={zoneStops}
                 errors={[]}
                 selectedFareStages={selectedFareStages}
@@ -55,7 +49,7 @@ describe('Edit Fare Stage Matching Page', () => {
     it('should render with error', () => {
         wrapper = shallow(
             <EditFareStageMatching
-                fareStages={fareStagesEditTicket}
+                fareStages={fareStageNames}
                 stops={zoneStops}
                 errors={[
                     {
@@ -76,7 +70,7 @@ describe('Edit Fare Stage Matching Page', () => {
     it('should render with warning', () => {
         wrapper = shallow(
             <EditFareStageMatching
-                fareStages={fareStagesEditTicket}
+                fareStages={fareStageNames}
                 stops={zoneStops}
                 errors={[]}
                 selectedFareStages={selectedFareStages}
