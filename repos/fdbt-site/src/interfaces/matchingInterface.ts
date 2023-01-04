@@ -1,4 +1,3 @@
-import { ErrorInfo } from 'react';
 import { PassengerDetails, BasicService, UserFareStages, ServicesInfo } from '.';
 import { Stop, Product } from './matchingJsonTypes';
 
@@ -11,6 +10,10 @@ export interface MatchingInfo {
     service: BasicService;
     userFareStages: UserFareStages;
     matchingFareZones: MatchingFareZones;
+}
+
+export interface SelectedFareStages {
+    selectedFareStages: { [key: string]: string };
 }
 
 export interface InboundMatchingInfo {

@@ -167,7 +167,7 @@ export interface SessionAttributeTypes {
     [SOP_ATTRIBUTE]: SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
     [MATCHING_ATTRIBUTE]: MatchingWithErrors | MatchingInfo;
-    [EDIT_FARE_STAGE_MATCHING_ATTRIBUTE]: Direction | EditFareStageMatchingWithErrors;
+    [EDIT_FARE_STAGE_MATCHING_ATTRIBUTE]: EditFareStageMatchingWithErrors;
     [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
     [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiry | ErrorInfo[];
     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: CarnetProductInfo | WithErrors<CarnetProductInfo>;

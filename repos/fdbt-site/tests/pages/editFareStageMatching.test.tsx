@@ -39,6 +39,7 @@ describe('Edit Fare Stage Matching Page', () => {
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
                 backHref=""
+                warning={false}
             />,
         );
     });
@@ -66,6 +67,22 @@ describe('Edit Fare Stage Matching Page', () => {
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
                 backHref=""
+                warning={false}
+            />,
+        );
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render with warning', () => {
+        wrapper = shallow(
+            <EditFareStageMatching
+                fareStages={fareStagesEditTicket}
+                stops={zoneStops}
+                errors={[]}
+                selectedFareStages={selectedFareStages}
+                csrfToken=""
+                backHref=""
+                warning={true}
             />,
         );
         expect(wrapper).toMatchSnapshot();

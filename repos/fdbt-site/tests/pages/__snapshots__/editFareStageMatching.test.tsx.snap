@@ -15,6 +15,10 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
     <ErrorSummary
       errors={Array []}
     />
+    <WarningSummary
+      errors={Array []}
+      label="Check this box if you wish to proceed without assigning all fare stages, then click Continue"
+    />
     <div
       className="govuk-form-group "
     >
@@ -58,6 +62,26 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
         >
           This data has been taken from the Traveline National Dataset and NaPTAN database.
         </span>
+        <div
+          className="reset-autopopulate-buttons"
+        >
+          <button
+            className="govuk-button govuk-button--secondary"
+            id="top-reset-all-fare-stages-button"
+            onClick={[Function]}
+            type="button"
+          >
+            Reset All Fare Stages
+          </button>
+          <button
+            className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
+            id="top-auto-populate-fares-stages-button"
+            onClick={[Function]}
+            type="button"
+          >
+            Auto-populate Fare Stages
+          </button>
+        </div>
         <FormElementWrapper
           errorClass="govuk-radios--error"
           errorId="radio-option-single"
@@ -122,7 +146,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-0"
                     name="option-0"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -186,7 +210,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-1"
                     name="option-1"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -250,7 +274,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-2"
                     name="option-2"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -314,7 +338,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-3"
                     name="option-3"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -378,7 +402,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-4"
                     name="option-4"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -442,7 +466,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-5"
                     name="option-5"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -506,7 +530,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-6"
                     name="option-6"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -570,7 +594,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-7"
                     name="option-7"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -634,7 +658,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-8"
                     name="option-8"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -698,7 +722,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-9"
                     name="option-9"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -762,7 +786,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-10"
                     name="option-10"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -826,7 +850,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-11"
                     name="option-11"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -890,7 +914,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-12"
                     name="option-12"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -954,7 +978,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-13"
                     name="option-13"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1018,7 +1042,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
                     className="govuk-select farestage-select"
                     id="option-14"
                     name="option-14"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1063,6 +1087,26 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
         </FormElementWrapper>
       </fieldset>
     </div>
+    <div
+      className="reset-autopopulate-buttons"
+    >
+      <button
+        className="govuk-button govuk-button--secondary"
+        id="bottom-reset-all-fare-stages-button"
+        onClick={[Function]}
+        type="button"
+      >
+        Reset All Fare Stages
+      </button>
+      <button
+        className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
+        id="bottom-auto-populate-fares-stages-button"
+        onClick={[Function]}
+        type="button"
+      >
+        Auto-populate Fare Stages
+      </button>
+    </div>
     <input
       className="govuk-button"
       id="continue-button"
@@ -1101,6 +1145,10 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
           },
         ]
       }
+    />
+    <WarningSummary
+      errors={Array []}
+      label="Check this box if you wish to proceed without assigning all fare stages, then click Continue"
     />
     <div
       className="govuk-form-group govuk-form-group--error"
@@ -1145,6 +1193,26 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
         >
           This data has been taken from the Traveline National Dataset and NaPTAN database.
         </span>
+        <div
+          className="reset-autopopulate-buttons"
+        >
+          <button
+            className="govuk-button govuk-button--secondary"
+            id="top-reset-all-fare-stages-button"
+            onClick={[Function]}
+            type="button"
+          >
+            Reset All Fare Stages
+          </button>
+          <button
+            className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
+            id="top-auto-populate-fares-stages-button"
+            onClick={[Function]}
+            type="button"
+          >
+            Auto-populate Fare Stages
+          </button>
+        </div>
         <FormElementWrapper
           errorClass="govuk-radios--error"
           errorId="radio-option-single"
@@ -1216,7 +1284,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-0"
                     name="option-0"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1280,7 +1348,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-1"
                     name="option-1"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1344,7 +1412,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-2"
                     name="option-2"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1408,7 +1476,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-3"
                     name="option-3"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1472,7 +1540,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-4"
                     name="option-4"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1536,7 +1604,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-5"
                     name="option-5"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1600,7 +1668,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-6"
                     name="option-6"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1664,7 +1732,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-7"
                     name="option-7"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1728,7 +1796,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-8"
                     name="option-8"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1792,7 +1860,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-9"
                     name="option-9"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1856,7 +1924,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-10"
                     name="option-10"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1920,7 +1988,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-11"
                     name="option-11"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -1984,7 +2052,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-12"
                     name="option-12"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -2048,7 +2116,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-13"
                     name="option-13"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -2112,7 +2180,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
                     className="govuk-select farestage-select"
                     id="option-14"
                     name="option-14"
-                    onBlur={[Function]}
+                    onChange={[Function]}
                     value=""
                   >
                     <option
@@ -2156,6 +2224,1150 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
           </table>
         </FormElementWrapper>
       </fieldset>
+    </div>
+    <div
+      className="reset-autopopulate-buttons"
+    >
+      <button
+        className="govuk-button govuk-button--secondary"
+        id="bottom-reset-all-fare-stages-button"
+        onClick={[Function]}
+        type="button"
+      >
+        Reset All Fare Stages
+      </button>
+      <button
+        className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
+        id="bottom-auto-populate-fares-stages-button"
+        onClick={[Function]}
+        type="button"
+      >
+        Auto-populate Fare Stages
+      </button>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</FullColumnLayout>
+`;
+
+exports[`Edit Fare Stage Matching Page should render with warning 1`] = `
+<FullColumnLayout
+  description="Edit fare stages page of the Create Fares Data Service"
+  errors={Array []}
+  title="Edit fare stages - Create Fares Data Service "
+>
+  <CsrfForm
+    action="/api/editFareStageMatching"
+    className="matching-page"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <WarningSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "One or more fare stages have not been assigned, assign each fare stage to a stop",
+            "id": "option-0",
+          },
+        ]
+      }
+      label="Check this box if you wish to proceed without assigning all fare stages, then click Continue"
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="fare-type-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="fare-type-page-heading"
+          >
+            Match stops to fares stages
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="fare-type-operator-hint"
+        >
+          Select a fare stage for each stop.
+        </span>
+        <span
+          className="govuk-hint"
+          id="auto-populate-hint"
+        >
+          To assist you with completing this section we have included an auto-complete feature. Assign 
+          <b>
+            each
+          </b>
+           fare stage to the 
+          <b>
+            first
+          </b>
+           bus stop in the stage and then select the auto-complete button to fill in the gaps. You can also manually match individual stops to fare stages at any point.
+        </span>
+        <span
+          className="govuk-hint"
+          id="traveline-hint"
+        >
+          This data has been taken from the Traveline National Dataset and NaPTAN database.
+        </span>
+        <div
+          className="reset-autopopulate-buttons"
+        >
+          <button
+            className="govuk-button govuk-button--secondary"
+            id="top-reset-all-fare-stages-button"
+            onClick={[Function]}
+            type="button"
+          >
+            Reset All Fare Stages
+          </button>
+          <button
+            className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
+            id="top-auto-populate-fares-stages-button"
+            onClick={[Function]}
+            type="button"
+          >
+            Auto-populate Fare Stages
+          </button>
+        </div>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="radio-option-single"
+          errors={Array []}
+        >
+          <table
+            className="govuk-table"
+          >
+            <thead
+              className="govuk-table__head"
+            >
+              <tr
+                className="govuk-table__row"
+              >
+                <th
+                  className="govuk-table__header govuk-!-width-one-half"
+                  id="stop-name-header"
+                  scope="col"
+                >
+                  Stop name
+                </th>
+                <th
+                  className="govuk-table__header govuk-!-width-one-quarter"
+                  id="naptan-code-header"
+                  scope="col"
+                >
+                  Naptan code
+                </th>
+                <th
+                  className="govuk-table__header govuk-!-width-one-quarter"
+                  id="fare-stage-header"
+                  scope="col"
+                >
+                  Fare stage
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            >
+              <tr
+                className="govuk-table__row"
+                key="13003305E"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-0"
+                >
+                  New Seaham, S-bound Westlea shops (on B1285 Stockton Road)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-0"
+                >
+                  durapmja
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-0 naptan-code-header naptan-0"
+                    className="govuk-select farestage-select"
+                    id="option-0"
+                    name="option-0"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-0"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Westlea shops\\",\\"naptanCode\\":\\"durapmja\\",\\"atcoCode\\":\\"13003305E\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"B1285 Stockton Road\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003622B"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-1"
+                >
+                  Deneside, NE-bound The Avenue Shops (on The Avenue)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-1"
+                >
+                  duratgtm
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-1 naptan-code-header naptan-1"
+                    className="govuk-select farestage-select"
+                    id="option-1"
+                    name="option-1"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-1"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"The Avenue Shops\\",\\"naptanCode\\":\\"duratgtm\\",\\"atcoCode\\":\\"13003622B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003655B"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-2"
+                >
+                  Seaham, B Interchange Stand B (on South Crescent)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-2"
+                >
+                  duratjwd
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-2 naptan-code-header naptan-2"
+                    className="govuk-select farestage-select"
+                    id="option-2"
+                    name="option-2"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-2"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Interchange Stand B\\",\\"naptanCode\\":\\"duratjwd\\",\\"atcoCode\\":\\"13003655B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"B\\",\\"street\\":\\"South Crescent\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003635B"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-3"
+                >
+                  Seaham, NE-bound Adolphus Place (on South Terrace)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-3"
+                >
+                  duratjga
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-3 naptan-code-header naptan-3"
+                    className="govuk-select farestage-select"
+                    id="option-3"
+                    name="option-3"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-3"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Adolphus Place\\",\\"naptanCode\\":\\"duratjga\\",\\"atcoCode\\":\\"13003635B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"South Terrace\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003618B"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-4"
+                >
+                  Deneside, NE-bound The Avenue - Essex Crescent (on The Avenue)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-4"
+                >
+                  duratgpt
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-4 naptan-code-header naptan-4"
+                    className="govuk-select farestage-select"
+                    id="option-4"
+                    name="option-4"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-4"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"The Avenue - Essex Crescent\\",\\"naptanCode\\":\\"duratgpt\\",\\"atcoCode\\":\\"13003618B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003612D"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-5"
+                >
+                  Seaham, SE-bound New Strangford Road (on New Stranford Road)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-5"
+                >
+                  duratgma
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-5 naptan-code-header naptan-5"
+                    className="govuk-select farestage-select"
+                    id="option-5"
+                    name="option-5"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-5"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"New Strangford Road\\",\\"naptanCode\\":\\"duratgma\\",\\"atcoCode\\":\\"13003612D\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"SE-bound\\",\\"street\\":\\"New Stranford Road\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003611B"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-6"
+                >
+                  Seaham, NE-bound New Tempest Road - York House (on Tempest Road)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-6"
+                >
+                  duratgjt
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-6 naptan-code-header naptan-6"
+                    className="govuk-select farestage-select"
+                    id="option-6"
+                    name="option-6"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-6"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003306B"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-7"
+                >
+                  New Seaham, NE-bound Mount Pleasant (on The Avenue)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-7"
+                >
+                  durapmjg
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-7 naptan-code-header naptan-7"
+                    className="govuk-select farestage-select"
+                    id="option-7"
+                    name="option-7"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-7"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Mount Pleasant\\",\\"naptanCode\\":\\"durapmjg\\",\\"atcoCode\\":\\"13003306B\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"The Avenue\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003949C"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-8"
+                >
+                  Seaham, E-bound Viceroy Street (on Viceroy street)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-8"
+                >
+                  durgawmt
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-8 naptan-code-header naptan-8"
+                    className="govuk-select farestage-select"
+                    id="option-8"
+                    name="option-8"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-8"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Viceroy Street\\",\\"naptanCode\\":\\"durgawmt\\",\\"atcoCode\\":\\"13003949C\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"Viceroy street\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003609E"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-9"
+                >
+                  Seaham, S-bound Vane Terrace - Castlereagh (on Vane Terrace)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-9"
+                >
+                  duratgdt
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-9 naptan-code-header naptan-9"
+                    className="govuk-select farestage-select"
+                    id="option-9"
+                    name="option-9"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-9"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003921A"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-10"
+                >
+                  New Seaham, N-bound Estate Hail and Ride (on Windermere Road)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-10"
+                >
+                  durgawjp
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-10 naptan-code-header naptan-10"
+                    className="govuk-select farestage-select"
+                    id="option-10"
+                    name="option-10"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-10"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Estate Hail and Ride\\",\\"naptanCode\\":\\"durgawjp\\",\\"atcoCode\\":\\"13003921A\\",\\"localityCode\\":\\"N0077347\\",\\"localityName\\":\\"New Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"N-bound\\",\\"street\\":\\"Windermere Road\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003923B"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-11"
+                >
+                  Deneside, NE-bound Kingston Avenue (on Kingston Avenue)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-11"
+                >
+                  durawagw
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-11 naptan-code-header naptan-11"
+                    className="govuk-select farestage-select"
+                    id="option-11"
+                    name="option-11"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-11"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Kingston Avenue\\",\\"naptanCode\\":\\"durawagw\\",\\"atcoCode\\":\\"13003923B\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Kingston Avenue\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003625C"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-12"
+                >
+                  Deneside, E-bound Park (on The Avenue)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-12"
+                >
+                  duratgwg
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-12 naptan-code-header naptan-12"
+                    className="govuk-select farestage-select"
+                    id="option-12"
+                    name="option-12"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-12"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003939H"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-13"
+                >
+                  Deneside, NW-bound Laurel Avenue (on Laurel Avenue)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-13"
+                >
+                  durawamp
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-13 naptan-code-header naptan-13"
+                    className="govuk-select farestage-select"
+                    id="option-13"
+                    name="option-13"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-13"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Laurel Avenue\\",\\"naptanCode\\":\\"durawamp\\",\\"atcoCode\\":\\"13003939H\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NW-bound\\",\\"street\\":\\"Laurel Avenue\\"}"
+                  />
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="13003661E"
+              >
+                <td
+                  className="govuk-table__cell stop-cell"
+                  id="stop-14"
+                >
+                  Seaham, S-bound Sophia Street (on Sophia Street)
+                </td>
+                <td
+                  className="govuk-table__cell naptan-cell"
+                  id="naptan-14"
+                >
+                  durgapwp
+                </td>
+                <td
+                  className="govuk-table__cell stage-cell"
+                >
+                  <select
+                    aria-labelledby="stop-name-header stop-14 naptan-code-header naptan-14"
+                    className="govuk-select farestage-select"
+                    id="option-14"
+                    name="option-14"
+                    onChange={[Function]}
+                    value=""
+                  >
+                    <option
+                      disabled={true}
+                      value=""
+                    >
+                      Select a Fare Stage
+                    </option>
+                    <option
+                      key="Acomb Green Lane"
+                      value="Acomb Green Lane"
+                    >
+                      Acomb Green Lane
+                    </option>
+                    <option
+                      key="Mattison Way"
+                      value="Mattison Way"
+                    >
+                      Mattison Way
+                    </option>
+                    <option
+                      key="Nursery Drive"
+                      value="Nursery Drive"
+                    >
+                      Nursery Drive
+                    </option>
+                    <option
+                      value="notApplicable"
+                    >
+                      Not Applicable
+                    </option>
+                  </select>
+                  <input
+                    name="option-14"
+                    type="hidden"
+                    value="{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"}"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <div
+      className="reset-autopopulate-buttons"
+    >
+      <button
+        className="govuk-button govuk-button--secondary"
+        id="bottom-reset-all-fare-stages-button"
+        onClick={[Function]}
+        type="button"
+      >
+        Reset All Fare Stages
+      </button>
+      <button
+        className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
+        id="bottom-auto-populate-fares-stages-button"
+        onClick={[Function]}
+        type="button"
+      >
+        Auto-populate Fare Stages
+      </button>
     </div>
     <input
       className="govuk-button"

@@ -11,6 +11,7 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import {
+    DIRECTION_ATTRIBUTE,
     EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
@@ -34,7 +35,7 @@ interface EditStagesProps {
     stops: Stop[];
     backHref: string;
     selectedFareStages: {};
-    warning: boolean
+    warning: boolean;
 }
 
 export const getFareStagesFromTicket = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>): string[] => {
@@ -108,9 +109,8 @@ const EditFareStageMatching = ({
     csrfToken,
     backHref,
     selectedFareStages,
-    warning
+    warning,
 }: EditStagesProps): ReactElement => {
-
     const warnings: ErrorInfo[] = [];
     const [selections, updateSelections] = useState<StopItem[]>([]);
     const [stopItems, updateStopItems] = useState(getStopItems(fareStages, stops, selectedFareStages));
@@ -265,13 +265,13 @@ const EditFareStageMatching = ({
                                                     {item.naptanCode}
                                                 </td>
                                                 <td className="govuk-table__cell stage-cell">
+                                                    {/* eslint-disable-next-line jsx-a11y/no-onchange */}
                                                     <select
                                                         className="govuk-select farestage-select"
                                                         id={`option-${item.index}`}
                                                         name={`option-${item.index}`}
                                                         value={item.dropdownValue}
                                                         aria-labelledby={`stop-name-header stop-${item.index} naptan-code-header naptan-${item.index}`}
-                                                        // eslint-disable-next-line jsx-a11y/no-onchange
                                                         onChange={(e) =>
                                                             handleDropdownSelection(item.index, e.target.value)
                                                         }
@@ -316,8 +316,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         | WithIds<ReturnTicket>
         | undefined;
 
+    //updateSessionAttribute(ctx.req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, undefined);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
     const editFareStageMatchingAttribute = getSessionAttribute(ctx.req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE);
+    const directionAttribute = getSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE);
 
     if (!ticket || !matchingJsonMetaData) {
         throw new Error('Ticket not found in session.');
@@ -335,8 +337,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if (ticket.type === 'single') {
         direction = ticket.journeyDirection;
     } else {
-        if (editFareStageMatchingAttribute && 'direction' in editFareStageMatchingAttribute) {
-            direction = editFareStageMatchingAttribute.direction;
+        if (directionAttribute && 'direction' in directionAttribute) {
+            direction = directionAttribute.direction;
         }
     }
 
@@ -385,8 +387,16 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             backHref: `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
                 matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
             }`,
-            selectedFareStages: getSelectedFareStagesFromTicket(ticket, direction),
-            warning: editFareStageMatchingAttribute && 'warning' in editFareStageMatchingAttribute ? editFareStageMatchingAttribute.warning : false,
+            selectedFareStages:
+                editFareStageMatchingAttribute && editFareStageMatchingAttribute.selectedFareStages
+                    ? editFareStageMatchingAttribute.selectedFareStages
+                    : getSelectedFareStagesFromTicket(ticket, direction),
+            warning:
+                editFareStageMatchingAttribute &&
+                'warning' in editFareStageMatchingAttribute &&
+                editFareStageMatchingAttribute.warning
+                    ? editFareStageMatchingAttribute.warning
+                    : false,
         },
     };
 };

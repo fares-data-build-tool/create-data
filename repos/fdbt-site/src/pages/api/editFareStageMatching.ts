@@ -8,6 +8,7 @@ import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
+    DIRECTION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
@@ -16,6 +17,18 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { getFareStagesFromTicket } from '../editFareStageMatching';
 import { ReturnTicket, SingleTicket, WithIds } from '../../interfaces/matchingJsonTypes';
 import { isReturnTicket } from '../../utils';
+import { MatchingFareZonesData } from '../../interfaces/matchingInterface';
+
+const getSelectedFareStages = (matchingFareZones: MatchingFareZonesData[]): { [key: string]: string } => {
+    const obj: { [key: string]: string } = {};
+
+    matchingFareZones.forEach((fareZone) => {
+        fareZone.stops.forEach((stop) => {
+            obj[stop.atcoCode] = fareZone.name;
+        });
+    });
+    return obj;
+};
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -44,25 +57,25 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 },
             ];
 
-            let warning = false;
-            if (ticket && isReturnTicket(ticket) &&  !overrideWarning) {
-                warning = true;
-                updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, { warning });
+            const selectedFareStages = getSelectedFareStages(Object.values(matchingFareZones));
+            if (ticket && isReturnTicket(ticket)) {
+                if (!overrideWarning) {
+                    updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, {
+                        selectedFareStages,
+                        warning: true,
+                    });
+                    redirectTo(res, '/editFareStageMatching');
+                    return;
+                }
             } else {
-                updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, { warning, errors });
+                updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, { selectedFareStages, errors });
+                redirectTo(res, '/editFareStageMatching');
+                return;
             }
-
-            redirectTo(res, '/editFareStageMatching');
-
-            return;
         }
 
         if (ticket.type === 'single') {
-            const formatMatchingFareZones = getFareZonesEditTicket(
-                userFareStages,
-                matchingFareZones,
-                ticket.fareZones,
-            );
+            const formatMatchingFareZones = getFareZonesEditTicket(userFareStages, matchingFareZones, ticket.fareZones);
 
             const updatedTicket = {
                 ...ticket,
@@ -73,19 +86,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             };
             await putUserDataInProductsBucketWithFilePath(updatedTicket, ticketMetaData.matchingJsonLink);
         } else {
-            const editFareStageMatchingAttribute = getSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE);
-            
+            const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
             const formatMatchingFareZones = getFareZonesEditTicket(
                 userFareStages,
                 matchingFareZones,
                 ticket.outboundFareZones,
             );
 
-            if (
-                editFareStageMatchingAttribute &&
-                'direction' in editFareStageMatchingAttribute &&
-                editFareStageMatchingAttribute.direction === 'inbound'
-            ) {
+            if (directionAttribute && 'direction' in directionAttribute && directionAttribute.direction === 'inbound') {
                 const updatedTicket = {
                     ...ticket,
                     inboundFareZones: formatMatchingFareZones,
@@ -103,7 +111,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     },
                 };
                 await putUserDataInProductsBucketWithFilePath(updatedTicket, ticketMetaData.matchingJsonLink);
-                updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, { direction: 'inbound' });
+                updateSessionAttribute(req, DIRECTION_ATTRIBUTE, { direction: 'inbound' });
 
                 redirectTo(res, '/editFareStageMatching');
                 return;
@@ -111,6 +119,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, undefined);
+        updateSessionAttribute(req, DIRECTION_ATTRIBUTE, undefined);
 
         redirectTo(
             res,

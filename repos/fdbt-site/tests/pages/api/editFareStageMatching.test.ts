@@ -1,8 +1,15 @@
-import matching from '../../../src/pages/api/matching';
-import { getMockRequestAndResponse, service, mockMatchingUserFareStages, expectedSingleTicket, expectedFlatFareTicket, expectedReturnTicketWithAdditionalService } from '../../testData/mockData';
+import {
+    getMockRequestAndResponse,
+    mockMatchingUserFareStages,
+    expectedSingleTicket,
+    expectedReturnTicketWithAdditionalService,
+} from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import { MatchingInfo, MatchingWithErrors } from '../../../src/interfaces/matchingInterface';
-import { MATCHING_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, UNASSIGNED_STOPS_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE, MATCHING_JSON_ATTRIBUTE, MATCHING_JSON_META_DATA_ATTRIBUTE, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE } from '../../../src/constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
+} from '../../../src/constants/attributes';
 import editFareStageMatching from '../../../src/pages/api/editFareStageMatching';
 import * as index from '../../../src/utils/apiUtils/index';
 import { EditFareStageMatchingWithErrors } from 'src/interfaces';
@@ -63,40 +70,37 @@ describe('Edit fare stage matching API', () => {
     const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
     s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
 
-
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    it.only('generates the error if no ticket in session', () => {
-
+    it.only('generates the error if no ticket in session', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 ...selections,
             },
             mockWriteHeadFn: writeHeadMock,
         });
-        editFareStageMatching(req, res);
+        await editFareStageMatching(req, res);
 
         expect(redirectToErrorSpy).toBeCalledWith(
             res,
             'There was a problem mapping the fare stage for edit ticket',
             'api.editFareStageMatching',
-            new Error("Ticket details not found"),
+            new Error('Ticket details not found'),
         );
-
     });
 
     // it.only('generates the error for ticket other than single, return or point-to-point-period ticket', () => {
-        
+
     //     const { req, res } = getMockRequestAndResponse({
     //         body: {
     //             ...selections,
-                
+
     //         },
     //         session: {
     //             [MATCHING_JSON_ATTRIBUTE]: expectedFlatFareTicket,
-    //             [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },                
+    //             [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
     //         },
     //         mockWriteHeadFn: writeHeadMock,
     //     });
@@ -110,10 +114,15 @@ describe('Edit fare stage matching API', () => {
     //     );
     // });
 
-    it.only('correctly generates matching error info, updates the EDIT_FARE_STAGE_MATCHING_ATTRIBUTE and then redirects to page when there are unassigned fare stages', () => {
+    it.only('correctly generates matching error info, updates the EDIT_FARE_STAGE_MATCHING_ATTRIBUTE and then redirects to page when there are unassigned fare stages', async () => {
         const expectedMatchingError: EditFareStageMatchingWithErrors = {
-            errors: [{errorMessage: 'One or more fare stages have not been assigned, assign each fare stage to a stop', id: "option-0"}],
-            warning: false            
+            errors: [
+                {
+                    errorMessage: 'One or more fare stages have not been assigned, assign each fare stage to a stop',
+                    id: 'option-0',
+                },
+            ],
+            selectedFareStages: {},
         };
         const { req, res } = getMockRequestAndResponse({
             body: {
@@ -121,67 +130,79 @@ describe('Edit fare stage matching API', () => {
                     '{"stopName":"Cresswood Avenue","naptanCode":"blpadpdg","atcoCode":"2590B0207","localityCode":"E0035271","localityName":"Anchorsholme","parentLocalityName":"Cleveleys","indicator":"opp","street":"Anchorsholme Lane East"}',
                 option1:
                     '{"stopName":"North Drive","naptanCode":"blpagjmj","atcoCode":"2590B0487","localityCode":"E0035271","localityName":"Anchorsholme","parentLocalityName":"Cleveleys","indicator":"adj","street":"North Drive"}',
-            },
-            session: {
-            [MATCHING_JSON_ATTRIBUTE]: expectedSingleTicket,
-            [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },                
-            },
-            mockWriteHeadFn: writeHeadMock,
-        });
-        editFareStageMatching(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, expectedMatchingError);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/editFareStageMatching',
-        });
-    });
-
-    it.only('correctly generates matching error info, updates the EDIT_FARE_STAGE_MATCHING_ATTRIBUTE and then redirects to page with warning when there are unassigned fare stages', () => {
-        const expectedMatchingError: EditFareStageMatchingWithErrors = {            
-            warning: true            
-        };
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                option0:
-                    '{"stopName":"Cresswood Avenue","naptanCode":"blpadpdg","atcoCode":"2590B0207","localityCode":"E0035271","localityName":"Anchorsholme","parentLocalityName":"Cleveleys","indicator":"opp","street":"Anchorsholme Lane East"}',
-                option1:
-                    '{"stopName":"North Drive","naptanCode":"blpagjmj","atcoCode":"2590B0487","localityCode":"E0035271","localityName":"Anchorsholme","parentLocalityName":"Cleveleys","indicator":"adj","street":"North Drive"}',
-            },
-            session: {
-            [MATCHING_JSON_ATTRIBUTE]: expectedReturnTicketWithAdditionalService,
-            [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },                
-            },
-            mockWriteHeadFn: writeHeadMock,
-        });
-        editFareStageMatching(req, res);
-
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, expectedMatchingError);
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/editFareStageMatching',
-        });
-    });
-
-    it('update correctly for the single ticket', () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                ...selections,                
             },
             session: {
                 [MATCHING_JSON_ATTRIBUTE]: expectedSingleTicket,
-                [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'matchingJsonLink' },                
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await editFareStageMatching(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+            req,
+            EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
+            expectedMatchingError,
+        );
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/editFareStageMatching',
+        });
+    });
+
+    it.only('correctly generates matching error info, updates the EDIT_FARE_STAGE_MATCHING_ATTRIBUTE and then redirects to page with warning when there are unassigned fare stages', async () => {
+        const expectedMatchingError: EditFareStageMatchingWithErrors = {
+            warning: true,
+            selectedFareStages: expect.any(Object),
+        };
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                option0:
+                    '{"stopName":"Cresswood Avenue","naptanCode":"blpadpdg","atcoCode":"2590B0207","localityCode":"E0035271","localityName":"Anchorsholme","parentLocalityName":"Cleveleys","indicator":"opp","street":"Anchorsholme Lane East"}',
+                option1:
+                    '{"stopName":"North Drive","naptanCode":"blpagjmj","atcoCode":"2590B0487","localityCode":"E0035271","localityName":"Anchorsholme","parentLocalityName":"Cleveleys","indicator":"adj","street":"North Drive"}',
+            },
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedReturnTicketWithAdditionalService,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await editFareStageMatching(req, res);
+
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(
+            req,
+            EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
+            expectedMatchingError,
+        );
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/editFareStageMatching',
+        });
+    });
+
+    it('update correctly for the single ticket', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                ...selections,
+            },
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedSingleTicket,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '1',
+                    serviceId: '2',
+                    matchingJsonLink: 'matchingJsonLink',
+                },
             },
             mockWriteHeadFn: writeHeadMock,
         });
 
-        editFareStageMatching(req, res);        
+        await editFareStageMatching(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/products/productDetails?productId=1&serviceId=2',
         });
-        
     });
 
-    it('update correctly for the return/point-to-point-period ticket for outbound direction and redirect to editFareStageMatching page', () => {
+    it('update correctly for the return/point-to-point-period ticket for outbound direction and redirect to editFareStageMatching page', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 ...selections,
@@ -192,13 +213,13 @@ describe('Edit fare stage matching API', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        matching(req, res);
+        await editFareStageMatching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });
     });
 
-    it('update correctly for the return/point-to-point-period ticket for inbound direction and redirect to productDetails page', () => {
+    it('update correctly for the return/point-to-point-period ticket for inbound direction and redirect to productDetails page', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 ...selections,
@@ -209,7 +230,7 @@ describe('Edit fare stage matching API', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        matching(req, res);
+        await editFareStageMatching(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/error',
         });

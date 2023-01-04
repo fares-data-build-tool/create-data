@@ -73,8 +73,9 @@ export interface Direction {
 }
 
 export interface EditFareStageMatchingWithErrors {
-    warning: boolean,
-    errors?: ErrorInfo[]
+    warning?: boolean;
+    errors?: ErrorInfo[];
+    selectedFareStages: { [key: string]: string };
 }
 
 export interface Errors {
