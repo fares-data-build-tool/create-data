@@ -24,7 +24,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isWithErrors } from '../interfaces/typeGuards';
 import WarningSummary from '../components/WarningSummary';
 
-const title = 'Edit fare stages - Create Fares Data Service ';
+const title = 'Edit fare stages - Create Fares Data Service';
 const description = 'Edit fare stages page of the Create Fares Data Service';
 const errorId = 'option-0';
 

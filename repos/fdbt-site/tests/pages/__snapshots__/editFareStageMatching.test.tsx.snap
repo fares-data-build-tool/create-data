@@ -4,7 +4,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
 <FullColumnLayout
   description="Edit fare stages page of the Create Fares Data Service"
   errors={Array []}
-  title="Edit fare stages - Create Fares Data Service "
+  title="Edit fare stages - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/editFareStageMatching"
@@ -1128,7 +1128,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
       },
     ]
   }
-  title="Edit fare stages - Create Fares Data Service "
+  title="Edit fare stages - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/editFareStageMatching"
@@ -2259,7 +2259,7 @@ exports[`Edit Fare Stage Matching Page should render with warning 1`] = `
 <FullColumnLayout
   description="Edit fare stages page of the Create Fares Data Service"
   errors={Array []}
-  title="Edit fare stages - Create Fares Data Service "
+  title="Edit fare stages - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/editFareStageMatching"
