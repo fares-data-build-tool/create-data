@@ -20,14 +20,14 @@ import { isReturnTicket } from '../../utils';
 import { MatchingFareZonesData } from '../../interfaces/matchingInterface';
 
 const getSelectedFareStages = (matchingFareZones: MatchingFareZonesData[]): { [key: string]: string } => {
-    const obj: { [key: string]: string } = {};
+    const selectedFareStages: { [key: string]: string } = {};
 
     matchingFareZones.forEach((fareZone) => {
         fareZone.stops.forEach((stop) => {
-            obj[stop.atcoCode] = fareZone.name;
+            selectedFareStages[stop.atcoCode] = fareZone.name;
         });
     });
-    return obj;
+    return selectedFareStages;
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
