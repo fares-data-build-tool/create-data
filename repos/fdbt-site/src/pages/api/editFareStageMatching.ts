@@ -127,7 +127,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     },
                 };
 
-                await putUserDataInProductsBucketWithFilePath(updatedTicket, ticketMetaData.matchingJsonLink);
+                updateSessionAttribute(req, MATCHING_JSON_ATTRIBUTE, updatedTicket);
                 updateSessionAttribute(req, DIRECTION_ATTRIBUTE, { direction: 'inbound' });
                 updateSessionAttribute(req, EDIT_FARE_STAGE_MATCHING_ATTRIBUTE, undefined);
                 redirectTo(res, '/editFareStageMatching');

@@ -23,8 +23,8 @@ import { formatStopName, getAndValidateNoc, getCsrfToken, isReturnTicket } from 
 import { getSessionAttribute } from '../utils/sessions';
 import { isWithErrors } from '../interfaces/typeGuards';
 import WarningSummary from '../components/WarningSummary';
+import { upperFirst } from 'lodash';
 
-const title = 'Edit fare stages - Create Fares Data Service';
 const description = 'Edit fare stages page of the Create Fares Data Service';
 const errorId = 'option-0';
 
@@ -37,6 +37,7 @@ interface EditStagesProps {
     selectedFareStages: {};
     warning: boolean;
     showBackButtton: boolean;
+    direction: string;
 }
 
 export const getFareStagesFromTicket = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>): string[] => {
@@ -112,6 +113,7 @@ const EditFareStageMatching = ({
     selectedFareStages,
     warning,
     showBackButtton,
+    direction,
 }: EditStagesProps): ReactElement => {
     const warnings: ErrorInfo[] = [];
     const [selections, updateSelections] = useState<StopItem[]>([]);
@@ -193,6 +195,8 @@ const EditFareStageMatching = ({
         });
     }
 
+    const title = `${upperFirst(direction)} fare stages - Create Fares Data Service`;
+
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             {!!backHref && errors.length === 0 && !warning && showBackButtton ? <BackButton href={backHref} /> : null}
@@ -207,7 +211,7 @@ const EditFareStageMatching = ({
                         <fieldset className="govuk-fieldset" aria-describedby="fare-type-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 className="govuk-fieldset__heading" id="fare-type-page-heading">
-                                    Match stops to fares stages
+                                    {upperFirst(direction)} - Match stops to fares stages
                                 </h1>
                             </legend>
                             <span className="govuk-hint" id="fare-type-operator-hint">
@@ -399,6 +403,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     ? editFareStageMatchingAttribute.warning
                     : false,
             showBackButtton,
+            direction,
         },
     };
 };
