@@ -365,6 +365,8 @@ export const completeCapStartTime = (): void => {
 };
 
 export const completeCapCreatePages = (): void => {
+    const randomName = getRandomNumber(1, 200);
+    clickElementById('capped-product-name').type(`Capped distance product ${randomName}`);
     clickElementById('cap-name-0').type('My Cap');
     clickElementById('cap-price-0').type('2.34');
     clickElementById('cap-period-duration-quantity-0').type('2');
