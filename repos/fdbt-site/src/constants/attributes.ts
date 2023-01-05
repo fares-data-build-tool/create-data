@@ -38,6 +38,8 @@ export const NUMBER_OF_STAGES_ATTRIBUTE = 'fdbt-number-stages';
 
 export const MATCHING_ATTRIBUTE = 'fdbt-matching';
 
+export const EDIT_FARE_STAGE_MATCHING_ATTRIBUTE = 'fdbt-edit-fare-stage-matching';
+
 export const INBOUND_MATCHING_ATTRIBUTE = 'fdbt-inbound-matching';
 
 export const NUMBER_OF_PRODUCTS_ATTRIBUTE = 'fdbt-number-of-products';

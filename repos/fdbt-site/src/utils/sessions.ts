@@ -75,6 +75,7 @@ import {
     CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
     MULTI_TAPS_PRICING_ATTRIBUTE,
     ADDITIONAL_PRICING_ATTRIBUTE,
+    EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -138,6 +139,7 @@ import {
     DistanceCap,
     MultiTapPricing,
     AdditionalPricing,
+    EditFareStageMatchingWithErrors,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -165,6 +167,7 @@ export interface SessionAttributeTypes {
     [SOP_ATTRIBUTE]: SalesOfferPackageWithErrors;
     [SOP_INFO_ATTRIBUTE]: SalesOfferPackageInfo | SalesOfferPackageInfoWithErrors;
     [MATCHING_ATTRIBUTE]: MatchingWithErrors | MatchingInfo;
+    [EDIT_FARE_STAGE_MATCHING_ATTRIBUTE]: EditFareStageMatchingWithErrors;
     [INBOUND_MATCHING_ATTRIBUTE]: MatchingWithErrors | InboundMatchingInfo;
     [PERIOD_EXPIRY_ATTRIBUTE]: PeriodExpiry | ErrorInfo[];
     [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: CarnetProductInfo | WithErrors<CarnetProductInfo>;

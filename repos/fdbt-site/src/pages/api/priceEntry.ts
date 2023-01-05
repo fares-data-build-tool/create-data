@@ -1,10 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import isEmpty from 'lodash/isEmpty';
-
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { INPUT_METHOD_ATTRIBUTE, PRICE_ENTRY_ATTRIBUTE, DIRECTION_ATTRIBUTE } from '../../constants/attributes';
 import { USER_DATA_BUCKET_NAME } from '../../constants';
-
 import { getUuidFromSession, redirectToError, redirectTo } from '../../utils/apiUtils';
 import { putStringInS3 } from '../../data/s3';
 import { removeAllWhiteSpace } from '../../utils/apiUtils/validator';

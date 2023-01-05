@@ -346,6 +346,12 @@ describe('myfares pages', () => {
                             editLink: '/csvUpload',
                         },
                         {
+                            id: 'fare-stage-matching',
+                            name: 'Fare stages and stops',
+                            content: ['5 bus stops across 5 fare stages'],
+                            editLink: '/editFareStageMatching',
+                        },
+                        {
                             id: 'purchase-methods',
                             name: 'Purchase methods',
                             content: ['SOP 1', 'SOP 2'],
@@ -496,6 +502,18 @@ describe('myfares pages', () => {
                             editLink: '/csvUpload',
                         },
                         {
+                            id: 'outbound-fare-stage-matching',
+                            name: 'Outbound fare stages and stops',
+                            content: ['1 bus stops across 1 fare stages'],
+                            editLink: '/editFareStageMatching',
+                        },
+                        {
+                            id: 'inbound-fare-stage-matching',
+                            name: 'Inbound fare stages and stops',
+                            content: ['5 bus stops across 5 fare stages'],
+                            editLink: '/editFareStageMatching',
+                        },
+                        {
                             id: 'return-ticket-validity',
                             name: 'Return ticket validity',
                             content: ['N/A'],
@@ -567,6 +585,18 @@ describe('myfares pages', () => {
                             name: 'Fare triangle',
                             content: ['You created a fare triangle'],
                             editLink: '/csvUpload',
+                        },
+                        {
+                            id: 'outbound-fare-stage-matching',
+                            name: 'Outbound fare stages and stops',
+                            content: ['1 bus stops across 1 fare stages'],
+                            editLink: '/editFareStageMatching',
+                        },
+                        {
+                            id: 'inbound-fare-stage-matching',
+                            name: 'Inbound fare stages and stops',
+                            content: ['5 bus stops across 5 fare stages'],
+                            editLink: '/editFareStageMatching',
                         },
                         {
                             id: 'quantity-in-bundle',
@@ -945,6 +975,12 @@ describe('myfares pages', () => {
                             name: 'Fare triangle',
                             content: ['Updated: 17/12/2021'],
                             editLink: '/csvUpload',
+                        },
+                        {
+                            id: 'fare-stage-matching',
+                            name: 'Fare stages and stops',
+                            content: ['5 bus stops across 5 fare stages'],
+                            editLink: '/editFareStageMatching',
                         },
                         {
                             id: 'purchase-methods',
