@@ -34,7 +34,7 @@ const AdditionalPricingStructures = ({
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 className="govuk-fieldset__heading">Are there additional pricing structures?</h1>
                         </legend>
-                        <label className="govuk-label" htmlFor="additional-discounts">
+                        <label className="govuk-label govuk-!-margin-bottom-4" htmlFor="additional-discounts">
                             Do you have additional discounts related to this product?
                         </label>
                         <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">

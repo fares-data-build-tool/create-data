@@ -2,7 +2,13 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { getMockContext } from '../testData/mockData';
 import { getSalesOfferPackagesByNocCode } from '../../src/data/auroradb';
-import { FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    TYPE_OF_CAP_ATTRIBUTE,
+    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+} from '../../src/constants/attributes';
 import SelectPurchaseMethods, { getServerSideProps, PurchaseMethodsProps } from '../../src/pages/selectPurchaseMethods';
 import { FromDb, SalesOfferPackage } from '../../src/interfaces/matchingJsonTypes';
 
@@ -301,7 +307,16 @@ describe('pages', () => {
                 (getSalesOfferPackagesByNocCode as jest.Mock).mockImplementation(() => mockSalesOfferPackages);
 
                 const ctx = getMockContext({
-                    session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'capped' } },
+                    session: {
+                        [FARE_TYPE_ATTRIBUTE]: { fareType: 'capped' },
+                        [TYPE_OF_CAP_ATTRIBUTE]: { typeOfCap: 'byDistance' },
+                        [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: {
+                            productName: 'product name',
+                            maximumPrice: '',
+                            minimumPrice: '',
+                            capPricing: [],
+                        },
+                    },
                 });
 
                 const result = await getServerSideProps(ctx);

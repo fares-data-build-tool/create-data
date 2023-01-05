@@ -1,3 +1,5 @@
+import { AdditionalPricing, CapDetails, DistanceCap, MultiTap } from './index';
+
 export interface PointToPointCarnetProductDetails extends BaseProduct {
     productName: string;
     carnetDetails: CarnetDetails;
@@ -13,7 +15,7 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     stops: Stop[];
 }
 
-export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator'> {
+export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator' | 'capped'> {
     operatorName: string;
     products: ProductDetails[];
     fareDayEnd?: string;
@@ -79,6 +81,7 @@ export type Ticket =
     | PointToPointTicket
     | GeoZoneTicket
     | PeriodMultipleServicesTicket
+    | CappedTicket
     | FlatFareTicket
     | SchemeOperatorGeoZoneTicket
     | SchemeOperatorFlatFareTicket
@@ -99,7 +102,8 @@ export type TicketWithIds =
     | WithIds<MultiOperatorMultipleServicesTicket>
     | WithIds<MultiOperatorGeoZoneTicket>
     | WithIds<PointToPointPeriodTicket>
-    | WithIds<PeriodHybridTicket>;
+    | WithIds<PeriodHybridTicket>
+    | WithIds<CappedTicket>;
 
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
@@ -257,6 +261,46 @@ export interface Product {
     productDurationUnits?: string;
     productEndTime?: string;
     carnetDetails?: CarnetDetails;
+}
+
+export interface CappedGeoZoneTicket extends BaseTicket<'capped'> {
+    cappedProductInfo: ByDistanceCapInfo | ByTapCapInfo | ByProductsCapInfo;
+    type: 'capped';
+    products: CappedProductDetails[];
+    zoneName: string;
+    stops: Stop[];
+}
+
+export interface CappedMultipleServicesTicket extends Omit<BaseTicket<'capped'>, 'products'> {
+    cappedProductInfo: ByDistanceCapInfo | ByTapCapInfo | ByProductsCapInfo;
+    products: CappedProductDetails[];
+    selectedServices: SelectedService[];
+    operatorName: string;
+}
+
+export type CappedTicket = CappedGeoZoneTicket | CappedMultipleServicesTicket;
+
+export interface CappedProductDetails extends BaseProduct {
+    productName: string;
+}
+
+export interface ByDistanceCapInfo {
+    capDetails: DistanceCap;
+    additionalDiscount?: AdditionalPricing;
+}
+
+export interface ByTapCapInfo {
+    tapDetails: MultiTap;
+    capDetails: CapDetails;
+    capExpiry: PeriodExpiry;
+    capStart: CapStartInfo;
+}
+
+export interface ByProductsCapInfo {
+    productGroup: { id: number };
+    capDetails: CapDetails;
+    capExpiry: PeriodExpiry;
+    capStart: CapStartInfo;
 }
 
 export interface ProductDetails extends BaseProduct {

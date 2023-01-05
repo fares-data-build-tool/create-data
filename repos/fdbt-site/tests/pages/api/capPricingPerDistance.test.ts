@@ -12,7 +12,7 @@ describe('capPricingPerDistance', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates cap info, updates the  CAP_PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', () => {
+    it('correctly generates cap info, updates the CAP_PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', () => {
         const mockCapInfo: DistanceCap = {
             maximumPrice: '4',
             minimumPrice: '3',
@@ -28,6 +28,7 @@ describe('capPricingPerDistance', () => {
                     pricePerKm: '5',
                 },
             ],
+            productName: 'Product',
         };
 
         const { req, res } = getMockRequestAndResponse({
@@ -38,6 +39,7 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '3',
                 pricePerKm1: '5',
                 pricePerKm0: '5',
+                cappedProductName: 'Product',
             },
             mockWriteHeadFn: writeHeadMock,
         });
@@ -69,6 +71,7 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '3',
                 pricePerKm1: '5',
                 pricePerKm0: '6',
+                cappedProductName: 'Product',
             },
         });
 
@@ -89,6 +92,7 @@ describe('capPricingPerDistance', () => {
                     pricePerKm: '5',
                 },
             ],
+            productName: 'Product',
             errors,
         });
     });
@@ -113,6 +117,7 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '3',
                 pricePerKm1: '5',
                 pricePerKm0: '5',
+                cappedProductName: 'Product',
             },
         });
 
@@ -130,6 +135,7 @@ describe('capPricingPerDistance', () => {
                     pricePerKm: '5',
                 },
             ],
+            productName: 'Product',
         });
     });
 
@@ -149,6 +155,7 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '3',
                 pricePerKm1: '5',
                 pricePerKm0: '2',
+                cappedProductName: 'Product',
             },
         });
 
@@ -169,6 +176,7 @@ describe('capPricingPerDistance', () => {
                     pricePerKm: '5',
                 },
             ],
+            productName: 'Product',
             errors,
         });
     });
@@ -189,6 +197,7 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '',
                 pricePerKm1: '5',
                 pricePerKm0: '5',
+                cappedProductName: 'Product',
             },
         });
 
@@ -209,6 +218,7 @@ describe('capPricingPerDistance', () => {
                     pricePerKm: '5',
                 },
             ],
+            productName: 'Product',
             errors,
         });
     });
@@ -229,6 +239,7 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '2',
                 pricePerKm0: '2',
                 pricePerKm1: '',
+                cappedProductName: 'Product',
             },
         });
 
@@ -245,6 +256,7 @@ describe('capPricingPerDistance', () => {
                     pricePerKm: '',
                 },
             ],
+            productName: 'Product',
             errors,
         });
     });
@@ -272,7 +284,7 @@ describe('validate input tests', () => {
             },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, '3', '4');
+        const errors = validateInput(capPricePerDistances, 1, '3', '4', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });
@@ -298,7 +310,7 @@ describe('validate input tests', () => {
             },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, '3', '4');
+        const errors = validateInput(capPricePerDistances, 1, '3', '4', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });
@@ -320,7 +332,7 @@ describe('validate input tests', () => {
             { id: `maximum-price`, errorMessage: 'This must be a valid price in pounds and pence' },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, '2', 'a');
+        const errors = validateInput(capPricePerDistances, 1, '2', 'a', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });
@@ -342,7 +354,7 @@ describe('validate input tests', () => {
             { id: `minimum-price`, errorMessage: 'This must be a valid price in pounds and pence' },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, 'a', '2');
+        const errors = validateInput(capPricePerDistances, 1, 'a', '2', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });
@@ -364,7 +376,7 @@ describe('validate input tests', () => {
             { id: `price-per-km-1`, errorMessage: 'This must be a valid price in pounds and pence' },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, '1', '2');
+        const errors = validateInput(capPricePerDistances, 1, '1', '2', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });
@@ -399,7 +411,7 @@ describe('validate input tests', () => {
             { id: 'distance-from-1', errorMessage: 'Distance from must be less than distance to in the same row' },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, '1', '2');
+        const errors = validateInput(capPricePerDistances, 1, '1', '2', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });

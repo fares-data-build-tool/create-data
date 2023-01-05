@@ -3,20 +3,26 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import {
+    CAPS_ATTRIBUTE,
+    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
+    TYPE_OF_CAP_ATTRIBUTE,
 } from '../constants/attributes';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import {
+    CapDetails,
+    DistanceCap,
     ErrorInfo,
     NextPageContextWithSession,
     ProductInfo,
     ProductWithSalesOfferPackages,
     SchoolFareTypeAttribute,
+    TypeOfCap,
 } from '../interfaces';
 import { isFareType } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
@@ -238,7 +244,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
         const selectedValue = {
             [productInfo.productName]: purchaseMethodsList.filter((purchaseMethod) =>
-                ticket.products[0].salesOfferPackages.map((salesOffer) => salesOffer.id).includes(purchaseMethod.id),
+                ticket.products[0].salesOfferPackages
+                    .map((salesOffer: { id: number }) => salesOffer.id)
+                    .includes(purchaseMethod.id),
             ),
         };
 
@@ -270,9 +278,25 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ? schoolFareTypeAttribute.schoolFareType
             : fareTypeAttribute.fareType;
 
+    let cappedProductName = '';
+
+    if (fareType === 'capped') {
+        const { typeOfCap } = getSessionAttribute(ctx.req, TYPE_OF_CAP_ATTRIBUTE) as TypeOfCap;
+
+        if (typeOfCap === 'byDistance') {
+            const distanceCap = getSessionAttribute(ctx.req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE) as DistanceCap;
+            cappedProductName = distanceCap.productName;
+        } else {
+            const capDetails = getSessionAttribute(ctx.req, CAPS_ATTRIBUTE) as CapDetails;
+            cappedProductName = capDetails.productName;
+        }
+    }
+
     const products =
         ['period', 'multiOperator', 'flatFare'].includes(fareType) && multipleProductAttribute
             ? multipleProductAttribute.products
+            : !!cappedProductName
+            ? [{ productName: cappedProductName, productPrice: '' }]
             : [{ productName: 'product', productPrice: '' }];
 
     const selected: { [key: string]: SalesOfferPackage[] } | undefined =

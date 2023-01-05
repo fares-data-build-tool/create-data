@@ -25,6 +25,11 @@ exports[`pages capConfirmation should render correctly for capped ticket by dist
             "name": "Cap type",
           },
           Object {
+            "content": "By distance cap",
+            "href": "/createCaps",
+            "name": "Capped product name",
+          },
+          Object {
             "content": Array [
               "Price - £2",
               "Duration - 1 day",
@@ -93,6 +98,11 @@ exports[`pages capConfirmation should render correctly for capped ticket by prod
             "name": "Product group name",
           },
           Object {
+            "content": "By products cap",
+            "href": "/createCaps",
+            "name": "Capped product name",
+          },
+          Object {
             "content": Array [
               "Price - £2",
               "Duration - 1 hour",
@@ -152,6 +162,11 @@ exports[`pages capConfirmation should render correctly for capped ticket by taps
             "content": "Pricing by taps ",
             "href": "typeOfCap",
             "name": "Cap type",
+          },
+          Object {
+            "content": "By taps cap",
+            "href": "/createCaps",
+            "name": "Capped product name",
           },
           Object {
             "content": Array [

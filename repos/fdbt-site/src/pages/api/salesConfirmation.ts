@@ -7,7 +7,6 @@ import {
 import { NextApiRequestWithSession } from '../../interfaces';
 import { isTicketRepresentation } from '../../interfaces/typeGuards';
 import { getSessionAttribute } from '../../utils/sessions';
-
 import {
     getAndValidateNoc,
     getFareTypeFromFromAttributes,
@@ -28,6 +27,7 @@ import {
     putUserDataInProductsBucket,
     splitUserDataJsonByProducts,
     insertDataToProductsBucketAndProductsTable,
+    getCappedTicketJson,
 } from '../../utils/apiUtils/userData';
 import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
 
@@ -54,6 +54,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson = getSingleTicketJson(req, res);
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
+        } else if (fareType === 'capped') {
+            if (!ticketType) {
+                throw new Error('Capped ticket required a type of ticket representation.');
+            }
+            userDataJson = await getCappedTicketJson(req, res, ticketType);
         } else if (['period', 'multiOperator', 'flatFare'].includes(fareType)) {
             switch (ticketType) {
                 case 'geoZone':

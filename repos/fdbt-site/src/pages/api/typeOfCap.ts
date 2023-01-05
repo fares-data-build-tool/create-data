@@ -24,18 +24,15 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
 
         updateSessionAttribute(req, TYPE_OF_CAP_ATTRIBUTE, { typeOfCap });
+
         if (typeOfCap === 'byProducts') {
             redirectTo(res, '/selectCappedProductGroup');
             return;
         } else if (typeOfCap === 'byDistance') {
             redirectTo(res, '/defineCapPricingPerDistance');
+            return;
         } else if (typeOfCap === 'byTaps') {
             redirectTo(res, '/multiTapsPricing');
-            return;
-        } else {
-            // to change when we support other types of cap
-            // and add appropriate unit API test
-            redirectTo(res, '/typeOfCap');
             return;
         }
     } catch (error) {

@@ -272,6 +272,8 @@ export const completePeriodGeoZonePages = (numberOfProducts: number, multiProduc
 export const completeCappedDistanceJourney = (): void => {
     clickElementById('radio-option-byDistance');
     continueButtonClick();
+    const randomName = getRandomNumber(1, 200);
+    clickElementById('capped-product-name').type(`Capped distance product ${randomName}`);
     clickElementById('minimum-price').type('2');
     clickElementById('maximum-price').type('3');
     clickElementById('add-another-button');

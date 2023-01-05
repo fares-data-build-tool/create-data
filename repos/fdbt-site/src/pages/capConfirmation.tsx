@@ -9,7 +9,7 @@ import {
     MULTI_TAPS_PRICING_ATTRIBUTE,
     CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { NextPageContextWithSession, ConfirmationElement, Cap } from '../interfaces';
+import { NextPageContextWithSession, ConfirmationElement, Cap, CapDetails } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
@@ -25,6 +25,7 @@ const description = 'Cap Confirmation page of the Create Fares Data Service';
 interface CapConfirmationProps {
     typeOfCap: string;
     productGroupName: string;
+    cappedProductName: string;
     caps: Cap[];
     capValidity: string;
     capStartInfoContent: string;
@@ -38,6 +39,7 @@ interface CapConfirmationProps {
 export const buildCapConfirmationElements = (
     typeOfCap: string,
     productGroupName: string,
+    cappedProductName: string,
     caps: Cap[],
     capValidity: string,
     capStartInfoContent: string,
@@ -59,6 +61,14 @@ export const buildCapConfirmationElements = (
             name: 'Product group name',
             content: productGroupName,
             href: '/selectCappedProductGroup',
+        });
+    }
+
+    if (cappedProductName) {
+        confirmationElements.push({
+            name: 'Capped product name',
+            content: cappedProductName,
+            href: '/createCaps',
         });
     }
 
@@ -130,6 +140,7 @@ export const buildCapConfirmationElements = (
 const CapConfirmation = ({
     typeOfCap,
     productGroupName,
+    cappedProductName,
     caps,
     capValidity,
     capStartInfoContent,
@@ -148,6 +159,7 @@ const CapConfirmation = ({
                     confirmationElements={buildCapConfirmationElements(
                         typeOfCap,
                         productGroupName,
+                        cappedProductName,
                         caps,
                         capValidity,
                         capStartInfoContent,
@@ -173,7 +185,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('Could not extract the correct attributes for the user journey.');
     }
 
-    const capAttribute = getSessionAttribute(ctx.req, CAPS_ATTRIBUTE);
+    const capAttribute = getSessionAttribute(ctx.req, CAPS_ATTRIBUTE) as CapDetails | undefined;
     const capStartAttribute = getSessionAttribute(ctx.req, CAP_START_ATTRIBUTE);
 
     const productGroupIdAttribute = getSessionAttribute(ctx.req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE);
@@ -183,7 +195,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ? (await getProductGroupByNocAndId(noc, Number.parseInt(productGroupIdAttribute)))?.name
             : '';
 
-    const caps = capAttribute ? capAttribute.caps : [];
+    const caps = capAttribute?.caps || [];
+    const cappedProductName = capAttribute?.productName;
 
     const capValidityAttribute = getSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE);
     const capValidity =
@@ -237,6 +250,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             typeOfCap: typeOfCapAttribute.typeOfCap,
             productGroupName: productGroupName || '',
+            cappedProductName: cappedProductName || '',
             caps,
             capValidity,
             capStartInfoContent,

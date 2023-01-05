@@ -1,8 +1,11 @@
 import ticketRepresentation from '../../../src/pages/api/ticketRepresentation';
 import { getMockRequestAndResponse } from '../../testData/mockData';
+import * as sessions from '../../../src/utils/sessions';
+import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('ticketRepresentation', () => {
     const writeHeadMock = jest.fn();
+    const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
 
     afterEach(() => {
         jest.resetAllMocks();
@@ -14,6 +17,26 @@ describe('ticketRepresentation', () => {
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/ticketRepresentation',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, TICKET_REPRESENTATION_ATTRIBUTE, {
+            errors: [{ errorMessage: 'Choose a type of ticket representation', id: 'geo-zone' }],
+        });
+    });
+
+    it('should return 302 redirect to /ticketRepresentation when an incorrect input method is selected', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: { ticketType: 'blah' },
+            mockWriteHeadFn: writeHeadMock,
+        });
+        ticketRepresentation(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/ticketRepresentation',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, TICKET_REPRESENTATION_ATTRIBUTE, {
+            errors: [{ errorMessage: 'Choose a type of ticket representation', id: 'geo-zone' }],
         });
     });
 
