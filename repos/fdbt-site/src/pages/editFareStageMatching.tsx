@@ -36,17 +36,13 @@ interface EditStagesProps {
     backHref: string;
     selectedFareStages: {};
     warning: boolean;
+    showBackButtton: boolean;
 }
 
-export const getFareStagesFromTicket = (
-    ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>,
-    direction: string,
-): string[] => {
+export const getFareStagesFromTicket = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>): string[] => {
     if (isReturnTicket(ticket)) {
-        if (direction === 'inbound') {
-            return ticket.inboundFareZones.map((fareZone) => fareZone.name);
-        }
-        return ticket.outboundFareZones.map((fareZone) => fareZone.name);
+        const fareZones = [...ticket.outboundFareZones, ...ticket.inboundFareZones];
+        return Array.from(new Set(fareZones.map((fareZone) => fareZone.name)));
     }
     return (ticket as WithIds<SingleTicket>).fareZones.map((fareZone) => fareZone.name);
 };
@@ -115,6 +111,7 @@ const EditFareStageMatching = ({
     backHref,
     selectedFareStages,
     warning,
+    showBackButtton,
 }: EditStagesProps): ReactElement => {
     const warnings: ErrorInfo[] = [];
     const [selections, updateSelections] = useState<StopItem[]>([]);
@@ -198,7 +195,7 @@ const EditFareStageMatching = ({
 
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
-            {!!backHref && errors.length === 0 && !warning ? <BackButton href={backHref} /> : null}
+            {!!backHref && errors.length === 0 && !warning && showBackButtton ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/editFareStageMatching" method="post" csrfToken={csrfToken} className="matching-page">
                 <>
                     <ErrorSummary errors={errors} />
@@ -336,15 +333,16 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const lineName = service.lineName;
 
     let direction = 'outbound';
-
+    let showBackButtton = true;
     if (ticket.type === 'single') {
         direction = ticket.journeyDirection;
     } else {
         if (directionAttribute && 'direction' in directionAttribute) {
             direction = directionAttribute.direction;
+            showBackButtton = directionAttribute.direction !== 'inbound';
         }
     }
-    const fareStages = getFareStagesFromTicket(ticket, direction);
+    const fareStages = getFareStagesFromTicket(ticket);
     // find journey patterns for direction (inbound or outbound)
     const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === direction);
 
@@ -400,6 +398,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 editFareStageMatchingAttribute.warning
                     ? editFareStageMatchingAttribute.warning
                     : false,
+            showBackButtton,
         },
     };
 };

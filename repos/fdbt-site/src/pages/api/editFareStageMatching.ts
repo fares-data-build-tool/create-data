@@ -48,17 +48,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const parsedInputs = getMatchingFareZonesAndUnassignedStopsFromForm(req);
 
         const { matchingFareZones, unassignedStops } = parsedInputs;
-        let direction = 'outbound';
 
-        if (ticket.type === 'single') {
-            direction = ticket.journeyDirection;
-        } else {
-            if (directionAttribute && 'direction' in directionAttribute) {
-                direction = directionAttribute.direction;
-            }
-        }
-
-        const userFareStages = getFareStagesFromTicket(ticket, direction);
+        const userFareStages = getFareStagesFromTicket(ticket);
 
         if (isAnyFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const errors: ErrorInfo[] = [

@@ -48,13 +48,15 @@ export const getFareZonesEditTicket = (
         .map((userStage) => {
             const matchedZone = matchingFareZones[userStage];
 
+            const filteredFareZones = fareZones.filter((fareZone) => fareZone.name === userStage);
+
             return {
                 name: userStage,
                 stops: matchedZone.stops.map((stop: Stop) => ({
                     ...stop,
                     qualifierName: '',
                 })),
-                prices: fareZones.filter((fareZone) => fareZone.name === userStage)[0].prices,
+                prices: filteredFareZones.length > 0 ? filteredFareZones[0].prices : [],
             };
         });
 };

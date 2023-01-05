@@ -34,6 +34,7 @@ describe('Edit Fare Stage Matching Page', () => {
                 csrfToken=""
                 backHref=""
                 warning={false}
+                showBackButtton={true}
             />,
         );
     });
@@ -62,6 +63,7 @@ describe('Edit Fare Stage Matching Page', () => {
                 csrfToken=""
                 backHref=""
                 warning={false}
+                showBackButtton={true}
             />,
         );
         expect(wrapper).toMatchSnapshot();
@@ -77,6 +79,7 @@ describe('Edit Fare Stage Matching Page', () => {
                 csrfToken=""
                 backHref=""
                 warning={true}
+                showBackButtton={true}
             />,
         );
         expect(wrapper).toMatchSnapshot();
