@@ -60,6 +60,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     }
 
     if (additionalDiscounts === 'no') {
+        updateSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE, undefined);
         redirectTo(res, '/capConfirmation');
         return;
     }
