@@ -27,7 +27,7 @@ exports[`pages additionalPricingStructures should render correctly 1`] = `
         </h1>
       </legend>
       <label
-        className="govuk-label"
+        className="govuk-label govuk-!-margin-bottom-4"
         htmlFor="additional-discounts"
       >
         Do you have additional discounts related to this product?
@@ -221,7 +221,7 @@ exports[`pages additionalPricingStructures should render error messaging when er
         </h1>
       </legend>
       <label
-        className="govuk-label"
+        className="govuk-label govuk-!-margin-bottom-4"
         htmlFor="additional-discounts"
       >
         Do you have additional discounts related to this product?

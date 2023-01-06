@@ -20,19 +20,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const noc = getAndValidateNoc(req, res);
 
-        const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
+        const productGroupExists = await getProductGroupByNocAndId(noc, Number.parseInt(productGroupId));
 
-        if (!isDevOrTest) {
-            const productCheck = await getProductGroupByNocAndId(noc, Number.parseInt(productGroupId));
-
-            if (!productCheck) {
-                updateSessionAttribute(req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE, {
-                    errorMessage: 'Choose a group of products',
-                    id: 'product-group-0-radio',
-                });
-                redirectTo(res, '/selectCappedProductGroup');
-                return;
-            }
+        if (!productGroupExists) {
+            updateSessionAttribute(req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE, {
+                errorMessage: 'Choose a group of products',
+                id: 'product-group-0-radio',
+            });
+            redirectTo(res, '/selectCappedProductGroup');
+            return;
         }
 
         updateSessionAttribute(req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE, productGroupId);

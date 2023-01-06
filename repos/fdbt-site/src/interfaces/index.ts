@@ -72,6 +72,12 @@ export interface Direction {
     inboundDirection?: string;
 }
 
+export interface EditFareStageMatchingWithErrors {
+    warning: boolean;
+    errors: ErrorInfo[];
+    selectedFareStages: { [key: string]: string };
+}
+
 export interface Errors {
     errors?: ErrorInfo[];
 }
@@ -723,6 +729,11 @@ export interface TypeOfCap {
     typeOfCap: 'byDistance' | 'byTaps' | 'byProducts';
 }
 
+export interface CapDetails {
+    caps: Cap[];
+    productName: string;
+}
+
 export interface GroupOfProducts {
     id: number;
     productIds: string[];
@@ -743,13 +754,14 @@ export interface CapDistancePricing {
 }
 
 export interface DistanceCap {
+    productName: string;
     maximumPrice: string;
     minimumPrice: string;
     capPricing: CapDistancePricing[];
 }
 
 export interface MultiTap {
-    [key: string]: string;
+    [tapNumber: string]: string;
 }
 
 export interface MultiTapPricing {

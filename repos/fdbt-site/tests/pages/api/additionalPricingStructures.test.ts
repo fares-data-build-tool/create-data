@@ -75,7 +75,7 @@ describe('additionalPricingStructures', () => {
 
         additionalPricingStructures(req, res);
 
-        expect(updateSessionAttributeSpy).not.toBeCalled();
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, ADDITIONAL_PRICING_ATTRIBUTE, undefined);
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/capConfirmation' });
     });

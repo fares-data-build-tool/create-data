@@ -21,6 +21,39 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
       Enter your distance cap details
     </h1>
     <div
+      className="govuk-!-margin-bottom-3 govuk-!-margin-left-1"
+    >
+      <label
+        className="govuk-label"
+        htmlFor="capped-product-name"
+      >
+        Capped product name
+      </label>
+      <span
+        className="govuk-hint"
+      >
+        Enter the name of your capped product
+      </span>
+      <div
+        className="govuk-input__wrapper"
+      >
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="capped-product-name"
+          errors={Array []}
+          hideText={true}
+        >
+          <input
+            className="govuk-input govuk-input--width-30"
+            defaultValue="Product"
+            id="capped-product-name"
+            name="cappedProductName"
+            type="text"
+          />
+        </FormElementWrapper>
+      </div>
+    </div>
+    <div
       className="flex-container"
     >
       <div
@@ -39,7 +72,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
             className="govuk-label"
             htmlFor="minimum-price"
           >
-            Minimum price(£)
+            Minimum price (£)
           </label>
           <span
             className="govuk-hint"
@@ -57,7 +90,6 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
               £
             </div>
             <FormElementWrapper
-              addFormGroupError={false}
               errorClass="govuk-input--error"
               errorId="minimum-price"
               errors={Array []}
@@ -91,7 +123,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
             className="govuk-label"
             htmlFor="maximum-price"
           >
-            Maximum price(£)
+            Maximum price (£)
           </label>
           <span
             className="govuk-hint"
@@ -109,7 +141,6 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
               £
             </div>
             <FormElementWrapper
-              addFormGroupError={false}
               errorClass="govuk-input--error"
               errorId="maximum-price"
               errors={Array []}
@@ -148,6 +179,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
             ],
             "maximumPrice": "4",
             "minimumPrice": "3",
+            "productName": "Product",
           }
         }
         errors={Array []}
@@ -212,6 +244,46 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
       Enter your distance cap details
     </h1>
     <div
+      className="govuk-!-margin-bottom-3 govuk-!-margin-left-1"
+    >
+      <label
+        className="govuk-label"
+        htmlFor="capped-product-name"
+      >
+        Capped product name
+      </label>
+      <span
+        className="govuk-hint"
+      >
+        Enter the name of your capped product
+      </span>
+      <div
+        className="govuk-input__wrapper"
+      >
+        <FormElementWrapper
+          errorClass="govuk-input--error"
+          errorId="capped-product-name"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "Enter a value for the distance",
+                "id": "distance-to-0",
+              },
+            ]
+          }
+          hideText={true}
+        >
+          <input
+            className="govuk-input govuk-input--width-30"
+            defaultValue="Product"
+            id="capped-product-name"
+            name="cappedProductName"
+            type="text"
+          />
+        </FormElementWrapper>
+      </div>
+    </div>
+    <div
       className="flex-container"
     >
       <div
@@ -237,7 +309,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             className="govuk-label"
             htmlFor="minimum-price"
           >
-            Minimum price(£)
+            Minimum price (£)
           </label>
           <span
             className="govuk-hint"
@@ -255,7 +327,6 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
               £
             </div>
             <FormElementWrapper
-              addFormGroupError={false}
               errorClass="govuk-input--error"
               errorId="minimum-price"
               errors={
@@ -303,7 +374,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             className="govuk-label"
             htmlFor="maximum-price"
           >
-            Maximum price(£)
+            Maximum price (£)
           </label>
           <span
             className="govuk-hint"
@@ -321,7 +392,6 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
               £
             </div>
             <FormElementWrapper
-              addFormGroupError={false}
               errorClass="govuk-input--error"
               errorId="maximum-price"
               errors={
@@ -367,6 +437,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             ],
             "maximumPrice": "4",
             "minimumPrice": "3",
+            "productName": "Product",
           }
         }
         errors={

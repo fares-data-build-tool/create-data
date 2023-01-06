@@ -25,6 +25,11 @@ exports[`pages capConfirmation should render correctly for capped ticket by dist
             "name": "Cap type",
           },
           Object {
+            "content": "By distance cap",
+            "href": "/createCaps",
+            "name": "Capped product name",
+          },
+          Object {
             "content": Array [
               "Price - £2",
               "Duration - 1 day",
@@ -48,6 +53,11 @@ exports[`pages capConfirmation should render correctly for capped ticket by dist
             "content": "0 km - End of journey, Price per km: £4",
             "href": "/defineCapPricingPerDistance",
             "name": "Distance band 1",
+          },
+          Object {
+            "content": "Pricing structure starts after 2 min with percentage discount 2%",
+            "href": "/additionalPricingStructures",
+            "name": "Additional pricing",
           },
         ]
       }
@@ -91,6 +101,11 @@ exports[`pages capConfirmation should render correctly for capped ticket by prod
             "content": "capped-product-group-name",
             "href": "/selectCappedProductGroup",
             "name": "Product group name",
+          },
+          Object {
+            "content": "By products cap",
+            "href": "/createCaps",
+            "name": "Capped product name",
           },
           Object {
             "content": Array [
@@ -152,6 +167,11 @@ exports[`pages capConfirmation should render correctly for capped ticket by taps
             "content": "Pricing by taps ",
             "href": "typeOfCap",
             "name": "Cap type",
+          },
+          Object {
+            "content": "By taps cap",
+            "href": "/createCaps",
+            "name": "Capped product name",
           },
           Object {
             "content": Array [

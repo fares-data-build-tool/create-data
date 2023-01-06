@@ -16,7 +16,7 @@ import logger from '../logger';
 import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { getUserFareStages } from '../../data/s3';
 import { RawJourneyPattern, StopPoint } from '../../interfaces/dbTypes';
-import { Stop, UnassignedStop } from '../../interfaces/matchingJsonTypes';
+import { FareZone, Stop, UnassignedStop } from '../../interfaces/matchingJsonTypes';
 
 export const getFareZones = (
     userFareStages: UserFareStages,
@@ -34,6 +34,29 @@ export const getFareZones = (
                     qualifierName: '',
                 })),
                 prices: userStage.prices,
+            };
+        });
+};
+
+export const getFareZonesEditTicket = (
+    fareStages: string[],
+    matchingFareZones: MatchingFareZones,
+    fareZones: FareZone[],
+): MatchingFareZonesData[] => {
+    return fareStages
+        .filter((userStage) => matchingFareZones[userStage])
+        .map((userStage) => {
+            const matchedZone = matchingFareZones[userStage];
+
+            const filteredFareZones = fareZones.filter((fareZone) => fareZone.name === userStage);
+
+            return {
+                name: userStage,
+                stops: matchedZone.stops.map((stop: Stop) => ({
+                    ...stop,
+                    qualifierName: '',
+                })),
+                prices: filteredFareZones.length > 0 ? filteredFareZones[0].prices : [],
             };
         });
 };
@@ -82,6 +105,9 @@ export const getMatchingFareZonesAndUnassignedStopsFromForm = (
 
 export const isFareStageUnassigned = (userFareStages: UserFareStages, matchingFareZones: MatchingFareZones): boolean =>
     userFareStages.fareStages.some((stage) => !matchingFareZones[stage.stageName]);
+
+export const isAnyFareStageUnassigned = (fareStages: string[], matchingFareZones: MatchingFareZones): boolean =>
+    fareStages.some((stage) => !matchingFareZones[stage]);
 
 export const fareStageIsUnused = (userFareStageNames: string[], uploadedFareStages: UserFareStages): boolean => {
     let fareStageIsUnused = false;
@@ -143,7 +169,7 @@ export const sortingWithoutSequenceNumbers = (journeyPatterns: RawJourneyPattern
     }
 };
 
-const validateSequenceNumbers = (stops: StopPoint[]): stops is (StopPoint & { sequenceNumber: number })[] => {
+export const validateSequenceNumbers = (stops: StopPoint[]): stops is (StopPoint & { sequenceNumber: number })[] => {
     const sequenceToStop = new Map<number, StopPoint>();
     return !stops.some((stop) => {
         if (!stop.sequenceNumber) {

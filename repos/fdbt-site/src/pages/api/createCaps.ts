@@ -19,10 +19,19 @@ export interface InputtedCap {
     durationUnits: string | undefined;
 }
 
-export const validateAndFormatCapInputs = (inputtedCaps: InputtedCap[]): { errors: ErrorInfo[]; caps: Cap[] } => {
+export const validateAndFormatCapInputs = (
+    inputtedCaps: InputtedCap[],
+    cappedProductName: string | undefined,
+): { errors: ErrorInfo[]; caps: Cap[] } => {
     const errors: ErrorInfo[] = [];
     const caps: Cap[] = [];
     const capNames = inputtedCaps.map((cap) => cap.name);
+
+    const productNameError = checkProductOrCapNameIsValid(cappedProductName || '', 'product');
+
+    if (productNameError) {
+        errors.push({ errorMessage: productNameError, id: 'capped-product-name' });
+    }
 
     inputtedCaps.forEach((cap, index) => {
         const trimmedCapName = removeExcessWhiteSpace(cap.name);
@@ -74,6 +83,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const inputtedCaps: InputtedCap[] = [];
         let i = 0;
+        const { cappedProductName } = req.body;
         while (req.body[`capNameInput${i}`] !== undefined) {
             const capName = req.body[`capNameInput${i}`] as string | undefined;
             const capPrice = req.body[`capPriceInput${i}`] as string | undefined;
@@ -90,14 +100,14 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             i += 1;
         }
 
-        const { caps, errors } = validateAndFormatCapInputs(inputtedCaps);
+        const { caps, errors } = validateAndFormatCapInputs(inputtedCaps, cappedProductName);
 
         if (errors.length > 0) {
-            updateSessionAttribute(req, CAPS_ATTRIBUTE, { errors, caps });
+            updateSessionAttribute(req, CAPS_ATTRIBUTE, { errors, caps, productName: cappedProductName });
             redirectTo(res, '/createCaps');
             return;
         }
-        updateSessionAttribute(req, CAPS_ATTRIBUTE, { errors: [], caps });
+        updateSessionAttribute(req, CAPS_ATTRIBUTE, { caps, productName: cappedProductName });
 
         redirectTo(res, '/selectCapValidity');
         return;
