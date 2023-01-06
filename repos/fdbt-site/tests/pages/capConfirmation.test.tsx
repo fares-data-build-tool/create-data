@@ -25,6 +25,7 @@ describe('pages', () => {
                     capDistancePricingContents={[]}
                     distanceBands={[]}
                     csrfToken=""
+                    additionalPricing=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -50,6 +51,7 @@ describe('pages', () => {
                     capDistancePricingContents={[]}
                     distanceBands={[]}
                     csrfToken=""
+                    additionalPricing=""
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -75,6 +77,7 @@ describe('pages', () => {
                     capDistancePricingContents={['Min price: £2, Max price: £4']}
                     distanceBands={['0 km - End of journey, Price per km: £4']}
                     csrfToken=""
+                    additionalPricing="Pricing structure starts after 2 min with percentage discount 2 %"
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -92,6 +95,7 @@ describe('pages', () => {
                     [],
                     [],
                     [],
+                    '',
                 );
                 expect(result).toStrictEqual([
                     { content: 'Pricing by products ', href: 'typeOfCap', name: 'Cap type' },
@@ -134,6 +138,7 @@ describe('pages', () => {
                     ['Tap number - 1, Price - £2', 'Tap number - 2, Price - £4'],
                     [],
                     [],
+                    '',
                 );
                 expect(result).toStrictEqual([
                     { content: 'Pricing by taps ', href: 'typeOfCap', name: 'Cap type' },
@@ -176,6 +181,7 @@ describe('pages', () => {
                     [],
                     ['Min price: £2, Max price: £9'],
                     ['0 km - 2 km, Price per km: £4', '2 km - End of journey, Price per km: £3'],
+                    'Pricing structure starts after 2 min with percentage discount 2 %',
                 );
                 expect(result).toStrictEqual([
                     { content: 'Pricing by distance ', href: 'typeOfCap', name: 'Cap type' },
@@ -198,6 +204,11 @@ describe('pages', () => {
                         content: '2 km - End of journey, Price per km: £3',
                         href: '/defineCapPricingPerDistance',
                         name: 'Distance band 2',
+                    },
+                    {
+                        content: 'Pricing structure starts after 2 min with percentage discount 2 %',
+                        href: '/additionalPricingStructures',
+                        name: 'Additional pricing',
                     },
                 ]);
             });

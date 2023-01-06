@@ -170,6 +170,9 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Se
         errors = additionalPricingStructures.additionalPricingStructures.errors;
         additionalPricing = additionalPricingStructures.additionalPricingStructures;
         clickedYes = additionalPricingStructures.clickedYes;
+    } else if (additionalPricingStructures && 'pricingStructureStart' in additionalPricingStructures) {
+        additionalPricing = additionalPricingStructures;
+        clickedYes = true;
     }
 
     return {

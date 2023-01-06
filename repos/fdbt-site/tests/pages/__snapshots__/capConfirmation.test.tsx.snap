@@ -49,6 +49,11 @@ exports[`pages capConfirmation should render correctly for capped ticket by dist
             "href": "/defineCapPricingPerDistance",
             "name": "Distance band 1",
           },
+          Object {
+            "content": "Pricing structure starts after 2 min with percentage discount 2 %",
+            "href": "/additionalPricingStructures",
+            "name": "Additional pricing",
+          },
         ]
       }
       header="Cap Information"
