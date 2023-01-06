@@ -55,8 +55,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
         } else if (fareType === 'capped') {
-            if (!ticketType) {
-                throw new Error('Capped ticket required a type of ticket representation.');
+            if (!ticketType || ticketType === 'hybrid' || ticketType === 'pointToPointPeriod') {
+                throw new Error('Capped ticket required a type of ticket representation of geoZone or multiService.');
             }
             userDataJson = await getCappedTicketJson(req, res, ticketType);
         } else if (['period', 'multiOperator', 'flatFare'].includes(fareType)) {

@@ -431,7 +431,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
 export const getCappedTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-    ticketType: 'geoZone' | 'multipleServices' | 'hybrid' | 'pointToPointPeriod',
+    ticketType: 'geoZone' | 'multipleServices',
 ): Promise<WithIds<CappedTicket>> => {
     let json;
     if (ticketType === 'geoZone') {

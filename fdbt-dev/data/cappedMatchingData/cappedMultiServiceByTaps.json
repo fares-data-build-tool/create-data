@@ -5,6 +5,7 @@
   "email": "test@example.com",
   "uuid": "BLAC75196528",
   "ticketPeriod": { "startDate": "2020-02-01T00:00:00.000Z" },
+  "timeRestriction": [],
   "selectedServices": [
     {
       "lineName": "2",
@@ -36,12 +37,12 @@
           "durationUnits": "day"
         }
       ],
-      "productName": "nameyname"
+      "productName": "product name"
     },
     "capExpiry": { "productValidity": "24hr", "productEndTime": "" },
     "capStart": { "type": "fixedWeekdays", "startDay": "monday" }
   },
   "products": [
-    { "productName": "nameyname", "salesOfferPackages": [{ "id": 3 }] }
+    { "productName": "product name", "salesOfferPackages": [{ "id": 3 }] }
   ]
 }

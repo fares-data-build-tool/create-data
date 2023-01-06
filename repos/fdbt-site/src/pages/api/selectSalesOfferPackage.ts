@@ -168,10 +168,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (!multipleProductAttribute) {
-            let key = 'product';
-            if (!!cappedProductName) {
-                key = cappedProductName;
-            }
+            const key = !!cappedProductName ? cappedProductName : 'product';
             const salesOfferPackages: SalesOfferPackage[] = sanitisedBody[key];
 
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackages);
