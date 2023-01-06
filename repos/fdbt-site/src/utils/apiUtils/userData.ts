@@ -59,6 +59,7 @@ import {
     MultiTapPricing,
     CapDetails,
     ServiceListAttribute,
+    OperatorAttribute,
 } from '../../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import {
@@ -269,9 +270,7 @@ export const getBasePeriodTicketAttributes = (
     ticketType: 'period' | 'multiOperator',
 ): WithIds<BasePeriodTicket> => {
     const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
-
     const baseTicketAttributes = getBaseTicketAttributes(req, res, ticketType);
-
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE);
@@ -512,9 +511,10 @@ export const getCappedTicketJson = async (
 export const getCappedGeoZoneTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): Promise<{ zoneName: string; stops: Stop[] } & WithBaseIds<BaseTicket<'capped'>>> => {
+): Promise<{ zoneName: string; stops: Stop[]; operatorName: string } & WithBaseIds<BaseTicket<'capped'>>> => {
     const baseAttributes = getBaseTicketAttributes(req, res, 'capped');
     const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
+    const operatorName = (getSessionAttribute(req, OPERATOR_ATTRIBUTE) as OperatorAttribute).name || '';
 
     if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName)) {
         throw new Error('Could not create geo zone ticket json. Necessary cookies and session objects not found.');
@@ -533,6 +533,7 @@ export const getCappedGeoZoneTicketJson = async (
         ...baseAttributes,
         zoneName: fareZoneName,
         stops: zoneStops,
+        operatorName,
     };
 };
 
@@ -580,14 +581,16 @@ export const getGeoZoneTicketJson = async (
 export const getCappedMultipleServicesTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): { selectedServices: SelectedService[] } & WithBaseIds<BaseTicket<'capped'>> => {
+): { selectedServices: SelectedService[]; operatorName: string } & WithBaseIds<BaseTicket<'capped'>> => {
     const baseAttributes = getBaseTicketAttributes(req, res, 'capped');
+    const operatorName = (getSessionAttribute(req, OPERATOR_ATTRIBUTE) as OperatorAttribute).name || '';
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const { selectedServices } = serviceListAttribute;
 
     return {
         ...baseAttributes,
         selectedServices,
+        operatorName,
     };
 };
 

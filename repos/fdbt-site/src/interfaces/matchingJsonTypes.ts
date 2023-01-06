@@ -269,6 +269,7 @@ export interface CappedGeoZoneTicket extends BaseTicket<'capped'> {
     products: CappedProductDetails[];
     zoneName: string;
     stops: Stop[];
+    operatorName: string;
 }
 
 export interface CappedMultipleServicesTicket extends Omit<BaseTicket<'capped'>, 'products'> {

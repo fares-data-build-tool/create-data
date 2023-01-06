@@ -1,4 +1,5 @@
 {
+  "operatorName": "Blackpool Transport",
   "nocCode": "BLAC",
   "type": "capped",
   "passengerType": { "id": 3 },
