@@ -250,7 +250,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const additionalPricing =
         typeOfCapAttribute.typeOfCap === 'byDistance'
             ? additionalPricingAttribute && 'pricingStructureStart' in additionalPricingAttribute
-                ? `Pricing structure starts after ${additionalPricingAttribute.pricingStructureStart} min with percentage discount ${additionalPricingAttribute.structureDiscount} %`
+                ? `Pricing structure starts after ${additionalPricingAttribute.pricingStructureStart} min with percentage discount ${additionalPricingAttribute.structureDiscount}%`
                 : 'N/A'
             : '';
 
