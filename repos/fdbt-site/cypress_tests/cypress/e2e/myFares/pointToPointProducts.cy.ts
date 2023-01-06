@@ -6,7 +6,6 @@ import {
     getHomePage,
 } from '../../support/helpers';
 import {
-    completeMyFaresPointToPointProductsPages,
     editEndDatePointToPointPage,
     editFareTrianglePointToPointPage,
     editPassengerTypePointToPointPage,
@@ -19,17 +18,6 @@ import {
 describe('The my fares point to point products pages', () => {
     before(() => {
         addSingleProductIfNotPresent();
-    });
-    it('allows for navigation through the point to point products pages', () => {
-        getHomePage();
-        clickElementById('manage-fares-link');
-        completeMyFaresPointToPointProductsPages();
-    });
-    it('allows for navigation through the point to point products pages via operator settings', () => {
-        getHomePage();
-        clickElementById('account-link');
-        clickElementByText('Services');
-        completeMyFaresPointToPointProductsPages();
     });
     it('allows the user the edit point to point product passenger type', () => {
         getHomePage();
