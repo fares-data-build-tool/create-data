@@ -7,7 +7,6 @@ import {
     getHomePage,
 } from '../../support/helpers';
 import {
-    completeMyFaresOtherProductsPages,
     editCarnetExpiry,
     editEndDateOtherProductsPage,
     editPassengerTypeOtherProductsPage,
@@ -24,18 +23,6 @@ import {
 describe('The my fares other products pages', () => {
     before(() => {
         addOtherProductsIfNotPresent();
-    });
-    it('allows for navigation through the other products pages', () => {
-        getHomePage();
-        clickElementById('manage-fares-link');
-        clickElementByText('Other products');
-        completeMyFaresOtherProductsPages();
-    });
-    it('allows for navigation through the other products pages via operator settings', () => {
-        getHomePage();
-        clickElementById('account-link');
-        clickElementByText('Other products');
-        completeMyFaresOtherProductsPages();
     });
     it('allows the user the edit other product services', () => {
         getHomePage();

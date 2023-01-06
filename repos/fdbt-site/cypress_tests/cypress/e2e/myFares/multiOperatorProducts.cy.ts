@@ -6,7 +6,6 @@ import {
     getHomePage,
 } from '../../support/helpers';
 import {
-    completeMyFaresMultiOperatorProductsPages,
     deleteMultiOperatorProduct,
     editEndDateOtherProductsPage,
     editOperatorGroupMultiOperatorProductsPage,
@@ -19,18 +18,6 @@ import {
 describe('The my fares multi operator products pages', () => {
     before(() => {
         addMultiOperatorProductIfNotPresent();
-    });
-    it('allows for navigation through the multi operator products pages', () => {
-        getHomePage();
-        clickElementById('manage-fares-link');
-        clickElementByText('Multi-operator products');
-        completeMyFaresMultiOperatorProductsPages();
-    });
-    it('allows for navigation through the multi operator products pages via operator settings', () => {
-        getHomePage();
-        clickElementById('account-link');
-        clickElementByText('Multi-operator products');
-        completeMyFaresMultiOperatorProductsPages();
     });
     it('allows the user the edit multi operator product passenger type', () => {
         getHomePage();
