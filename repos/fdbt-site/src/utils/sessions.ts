@@ -134,11 +134,11 @@ import {
     BasicService,
     ManageOperatorGroupWithErrors,
     TypeOfCap,
-    Cap,
     ManageProductGroupWithErrors,
     DistanceCap,
     MultiTapPricing,
     AdditionalPricing,
+    CapDetails,
     EditFareStageMatchingWithErrors,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -233,7 +233,7 @@ export interface SessionAttributeTypes {
     [VIEW_PRODUCT_GROUP]: ErrorInfo[];
     [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
-    [CAPS_ATTRIBUTE]: { errors: ErrorInfo[]; caps: Cap[] };
+    [CAPS_ATTRIBUTE]: CapDetails | WithErrors<CapDetails>;
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];

@@ -1,0 +1,51 @@
+{
+  "operatorName": "Blackpool Transport",
+  "nocCode": "BLAC",
+  "type": "capped",
+  "passengerType": { "id": 3 },
+  "email": "test@example.com",
+  "uuid": "BLACe773a1ff",
+  "ticketPeriod": { "startDate": "2020-02-01T00:00:00.000Z" },
+  "selectedServices": [
+    {
+      "lineName": "2",
+      "lineId": "YpQjUw",
+      "serviceCode": "NW_05_BLAC_2_1",
+      "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients"
+    },
+    {
+      "lineName": "2C",
+      "lineId": "vySmfewe0",
+      "serviceCode": "NW_05_BLAC_2C_1",
+      "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
+    }
+  ],
+  "cappedProductInfo": {
+    "productGroup": { "id": 1 },
+    "capDetails": {
+      "caps": [
+        {
+          "name": "Day cap",
+          "price": "5",
+          "durationAmount": "1",
+          "durationUnits": "day"
+        },
+        {
+          "name": "Week cap",
+          "price": "20",
+          "durationAmount": "1",
+          "durationUnits": "week"
+        }
+      ],
+      "productName": "By Products thing"
+    },
+    "capExpiry": {
+      "productValidity": "endOfCalendarDay",
+      "productEndTime": ""
+    },
+    "capStart": { "type": "fixedWeekdays", "startDay": "monday" }
+  },
+  "products": [
+    { "productName": "By Products thing", "salesOfferPackages": [{ "id": 3 }] }
+  ]
+}

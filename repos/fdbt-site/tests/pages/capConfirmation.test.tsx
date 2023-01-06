@@ -10,6 +10,7 @@ describe('pages', () => {
                 <CapConfirmation
                     typeOfCap="byProducts"
                     productGroupName="capped-product-group-name"
+                    cappedProductName="By products cap"
                     caps={[
                         {
                             name: 'Cap 1',
@@ -36,6 +37,7 @@ describe('pages', () => {
                 <CapConfirmation
                     typeOfCap="byTaps"
                     productGroupName=""
+                    cappedProductName="By taps cap"
                     caps={[
                         {
                             name: 'Cap 1',
@@ -62,6 +64,7 @@ describe('pages', () => {
                 <CapConfirmation
                     typeOfCap="byDistance"
                     productGroupName=""
+                    cappedProductName="By distance cap"
                     caps={[
                         {
                             name: 'Cap 1',
@@ -88,6 +91,7 @@ describe('pages', () => {
                 const result = buildCapConfirmationElements(
                     'byProducts',
                     'capped-product-group-name',
+                    'By products cap',
                     [{ name: 'Cap 1', price: '2', durationAmount: '1', durationUnits: ExpiryUnit.DAY }],
                     'endOfCalendarDay',
                     'Fixed days - Monday',
@@ -103,6 +107,11 @@ describe('pages', () => {
                         content: 'capped-product-group-name',
                         href: '/selectCappedProductGroup',
                         name: 'Product group name',
+                    },
+                    {
+                        content: 'By products cap',
+                        href: '/createCaps',
+                        name: 'Capped product name',
                     },
                     {
                         content: ['Price - £2', 'Duration - 1 day'],
@@ -131,6 +140,7 @@ describe('pages', () => {
                 const result = buildCapConfirmationElements(
                     'byTaps',
                     '',
+                    'By taps cap',
                     [{ name: 'Cap 1', price: '2', durationAmount: '1', durationUnits: ExpiryUnit.DAY }],
                     '24hr',
                     'Rolling days',
@@ -142,6 +152,11 @@ describe('pages', () => {
                 );
                 expect(result).toStrictEqual([
                     { content: 'Pricing by taps ', href: 'typeOfCap', name: 'Cap type' },
+                    {
+                        content: 'By taps cap',
+                        href: '/createCaps',
+                        name: 'Capped product name',
+                    },
                     {
                         content: ['Price - £2', 'Duration - 1 day'],
                         href: '/createCaps',
@@ -174,6 +189,7 @@ describe('pages', () => {
                 const result = buildCapConfirmationElements(
                     'byDistance',
                     '',
+                    'By distance cap',
                     [],
                     '',
                     '',
@@ -185,6 +201,11 @@ describe('pages', () => {
                 );
                 expect(result).toStrictEqual([
                     { content: 'Pricing by distance ', href: 'typeOfCap', name: 'Cap type' },
+                    {
+                        content: 'By distance cap',
+                        href: '/createCaps',
+                        name: 'Capped product name',
+                    },
                     {
                         content: '1, 2',
                         href: '/serviceList',
