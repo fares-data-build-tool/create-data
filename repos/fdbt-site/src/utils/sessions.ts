@@ -244,7 +244,7 @@ export interface SessionAttributeTypes {
     [ADDITIONAL_PRICING_ATTRIBUTE]:
         | AdditionalPricing
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
-    [MULTI_MODAL_ATTRIBUTE]: string;
+    [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

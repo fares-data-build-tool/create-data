@@ -5,7 +5,7 @@ import { checkIfMultipleOperators } from '../utils';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { MULTI_MODAL_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { redirectTo } from '../utils/apiUtils';
-import { getAllServicesByNocCode, operatorHasFerryOrTramServices } from '../data/auroradb';
+import { getAllServicesByNocCode } from '../data/auroradb';
 
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
@@ -87,10 +87,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         //console.log(`Checking for ${sessionNoc}`);
         const services = await getAllServicesByNocCode(sessionNoc);
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
-        const hasFerryOrTramServices = await operatorHasFerryOrTramServices(sessionNoc);
+        const tndsServices = services.filter((service) => service.dataSource && service.dataSource === 'tnds');
 
-        if (!hasBodsServices && hasFerryOrTramServices) {
-            updateSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE, 'mutli-mode');
+        if (!hasBodsServices && tndsServices.length > 0) {
+            const modes = tndsServices
+                .map((service) => {
+                    return service.mode ? service.mode : '';
+                })
+                .filter((mode) => mode !== '');
+
+            const uniqueModes = Array.from(new Set(modes));
+            updateSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE, { modes: uniqueModes });
         }
     }
 

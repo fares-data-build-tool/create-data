@@ -426,7 +426,7 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
 
     try {
         const queryInput = `
-            SELECT id, lineName, lineId, startDate, serviceDescription AS description, serviceCode, dataSource
+            SELECT id, lineName, lineId, startDate, serviceDescription AS description, serviceCode, dataSource, mode
             FROM txcOperatorLine
             WHERE nocCode = ?
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
