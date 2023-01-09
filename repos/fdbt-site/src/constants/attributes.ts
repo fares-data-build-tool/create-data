@@ -153,3 +153,5 @@ export const CAP_PRICING_PER_DISTANCE_ATTRIBUTE = 'fdbt-cap-pricing-per-distance
 export const MULTI_TAPS_PRICING_ATTRIBUTE = 'fdbt-multi-taps-pricing';
 
 export const ADDITIONAL_PRICING_ATTRIBUTE = 'fdbt-additional-pricing';
+
+export const MULTI_MODAL_ATTRIBUTE = 'fdbt-multi-modal';

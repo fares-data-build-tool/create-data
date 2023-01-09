@@ -2,9 +2,10 @@ import React, { ReactElement } from 'react';
 import { NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import { checkIfMultipleOperators } from '../utils';
-import { getSessionAttribute } from '../utils/sessions';
-import { OPERATOR_ATTRIBUTE } from '../constants/attributes';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { MULTI_MODAL_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { redirectTo } from '../utils/apiUtils';
+import { getAllServicesByNocCode, operatorHasFerryOrTramServices } from '../data/auroradb';
 
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
@@ -72,7 +73,7 @@ const Home = (): ReactElement => (
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{}> => {
     const multipleOperators = checkIfMultipleOperators(ctx);
 
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
@@ -80,6 +81,17 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): {} => {
 
     if ((!sessionNoc || sessionNoc.includes('|')) && multipleOperators && ctx.res) {
         redirectTo(ctx.res, '/multipleOperators');
+    }
+
+    if (sessionNoc) {
+        //console.log(`Checking for ${sessionNoc}`);
+        const services = await getAllServicesByNocCode(sessionNoc);
+        const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
+        const hasFerryOrTramServices = await operatorHasFerryOrTramServices(sessionNoc);
+
+        if (!hasBodsServices && hasFerryOrTramServices) {
+            updateSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE, 'mutli-mode');
+        }
     }
 
     return {
