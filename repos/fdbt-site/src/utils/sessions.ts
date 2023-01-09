@@ -76,6 +76,7 @@ import {
     MULTI_TAPS_PRICING_ATTRIBUTE,
     ADDITIONAL_PRICING_ATTRIBUTE,
     EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -243,6 +244,7 @@ export interface SessionAttributeTypes {
     [ADDITIONAL_PRICING_ATTRIBUTE]:
         | AdditionalPricing
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
+    [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
@@ -277,9 +279,9 @@ export const updateSessionAttribute = <T extends string>(
 
 export const regenerateSession = (req: IncomingMessageWithSession): void => {
     const attributesList = Object.values(attributes) as string[];
-
+    const excludeAttributeList = [OPERATOR_ATTRIBUTE, MULTI_MODAL_ATTRIBUTE];
     Object.keys(req.session).forEach((attribute) => {
-        if (attributesList.includes(attribute) && attribute !== OPERATOR_ATTRIBUTE) {
+        if (attributesList.includes(attribute) && !excludeAttributeList.includes(attribute)) {
             updateSessionAttribute(req, attribute, undefined);
         }
     });

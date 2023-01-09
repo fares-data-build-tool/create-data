@@ -592,6 +592,7 @@ export interface ServiceType {
     destination?: string;
     serviceCode: string;
     dataSource?: string;
+    mode?: string;
 }
 export interface ServiceCount {
     serviceCount: number;
