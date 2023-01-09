@@ -83,6 +83,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         redirectTo(ctx.res, '/multipleOperators');
     }
 
+    let uniqueModes: string[] = [];
+
     if (sessionNoc) {
         const services = await getAllServicesByNocCode(sessionNoc);
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
@@ -95,10 +97,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 })
                 .filter((mode) => mode !== '');
 
-            const uniqueModes = Array.from(new Set(modes));
-            updateSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE, { modes: uniqueModes });
+            uniqueModes = Array.from(new Set(modes));
         }
     }
+    updateSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE, uniqueModes.length > 0 ? { modes: uniqueModes } : undefined);
 
     return {
         props: {},
