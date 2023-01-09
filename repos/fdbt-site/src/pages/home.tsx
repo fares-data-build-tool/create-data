@@ -84,7 +84,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     if (sessionNoc) {
-        //console.log(`Checking for ${sessionNoc}`);
         const services = await getAllServicesByNocCode(sessionNoc);
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
         const tndsServices = services.filter((service) => service.dataSource && service.dataSource === 'tnds');
