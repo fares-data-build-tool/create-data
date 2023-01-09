@@ -68,7 +68,7 @@ export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Oper
             nocPublicName.website AS url, nocPublicName.ttrteEnq AS email, nocPublicName.fareEnq AS contactNumber, nocPublicName.complEnq AS street, nocLine.mode FROM nocTable
             JOIN nocPublicName ON nocTable.pubNmId = nocPublicName.pubNmId
             JOIN nocLine ON nocTable.nocCode = nocLine.nocCode
-            WHERE nocTable.nocCode IN (${substitution})
+            WHERE nocTable.nocCode IN (${substitution}) GROUP BY nocTable.nocCode
         `;
 
         const operatorData = await executeQuery<Operator[]>(queryInput, cleansedNocs);
