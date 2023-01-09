@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'develop'
+    - 'CFDS-163_session_multi_modal'
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:
