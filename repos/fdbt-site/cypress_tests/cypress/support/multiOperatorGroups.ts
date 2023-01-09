@@ -37,7 +37,7 @@ const checkCardBody = (
     });
 };
 
-export const createEditMultiOperatorGroups = (): void => {
+export const createEditMultiOperatorGroups = () => {
     const multiOperatorGroup1 = 'MultiOperator Group 1';
     const multiOperatorGroup2 = 'MultiOperator Group 2';
 
@@ -45,7 +45,7 @@ export const createEditMultiOperatorGroups = (): void => {
 
     // Click on edit and back button
     getElementByClass('card').eq(0).contains('Edit').click();
-    clickElementByText('Back');
+    clickElementByText("Back")
 
     const valuesToCompareFirst = ['Blackpool Transport - BLAC', "Warrington's Own Buses - WBTR"];
     const firstCard = getElementByClass('card').eq(0);

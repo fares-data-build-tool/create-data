@@ -1,4 +1,4 @@
-import { getRandomNumber, isFinished } from '../support/helpers';
+import { isFinished } from '../support/helpers';
 import {
     completePointToPointPeriodPages,
     completeHybridPages,
@@ -10,8 +10,16 @@ import {
 } from '../support/steps';
 
 describe('the period faretype product journey', () => {
+    it('completes successfully for geozone and a single product', () => {
+        selectFareType('period', false);
+        defineUserTypeAndTimeRestrictions();
+        completePeriodGeoZonePages(1);
+        completeSalesPages();
+        isFinished();
+    });
+
     it('completes successfully for geozone and multiple products', () => {
-        const numberOfProducts = getRandomNumber(1, 5);
+        const numberOfProducts = 5;
         const multiProductNamePrefix = 'Cypress product ';
         selectFareType('period', false);
         defineUserTypeAndTimeRestrictions();
@@ -20,8 +28,16 @@ describe('the period faretype product journey', () => {
         isFinished();
     });
 
+    it('completes successfully for multi-service and a single product', () => {
+        selectFareType('period', false);
+        defineUserTypeAndTimeRestrictions();
+        completePeriodMultiServicePages();
+        completeSalesPages();
+        isFinished();
+    });
+
     it('completes successfully for multi-service and multiple products', () => {
-        const numberOfProducts = getRandomNumber(1, 5);
+        const numberOfProducts = 3;
         const multiProductNamePrefix = 'Cypress product ';
         selectFareType('period', false);
         defineUserTypeAndTimeRestrictions();
@@ -39,7 +55,7 @@ describe('the period faretype product journey', () => {
     });
 
     it('completes successfully for hybrid and multiple products', () => {
-        const numberOfProducts = getRandomNumber(1, 5);
+        const numberOfProducts = 3;
         const multiProductNamePrefix = 'Hybrid product ';
         selectFareType('period', false);
         defineUserTypeAndTimeRestrictions();

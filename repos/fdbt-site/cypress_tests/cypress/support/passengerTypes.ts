@@ -15,7 +15,7 @@ interface PassengerType {
     name: string;
 }
 
-export const enterPassengerTypeDetails = ({ type, minAge, maxAge, documents, name }: PassengerType): void => {
+export const enterPassengerTypeDetails = ({ type, minAge, maxAge, documents, name }: PassengerType) => {
     clickElementById(type);
 
     minAge && getElementByName('ageRangeMin').clear().type(minAge.toString());
@@ -28,13 +28,13 @@ export const enterPassengerTypeDetails = ({ type, minAge, maxAge, documents, nam
     getElementByName('name').clear().type(name);
 };
 
-export const addSinglePassengerType = (passengerType: PassengerType): void => {
+export const addSinglePassengerType = (passengerType: PassengerType) => {
     cy.contains('Add a passenger type').click();
     enterPassengerTypeDetails(passengerType);
     cy.contains('Add passenger type').click();
 };
 
-export const addGroupPassengerType = (groupName: string): void => {
+export const addGroupPassengerType = (groupName: string) => {
     clickElementByText('Add a passenger group');
     getElementById('max-group-size').clear().type('6');
     clickElementById('passenger-type-0');
@@ -78,7 +78,7 @@ export const createEditSinglePassengerTypes = (): void => {
 
     // Click on edit and back button
     getElementByClass('card').eq(0).contains('Edit').click();
-    clickElementByText('Back');
+    clickElementByText("Back");
 
     const firstCard = getElementByClass('card').eq(0);
     firstCard.should('include.text', passengerType1.name);

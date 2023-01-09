@@ -1,10 +1,4 @@
-import {
-    clickElementById,
-    clickElementByText,
-    continueButtonClick,
-    getElementByClass,
-    getElementById,
-} from './helpers';
+import { clickElementById, clickElementByText, continueButtonClick, getElementByClass, getElementById } from './helpers';
 
 export const addSingleProductGroup = (name: string, selectAll: boolean): void => {
     clickElementByText('Add a product group');
@@ -18,7 +12,7 @@ export const addSingleProductGroup = (name: string, selectAll: boolean): void =>
     continueButtonClick();
 };
 
-export const createEditProductGroups = (): void => {
+export const createEditProductGroups = () => {
     const productGroup1 = 'Product Group 1';
     const productGroup2 = 'Product Group 2';
 
@@ -27,15 +21,17 @@ export const createEditProductGroups = (): void => {
     const firstCard = getElementByClass('card').eq(0);
     firstCard.should('contain.text', productGroup1);
     firstCard.should('contain.text', '1 product');
-
+    
     getElementByClass('card').eq(0).contains('Edit').click();
     clickElementById('product-group-name').clear().type('Another product group');
     clickElementById('select-all');
     continueButtonClick();
-
+    
     getElementByClass('card').eq(0).should('contain.text', 'Another product group');
 
     addSingleProductGroup(productGroup2, true);
     const secondCard = getElementByClass('card').eq(1);
     secondCard.should('contain.text', productGroup2);
+
 };
+

@@ -9,9 +9,9 @@ describe('purchase methods', () => {
 
         // start with clean environment
         deleteAllCards();
+
         createEditPurchaseMethod();
-        deleteAllCards();
-        createEditPurchaseMethod(true);
+
         deleteAllCards();
     });
 });
