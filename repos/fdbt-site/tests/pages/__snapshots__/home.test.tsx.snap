@@ -3,7 +3,7 @@
 exports[`pages home page should render correctly 1`] = `
 <BaseLayout
   description="Create Fares Data is a service that allows you to generate data in NeTEx format"
-  title="Create Fares Data"
+  title="undefined Create Fares Data"
 >
   <h1
     className="govuk-heading-xl"
