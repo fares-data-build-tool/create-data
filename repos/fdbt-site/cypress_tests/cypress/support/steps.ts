@@ -272,6 +272,8 @@ export const completePeriodGeoZonePages = (numberOfProducts: number, multiProduc
 export const completeCappedDistanceJourney = (): void => {
     clickElementById('radio-option-byDistance');
     continueButtonClick();
+    const randomName = getRandomNumber(1, 200);
+    clickElementById('capped-product-name').type(`Capped distance product ${randomName}`);
     clickElementById('minimum-price').type('2');
     clickElementById('maximum-price').type('3');
     clickElementById('add-another-button');
@@ -363,7 +365,8 @@ export const completeCapStartTime = (): void => {
 };
 
 export const completeCapCreatePages = (): void => {
-    clickElementById('capped-product-name').type('My Cap Product');
+    const randomName = getRandomNumber(1, 200);
+    clickElementById('capped-product-name').type(`Capped distance product ${randomName}`);
     clickElementById('cap-name-0').type('My Cap');
     clickElementById('cap-price-0').type('2.34');
     clickElementById('cap-period-duration-quantity-0').type('2');
