@@ -22,7 +22,9 @@ before(() => {
 
     addSingleProductIfNotPresent();
     addOtherProductsIfNotPresent();
+    cy.log('It usually fails here')
     getHomePage();
+    cy.log('Passed')
     clickElementById('account-link');
     clickElementByText('Product groups');
     addTestProductGroups();
