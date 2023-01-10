@@ -3,6 +3,7 @@ import {
     addSingleProductIfNotPresent,
     clickElementById,
     clickElementByText,
+    getElementByClass,
     getHomePage,
 } from './helpers';
 import { addSingleMultiOperatorGroup } from './multiOperatorGroups';
@@ -28,9 +29,7 @@ before(() => {
 
     addSingleProductIfNotPresent();
     addOtherProductsIfNotPresent();
-    cy.log('It usually fails here');
     getHomePage();
-    cy.log('Passed');
     clickElementById('account-link');
     clickElementByText('Product groups');
     addTestProductGroups();
@@ -154,6 +153,28 @@ const addTestPurchaseMethods = (): void => {
         cy.log(`There are ${numberOfPurchaseMethods} purchase methods`);
         if (numberOfPurchaseMethods > 0) {
             cy.log('There is at least one purchase method');
+            getElementByClass('card')
+                .last()
+                .invoke('attr', 'id')
+                .then((id) => {
+                    if (!id.startsWith('purchase-method-cap-')) {
+                        const cappedPurchaseMethod1 = {
+                            purchaseLocations: ['checkbox-0-on-board'],
+                            paymentMethods: ['checkbox-0-debit-card', 'checkbox-1-credit-card'],
+                            ticketFormats: ['checkbox-0-mobile-app'],
+                            name: 'Test capped onboard',
+                        };
+                        const cappedPurchaseMethod2 = {
+                            purchaseLocations: ['checkbox-0-on-board', 'checkbox-1-mobile-device'],
+                            paymentMethods: ['checkbox-2-mobile-phone'],
+                            ticketFormats: ['checkbox-0-mobile-app'],
+                            name: 'Test capped mobile',
+                        };
+
+                        addPurchaseMethod(cappedPurchaseMethod1, true);
+                        addPurchaseMethod(cappedPurchaseMethod2, true);
+                    }
+                });
         } else {
             const purchaseMethod1 = {
                 purchaseLocations: ['checkbox-0-on-board'],

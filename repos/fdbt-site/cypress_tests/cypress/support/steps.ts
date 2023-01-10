@@ -363,6 +363,7 @@ export const completeCapStartTime = (): void => {
 };
 
 export const completeCapCreatePages = (): void => {
+    clickElementById('capped-product-name').type('My Cap Product');
     clickElementById('cap-name-0').type('My Cap');
     clickElementById('cap-price-0').type('2.34');
     clickElementById('cap-period-duration-quantity-0').type('2');
