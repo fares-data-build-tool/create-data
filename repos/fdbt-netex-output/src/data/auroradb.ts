@@ -77,39 +77,36 @@ export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Oper
             throw new Error(`No operator data found for nocCodes: ${cleansedNocs.join(',')}`);
         }
 
-        const allNocCodes: string[] = [];
-        let nocCount: { [key: string]: number } = {};
+        const operators = operatorData;
+        const containsNonBus = operators.filter(operator => operator.mode !== 'Bus');
+        if (containsNonBus.length > 0) {
+            const allNocs = operators.map(operator => operator.nocCode);
 
-        for (let i = 0; i < operatorData.length; i++) {
-            if (allNocCodes.includes(operatorData[i].nocCode)) {
-                allNocCodes.push(operatorData[i].nocCode);
-                nocCount = { ...nocCount, [operatorData[i].nocCode]: nocCount[operatorData[i].nocCode] + 1 };
-            } else {
-                allNocCodes.push(operatorData[i].nocCode);
-                nocCount = { ...nocCount, [operatorData[i].nocCode]: 1 };
+            const setOfNocs = new Set(allNocs);
+
+            if (allNocs.length > setOfNocs.size) {
+                const foundNocs: string[] = [];
+
+                const duplicateNocs: string[] = [];
+
+                allNocs.forEach(noc => {
+                    if (!foundNocs.includes(noc)) {
+                        foundNocs.push(noc);
+                    } else {
+                        duplicateNocs.push(noc);
+                    }
+                });
+
+                duplicateNocs.forEach(noc => {
+                    const indexOfOperatorToRemove = operators.findIndex(
+                        operator => operator.mode !== 'Bus' && operator.nocCode === noc,
+                    );
+                    operators.splice(indexOfOperatorToRemove, 1);
+                });
             }
         }
 
-        const duplicateNocs: string[] = [];
-
-        allNocCodes.forEach(nocCode => {
-            if (nocCount[nocCode] > 1) {
-                duplicateNocs.push(nocCode);
-            }
-        });
-
-        const result = operatorData.filter(item => {
-            if (!duplicateNocs.includes(item.nocCode)) {
-                return item;
-            } else {
-                if (item.mode === 'Bus') {
-                    return item;
-                }
-                return;
-            }
-        });
-
-        return result;
+        return operators;
     } catch (err) {
         throw new Error(`Could not retrieve operator data from AuroraDB: ${err.stack}`);
     }
