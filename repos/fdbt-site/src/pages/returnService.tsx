@@ -9,7 +9,11 @@ import {
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
-import { getPassengerTypeById, getServicesByNocAndModes, getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import {
+    getPassengerTypeById,
+    getServicesByNocCodeAndDataSource,
+    getTndsServicesByNocAndModes,
+} from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken, isReturnTicket } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -116,7 +120,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     let services;
     if (modesAttribute) {
-        services = await getServicesByNocAndModes(nocCode, modesAttribute.modes);
+        services = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
     }
     services = await getServicesByNocCodeAndDataSource(nocCode, 'bods');
 

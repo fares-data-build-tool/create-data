@@ -10,7 +10,7 @@ import {
     TXC_SOURCE_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
-import { getServicesByNocAndModes, getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import { getServicesByNocCodeAndDataSource, getTndsServicesByNocAndModes } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -119,7 +119,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     let services;
     if (modesAttribute && modesAttribute.modes.length > 0) {
-        services = await getServicesByNocAndModes(nocCode, modesAttribute.modes);
+        services = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
     }
 
     services = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);

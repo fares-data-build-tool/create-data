@@ -11,7 +11,11 @@ import {
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
-import { getAllServicesByNocCode, getServicesByNocAndModes, getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import {
+    getAllServicesByNocCode,
+    getServicesByNocCodeAndDataSource,
+    getTndsServicesByNocAndModes,
+} from '../data/auroradb';
 import {
     ErrorInfo,
     NextPageContextWithSession,
@@ -190,7 +194,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     let chosenDataSourceServices;
     if (modesAttribute && modesAttribute.modes.length > 0) {
-        chosenDataSourceServices = await getServicesByNocAndModes(nocCode, modesAttribute.modes);
+        chosenDataSourceServices = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
     }
     chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
