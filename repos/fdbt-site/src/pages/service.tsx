@@ -8,8 +8,9 @@ import {
     SERVICE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
-import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import { getServicesByNocAndModes, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -114,7 +115,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const dataSourceAttribute = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
-    const services = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
+
+    let services;
+    if (modesAttribute && modesAttribute.modes.length > 0) {
+        services = await getServicesByNocAndModes(nocCode, modesAttribute.modes);
+    }
+
+    services = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
     if (services.length === 0) {
         if (ctx.res) {

@@ -194,25 +194,32 @@ export const getServicesByNocCodeAndDataSourceWithGrouping = async (
     }
 };
 
-export const getFerryAndBusServices = async (noc: string): Promise<ServiceWithOriginAndDestination[]> => {
+export const getTndsServicesByNocAndModes = async (
+    noc: string,
+    modes: string[],
+): Promise<ServiceWithOriginAndDestination[]> => {
     const nocCodeParameter = replaceInternalNocCode(noc);
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving tram and ferry services for given noc',
+        message: 'retrieving services for given noc and modes',
         noc,
     });
 
     try {
+        const substitution = modes.map(() => '?').join(',');
         const queryInput = `
             SELECT lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = 'tnds' AND (endDate IS NULL OR CURDATE() <= endDate)
-            AND (mode = 'ferry' OR mode = 'tram')
+            AND mode in (${substitution}) 
             group by lineId, origin, destination
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
-        const queryResults = await executeQuery<ServiceWithOriginAndDestination[]>(queryInput, [nocCodeParameter]);
+        const queryResults = await executeQuery<ServiceWithOriginAndDestination[]>(
+            queryInput,
+            [nocCodeParameter].concat(modes),
+        );
 
         return (
             queryResults.map((item) => ({
@@ -413,6 +420,37 @@ export const getBodsServiceDirectionDescriptionsByNocAndServiceId = async (
         };
     } catch (error) {
         throw new Error(`Could not retrieve individual service direction descriptions from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getServicesByNocAndModes = async (nocCode: string, modes: string[]): Promise<ServiceType[]> => {
+    const nocCodeParameter = replaceInternalNocCode(nocCode);
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given noc',
+        noc: nocCode,
+    });
+
+    try {
+        const substitution = modes.map(() => '?').join(',');
+
+        const queryInput = `
+            SELECT id, lineName, lineId, startDate, serviceDescription AS description, origin, destination, serviceCode
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND dataSource = 'tnds' AND mode in (${substitution})  AND (endDate IS NULL OR CURDATE() <= endDate)
+            ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
+        `;
+
+        const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter].concat(modes));
+
+        return (
+            queryResults.map((item) => ({
+                ...item,
+                startDate: convertDateFormat(item.startDate),
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
     }
 };
 

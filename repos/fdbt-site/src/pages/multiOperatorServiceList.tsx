@@ -8,9 +8,10 @@ import {
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
 import {
-    getFerryAndBusServices,
+    getTndsServicesByNocAndModes,
     getOperatorDetailsFromNocTable,
     getServicesByNocCodeAndDataSourceWithGrouping,
 } from '../data/auroradb';
@@ -442,6 +443,7 @@ export const getServerSideProps = async (
     const csrfToken = getCsrfToken(ctx);
     const multiOperatorAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE);
     const multiOperatorServicesAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
+    const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
     let multiOperatorData: MultiOperatorInfo[] = [];
     let errors: ErrorInfo[] = [];
     let backHref = '';
@@ -468,8 +470,8 @@ export const getServerSideProps = async (
                 let dataSource: 'bods' | 'tnds' = 'bods';
                 let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
-                if (services.length === 0) {
-                    services = await getFerryAndBusServices(operator.nocCode);
+                if (services.length === 0 && modesAttribute) {
+                    services = await getTndsServicesByNocAndModes(operator.nocCode, modesAttribute.modes);
                     dataSource = 'tnds';
                 }
                 // get the operators name, as we only have the nocCode
@@ -508,8 +510,8 @@ export const getServerSideProps = async (
                 let dataSource: 'bods' | 'tnds' = 'bods';
                 let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
-                if (services.length === 0) {
-                    services = await getFerryAndBusServices(operator.nocCode);
+                if (services.length === 0 && modesAttribute) {
+                    services = await getTndsServicesByNocAndModes(operator.nocCode, modesAttribute.modes);
                     dataSource = 'tnds';
                 }
 

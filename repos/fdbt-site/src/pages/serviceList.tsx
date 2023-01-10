@@ -9,8 +9,9 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
-import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import { getAllServicesByNocCode, getServicesByNocAndModes, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import {
     ErrorInfo,
     NextPageContextWithSession,
@@ -185,7 +186,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const { selectAll } = ctx.query;
 
-    const chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
+
+    let chosenDataSourceServices;
+    if (modesAttribute && modesAttribute.modes.length > 0) {
+        chosenDataSourceServices = await getServicesByNocAndModes(nocCode, modesAttribute.modes);
+    }
+    chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
     const serviceList: ServicesInfo[] = chosenDataSourceServices.map((service) => {
         return {
