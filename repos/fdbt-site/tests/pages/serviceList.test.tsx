@@ -2,8 +2,12 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import ServiceList, { getServerSideProps } from '../../src/pages/serviceList';
 import { getMockContext } from '../testData/mockData';
-import { getServicesByNocCodeAndDataSource, getAllServicesByNocCode } from '../../src/data/auroradb';
-import { OPERATOR_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants/attributes';
+import {
+    getServicesByNocCodeAndDataSource,
+    getAllServicesByNocCode,
+    getTndsServicesByNocAndModes,
+} from '../../src/data/auroradb';
+import { MULTI_MODAL_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants/attributes';
 import { ErrorInfo, ServiceType, ServicesInfo } from '../../src/interfaces';
 
 jest.mock('../../src/data/auroradb');
@@ -88,6 +92,7 @@ describe('pages', () => {
         beforeEach(() => {
             (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => mockServices);
             (getAllServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
+            (getTndsServicesByNocAndModes as jest.Mock).mockImplementation(() => []);
         });
         /*
         it('should render correctly with tnds data source', () => {
@@ -198,6 +203,27 @@ describe('pages', () => {
                     checked: false,
                 }));
                 expect(result.props.errors.length).toBe(0);
+                expect(result.props.serviceList).toEqual(expectedCheckedServiceList);
+                expect(result.props.buttonText).toEqual('Select All Services');
+            });
+
+            it('should return expected props to the page when the page when multi modal attribute is present', async () => {
+                const ctx = getMockContext({
+                    session: {
+                        [MULTI_MODAL_ATTRIBUTE]: {
+                            modes: ['ferry', 'tram', 'coach'],
+                        },
+                    },
+                });
+                (getAllServicesByNocCode as jest.Mock).mockImplementation(() => []);
+                (getTndsServicesByNocAndModes as jest.Mock).mockImplementation(() => mockServices);
+
+                const result = await getServerSideProps(ctx);
+                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
+                    ...mockService,
+                    checked: false,
+                }));
+
                 expect(result.props.serviceList).toEqual(expectedCheckedServiceList);
                 expect(result.props.buttonText).toEqual('Select All Services');
             });

@@ -2,6 +2,7 @@ import { NextApiResponse } from 'next';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
     RETURN_SERVICE_ATTRIBUTE,
 } from '../../constants/attributes';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
@@ -38,7 +39,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        const service = await getServiceByIdAndDataSource(getAndValidateNoc(req, res), serviceId, 'bods');
+        let dataSource = 'bods';
+        const modesAttribute = getSessionAttribute(req, MULTI_MODAL_ATTRIBUTE);
+        if (modesAttribute) {
+            dataSource = 'tnds';
+        }
+        const service = await getServiceByIdAndDataSource(getAndValidateNoc(req, res), serviceId, dataSource);
 
         const additionalServices: AdditionalService[] = [
             {
