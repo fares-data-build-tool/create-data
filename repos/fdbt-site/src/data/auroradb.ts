@@ -157,6 +157,37 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
     }
 };
 
+export const getTndsServicesByNocAndModes = async (nocCode: string, modes: string[]): Promise<ServiceType[]> => {
+    const nocCodeParameter = replaceInternalNocCode(nocCode);
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving services for given noc',
+        noc: nocCode,
+    });
+
+    try {
+        const substitution = modes.map(() => '?').join(',');
+        const queryInput = `
+            SELECT id, lineName, lineId, startDate, serviceDescription AS description, origin, destination, serviceCode
+            FROM txcOperatorLine
+            WHERE nocCode = ? AND dataSource = 'tnds' AND (endDate IS NULL OR CURDATE() <= endDate)
+            AND mode in (${substitution}) 
+            ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
+        `;
+
+        const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter].concat(modes));
+
+        return (
+            queryResults.map((item) => ({
+                ...item,
+                startDate: convertDateFormat(item.startDate),
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve services from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const getServicesByNocCodeAndDataSourceWithGrouping = async (
     nocCode: string,
     source: string,
@@ -194,26 +225,25 @@ export const getServicesByNocCodeAndDataSourceWithGrouping = async (
     }
 };
 
-export const getTndsServicesByNocAndModes = async (noc: string, modes: string[]): Promise<ServiceType[]> => {
+export const getFerryAndTramServices = async (noc: string): Promise<ServiceWithOriginAndDestination[]> => {
     const nocCodeParameter = replaceInternalNocCode(noc);
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving tnds services for given noc and modes',
+        message: 'retrieving tram and ferry services for given noc',
         noc,
     });
 
     try {
-        const substitution = modes.map(() => '?').join(',');
         const queryInput = `
-            SELECT id, lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
+            SELECT lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = 'tnds' AND (endDate IS NULL OR CURDATE() <= endDate)
-            AND mode in (${substitution}) 
+            AND (mode = 'ferry' OR mode = 'tram')
             group by lineId, origin, destination
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
-        const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter].concat(modes));
+        const queryResults = await executeQuery<ServiceWithOriginAndDestination[]>(queryInput, [nocCodeParameter]);
 
         return (
             queryResults.map((item) => ({

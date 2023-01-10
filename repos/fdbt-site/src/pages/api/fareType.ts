@@ -23,9 +23,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
             // removed as TNDS is being disabled until further notice
             //const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
-            const modes = getSessionAttribute(req, MULTI_MODAL_ATTRIBUTE);
+            const multiModalAttribute = getSessionAttribute(req, MULTI_MODAL_ATTRIBUTE);
 
-            if (!schemeOp && !hasBodsServices && !modes) {
+            if (!schemeOp && !hasBodsServices && !multiModalAttribute) {
                 redirectTo(res, '/noServices');
                 return;
             }

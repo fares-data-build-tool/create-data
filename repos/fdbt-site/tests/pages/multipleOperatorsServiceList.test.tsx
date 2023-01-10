@@ -4,7 +4,7 @@ import MultipleOperatorsServiceList, { getServerSideProps } from '../../src/page
 import { getMockContext } from '../testData/mockData';
 import * as aurora from '../../src/data/auroradb';
 import { ErrorInfo, MultiOperatorInfo, ServiceWithOriginAndDestination } from '../../src/interfaces';
-import { MULTIPLE_OPERATOR_ATTRIBUTE, MULTI_MODAL_ATTRIBUTE } from '../../src/constants/attributes';
+import { MULTIPLE_OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 
 describe('pages', () => {
     describe('multipleOperatorsServiceList', () => {
@@ -91,51 +91,6 @@ describe('pages', () => {
                 dataSource: 'bods',
             },
         ];
-        const mockMultiOperatorTndsData: MultiOperatorInfo[] = [
-            {
-                nocCode: 'BLAC',
-                name: 'Blackpool Transport',
-                services: [
-                    {
-                        lineName: '1',
-                        lineId: '4YyoI0',
-                        startDate: '05/04/2020',
-                        serviceDescription: 'FLEETWOOD - BLACKPOOL via Promenade',
-                        origin: 'Fleetwood',
-                        destination: 'Blackpool',
-                        serviceCode: 'NW_05_BLAC_1_1',
-                    },
-                    {
-                        lineName: '2',
-                        lineId: 'YpQjUw',
-                        startDate: '05/04/2020',
-                        serviceDescription: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
-                        origin: 'Poulton',
-                        destination: 'Blackpool',
-                        serviceCode: 'NW_05_BLAC_2_1',
-                    },
-                ],
-                selectedServices: [],
-                dataSource: 'tnds',
-            },
-            {
-                nocCode: 'LNUD',
-                name: 'Testing ops',
-                services: [
-                    {
-                        lineName: '259',
-                        lineId: 'vHaXmz',
-                        startDate: '25/03/2020',
-                        serviceDescription: 'Brighouse - East Bierley',
-                        origin: 'Brighouse',
-                        destination: 'East Bierley',
-                        serviceCode: 'YWAO259',
-                    },
-                ],
-                selectedServices: [],
-                dataSource: 'tnds',
-            },
-        ];
         const getServicesByNocCodeAndDataSourceAndDescriptionSpy = jest.spyOn(
             aurora,
             'getServicesByNocCodeAndDataSourceWithGrouping',
@@ -189,26 +144,6 @@ describe('pages', () => {
                 const result = await getServerSideProps(ctx);
                 expect(result.props.errors.length).toBe(0);
                 expect(result.props.multiOperatorData).toEqual(mockMultiOperatorData);
-            });
-
-            it('should return expected props to the page when there is no bods but having tnds services with multi modes', async () => {
-                getServicesByNocCodeAndDataSourceAndDescriptionSpy.mockResolvedValueOnce(mockBlackServices);
-                const ctx = getMockContext({
-                    session: {
-                        [MULTIPLE_OPERATOR_ATTRIBUTE]: {
-                            selectedOperators: [
-                                { nocCode: 'BLAC', name: 'Blackpool Transport' },
-                                { nocCode: 'LNUD', name: 'Testing ops' },
-                            ],
-                        },
-                        [MULTI_MODAL_ATTRIBUTE]: {
-                            modes: ['ferry', 'tram', 'coach'],
-                        },
-                    },
-                });
-                const result = await getServerSideProps(ctx);
-                expect(result.props.errors.length).toBe(0);
-                expect(result.props.multiOperatorData).toEqual(mockMultiOperatorTndsData);
             });
         });
     });

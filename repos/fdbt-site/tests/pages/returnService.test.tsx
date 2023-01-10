@@ -60,6 +60,7 @@ describe('pages', () => {
                     csrfToken=""
                     selectedServiceId={1}
                     backHref="/productDetails?productId=1"
+                    dataSource="bods"
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -75,6 +76,7 @@ describe('pages', () => {
                     csrfToken=""
                     selectedServiceId={1}
                     backHref="/productDetails?productId=1"
+                    dataSource="bods"
                 />,
             );
             const operatorWelcome = wrapper.find('#service-operator-passenger-type-hint').first();
@@ -92,6 +94,28 @@ describe('pages', () => {
                     csrfToken=""
                     selectedServiceId={1}
                     backHref=""
+                    dataSource="bods"
+                />,
+            );
+            const operatorServices = wrapper.find('.service-option');
+
+            expect(operatorServices).toHaveLength(3);
+            expect(operatorServices.first().text()).toBe('123 Manchester - Leeds (Start date 05/02/2020)');
+            expect(operatorServices.at(1).text()).toBe('X1 Edinburgh - N/A (Start date 06/02/2020)');
+            expect(operatorServices.at(2).text()).toBe('Infinity Line N/A - London (Start date 07/02/2020)');
+        });
+
+        it('shows a list of services for the operator in the select box with tnds data source', () => {
+            const wrapper = shallow(
+                <ReturnService
+                    operator="Connexions Buses"
+                    passengerType="Adult"
+                    services={mockServices}
+                    errors={[]}
+                    csrfToken=""
+                    selectedServiceId={1}
+                    backHref=""
+                    dataSource="tnds"
                 />,
             );
             const operatorServices = wrapper.find('.service-option');
@@ -157,6 +181,7 @@ describe('pages', () => {
                     csrfToken: '',
                     backHref: '/products/productDetails?productId=1&serviceId=2',
                     selectedServiceId: 1,
+                    dataSource: 'bods',
                 },
             });
         });
@@ -220,6 +245,7 @@ describe('pages', () => {
                     csrfToken: '',
                     backHref: '/products/productDetails?productId=1&serviceId=2',
                     selectedServiceId: 1,
+                    dataSource: 'tnds',
                 },
             });
         });

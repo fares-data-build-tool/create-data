@@ -8,9 +8,12 @@ import {
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
-    MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
-import { getOperatorDetailsFromNocTable, getServicesByNocCodeAndDataSourceWithGrouping } from '../data/auroradb';
+import {
+    getFerryAndTramServices,
+    getOperatorDetailsFromNocTable,
+    getServicesByNocCodeAndDataSourceWithGrouping,
+} from '../data/auroradb';
 import {
     ErrorInfo,
     MultiOperatorInfo,
@@ -439,7 +442,6 @@ export const getServerSideProps = async (
     const csrfToken = getCsrfToken(ctx);
     const multiOperatorAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE);
     const multiOperatorServicesAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE);
-    const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
     let multiOperatorData: MultiOperatorInfo[] = [];
     let errors: ErrorInfo[] = [];
     let backHref = '';
@@ -464,12 +466,12 @@ export const getServerSideProps = async (
         multiOperatorData = await Promise.all(
             ticket.additionalOperators.map(async (operator) => {
                 let dataSource: 'bods' | 'tnds' = 'bods';
+                let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
-                if (modesAttribute) {
+                if (services.length === 0) {
+                    services = await getFerryAndTramServices(operator.nocCode);
                     dataSource = 'tnds';
                 }
-                const services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
-
                 // get the operators name, as we only have the nocCode
                 const operatorDetails = (await getOperatorDetailsFromNocTable(operator.nocCode)) as OperatorDetails;
 
@@ -504,12 +506,12 @@ export const getServerSideProps = async (
         multiOperatorData = await Promise.all(
             multiOperatorAttribute.selectedOperators.map(async (operator) => {
                 let dataSource: 'bods' | 'tnds' = 'bods';
+                let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
-                if (modesAttribute) {
+                if (services.length === 0) {
+                    services = await getFerryAndTramServices(operator.nocCode);
                     dataSource = 'tnds';
                 }
-
-                const services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
                 return {
                     name: operator.name,

@@ -34,6 +34,7 @@ interface ReturnServiceProps {
     csrfToken: string;
     selectedServiceId: number;
     backHref: string;
+    dataSource: string;
 }
 
 const ReturnService = ({
@@ -44,6 +45,7 @@ const ReturnService = ({
     csrfToken,
     selectedServiceId,
     backHref,
+    dataSource,
 }: ReturnServiceProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <BackButton href={backHref} />
@@ -85,8 +87,14 @@ const ReturnService = ({
                         </select>
                     </FormElementWrapper>
                     <span className="govuk-hint hint-text" id="traveline-hint">
-                        This data is taken from the <b>Bus Open Data Service (BODS)</b>. If the service you are looking
-                        for is not listed, contact the BODS help desk for advice <a href="/contact">here</a>
+                        This data is taken from the{' '}
+                        <b>
+                            {dataSource === 'tnds'
+                                ? 'Traveline National Dataset (TNDS)'
+                                : 'Bus Open Data Service (BODS)'}
+                        </b>
+                        . If the service you are looking for is not listed, contact the BODS help desk for advice{' '}
+                        <a href="/contact">here</a>
                     </span>
                 </div>
                 <input type="hidden" name="selectedServiceId" value={selectedServiceId} />
@@ -118,8 +126,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('Ticket should be return type');
     }
 
+    let dataSource = 'bods';
     let services;
     if (modesAttribute) {
+        dataSource = 'tnds';
         services = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
     } else {
         services = await getServicesByNocCodeAndDataSource(nocCode, 'bods');
@@ -148,6 +158,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             csrfToken,
             selectedServiceId,
             backHref,
+            dataSource,
         },
     };
 };
