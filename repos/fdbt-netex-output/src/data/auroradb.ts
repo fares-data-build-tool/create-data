@@ -68,7 +68,7 @@ export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Oper
             nocPublicName.website AS url, nocPublicName.ttrteEnq AS email, nocPublicName.fareEnq AS contactNumber, nocPublicName.complEnq AS street, nocLine.mode FROM nocTable
             JOIN nocPublicName ON nocTable.pubNmId = nocPublicName.pubNmId
             JOIN nocLine ON nocTable.nocCode = nocLine.nocCode
-            WHERE nocTable.nocCode IN (${substitution}) GROUP BY nocTable.nocCode
+            WHERE nocTable.nocCode IN (${substitution})
         `;
 
         const operatorData = await executeQuery<Operator[]>(queryInput, cleansedNocs);
@@ -77,7 +77,39 @@ export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Oper
             throw new Error(`No operator data found for nocCodes: ${cleansedNocs.join(',')}`);
         }
 
-        return operatorData;
+        const allNocCodes: string[] = [];
+        let nocCount: { [key: string]: number } = {};
+
+        for (let i = 0; i < operatorData.length; i++) {
+            if (allNocCodes.includes(operatorData[i].nocCode)) {
+                allNocCodes.push(operatorData[i].nocCode);
+                nocCount = { ...nocCount, [operatorData[i].nocCode]: nocCount[operatorData[i].nocCode] + 1 };
+            } else {
+                allNocCodes.push(operatorData[i].nocCode);
+                nocCount = { ...nocCount, [operatorData[i].nocCode]: 1 };
+            }
+        }
+
+        const duplicateNocs: string[] = [];
+
+        allNocCodes.forEach(nocCode => {
+            if (nocCount[nocCode] > 1) {
+                duplicateNocs.push(nocCode);
+            }
+        });
+
+        const result = operatorData.filter(item => {
+            if (!duplicateNocs.includes(item.nocCode)) {
+                return item;
+            } else {
+                if (item.mode === 'Bus') {
+                    return item;
+                }
+                return;
+            }
+        });
+
+        return result;
     } catch (err) {
         throw new Error(`Could not retrieve operator data from AuroraDB: ${err.stack}`);
     }
