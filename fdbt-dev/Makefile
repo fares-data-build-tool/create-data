@@ -178,6 +178,10 @@ validate-netex:
 validate-latest-file:
 	./scripts/validate_latest_netex.sh
 
+# usage is 'make file=<path-to-file> validate-this-netex'
+validate-this-netex:
+	./scripts/validate_this_netex.sh $(file)
+
 copy-latest-netex:
 	EDGE_PORT=4572 awslocal s3 cp s3://fdbt-unvalidated-netex-data-dev/$(EDGE_PORT=4572 awslocal s3 ls s3://fdbt-unvalidated-netex-data-dev --recursive | sort | tail -n 1 | awk '{print $NF}') .
 
