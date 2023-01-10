@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import ReturnService, { getServerSideProps } from '../../src/pages/returnService';
-import { getServicesByNocCodeAndDataSource } from '../../src/data/auroradb';
+import { getServicesByNocCodeAndDataSource, getTndsServicesByNocAndModes } from '../../src/data/auroradb';
 import { expectedReturnTicketWithAdditionalService, expectedSingleTicket, getMockContext } from '../testData/mockData';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
 } from '../../src/constants/attributes';
 import { OperatorAttribute, ServiceType } from '../../src/interfaces';
@@ -59,6 +60,7 @@ describe('pages', () => {
                     csrfToken=""
                     selectedServiceId={1}
                     backHref="/productDetails?productId=1"
+                    dataSource="bods"
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -74,6 +76,7 @@ describe('pages', () => {
                     csrfToken=""
                     selectedServiceId={1}
                     backHref="/productDetails?productId=1"
+                    dataSource="bods"
                 />,
             );
             const operatorWelcome = wrapper.find('#service-operator-passenger-type-hint').first();
@@ -91,6 +94,28 @@ describe('pages', () => {
                     csrfToken=""
                     selectedServiceId={1}
                     backHref=""
+                    dataSource="bods"
+                />,
+            );
+            const operatorServices = wrapper.find('.service-option');
+
+            expect(operatorServices).toHaveLength(3);
+            expect(operatorServices.first().text()).toBe('123 Manchester - Leeds (Start date 05/02/2020)');
+            expect(operatorServices.at(1).text()).toBe('X1 Edinburgh - N/A (Start date 06/02/2020)');
+            expect(operatorServices.at(2).text()).toBe('Infinity Line N/A - London (Start date 07/02/2020)');
+        });
+
+        it('shows a list of services for the operator in the select box with tnds data source', () => {
+            const wrapper = shallow(
+                <ReturnService
+                    operator="Connexions Buses"
+                    passengerType="Adult"
+                    services={mockServices}
+                    errors={[]}
+                    csrfToken=""
+                    selectedServiceId={1}
+                    backHref=""
+                    dataSource="tnds"
                 />,
             );
             const operatorServices = wrapper.find('.service-option');
@@ -156,6 +181,71 @@ describe('pages', () => {
                     csrfToken: '',
                     backHref: '/products/productDetails?productId=1&serviceId=2',
                     selectedServiceId: 1,
+                    dataSource: 'bods',
+                },
+            });
+        });
+
+        it('return list of services if multi modal attribute is present', async () => {
+            (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => []);
+            (getTndsServicesByNocAndModes as jest.Mock).mockImplementation(() => mockServices);
+
+            const operatorData: OperatorAttribute = {
+                name: 'Test Op',
+                nocCode: 'TEST',
+            };
+
+            const ctx = getMockContext({
+                session: {
+                    [OPERATOR_ATTRIBUTE]: operatorData,
+                    [MATCHING_JSON_ATTRIBUTE]: expectedReturnTicketWithAdditionalService,
+                    [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
+                    [MULTI_MODAL_ATTRIBUTE]: { modes: ['ferry', 'tram', 'coach'] },
+                },
+                query: {
+                    selectedServiceId: 1,
+                },
+            });
+            const result = await getServerSideProps(ctx);
+            expect(result).toEqual({
+                props: {
+                    errors: [],
+                    operator: 'Test Op',
+                    passengerType: '',
+                    services: [
+                        {
+                            id: 11,
+                            lineName: '123',
+                            lineId: '3h3vb32ik',
+                            startDate: '05/02/2020',
+                            description: 'this bus service is 123',
+                            origin: 'Manchester',
+                            destination: 'Leeds',
+                            serviceCode: 'NW_05_BLAC_123_1',
+                        },
+                        {
+                            id: 12,
+                            lineName: 'X1',
+                            lineId: '3h3vb32ik',
+                            startDate: '06/02/2020',
+                            description: 'this bus service is X1',
+                            origin: 'Edinburgh',
+                            serviceCode: 'NW_05_BLAC_X1_1',
+                        },
+                        {
+                            id: 13,
+                            lineName: 'Infinity Line',
+                            lineId: '3h3vb32ik',
+                            startDate: '07/02/2020',
+                            description: 'this bus service is Infinity Line',
+                            destination: 'London',
+                            serviceCode: 'WY_13_IWBT_07_1',
+                        },
+                    ],
+                    csrfToken: '',
+                    backHref: '/products/productDetails?productId=1&serviceId=2',
+                    selectedServiceId: 1,
+                    dataSource: 'tnds',
                 },
             });
         });

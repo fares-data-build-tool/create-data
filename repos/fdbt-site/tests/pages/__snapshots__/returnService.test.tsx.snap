@@ -108,11 +108,13 @@ exports[`pages returnService should render correctly 1`] = `
         className="govuk-hint hint-text"
         id="traveline-hint"
       >
-        This data is taken from the 
+        This data is taken from the
+         
         <b>
           Bus Open Data Service (BODS)
         </b>
-        . If the service you are looking for is not listed, contact the BODS help desk for advice 
+        . If the service you are looking for is not listed, contact the BODS help desk for advice
+         
         <a
           href="/contact"
         >

@@ -10,7 +10,7 @@ import {
     MULTIPLE_OPERATOR_ATTRIBUTE,
 } from '../constants/attributes';
 import {
-    getFerryAndBusServices,
+    getFerryAndTramServices,
     getOperatorDetailsFromNocTable,
     getServicesByNocCodeAndDataSourceWithGrouping,
 } from '../data/auroradb';
@@ -469,7 +469,7 @@ export const getServerSideProps = async (
                 let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
                 if (services.length === 0) {
-                    services = await getFerryAndBusServices(operator.nocCode);
+                    services = await getFerryAndTramServices(operator.nocCode);
                     dataSource = 'tnds';
                 }
                 // get the operators name, as we only have the nocCode
@@ -509,7 +509,7 @@ export const getServerSideProps = async (
                 let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
                 if (services.length === 0) {
-                    services = await getFerryAndBusServices(operator.nocCode);
+                    services = await getFerryAndTramServices(operator.nocCode);
                     dataSource = 'tnds';
                 }
 
