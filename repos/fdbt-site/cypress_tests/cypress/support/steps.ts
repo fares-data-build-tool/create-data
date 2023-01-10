@@ -570,7 +570,7 @@ export const editCarnetExpiry = (): void => {
     cy.get('@dropdownValue').then((input) => {
         const productDurationUnit = input.toString();
         const value =
-            productDurationUnit === 'no expiry'
+            productDurationUnit === 'No expiry'
                 ? 'No expiry'
                 : `${productDuration} ${productDurationUnit.slice(0, productDurationUnit.length - 1).toLowerCase()}(s)`;
         getElementById('carnet-expiry').should('have.text', value);
