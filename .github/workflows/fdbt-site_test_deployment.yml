@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'cfds-158_ui_test'
+    - 'develop'
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:
