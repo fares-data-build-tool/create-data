@@ -21,8 +21,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const nocCode = getAndValidateNoc(req, res);
             const services = await getAllServicesByNocCode(nocCode);
             const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
-            // removed as TNDS is being disabled until further notice
-            //const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
             const multiModalAttribute = getSessionAttribute(req, MULTI_MODAL_ATTRIBUTE);
 
             if (!schemeOp && !hasBodsServices && !multiModalAttribute) {

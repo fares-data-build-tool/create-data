@@ -161,8 +161,9 @@ export const getTndsServicesByNocAndModes = async (nocCode: string, modes: strin
     const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving services for given noc',
-        noc: nocCode,
+        message: 'retrieving tnds services for given noc and modes',
+        nocCode,
+        modes,
     });
 
     try {
