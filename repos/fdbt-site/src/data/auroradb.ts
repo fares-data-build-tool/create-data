@@ -194,10 +194,7 @@ export const getServicesByNocCodeAndDataSourceWithGrouping = async (
     }
 };
 
-export const getTndsServicesByNocAndModes = async (
-    noc: string,
-    modes: string[],
-): Promise<ServiceWithOriginAndDestination[]> => {
+export const getTndsServicesByNocAndModes = async (noc: string, modes: string[]): Promise<ServiceType[]> => {
     const nocCodeParameter = replaceInternalNocCode(noc);
     logger.info('', {
         context: 'data.auroradb',
@@ -208,7 +205,7 @@ export const getTndsServicesByNocAndModes = async (
     try {
         const substitution = modes.map(() => '?').join(',');
         const queryInput = `
-            SELECT lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
+            SELECT id, lineName, lineId, startDate, serviceDescription, origin, destination, serviceCode
             FROM txcOperatorLine
             WHERE nocCode = ? AND dataSource = 'tnds' AND (endDate IS NULL OR CURDATE() <= endDate)
             AND mode in (${substitution}) 
@@ -216,10 +213,7 @@ export const getTndsServicesByNocAndModes = async (
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
         `;
 
-        const queryResults = await executeQuery<ServiceWithOriginAndDestination[]>(
-            queryInput,
-            [nocCodeParameter].concat(modes),
-        );
+        const queryResults = await executeQuery<ServiceType[]>(queryInput, [nocCodeParameter].concat(modes));
 
         return (
             queryResults.map((item) => ({

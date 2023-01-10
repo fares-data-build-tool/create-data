@@ -10,11 +10,7 @@ import {
     MULTIPLE_OPERATOR_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
-import {
-    getTndsServicesByNocAndModes,
-    getOperatorDetailsFromNocTable,
-    getServicesByNocCodeAndDataSourceWithGrouping,
-} from '../data/auroradb';
+import { getOperatorDetailsFromNocTable, getServicesByNocCodeAndDataSourceWithGrouping } from '../data/auroradb';
 import {
     ErrorInfo,
     MultiOperatorInfo,
@@ -468,12 +464,12 @@ export const getServerSideProps = async (
         multiOperatorData = await Promise.all(
             ticket.additionalOperators.map(async (operator) => {
                 let dataSource: 'bods' | 'tnds' = 'bods';
-                let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
-                if (services.length === 0 && modesAttribute) {
-                    services = await getTndsServicesByNocAndModes(operator.nocCode, modesAttribute.modes);
+                if (modesAttribute) {
                     dataSource = 'tnds';
                 }
+                const services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
+
                 // get the operators name, as we only have the nocCode
                 const operatorDetails = (await getOperatorDetailsFromNocTable(operator.nocCode)) as OperatorDetails;
 
@@ -508,12 +504,12 @@ export const getServerSideProps = async (
         multiOperatorData = await Promise.all(
             multiOperatorAttribute.selectedOperators.map(async (operator) => {
                 let dataSource: 'bods' | 'tnds' = 'bods';
-                let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
-                if (services.length === 0 && modesAttribute) {
-                    services = await getTndsServicesByNocAndModes(operator.nocCode, modesAttribute.modes);
+                if (modesAttribute) {
                     dataSource = 'tnds';
                 }
+
+                const services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
                 return {
                     name: operator.name,

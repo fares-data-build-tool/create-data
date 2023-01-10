@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import ReturnService, { getServerSideProps } from '../../src/pages/returnService';
-import { getServicesByNocCodeAndDataSource } from '../../src/data/auroradb';
+import { getServicesByNocCodeAndDataSource, getTndsServicesByNocAndModes } from '../../src/data/auroradb';
 import { expectedReturnTicketWithAdditionalService, expectedSingleTicket, getMockContext } from '../testData/mockData';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
 } from '../../src/constants/attributes';
 import { OperatorAttribute, ServiceType } from '../../src/interfaces';
@@ -112,6 +113,69 @@ describe('pages', () => {
                     [OPERATOR_ATTRIBUTE]: operatorData,
                     [MATCHING_JSON_ATTRIBUTE]: expectedReturnTicketWithAdditionalService,
                     [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
+                },
+                query: {
+                    selectedServiceId: 1,
+                },
+            });
+            const result = await getServerSideProps(ctx);
+            expect(result).toEqual({
+                props: {
+                    errors: [],
+                    operator: 'Test Op',
+                    passengerType: '',
+                    services: [
+                        {
+                            id: 11,
+                            lineName: '123',
+                            lineId: '3h3vb32ik',
+                            startDate: '05/02/2020',
+                            description: 'this bus service is 123',
+                            origin: 'Manchester',
+                            destination: 'Leeds',
+                            serviceCode: 'NW_05_BLAC_123_1',
+                        },
+                        {
+                            id: 12,
+                            lineName: 'X1',
+                            lineId: '3h3vb32ik',
+                            startDate: '06/02/2020',
+                            description: 'this bus service is X1',
+                            origin: 'Edinburgh',
+                            serviceCode: 'NW_05_BLAC_X1_1',
+                        },
+                        {
+                            id: 13,
+                            lineName: 'Infinity Line',
+                            lineId: '3h3vb32ik',
+                            startDate: '07/02/2020',
+                            description: 'this bus service is Infinity Line',
+                            destination: 'London',
+                            serviceCode: 'WY_13_IWBT_07_1',
+                        },
+                    ],
+                    csrfToken: '',
+                    backHref: '/products/productDetails?productId=1&serviceId=2',
+                    selectedServiceId: 1,
+                },
+            });
+        });
+
+        it('return list of services if multi modal attribute is present', async () => {
+            (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => []);
+            (getTndsServicesByNocAndModes as jest.Mock).mockImplementation(() => mockServices);
+
+            const operatorData: OperatorAttribute = {
+                name: 'Test Op',
+                nocCode: 'TEST',
+            };
+
+            const ctx = getMockContext({
+                session: {
+                    [OPERATOR_ATTRIBUTE]: operatorData,
+                    [MATCHING_JSON_ATTRIBUTE]: expectedReturnTicketWithAdditionalService,
+                    [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
+                    [MULTI_MODAL_ATTRIBUTE]: { modes: ['ferry', 'tram', 'coach'] },
                 },
                 query: {
                     selectedServiceId: 1,

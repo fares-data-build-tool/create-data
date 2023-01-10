@@ -166,12 +166,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
+    const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
 
     if (!dataSourceAttribute) {
         const services = await getAllServicesByNocCode(nocCode);
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
 
-        if (!hasBodsServices) {
+        if (!hasBodsServices && !modesAttribute) {
             if (ctx.res) {
                 redirectTo(ctx.res, '/noServices');
             } else {
@@ -181,7 +182,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         // removed as TNDS is being disabled until further notice
         // const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
         updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
-            source: 'bods',
+            source: hasBodsServices ? 'bods' : 'tnds',
             hasBods: true,
             hasTnds: false,
         });
@@ -190,10 +191,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const { selectAll } = ctx.query;
 
-    const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
-
     let chosenDataSourceServices;
-    if (modesAttribute && modesAttribute.modes.length > 0) {
+    if (modesAttribute) {
         chosenDataSourceServices = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
     }
     chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);

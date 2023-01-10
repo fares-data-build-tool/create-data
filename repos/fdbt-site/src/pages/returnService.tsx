@@ -121,8 +121,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     let services;
     if (modesAttribute) {
         services = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
+    } else {
+        services = await getServicesByNocCodeAndDataSource(nocCode, 'bods');
     }
-    services = await getServicesByNocCodeAndDataSource(nocCode, 'bods');
 
     if (services.length === 0) {
         if (ctx.res) {
