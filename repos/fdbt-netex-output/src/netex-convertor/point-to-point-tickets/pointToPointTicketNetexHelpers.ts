@@ -261,23 +261,20 @@ export const getInnerFareTables = (
 
 export const getPointToPointAvailabilityElement = (
     ticket: PointToPointTicket | PointToPointPeriodTicket,
-): NetexObject => {
-    const hasTimeRestriction = !!ticket.timeRestriction && ticket.timeRestriction.length > 0;
-    return {
-        version: '1.0',
-        id: `Tariff@${ticket.type}@availability`,
-        TypeOfFareStructureElementRef: {
-            version: 'fxc:v1.0',
-            ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
+): NetexObject => ({
+    version: '1.0',
+    id: `Tariff@${ticket.type}@availability`,
+    TypeOfFareStructureElementRef: {
+        version: 'fxc:v1.0',
+        ref: 'fxc:access_when',
+    },
+    qualityStructureFactors: {
+        FareDemandFactorRef: {
+            ref: 'op@Tariff@Demand',
+            version: '1.0',
         },
-        qualityStructureFactors: {
-            FareDemandFactorRef: {
-                ref: 'op@Tariff@Demand',
-                version: '1.0',
-            },
-        },
-    };
-};
+    },
+});
 
 export const getPreassignedFareProduct = (
     matchingData: PointToPointTicket | PointToPointPeriodTicket,
