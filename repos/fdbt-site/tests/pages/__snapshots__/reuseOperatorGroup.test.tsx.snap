@@ -28,7 +28,7 @@ exports[`pages reuseOperatorGroup should render coorectly when one operator grou
             className="govuk-fieldset__heading"
             id="reuse-operator-group-page-heading"
           >
-            Select a operator group
+            Select an operator group
           </h1>
         </legend>
         <div
@@ -129,7 +129,7 @@ exports[`pages reuseOperatorGroup should render correctly 1`] = `
             className="govuk-fieldset__heading"
             id="reuse-operator-group-page-heading"
           >
-            Select a operator group
+            Select an operator group
           </h1>
         </legend>
         <div
@@ -223,7 +223,7 @@ exports[`pages reuseOperatorGroup should render errors when user does not select
             className="govuk-fieldset__heading"
             id="reuse-operator-group-page-heading"
           >
-            Select a operator group
+            Select an operator group
           </h1>
         </legend>
         <div
