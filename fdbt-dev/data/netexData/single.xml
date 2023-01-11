@@ -545,7 +545,7 @@
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="Tariff@single@lines">
                   <Name>O/D pairs for 4</Name>
-                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:access"/>
+                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:access_when"/>
                   <distanceMatrixElements>
                     <DistanceMatrixElement version="1.0" id="Test_Stage_1+Test_Stage_2">
                       <priceGroups>

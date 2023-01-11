@@ -550,7 +550,7 @@ export const getLinesElement = (
         Name: { $t: `O/D pairs for ${lineName}` },
         TypeOfFareStructureElementRef: {
             versionRef: 'fxc:v1.0',
-            ref: 'fxc:access',
+            ref: 'fxc:access_when',
         },
         distanceMatrixElements: {
             DistanceMatrixElement: isReturnTicket(ticket)
