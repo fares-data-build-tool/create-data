@@ -15,9 +15,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 await deleteFromS3(product.matchingJsonLink, PRODUCTS_DATA_BUCKET_NAME);
                 await deleteProductByNocCodeAndId(Number(product.id), nationalOperatorCode);
             }
-            // products.forEach((product) => {
-
-            // });
         }
         redirectTo(res, '/home');
     } catch (error) {
