@@ -98,7 +98,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         redirectTo(ctx.res, '/multipleOperators');
     }
     const csrfToken = getCsrfToken(ctx);
-    let showDeleteProductsLink = false;
+    const showDeleteProductsLink = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
 
     if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
         showDeleteProductsLink = true;
