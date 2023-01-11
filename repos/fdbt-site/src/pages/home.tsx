@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
-import { checkIfMultipleOperators } from '../utils';
+import { checkIfMultipleOperators, getCsrfToken } from '../utils';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { MULTI_MODAL_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { redirectTo } from '../utils/apiUtils';
@@ -10,7 +10,12 @@ import { getAllServicesByNocCode } from '../data/auroradb';
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
 
-const Home = (): ReactElement => (
+interface HomeProps {
+    csrfToken: string;
+    showDeleteProductsLink: boolean;
+}
+
+const Home = ({ csrfToken, showDeleteProductsLink }: HomeProps): ReactElement => (
     <BaseLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Create fares data</h1>
         <div className="govuk-grid-row">
@@ -21,7 +26,7 @@ const Home = (): ReactElement => (
                         For bus operators running commercial bus services in England, and local authorities that need to
                         create NeTEx data for the services they operate.
                     </p>
-                    <a href={'/fareType'} className="govuk-link govuk-!-font-size-19" id="faretype-link">
+                    <a href="/fareType" className="govuk-link govuk-!-font-size-19" id="faretype-link">
                         Create NeTEx data for your fares
                     </a>
                 </div>
@@ -33,7 +38,7 @@ const Home = (): ReactElement => (
                     </h2>
                     <p className="govuk-body">View and manage all of your products and services in one place.</p>
 
-                    <a href={'/products/services'} className="govuk-link govuk-!-font-size-19" id="manage-fares-link">
+                    <a href="/products/services" className="govuk-link govuk-!-font-size-19" id="manage-fares-link">
                         {'View and manage fares'}
                     </a>
                 </div>
@@ -59,6 +64,17 @@ const Home = (): ReactElement => (
                             here
                         </a>
                         &nbsp;to view their contact details.
+                        {showDeleteProductsLink ? (
+                            <p>
+                                <a
+                                    className="govuk-button govuk-button--warning"
+                                    href={`/api/deleteAllProducts?_csrf=${csrfToken}`}
+                                    aria-label="go to the bus open data service"
+                                >
+                                    Clear products
+                                </a>
+                            </p>
+                        ) : null}
                     </p>
                 </div>
             </div>
@@ -82,6 +98,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if ((!sessionNoc || sessionNoc.includes('|')) && multipleOperators && ctx.res) {
         redirectTo(ctx.res, '/multipleOperators');
     }
+    const csrfToken = getCsrfToken(ctx);
+    const showDeleteProductsLink = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
 
     let uniqueModes: string[] = [];
 
@@ -103,7 +121,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     updateSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE, uniqueModes.length > 0 ? { modes: uniqueModes } : undefined);
 
     return {
-        props: {},
+        props: {
+            csrfToken,
+            showDeleteProductsLink,
+        },
     };
 };
 

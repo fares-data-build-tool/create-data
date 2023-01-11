@@ -1910,6 +1910,20 @@ export const deleteProductByNocCodeAndId = async (id: number, nocCode: string): 
     await executeQuery(deleteQuery, [id, nocCode]);
 };
 
+export const deleteProductsByNocCode = async (nocCode: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'deleting all products for given noc',
+        nocCode,
+    });
+
+    const deleteQuery = `
+            DELETE FROM products
+            WHERE  nocCode = ?`;
+
+    await executeQuery(deleteQuery, [nocCode]);
+};
+
 export const updateProductFareTriangleModifiedByNocCodeAndId = async (
     id: number,
     nocCode: string,
