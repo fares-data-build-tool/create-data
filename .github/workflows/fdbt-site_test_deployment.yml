@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'develop'
+    - 'fix/CFDS-165_edit_multi_op_error'
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:

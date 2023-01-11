@@ -445,13 +445,14 @@ export const getServerSideProps = async (
     let multiOperatorData: MultiOperatorInfo[] = [];
     let errors: ErrorInfo[] = [];
     let backHref = '';
-
+    console.log('here 10');
     if (!multiOperatorAttribute) {
         // edit mode
         const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
-
+        console.log('here 11');
         if (!ticket || !matchingJsonMetaData || !('additionalOperators' in ticket)) {
+            console.log('here 12');
             throw new Error('Page navigated to manually without necessary session attributes.');
         }
 
@@ -469,9 +470,11 @@ export const getServerSideProps = async (
                 let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
                 if (services.length === 0) {
+                    console.log('here 13');
                     services = await getFerryAndTramServices(operator.nocCode);
                     dataSource = 'tnds';
                 }
+                console.log('here 14');
                 // get the operators name, as we only have the nocCode
                 const operatorDetails = (await getOperatorDetailsFromNocTable(operator.nocCode)) as OperatorDetails;
 
@@ -485,14 +488,14 @@ export const getServerSideProps = async (
                             serviceWithOandD.lineId === service.lineId &&
                             serviceWithOandD.startDate === service.startDate,
                     ) as ServiceWithOriginAndDestination;
-
+                    console.log('here 15');
                     return {
                         ...service,
                         origin: matchingService.origin,
                         destination: matchingService.destination,
                     };
                 });
-
+                console.log('here 16');
                 return {
                     name: operatorDetails.operatorName,
                     nocCode: operator.nocCode,
@@ -507,12 +510,13 @@ export const getServerSideProps = async (
             multiOperatorAttribute.selectedOperators.map(async (operator) => {
                 let dataSource: 'bods' | 'tnds' = 'bods';
                 let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
-
+                console.log('here 17');
                 if (services.length === 0) {
+                    console.log('here 18');
                     services = await getFerryAndTramServices(operator.nocCode);
                     dataSource = 'tnds';
                 }
-
+                console.log('here 19');
                 return {
                     name: operator.name,
                     nocCode: operator.nocCode,
@@ -526,7 +530,7 @@ export const getServerSideProps = async (
 
     if (!!multiOperatorServicesAttribute && isWithErrors(multiOperatorServicesAttribute)) {
         errors = multiOperatorServicesAttribute.errors;
-
+        console.log('here 20');
         // as we dont have the origin / destination of any of the selected services
         // we need to enrich the service using
         // the services we get back from the database
@@ -537,6 +541,7 @@ export const getServerSideProps = async (
             if (!matchingOperator) {
                 return operator;
             }
+            console.log('here 21');
             const matchingSelectedServices = matchingOperator.selectedServices;
             const servicesWithOriginAndDestination = operator.services;
 
@@ -545,21 +550,21 @@ export const getServerSideProps = async (
                     (serviceWithOandD) =>
                         serviceWithOandD.lineId === service.lineId && serviceWithOandD.startDate === service.startDate,
                 ) as ServiceWithOriginAndDestination;
-
+                console.log('here 22');
                 return {
                     ...service,
                     origin: matchingService.origin,
                     destination: matchingService.destination,
                 };
             });
-
+            console.log('here 23');
             return {
                 ...operator,
                 selectedServices: updatedSelectedServices,
             };
         });
     }
-
+    console.log('here 24');
     return {
         props: {
             multiOperatorData,

@@ -16,7 +16,7 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
     //  example input {'LNUD#259#vHaXmz#YWAO259#25/03/2020': 'Brighouse - East Bierley'}
 
     const keyValuePairs = Object.entries(requestBody);
-
+    console.log('here 1');
     const nocList: string[] = [];
 
     const unsortedMultiOperatorData = keyValuePairs.map((pair) => {
@@ -44,6 +44,7 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
 
     const sortedMultiOperatorData: AdditionalOperator[] = nocList.map((nocCode) => {
         const matchingData = unsortedMultiOperatorData.filter((data) => data.noc === nocCode);
+        console.log('here 2');
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const selectedServices: SelectedService[] = matchingData.map(({ noc, ...rest }) => rest);
         return {
@@ -59,12 +60,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     try {
         const operatorCount = req.body.operatorCount ? parseInt(req.body.operatorCount) : 0;
         const selectedOperatorCount = req.body.selectedOperatorCount ? parseInt(req.body.selectedOperatorCount) : 0;
-
+        console.log('here 3');
         delete req.body.operatorCount;
         delete req.body.selectedOperatorCount;
 
         const listOfMultiOperatorsData = getMultiOperatorsDataFromRequest(req.body);
-
+        console.log('here 4');
         if (operatorCount !== selectedOperatorCount) {
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, {
                 multiOperatorInfo: listOfMultiOperatorsData,
@@ -81,7 +82,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
-
+        console.log('here 5');
         const inEditMode = ticket && matchingJsonMetaData;
 
         if (inEditMode) {
@@ -89,21 +90,22 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 ...ticket,
                 additionalOperators: listOfMultiOperatorsData,
             };
-
+            console.log('here 6');
             // put the now updated matching json into s3
             // overriding the existing object
             await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
-
+            console.log('here 7');
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, undefined);
 
             redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData.productId}`);
             return;
         }
-
+        console.log('here 8');
         updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, listOfMultiOperatorsData);
         redirectTo(res, '/multipleProducts');
         return;
     } catch (error) {
+        console.log('here 9', error);
         const message =
             'There was a problem processing the selected services from the multipleOperatorsServicesList page:';
         redirectToError(res, message, 'api.multipleOperatorsServiceList', error);
