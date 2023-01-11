@@ -54,7 +54,7 @@ export const getOperatorDetailsByNoc = async (nocCode: string): Promise<Operator
     }
 };
 
-export const removeDuplicateOperators = (operators: Operator[]) => {
+export const removeDuplicateOperators = (operators: Operator[]): Operator[] => {
     const filteredOperators = operators.filter(op => {
         // find the number of times the operator appears in the operators array
         const operatorCount = operators.filter(operator => operator.nocCode === op.nocCode).length;
