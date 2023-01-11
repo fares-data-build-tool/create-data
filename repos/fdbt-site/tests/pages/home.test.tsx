@@ -50,7 +50,7 @@ describe('pages', () => {
         const checkForServicesSpy = jest.spyOn(aurora, 'getAllServicesByNocCode');
 
         it('should render correctly', () => {
-            const tree = shallow(<Home csrfToken="" showDeleteProductsLink={true} />);
+            const tree = shallow(<Home csrfToken="" showDeleteProductsLink />);
             expect(tree).toMatchSnapshot();
         });
 
