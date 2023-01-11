@@ -1,8 +1,13 @@
 import camelCase from 'lodash/camelCase';
 import { NextApiResponse } from 'next';
 import { redirectToError, redirectTo, getAndValidateNoc, isSchemeOperator } from '../../utils/apiUtils/index';
-import { regenerateSession, updateSessionAttribute } from '../../utils/sessions';
-import { FARE_TYPE_ATTRIBUTE, CARNET_FARE_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
+import { getSessionAttribute, regenerateSession, updateSessionAttribute } from '../../utils/sessions';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
+} from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getAllServicesByNocCode } from '../../data/auroradb';
 import { SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
@@ -16,16 +21,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const nocCode = getAndValidateNoc(req, res);
             const services = await getAllServicesByNocCode(nocCode);
             const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
-            // removed as TNDS is being disabled until further notice
-            // const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
+            const multiModalAttribute = getSessionAttribute(req, MULTI_MODAL_ATTRIBUTE);
 
-            if (!schemeOp && !hasBodsServices) {
+            if (!schemeOp && !hasBodsServices && !multiModalAttribute) {
                 redirectTo(res, '/noServices');
                 return;
             }
 
             updateSessionAttribute(req, TXC_SOURCE_ATTRIBUTE, {
-                source: 'bods',
+                source: hasBodsServices ? 'bods' : 'tnds',
                 hasBods: true,
                 hasTnds: false,
             });

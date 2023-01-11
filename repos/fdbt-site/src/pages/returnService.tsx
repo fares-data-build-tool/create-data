@@ -7,8 +7,13 @@ import {
     OPERATOR_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
-import { getPassengerTypeById, getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import {
+    getPassengerTypeById,
+    getServicesByNocCodeAndDataSource,
+    getTndsServicesByNocAndModes,
+} from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken, isReturnTicket } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -29,6 +34,7 @@ interface ReturnServiceProps {
     csrfToken: string;
     selectedServiceId: number;
     backHref: string;
+    dataSource: string;
 }
 
 const ReturnService = ({
@@ -39,6 +45,7 @@ const ReturnService = ({
     csrfToken,
     selectedServiceId,
     backHref,
+    dataSource,
 }: ReturnServiceProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>
         <BackButton href={backHref} />
@@ -80,8 +87,14 @@ const ReturnService = ({
                         </select>
                     </FormElementWrapper>
                     <span className="govuk-hint hint-text" id="traveline-hint">
-                        This data is taken from the <b>Bus Open Data Service (BODS)</b>. If the service you are looking
-                        for is not listed, contact the BODS help desk for advice <a href="/contact">here</a>
+                        This data is taken from the{' '}
+                        <b>
+                            {dataSource === 'tnds'
+                                ? 'Traveline National Dataset (TNDS)'
+                                : 'Bus Open Data Service (BODS)'}
+                        </b>
+                        . If the service you are looking for is not listed, contact the BODS help desk for advice{' '}
+                        <a href="/contact">here</a>
                     </span>
                 </div>
                 <input type="hidden" name="selectedServiceId" value={selectedServiceId} />
@@ -96,6 +109,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+    const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
     const selectedServiceId = Number(ctx.query.selectedServiceId);
 
@@ -112,7 +126,14 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('Ticket should be return type');
     }
 
-    const services = await getServicesByNocCodeAndDataSource(nocCode, 'bods');
+    let dataSource = 'bods';
+    let services;
+    if (modesAttribute) {
+        dataSource = 'tnds';
+        services = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
+    } else {
+        services = await getServicesByNocCodeAndDataSource(nocCode, 'bods');
+    }
 
     if (services.length === 0) {
         if (ctx.res) {
@@ -137,6 +158,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             csrfToken,
             selectedServiceId,
             backHref,
+            dataSource,
         },
     };
 };
