@@ -67,6 +67,7 @@ const Home = ({ csrfToken, showDeleteProductsLink }: HomeProps): ReactElement =>
                         {showDeleteProductsLink ? (
                             <p>
                                 <a
+                                    className="govuk-button govuk-button--warning"
                                     href={`/api/deleteAllProducts?_csrf=${csrfToken}`}
                                     aria-label="go to the bus open data service"
                                 >

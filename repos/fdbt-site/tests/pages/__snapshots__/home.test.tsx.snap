@@ -104,6 +104,7 @@ exports[`pages home page should render correctly 1`] = `
           <p>
             <a
               aria-label="go to the bus open data service"
+              className="govuk-button govuk-button--warning"
               href="/api/deleteAllProducts?_csrf="
             >
               Clear products
