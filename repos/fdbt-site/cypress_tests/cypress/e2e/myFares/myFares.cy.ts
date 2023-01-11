@@ -93,7 +93,7 @@ describe('The my fares products pages', () => {
     before(() => {
         addOtherProductsIfNotPresent();
     });
-    it("allows the user to edit an product's services", () => {
+    it("allows the user to edit a product's services", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
@@ -105,32 +105,32 @@ describe('The my fares products pages', () => {
                 editServicesOtherProductsPage();
             });
     });
-    it("allows the user to edit an product's passenger type", () => {
+    it("allows the user to edit a product's passenger type", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
         editPassengerTypeOtherProductsPage();
     });
-    it("allows the user to edit an product's start date", () => {
+    it("allows the user to edit a product's start date", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
         clickRandomElementInTable('govuk-table__body', 'product-link');
         editStartDate();
     });
-    it("allows the user to edit an product's end date", () => {
+    it("allows the user to edit a product's end date", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
         editEndDateOtherProductsPage();
     });
-    it("allows the user to edit an product's purchase method", () => {
+    it("allows the user to edit a product's purchase method", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
         editPurchaseMethodOtherProductsPage();
     });
-    it("allows the user to edit an product's time restriction", () => {
+    it("allows the user to edit a product's time restriction", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
@@ -142,7 +142,7 @@ describe('The my fares products pages', () => {
                 editTimeRestriction();
             });
     });
-    it("allows the user to edit an product's period duration", () => {
+    it("allows the user to edit a product's period duration", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
@@ -154,7 +154,7 @@ describe('The my fares products pages', () => {
                 editProductDuration();
             });
     });
-    it("allows the user to edit an product's carnet product quantity", () => {
+    it("allows the user to edit a product's carnet product quantity", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
@@ -166,7 +166,7 @@ describe('The my fares products pages', () => {
                 editQuantityInBundle();
             });
     });
-    it("allows the user to edit an product's carnet product expiry", () => {
+    it("allows the user to edit a product's carnet product expiry", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
@@ -178,14 +178,14 @@ describe('The my fares products pages', () => {
                 editCarnetExpiry();
             });
     });
-    it("allows the user to edit an product's name", () => {
+    it("allows the user to edit a product's name", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
         clickRandomElementInTable('govuk-table__body', 'product-link');
         editProductName();
     });
-    it("allows the user to edit an product's validity", () => {
+    it("allows the user to edit a product's validity", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');
