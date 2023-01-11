@@ -516,14 +516,14 @@ export const getLinesElement = (
                 ref: ticket.additionalServices[0].lineId,
             },
         ];
-
+        const hasTimeRestriction = !!ticket.timeRestriction && ticket.timeRestriction.length > 0;
         return {
             version: '1.0',
             id: `Tariff@${typeOfPointToPoint}@lines`,
             Name: { $t: `O/D pairs for ${lineName}` },
             TypeOfFareStructureElementRef: {
                 versionRef: 'fxc:v1.0',
-                ref: 'fxc:access',
+                ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
             },
             distanceMatrixElements: {
                 DistanceMatrixElement: getDistanceMatrixElements(
