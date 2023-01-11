@@ -472,6 +472,9 @@ export const completeSalesOfferPackagesForMultipleProducts = (
 };
 
 export const randomlyChooseAndSelectServices = (): void => {
+    // to unselect all boxes when editing
+    clickElementById('select-all-button');
+    clickElementById('select-all-button');
     const randomSelector = getRandomNumber(1, 4);
     switch (randomSelector) {
         case 1: {
