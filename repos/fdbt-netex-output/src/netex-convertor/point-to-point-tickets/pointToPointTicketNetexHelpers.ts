@@ -516,7 +516,7 @@ export const getLinesElement = (
                 ref: ticket.additionalServices[0].lineId,
             },
         ];
-        const hasTimeRestriction = !!ticket.timeRestriction && ticket.timeRestriction.length > 0;
+        const hasTimeRestriction = ticket.timeRestriction.length > 0;
         return {
             version: '1.0',
             id: `Tariff@${typeOfPointToPoint}@lines`,
