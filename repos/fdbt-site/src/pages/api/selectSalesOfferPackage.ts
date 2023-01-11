@@ -92,12 +92,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
         const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
-
+        /* eslint-disable no-console */
+        console.log('here salesOffer faretype attribute', fareTypeAttribute);
         const fareType =
             fareTypeAttribute.fareType === 'schoolService' && !!schoolFareTypeAttribute
                 ? schoolFareTypeAttribute.schoolFareType
                 : fareTypeAttribute.fareType;
-
+        /* eslint-disable no-console */
+        console.log('here salesOffer faretype', fareType);
         let cappedProductName = '';
 
         if (fareType === 'capped') {
