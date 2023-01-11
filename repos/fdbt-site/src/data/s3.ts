@@ -337,6 +337,24 @@ export const deleteFromS3 = async (key: string, bucketName: string): Promise<voi
     }
 };
 
+export const deleteMultipleObjectsFromS3 = async (keys: string[], bucketName: string): Promise<void> => {
+    try {
+        logger.info('', {
+            context: 'data.s3',
+            message: `Deleting ${keys.join(', ')} in ${bucketName}`,
+        });
+
+        const bucketKeys = keys.map((key) => ({ Key: key }));
+        const bucketParams = {
+            Bucket: bucketName,
+            Delete: { Objects: bucketKeys },
+        };
+        await s3.deleteObjects(bucketParams).promise();
+    } catch (error) {
+        throw new Error(`Deletion of ${keys.join(', ')} in ${bucketName} unsuccessful: ${(error as Error).stack}`);
+    }
+};
+
 const listBucketObjects = async (bucket: string): Promise<ObjectList> => {
     const objects: {}[] = [];
 
