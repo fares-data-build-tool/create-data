@@ -12,10 +12,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (products.length > 0 && (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test')) {
             const matchingJsonLinks = products.map((product) => product.matchingJsonLink);
-            if (matchingJsonLinks.length > 0) {
-                await deleteMultipleObjectsFromS3(matchingJsonLinks, PRODUCTS_DATA_BUCKET_NAME);
-                await deleteProductsByNocCode(nationalOperatorCode);
-            }
+
+            await deleteMultipleObjectsFromS3(matchingJsonLinks, PRODUCTS_DATA_BUCKET_NAME);
+            await deleteProductsByNocCode(nationalOperatorCode);
         }
         redirectTo(res, '/home');
     } catch (error) {
