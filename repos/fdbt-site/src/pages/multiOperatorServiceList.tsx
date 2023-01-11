@@ -445,13 +445,16 @@ export const getServerSideProps = async (
     let multiOperatorData: MultiOperatorInfo[] = [];
     let errors: ErrorInfo[] = [];
     let backHref = '';
+    /* eslint-disable no-console */
     console.log('here 10');
     if (!multiOperatorAttribute) {
         // edit mode
         const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+        /* eslint-disable no-console */
         console.log('here 11');
         if (!ticket || !matchingJsonMetaData || !('additionalOperators' in ticket)) {
+            /* eslint-disable no-console */
             console.log('here 12');
             throw new Error('Page navigated to manually without necessary session attributes.');
         }
@@ -470,10 +473,12 @@ export const getServerSideProps = async (
                 let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
 
                 if (services.length === 0) {
+                    /* eslint-disable no-console */
                     console.log('here 13');
                     services = await getFerryAndTramServices(operator.nocCode);
                     dataSource = 'tnds';
                 }
+                /* eslint-disable no-console */
                 console.log('here 14');
                 // get the operators name, as we only have the nocCode
                 const operatorDetails = (await getOperatorDetailsFromNocTable(operator.nocCode)) as OperatorDetails;
@@ -488,6 +493,7 @@ export const getServerSideProps = async (
                             serviceWithOandD.lineId === service.lineId &&
                             serviceWithOandD.startDate === service.startDate,
                     ) as ServiceWithOriginAndDestination;
+                    /* eslint-disable no-console */
                     console.log('here 15');
                     return {
                         ...service,
@@ -495,6 +501,7 @@ export const getServerSideProps = async (
                         destination: matchingService.destination,
                     };
                 });
+                /* eslint-disable no-console */
                 console.log('here 16');
                 return {
                     name: operatorDetails.operatorName,
@@ -510,12 +517,15 @@ export const getServerSideProps = async (
             multiOperatorAttribute.selectedOperators.map(async (operator) => {
                 let dataSource: 'bods' | 'tnds' = 'bods';
                 let services = await getServicesByNocCodeAndDataSourceWithGrouping(operator.nocCode, dataSource);
+                /* eslint-disable no-console */
                 console.log('here 17');
                 if (services.length === 0) {
+                    /* eslint-disable no-console */
                     console.log('here 18');
                     services = await getFerryAndTramServices(operator.nocCode);
                     dataSource = 'tnds';
                 }
+                /* eslint-disable no-console */
                 console.log('here 19');
                 return {
                     name: operator.name,
@@ -530,6 +540,7 @@ export const getServerSideProps = async (
 
     if (!!multiOperatorServicesAttribute && isWithErrors(multiOperatorServicesAttribute)) {
         errors = multiOperatorServicesAttribute.errors;
+        /* eslint-disable no-console */
         console.log('here 20');
         // as we dont have the origin / destination of any of the selected services
         // we need to enrich the service using
@@ -541,6 +552,7 @@ export const getServerSideProps = async (
             if (!matchingOperator) {
                 return operator;
             }
+            /* eslint-disable no-console */
             console.log('here 21');
             const matchingSelectedServices = matchingOperator.selectedServices;
             const servicesWithOriginAndDestination = operator.services;
@@ -550,6 +562,7 @@ export const getServerSideProps = async (
                     (serviceWithOandD) =>
                         serviceWithOandD.lineId === service.lineId && serviceWithOandD.startDate === service.startDate,
                 ) as ServiceWithOriginAndDestination;
+                /* eslint-disable no-console */
                 console.log('here 22');
                 return {
                     ...service,
@@ -557,6 +570,7 @@ export const getServerSideProps = async (
                     destination: matchingService.destination,
                 };
             });
+            /* eslint-disable no-console */
             console.log('here 23');
             return {
                 ...operator,
@@ -564,6 +578,7 @@ export const getServerSideProps = async (
             };
         });
     }
+    /* eslint-disable no-console */
     console.log('here 24');
     return {
         props: {
