@@ -694,6 +694,7 @@ export const editTimeRestrictionPointToPointPage = (): void => {
 export const editPurchaseMethod = (isOtherProduct?: boolean): void => {
     clickElementById('purchase-methods-link');
     cy.get('.govuk-checkboxes__input').each((checkbox) => {
+        cy.log((!!checkbox.attr('checked')).toString());
         if (!!checkbox.attr('checked')) {
             cy.wrap(checkbox).click();
         }

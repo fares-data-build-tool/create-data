@@ -137,12 +137,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         // redirected from the product details page
         if (ticket && matchingJsonMetaData) {
+            /* eslint-disable no-console */
+            console.log('here salesOfferPackage');
             const product = ticket.products[0];
-
+            /* eslint-disable no-console */
+            console.log('here salesOffer', product);
             const productName = 'productName' in product ? product.productName : 'product';
             // edit mode
             const salesOfferPackages: SalesOfferPackage[] = sanitisedBody[productName];
-
+            /* eslint-disable no-console */
+            console.log('here salesOffer', salesOfferPackages);
             const updatedTicket: WithIds<Ticket> = {
                 ...ticket,
                 products: [
