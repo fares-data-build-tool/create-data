@@ -666,7 +666,7 @@ export const getPeriodAvailabilityElement = (
     Name: { $t: 'Available lines and/or zones' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
-        ref: 'fxc:access',
+        ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
     },
     qualityStructureFactors: hasTimeRestriction
         ? {
