@@ -101,10 +101,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const showDeleteProductsLink = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
 
-    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
-        showDeleteProductsLink = true;
-    }
-
     let uniqueModes: string[] = [];
 
     if (sessionNoc) {

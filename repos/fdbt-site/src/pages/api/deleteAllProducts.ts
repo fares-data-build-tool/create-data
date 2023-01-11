@@ -1,8 +1,8 @@
 import { NextApiResponse } from 'next';
-import { deleteProductByNocCodeAndId, getAllProductsByNoc } from '../../data/auroradb';
+import { deleteProductsByNocCode, getAllProductsByNoc } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
-import { deleteFromS3 } from '../../data/s3';
+import { deleteMultipleObjectsFromS3 } from '../../data/s3';
 import { PRODUCTS_DATA_BUCKET_NAME } from '../../constants';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -11,9 +11,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const nationalOperatorCode = getAndValidateNoc(req, res);
             const products = await getAllProductsByNoc(nationalOperatorCode);
 
-            for (const product of products) {
-                await deleteFromS3(product.matchingJsonLink, PRODUCTS_DATA_BUCKET_NAME);
-                await deleteProductByNocCodeAndId(Number(product.id), nationalOperatorCode);
+            const matchingJsonLinks = products.map((product) => product.matchingJsonLink);
+            if (matchingJsonLinks.length > 0) {
+                await deleteMultipleObjectsFromS3(matchingJsonLinks, PRODUCTS_DATA_BUCKET_NAME);
+                await deleteProductsByNocCode(nationalOperatorCode);
             }
         }
         redirectTo(res, '/home');
