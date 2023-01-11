@@ -340,7 +340,7 @@
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="Tariff@return@lines">
                   <Name>O/D pairs for 709</Name>
-                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:access_when"/>
+                  <TypeOfFareStructureElementRef versionRef="fxc:v1.0" ref="fxc:access"/>
                   <distanceMatrixElements>
                     <DistanceMatrixElement version="1.0" id="Shott_Drive+The_Stag_pub">
                       <priceGroups>
