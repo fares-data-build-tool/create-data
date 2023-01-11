@@ -78,35 +78,15 @@ export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Oper
         }
 
         const operators = operatorData;
-        const containsNonBus = operators.filter(operator => operator.mode !== 'Bus');
-        if (containsNonBus.length > 0) {
-            const allNocs = operators.map(operator => operator.nocCode);
 
-            const setOfNocs = new Set(allNocs);
+        const filteredOperators = operators.filter(op => {
+            // find the number of times the operator appears in the operators array
+            const operatorCount = operators.filter(operator => operator.nocCode === op.nocCode).length;
+            // only return operators where they appear once or their mode is bus
+            return operatorCount === 1 || op.mode === 'Bus';
+        });
 
-            if (allNocs.length > setOfNocs.size) {
-                const foundNocs: string[] = [];
-
-                const duplicateNocs: string[] = [];
-
-                allNocs.forEach(noc => {
-                    if (!foundNocs.includes(noc)) {
-                        foundNocs.push(noc);
-                    } else {
-                        duplicateNocs.push(noc);
-                    }
-                });
-
-                duplicateNocs.forEach(noc => {
-                    const indexOfOperatorToRemove = operators.findIndex(
-                        operator => operator.mode !== 'Bus' && operator.nocCode === noc,
-                    );
-                    operators.splice(indexOfOperatorToRemove, 1);
-                });
-            }
-        }
-
-        return operators;
+        return filteredOperators;
     } catch (err) {
         throw new Error(`Could not retrieve operator data from AuroraDB: ${err.stack}`);
     }
