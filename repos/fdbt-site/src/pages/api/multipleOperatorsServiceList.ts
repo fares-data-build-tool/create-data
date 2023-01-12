@@ -44,6 +44,7 @@ export const getMultiOperatorsDataFromRequest = (requestBody: {
 
     const sortedMultiOperatorData: AdditionalOperator[] = nocList.map((nocCode) => {
         const matchingData = unsortedMultiOperatorData.filter((data) => data.noc === nocCode);
+
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const selectedServices: SelectedService[] = matchingData.map(({ noc, ...rest }) => rest);
         return {
@@ -81,7 +82,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
-
         const inEditMode = ticket && matchingJsonMetaData;
 
         if (inEditMode) {
@@ -93,7 +93,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             // put the now updated matching json into s3
             // overriding the existing object
             await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
-
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, undefined);
 
             redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData.productId}`);

@@ -93,10 +93,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
         const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
+        const fareTypeValue: string = ticket && matchingJsonMetaData ? ticket.type : fareTypeAttribute.fareType;
         const fareType =
-            fareTypeAttribute.fareType === 'schoolService' && !!schoolFareTypeAttribute
+            fareTypeValue === 'schoolService' && !!schoolFareTypeAttribute
                 ? schoolFareTypeAttribute.schoolFareType
-                : fareTypeAttribute.fareType;
+                : fareTypeValue;
 
         let cappedProductName = '';
 
@@ -119,6 +120,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
               'productName' in ticket.products[0] &&
               'productPrice' in ticket.products[0]
             ? [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }]
+            : ticket &&
+              'products' in ticket &&
+              'productName' in ticket.products[0] &&
+              (ticket.type === 'single' || ticket.type === 'return')
+            ? [{ productName: ticket.products[0].productName }]
             : !!cappedProductName
             ? [{ productName: cappedProductName, productPrice: '' }]
             : [{ productName: 'product', productPrice: '' }];
@@ -138,11 +144,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         // redirected from the product details page
         if (ticket && matchingJsonMetaData) {
             const product = ticket.products[0];
-
             const productName = 'productName' in product ? product.productName : 'product';
             // edit mode
             const salesOfferPackages: SalesOfferPackage[] = sanitisedBody[productName];
-
             const updatedTicket: WithIds<Ticket> = {
                 ...ticket,
                 products: [

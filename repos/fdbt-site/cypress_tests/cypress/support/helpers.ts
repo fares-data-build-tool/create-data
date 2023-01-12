@@ -332,14 +332,12 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
                 .then(($radio) => {
                     const radioPurchaseType = $radio.attr('value');
                     purchaseType = (JSON.parse(radioPurchaseType) as { name: string }).name;
-
+                    cy.wrap(purchaseType).as('purchaseType');
                     if (isOtherProduct) {
                         cy.get(`[id$=price-${randomNumber}]`).then(($radio) => {
                             purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
                             cy.wrap(purchaseType).as('purchaseType');
                         });
-                    } else {
-                        cy.wrap(purchaseType).as('purchaseType');
                     }
                 });
         });
@@ -472,6 +470,9 @@ export const completeSalesOfferPackagesForMultipleProducts = (
 };
 
 export const randomlyChooseAndSelectServices = (): void => {
+    // to unselect all boxes when editing
+    clickElementById('select-all-button');
+    clickElementById('select-all-button');
     const randomSelector = getRandomNumber(1, 4);
     switch (randomSelector) {
         case 1: {
