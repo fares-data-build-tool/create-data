@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { getAndValidateNoc } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, EntityStatus } from '../../interfaces';
 import { getS3Exports } from '../../data/s3';
-import { getAllProductsByNoc, getBodsServicesByNoc } from '../../data/auroradb';
+import { getAllProductsByNoc, getAllServicesByNocCode, getBodsOrTndsServicesByNoc } from '../../data/auroradb';
 import { triggerExport } from '../../utils/apiUtils/export';
 import { getEntityStatus } from '../products/services';
 import { DbProduct } from '../../interfaces/dbTypes';
@@ -74,7 +74,11 @@ export const filterOutProductsWithNoActiveServices = async (
 ): Promise<DbProduct[]> => {
     const lineIdsToKeep: string[] = [];
 
-    const allBodsServices = await getBodsServicesByNoc(noc);
+    const services = await getAllServicesByNocCode(noc);
+    const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
+    const tndsServices = services.filter((service) => service.dataSource && service.dataSource === 'tnds');
+    const dataSource = !hasBodsServices && tndsServices.length > 0 ? 'tnds' : 'bods';
+    const allBodsServices = await getBodsOrTndsServicesByNoc(noc, dataSource);
 
     for (let i = 0; i < products.length; i++) {
         const product = products[i];

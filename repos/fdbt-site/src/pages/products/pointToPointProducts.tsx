@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import { MyFaresPointToPointProduct, MyFaresService, NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
 import {
-    getBodsServiceByNocAndId,
+    getServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
     getPointToPointProductsByLineId,
     getTimeRestrictionByIdAndNoc,
@@ -16,6 +16,8 @@ import BackButton from '../../components/BackButton';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import { buildDeleteUrl } from './otherProducts';
 import { MyFaresProduct } from '../../interfaces/dbTypes';
+import { getSessionAttribute } from '../../utils/sessions';
+import { MULTI_MODAL_ATTRIBUTE } from '../../constants/attributes';
 
 const title = 'Point To Point Products - Create Fares Data Service';
 const description = 'View and access your point to point products in one place.';
@@ -207,7 +209,9 @@ export const getServerSideProps = async (
         throw new Error('Unable to find line name to show products for.');
     }
 
-    const service = await getBodsServiceByNocAndId(noc, serviceId);
+    const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
+    const dataSource = multiModalAttribute ? 'tnds' : 'bods';
+    const service = await getServiceByNocAndId(noc, serviceId, dataSource);
     const products = await getPointToPointProductsByLineId(noc, service.lineId);
     const productsToDisplay = filterProductsNotToDisplay(service, products);
 

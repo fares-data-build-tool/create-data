@@ -305,7 +305,10 @@ export const operatorHasBodsServices = async (nationalOperatorCode: string): Pro
     }
 };
 
-export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promise<MyFaresService[]> => {
+export const getBodsOrTndsServicesByNoc = async (
+    nationalOperatorCode: string,
+    dataSource = 'bods',
+): Promise<MyFaresService[]> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
     logger.info('', {
@@ -318,11 +321,11 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
         const queryInput = `
             SELECT id, lineName, lineId, origin, destination, startDate, endDate
             FROM txcOperatorLine
-            WHERE nocCode = ? AND dataSource = 'bods'
+            WHERE nocCode = ? AND dataSource = ?
             ORDER BY CAST(lineName AS UNSIGNED), lineName;
         `;
 
-        const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter]);
+        const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter, dataSource]);
         return (
             queryResults.map((item) => ({
                 ...item,
@@ -336,86 +339,51 @@ export const getBodsServicesByNoc = async (nationalOperatorCode: string): Promis
     }
 };
 
-export const getBodsServiceByNocAndId = async (
+export const getServiceByNocAndId = async (
     nationalOperatorCode: string,
     serviceId: string,
+    dataSource = 'bods',
 ): Promise<MyFaresService> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving services for given national operator code and serviceId',
+        message: 'retrieving services for given national operator code, serviceId and datasource',
         nationalOperatorCode,
         serviceId,
+        dataSource,
     });
 
     try {
         const queryInput = `
             SELECT id, lineName, lineId, origin, destination, startDate, endDate
             FROM txcOperatorLine
-            WHERE nocCode = ? AND id = ? AND dataSource = 'bods';
+            WHERE nocCode = ? AND id = ? AND dataSource = ?;
         `;
 
-        const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter, serviceId]);
+        const queryResults = await executeQuery<MyFaresService[]>(queryInput, [
+            nocCodeParameter,
+            serviceId,
+            dataSource,
+        ]);
         if (queryResults.length !== 1) {
             throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
         }
-        // Is it better to JSON.parse this and overwrite the start end and end date via spreading the rest?
+
         return {
-            id: queryResults[0].id,
-            origin: queryResults[0].origin,
-            destination: queryResults[0].destination,
-            lineName: queryResults[0].lineName,
+            ...queryResults[0],
             startDate: convertDateFormat(queryResults[0].startDate),
             endDate: queryResults[0].endDate ? convertDateFormat(queryResults[0].endDate) : undefined,
-            lineId: queryResults[0].lineId,
         };
     } catch (error) {
         throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
     }
 };
 
-export const getBodsServicesByNocAndLineId = async (
-    nationalOperatorCode: string,
-    lineId: string,
-): Promise<MyFaresService[]> => {
-    const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
-
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving services for given national operator code and lineId',
-        nationalOperatorCode,
-        lineId,
-    });
-
-    try {
-        const queryInput = `
-            SELECT id, lineName, lineId, origin, destination, startDate, endDate
-            FROM txcOperatorLine
-            WHERE nocCode = ? AND lineId = ? AND dataSource = 'bods';
-        `;
-
-        const queryResults = await executeQuery<MyFaresService[]>(queryInput, [nocCodeParameter, lineId]);
-
-        return queryResults.map((result) => {
-            return {
-                id: result.id,
-                origin: result.origin,
-                destination: result.destination,
-                lineName: result.lineName,
-                startDate: convertDateFormat(result.startDate),
-                endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
-                lineId: result.lineId,
-            };
-        });
-    } catch (error) {
-        throw new Error(`Could not retrieve bods services for line id ${lineId} from AuroraDB: ${error.stack}`);
-    }
-};
-
-export const getBodsServiceDirectionDescriptionsByNocAndServiceId = async (
+export const getServiceDirectionDescriptionsByNocAndServiceId = async (
     nationalOperatorCode: string,
     serviceId: string,
+    dataSource: string,
 ): Promise<{ inboundDirectionDescription: string; outboundDirectionDescription: string }> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
@@ -430,12 +398,12 @@ export const getBodsServiceDirectionDescriptionsByNocAndServiceId = async (
         const queryInput = `
             SELECT inboundDirectionDescription, outboundDirectionDescription
             FROM txcOperatorLine
-            WHERE nocCode = ? AND id = ? AND dataSource = 'bods';
+            WHERE nocCode = ? AND id = ? AND dataSource = ?;
         `;
 
         const queryResults = await executeQuery<
             { inboundDirectionDescription: string; outboundDirectionDescription: string }[]
-        >(queryInput, [nocCodeParameter, serviceId]);
+        >(queryInput, [nocCodeParameter, serviceId, dataSource]);
         if (queryResults.length !== 1) {
             throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
         }

@@ -6,10 +6,12 @@ import {
     EntityStatus,
 } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
-import { getPointToPointProducts, getBodsServicesByNoc } from '../../data/auroradb';
+import { getPointToPointProducts, getBodsOrTndsServicesByNoc } from '../../data/auroradb';
 import { getAndValidateNoc } from '../../utils';
 import moment from 'moment';
 import { MyFaresProduct } from '../../interfaces/dbTypes';
+import { getSessionAttribute } from '../../utils/sessions';
+import { MULTI_MODAL_ATTRIBUTE } from '../../constants/attributes';
 
 const title = 'Services - Create Fares Data Service';
 const description = 'View and access your services in one place.';
@@ -184,7 +186,14 @@ export const matchProductsToServices = (
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
     const noc = getAndValidateNoc(ctx);
-    const services = await getBodsServicesByNoc(noc);
+    const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
+    let services: MyFaresService[];
+    if (multiModalAttribute) {
+        services = await getBodsOrTndsServicesByNoc(noc, 'tnds');
+    } else {
+        services = await getBodsOrTndsServicesByNoc(noc);
+    }
+
     const products = await getPointToPointProducts(noc);
     const servicesAndProducts = matchProductsToServices(services, products);
 

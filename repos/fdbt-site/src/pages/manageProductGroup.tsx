@@ -4,13 +4,13 @@ import React, { ReactElement, useState } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import InformationSummary from '../components/InformationSummary';
-import { MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE } from '../constants/attributes';
+import { MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE, MULTI_MODAL_ATTRIBUTE } from '../constants/attributes';
 import { getSessionAttribute } from '../utils/sessions';
 import CsrfForm from '../components/CsrfForm';
 import {
     getAllPassengerTypesByNoc,
     getAllProductsByNoc,
-    getBodsServicesByNoc,
+    getBodsOrTndsServicesByNoc,
     getProductGroupByNocAndId,
 } from '../data/auroradb';
 import { getProductsMatchingJson } from '../data/s3';
@@ -438,7 +438,14 @@ export const getServerSideProps = async (
     const allServicesWithMatchingLineIds: MyFaresService[] = [];
 
     if (uniqueServiceLineIds.length > 0) {
-        const allBodsServices = await getBodsServicesByNoc(noc);
+        const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
+        let allBodsServices: MyFaresService[];
+        if (multiModalAttribute) {
+            allBodsServices = await getBodsOrTndsServicesByNoc(noc, 'tnds');
+        } else {
+            allBodsServices = await getBodsOrTndsServicesByNoc(noc, 'bods');
+        }
+
         uniqueServiceLineIds.forEach((uniqueServiceLineId) => {
             allServicesWithMatchingLineIds.push(
                 allBodsServices.find((service) => service.lineId === uniqueServiceLineId) as MyFaresService,
