@@ -44,7 +44,8 @@ export const sanitiseReqBody = (
 
     const sanitisedBody = products.reduce((sanitisedBody, product) => {
         const sopInput = req.body[`${productPrefix}${product.productName}`];
-
+        /* eslint-disable no-console */
+        console.log(sopInput, 'sopInput');
         if (!sopInput) {
             errors.push({
                 errorMessage: 'Choose at least one sales offer package from the options',
