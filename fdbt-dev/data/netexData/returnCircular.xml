@@ -585,7 +585,7 @@
                   </GenericParameterAssignment>
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="Tariff@return@availability">
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access_when"/>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
                   <qualityStructureFactors>
                     <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
                   </qualityStructureFactors>
