@@ -328,7 +328,7 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
             const randomNumber = getRandomNumber(0, length - 1);
             getElementByClass('govuk-checkboxes__input')
                 .eq(randomNumber)
-                .click()
+                .check()
                 .then(($radio) => {
                     const radioPurchaseType = $radio.attr('value');
                     purchaseType = (JSON.parse(radioPurchaseType) as { name: string }).name;
