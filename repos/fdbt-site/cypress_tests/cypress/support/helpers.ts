@@ -346,10 +346,12 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
     continueButtonClick();
 };
 
-export const randomlyDecideTimeRestrictions = (): void => {
+export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
     let timeRestriction = 'N/A';
     if (getRandomNumber(0, 1) === 0) {
-        clickElementById('valid-days-not-required');
+        if (isEditing) {
+            clickElementById('valid-days-not-required');
+        }
         cy.wrap(timeRestriction).as('timeRestriction');
     } else {
         // click yes button
