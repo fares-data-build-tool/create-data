@@ -6,7 +6,12 @@ import { GS_PURCHASE_METHOD_ATTRIBUTE } from '../../constants/attributes';
 import { paymentMethodsList, purchaseLocationsList, ticketFormatsList } from '../managePurchaseMethod';
 import { toArray } from '../../utils';
 import { invalidCharactersArePresent, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
-import { insertSalesOfferPackage, getSalesOfferPackagesByNocCode, updateSalesOfferPackage } from '../../data/auroradb';
+import {
+    insertSalesOfferPackage,
+    getSalesOfferPackagesByNocCode,
+    updateSalesOfferPackage,
+    getSalesOfferPackageByIdAndNoc,
+} from '../../data/auroradb';
 import { FromDb, SalesOfferPackage } from '../../interfaces/matchingJsonTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -26,25 +31,26 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } = req.body;
 
         const id = req.body.id && Number(req.body.id);
+        const isCapped = req.body.isCapped === 'true';
 
         if (!purchaseLocations) {
             errors.push({
                 errorMessage: 'Select at least one option for where the ticket can be sold',
-                id: purchaseLocationsList.id,
+                id: purchaseLocationsList(isCapped).id,
             });
         }
 
         if (!paymentMethods) {
             errors.push({
                 errorMessage: 'Select at least one option for how tickets can be paid for',
-                id: paymentMethodsList.id,
+                id: paymentMethodsList(isCapped).id,
             });
         }
 
         if (!ticketFormats) {
             errors.push({
                 errorMessage: 'Select at least one option for the ticket format',
-                id: ticketFormatsList.id,
+                id: ticketFormatsList(isCapped).id,
             });
         }
 
@@ -73,6 +79,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             purchaseLocations: toArray(purchaseLocations),
             paymentMethods: toArray(paymentMethods),
             ticketFormats: toArray(ticketFormats),
+            isCapped,
         };
 
         const noc = getAndValidateNoc(req, res);
@@ -86,12 +93,60 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     id: 'purchase-method-name',
                 });
             }
+
+            if (id) {
+                const purchaseDetails = await getSalesOfferPackageByIdAndNoc(id, noc);
+                if (purchaseDetails.isCapped) {
+                    const validPurchaseLocations = purchaseLocationsList(true).method;
+                    const isValidPurchaseLocation = toArray(purchaseLocations).every((purchaseLoc) =>
+                        validPurchaseLocations.includes(purchaseLoc),
+                    );
+
+                    if (!isValidPurchaseLocation) {
+                        errors.push({
+                            errorMessage: `Select the valid option(s) for the purchase locations.`,
+                            id: purchaseLocationsList(true).id,
+                        });
+                    }
+
+                    const validPaymentMethods = paymentMethodsList(true).paymentMethods;
+                    const isValidPaymentMethod = toArray(paymentMethods).every((paymentMethod) =>
+                        validPaymentMethods.includes(paymentMethod),
+                    );
+
+                    if (!isValidPaymentMethod) {
+                        errors.push({
+                            errorMessage: `Select the valid option(s) for the payment method.`,
+                            id: paymentMethodsList(true).id,
+                        });
+                    }
+
+                    const ticketFormatsValue = ticketFormatsList(true).ticketFormats.map(
+                        (ticketFormat) => ticketFormat.value,
+                    );
+                    const isValidTicketFormat = toArray(ticketFormats).every((ticketFormatValue) =>
+                        ticketFormatsValue.includes(ticketFormatValue),
+                    );
+
+                    if (!isValidTicketFormat) {
+                        errors.push({
+                            errorMessage: `Select the valid option(s) for the ticket format.`,
+                            id: ticketFormatsList(true).id,
+                        });
+                    }
+                }
+            }
         }
 
         if (errors.length > 0) {
             updateSessionAttribute(req, GS_PURCHASE_METHOD_ATTRIBUTE, { inputs: salesOfferPackage, errors });
+            const cappedPart = isCapped ? 'isCapped=true' : '';
+            const idPart = id ? `id=${id}` : '';
+            const andSymbol = !!cappedPart && !!idPart ? '&' : '';
+            const querySymbol = cappedPart || idPart ? '?' : '';
+            const queryString = `${querySymbol}${cappedPart}${andSymbol}${idPart}`;
 
-            redirectTo(res, `/managePurchaseMethod${id ? `?id=${id}` : ''}`);
+            redirectTo(res, `/managePurchaseMethod${queryString}`);
             return;
         }
 

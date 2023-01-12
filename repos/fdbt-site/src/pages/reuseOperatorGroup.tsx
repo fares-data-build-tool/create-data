@@ -39,7 +39,7 @@ const ReuseOperatorGroup = ({
                     <fieldset className="govuk-fieldset" aria-describedby="operator-group-page-heading">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 className="govuk-fieldset__heading" id="reuse-operator-group-page-heading">
-                                Select a operator group
+                                Select an operator group
                             </h1>
                         </legend>
                         <div className="govuk-warning-text">

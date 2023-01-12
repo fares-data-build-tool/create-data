@@ -54,6 +54,16 @@ export const getOperatorDetailsByNoc = async (nocCode: string): Promise<Operator
     }
 };
 
+export const removeDuplicateOperators = (operators: Operator[]): Operator[] => {
+    const filteredOperators = operators.filter(op => {
+        // find the number of times the operator appears in the operators array
+        const operatorCount = operators.filter(operator => operator.nocCode === op.nocCode).length;
+        // only return operators where they appear once or their mode is bus
+        return operatorCount === 1 || op.mode === 'Bus';
+    });
+    return filteredOperators;
+};
+
 export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Operator[]> => {
     try {
         const cleansedNocs: string[] = nocCodes.map(noc => replaceIWBusCoNocCode(noc));
@@ -77,7 +87,9 @@ export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Oper
             throw new Error(`No operator data found for nocCodes: ${cleansedNocs.join(',')}`);
         }
 
-        return operatorData;
+        const filteredOperators = removeDuplicateOperators(operatorData);
+
+        return filteredOperators;
     } catch (err) {
         throw new Error(`Could not retrieve operator data from AuroraDB: ${err.stack}`);
     }

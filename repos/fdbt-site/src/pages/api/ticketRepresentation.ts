@@ -6,8 +6,9 @@ import { updateSessionAttribute } from '../../utils/sessions';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
-        if (req.body.ticketType) {
-            const { ticketType } = req.body;
+        const { ticketType } = req.body;
+
+        if (['geoZone', 'hybrid', 'multipleServices', 'pointToPointPeriod'].includes(ticketType)) {
             const ticketTypeObject: TicketRepresentationAttribute = { name: ticketType };
             const isScheme = isSchemeOperator(req, res);
 
@@ -32,6 +33,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 errors: [{ errorMessage: 'Choose a type of ticket representation', id: 'geo-zone' }],
             });
             redirectTo(res, '/ticketRepresentation');
+            return;
         }
     } catch (error) {
         const message = 'There was a problem selecting the type of ticket:';

@@ -3,7 +3,12 @@ import { shallow } from 'enzyme';
 import Service, { getServerSideProps } from '../../src/pages/service';
 import { getServicesByNocCodeAndDataSource } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
-import { OPERATOR_ATTRIBUTE, PASSENGER_TYPE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../src/constants/attributes';
+import {
+    MULTI_MODAL_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    PASSENGER_TYPE_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+} from '../../src/constants/attributes';
 import { ServiceType } from '../../src/interfaces';
 
 jest.mock('../../src/data/auroradb');
@@ -146,6 +151,66 @@ describe('pages', () => {
             expect(operatorServices.first().text()).toBe('123 Manchester - Leeds (Start date 05/02/2020)');
             expect(operatorServices.at(1).text()).toBe('X1 Edinburgh - N/A (Start date 06/02/2020)');
             expect(operatorServices.at(2).text()).toBe('Infinity Line N/A - London (Start date 07/02/2020)');
+        });
+
+        it('returns operator value and list of services for the multi modal operator if multi modal attribute is present in session', async () => {
+            const ctx = getMockContext({
+                session: {
+                    [TXC_SOURCE_ATTRIBUTE]: {
+                        source: 'tnds',
+                        hasBods: false,
+                        hasTnds: true,
+                    },
+                    [MULTI_MODAL_ATTRIBUTE]: {
+                        modes: ['tram', 'bus', 'coach'],
+                    },
+                },
+            });
+            const result = await getServerSideProps(ctx);
+
+            expect(result).toEqual({
+                props: {
+                    error: [],
+                    operator: 'test',
+                    passengerType: 'Adult',
+                    services: [
+                        {
+                            id: 11,
+                            lineName: '123',
+                            lineId: '3h3vb32ik',
+                            startDate: '05/02/2020',
+                            description: 'this bus service is 123',
+                            origin: 'Manchester',
+                            destination: 'Leeds',
+                            serviceCode: 'NW_05_BLAC_123_1',
+                        },
+                        {
+                            id: 12,
+                            lineName: 'X1',
+                            lineId: '3h3vb32ik',
+                            startDate: '06/02/2020',
+                            description: 'this bus service is X1',
+                            origin: 'Edinburgh',
+                            serviceCode: 'NW_05_BLAC_X1_1',
+                        },
+                        {
+                            id: 13,
+                            lineName: 'Infinity Line',
+                            lineId: '3h3vb32ik',
+                            startDate: '07/02/2020',
+                            description: 'this bus service is Infinity Line',
+                            destination: 'London',
+                            serviceCode: 'WY_13_IWBT_07_1',
+                        },
+                    ],
+                    dataSourceAttribute: {
+                        source: 'tnds',
+                        hasBods: false,
+                        hasTnds: true,
+                    },
+                    csrfToken: '',
+                },
+            });
         });
 
         it('returns operator value and list of services when operator attribute exists with NOCCode', async () => {

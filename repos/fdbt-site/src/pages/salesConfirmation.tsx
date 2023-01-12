@@ -27,7 +27,7 @@ export const sopTicketFormatConverter = (enumerations: string[]): string => {
     return enumerations
         .map(
             (enumeration) =>
-                ticketFormatsList.ticketFormats.find((ticketFormat) => ticketFormat.value === enumeration)?.display ||
+                ticketFormatsList().ticketFormats.find((ticketFormat) => ticketFormat.value === enumeration)?.display ||
                 '',
         )
         .join(', ');

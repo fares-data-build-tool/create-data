@@ -2,7 +2,7 @@ import { startCase } from 'lodash';
 import { NextApiResponse } from 'next';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
 import { redirectTo } from '../../../src/utils/apiUtils';
-import { isCurrency } from '../../../src/utils/apiUtils/validator';
+import { checkProductOrCapNameIsValid, isCurrency } from '../../../src/utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../../src/utils/sessions';
 import { CapDistancePricing, DistanceCap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 
@@ -34,19 +34,28 @@ export const validateInput = (
     lastIndex: number,
     minimumPrice: string,
     maximumPrice: string,
+    cappedProductName: string,
 ): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
+
+    const cappedProductNameError = checkProductOrCapNameIsValid(cappedProductName, 'product');
+    if (cappedProductNameError) {
+        errors.push({
+            id: 'capped-product-name',
+            errorMessage: cappedProductNameError,
+        });
+    }
     const minimumPriceError = checkInputIsValid(minimumPrice, 'price');
     if (minimumPriceError) {
         errors.push({
-            id: `minimum-price`,
+            id: 'minimum-price',
             errorMessage: minimumPriceError,
         });
     }
     const maximumPriceError = checkInputIsValid(maximumPrice, 'price');
     if (maximumPriceError) {
         errors.push({
-            id: `maximum-price`,
+            id: 'maximum-price',
             errorMessage: maximumPriceError,
         });
     }
@@ -105,8 +114,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const capPricePerDistances: CapDistancePricing[] = [];
     let i = 0;
     let errors: ErrorInfo[] = [];
-    const minimumPrice = req.body[`minimumPrice`];
-    const maximumPrice = req.body[`maximumPrice`];
+    const { cappedProductName, minimumPrice, maximumPrice } = req.body;
 
     while (req.body[`pricePerKm${i}`] !== undefined) {
         const distanceFrom = req.body[`distanceFrom${i}`];
@@ -122,8 +130,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     }
     capPricePerDistances[0] = { ...capPricePerDistances[0], distanceFrom: '0' };
     capPricePerDistances[i - 1] = { ...capPricePerDistances[i - 1], distanceTo: 'Max' };
-    errors = validateInput(capPricePerDistances, i - 1, minimumPrice, maximumPrice);
-    const distanceCap: DistanceCap = { maximumPrice, minimumPrice, capPricing: capPricePerDistances };
+    errors = validateInput(capPricePerDistances, i - 1, minimumPrice, maximumPrice, cappedProductName);
+    const distanceCap: DistanceCap = {
+        maximumPrice,
+        minimumPrice,
+        capPricing: capPricePerDistances,
+        productName: cappedProductName,
+    };
     if (errors.length > 0) {
         updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
             errors,

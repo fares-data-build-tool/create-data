@@ -9,8 +9,13 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
-import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import {
+    getAllServicesByNocCode,
+    getServicesByNocCodeAndDataSource,
+    getTndsServicesByNocAndModes,
+} from '../data/auroradb';
 import {
     ErrorInfo,
     NextPageContextWithSession,
@@ -161,12 +166,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
+    const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
 
     if (!dataSourceAttribute) {
         const services = await getAllServicesByNocCode(nocCode);
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
 
-        if (!hasBodsServices) {
+        if (!hasBodsServices && !modesAttribute) {
             if (ctx.res) {
                 redirectTo(ctx.res, '/noServices');
             } else {
@@ -176,7 +182,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         // removed as TNDS is being disabled until further notice
         // const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
         updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
-            source: 'bods',
+            source: hasBodsServices ? 'bods' : 'tnds',
             hasBods: true,
             hasTnds: false,
         });
@@ -185,7 +191,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const { selectAll } = ctx.query;
 
-    const chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    let chosenDataSourceServices;
+    if (modesAttribute) {
+        chosenDataSourceServices = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
+    }
+    chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
     const serviceList: ServicesInfo[] = chosenDataSourceServices.map((service) => {
         return {

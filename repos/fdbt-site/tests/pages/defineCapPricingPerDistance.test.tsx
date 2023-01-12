@@ -24,6 +24,7 @@ describe('pages', () => {
                                 pricePerKm: '5',
                             },
                         ],
+                        productName: 'Product',
                     }}
                     numberOfCapInitial={1}
                 />,
@@ -56,6 +57,7 @@ describe('pages', () => {
                                 pricePerKm: '5',
                             },
                         ],
+                        productName: 'Product',
                     }}
                     numberOfCapInitial={2}
                 />,

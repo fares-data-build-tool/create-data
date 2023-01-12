@@ -6,7 +6,20 @@ describe('pages', () => {
     describe('manage purchase method', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <ManagePurchaseMethod csrfToken={''} errors={[]} inputs={undefined} editMode={false} />,
+                <ManagePurchaseMethod
+                    csrfToken={''}
+                    errors={[]}
+                    inputs={undefined}
+                    editMode={false}
+                    isCapped={false}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+        it('should render correctly for capped ticket', () => {
+            const tree = shallow(
+                <ManagePurchaseMethod csrfToken={''} errors={[]} inputs={undefined} editMode={false} isCapped={true} />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -19,9 +32,29 @@ describe('pages', () => {
                 ticketFormats: ['blah'],
                 paymentMethods: ['blob'],
                 purchaseLocations: ['baz'],
+                isCapped: false,
             };
 
-            const tree = shallow(<ManagePurchaseMethod csrfToken={''} errors={[]} inputs={inputs} editMode />);
+            const tree = shallow(
+                <ManagePurchaseMethod csrfToken={''} errors={[]} inputs={inputs} isCapped={false} editMode />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly in edit mode for capped ticket', () => {
+            const inputs = {
+                id: 0,
+                name: 'test',
+                ticketFormats: ['blah'],
+                paymentMethods: ['blob'],
+                purchaseLocations: ['baz'],
+                isCapped: true,
+            };
+
+            const tree = shallow(
+                <ManagePurchaseMethod csrfToken={''} errors={[]} inputs={inputs} isCapped={false} editMode />,
+            );
 
             expect(tree).toMatchSnapshot();
         });
@@ -35,9 +68,12 @@ describe('pages', () => {
                 ticketFormats: ['blah'],
                 paymentMethods: ['blob'],
                 purchaseLocations: ['baz'],
+                isCapped: false,
             };
 
-            const tree = shallow(<ManagePurchaseMethod csrfToken={''} errors={errors} inputs={inputs} editMode />);
+            const tree = shallow(
+                <ManagePurchaseMethod csrfToken={''} errors={errors} inputs={inputs} isCapped={false} editMode />,
+            );
 
             expect(tree).toMatchSnapshot();
         });

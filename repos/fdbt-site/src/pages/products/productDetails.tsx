@@ -344,6 +344,47 @@ const createProductDetails = async (
             ],
             editLink: '/csvUpload',
         });
+
+        if (isReturnTicket(ticket)) {
+            let outboundStopCounter = 0;
+
+            ticket.outboundFareZones.forEach((stage) => {
+                outboundStopCounter = outboundStopCounter + stage.stops.length;
+            });
+
+            productDetailsElements.push({
+                id: 'outbound-fare-stage-matching',
+                name: 'Outbound fare stages and stops',
+                content: [`${outboundStopCounter} bus stops across ${ticket.outboundFareZones.length} fare stages`],
+                editLink: '/editFareStageMatching',
+            });
+
+            let inboundStopCounter = 0;
+
+            ticket.inboundFareZones.forEach((stage) => {
+                inboundStopCounter = inboundStopCounter + stage.stops.length;
+            });
+
+            productDetailsElements.push({
+                id: 'inbound-fare-stage-matching',
+                name: 'Inbound fare stages and stops',
+                content: [`${inboundStopCounter} bus stops across ${ticket.inboundFareZones.length} fare stages`],
+                editLink: '/editFareStageMatching',
+            });
+        } else if (ticket.type === 'single') {
+            let stopCounter = 0;
+
+            ticket.fareZones.forEach((stage) => {
+                stopCounter = stopCounter + stage.stops.length;
+            });
+
+            productDetailsElements.push({
+                id: 'fare-stage-matching',
+                name: 'Fare stages and stops',
+                content: [`${stopCounter} bus stops across ${ticket.fareZones.length} fare stages`],
+                editLink: '/editFareStageMatching',
+            });
+        }
     }
 
     if ('additionalNocs' in ticket) {

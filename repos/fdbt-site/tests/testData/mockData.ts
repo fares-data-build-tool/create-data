@@ -803,6 +803,8 @@ export const userFareStages: UserFareStages = {
     ],
 };
 
+export const fareStageNames: string[] = ['Acomb Green Lane', 'Mattison Way', 'Nursery Drive'];
+
 export const zoneStops: Stop[] = [
     {
         stopName: 'Westlea shops',
@@ -1109,6 +1111,7 @@ export const expectedSalesOfferPackageArray: SalesOfferPackage[] = [
         purchaseLocations: ['onBoard'],
         paymentMethods: ['cash'],
         ticketFormats: ['paperTicket'],
+        isCapped: false,
     },
     {
         id: 2,
@@ -1117,6 +1120,25 @@ export const expectedSalesOfferPackageArray: SalesOfferPackage[] = [
         purchaseLocations: ['onBoard'],
         paymentMethods: ['contactlessPaymentCard'],
         ticketFormats: ['paperTicket'],
+        isCapped: false,
+    },
+    {
+        id: 3,
+        name: 'Capped Onboard',
+        description: 'Purchasable on board the bus, with a debit card, as a smart card.',
+        purchaseLocations: ['onBoard'],
+        paymentMethods: ['debitCard'],
+        ticketFormats: ['smartCard'],
+        isCapped: true,
+    },
+    {
+        id: 4,
+        name: 'Capped Mobile',
+        description: 'Purchasable via the mobile device, with a contactless card or device, as a paper ticket.',
+        purchaseLocations: ['mobileDevice'],
+        paymentMethods: ['mobilePhone'],
+        ticketFormats: ['mobileApp'],
+        isCapped: true,
     },
 ];
 

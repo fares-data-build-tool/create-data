@@ -7,9 +7,10 @@ import {
     CAP_START_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     MULTI_TAPS_PRICING_ATTRIBUTE,
+    ADDITIONAL_PRICING_ATTRIBUTE,
     CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { NextPageContextWithSession, ConfirmationElement, Cap } from '../interfaces';
+import { NextPageContextWithSession, ConfirmationElement, Cap, CapDetails } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
@@ -25,6 +26,7 @@ const description = 'Cap Confirmation page of the Create Fares Data Service';
 interface CapConfirmationProps {
     typeOfCap: string;
     productGroupName: string;
+    cappedProductName: string;
     caps: Cap[];
     capValidity: string;
     capStartInfoContent: string;
@@ -32,12 +34,14 @@ interface CapConfirmationProps {
     tapsPricingContents: string[];
     capDistancePricingContents: string[];
     distanceBands: string[];
+    additionalPricing: string;
     csrfToken: string;
 }
 
 export const buildCapConfirmationElements = (
     typeOfCap: string,
     productGroupName: string,
+    cappedProductName: string,
     caps: Cap[],
     capValidity: string,
     capStartInfoContent: string,
@@ -45,6 +49,7 @@ export const buildCapConfirmationElements = (
     tapsPricingContents: string[],
     capDistancePricingContents: string[],
     distanceBands: string[],
+    additionalPricing: string,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
@@ -59,6 +64,14 @@ export const buildCapConfirmationElements = (
             name: 'Product group name',
             content: productGroupName,
             href: '/selectCappedProductGroup',
+        });
+    }
+
+    if (cappedProductName) {
+        confirmationElements.push({
+            name: 'Capped product name',
+            content: cappedProductName,
+            href: '/createCaps',
         });
     }
 
@@ -124,12 +137,21 @@ export const buildCapConfirmationElements = (
         });
     }
 
+    if (additionalPricing) {
+        confirmationElements.push({
+            name: 'Additional pricing',
+            content: additionalPricing,
+            href: '/additionalPricingStructures',
+        });
+    }
+
     return confirmationElements;
 };
 
 const CapConfirmation = ({
     typeOfCap,
     productGroupName,
+    cappedProductName,
     caps,
     capValidity,
     capStartInfoContent,
@@ -137,6 +159,7 @@ const CapConfirmation = ({
     tapsPricingContents,
     capDistancePricingContents,
     distanceBands,
+    additionalPricing,
     csrfToken,
 }: CapConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
@@ -148,6 +171,7 @@ const CapConfirmation = ({
                     confirmationElements={buildCapConfirmationElements(
                         typeOfCap,
                         productGroupName,
+                        cappedProductName,
                         caps,
                         capValidity,
                         capStartInfoContent,
@@ -155,6 +179,7 @@ const CapConfirmation = ({
                         tapsPricingContents,
                         capDistancePricingContents,
                         distanceBands,
+                        additionalPricing,
                     )}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -168,12 +193,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
 
     const typeOfCapAttribute = getSessionAttribute(ctx.req, TYPE_OF_CAP_ATTRIBUTE);
+    const additionalPricingAttribute = getSessionAttribute(ctx.req, ADDITIONAL_PRICING_ATTRIBUTE);
 
     if (!typeOfCapAttribute || !('typeOfCap' in typeOfCapAttribute)) {
         throw new Error('Could not extract the correct attributes for the user journey.');
     }
 
-    const capAttribute = getSessionAttribute(ctx.req, CAPS_ATTRIBUTE);
+    const capAttribute = getSessionAttribute(ctx.req, CAPS_ATTRIBUTE) as CapDetails | undefined;
     const capStartAttribute = getSessionAttribute(ctx.req, CAP_START_ATTRIBUTE);
 
     const productGroupIdAttribute = getSessionAttribute(ctx.req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE);
@@ -183,7 +209,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ? (await getProductGroupByNocAndId(noc, Number.parseInt(productGroupIdAttribute)))?.name
             : '';
 
-    const caps = capAttribute ? capAttribute.caps : [];
+    const caps = capAttribute?.caps || [];
+    const cappedProductName = capAttribute?.productName;
 
     const capValidityAttribute = getSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE);
     const capValidity =
@@ -233,10 +260,18 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 : 'Rolling days'
             : '';
 
+    const additionalPricing =
+        typeOfCapAttribute.typeOfCap === 'byDistance'
+            ? additionalPricingAttribute && 'pricingStructureStart' in additionalPricingAttribute
+                ? `Pricing structure starts after ${additionalPricingAttribute.pricingStructureStart} min with percentage discount ${additionalPricingAttribute.structureDiscount}%`
+                : 'N/A'
+            : '';
+
     return {
         props: {
             typeOfCap: typeOfCapAttribute.typeOfCap,
             productGroupName: productGroupName || '',
+            cappedProductName: cappedProductName || '',
             caps,
             capValidity,
             capStartInfoContent,
@@ -247,6 +282,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             tapsPricingContents,
             capDistancePricingContents,
             distanceBands,
+            additionalPricing,
             csrfToken,
         },
     };

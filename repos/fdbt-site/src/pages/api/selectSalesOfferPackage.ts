@@ -4,12 +4,22 @@ import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
+    CAPS_ATTRIBUTE,
+    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    TYPE_OF_CAP_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
+    CapDetails,
+    DistanceCap,
     ErrorInfo,
+    FareType,
     NextApiRequestWithSession,
     ProductWithSalesOfferPackages,
+    SchoolFareTypeAttribute,
     SelectSalesOfferPackageWithError,
+    TypeOfCap,
 } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
@@ -80,10 +90,37 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
+        const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
+        const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
+
+        const fareType =
+            fareTypeAttribute.fareType === 'schoolService' && !!schoolFareTypeAttribute
+                ? schoolFareTypeAttribute.schoolFareType
+                : fareTypeAttribute.fareType;
+
+        let cappedProductName = '';
+
+        if (fareType === 'capped') {
+            const { typeOfCap } = getSessionAttribute(req, TYPE_OF_CAP_ATTRIBUTE) as TypeOfCap;
+
+            if (typeOfCap === 'byDistance') {
+                const distanceCap = getSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE) as DistanceCap;
+                cappedProductName = distanceCap.productName;
+            } else {
+                const capDetails = getSessionAttribute(req, CAPS_ATTRIBUTE) as CapDetails;
+                cappedProductName = capDetails.productName;
+            }
+        }
+
         const products = multipleProductAttribute
             ? multipleProductAttribute.products
-            : ticket && 'productName' in ticket.products[0]
+            : ticket &&
+              'products' in ticket &&
+              'productName' in ticket.products[0] &&
+              'productPrice' in ticket.products[0]
             ? [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }]
+            : !!cappedProductName
+            ? [{ productName: cappedProductName, productPrice: '' }]
             : [{ productName: 'product', productPrice: '' }];
 
         const { sanitisedBody, errors } = sanitiseReqBody(req, products);
@@ -131,7 +168,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (!multipleProductAttribute) {
-            const salesOfferPackages: SalesOfferPackage[] = sanitisedBody['product'];
+            const key = !!cappedProductName ? cappedProductName : 'product';
+            const salesOfferPackages: SalesOfferPackage[] = sanitisedBody[key];
 
             updateSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE, salesOfferPackages);
         } else {

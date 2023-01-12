@@ -14,6 +14,7 @@ describe('createCaps', () => {
     it('redirects back to /createCaps if there is no user entry', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
+                cappedProductName: '',
                 capNameInput0: '',
                 capPriceInput0: '',
                 capDurationInput0: '',
@@ -31,17 +32,20 @@ describe('createCaps', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
             caps: [{ durationAmount: '', durationUnits: '', name: '', price: '' }],
             errors: [
+                { errorMessage: 'Product name cannot have less than 2 characters', id: 'capped-product-name' },
                 { errorMessage: 'Cap name cannot have less than 2 characters', id: 'cap-name-0' },
                 { errorMessage: 'Cap price cannot be empty', id: 'cap-price-0' },
                 { errorMessage: 'Cap duration cannot be empty', id: 'cap-period-duration-quantity-0' },
                 { errorMessage: 'Choose an option from the dropdown', id: 'cap-duration-unit-0' },
             ],
+            productName: '',
         });
     });
 
     it('redirects back to /createCaps if the user entry contains mistakes', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
+                cappedProductName: 'Product',
                 capNameInput0: 'hello',
                 capPriceInput0: '',
                 capDurationInput0: '2',
@@ -81,12 +85,14 @@ describe('createCaps', () => {
                 { errorMessage: 'Cap name cannot have less than 2 characters', id: 'cap-name-1' },
                 { errorMessage: 'Cap name cannot have more than 50 characters', id: 'cap-name-2' },
             ],
+            productName: 'Product',
         });
     });
 
     it('redirects to /createCaps if two caps have the same name', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
+                cappedProductName: 'Product',
                 capNameInput0: 'hello',
                 capPriceInput0: '22',
                 capDurationInput0: '2',
@@ -114,12 +120,14 @@ describe('createCaps', () => {
                 { errorMessage: 'Cap names must be unique', id: 'cap-name-0' },
                 { errorMessage: 'Cap names must be unique', id: 'cap-name-1' },
             ],
+            productName: 'Product',
         });
     });
 
     it('redirects back to /createCaps if the user enters 0 as an input', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
+                cappedProductName: 'Product',
                 capNameInput0: 'Name',
                 capPriceInput0: '0',
                 capDurationInput0: '2',
@@ -137,12 +145,14 @@ describe('createCaps', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
             caps: [{ durationAmount: '2', durationUnits: 'week', name: 'Name', price: '0' }],
             errors: [{ errorMessage: 'Cap prices cannot be zero', id: 'cap-price-0' }],
+            productName: 'Product',
         });
     });
 
     it('redirects back to /createCaps if the user enters 000 as an input', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
+                cappedProductName: 'Product',
                 capNameInput0: 'Name',
                 capPriceInput0: '000',
                 capDurationInput0: '2',
@@ -160,6 +170,31 @@ describe('createCaps', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
             caps: [{ durationAmount: '2', durationUnits: 'week', name: 'Name', price: '000' }],
             errors: [{ errorMessage: 'Cap prices cannot be zero', id: 'cap-price-0' }],
+            productName: 'Product',
+        });
+    });
+
+    it('redirects back to /createCaps if the user doesnt provide a product name', () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                capNameInput0: 'Name',
+                capPriceInput0: '2',
+                capDurationInput0: '2',
+                capDurationUnitsInput0: 'week',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        createCaps(req, res);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/createCaps',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
+            caps: [{ durationAmount: '2', durationUnits: 'week', name: 'Name', price: '2' }],
+            errors: [{ errorMessage: 'Product name cannot have less than 2 characters', id: 'capped-product-name' }],
+            productName: undefined,
         });
     });
 });

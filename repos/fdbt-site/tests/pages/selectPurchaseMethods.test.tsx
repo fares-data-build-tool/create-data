@@ -2,7 +2,13 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { getMockContext } from '../testData/mockData';
 import { getSalesOfferPackagesByNocCode } from '../../src/data/auroradb';
-import { FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    TYPE_OF_CAP_ATTRIBUTE,
+    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    MULTIPLE_PRODUCT_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+} from '../../src/constants/attributes';
 import SelectPurchaseMethods, { getServerSideProps, PurchaseMethodsProps } from '../../src/pages/selectPurchaseMethods';
 import { FromDb, SalesOfferPackage } from '../../src/interfaces/matchingJsonTypes';
 
@@ -15,6 +21,7 @@ const defaultSalesOfferPackageOne: FromDb<SalesOfferPackage> = {
     purchaseLocations: ['onBoard'],
     paymentMethods: ['cash'],
     ticketFormats: ['paperTicket'],
+    isCapped: false,
 };
 
 const defaultSalesOfferPackageTwo: FromDb<SalesOfferPackage> = {
@@ -24,6 +31,7 @@ const defaultSalesOfferPackageTwo: FromDb<SalesOfferPackage> = {
     purchaseLocations: ['onBoard'],
     paymentMethods: ['contactlessPaymentCard'],
     ticketFormats: ['paperTicket'],
+    isCapped: false,
 };
 
 const defaultSalesOfferPackageThree: FromDb<SalesOfferPackage> = {
@@ -33,6 +41,7 @@ const defaultSalesOfferPackageThree: FromDb<SalesOfferPackage> = {
     purchaseLocations: ['online'],
     paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
     ticketFormats: ['smartCard'],
+    isCapped: false,
 };
 
 const defaultSalesOfferPackageFour: FromDb<SalesOfferPackage> = {
@@ -42,6 +51,27 @@ const defaultSalesOfferPackageFour: FromDb<SalesOfferPackage> = {
     purchaseLocations: ['mobileDevice'],
     paymentMethods: ['debitCard', 'creditCard', 'mobilePhone', 'directDebit'],
     ticketFormats: ['mobileApp'],
+    isCapped: false,
+};
+
+const defaultSalesOfferPackageFive: FromDb<SalesOfferPackage> = {
+    id: 4,
+    name: 'Capped Purchase Method Mobile',
+    description: '',
+    purchaseLocations: ['mobileDevice'],
+    paymentMethods: ['debitCard', 'creditCard'],
+    ticketFormats: ['mobileApp'],
+    isCapped: true,
+};
+
+const defaultSalesOfferPackageSix: FromDb<SalesOfferPackage> = {
+    id: 4,
+    name: 'Mobile App',
+    description: '',
+    purchaseLocations: ['onBoard'],
+    paymentMethods: ['debitCard', 'creditCard', 'mobilePhone'],
+    ticketFormats: ['smartCard'],
+    isCapped: false,
 };
 
 describe('pages', () => {
@@ -56,6 +86,16 @@ describe('pages', () => {
         products: [],
         csrfToken: '',
         backHref: '',
+        isCapped: false,
+    };
+
+    const selectCappedSalesOfferPackagePropsInfoNoError: PurchaseMethodsProps = {
+        purchaseMethodsList: [defaultSalesOfferPackageFive, defaultSalesOfferPackageSix],
+        errors: [],
+        products: [],
+        csrfToken: '',
+        backHref: '',
+        isCapped: true,
     };
 
     const selectSalesOfferPackagePropsInfoWithError: PurchaseMethodsProps = {
@@ -69,6 +109,16 @@ describe('pages', () => {
         errors: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
         csrfToken: '',
         backHref: '',
+        isCapped: false,
+    };
+
+    const selectCappedSalesOfferPackagePropsInfoWithError: PurchaseMethodsProps = {
+        products: [],
+        purchaseMethodsList: [defaultSalesOfferPackageFive, defaultSalesOfferPackageSix],
+        errors: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
+        csrfToken: '',
+        backHref: '',
+        isCapped: false,
     };
 
     describe('selectPurchaseMethods', () => {
@@ -85,6 +135,26 @@ describe('pages', () => {
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
                     backHref=""
+                    isCapped={false}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for capped ticket', () => {
+            const tree = shallow(
+                <SelectPurchaseMethods
+                    purchaseMethodsList={selectCappedSalesOfferPackagePropsInfoNoError.purchaseMethodsList}
+                    products={[
+                        {
+                            productName: 'Great Product',
+                            productPrice: '22',
+                        },
+                    ]}
+                    errors={selectCappedSalesOfferPackagePropsInfoNoError.errors}
+                    csrfToken=""
+                    backHref=""
+                    isCapped={true}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -103,6 +173,26 @@ describe('pages', () => {
                     errors={selectSalesOfferPackagePropsInfoNoError.errors}
                     csrfToken=""
                     backHref=""
+                    isCapped={false}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly with no purchase methods for capped ticket', () => {
+            const tree = shallow(
+                <SelectPurchaseMethods
+                    purchaseMethodsList={[]}
+                    products={[
+                        {
+                            productName: 'Great Product',
+                            productPrice: '22',
+                        },
+                    ]}
+                    errors={selectCappedSalesOfferPackagePropsInfoNoError.errors}
+                    csrfToken=""
+                    backHref=""
+                    isCapped={true}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -116,6 +206,21 @@ describe('pages', () => {
                     errors={selectSalesOfferPackagePropsInfoWithError.errors}
                     csrfToken=""
                     backHref=""
+                    isCapped={false}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render an error when an error message is passed through to props for capped ticket', () => {
+            const tree = shallow(
+                <SelectPurchaseMethods
+                    purchaseMethodsList={selectCappedSalesOfferPackagePropsInfoWithError.purchaseMethodsList}
+                    products={[]}
+                    errors={selectCappedSalesOfferPackagePropsInfoWithError.errors}
+                    csrfToken=""
+                    backHref=""
+                    isCapped={true}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -140,6 +245,7 @@ describe('pages', () => {
                             purchaseLocations: ['On bus'],
                             paymentMethods: ['Cash'],
                             ticketFormats: ['Paper ticket'],
+                            isCapped: false,
                         },
                         {
                             id: 2,
@@ -148,6 +254,7 @@ describe('pages', () => {
                             purchaseLocations: ['Online App'],
                             paymentMethods: ['Card via App'],
                             ticketFormats: ['eTicket'],
+                            isCapped: false,
                         },
                         {
                             id: 3,
@@ -156,6 +263,7 @@ describe('pages', () => {
                             purchaseLocations: ['Ticket Machine'],
                             paymentMethods: ['Card'],
                             ticketFormats: ['Pass'],
+                            isCapped: false,
                         },
                     ];
                     (getSalesOfferPackagesByNocCode as jest.Mock).mockImplementation(() => mockSalesOfferPackages);
@@ -183,6 +291,47 @@ describe('pages', () => {
                     expect(result.props.purchaseMethodsList).toEqual(expectedSalesOfferPackageList);
                 },
             );
+
+            it('should return expected props when the page is visited by a user with stored sales offer packages on the capped ticket', async () => {
+                const mockSalesOfferPackages: SalesOfferPackage[] = [
+                    {
+                        id: 1,
+                        name: 'Capped Ticket',
+                        description: 'On bus - CreditCard - mobile',
+                        purchaseLocations: ['On Board'],
+                        paymentMethods: ['CreditCard'],
+                        ticketFormats: ['Mobile'],
+                        isCapped: true,
+                    },
+                ];
+                (getSalesOfferPackagesByNocCode as jest.Mock).mockImplementation(() => mockSalesOfferPackages);
+
+                const ctx = getMockContext({
+                    session: {
+                        [FARE_TYPE_ATTRIBUTE]: { fareType: 'capped' },
+                        [TYPE_OF_CAP_ATTRIBUTE]: { typeOfCap: 'byDistance' },
+                        [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: {
+                            productName: 'product name',
+                            maximumPrice: '',
+                            minimumPrice: '',
+                            capPricing: [],
+                        },
+                    },
+                });
+
+                const result = await getServerSideProps(ctx);
+                const expectedSalesOfferPackageList: SalesOfferPackage[] = mockSalesOfferPackages.map(
+                    (mockSalesOfferPackage) => {
+                        return {
+                            ...mockSalesOfferPackage,
+                        };
+                    },
+                );
+
+                expect(result.props.errors.length).toBe(0);
+                expect(result.props.products.length).toBe(1);
+                expect(result.props.purchaseMethodsList).toEqual(expectedSalesOfferPackageList);
+            });
 
             it('should throw an error when necessary nocCode is invalid, when the user is not a scheme operator', async () => {
                 const ctx = getMockContext({

@@ -36,14 +36,38 @@ const DefineCapPricingPerDistance = ({
                     <h1 className="govuk-heading-l" id="cap-pricing-per-distance-heading">
                         Enter your distance cap details
                     </h1>
+
+                    <div className="govuk-!-margin-bottom-3 govuk-!-margin-left-1">
+                        <label className="govuk-label" htmlFor="capped-product-name">
+                            Capped product name
+                        </label>
+                        <span className="govuk-hint">Enter the name of your capped product</span>
+                        <div className="govuk-input__wrapper">
+                            <FormElementWrapper
+                                errors={errors}
+                                errorId="capped-product-name"
+                                errorClass="govuk-input--error"
+                                hideText
+                            >
+                                <input
+                                    className="govuk-input govuk-input--width-30"
+                                    id="capped-product-name"
+                                    name="cappedProductName"
+                                    type="text"
+                                    defaultValue={capPricingPerDistanceData.productName || ''}
+                                />
+                            </FormElementWrapper>
+                        </div>
+                    </div>
+
                     <div className="flex-container">
                         <div className="govuk-!-margin-left-1 govuk-!-margin-right-2">
-                            <FormGroupWrapper errors={errors} errorIds={[`minimum-price`]} hideErrorBar>
+                            <FormGroupWrapper errors={errors} errorIds={['minimum-price']} hideErrorBar>
                                 <>
                                     <label className="govuk-label" htmlFor="minimum-price">
-                                        Minimum price(£)
+                                        Minimum price (£)
                                     </label>
-                                    <span className="govuk-hint" id={`minimum-price-hint`}>
+                                    <span className="govuk-hint" id="minimum-price-hint">
                                         e.g. £2.99
                                     </span>
                                     <div className="govuk-input__wrapper">
@@ -52,15 +76,14 @@ const DefineCapPricingPerDistance = ({
                                         </div>
                                         <FormElementWrapper
                                             errors={errors}
-                                            errorId={'minimum-price'}
+                                            errorId="minimum-price"
                                             errorClass="govuk-input--error"
                                             hideText
-                                            addFormGroupError={false}
                                         >
                                             <input
                                                 className="govuk-input govuk-input--width-3"
-                                                id={`minimum-price`}
-                                                name={`minimumPrice`}
+                                                id="minimum-price"
+                                                name="minimumPrice"
                                                 type="text"
                                                 onChange={(e) => {
                                                     setCapPricingPerDistanceData({
@@ -77,13 +100,13 @@ const DefineCapPricingPerDistance = ({
                         </div>
 
                         <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
-                            <FormGroupWrapper errors={errors} errorIds={[`maximum-price`]} hideErrorBar>
+                            <FormGroupWrapper errors={errors} errorIds={['maximum-price']} hideErrorBar>
                                 <>
-                                    <label className="govuk-label" htmlFor={`maximum-price`}>
-                                        Maximum price(£)
+                                    <label className="govuk-label" htmlFor="maximum-price">
+                                        Maximum price (£)
                                     </label>
 
-                                    <span className="govuk-hint" id={`maximum-price-hint`}>
+                                    <span className="govuk-hint" id="maximum-price-hint">
                                         e.g. £2.99
                                     </span>
 
@@ -93,15 +116,14 @@ const DefineCapPricingPerDistance = ({
                                         </div>
                                         <FormElementWrapper
                                             errors={errors}
-                                            errorId={'maximum-price'}
+                                            errorId="maximum-price"
                                             errorClass="govuk-input--error"
                                             hideText
-                                            addFormGroupError={false}
                                         >
                                             <input
                                                 className="govuk-input govuk-input--width-3"
-                                                id={`maximum-price`}
-                                                name={`maximumPrice`}
+                                                id="maximum-price"
+                                                name="maximumPrice"
                                                 type="text"
                                                 onChange={(e) => {
                                                     setCapPricingPerDistanceData({
@@ -234,6 +256,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
                 capPricing: [{ distanceFrom: '0', distanceTo: 'Max', pricePerKm: '' }],
                 minimumPrice: '',
                 maximumPrice: '',
+                productName: '',
             },
             csrfToken,
             numberOfCapInitial: capPricePerDistances?.capPricing?.length || 1,

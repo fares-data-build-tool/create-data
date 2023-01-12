@@ -1,6 +1,14 @@
-import { clickElementById, clickElementByText, getElementById, getHomePage } from './helpers';
+import {
+    addOtherProductsIfNotPresent,
+    addSingleProductIfNotPresent,
+    clickElementById,
+    clickElementByText,
+    getElementByClass,
+    getHomePage,
+} from './helpers';
 import { addSingleMultiOperatorGroup } from './multiOperatorGroups';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
+import { addSingleProductGroup } from './productGroups';
 import { addPurchaseMethod } from './purchaseMethods';
 import { addTimeRestriction } from './timeRestrictions';
 
@@ -18,6 +26,13 @@ before(() => {
     addTestFareDayEnd();
     clickElementByText('Operator groups');
     addTestOperatorGroups();
+
+    addSingleProductIfNotPresent();
+    addOtherProductsIfNotPresent();
+    getHomePage();
+    clickElementById('account-link');
+    clickElementByText('Product groups');
+    addTestProductGroups();
     cy.log('Global Settings set up for LNUD');
 
     // Disabling the below, as schemes are currently not fully supported
@@ -38,6 +53,8 @@ before(() => {
     cy.log('Global Settings set up for scheme');
 });
 
+// Disabling the below, as schemes are currently not fully supported
+/*
 const addTestOperatorDetails = (): void => {
     clickElementById('operatorName').clear().type('Easy A to B');
     clickElementById('contactNumber').clear().type('01492 451 652');
@@ -49,6 +66,7 @@ const addTestOperatorDetails = (): void => {
     clickElementById('postcode').clear().type('AW23 8LE');
     clickElementByText('Save');
 };
+*/
 
 const addTestOperatorGroups = (): void => {
     cy.get(`[data-card-count]`).then((element) => {
@@ -56,12 +74,30 @@ const addTestOperatorGroups = (): void => {
         cy.log(`There are ${numberofOperatorGroups} operator groups`);
         cy.get(`[operator-groups]`).then((element) => {
             const operatorGroups = element.attr('operator-groups').toString();
-            const operatorGroupsValue = operatorGroups.split(',')
+            const operatorGroupsValue = operatorGroups.split(',');
             if (!operatorGroupsValue.includes('test')) {
                 addSingleMultiOperatorGroup('test', false, true);
             }
             if (!operatorGroupsValue.includes('test2')) {
                 addSingleMultiOperatorGroup('test2', false, false);
+            }
+        });
+    });
+};
+
+const addTestProductGroups = (): void => {
+    cy.get(`[data-card-count]`).then((element) => {
+        const numberofProductGroups = Number(element.attr('data-card-count'));
+        cy.log(`There are ${numberofProductGroups} product groups`);
+        cy.get(`[product-groups]`).then((element) => {
+            const productGroups = element.attr('product-groups').toString();
+
+            const productGroupsValue = productGroups.split(',');
+            if (!productGroupsValue.includes('test')) {
+                addSingleProductGroup('test', false);
+            }
+            if (!productGroupsValue.includes('test2')) {
+                addSingleProductGroup('test2', true);
             }
         });
     });
@@ -117,6 +153,28 @@ const addTestPurchaseMethods = (): void => {
         cy.log(`There are ${numberOfPurchaseMethods} purchase methods`);
         if (numberOfPurchaseMethods > 0) {
             cy.log('There is at least one purchase method');
+            getElementByClass('card')
+                .last()
+                .invoke('attr', 'id')
+                .then((id) => {
+                    if (!id.startsWith('purchase-method-cap-')) {
+                        const cappedPurchaseMethod1 = {
+                            purchaseLocations: ['checkbox-0-on-board'],
+                            paymentMethods: ['checkbox-0-debit-card', 'checkbox-1-credit-card'],
+                            ticketFormats: ['checkbox-0-mobile-app'],
+                            name: 'Test capped onboard',
+                        };
+                        const cappedPurchaseMethod2 = {
+                            purchaseLocations: ['checkbox-0-on-board', 'checkbox-1-mobile-device'],
+                            paymentMethods: ['checkbox-2-mobile-phone'],
+                            ticketFormats: ['checkbox-0-mobile-app'],
+                            name: 'Test capped mobile',
+                        };
+
+                        addPurchaseMethod(cappedPurchaseMethod1, true);
+                        addPurchaseMethod(cappedPurchaseMethod2, true);
+                    }
+                });
         } else {
             const purchaseMethod1 = {
                 purchaseLocations: ['checkbox-0-on-board'],
@@ -140,6 +198,22 @@ const addTestPurchaseMethods = (): void => {
             addPurchaseMethod(purchaseMethod1);
             addPurchaseMethod(purchaseMethod2);
             addPurchaseMethod(purchaseMethod3);
+
+            const cappedPurchaseMethod1 = {
+                purchaseLocations: ['checkbox-0-on-board'],
+                paymentMethods: ['checkbox-0-debit-card', 'checkbox-1-credit-card'],
+                ticketFormats: ['checkbox-0-mobile-app'],
+                name: 'Test capped onboard',
+            };
+            const cappedPurchaseMethod2 = {
+                purchaseLocations: ['checkbox-0-on-board', 'checkbox-1-mobile-device'],
+                paymentMethods: ['checkbox-2-mobile-phone'],
+                ticketFormats: ['checkbox-0-mobile-app'],
+                name: 'Test capped mobile',
+            };
+
+            addPurchaseMethod(cappedPurchaseMethod1, true);
+            addPurchaseMethod(cappedPurchaseMethod2, true);
         }
     });
 };

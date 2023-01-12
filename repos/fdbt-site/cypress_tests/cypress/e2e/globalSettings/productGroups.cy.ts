@@ -11,7 +11,7 @@ describe('product groups', () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Product groups');
-        
+
         // // start with clean environment
         deleteAllCards();
 
