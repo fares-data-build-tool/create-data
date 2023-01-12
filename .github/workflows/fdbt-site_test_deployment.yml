@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'fix/CFDS-165_edit_multi_op_error'
+    - 'develop'
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:
@@ -124,9 +124,9 @@ jobs:
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
         
-    # - name: Sleep for 10 mins
-    #   run: sleep 10m
-    #   shell: bash
+    - name: Sleep for 10 mins
+      run: sleep 10m
+      shell: bash
 
     - name: run-ui-tests
       env:
