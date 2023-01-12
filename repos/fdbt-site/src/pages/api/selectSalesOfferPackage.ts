@@ -125,9 +125,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             : !!cappedProductName
             ? [{ productName: cappedProductName, productPrice: '' }]
             : [{ productName: 'product', productPrice: '' }];
-
+        /* eslint-disable no-console */
+        console.log(products);
         const { sanitisedBody, errors } = sanitiseReqBody(req, products);
-
+        /* eslint-disable no-console */
+        console.log(sanitisedBody);
         if (errors.length > 0) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
                 errors,

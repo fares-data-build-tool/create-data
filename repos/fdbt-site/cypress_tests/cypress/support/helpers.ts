@@ -328,19 +328,17 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
             const randomNumber = getRandomNumber(0, length - 1);
             getElementByClass('govuk-checkboxes__input')
                 .eq(randomNumber)
-                .check()
+                .click()
                 .then(($radio) => {
                     const radioPurchaseType = $radio.attr('value');
                     purchaseType = (JSON.parse(radioPurchaseType) as { name: string }).name;
-
+                    cy.wrap(purchaseType).as('purchaseType');
                     if (isOtherProduct) {
                         cy.get(`[id$=price-${randomNumber}]`).then(($radio) => {
                             purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
                             cy.wrap(purchaseType).as('purchaseType');
                         });
-                    } else {
-                        cy.wrap(purchaseType).as('purchaseType');
-                    }
+                    } 
                 });
         });
     continueButtonClick();
