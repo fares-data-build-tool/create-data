@@ -338,7 +338,7 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
                             purchaseType = `${purchaseType} - £${$radio.attr('value')}`;
                             cy.wrap(purchaseType).as('purchaseType');
                         });
-                    } 
+                    }
                 });
         });
     continueButtonClick();

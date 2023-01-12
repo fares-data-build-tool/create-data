@@ -44,8 +44,7 @@ export const sanitiseReqBody = (
 
     const sanitisedBody = products.reduce((sanitisedBody, product) => {
         const sopInput = req.body[`${productPrefix}${product.productName}`];
-        /* eslint-disable no-console */
-        console.log(sopInput, 'sopInput');
+
         if (!sopInput) {
             errors.push({
                 errorMessage: 'Choose at least one sales offer package from the options',
@@ -93,15 +92,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
         const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
-        /* eslint-disable no-console */
-        console.log('here salesOffer faretype attribute', fareTypeAttribute);
+
         const fareTypeValue: string = ticket && matchingJsonMetaData ? ticket.type : fareTypeAttribute.fareType;
         const fareType =
             fareTypeValue === 'schoolService' && !!schoolFareTypeAttribute
                 ? schoolFareTypeAttribute.schoolFareType
                 : fareTypeValue;
-        /* eslint-disable no-console */
-        console.log('here salesOffer faretype', fareType);
+
         let cappedProductName = '';
 
         if (fareType === 'capped') {
@@ -123,14 +120,17 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
               'productName' in ticket.products[0] &&
               'productPrice' in ticket.products[0]
             ? [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }]
+            : ticket &&
+              'products' in ticket &&
+              'productName' in ticket.products[0] &&
+              (ticket.type === 'single' || ticket.type === 'return')
+            ? [{ productName: ticket.products[0].productName }]
             : !!cappedProductName
             ? [{ productName: cappedProductName, productPrice: '' }]
             : [{ productName: 'product', productPrice: '' }];
-        /* eslint-disable no-console */
-        console.log(products);
+
         const { sanitisedBody, errors } = sanitiseReqBody(req, products);
-        /* eslint-disable no-console */
-        console.log(sanitisedBody);
+
         if (errors.length > 0) {
             const salesOfferPackagesAttributeError: SelectSalesOfferPackageWithError = {
                 errors,
@@ -143,16 +143,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         // redirected from the product details page
         if (ticket && matchingJsonMetaData) {
-            /* eslint-disable no-console */
-            console.log('here salesOfferPackage');
             const product = ticket.products[0];
-            /* eslint-disable no-console */
-            console.log('here salesOffer', product);
             const productName = 'productName' in product ? product.productName : 'product';
             // edit mode
             const salesOfferPackages: SalesOfferPackage[] = sanitisedBody[productName];
-            /* eslint-disable no-console */
-            console.log('here salesOffer', salesOfferPackages);
             const updatedTicket: WithIds<Ticket> = {
                 ...ticket,
                 products: [
