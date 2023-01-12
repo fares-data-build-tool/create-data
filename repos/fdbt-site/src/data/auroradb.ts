@@ -342,7 +342,7 @@ export const getBodsOrTndsServicesByNoc = async (
 export const getServiceByNocAndId = async (
     nationalOperatorCode: string,
     serviceId: string,
-    dataSource = 'bods',
+    dataSource: string,
 ): Promise<MyFaresService> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 

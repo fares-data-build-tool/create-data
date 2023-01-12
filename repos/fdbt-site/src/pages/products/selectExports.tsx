@@ -468,7 +468,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
     const products = await getAllProductsByNoc(noc);
     const nonExpiredProducts = getNonExpiredProducts(products);
-    const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
+    const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
+    const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(
+        noc,
+        nonExpiredProducts,
+        dataSource,
+    );
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
     const productsToDisplay: ProductToDisplay[] = await Promise.all(

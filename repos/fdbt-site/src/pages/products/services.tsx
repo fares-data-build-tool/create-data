@@ -186,14 +186,8 @@ export const matchProductsToServices = (
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
     const noc = getAndValidateNoc(ctx);
-    const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
-    let services: MyFaresService[];
-    if (multiModalAttribute) {
-        services = await getBodsOrTndsServicesByNoc(noc, 'tnds');
-    } else {
-        services = await getBodsOrTndsServicesByNoc(noc);
-    }
-
+    const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
+    const services: MyFaresService[] = await getBodsOrTndsServicesByNoc(noc, dataSource);
     const products = await getPointToPointProducts(noc);
     const servicesAndProducts = matchProductsToServices(services, products);
 

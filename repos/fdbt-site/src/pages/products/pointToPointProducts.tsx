@@ -209,8 +209,7 @@ export const getServerSideProps = async (
         throw new Error('Unable to find line name to show products for.');
     }
 
-    const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
-    const dataSource = multiModalAttribute ? 'tnds' : 'bods';
+    const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
     const service = await getServiceByNocAndId(noc, serviceId, dataSource);
     const products = await getPointToPointProductsByLineId(noc, service.lineId);
     const productsToDisplay = filterProductsNotToDisplay(service, products);

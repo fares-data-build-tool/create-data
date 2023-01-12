@@ -572,8 +572,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         matchingJsonLink,
     });
 
-    const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
-    const dataSource = multiModalAttribute ? 'tnds' : 'bods';
+    const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
 
     const productDetails = await createProductDetails(
         ticket,

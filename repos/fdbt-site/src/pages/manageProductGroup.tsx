@@ -388,7 +388,12 @@ export const getServerSideProps = async (
     const noc = getAndValidateNoc(ctx);
     const products = await getAllProductsByNoc(noc);
     const nonExpiredProducts = getNonExpiredProducts(products);
-    const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
+    const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
+    const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(
+        noc,
+        nonExpiredProducts,
+        dataSource,
+    );
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
     const allProductsToDisplay: ProductToDisplay[] = await Promise.all(
@@ -438,17 +443,12 @@ export const getServerSideProps = async (
     const allServicesWithMatchingLineIds: MyFaresService[] = [];
 
     if (uniqueServiceLineIds.length > 0) {
-        const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
-        let allBodsServices: MyFaresService[];
-        if (multiModalAttribute) {
-            allBodsServices = await getBodsOrTndsServicesByNoc(noc, 'tnds');
-        } else {
-            allBodsServices = await getBodsOrTndsServicesByNoc(noc, 'bods');
-        }
+        const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
+        const allBodsOrTndsServices: MyFaresService[] = await getBodsOrTndsServicesByNoc(noc, dataSource);
 
         uniqueServiceLineIds.forEach((uniqueServiceLineId) => {
             allServicesWithMatchingLineIds.push(
-                allBodsServices.find((service) => service.lineId === uniqueServiceLineId) as MyFaresService,
+                allBodsOrTndsServices.find((service) => service.lineId === uniqueServiceLineId) as MyFaresService,
             );
         });
     }
