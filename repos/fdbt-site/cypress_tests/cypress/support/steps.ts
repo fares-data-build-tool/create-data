@@ -695,7 +695,7 @@ export const editPurchaseMethod = (isOtherProduct?: boolean): void => {
     clickElementById('purchase-methods-link');
     cy.get('.govuk-checkboxes__input').each((checkbox) => {
         if (!!checkbox.attr('checked')) {
-            cy.wrap(checkbox).uncheck()
+            cy.wrap(checkbox).uncheck();
         }
     });
     randomlyDeterminePurchaseType(isOtherProduct);
@@ -771,11 +771,25 @@ const editOperatorGroup = (): void => {
 };
 
 export const editOperatorGroupMultiOperatorProductsPage = (): void => {
+    let foundGeoZone = false;
+    cy.wrap(foundGeoZone).as('foundGeoZone');
     clickRandomElementInTable('govuk-table__body', 'product-link');
-    getElementById('product-name').should('not.be.empty');
-    getElementById('product-status').should('not.be.empty');
-    getElementById('fare-type').should('not.be.empty');
-    getElementById('zone').should('not.be.empty');
-    getElementById('multi-operator-group').should('not.be.empty');
-    editOperatorGroup();
+    cy.get('.govuk-summary-list__key').each(($element) => {
+        if ($element.text() === 'Multi Operator Group') {
+            foundGeoZone = true;
+            cy.wrap(foundGeoZone).as('foundGeoZone');
+            getElementById('product-name').should('not.be.empty');
+            getElementById('product-status').should('not.be.empty');
+            getElementById('fare-type').should('not.be.empty');
+            getElementById('zone').should('not.be.empty');
+            getElementById('multi-operator-group').should('not.be.empty');
+            editOperatorGroup();
+        }
+    });
+    cy.get('@foundGeoZone').then((foundGeoZone) => {
+        if (!foundGeoZone) {
+            clickElementByText('Back');
+            editOperatorGroupMultiOperatorProductsPage();
+        }
+    });
 };
