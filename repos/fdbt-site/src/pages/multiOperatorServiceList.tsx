@@ -526,7 +526,6 @@ export const getServerSideProps = async (
 
     if (!!multiOperatorServicesAttribute && isWithErrors(multiOperatorServicesAttribute)) {
         errors = multiOperatorServicesAttribute.errors;
-
         // as we dont have the origin / destination of any of the selected services
         // we need to enrich the service using
         // the services we get back from the database
@@ -537,6 +536,7 @@ export const getServerSideProps = async (
             if (!matchingOperator) {
                 return operator;
             }
+
             const matchingSelectedServices = matchingOperator.selectedServices;
             const servicesWithOriginAndDestination = operator.services;
 
