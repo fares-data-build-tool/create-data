@@ -6,7 +6,7 @@ import {
     getProductById,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
-    getServiceDirectionDescriptionsByNocAndServiceId,
+    getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource,
     getServiceByIdAndDataSource,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation } from '../../interfaces';
@@ -288,7 +288,7 @@ const createProductDetails = async (
 
         if ('journeyDirection' in ticket && ticket.journeyDirection) {
             const { inboundDirectionDescription, outboundDirectionDescription } =
-                await getServiceDirectionDescriptionsByNocAndServiceId(noc, serviceId, dataSource);
+                await getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource(noc, serviceId, dataSource);
 
             productDetailsElements.push({
                 id: 'journey-direction',

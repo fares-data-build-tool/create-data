@@ -307,14 +307,15 @@ export const operatorHasBodsServices = async (nationalOperatorCode: string): Pro
 
 export const getBodsOrTndsServicesByNoc = async (
     nationalOperatorCode: string,
-    dataSource = 'bods',
+    dataSource: string,
 ): Promise<MyFaresService[]> => {
     const nocCodeParameter = replaceInternalNocCode(nationalOperatorCode);
 
     logger.info('', {
         context: 'data.auroradb',
-        message: 'retrieving services for given national operator code',
+        message: 'retrieving services for given national operator code and datasource',
         noc: nationalOperatorCode,
+        dataSource,
     });
 
     try {
@@ -380,7 +381,7 @@ export const getServiceByNocAndId = async (
     }
 };
 
-export const getServiceDirectionDescriptionsByNocAndServiceId = async (
+export const getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource = async (
     nationalOperatorCode: string,
     serviceId: string,
     dataSource: string,

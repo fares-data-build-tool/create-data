@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import {
-    getServiceDirectionDescriptionsByNocAndServiceId,
+    getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource,
     getServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
     getProductById,
@@ -304,7 +304,7 @@ describe('myfares pages', () => {
                 name: 'Test Time Restriction',
             });
 
-            (getServiceDirectionDescriptionsByNocAndServiceId as jest.Mock).mockResolvedValue({
+            (getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource as jest.Mock).mockResolvedValue({
                 inboundDirectionDescription: 'this way',
                 outboundDirectionDescription: 'another way',
             });
