@@ -61,7 +61,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
 
     const cards = () => (
         <>
-            <div className="card-row">
+            <div className="card-row" data-card-count={entities.length}>
                 {entities.map((entity) => (
                     <div className="card" key={entity.id} id={`${entity.id}`}>
                         <div className={'card__body ' + entityDescription.replace(/ /g, '-')}>
@@ -106,13 +106,13 @@ export const GlobalSettingsViewPage = <T extends Entity>({
             <div>
                 <ErrorSummary errors={errors} />
             </div>
-            <div className="govuk-width-container" data-card-count={entities.length}>
+            <div className="govuk-width-container">
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-one-quarter">
                         <SubNavigation />
                     </div>
 
-                    <div className="govuk-grid-column-three-quarters">
+                    <div className="govuk-grid-column-three-quarters" data-card-count={entities.length}>
                         <h1 className="govuk-heading-xl">{title}</h1>
                         <p className="govuk-body govuk-!-margin-bottom-8">{description}</p>
 
