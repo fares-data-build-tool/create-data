@@ -370,8 +370,8 @@ export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
     cy.wrap(noSelected).as('noSelected');
     if (isEditing) {
         cy.get('.govuk-radios__input').each(($radio) => {
-            if ($radio.attr('value') === 'no' && $radio.prop('checked')) {
-                noSelected = true;
+            if ($radio.attr('value') === 'yes' && $radio.prop('checked')) {
+                noSelected = false;
                 cy.wrap(noSelected).as('noSelected');
             }
         });
