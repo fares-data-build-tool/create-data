@@ -27,7 +27,7 @@ import { checkPriceIsValid, removeAllWhiteSpace, removeExcessWhiteSpace } from '
 import { toArray } from '../../utils';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 import { SalesOfferPackage, Ticket, WithIds } from '../../interfaces/matchingJsonTypes';
-
+import { isPointToPointTicket } from '../../interfaces/typeGuards';
 interface SanitisedBodyAndErrors {
     sanitisedBody: { [key: string]: SalesOfferPackage[] };
     errors: ErrorInfo[];
@@ -120,10 +120,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
               'productName' in ticket.products[0] &&
               'productPrice' in ticket.products[0]
             ? [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }]
-            : ticket &&
-              'products' in ticket &&
-              'productName' in ticket.products[0] &&
-              (ticket.type === 'single' || ticket.type === 'return')
+            : ticket && 'products' in ticket && 'productName' in ticket.products[0] && isPointToPointTicket(ticket)
             ? [{ productName: ticket.products[0].productName }]
             : !!cappedProductName
             ? [{ productName: cappedProductName, productPrice: '' }]
