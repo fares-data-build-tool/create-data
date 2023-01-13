@@ -20,7 +20,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const ticket = await getProductsMatchingJson(matchingJsonLink);
         const uuid = buildUuid(noc);
 
-        const newJsonLink = await insertDataToProductsBucketAndProductsTable(ticket, noc, uuid, '', 'bods', {
+        const newJsonLink = await insertDataToProductsBucketAndProductsTable(ticket, noc, uuid, {
             req,
             res,
         });

@@ -823,13 +823,11 @@ export const insertDataToProductsBucketAndProductsTable = async (
     userDataJson: TicketWithIds,
     nocCode: string,
     uuid: string,
-    ticketType: string,
-    dataFormat: 'tnds' | 'bods' | undefined,
     ctx: { req: NextApiRequestWithSession; res: NextApiResponse },
 ): Promise<string> => {
     const filePath = await putUserDataInProductsBucket(userDataJson, uuid, nocCode);
 
-    if (!shouldInstantlyGenerateNetexFromMatchingJson(ticketType, dataFormat, ctx)) {
+    if (!isSchemeOperator(ctx.req, ctx.res)) {
         const dateTime = moment().toDate();
         const { startDate, endDate } = userDataJson.ticketPeriod;
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
@@ -838,12 +836,4 @@ export const insertDataToProductsBucketAndProductsTable = async (
     }
 
     return filePath;
-};
-
-export const shouldInstantlyGenerateNetexFromMatchingJson = (
-    ticketType: string,
-    dataFormat: 'tnds' | 'bods' | undefined,
-    ctx: { req: NextApiRequestWithSession; res: NextApiResponse },
-): boolean => {
-    return isSchemeOperator(ctx.req, ctx.res) || (ticketType !== 'geoZone' && dataFormat === 'tnds');
 };
