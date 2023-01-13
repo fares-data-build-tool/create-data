@@ -12,7 +12,6 @@ import {
     selectFareType,
 } from './steps';
 import { DateInput } from './types';
-import * as e from 'express';
 
 export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
