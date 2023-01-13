@@ -226,13 +226,12 @@ const MatchingBase = ({
                                 the auto-complete button to fill in the gaps. You can also manually match individual
                                 stops to fare stages at any point.
                             </span>
-                            <span className="govuk-hint" id="traveline-hint">
-                                <b>
-                                    This data has been taken from the
+                            <span className="govuk-hint" id="traveline-hint">    
+                                    This data has been taken from the {' '}
                                     {dataSource === 'tnds'
                                         ? 'Traveline National Dataset (TNDS)'
                                         : 'Bus Open Data Service (BODS)'}
-                                </b>{' '}
+                                {' '}
                                 and NaPTAN database.
                             </span>
                             {renderResetAndAutoPopulateButtons(
