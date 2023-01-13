@@ -14,6 +14,7 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
   </div>
   <div
     className="govuk-width-container"
+    data-card-count={3}
   >
     <div
       className="govuk-grid-row"
@@ -25,7 +26,6 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
       </div>
       <div
         className="govuk-grid-column-three-quarters"
-        data-card-count={3}
       >
         <h1
           className="govuk-heading-xl"
@@ -39,7 +39,6 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist 1`] 
         </p>
         <div
           className="card-row"
-          data-card-count={3}
         >
           <div
             className="card"
@@ -208,6 +207,7 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist and 
   </div>
   <div
     className="govuk-width-container"
+    data-card-count={3}
   >
     <div
       className="govuk-grid-row"
@@ -219,7 +219,6 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist and 
       </div>
       <div
         className="govuk-grid-column-three-quarters"
-        data-card-count={3}
       >
         <h1
           className="govuk-heading-xl"
@@ -233,7 +232,6 @@ exports[`GlobalSettingsViewPage should render correctly when entities exist and 
         </p>
         <div
           className="card-row"
-          data-card-count={3}
         >
           <div
             className="card"
@@ -402,6 +400,7 @@ exports[`GlobalSettingsViewPage should render correctly when no entities 1`] = `
   </div>
   <div
     className="govuk-width-container"
+    data-card-count={0}
   >
     <div
       className="govuk-grid-row"
@@ -413,7 +412,6 @@ exports[`GlobalSettingsViewPage should render correctly when no entities 1`] = `
       </div>
       <div
         className="govuk-grid-column-three-quarters"
-        data-card-count={0}
       >
         <h1
           className="govuk-heading-xl"
