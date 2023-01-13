@@ -12,6 +12,7 @@ import {
     selectFareType,
 } from './steps';
 import { DateInput } from './types';
+import * as e from 'express';
 
 export const throwInvalidRandomSelectorError = (): void => {
     throw new Error('Invalid random selector');
@@ -345,8 +346,6 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
 };
 
 export const selectTimeRestriction = () => {
-    // click yes button
-    clickElementById('valid-days-required');
     // randomly pick a time restriction
     getElementById('conditional-time-restriction')
         .find('[class=govuk-radios__input]')
@@ -367,6 +366,7 @@ export const selectTimeRestriction = () => {
 
 export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
     let timeRestriction = 'N/A';
+    const randomNumber = getRandomNumber(0, 1);
     cy.wrap(timeRestriction).as('timeRestriction');
     let noSelected = true;
     cy.wrap(noSelected).as('noSelected');
@@ -377,17 +377,32 @@ export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
                 cy.wrap(noSelected).as('noSelected');
             }
         });
-        if (!noSelected) {
-            cy.wrap(timeRestriction).as('timeRestriction');
-            clickElementById('valid-days-not-required');
-            continueButtonClick();
-        } else {
-            selectTimeRestriction();
+        if (randomNumber === 0) {
+            if (noSelected) {
+                // if no is selected and the random number says to select no
+                continueButtonClick();
+            } else {
+                // if yes is selected and the random number says to select no
+                clickElementById('valid-days-not-required');
+                continueButtonClick();
+            }
+        } else if (randomNumber === 1) {
+            if (noSelected) {
+                // if no is selected and the random number says to select yes
+                clickElementById('valid-days-required');
+                selectTimeRestriction();
+            } else {
+                // if yes is selected and the random number says to select yes change time restriction
+                selectTimeRestriction();
+            }
         }
     } else {
-        if (getRandomNumber(0, 1) === 0) {
+        if (randomNumber === 0) {
+            // if random number says to select no and no is selected by default click continue
             continueButtonClick();
         } else {
+            // otherwise select a time restriction
+            clickElementById('valid-days-required');
             selectTimeRestriction();
         }
     }
