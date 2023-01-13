@@ -15,6 +15,7 @@ import {
     EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { ReturnTicket, SingleTicket, Stop, WithIds } from '../interfaces/matchingJsonTypes';
@@ -38,6 +39,7 @@ interface EditStagesProps {
     warning: boolean;
     showBackButtton: boolean;
     direction: string;
+    dataSource: string;
 }
 
 export const getFareStagesFromTicket = (ticket: WithIds<SingleTicket> | WithIds<ReturnTicket>): string[] => {
@@ -114,6 +116,7 @@ const EditFareStageMatching = ({
     warning,
     showBackButtton,
     direction,
+    dataSource,
 }: EditStagesProps): ReactElement => {
     const warnings: ErrorInfo[] = [];
     const [selections, updateSelections] = useState<StopItem[]>([]);
@@ -224,7 +227,11 @@ const EditFareStageMatching = ({
                                 stops to fare stages at any point.
                             </span>
                             <span className="govuk-hint" id="traveline-hint">
-                                This data has been taken from the Traveline National Dataset and NaPTAN database.
+                                This data has been taken from the{' '}
+                                {dataSource === 'tnds'
+                                    ? 'Traveline National Dataset (TNDS)'
+                                    : 'Bus Open Data Service (BODS)'}{' '}
+                                and NaPTAN database.
                             </span>
                             {renderResetAndAutoPopulateButtons(
                                 handleResetButtonClick,
@@ -331,7 +338,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const nocCode = getAndValidateNoc(ctx);
-    const dataSource = 'bods';
+    const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
     const serviceId = matchingJsonMetaData.serviceId;
     const service = await getServiceByIdAndDataSource(nocCode, Number(serviceId), dataSource);
     const lineName = service.lineName;
@@ -404,6 +411,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     : false,
             showBackButtton,
             direction,
+            dataSource,
         },
     };
 };

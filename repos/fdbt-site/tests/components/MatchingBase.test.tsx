@@ -57,6 +57,7 @@ describe('MatchingBase', () => {
                         csrfToken=""
                         {...baseProps}
                         unusedStage={false}
+                        dataSource="bods"
                     />,
                 );
                 expect(wrapper).toMatchSnapshot();
@@ -74,6 +75,7 @@ describe('MatchingBase', () => {
                         csrfToken=""
                         {...baseProps}
                         unusedStage={false}
+                        dataSource="bods"
                     />,
                 );
                 expect(wrapper).toMatchSnapshot();
@@ -103,6 +105,7 @@ describe('MatchingBase', () => {
                     // eslint-disable-next-line react/jsx-props-no-spreading
                     {...baseProps}
                     unusedStage={false}
+                    dataSource="bods"
                 />,
             );
 
@@ -133,6 +136,7 @@ describe('MatchingBase', () => {
                     // eslint-disable-next-line react/jsx-props-no-spreading
                     {...baseProps}
                     unusedStage={false}
+                    dataSource="bods"
                 />,
             );
 
@@ -164,6 +168,7 @@ describe('MatchingBase', () => {
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         {...baseProps}
                         unusedStage={false}
+                        dataSource="bods"
                     />,
                 );
             });

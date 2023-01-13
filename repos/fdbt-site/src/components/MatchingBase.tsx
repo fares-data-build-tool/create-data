@@ -19,7 +19,7 @@ interface MatchingBaseProps {
     title: string;
     description: string;
     hintText: string;
-    travelineHintText: string;
+    dataSource: string;
     heading: string;
     apiEndpoint: string;
     unusedStage: boolean;
@@ -99,7 +99,7 @@ const MatchingBase = ({
     title,
     description,
     hintText,
-    travelineHintText,
+    dataSource,
     heading,
     apiEndpoint,
     unusedStage,
@@ -227,7 +227,11 @@ const MatchingBase = ({
                                 stops to fare stages at any point.
                             </span>
                             <span className="govuk-hint" id="traveline-hint">
-                                {travelineHintText}
+                                This data has been taken from the{' '}
+                                {dataSource === 'tnds'
+                                    ? 'Traveline National Dataset (TNDS)'
+                                    : 'Bus Open Data Service (BODS)'}{' '}
+                                and NaPTAN database.
                             </span>
                             {renderResetAndAutoPopulateButtons(
                                 handleResetButtonClick,
