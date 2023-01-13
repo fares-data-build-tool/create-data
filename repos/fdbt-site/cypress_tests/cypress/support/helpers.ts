@@ -375,13 +375,11 @@ export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
                 cy.wrap(noSelected).as('noSelected');
             }
         });
-        if (randomNumber === 0) {
-            if (!noSelected) {
+        if (!noSelected) {
+            if (randomNumber === 0) {
                 // if yes is selected and the random number says to select no
                 clickElementById('valid-days-not-required');
-            }
-        } else {
-            if (!noSelected) {
+            } else {
                 // if yes is selected and the random number says to select yes change time restriction
                 selectTimeRestriction();
             }
