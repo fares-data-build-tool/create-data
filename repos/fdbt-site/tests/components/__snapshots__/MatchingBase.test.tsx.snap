@@ -81,10 +81,9 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
           className="govuk-hint"
           id="traveline-hint"
         >
-          <b>
-            This data has been taken from the
-            Bus Open Data Service (BODS)
-          </b>
+          This data has been taken from the
+           
+          Bus Open Data Service (BODS)
            
           and NaPTAN database.
         </span>
@@ -1668,10 +1667,9 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
           className="govuk-hint"
           id="traveline-hint"
         >
-          <b>
-            This data has been taken from the
-            Bus Open Data Service (BODS)
-          </b>
+          This data has been taken from the
+           
+          Bus Open Data Service (BODS)
            
           and NaPTAN database.
         </span>

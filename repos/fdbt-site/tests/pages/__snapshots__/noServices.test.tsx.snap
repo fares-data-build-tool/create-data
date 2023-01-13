@@ -13,7 +13,7 @@ exports[`pages noServices should render correctly 1`] = `
   <p
     className="govuk-body-m"
   >
-    This service utilises the Bus Open Data Service (BODS) and to obtain operators' service data in order to help them create fares data.
+    This service utilises the Bus Open Data Service (BODS) and Traveline National Dataset (TNDS) to obtain operator's service data in order to help them create fares data.
   </p>
   <p
     className="govuk-body-m"

@@ -227,7 +227,7 @@ const EditFareStageMatching = ({
                                 stops to fare stages at any point.
                             </span>
                             <span className="govuk-hint" id="traveline-hint">
-                                This data has been taken from the
+                                This data has been taken from the{' '}
                                 {dataSource === 'tnds'
                                     ? 'Traveline National Dataset (TNDS)'
                                     : 'Bus Open Data Service (BODS)'}{' '}

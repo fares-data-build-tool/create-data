@@ -62,6 +62,7 @@ exports[`Edit Fare Stage Matching Page should render correctly 1`] = `
           id="traveline-hint"
         >
           This data has been taken from the
+           
           Bus Open Data Service (BODS)
            
           and NaPTAN database.
@@ -1183,6 +1184,7 @@ exports[`Edit Fare Stage Matching Page should render correctly for inbound 1`] =
           id="traveline-hint"
         >
           This data has been taken from the
+           
           Bus Open Data Service (BODS)
            
           and NaPTAN database.
@@ -2304,6 +2306,7 @@ exports[`Edit Fare Stage Matching Page should render correctly for tnds data sou
           id="traveline-hint"
         >
           This data has been taken from the
+           
           Traveline National Dataset (TNDS)
            
           and NaPTAN database.
@@ -3439,6 +3442,7 @@ exports[`Edit Fare Stage Matching Page should render with error 1`] = `
           id="traveline-hint"
         >
           This data has been taken from the
+           
           Bus Open Data Service (BODS)
            
           and NaPTAN database.
@@ -4574,6 +4578,7 @@ exports[`Edit Fare Stage Matching Page should render with warning 1`] = `
           id="traveline-hint"
         >
           This data has been taken from the
+           
           Bus Open Data Service (BODS)
            
           and NaPTAN database.
