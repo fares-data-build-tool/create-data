@@ -360,7 +360,6 @@ export const selectTimeRestriction = () => {
                     cy.wrap(timeRestriction).as('timeRestriction');
                 });
         });
-    continueButtonClick();
 };
 
 export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
@@ -377,34 +376,23 @@ export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
             }
         });
         if (randomNumber === 0) {
-            if (noSelected) {
-                // if no is selected and the random number says to select no
-                continueButtonClick();
-            } else {
+            if (!noSelected) {
                 // if yes is selected and the random number says to select no
                 clickElementById('valid-days-not-required');
-                continueButtonClick();
             }
-        } else if (randomNumber === 1) {
-            if (noSelected) {
-                // if no is selected and the random number says to select yes
-                clickElementById('valid-days-required');
-                selectTimeRestriction();
-            } else {
+        } else {
+            if (!noSelected) {
                 // if yes is selected and the random number says to select yes change time restriction
                 selectTimeRestriction();
             }
         }
-    } else {
-        if (randomNumber === 0) {
-            // if random number says to select no and no is selected by default click continue
-            continueButtonClick();
-        } else {
-            // otherwise select a time restriction
-            clickElementById('valid-days-required');
-            selectTimeRestriction();
-        }
     }
+    if (randomNumber === 1 && noSelected) {
+        // otherwise select a time restriction
+        clickElementById('valid-days-required');
+        selectTimeRestriction();
+    }
+    continueButtonClick();
 };
 
 export const randomlyDecideTermRestrictions = (): void => {
