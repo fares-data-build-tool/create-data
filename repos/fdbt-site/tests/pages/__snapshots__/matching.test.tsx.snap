@@ -4,6 +4,7 @@ exports[`Matching Page should render correctly 1`] = `
 <MatchingBase
   apiEndpoint="/api/matching"
   csrfToken=""
+  dataSource="bods"
   description="Matching page of the Create Fares Data Service"
   error=""
   heading="Match stops to fares stages"
@@ -192,7 +193,332 @@ exports[`Matching Page should render correctly 1`] = `
     ]
   }
   title="Matching - Create Fares Data Service"
-  travelineHintText="This data has been taken from the Traveline National Dataset and NaPTAN database."
+  unusedStage={false}
+  userFareStages={
+    Object {
+      "fareStages": Array [
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Mattison Way",
+                "Nursery Drive",
+                "Holl Bank/Beech Ave",
+              ],
+              "price": "1.10",
+            },
+            Object {
+              "fareZones": Array [
+                "Cambridge Street (York)",
+                "Blossom Street",
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.70",
+            },
+          ],
+          "stageName": "Acomb Green Lane",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Nursery Drive",
+                "Holl Bank/Beech Ave",
+              ],
+              "price": "1.10",
+            },
+            Object {
+              "fareZones": Array [
+                "Cambridge Street (York)",
+                "Blossom Street",
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.70",
+            },
+          ],
+          "stageName": "Mattison Way",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Holl Bank/Beech Ave",
+                "Cambridge Street (York)",
+                "Blossom Street",
+              ],
+              "price": "1.10",
+            },
+            Object {
+              "fareZones": Array [
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.70",
+            },
+          ],
+          "stageName": "Nursery Drive",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Cambridge Street (York)",
+                "Blossom Street",
+              ],
+              "price": "1.10",
+            },
+            Object {
+              "fareZones": Array [
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.70",
+            },
+          ],
+          "stageName": "Holl Bank/Beech Ave",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Blossom Street",
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.00",
+            },
+          ],
+          "stageName": "Cambridge Street (York)",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Rail Station (York)",
+                "Piccadilly (York)",
+              ],
+              "price": "1.00",
+            },
+          ],
+          "stageName": "Blossom Street",
+        },
+        Object {
+          "prices": Array [
+            Object {
+              "fareZones": Array [
+                "Piccadilly (York)",
+              ],
+              "price": "1.00",
+            },
+          ],
+          "stageName": "Rail Station (York)",
+        },
+        Object {
+          "prices": Array [],
+          "stageName": "Piccadilly (York)",
+        },
+      ],
+    }
+  }
+  warning={false}
+/>
+`;
+
+exports[`Matching Page should render correctly with tnds data source 1`] = `
+<MatchingBase
+  apiEndpoint="/api/matching"
+  csrfToken=""
+  dataSource="tnds"
+  description="Matching page of the Create Fares Data Service"
+  error=""
+  heading="Match stops to fares stages"
+  hintText="Select a fare stage for each stop."
+  selectedFareStages={
+    Array [
+      Array [
+        "Acomb Green Lane",
+        "{\\"stopName\\":\\"Sophia Street\\",\\"naptanCode\\":\\"durgapwp\\",\\"atcoCode\\":\\"13003661E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Sophia Street\\"}",
+      ],
+      Array [
+        "Acomb Green Lane",
+        "{\\"stopName\\":\\"Park\\",\\"naptanCode\\":\\"duratgwg\\",\\"atcoCode\\":\\"13003625C\\",\\"localityCode\\":\\"E0010170\\",\\"localityName\\":\\"Deneside\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"E-bound\\",\\"street\\":\\"The Avenue\\"}",
+      ],
+      Array [
+        "Holl Bank/Beech Ave",
+        "{\\"stopName\\":\\"Vane Terrace - Castlereagh\\",\\"naptanCode\\":\\"duratgdt\\",\\"atcoCode\\":\\"13003609E\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"S-bound\\",\\"street\\":\\"Vane Terrace\\"}",
+      ],
+      Array [
+        "Holl Bank/Beech Ave",
+        "{\\"stopName\\":\\"New Tempest Road - York House\\",\\"naptanCode\\":\\"duratgjt\\",\\"atcoCode\\":\\"13003611B\\",\\"localityCode\\":\\"E0045957\\",\\"localityName\\":\\"Seaham\\",\\"parentLocalityName\\":\\"IW Test\\",\\"indicator\\":\\"NE-bound\\",\\"street\\":\\"Tempest Road\\"}",
+      ],
+    ]
+  }
+  service={
+    Object {
+      "lineId": "q2gv2ve",
+      "lineName": "215",
+      "nocCode": "DCCL",
+      "operatorShortName": "DCC",
+      "serviceDescription": "Worthing - Seaham - Crawley",
+    }
+  }
+  stops={
+    Array [
+      Object {
+        "atcoCode": "13003305E",
+        "indicator": "S-bound",
+        "localityCode": "N0077347",
+        "localityName": "New Seaham",
+        "naptanCode": "durapmja",
+        "parentLocalityName": "IW Test",
+        "stopName": "Westlea shops",
+        "street": "B1285 Stockton Road",
+      },
+      Object {
+        "atcoCode": "13003622B",
+        "indicator": "NE-bound",
+        "localityCode": "E0010170",
+        "localityName": "Deneside",
+        "naptanCode": "duratgtm",
+        "parentLocalityName": "IW Test",
+        "stopName": "The Avenue Shops",
+        "street": "The Avenue",
+      },
+      Object {
+        "atcoCode": "13003655B",
+        "indicator": "B",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "duratjwd",
+        "parentLocalityName": "IW Test",
+        "stopName": "Interchange Stand B",
+        "street": "South Crescent",
+      },
+      Object {
+        "atcoCode": "13003635B",
+        "indicator": "NE-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "duratjga",
+        "parentLocalityName": "IW Test",
+        "stopName": "Adolphus Place",
+        "street": "South Terrace",
+      },
+      Object {
+        "atcoCode": "13003618B",
+        "indicator": "NE-bound",
+        "localityCode": "E0010170",
+        "localityName": "Deneside",
+        "naptanCode": "duratgpt",
+        "parentLocalityName": "IW Test",
+        "stopName": "The Avenue - Essex Crescent",
+        "street": "The Avenue",
+      },
+      Object {
+        "atcoCode": "13003612D",
+        "indicator": "SE-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "duratgma",
+        "parentLocalityName": "IW Test",
+        "stopName": "New Strangford Road",
+        "street": "New Stranford Road",
+      },
+      Object {
+        "atcoCode": "13003611B",
+        "indicator": "NE-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "duratgjt",
+        "parentLocalityName": "IW Test",
+        "stopName": "New Tempest Road - York House",
+        "street": "Tempest Road",
+      },
+      Object {
+        "atcoCode": "13003306B",
+        "indicator": "NE-bound",
+        "localityCode": "N0077347",
+        "localityName": "New Seaham",
+        "naptanCode": "durapmjg",
+        "parentLocalityName": "IW Test",
+        "stopName": "Mount Pleasant",
+        "street": "The Avenue",
+      },
+      Object {
+        "atcoCode": "13003949C",
+        "indicator": "E-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "durgawmt",
+        "parentLocalityName": "IW Test",
+        "stopName": "Viceroy Street",
+        "street": "Viceroy street",
+      },
+      Object {
+        "atcoCode": "13003609E",
+        "indicator": "S-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "duratgdt",
+        "parentLocalityName": "IW Test",
+        "stopName": "Vane Terrace - Castlereagh",
+        "street": "Vane Terrace",
+      },
+      Object {
+        "atcoCode": "13003921A",
+        "indicator": "N-bound",
+        "localityCode": "N0077347",
+        "localityName": "New Seaham",
+        "naptanCode": "durgawjp",
+        "parentLocalityName": "IW Test",
+        "stopName": "Estate Hail and Ride",
+        "street": "Windermere Road",
+      },
+      Object {
+        "atcoCode": "13003923B",
+        "indicator": "NE-bound",
+        "localityCode": "E0010170",
+        "localityName": "Deneside",
+        "naptanCode": "durawagw",
+        "parentLocalityName": "IW Test",
+        "stopName": "Kingston Avenue",
+        "street": "Kingston Avenue",
+      },
+      Object {
+        "atcoCode": "13003625C",
+        "indicator": "E-bound",
+        "localityCode": "E0010170",
+        "localityName": "Deneside",
+        "naptanCode": "duratgwg",
+        "parentLocalityName": "IW Test",
+        "stopName": "Park",
+        "street": "The Avenue",
+      },
+      Object {
+        "atcoCode": "13003939H",
+        "indicator": "NW-bound",
+        "localityCode": "E0010170",
+        "localityName": "Deneside",
+        "naptanCode": "durawamp",
+        "parentLocalityName": "IW Test",
+        "stopName": "Laurel Avenue",
+        "street": "Laurel Avenue",
+      },
+      Object {
+        "atcoCode": "13003661E",
+        "indicator": "S-bound",
+        "localityCode": "E0045957",
+        "localityName": "Seaham",
+        "naptanCode": "durgapwp",
+        "parentLocalityName": "IW Test",
+        "stopName": "Sophia Street",
+        "street": "Sophia Street",
+      },
+    ]
+  }
+  title="Matching - Create Fares Data Service"
   unusedStage={false}
   userFareStages={
     Object {
@@ -330,6 +656,7 @@ exports[`Matching Page should render with error 1`] = `
 <MatchingBase
   apiEndpoint="/api/matching"
   csrfToken=""
+  dataSource="bods"
   description="Matching page of the Create Fares Data Service"
   error="One or more fare stages have not been assigned, assign each fare stage to a stop"
   heading="Match stops to fares stages"
@@ -518,7 +845,6 @@ exports[`Matching Page should render with error 1`] = `
     ]
   }
   title="Matching - Create Fares Data Service"
-  travelineHintText="This data has been taken from the Traveline National Dataset and NaPTAN database."
   unusedStage={false}
   userFareStages={
     Object {

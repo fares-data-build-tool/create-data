@@ -41,7 +41,7 @@ exports[`pages confirmRegistration should render correctly with tndsless nocs 1`
   <p
     className="govuk-body-m"
   >
-    This service utilises the Traveline National Dataset (TNDS) to obtain operators' service data in order to help them create fares data.
+    This service utilises the Traveline National Dataset (TNDS) and Bus Open Data Service (BODS) to obtain operators' service data in order to help them create fares data.
   </p>
   <p
     className="govuk-body-m"

@@ -10,7 +10,6 @@ const heading = 'Outbound - Match stops to fare stages';
 const title = 'Outbound Matching - Create Fares Data Service';
 const description = 'Outbound Matching page of the Create Fares Data Service';
 const hintText = 'Select a fare stage for each stop on the outbound journey.';
-const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/outboundMatching';
 
 const OutboundMatching = ({
@@ -21,6 +20,7 @@ const OutboundMatching = ({
     warning,
     csrfToken,
     selectedFareStages,
+    dataSource,
 }: MatchingProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
@@ -33,7 +33,7 @@ const OutboundMatching = ({
         title={title}
         description={description}
         hintText={hintText}
-        travelineHintText={travelineHintText}
+        dataSource={dataSource}
         apiEndpoint={apiEndpoint}
         csrfToken={csrfToken}
         unusedStage={false}

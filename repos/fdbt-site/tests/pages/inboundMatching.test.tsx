@@ -34,6 +34,7 @@ describe('Inbound Matching Page', () => {
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
                 unusedStage={false}
+                dataSource="bods"
             />,
         );
     });
@@ -43,6 +44,24 @@ describe('Inbound Matching Page', () => {
     });
 
     it('should render correctly', () => {
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render correctly with tnds data source', () => {
+        wrapper = shallow(
+            <InboundMatching
+                userFareStages={userFareStages}
+                stops={zoneStops}
+                service={service}
+                error=""
+                warning={false}
+                selectedFareStages={selectedFareStages}
+                csrfToken=""
+                unusedStage={false}
+                dataSource="tnds"
+            />,
+        );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -57,6 +76,7 @@ describe('Inbound Matching Page', () => {
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
                 unusedStage={false}
+                dataSource="bods"
             />,
         );
 
@@ -74,6 +94,7 @@ describe('Inbound Matching Page', () => {
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
                 unusedStage={false}
+                dataSource="bods"
             />,
         );
         expect(wrapper).toMatchSnapshot();

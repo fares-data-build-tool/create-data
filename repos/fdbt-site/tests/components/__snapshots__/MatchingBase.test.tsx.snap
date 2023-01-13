@@ -81,7 +81,12 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
           className="govuk-hint"
           id="traveline-hint"
         >
-          This data has been taken from the Traveline National Dataset and NaPTAN database.
+          <b>
+            This data has been taken from the
+            Bus Open Data Service (BODS)
+          </b>
+           
+          and NaPTAN database.
         </span>
         <div
           className="reset-autopopulate-buttons"
@@ -1663,7 +1668,12 @@ exports[`MatchingBase getDefaultStopItems renderResetAndAutoPopulateButtons shou
           className="govuk-hint"
           id="traveline-hint"
         >
-          This data has been taken from the Traveline National Dataset and NaPTAN database.
+          <b>
+            This data has been taken from the
+            Bus Open Data Service (BODS)
+          </b>
+           
+          and NaPTAN database.
         </span>
         <div
           className="reset-autopopulate-buttons"
