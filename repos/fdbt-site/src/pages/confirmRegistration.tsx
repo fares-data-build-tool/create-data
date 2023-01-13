@@ -18,8 +18,8 @@ const ConfirmRegistration = ({ tndslessNocs }: ConfirmRegistrationProps): ReactE
         {tndslessNocs.length > 0 && (
             <>
                 <p className="govuk-body-m">
-                    This service utilises the Traveline National Dataset (TNDS) to obtain operators&apos; service data
-                    in order to help them create fares data.
+                    This service utilises the Traveline National Dataset (TNDS) and Bus Open Data Service (BODS) to
+                    obtain operators&apos; service data in order to help them create fares data.
                 </p>
                 <p className="govuk-body-m">
                     The following National Operator Codes have no service data in TNDS and so cannot be used to create

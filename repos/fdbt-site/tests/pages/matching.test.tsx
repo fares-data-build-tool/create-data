@@ -32,6 +32,7 @@ describe('Matching Page', () => {
                 error=""
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
+                dataSource="bods"
             />,
         );
     });
@@ -44,6 +45,22 @@ describe('Matching Page', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
+    it('should render correctly with tnds data source', () => {
+        wrapper = shallow(
+            <Matching
+                userFareStages={userFareStages}
+                stops={zoneStops}
+                service={service}
+                error=""
+                selectedFareStages={selectedFareStages}
+                csrfToken=""
+                dataSource="tnds"
+            />,
+        );
+
+        expect(wrapper).toMatchSnapshot();
+    });
+
     it('should render with error', () => {
         wrapper = shallow(
             <Matching
@@ -53,6 +70,7 @@ describe('Matching Page', () => {
                 error="One or more fare stages have not been assigned, assign each fare stage to a stop"
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
+                dataSource="bods"
             />,
         );
         expect(wrapper).toMatchSnapshot();

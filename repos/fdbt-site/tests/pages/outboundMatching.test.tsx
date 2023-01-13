@@ -33,6 +33,7 @@ describe('OutboundMatching Page', () => {
                 warning={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
+                dataSource="bods"
             />,
         );
     });
@@ -42,6 +43,23 @@ describe('OutboundMatching Page', () => {
     });
 
     it('should render correctly', () => {
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render correctly with tnds data source', () => {
+        wrapper = shallow(
+            <OutboundMatching
+                userFareStages={userFareStages}
+                stops={zoneStops}
+                service={service}
+                error=""
+                warning={false}
+                selectedFareStages={selectedFareStages}
+                csrfToken=""
+                dataSource="tnds"
+            />,
+        );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -55,6 +73,7 @@ describe('OutboundMatching Page', () => {
                 warning={true}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
+                dataSource="bods"
             />,
         );
 
@@ -71,6 +90,7 @@ describe('OutboundMatching Page', () => {
                 warning={false}
                 selectedFareStages={selectedFareStages}
                 csrfToken=""
+                dataSource="bods"
             />,
         );
         expect(wrapper).toMatchSnapshot();

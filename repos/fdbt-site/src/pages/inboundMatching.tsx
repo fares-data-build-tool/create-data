@@ -10,7 +10,6 @@ const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Create Fares Data Service';
 const description = 'Inbound Matching page of the Create Fares Data Service';
 const hintText = 'Select a fare stage for each stop on the inbound journey.';
-const travelineHintText = 'This data has been taken from the Traveline National Dataset and NaPTAN database.';
 const apiEndpoint = '/api/inboundMatching';
 
 interface InboundMatchingProps {
@@ -22,6 +21,7 @@ interface InboundMatchingProps {
     selectedFareStages: string[][];
     unusedStage: boolean;
     csrfToken: string;
+    dataSource: string;
 }
 
 const InboundMatching = ({
@@ -33,6 +33,7 @@ const InboundMatching = ({
     csrfToken,
     selectedFareStages,
     unusedStage,
+    dataSource,
 }: InboundMatchingProps): ReactElement => (
     <MatchingBase
         userFareStages={userFareStages}
@@ -45,7 +46,7 @@ const InboundMatching = ({
         title={title}
         description={description}
         hintText={hintText}
-        travelineHintText={travelineHintText}
+        dataSource={dataSource}
         apiEndpoint={apiEndpoint}
         unusedStage={unusedStage}
         csrfToken={csrfToken}
