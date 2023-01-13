@@ -365,6 +365,7 @@ export const selectTimeRestriction = () => {
 export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
     let timeRestriction = 'N/A';
     const randomNumber = getRandomNumber(0, 1);
+    cy.log('Is yes chosen?', randomNumber === 1);
     cy.wrap(timeRestriction).as('timeRestriction');
     let noSelected = true;
     cy.wrap(noSelected).as('noSelected');
@@ -375,21 +376,25 @@ export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
                 cy.wrap(noSelected).as('noSelected');
             }
         });
-        if (!noSelected) {
-            if (randomNumber === 0) {
-                // if yes is selected and the random number says to select no
-                clickElementById('valid-days-not-required');
-            } else {
-                // if yes is selected and the random number says to select yes change time restriction
-                selectTimeRestriction();
+        cy.get('@noSelected').then((noSelected) => {
+            if (!noSelected) {
+                if (randomNumber === 0) {
+                    // if yes is selected and the random number says to select no
+                    clickElementById('valid-days-not-required');
+                } else {
+                    // if yes is selected and the random number says to select yes change time restriction
+                    selectTimeRestriction();
+                }
             }
+        });
+    }
+    cy.get('@noSelected').then((noSelected) => {
+        if (randomNumber === 1 && noSelected) {
+            // otherwise select a time restriction
+            clickElementById('valid-days-required');
+            selectTimeRestriction();
         }
-    }
-    if (randomNumber === 1 && noSelected) {
-        // otherwise select a time restriction
-        clickElementById('valid-days-required');
-        selectTimeRestriction();
-    }
+    });
     continueButtonClick();
 };
 
