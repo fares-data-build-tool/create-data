@@ -2,20 +2,26 @@ import { NextApiResponse } from 'next';
 import { getAndValidateNoc } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, EntityStatus } from '../../interfaces';
 import { getS3Exports } from '../../data/s3';
-import { getAllProductsByNoc, getBodsServicesByNoc } from '../../data/auroradb';
+import { getAllProductsByNoc, getBodsOrTndsServicesByNoc } from '../../data/auroradb';
 import { triggerExport } from '../../utils/apiUtils/export';
 import { getEntityStatus } from '../products/services';
 import { DbProduct } from '../../interfaces/dbTypes';
+import { getSessionAttribute } from '../../utils/sessions';
+import { MULTI_MODAL_ATTRIBUTE } from '../../constants/attributes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const noc = getAndValidateNoc(req, res);
     const products = await getAllProductsByNoc(noc);
-
+    const dataSource = !!getSessionAttribute(req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
     // 1. filter out expired products
     const nonExpiredProducts = getNonExpiredProducts(products);
 
     // 2. filter out products with no active services
-    const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
+    const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(
+        noc,
+        nonExpiredProducts,
+        dataSource,
+    );
 
     // 3. figure out the name of the file
     const [date] = new Date().toISOString().split('T');
@@ -71,10 +77,11 @@ export const getNonExpiredProducts = (products: DbProduct[]): DbProduct[] => {
 export const filterOutProductsWithNoActiveServices = async (
     noc: string,
     products: DbProduct[],
+    dataSource: string,
 ): Promise<DbProduct[]> => {
     const lineIdsToKeep: string[] = [];
 
-    const allBodsServices = await getBodsServicesByNoc(noc);
+    const allBodsOrTndsServices = await getBodsOrTndsServicesByNoc(noc, dataSource);
 
     for (let i = 0; i < products.length; i++) {
         const product = products[i];
@@ -84,7 +91,7 @@ export const filterOutProductsWithNoActiveServices = async (
             // we have a product that is not associated with a service
             lineIdsToKeep.push(lineId);
         } else {
-            const services = allBodsServices.filter((service) => service.lineId === lineId);
+            const services = allBodsOrTndsServices.filter((service) => service.lineId === lineId);
 
             const activeServices = services.filter((service) => {
                 const startDate = service.startDate;

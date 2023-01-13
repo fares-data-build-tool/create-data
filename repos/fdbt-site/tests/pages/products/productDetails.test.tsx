@@ -1,8 +1,8 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import {
-    getBodsServiceDirectionDescriptionsByNocAndServiceId,
-    getBodsServiceByNocAndId,
+    getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource,
+    getServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
     getProductById,
     getSalesOfferPackageByIdAndNoc,
@@ -281,7 +281,7 @@ describe('myfares pages', () => {
     });
     describe('getServerSideProps', () => {
         beforeEach(() => {
-            (getBodsServiceByNocAndId as jest.Mock).mockResolvedValueOnce({
+            (getServiceByNocAndId as jest.Mock).mockResolvedValueOnce({
                 id: '2',
                 lineId: '1',
                 origin: 'Test Origin',
@@ -304,7 +304,7 @@ describe('myfares pages', () => {
                 name: 'Test Time Restriction',
             });
 
-            (getBodsServiceDirectionDescriptionsByNocAndServiceId as jest.Mock).mockResolvedValue({
+            (getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource as jest.Mock).mockResolvedValue({
                 inboundDirectionDescription: 'this way',
                 outboundDirectionDescription: 'another way',
             });

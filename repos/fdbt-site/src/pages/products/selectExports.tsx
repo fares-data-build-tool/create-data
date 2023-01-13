@@ -1,9 +1,11 @@
 import startCase from 'lodash/startCase';
 import moment from 'moment';
 import React, { ReactElement, useState } from 'react';
+import { MULTI_MODAL_ATTRIBUTE } from '../../constants/attributes';
+import { getSessionAttribute } from '../../utils/sessions';
 import BackButton from '../../components/BackButton';
 import CsrfForm from '../../components/CsrfForm';
-import { getAllPassengerTypesByNoc, getAllProductsByNoc, getBodsServicesByNoc } from '../../data/auroradb';
+import { getAllPassengerTypesByNoc, getAllProductsByNoc, getBodsOrTndsServicesByNoc } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import { MyFaresService, NextPageContextWithSession, ProductToDisplay, ServiceToDisplay } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
@@ -466,7 +468,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
     const products = await getAllProductsByNoc(noc);
     const nonExpiredProducts = getNonExpiredProducts(products);
-    const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(noc, nonExpiredProducts);
+    const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
+    const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(
+        noc,
+        nonExpiredProducts,
+        dataSource,
+    );
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
     const productsToDisplay: ProductToDisplay[] = await Promise.all(
@@ -512,7 +519,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const allServicesWithMatchingLineIds: MyFaresService[] = [];
 
     if (uniqueServiceLineIds.length > 0) {
-        const allBodsServices = await getBodsServicesByNoc(noc);
+        const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
+        const dataSource = multiModalAttribute ? 'tnds' : 'bods';
+        const allBodsServices = await getBodsOrTndsServicesByNoc(noc, dataSource);
         uniqueServiceLineIds.forEach((uniqueServiceLineId) => {
             allServicesWithMatchingLineIds.push(
                 allBodsServices.find((service) => service.lineId === uniqueServiceLineId) as MyFaresService,

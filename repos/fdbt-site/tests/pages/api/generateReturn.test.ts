@@ -337,8 +337,6 @@ describe('generateReturn', () => {
             expectedGeneratedReturn,
             noc,
             expect.any(String),
-            '',
-            'bods',
             {
                 req,
                 res,
