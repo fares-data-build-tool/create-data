@@ -39,8 +39,6 @@ describe('copyProduct', () => {
             expectedCarnetReturnTicket,
             noc,
             expect.any(String),
-            '',
-            'bods',
             {
                 req,
                 res,
