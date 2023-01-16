@@ -9,6 +9,7 @@ import {
     BasePeriodTicket,
     ProductDetails,
     BaseSchemeOperatorTicket,
+    CappedTicket,
 } from 'fdbt-types/matchingJsonTypes';
 import {
     getFareDayEnd,
@@ -16,6 +17,7 @@ import {
     getTimeRestrictionsByIdAndNoc,
     getGroupDefinition,
     getSalesOfferPackagesByNoc,
+    getProductGroupById,
 } from './database';
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
@@ -69,6 +71,18 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 groupDefinition = await getGroupDefinition(singleOrGroupPassengerType.groupPassengerType, noc);
             } else {
                 passengerType = singleOrGroupPassengerType.passengerType;
+            }
+            
+            if(ticketWithIds.type === 'capped' && 'cappedProductInfo' in ticketWithIds && 'productGroup' in ticketWithIds.cappedProductInfo) {
+                const productGroupId = ticketWithIds.cappedProductInfo.productGroup.id;
+                const productGroup = await getProductGroupById(noc, productGroupId);
+                
+                const productGroupName = productGroup.name;
+                
+                productGroup.productIds.forEach((productId) => {
+                    //await getProduct
+                })
+                
             }
 
             const allSops = await getSalesOfferPackagesByNoc(noc);

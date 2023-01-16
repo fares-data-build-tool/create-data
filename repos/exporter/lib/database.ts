@@ -7,6 +7,7 @@ import {
     SinglePassengerType,
     RawSalesOfferPackage,
     ServiceDetails,
+    GroupOfProductsDb,
 } from 'fdbt-types/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import { getSsmValue } from './ssm';
@@ -91,6 +92,25 @@ export const getPassengerTypeById = async (
               name,
               passengerType: JSON.parse(contents) as PassengerType,
           };
+};
+
+export const getProductGroupById = async (noc: string, productGroupId: Number): Promise<{
+    id: number,
+    productIds: string[],
+    name: string,
+}> => {
+    const queryInput = `
+            SELECT id, name, products
+            FROM groupOfProducts
+            WHERE nocCode = ? AND id = ?`;
+
+    const result = await executeQuery<GroupOfProductsDb[]>(queryInput, [noc, productGroupId.toString()]);
+
+    return {
+        id: result[0].id,
+        productIds: JSON.parse(result[0].products) as string[],
+        name: result[0].name,
+    };
 };
 
 export const getSalesOfferPackagesByNoc = async (nocCode: string): Promise<FromDb<SalesOfferPackage>[]> => {
