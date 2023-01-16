@@ -60,7 +60,7 @@ export interface SalesOfferPackage {
 
 export type FromDb<T> = T & { id: number };
 
-export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
+export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return' | 'capped';
 
 export type Ticket =
     | PointToPointTicket
@@ -72,7 +72,8 @@ export type Ticket =
     | SchemeOperatorMultiServiceTicket
     | MultiOperatorGeoZoneTicket
     | PointToPointPeriodTicket
-    | PeriodHybridTicket;
+    | PeriodHybridTicket
+    | CappedTicket;
 
 export type TicketWithIds =
     | WithIds<SingleTicket>
@@ -85,13 +86,102 @@ export type TicketWithIds =
     | WithIds<SchemeOperatorMultiServiceTicket>
     | WithIds<MultiOperatorGeoZoneTicket>
     | WithIds<PointToPointPeriodTicket>
-    | WithIds<PeriodHybridTicket>;
+    | WithIds<PeriodHybridTicket>
+    | WithIds<CappedTicket>;
 
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
 
-export interface SchemeOperatorGeoZoneTicket extends BaseSchemeOperatorTicket {
+export interface CappedGeoZoneTicket extends BaseTicket<'capped'> {
+    cappedProductInfo: ByDistanceCapInfo | ByTapCapInfo | ByProductsCapInfo;
+    type: 'capped';
+    products: CappedProductDetails[];
+    zoneName: string;
+    stops: Stop[];
+    operatorName: string;
+}
+
+export interface CappedMultipleServicesTicket extends Omit<BaseTicket<'capped'>, 'products'> {
+    cappedProductInfo: ByDistanceCapInfo | ByTapCapInfo | ByProductsCapInfo;
+    type: 'capped';
+    products: CappedProductDetails[];
+    selectedServices: SelectedService[];
+    operatorName: string;
+}
+export interface CappedProductDetails extends BaseProduct {
+    productName: string;
+}
+
+export interface ByDistanceCapInfo {
+    capDetails: DistanceCap;
+    additionalDiscount?: AdditionalPricing;
+}
+
+export interface ByTapCapInfo {
+    tapDetails: MultiTap;
+    capDetails: CapDetails;
+    capExpiry: PeriodExpiry;
+    capStart: CapStartInfo;
+}
+
+export interface ByProductsCapInfo {
+    productGroup: { id: number };
+    capDetails: CapDetails;
+    capExpiry: PeriodExpiry;
+    capStart: CapStartInfo;
+}
+
+export interface CapDetails {
+    caps: Cap[];
+    productName: string;
+}
+
+export type CappedTicket = CappedGeoZoneTicket | CappedMultipleServicesTicket;
+
+export interface Cap {
+    name: string;
+    price: string;
+    durationAmount: string;
+    durationUnits: ExpiryUnit;
+}
+
+export interface AdditionalPricing {
+    pricingStructureStart: string;
+    structureDiscount: string;
+}
+
+export interface CapDistancePricing {
+    distanceFrom: string;
+    distanceTo: string;
+    pricePerKm: string;
+}
+
+export interface DistanceCap {
+    productName: string;
+    maximumPrice: string;
+    minimumPrice: string;
+    capPricing: CapDistancePricing[];
+}
+
+export interface MultiTap {
+    [tapNumber: string]: string;
+}
+
+export interface MultiTapPricing {
+    tapDetails: MultiTap;
+}
+
+export type DayOfTheWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+export type CapStart = 'rollingDays' | 'fixedWeekdays';
+
+export interface CapStartInfo {
+    type: CapStart;
+    startDay?: DayOfTheWeek;
+}
+
+export interface  SchemeOperatorGeoZoneTicket extends BaseSchemeOperatorTicket {
     zoneName: string;
     stops: Stop[];
     products: ProductDetails[];

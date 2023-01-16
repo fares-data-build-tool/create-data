@@ -7,6 +7,8 @@ import {
     SinglePassengerType,
     RawSalesOfferPackage,
     ServiceDetails,
+    GroupOfProductsDb,
+    GroupOfProducts,
 } from 'fdbt-types/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import { getSsmValue } from './ssm';
@@ -91,6 +93,33 @@ export const getPassengerTypeById = async (
               name,
               passengerType: JSON.parse(contents) as PassengerType,
           };
+};
+
+export const getProductGroupById = async (noc: string, productGroupId: number): Promise<GroupOfProducts> => {
+    const queryInput = `
+            SELECT id, name, products
+            FROM groupOfProducts
+            WHERE nocCode = ? AND id = ?`;
+
+    const result = await executeQuery<GroupOfProductsDb[]>(queryInput, [noc, productGroupId.toString()]);
+
+    return {
+        id: result[0].id,
+        productIds: JSON.parse(result[0].products) as string[],
+        name: result[0].name,
+    };
+};
+
+export const getMatchingJsonLinksById = async (noc: string, productIds: string[]): Promise<string[]> => {
+    const substitution = productIds.map(() => '?').join(',');
+
+    const queryInput = `
+            SELECT matchingJsonLink
+            FROM products
+            WHERE nocCode = ? 
+            AND id in (${substitution}) `;
+
+    return await executeQuery<string[]>(queryInput, [noc, substitution]);
 };
 
 export const getSalesOfferPackagesByNoc = async (nocCode: string): Promise<FromDb<SalesOfferPackage>[]> => {

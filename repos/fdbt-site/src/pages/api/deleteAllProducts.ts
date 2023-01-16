@@ -17,6 +17,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             await deleteProductsByNocCode(nationalOperatorCode);
         }
         redirectTo(res, '/home');
+        return;
     } catch (error) {
         redirectToError(res, 'There was a problem deleting the all products', 'api.deleteAllProducts', error);
     }
