@@ -1,28 +1,21 @@
 import React, { ReactElement } from 'react';
 import TwoThirdsLayout from '../layout/Layout';
-import { NextPageContextWithSession } from '../interfaces';
-import { getSessionAttribute } from '../utils/sessions';
-import { MULTI_MODAL_ATTRIBUTE } from '../constants/attributes';
 
 const title = 'No Services - Create Fares Data Service';
 const description = 'No Services error page of the Create Fares Data Service';
 
-interface NoServicesProps {
-    dataSource: string;
-}
-
-const NoServices = ({ dataSource }: NoServicesProps): ReactElement => (
+const NoServices = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-l">
             Sorry, there is no service data available for your National Operator Code (NOC)
         </h1>
         <p className="govuk-body-m">
-            This service utilises the{' '}
-            {dataSource === 'tnds' ? 'Traveline National Dataset (TNDS)' : 'Bus Open Data Service (BODS)'} to obtain
+            This service utilises the Bus Open Data Service (BODS) and Traveline National Dataset (TNDS) to obtain
             operator&apos;s service data in order to help them create fares data.
         </p>
         <p className="govuk-body-m">
-            It appears there is no service data for this operator in the Bus Open Data Service.
+            It appears there is no service data for this operator in the Bus Open Data Service (BODS), or the Traveline
+            National Dataset (TNDS).
         </p>
         <p className="govuk-body-m">You will not be able to continue creating fares data without this.</p>
         <p className="govuk-body-m">
@@ -41,14 +34,8 @@ const NoServices = ({ dataSource }: NoServicesProps): ReactElement => (
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: NoServicesProps } => {
-    const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
-
-    return {
-        props: {
-            dataSource,
-        },
-    };
+export const getServerSideProps = (): {} => {
+    return { props: {} };
 };
 
 export default NoServices;
