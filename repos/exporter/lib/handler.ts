@@ -17,7 +17,7 @@ import {
     getGroupDefinition,
     getSalesOfferPackagesByNoc,
     getProductGroupById,
-    getProductsById,
+    getMatchingJsonLinksById,
 } from './database';
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
@@ -82,12 +82,12 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 const productGroupId = ticketWithIds.cappedProductInfo.productGroup.id;
                 const productGroup = await getProductGroupById(noc, productGroupId);
                 const productNames: string[] = [];
-                const matchingJsonLinks = await getProductsById(noc, productGroup.productIds);
+                const matchingJsonLinks = await getMatchingJsonLinksById(noc, productGroup.productIds);
 
                 for (const matchingJsonLink of matchingJsonLinks) {
                     const object = await s3.getObject({ Key: matchingJsonLink, Bucket: PRODUCTS_BUCKET }).promise();
                     if (!object.Body) {
-                        throw new Error(`body was not present [${path}]`);
+                        throw new Error(`body was not present [${matchingJsonLink}]`);
                     }
                     const ticketWithIds = JSON.parse(object.Body.toString('utf-8')) as TicketWithIds;
                     const ticketProductNames = ticketWithIds.products.map((product) => product.productName);

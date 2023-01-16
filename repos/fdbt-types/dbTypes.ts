@@ -107,6 +107,12 @@ export interface GroupOfProductsDb {
     name: string;
 }
 
+export interface GroupOfProducts {
+    id: number;
+    productIds: string[];
+    name: string;
+}
+
 export interface GroupPassengerTypeDb {
     id: number;
     name: string;

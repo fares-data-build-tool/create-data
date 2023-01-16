@@ -8,6 +8,7 @@ import {
     RawSalesOfferPackage,
     ServiceDetails,
     GroupOfProductsDb,
+    GroupOfProducts,
 } from 'fdbt-types/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import { getSsmValue } from './ssm';
@@ -94,14 +95,7 @@ export const getPassengerTypeById = async (
           };
 };
 
-export const getProductGroupById = async (
-    noc: string,
-    productGroupId: number,
-): Promise<{
-    id: number;
-    productIds: string[];
-    name: string;
-}> => {
+export const getProductGroupById = async (noc: string, productGroupId: number): Promise<GroupOfProducts> => {
     const queryInput = `
             SELECT id, name, products
             FROM groupOfProducts
@@ -116,7 +110,7 @@ export const getProductGroupById = async (
     };
 };
 
-export const getProductsById = async (noc: string, productIds: string[]): Promise<string[]> => {
+export const getMatchingJsonLinksById = async (noc: string, productIds: string[]): Promise<string[]> => {
     const substitution = productIds.map(() => '?').join(',');
 
     const queryInput = `
