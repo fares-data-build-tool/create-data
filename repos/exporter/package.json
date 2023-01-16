@@ -10,7 +10,8 @@
         "test": "jest",
         "test:ci": "CI=true jest",
         "cdk": "cdk",
-        "lint": "eslint . --ext .ts --max-warnings 0"
+        "lint": "eslint . --ext .ts --max-warnings 0",
+        "lint:fix": "eslint --fix . --ext .ts --max-warnings 0"
     },
     "jest": {
         "collectCoverageFrom": [

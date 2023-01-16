@@ -94,10 +94,13 @@ export const getPassengerTypeById = async (
           };
 };
 
-export const getProductGroupById = async (noc: string, productGroupId: Number): Promise<{
-    id: number,
-    productIds: string[],
-    name: string,
+export const getProductGroupById = async (
+    noc: string,
+    productGroupId: number,
+): Promise<{
+    id: number;
+    productIds: string[];
+    name: string;
 }> => {
     const queryInput = `
             SELECT id, name, products
@@ -111,6 +114,18 @@ export const getProductGroupById = async (noc: string, productGroupId: Number): 
         productIds: JSON.parse(result[0].products) as string[],
         name: result[0].name,
     };
+};
+
+export const getProductsById = async (noc: string, productIds: string[]): Promise<string[]> => {
+    const substitution = productIds.map(() => '?').join(',');
+
+    const queryInput = `
+            SELECT matchingJsonLink
+            FROM products
+            WHERE nocCode = ? 
+            AND id in (${substitution}) `;
+
+    return await executeQuery<string[]>(queryInput, [noc, substitution]);
 };
 
 export const getSalesOfferPackagesByNoc = async (nocCode: string): Promise<FromDb<SalesOfferPackage>[]> => {

@@ -9,7 +9,6 @@ import {
     BasePeriodTicket,
     ProductDetails,
     BaseSchemeOperatorTicket,
-    CappedTicket,
 } from 'fdbt-types/matchingJsonTypes';
 import {
     getFareDayEnd,
@@ -18,6 +17,7 @@ import {
     getGroupDefinition,
     getSalesOfferPackagesByNoc,
     getProductGroupById,
+    getProductsById,
 } from './database';
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
@@ -72,17 +72,29 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             } else {
                 passengerType = singleOrGroupPassengerType.passengerType;
             }
-            
-            if(ticketWithIds.type === 'capped' && 'cappedProductInfo' in ticketWithIds && 'productGroup' in ticketWithIds.cappedProductInfo) {
+
+            let cappedProductGroupInfo = undefined;
+            if (
+                ticketWithIds.type === 'capped' &&
+                'cappedProductInfo' in ticketWithIds &&
+                'productGroup' in ticketWithIds.cappedProductInfo
+            ) {
                 const productGroupId = ticketWithIds.cappedProductInfo.productGroup.id;
                 const productGroup = await getProductGroupById(noc, productGroupId);
-                
-                const productGroupName = productGroup.name;
-                
-                productGroup.productIds.forEach((productId) => {
-                    //await getProduct
-                })
-                
+                const productNames: string[] = [];
+                const matchingJsonLinks = await getProductsById(noc, productGroup.productIds);
+
+                for (const matchingJsonLink of matchingJsonLinks) {
+                    const object = await s3.getObject({ Key: matchingJsonLink, Bucket: PRODUCTS_BUCKET }).promise();
+                    if (!object.Body) {
+                        throw new Error(`body was not present [${path}]`);
+                    }
+                    const ticketWithIds = JSON.parse(object.Body.toString('utf-8')) as TicketWithIds;
+                    const ticketProductNames = ticketWithIds.products.map((product) => product.productName);
+                    productNames.push(...ticketProductNames);
+                }
+
+                cappedProductGroupInfo = { cappedProductInfo: { productGroupName: productGroup.name, productNames } };
             }
 
             const allSops = await getSalesOfferPackagesByNoc(noc);
@@ -135,8 +147,10 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             const baseTicket: BaseTicket | BaseSchemeOperatorTicket = {
                 ...ticketWithIds,
                 ...passengerType,
+                ...cappedProductGroupInfo,
                 groupDefinition,
                 timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
+                
             };
             /* eslint-enable */
 
