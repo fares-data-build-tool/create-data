@@ -344,7 +344,7 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
     continueButtonClick();
 };
 
-export const selectTimeRestriction = () => {
+export const selectTimeRestriction = (): void => {
     // randomly pick a time restriction
     getElementById('conditional-time-restriction')
         .find('[class=govuk-radios__input]')
@@ -363,7 +363,7 @@ export const selectTimeRestriction = () => {
 };
 
 export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
-    let timeRestriction = 'N/A';
+    const timeRestriction = 'N/A';
     const randomNumber = getRandomNumber(0, 1);
     cy.log('Is yes chosen?', randomNumber === 1);
     cy.wrap(timeRestriction).as('timeRestriction');

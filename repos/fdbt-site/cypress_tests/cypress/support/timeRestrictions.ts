@@ -23,7 +23,8 @@ export const addTimeRestriction = (timeRestriction: TimeRestriction): void => {
         numberOfTimeRestrictions = Number(element.attr('data-card-count'));
         if (numberOfTimeRestrictions > 0) {
             getElementByClass('card-row').then((body) => {
-                if (cy.wrap(body).contains(timeRestriction.name)) {
+                const containsName = !!cy.wrap(body).contains(timeRestriction.name);
+                if (containsName) {
                     clickElementByText('Add a time restriction');
                     enterTimeRestrictionDetails(timeRestriction);
                     clickElementByText('Add time restriction');
