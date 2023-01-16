@@ -133,7 +133,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 },
             };
 
-            const newJsonLink = await insertDataToProductsBucketAndProductsTable(returnTicket, noc, uuid, '', 'bods', {
+            const newJsonLink = await insertDataToProductsBucketAndProductsTable(returnTicket, noc, uuid, {
                 req,
                 res,
             });

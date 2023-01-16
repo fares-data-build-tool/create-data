@@ -36,6 +36,7 @@ describe('Edit Fare Stage Matching Page', () => {
                 warning={false}
                 showBackButtton={true}
                 direction={'outbound'}
+                dataSource="bods"
             />,
         );
     });
@@ -45,6 +46,24 @@ describe('Edit Fare Stage Matching Page', () => {
     });
 
     it('should render correctly', () => {
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render correctly for tnds data source', () => {
+        wrapper = shallow(
+            <EditFareStageMatching
+                fareStages={fareStageNames}
+                stops={zoneStops}
+                errors={[]}
+                selectedFareStages={selectedFareStages}
+                csrfToken=""
+                backHref=""
+                warning={false}
+                showBackButtton={true}
+                direction={'outbound'}
+                dataSource="tnds"
+            />,
+        );
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -60,6 +79,7 @@ describe('Edit Fare Stage Matching Page', () => {
                 warning={false}
                 showBackButtton={true}
                 direction={'inbound'}
+                dataSource="bods"
             />,
         );
         expect(wrapper).toMatchSnapshot();
@@ -83,6 +103,7 @@ describe('Edit Fare Stage Matching Page', () => {
                 warning={false}
                 showBackButtton={true}
                 direction={'outbound'}
+                dataSource="bods"
             />,
         );
         expect(wrapper).toMatchSnapshot();
@@ -100,6 +121,7 @@ describe('Edit Fare Stage Matching Page', () => {
                 warning={true}
                 showBackButtton={true}
                 direction={'outbound'}
+                dataSource="bods"
             />,
         );
         expect(wrapper).toMatchSnapshot();

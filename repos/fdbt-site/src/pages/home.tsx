@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
 import { checkIfMultipleOperators, getCsrfToken } from '../utils';
-import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, regenerateSession, updateSessionAttribute } from '../utils/sessions';
 import { MULTI_MODAL_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { redirectTo } from '../utils/apiUtils';
 import { getAllServicesByNocCode } from '../data/auroradb';
@@ -90,6 +90,7 @@ const Home = ({ csrfToken, showDeleteProductsLink }: HomeProps): ReactElement =>
 );
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{}> => {
+    regenerateSession(ctx.req);
     const multipleOperators = checkIfMultipleOperators(ctx);
 
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
@@ -99,7 +100,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         redirectTo(ctx.res, '/multipleOperators');
     }
     const csrfToken = getCsrfToken(ctx);
-    const showDeleteProductsLink = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
+    const showDeleteProductsLink = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
 
     let uniqueModes: string[] = [];
 

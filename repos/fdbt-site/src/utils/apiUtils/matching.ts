@@ -269,6 +269,7 @@ export const getMatchingProps = async (
                     ? matchingAttribute.selectedFareStages
                     : [],
             csrfToken,
+            dataSource,
         },
     };
 };

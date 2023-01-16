@@ -1,12 +1,12 @@
 import React, { ReactElement, useState } from 'react';
 import { convertDateFormat, getAndValidateNoc, getCsrfToken, isReturnTicket, sentenceCaseString } from '../../utils';
 import {
-    getBodsServiceByNocAndId,
+    getServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
     getProductById,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
-    getBodsServiceDirectionDescriptionsByNocAndServiceId,
+    getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource,
     getServiceByIdAndDataSource,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation } from '../../interfaces';
@@ -15,10 +15,11 @@ import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
 import BackButton from '../../components/BackButton';
 import InformationSummary from '../../components/InformationSummary';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import ProductNamePopup from '../../components/ProductNamePopup';
@@ -213,6 +214,7 @@ const createProductDetails = async (
     serviceId: string | string[] | undefined,
     ctx: NextPageContextWithSession,
     fareTriangleModified: string | undefined,
+    dataSource: string,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
     productName: string;
@@ -252,11 +254,11 @@ const createProductDetails = async (
             throw new Error(`Expected string type for serviceId, received: ${serviceId}`);
         }
 
-        const pointToPointService = await getBodsServiceByNocAndId(noc, serviceId);
+        const pointToPointService = await getServiceByNocAndId(noc, serviceId, dataSource);
 
         const additionalService =
             isReturnTicket(ticket) && ticket.additionalServices && ticket.additionalServices.length > 0
-                ? await getBodsServiceByNocAndId(noc, ticket.additionalServices[0].serviceId.toString())
+                ? await getServiceByNocAndId(noc, ticket.additionalServices[0].serviceId.toString(), dataSource)
                 : undefined;
 
         productDetailsElements.push({
@@ -286,7 +288,7 @@ const createProductDetails = async (
 
         if ('journeyDirection' in ticket && ticket.journeyDirection) {
             const { inboundDirectionDescription, outboundDirectionDescription } =
-                await getBodsServiceDirectionDescriptionsByNocAndServiceId(noc, serviceId);
+                await getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource(noc, serviceId, dataSource);
 
             productDetailsElements.push({
                 id: 'journey-direction',
@@ -570,6 +572,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         matchingJsonLink,
     });
 
+    const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
+
     const productDetails = await createProductDetails(
         ticket,
         noc,
@@ -577,6 +581,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         serviceId,
         ctx,
         fareTriangleModified,
+        dataSource,
     );
 
     const backHref = serviceId
@@ -586,7 +591,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         : '/products/otherProducts';
 
     const lineId =
-        typeof serviceId === 'string' ? (await getServiceByIdAndDataSource(noc, Number(serviceId), 'bods')).lineId : '';
+        typeof serviceId === 'string'
+            ? (await getServiceByIdAndDataSource(noc, Number(serviceId), dataSource)).lineId
+            : '';
 
     return {
         props: {

@@ -266,7 +266,7 @@ export const getPointToPointAvailabilityElement = (
     id: `Tariff@${ticket.type}@availability`,
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
-        ref: 'fxc:access',
+        ref: 'fxc:access_when',
     },
     qualityStructureFactors: {
         FareDemandFactorRef: {
