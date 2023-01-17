@@ -172,10 +172,9 @@ export const getProductsAndSalesOfferPackages = <T extends { products: { salesOf
                 price: salesOfferPackage.price,
             };
         });
-        // here
+
         return {
-            pricingByDistance: 'pricingByDistance' in matchedProduct ? matchedProduct.pricingByDistance : undefined,
-            productName: 'productName' in matchedProduct ? matchedProduct.productName : undefined,
+            productName: matchedProduct.productName,
             productPrice: 'productPrice' in matchedProduct ? matchedProduct.productPrice : undefined,
             productDuration: matchedProduct.productDuration
                 ? `${matchedProduct.productDuration} ${matchedProduct.productDurationUnits}${

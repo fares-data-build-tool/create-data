@@ -8,6 +8,7 @@ import { getTag } from '../products/services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
+import { Product } from 'src/interfaces/matchingJsonTypes';
 
 const title = 'Other products - Create Fares Data Service';
 const description = 'View and access your other products in one place.';
@@ -17,11 +18,11 @@ interface OtherProductsProps {
     csrfToken: string;
 }
 
-const getProductName = (innerProduct: any): string => {
+const getProductName = (innerProduct: Product): string => {
     if ('pricingByDistance' in innerProduct) {
-        return innerProduct.pricingByDistance.productName as string;
+        return innerProduct?.pricingByDistance?.productName || '';
     }
-    return 'productName' in innerProduct ? (innerProduct.productName as string) : '';
+    return 'productName' in innerProduct ? innerProduct?.productName : '';
 };
 
 const buildCopyUrl = (productId: string, csrfToken: string) => {
