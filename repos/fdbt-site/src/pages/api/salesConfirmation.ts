@@ -90,8 +90,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (userDataJson) {
-            console.log(JSON.stringify(userDataJson));
-            //{"products":[{"salesOfferPackages":{"id":1},"pricingByDistance":{"maximumPrice":"5","minimumPrice":"2","capPricing":[{"distanceFrom":"0","distanceTo":"Max","pricePerKm":"4"}],"productName":"flat fare fake"}}],"selectedServices":[{"lineName":"1","lineId":"4YyoI0","serviceCode":"NW_05_BLAC_1_1","serviceDescription":"FLEETWOOD - BLACKPOOL via Promenade"},{"lineName":"2C","lineId":"vySmfewe0","serviceCode":"NW_05_BLAC_2C_1","serviceDescription":"KNOTT END - POULTON - BLACKPOOL"}],"termTime":false}
             const carnetAttribute = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
             const dataFormat = getSessionAttribute(req, TXC_SOURCE_ATTRIBUTE)?.source;
 

@@ -13,12 +13,10 @@ import * as session from '../../../src/utils/sessions';
 import {
     expectedCappedTicket,
     expectedFlatFareTicket,
-    expectedPeriodGeoZoneTicketWithMultipleProducts,
     expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
     expectedPointToPointPeriodTicket,
     expectedSingleTicket,
     getMockRequestAndResponse,
-    mockPointToPointProducts,
 } from '../../testData/mockData';
 import * as userData from '../../../src/utils/apiUtils/userData';
 import { ExpiryUnit } from '../../../src/interfaces/matchingJsonTypes';

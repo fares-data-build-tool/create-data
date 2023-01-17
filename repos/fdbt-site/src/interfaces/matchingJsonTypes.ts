@@ -45,7 +45,7 @@ export interface FlatFareProductDetails extends BaseProduct {
 }
 
 export interface PriceByDistanceProductDetails extends BaseProduct {
-    pricingByDistance: ByDistanceInfo;
+    pricingByDistance: DistancePricingData;
     carnetDetails?: CarnetDetails;
 }
 

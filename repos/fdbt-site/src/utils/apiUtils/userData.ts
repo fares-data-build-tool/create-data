@@ -110,6 +110,7 @@ import {
     CappedTicket,
     ExpiryUnit,
     FlatFareMultipleServices,
+    PriceByDistanceProductDetails,
 } from '../../interfaces/matchingJsonTypes';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
@@ -600,27 +601,44 @@ export const getMultipleServicesByDistanceTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
 ): WithIds<FlatFareMultipleServices> => {
+    const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const { selectedServices } = serviceListAttribute;
     const pricingByDistance = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
-    const products = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE) as SalesOfferPackage[];
+    const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE) as SalesOfferPackage[];
     const baseTicketAttributes = getBaseTicketAttributes(req, res, 'flatFare');
-    if (pricingByDistance && products && products.length > 0) {
-        const data = [
-            {
-                salesOfferPackages: { id: products[0].id, price: products[0].price },
-                pricingByDistance,
-            },
-        ];
-        // [{"salesOfferPackages":{"id":2},"pricingByDistance":{"maximumPrice":"5","minimumPrice":"2","capPricing":[{"distanceFrom":"0","distanceTo":"Max","pricePerKm":"5"}],"productName":"flat fare fake"}}]
-        console.log(JSON.stringify(data));
-        return {
-            ...baseTicketAttributes,
-            products: data,
-            selectedServices,
-            termTime: isTermTime(req),
-        };
+
+    if (
+        !operatorAttribute ||
+        !operatorAttribute.name ||
+        !pricingByDistance ||
+        !salesOfferPackages ||
+        salesOfferPackages.length <= 0
+    ) {
+        logger.error('Attributes missing / incorrect', {
+            operatorAttribute,
+            pricingByDistance,
+            salesOfferPackages,
+        });
+        throw new Error(`Could not create flat fare by distance ticket json. Necessary attributes could not be found.`);
     }
+
+    const { name } = operatorAttribute;
+
+    const data = [
+        {
+            salesOfferPackages,
+            pricingByDistance,
+        },
+    ] as PriceByDistanceProductDetails[];
+
+    return {
+        operatorName: name,
+        ...baseTicketAttributes,
+        products: data,
+        selectedServices,
+        termTime: isTermTime(req),
+    } as WithIds<FlatFareMultipleServices>;
 };
 
 export const getMultipleServicesTicketJson = (

@@ -48,7 +48,7 @@ export const sanitiseReqBody = (
 
     const sanitisedBody = products.reduce((sanitisedBody, product) => {
         const sopInput = req.body[`${productPrefix}${product.productName}`];
-        console.log(JSON.stringify(req.body));
+
         if (!sopInput) {
             errors.push({
                 errorMessage: 'Choose at least one sales offer package from the options',
@@ -122,7 +122,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
-        console.log('ticket', JSON.stringify(ticket));
+
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
         const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
@@ -131,7 +131,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             fareTypeValue === 'schoolService' && !!schoolFareTypeAttribute
                 ? schoolFareTypeAttribute.schoolFareType
                 : fareTypeValue;
-        console.log(fareType);
+
         let cappedProductName = '';
 
         if (fareType === 'capped') {
@@ -153,10 +153,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 cappedProductName = pricingByDistance.productName;
             }
         }
-        console.log(cappedProductName);
 
         const products = getProductsByValues(ticket, multipleProductAttribute, cappedProductName);
-        console.log(JSON.stringify(products));
 
         const { sanitisedBody, errors } = sanitiseReqBody(req, products);
 
@@ -199,7 +197,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             );
             return;
         }
-        console.log('here');
+
         if (!multipleProductAttribute) {
             const key = !!cappedProductName ? cappedProductName : 'product';
             const salesOfferPackages: SalesOfferPackage[] = sanitisedBody[key];

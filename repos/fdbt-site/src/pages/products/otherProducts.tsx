@@ -17,6 +17,13 @@ interface OtherProductsProps {
     csrfToken: string;
 }
 
+const getProductName = (innerProduct: any): string => {
+    if ('pricingByDistance' in innerProduct) {
+        return innerProduct.pricingByDistance.productName as string;
+    }
+    return 'productName' in innerProduct ? (innerProduct.productName as string) : '';
+};
+
 const buildCopyUrl = (productId: string, csrfToken: string) => {
     return `/api/copyProduct?id=${productId}&_csrf=${csrfToken}`;
 };
@@ -179,7 +186,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
                 return Promise.all(
                     matchingJson.products?.map(async (innerProduct) => {
-                        const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
+                        const productDescription = getProductName(innerProduct);
                         const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
                         const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
                         const passengerType = await getPassengerTypeNameByIdAndNoc(matchingJson.passengerType.id, noc);
