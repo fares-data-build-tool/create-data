@@ -115,7 +115,7 @@ const SelectTimeRestrictions = ({
                                         type="radio"
                                         value="no"
                                         data-aria-controls="conditional-time-restriction-2"
-                                        defaultChecked={!selectedId && isEditing}
+                                        defaultChecked={!selectedId}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
                                         No

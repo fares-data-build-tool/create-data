@@ -373,32 +373,57 @@ export const randomlyDeterminePurchaseType = (isOtherProduct?: boolean): void =>
     continueButtonClick();
 };
 
-export const randomlyDecideTimeRestrictions = (): void => {
-    let timeRestriction = 'N/A';
-    if (getRandomNumber(0, 1) === 0) {
-        clickElementById('valid-days-not-required');
-        cy.wrap(timeRestriction).as('timeRestriction');
-    } else {
-        // click yes button
-        clickElementById('valid-days-required');
+export const selectTimeRestriction = (): void => {
+    // randomly pick a time restriction
+    getElementById('conditional-time-restriction')
+        .find('[class=govuk-radios__input]')
+        .its('length')
+        .then((length) => {
+            const randomNumber = getRandomNumber(0, length - 1);
+            getElementById('conditional-time-restriction')
+                .find('[class=govuk-radios__input]')
+                .eq(randomNumber)
+                .click()
+                .then(($radio) => {
+                    const timeRestriction = $radio.attr('value');
+                    cy.wrap(timeRestriction).as('timeRestriction');
+                });
+        });
+};
 
-        // randomly pick a time restriction
-        getElementById('conditional-time-restriction')
-            .find('[class=govuk-radios__input]')
-            .its('length')
-            .then((length) => {
-                const randomNumber = getRandomNumber(0, length - 1);
-                getElementById('conditional-time-restriction')
-                    .find('[class=govuk-radios__input]')
-                    .eq(randomNumber)
-                    .click()
-                    .then(($radio) => {
-                        timeRestriction = $radio.attr('value');
-                        cy.wrap(timeRestriction).as('timeRestriction');
-                    });
-            });
+export const randomlyDecideTimeRestrictions = (isEditing?: boolean): void => {
+    const timeRestriction = 'N/A';
+    const randomNumber = getRandomNumber(0, 1);
+    cy.log('Is yes chosen?', randomNumber === 1);
+    cy.wrap(timeRestriction).as('timeRestriction');
+    let noSelected = true;
+    cy.wrap(noSelected).as('noSelected');
+    if (isEditing) {
+        cy.get('.govuk-radios__input').each(($radio) => {
+            if ($radio.attr('value') === 'Premade' && $radio.prop('checked')) {
+                noSelected = false;
+                cy.wrap(noSelected).as('noSelected');
+            }
+        });
+        cy.get('@noSelected').then((noSelected) => {
+            if (!noSelected) {
+                if (randomNumber === 0) {
+                    // if yes is selected and the random number says to select no
+                    clickElementById('valid-days-not-required');
+                } else {
+                    // if yes is selected and the random number says to select yes change time restriction
+                    selectTimeRestriction();
+                }
+            }
+        });
     }
-
+    cy.get('@noSelected').then((noSelected) => {
+        if (randomNumber === 1 && noSelected) {
+            // otherwise select a time restriction
+            clickElementById('valid-days-required');
+            selectTimeRestriction();
+        }
+    });
     continueButtonClick();
 };
 

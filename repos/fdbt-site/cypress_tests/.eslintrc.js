@@ -25,6 +25,12 @@ module.exports = {
     plugins: ['@typescript-eslint'],
     rules: {
         indent: [0, 4],
+        '@typescript-eslint/no-misused-promises': [
+            'error',
+            {
+                checksConditionals: false,
+            },
+        ],
     },
     settings: {
         'import/resolver': {

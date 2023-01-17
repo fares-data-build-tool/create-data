@@ -17,10 +17,25 @@ const enterTimeRestrictionDetails = ({ days, name }: TimeRestriction) => {
     getElementByName('timeRestrictionName').clear().type(name);
 };
 
-export const addTimeRestriction = (passengerType: TimeRestriction): void => {
-    clickElementByText('Add a time restriction');
-    enterTimeRestrictionDetails(passengerType);
-    clickElementByText('Add time restriction');
+export const addTimeRestriction = (timeRestriction: TimeRestriction): void => {
+    let numberOfTimeRestrictions = 0;
+    cy.get(`[data-card-count]`).then((element) => {
+        numberOfTimeRestrictions = Number(element.attr('data-card-count'));
+        if (numberOfTimeRestrictions > 0) {
+            getElementByClass('card-row').then((body) => {
+                const containsName = !!cy.wrap(body).contains(timeRestriction.name);
+                if (containsName) {
+                    clickElementByText('Add a time restriction');
+                    enterTimeRestrictionDetails(timeRestriction);
+                    clickElementByText('Add time restriction');
+                }
+            });
+        } else {
+            clickElementByText('Add a time restriction');
+            enterTimeRestrictionDetails(timeRestriction);
+            clickElementByText('Add time restriction');
+        }
+    });
 };
 
 export const createEditTimeRestriction = (): void => {

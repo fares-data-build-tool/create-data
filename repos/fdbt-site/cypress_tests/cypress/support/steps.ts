@@ -30,9 +30,9 @@ import {
     completePricingPerDistancePage,
 } from './helpers';
 
-export const defineUserTypeAndTimeRestrictions = (): void => {
+export const defineUserTypeAndTimeRestrictions = (isEditing?: boolean): void => {
     randomlyDetermineUserType();
-    randomlyDecideTimeRestrictions();
+    randomlyDecideTimeRestrictions(isEditing);
 
     continueButtonClick();
 };
@@ -672,7 +672,7 @@ export const editEndDatePointToPointPage = (): void => {
 
 export const editTimeRestriction = (): void => {
     clickElementById('time-restriction-link');
-    randomlyDecideTimeRestrictions();
+    randomlyDecideTimeRestrictions(true);
     cy.get('@timeRestriction').then((timeRestriction) => {
         getElementById('time-restriction').should('have.text', timeRestriction.toString());
     });

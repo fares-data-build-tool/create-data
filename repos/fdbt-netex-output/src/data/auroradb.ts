@@ -50,7 +50,7 @@ export const getOperatorDetailsByNoc = async (nocCode: string): Promise<Operator
 
         return queryResults[0] ? (JSON.parse(queryResults[0].contents) as OperatorDetails) : undefined;
     } catch (error) {
-        throw new Error(`Could not retrieve operator details by nocCode from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve operator details by nocCode from AuroraDB: ${(error as Error).stack}`);
     }
 };
 
@@ -91,6 +91,6 @@ export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Oper
 
         return filteredOperators;
     } catch (err) {
-        throw new Error(`Could not retrieve operator data from AuroraDB: ${err.stack}`);
+        throw new Error(`Could not retrieve operator data from AuroraDB: ${(err as Error).stack}`);
     }
 };

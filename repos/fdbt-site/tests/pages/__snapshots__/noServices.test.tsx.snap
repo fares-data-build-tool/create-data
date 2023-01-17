@@ -18,7 +18,7 @@ exports[`pages noServices should render correctly 1`] = `
   <p
     className="govuk-body-m"
   >
-    It appears there is no service data for this operator in the Bus Open Data Service.
+    It appears there is no service data for this operator in the Bus Open Data Service (BODS), or the Traveline National Dataset (TNDS).
   </p>
   <p
     className="govuk-body-m"

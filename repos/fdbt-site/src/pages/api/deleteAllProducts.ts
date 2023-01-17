@@ -10,13 +10,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const nationalOperatorCode = getAndValidateNoc(req, res);
         const products = await getAllProductsByNoc(nationalOperatorCode);
 
-        if (products.length > 0 && (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test')) {
+        if (products.length > 0 && (process.env.NODE_ENV === 'development' || process.env.STAGE === 'test')) {
             const matchingJsonLinks = products.map((product) => product.matchingJsonLink);
 
             await deleteMultipleObjectsFromS3(matchingJsonLinks, PRODUCTS_DATA_BUCKET_NAME);
             await deleteProductsByNocCode(nationalOperatorCode);
         }
         redirectTo(res, '/home');
+        return;
     } catch (error) {
         redirectToError(res, 'There was a problem deleting the all products', 'api.deleteAllProducts', error);
     }
