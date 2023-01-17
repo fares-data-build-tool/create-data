@@ -3,7 +3,7 @@ import { DistancePricingData, ErrorInfo } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 
 interface DistanceRowProps {
-    numberOfCapToDisplay: number;
+    numberToDisplay: number;
     errors: ErrorInfo[];
     pricingPerDistance: DistancePricingData;
     setPricingPerDistance: React.Dispatch<React.SetStateAction<DistancePricingData>>;
@@ -184,12 +184,12 @@ export const renderRows = (
 };
 
 const DistanceRow = ({
-    numberOfCapToDisplay,
+    numberToDisplay,
     errors,
     pricingPerDistance,
     setPricingPerDistance,
 }: DistanceRowProps): ReactElement => {
-    return <div>{renderRows(numberOfCapToDisplay, errors, pricingPerDistance, setPricingPerDistance)}</div>;
+    return <div>{renderRows(numberToDisplay, errors, pricingPerDistance, setPricingPerDistance)}</div>;
 };
 
 export default DistanceRow;

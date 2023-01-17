@@ -269,6 +269,10 @@ export interface Product {
     pricingByDistance?: DistancePricingData;
 }
 
+export interface FlatFareByDistanceProduct {
+    pricingByDistance: DistancePricingData;
+}
+
 export interface CappedGeoZoneTicket extends BaseTicket<'capped'> {
     cappedProductInfo: ByDistanceCapInfo | ByTapCapInfo | ByProductsCapInfo;
     type: 'capped';

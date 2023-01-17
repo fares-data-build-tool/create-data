@@ -77,7 +77,6 @@ export const completeFlatFarePages = (
     isScheme: boolean,
     isCarnet = false,
     isGeoZone = false,
-    isByDistance = false,
 ): void => {
     if (isScheme) {
         completeOperatorSearch();

@@ -93,7 +93,6 @@ export const getProductsByValues = (
     pricePerDistanceName: string,
 ): ProductInfo[] => {
     // for 'period', 'multiOperator', 'flatFare' that have multiple products
-    const products = [{ productName: 'product', productPrice: '' }];
     if (multipleProductAttribute) {
         return multipleProductAttribute.products;
     }
@@ -107,7 +106,7 @@ export const getProductsByValues = (
     if (ticket && 'products' in ticket && 'productName' in ticket.products[0] && isPointToPointTicket(ticket)) {
         return [{ productName: ticket.products[0].productName, productPrice: '' }];
     }
-    return products;
+    return [{ productName: 'product', productPrice: '' }];
 };
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {

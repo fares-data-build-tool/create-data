@@ -26,7 +26,7 @@ describe('pages', () => {
                         ],
                         productName: 'Product',
                     }}
-                    numberOfCapInitial={1}
+                    numberOfEntitesByDistanceInitial={1}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -59,7 +59,7 @@ describe('pages', () => {
                         ],
                         productName: 'Product',
                     }}
-                    numberOfCapInitial={2}
+                    numberOfEntitesByDistanceInitial={2}
                 />,
             );
             expect(tree).toMatchSnapshot();

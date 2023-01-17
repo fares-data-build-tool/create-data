@@ -17,16 +17,16 @@ interface DefinePricingPerDistanceProps {
     errors: ErrorInfo[];
     csrfToken: string;
     pricingPerDistanceData: DistancePricingData;
-    numberOfCapInitial: number;
+    numberOfEntitesByDistanceInitial: number;
 }
 
 const DefineCapPricingPerDistance = ({
     errors,
     csrfToken,
     pricingPerDistanceData,
-    numberOfCapInitial,
+    numberOfEntitesByDistanceInitial,
 }: DefinePricingPerDistanceProps): ReactElement => {
-    const [numberOfCap, setNumberOfCaps] = useState(numberOfCapInitial);
+    const [numberOfEntitesByDistance, setnumberOfEntitesByDistances] = useState(numberOfEntitesByDistanceInitial);
     const [pricingPerDistance, setPricingPerDistance] = useState(pricingPerDistanceData);
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
@@ -141,35 +141,35 @@ const DefineCapPricingPerDistance = ({
                     </div>
                     <div className="govuk-grid-row">
                         <DistanceRow
-                            numberOfCapToDisplay={numberOfCap}
+                            numberToDisplay={numberOfEntitesByDistance}
                             errors={errors}
                             pricingPerDistance={pricingPerDistance}
                             setPricingPerDistance={setPricingPerDistance}
                         />
                         <div className="flex-container">
-                            {numberOfCap < 10 ? (
+                            {numberOfEntitesByDistance < 10 ? (
                                 <button
                                     id="add-another-button"
                                     type="button"
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
                                     onClick={(): void => {
-                                        setNumberOfCaps(numberOfCap + 1);
+                                        setnumberOfEntitesByDistances(numberOfEntitesByDistance + 1);
                                         const items = [...pricingPerDistance.capPricing];
-                                        let item = { ...pricingPerDistance.capPricing[numberOfCap - 1] };
+                                        let item = { ...pricingPerDistance.capPricing[numberOfEntitesByDistance - 1] };
                                         item.distanceTo = '';
-                                        items[numberOfCap - 1] = item;
+                                        items[numberOfEntitesByDistance - 1] = item;
                                         setPricingPerDistance({
                                             ...pricingPerDistance,
                                             capPricing: items,
                                         });
-                                        item = { ...pricingPerDistance.capPricing[numberOfCap] };
+                                        item = { ...pricingPerDistance.capPricing[numberOfEntitesByDistance] };
                                         item.distanceTo = 'Max';
-                                        items[numberOfCap] = item;
+                                        items[numberOfEntitesByDistance] = item;
                                         setPricingPerDistance({
                                             ...pricingPerDistance,
                                             capPricing: items,
                                         });
-                                        for (let i = 0; i < numberOfCap; i += 1) {
+                                        for (let i = 0; i < numberOfEntitesByDistance; i += 1) {
                                             if (
                                                 !pricingPerDistance?.capPricing[i]?.distanceFrom &&
                                                 i !== 0 &&
@@ -194,7 +194,7 @@ const DefineCapPricingPerDistance = ({
                                 ''
                             )}
 
-                            {numberOfCap > 1 ? (
+                            {numberOfEntitesByDistance > 1 ? (
                                 <button
                                     id="remove-button"
                                     type="button"
@@ -202,20 +202,20 @@ const DefineCapPricingPerDistance = ({
                                     onClick={(): void => {
                                         setPricingPerDistance((current) => {
                                             const copy = { ...current };
-                                            if (numberOfCap !== 1) {
-                                                if (copy?.capPricing[numberOfCap - 1]?.distanceFrom) {
-                                                    copy.capPricing[numberOfCap - 1].distanceFrom = '';
+                                            if (numberOfEntitesByDistance !== 1) {
+                                                if (copy?.capPricing[numberOfEntitesByDistance - 1]?.distanceFrom) {
+                                                    copy.capPricing[numberOfEntitesByDistance - 1].distanceFrom = '';
                                                 }
-                                                if (copy?.capPricing[numberOfCap - 1]?.distanceTo) {
-                                                    copy.capPricing[numberOfCap - 1].distanceTo = '';
+                                                if (copy?.capPricing[numberOfEntitesByDistance - 1]?.distanceTo) {
+                                                    copy.capPricing[numberOfEntitesByDistance - 1].distanceTo = '';
                                                 }
-                                                if (copy?.capPricing[numberOfCap - 1]?.pricePerKm) {
-                                                    copy.capPricing[numberOfCap - 1].pricePerKm = '';
+                                                if (copy?.capPricing[numberOfEntitesByDistance - 1]?.pricePerKm) {
+                                                    copy.capPricing[numberOfEntitesByDistance - 1].pricePerKm = '';
                                                 }
                                             }
                                             return { ...copy };
                                         });
-                                        setNumberOfCaps(numberOfCap - 1);
+                                        setnumberOfEntitesByDistances(numberOfEntitesByDistance - 1);
                                     }}
                                 >
                                     Remove last row
@@ -256,7 +256,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
                 productName: '',
             },
             csrfToken,
-            numberOfCapInitial: pricingPerDistanceData?.capPricing?.length || 1,
+            numberOfEntitesByDistanceInitial: pricingPerDistanceData?.capPricing?.length || 1,
         },
     };
 };

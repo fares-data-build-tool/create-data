@@ -164,7 +164,7 @@ exports[`pages DefinePricingPerDistance should render correctly 1`] = `
     >
       <DistanceRow
         errors={Array []}
-        numberOfCapToDisplay={1}
+        numberToDisplay={1}
         pricingPerDistance={
           Object {
             "capPricing": Array [
@@ -429,7 +429,7 @@ exports[`pages DefinePricingPerDistance should render error messaging when error
             },
           ]
         }
-        numberOfCapToDisplay={2}
+        numberToDisplay={2}
         pricingPerDistance={
           Object {
             "capPricing": Array [
