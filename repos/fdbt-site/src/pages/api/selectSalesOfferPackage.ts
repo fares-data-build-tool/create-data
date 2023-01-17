@@ -15,7 +15,6 @@ import {
     DistancePricingData,
     ErrorInfo,
     FareType,
-    MultiProduct,
     MultipleProductAttribute,
     MultipleProductAttributeWithErrors,
     NextApiRequestWithSession,
@@ -23,6 +22,7 @@ import {
     SchoolFareTypeAttribute,
     SelectSalesOfferPackageWithError,
     TypeOfCap,
+    ProductInfo,
 } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
@@ -91,15 +91,7 @@ export const getProductsByValues = (
     ticket: TicketWithIds | undefined,
     multipleProductAttribute: MultipleProductAttribute | MultipleProductAttributeWithErrors | undefined,
     pricePerDistanceName: string,
-):
-    | MultiProduct[]
-    | {
-          productName: string;
-          productPrice: string | undefined;
-      }[]
-    | {
-          productName: string;
-      }[] => {
+): ProductInfo[] => {
     // for 'period', 'multiOperator', 'flatFare' that have multiple products
     const products = [{ productName: 'product', productPrice: '' }];
     if (multipleProductAttribute) {
@@ -110,10 +102,10 @@ export const getProductsByValues = (
         return [{ productName: pricePerDistanceName, productPrice: '' }];
     }
     if (ticket && 'products' in ticket && 'productName' in ticket.products[0] && 'productPrice' in ticket.products[0]) {
-        return [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }];
+        return [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice || '' }];
     }
     if (ticket && 'products' in ticket && 'productName' in ticket.products[0] && isPointToPointTicket(ticket)) {
-        return [{ productName: ticket.products[0].productName }];
+        return [{ productName: ticket.products[0].productName, productPrice: '' }];
     }
     return products;
 };

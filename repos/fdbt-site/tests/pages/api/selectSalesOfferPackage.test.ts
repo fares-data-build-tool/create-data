@@ -289,6 +289,7 @@ describe('selectSalesOfferPackage', () => {
             expect(getProductsByValues(expectedPointToPointPeriodTicket, undefined, '')).toEqual([
                 {
                     productName: 'My product',
+                    productPrice: '',
                 },
             ]);
         });
@@ -309,6 +310,8 @@ describe('selectSalesOfferPackage', () => {
                             {
                                 productName: 'Weekly Ticket',
                                 productPrice: '50',
+                                productNameId: '',
+                                productPriceId: '',
                             },
                         ],
                     },
@@ -318,6 +321,8 @@ describe('selectSalesOfferPackage', () => {
                 {
                     productName: 'Weekly Ticket',
                     productPrice: '50',
+                    productNameId: '',
+                    productPriceId: '',
                 },
             ]);
         });

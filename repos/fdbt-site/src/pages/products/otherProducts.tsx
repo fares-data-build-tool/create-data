@@ -187,7 +187,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
                 return Promise.all(
                     matchingJson.products?.map(async (innerProduct) => {
-                        const productDescription = getProductName(innerProduct);
+                        const productDescription = getProductName(innerProduct as Product);
                         const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
                         const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
                         const passengerType = await getPassengerTypeNameByIdAndNoc(matchingJson.passengerType.id, noc);

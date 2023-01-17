@@ -55,6 +55,11 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
                   "label": "Point to Point",
                   "value": "pointToPointPeriod",
                 },
+                Object {
+                  "hint": "Multi service, priced by distance",
+                  "label": "Multi service, priced by distance",
+                  "value": "multipleServicesPricedByDistance",
+                },
               ]
             }
           />
@@ -227,6 +232,11 @@ exports[`pages ticketRepresentation should render error messaging when errors ar
                   "hint": "Unlimited travel within a geographic zone and certain additional services outside that zone",
                   "label": "Hybrid period ticket",
                   "value": "hybrid",
+                },
+                Object {
+                  "hint": "Multi service, priced by distance",
+                  "label": "Multi service, priced by distance",
+                  "value": "multipleServicesPricedByDistance",
                 },
               ]
             }

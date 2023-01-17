@@ -56,6 +56,7 @@ import {
     OperatorGroup,
     ProductToDisplay,
     ServiceToDisplay,
+    MultiOperatorMultipleServicesTicket,
 } from '../../src/interfaces';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
@@ -1224,223 +1225,23 @@ export const expectedCappedTicket: WithIds<CappedTicket> = {
     email: 'test@example.com',
     uuid: 'BLAC28ac10f0',
     ticketPeriod: { startDate: '2020-02-01T00:00:00.000Z' },
-    lineName: '1',
-    serviceDescription: 'FLEETWOOD - BLACKPOOL via Promenade',
-    lineId: '4YyoI0',
-    fareZones: [
-        {
-            name: 'Shott Drive',
-            stops: [
-                {
-                    stopName: 'Market Street',
-                    naptanCode: 'blpajgag',
-                    atcoCode: '2590B0901',
-                    localityCode: 'E0054826',
-                    localityName: 'Blackpool Town Centre',
-                    parentLocalityName: 'Blackpool',
-                    indicator: 'Stop MA1',
-                    street: 'Market Street',
-                    qualifierName: '',
-                },
-            ],
-            prices: [
-                { price: '1.10', fareZones: ['The Stag pub', 'Frederick Drive', 'Red Lane'] },
-                { price: '1.70', fareZones: ['Rail Station', 'Redtree Street', 'Park Lane', 'Daws Bank/Plough Ave'] },
-            ],
-        },
-        {
-            name: 'The Stag pub',
-            stops: [
-                {
-                    stopName: 'Bank Hey Street',
-                    naptanCode: 'blpadjmt',
-                    atcoCode: '2590B0128',
-                    localityCode: 'N0079382',
-                    localityName: 'Promenade',
-                    parentLocalityName: 'Blackpool',
-                    indicator: 'Stop 2',
-                    street: 'Bank Hey Street',
-                    qualifierName: '',
-                },
-            ],
-            prices: [
-                { price: '1.10', fareZones: ['Frederick Drive', 'Red Lane'] },
-                { price: '1.70', fareZones: ['Rail Station', 'Redtree Street', 'Park Lane', 'Daws Bank/Plough Ave'] },
-            ],
-        },
-        {
-            name: 'Frederick Drive',
-            stops: [
-                {
-                    stopName: 'Central Coach Station',
-                    naptanCode: 'blpagwat',
-                    atcoCode: '2590B0677',
-                    localityCode: 'E0054826',
-                    localityName: 'Blackpool Town Centre',
-                    parentLocalityName: 'Blackpool',
-                    indicator: 'opp',
-                    street: 'Central Drive',
-                    qualifierName: '',
-                },
-            ],
-            prices: [
-                { price: '1.10', fareZones: ['Red Lane', 'Rail Station', 'Redtree Street'] },
-                { price: '1.70', fareZones: ['Park Lane', 'Daws Bank/Plough Ave'] },
-            ],
-        },
-        {
-            name: 'Red Lane',
-            stops: [
-                {
-                    stopName: 'Chapel Street',
-                    naptanCode: 'blpagjwp',
-                    atcoCode: '2590B0516',
-                    localityCode: 'N0079370',
-                    localityName: 'Central',
-                    parentLocalityName: 'Blackpool',
-                    indicator: 'by',
-                    street: 'Central Drive',
-                    qualifierName: '',
-                },
-            ],
-            prices: [
-                { price: '1.10', fareZones: ['Rail Station', 'Redtree Street'] },
-                { price: '1.70', fareZones: ['Park Lane', 'Daws Bank/Plough Ave'] },
-            ],
-        },
-        {
-            name: 'Rail Station',
-            stops: [
-                {
-                    stopName: 'Gymnasium',
-                    naptanCode: 'blpadjpd',
-                    atcoCode: '2590B0131',
-                    localityCode: 'N0079370',
-                    localityName: 'Central',
-                    parentLocalityName: 'Blackpool',
-                    indicator: 'by',
-                    street: 'Grasmere Road',
-                    qualifierName: '',
-                },
-            ],
-            prices: [{ price: '1.00', fareZones: ['Redtree Street', 'Park Lane', 'Daws Bank/Plough Ave'] }],
-        },
-        {
-            name: 'Redtree Street',
-            stops: [
-                {
-                    stopName: 'Revoe School',
-                    naptanCode: 'blpadjpg',
-                    atcoCode: '2590B0132',
-                    localityCode: 'N0079371',
-                    localityName: 'Ansdell',
-                    parentLocalityName: 'Blackpool',
-                    indicator: 'opp',
-                    street: 'Grasmere Road',
-                    qualifierName: '',
-                },
-            ],
-            prices: [{ price: '1.00', fareZones: ['Park Lane', 'Daws Bank/Plough Ave'] }],
-        },
-        {
-            name: 'Park Lane',
-            stops: [
-                {
-                    stopName: 'Condor Square',
-                    naptanCode: 'blpadjpj',
-                    atcoCode: '2590B0133',
-                    localityCode: 'N0079371',
-                    localityName: 'Ansdell',
-                    parentLocalityName: 'Blackpool',
-                    indicator: 'by',
-                    street: 'Ansdell Road',
-                    qualifierName: '',
-                },
-            ],
-            prices: [{ price: '1.00', fareZones: ['Daws Bank/Plough Ave'] }],
-        },
-        {
-            name: 'Daws Bank/Plough Ave',
-            stops: [
-                {
-                    stopName: 'Bloomfield Hotel',
-                    naptanCode: 'blpadjpm',
-                    atcoCode: '2590B0134',
-                    localityCode: 'E0035294',
-                    localityName: 'Bloomfield',
-                    parentLocalityName: 'Blackpool',
-                    indicator: 'o/s',
-                    street: 'Ansdell Road',
-                    qualifierName: '',
-                },
-            ],
-            prices: [],
-        },
-    ],
-    unassignedStops: {
-        singleUnassignedStops: [
-            { atcoCode: '2590B0135' },
-            { atcoCode: '2590B0136' },
-            { atcoCode: '2590B0137' },
-            { atcoCode: '2590B0138' },
-            { atcoCode: '2590B0139' },
-            { atcoCode: '2590BTA01300' },
-            { atcoCode: '2590B0419' },
-            { atcoCode: '2590B0420' },
-            { atcoCode: '2590B0421' },
-            { atcoCode: '2590B0422' },
-            { atcoCode: '2590B0423' },
-            { atcoCode: '2590B0424' },
-            { atcoCode: '2590B0425' },
-            { atcoCode: '2590B0426' },
-            { atcoCode: '2590B0427' },
-            { atcoCode: '2500B0428' },
-            { atcoCode: '2500B0429' },
-            { atcoCode: '2500B0430' },
-            { atcoCode: '2500B0431' },
-            { atcoCode: '2500IMG390' },
-            { atcoCode: '2500IMG387' },
-            { atcoCode: '2500B0433' },
-            { atcoCode: '2500BTA01082' },
-            { atcoCode: '2500B0435' },
-            { atcoCode: '2500B0436' },
-            { atcoCode: '2500B0437' },
-            { atcoCode: '2500B0438' },
-            { atcoCode: '2500B0439' },
-            { atcoCode: '2500B0440' },
-            { atcoCode: '2500B0441' },
-            { atcoCode: '2500B0287' },
-            { atcoCode: '2500B0347' },
-            { atcoCode: '2500B0348' },
-            { atcoCode: '2500B0349' },
-            { atcoCode: '2500B0350' },
-            { atcoCode: '2500B0351' },
-            { atcoCode: '2500B0352' },
-            { atcoCode: '2500B0353' },
-            { atcoCode: '2500B0354' },
-            { atcoCode: '2500B0355' },
-            { atcoCode: '2500B0356' },
-            { atcoCode: '2500B0357' },
-            { atcoCode: '2500B0358' },
-            { atcoCode: '2500B0359' },
-            { atcoCode: '2500B0360' },
-            { atcoCode: '2500B0266' },
-            { atcoCode: '2500B0267' },
-            { atcoCode: '2500B0268' },
-            { atcoCode: '2500B0269' },
-            { atcoCode: '2500B0534' },
-            { atcoCode: '2500B0535' },
-            { atcoCode: '2500IMG660' },
-            { atcoCode: '2500IMG661' },
-            { atcoCode: '2500IMG663' },
-            { atcoCode: '2500B0449' },
-        ],
-    },
-    products: [{ salesOfferPackages: [{ id: 1 }] }],
-    termTime: false,
+    products: [{ productName: '', salesOfferPackages: [{ id: 1, price: undefined }] }],
     operatorName: 'Blackpool Transport',
-    journeyDirection: 'outbound',
     carnet: false,
+    cappedProductInfo: {
+        capDetails: {
+            productName: 'Product 1',
+            maximumPrice: '2',
+            minimumPrice: '1',
+            capPricing: [
+                {
+                    distanceFrom: '0',
+                    distanceTo: 'Max',
+                    pricePerKm: '2',
+                },
+            ],
+        },
+    },
 };
 
 export const expectedSingleTicket: WithIds<SingleTicket> = {
@@ -3000,177 +2801,178 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Wit
     ],
 };
 
-export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators = {
-    operatorName: 'test',
-    type: 'multiOperator',
-    nocCode: 'TEST',
-    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    email: 'test@example.com',
-    passengerType: { id: 9 },
-    termTime: false,
-    timeRestriction: { id: 2 },
-    ticketPeriod: {
-        startDate: '2020-12-17T09:30:46.0Z',
-        endDate: '2020-12-18T09:30:46.0Z',
-    },
-    operatorGroupId: 1,
-    products: [
-        {
-            productName: 'Weekly Ticket',
-            productPrice: '50',
-            productDuration: '5 weeks',
-            productValidity: 'fareDayEnd',
-            salesOfferPackages: [
-                {
-                    id: 1,
-                    price: undefined,
-                },
-                {
-                    id: 2,
-                    price: undefined,
-                },
-            ],
-            carnetDetails: undefined,
+export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators: WithIds<MultiOperatorMultipleServicesTicket> =
+    {
+        operatorName: 'test',
+        type: 'multiOperator',
+        nocCode: 'TEST',
+        uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+        email: 'test@example.com',
+        passengerType: { id: 9 },
+        termTime: false,
+        timeRestriction: { id: 2 },
+        ticketPeriod: {
+            startDate: '2020-12-17T09:30:46.0Z',
+            endDate: '2020-12-18T09:30:46.0Z',
         },
-        {
-            productName: 'Day Ticket',
-            productPrice: '2.50',
-            productDuration: '1 year',
-            productValidity: 'fareDayEnd',
-            salesOfferPackages: [
-                {
-                    id: 1,
-                    price: undefined,
-                },
-                {
-                    id: 2,
-                    price: undefined,
-                },
-            ],
-            carnetDetails: undefined,
-        },
-        {
-            productName: 'Monthly Ticket',
-            productPrice: '200',
-            productDuration: '28 months',
-            productValidity: 'fareDayEnd',
-            salesOfferPackages: [
-                {
-                    id: 1,
-                    price: undefined,
-                },
-                {
-                    id: 2,
-                    price: undefined,
-                },
-            ],
-            carnetDetails: undefined,
-        },
-    ],
-    selectedServices: [
-        {
-            lineName: '12A',
-            lineId: '3h3vb32ik',
-            serviceCode: 'NW_05_BLAC_12A_1',
-            startDate: '13/05/2020',
-            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
-        },
-        {
-            lineName: '6',
-            lineId: '3h3vb32ik',
-            serviceCode: 'NW_05_BLAC_6_1',
-            startDate: '08/05/2020',
-            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
-        },
-        {
-            lineName: '101',
-            lineId: '3h3vb32ik',
-            serviceCode: 'NW_05_BLAC_101_1',
-            startDate: '06/05/2020',
-            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
-        },
-    ],
-    additionalOperators: [
-        {
-            nocCode: 'WBTR',
-            selectedServices: [
-                {
-                    lineName: '343',
-                    lineId: '3h3vsergesrhg',
-                    serviceCode: '11-444-_-y08-1',
-                    serviceDescription: 'Test Under Lyne - Glossop',
-                    startDate: '07/04/2020',
-                },
-                {
-                    lineName: '444',
-                    lineId: '3h3vtrhtherhed',
-                    serviceCode: 'NW_01_MCT_391_1',
-                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
-                    startDate: '23/04/2019',
-                },
-                {
-                    lineName: '543',
-                    lineId: '3h3vb32ik',
-                    serviceCode: 'NW_04_MCTR_232_1',
-                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
-                    startDate: '06/04/2020',
-                },
-            ],
-        },
-        {
-            nocCode: 'BLAC',
-            selectedServices: [
-                {
-                    lineName: '100',
-                    lineId: '3h3rthsrty56y5',
-                    serviceCode: '11-444-_-y08-1',
-                    serviceDescription: 'Test Under Lyne - Glossop',
-                    startDate: '07/04/2020',
-                },
-                {
-                    lineName: '101',
-                    lineId: '3h34t43deefsf',
-                    serviceCode: 'NW_01_MCT_391_1',
-                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
-                    startDate: '23/04/2019',
-                },
-                {
-                    lineName: '102',
-                    lineId: '34tvwevdsvb32ik',
-                    serviceCode: 'NW_04_MCTR_232_1',
-                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
-                    startDate: '06/04/2020',
-                },
-            ],
-        },
-        {
-            nocCode: 'LEDS',
-            selectedServices: [
-                {
-                    lineName: '63',
-                    lineId: '45t34gvfdx2ik',
-                    serviceCode: '11-444-_-y08-1',
-                    serviceDescription: 'Test Under Lyne - Glossop',
-                    startDate: '07/04/2020',
-                },
-                {
-                    lineName: '64',
-                    lineId: 'q45g4rgergik',
-                    serviceCode: 'NW_01_MCT_391_1',
-                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
-                    startDate: '23/04/2019',
-                },
-                {
-                    lineName: '65',
-                    lineId: 'q34ttfwerfsxfc',
-                    serviceCode: 'NW_04_MCTR_232_1',
-                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
-                    startDate: '06/04/2020',
-                },
-            ],
-        },
-    ],
-};
+        operatorGroupId: 1,
+        products: [
+            {
+                productName: 'Weekly Ticket',
+                productPrice: '50',
+                productDuration: '5 weeks',
+                productValidity: 'fareDayEnd',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
+                carnetDetails: undefined,
+            },
+            {
+                productName: 'Day Ticket',
+                productPrice: '2.50',
+                productDuration: '1 year',
+                productValidity: 'fareDayEnd',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
+                carnetDetails: undefined,
+            },
+            {
+                productName: 'Monthly Ticket',
+                productPrice: '200',
+                productDuration: '28 months',
+                productValidity: 'fareDayEnd',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
+                carnetDetails: undefined,
+            },
+        ],
+        selectedServices: [
+            {
+                lineName: '12A',
+                lineId: '3h3vb32ik',
+                serviceCode: 'NW_05_BLAC_12A_1',
+                startDate: '13/05/2020',
+                serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+            },
+            {
+                lineName: '6',
+                lineId: '3h3vb32ik',
+                serviceCode: 'NW_05_BLAC_6_1',
+                startDate: '08/05/2020',
+                serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+            },
+            {
+                lineName: '101',
+                lineId: '3h3vb32ik',
+                serviceCode: 'NW_05_BLAC_101_1',
+                startDate: '06/05/2020',
+                serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+            },
+        ],
+        additionalOperators: [
+            {
+                nocCode: 'WBTR',
+                selectedServices: [
+                    {
+                        lineName: '343',
+                        lineId: '3h3vsergesrhg',
+                        serviceCode: '11-444-_-y08-1',
+                        serviceDescription: 'Test Under Lyne - Glossop',
+                        startDate: '07/04/2020',
+                    },
+                    {
+                        lineName: '444',
+                        lineId: '3h3vtrhtherhed',
+                        serviceCode: 'NW_01_MCT_391_1',
+                        serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                        startDate: '23/04/2019',
+                    },
+                    {
+                        lineName: '543',
+                        lineId: '3h3vb32ik',
+                        serviceCode: 'NW_04_MCTR_232_1',
+                        serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                        startDate: '06/04/2020',
+                    },
+                ],
+            },
+            {
+                nocCode: 'BLAC',
+                selectedServices: [
+                    {
+                        lineName: '100',
+                        lineId: '3h3rthsrty56y5',
+                        serviceCode: '11-444-_-y08-1',
+                        serviceDescription: 'Test Under Lyne - Glossop',
+                        startDate: '07/04/2020',
+                    },
+                    {
+                        lineName: '101',
+                        lineId: '3h34t43deefsf',
+                        serviceCode: 'NW_01_MCT_391_1',
+                        serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                        startDate: '23/04/2019',
+                    },
+                    {
+                        lineName: '102',
+                        lineId: '34tvwevdsvb32ik',
+                        serviceCode: 'NW_04_MCTR_232_1',
+                        serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                        startDate: '06/04/2020',
+                    },
+                ],
+            },
+            {
+                nocCode: 'LEDS',
+                selectedServices: [
+                    {
+                        lineName: '63',
+                        lineId: '45t34gvfdx2ik',
+                        serviceCode: '11-444-_-y08-1',
+                        serviceDescription: 'Test Under Lyne - Glossop',
+                        startDate: '07/04/2020',
+                    },
+                    {
+                        lineName: '64',
+                        lineId: 'q45g4rgergik',
+                        serviceCode: 'NW_01_MCT_391_1',
+                        serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                        startDate: '23/04/2019',
+                    },
+                    {
+                        lineName: '65',
+                        lineId: 'q34ttfwerfsxfc',
+                        serviceCode: 'NW_04_MCTR_232_1',
+                        serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                        startDate: '06/04/2020',
+                    },
+                ],
+            },
+        ],
+    };
 
 export const expectedFlatFareTicket: WithIds<FlatFareGeoZoneTicket> | WithIds<FlatFareMultipleServices> = {
     operatorName: 'test',

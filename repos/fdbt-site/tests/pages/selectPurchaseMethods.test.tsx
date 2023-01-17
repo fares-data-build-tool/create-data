@@ -310,6 +310,7 @@ describe('pages', () => {
                     session: {
                         [FARE_TYPE_ATTRIBUTE]: { fareType: 'capped' },
                         [TYPE_OF_CAP_ATTRIBUTE]: { typeOfCap: 'byDistance' },
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: undefined,
                         [PRICING_PER_DISTANCE_ATTRIBUTE]: {
                             productName: 'product name',
                             maximumPrice: '',
