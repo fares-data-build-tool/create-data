@@ -1,3 +1,4 @@
+import { random } from 'cypress/types/lodash';
 import {
     startPageLinkClick,
     clickElementById,
@@ -27,6 +28,7 @@ import {
     completeMultiServicePages,
     getElementByClass,
     throwInvalidRandomSelectorError,
+    completePricingPerDistancePage,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (): void => {
@@ -77,6 +79,7 @@ export const completeFlatFarePages = (
     isScheme: boolean,
     isCarnet = false,
     isGeoZone = false,
+    isByDistance = false,
 ): void => {
     if (isScheme) {
         completeOperatorSearch();
@@ -85,10 +88,15 @@ export const completeFlatFarePages = (
         submitButtonClick();
     } else {
         randomlyChooseAndSelectServices();
-        continueButtonClick();
+        continueButtonClick();        
     }
-    getElementById('multiple-product-name-0').type(productName);
-    getElementById('multiple-product-price-0').type('50.50');
+    
+    if (isByDistance) {
+        completePricingPerDistancePage(productName);
+    } else {
+        getElementById('multiple-product-name-0').type(productName);
+        getElementById('multiple-product-price-0').type('50.50');
+    }
 
     if (isCarnet) {
         getElementById('product-details-carnet-quantity-0').type('20');
