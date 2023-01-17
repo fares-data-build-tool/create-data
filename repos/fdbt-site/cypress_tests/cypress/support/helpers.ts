@@ -297,35 +297,6 @@ export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
     });
 };
 
-export const completePricingPerDistancePage = (productName: string): void => {
-    getElementById('capped-product-name').type(productName);
-    getElementById('minimum-price').type('1.0');
-    getElementById('maximum-price').type('2.6');
-
-    const randomSelector = getRandomNumber(1, 4);
-    cy.log(`Random Selector ${randomSelector}`);
-    for (let i = 0; i < randomSelector; i++) {
-        if (i !== randomSelector - 1) {
-            getElementById('add-another-button').click();
-        }
-        cy.log(`Checking for ${i}`);
-        const fromDistance = (i * 2).toString();
-        const toDistance = ((i + 1) * 2).toString();
-        const pricePerKm = ((i + 1) * 3).toString();
-
-        cy.log(`Row(${i}): ${fromDistance}, ${toDistance}, Price: ${pricePerKm}`);
-        getElementById(`price-per-km-${i}`).type(pricePerKm);
-
-        if (i != 0) {
-            getElementById(`distance-from-${i}`).clear().type(fromDistance);
-        }
-
-        if (i !== randomSelector - 1) {
-            getElementById(`distance-to-${i}`).clear().type(toDistance);
-        }
-    }
-};
-
 export const completeGroupPassengerDetailsPages = (): void => {
     const groupSize = completeGroupSizePage();
     completeDefineGroupPassengersPages(groupSize);

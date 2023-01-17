@@ -27,7 +27,6 @@ import {
     completeMultiServicePages,
     getElementByClass,
     throwInvalidRandomSelectorError,
-    completePricingPerDistancePage,
 } from './helpers';
 
 export const defineUserTypeAndTimeRestrictions = (isEditing?: boolean): void => {
@@ -90,12 +89,8 @@ export const completeFlatFarePages = (
         continueButtonClick();
     }
 
-    if (isByDistance) {
-        completePricingPerDistancePage(productName);
-    } else {
-        getElementById('multiple-product-name-0').type(productName);
-        getElementById('multiple-product-price-0').type('50.50');
-    }
+    getElementById('multiple-product-name-0').type(productName);
+    getElementById('multiple-product-price-0').type('50.50');
 
     if (isCarnet) {
         getElementById('product-details-carnet-quantity-0').type('20');

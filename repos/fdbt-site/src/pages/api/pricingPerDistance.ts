@@ -150,6 +150,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     const fareType = getFareTypeFromFromAttributes(req);
     if (fareType === 'flatFare') {
         redirectTo(res, '/ticketConfirmation');
+        return;
     }
     redirectTo(res, '/additionalPricingStructures');
     return;
