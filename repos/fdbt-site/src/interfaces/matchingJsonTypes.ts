@@ -266,6 +266,7 @@ export interface Product {
     productDurationUnits?: string;
     productEndTime?: string;
     carnetDetails?: CarnetDetails;
+    pricingByDistance?: DistancePricingData;
 }
 
 export interface CappedGeoZoneTicket extends BaseTicket<'capped'> {
