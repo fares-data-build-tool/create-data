@@ -26,4 +26,14 @@ describe('The flat fare faretype product journey', () => {
         completeSalesPages();
         isFinished();
     });
+
+    it.only('completes successfully for pricing by distance', () => {
+        selectFareType('flatFare', false);
+        defineUserTypeAndTimeRestrictions();
+        clickElementById('radio-option-multipleServicesPricedByDistance');
+        continueButtonClick();
+        completeFlatFarePages('Flat Fare Test Product', false, false, false, true);
+        completeSalesPages();
+        isFinished();
+    });
 });
