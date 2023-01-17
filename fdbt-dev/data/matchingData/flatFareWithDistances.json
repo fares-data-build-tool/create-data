@@ -1,0 +1,54 @@
+{
+  "operatorName": "Test Operator",
+  "nocCode": "BLAC",
+  "type": "flatFare",
+  "passengerType": { "id": 1 },
+  "email": "test@example.com",
+  "uuid": "BLACec063873",
+  "ticketPeriod": { "startDate": "2023-05-11T00:00:00.000Z" },
+  "products": [
+    {
+      "salesOfferPackages": [
+        {
+          "id": 1,
+          "name": "cash",
+          "description": "Purchase method automatically created",
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["cash"],
+          "ticketFormats": ["paperTicket"],
+          "isCapped": false
+        }
+      ],
+      "pricingByDistance": {
+        "maximumPrice": "8",
+        "minimumPrice": "6",
+        "capPricing": [
+          { "distanceFrom": "0", "distanceTo": "Max", "pricePerKm": "2" }
+        ],
+        "productName": "Flat Fare With Distances"
+      }
+    }
+  ],
+  "selectedServices": [
+    {
+      "lineName": "1",
+      "lineId": "4YyoI0",
+      "serviceCode": "NW_05_BLAC_1_1",
+      "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade"
+    },
+    {
+      "lineName": "2C",
+      "lineId": "vySmfewe0",
+      "serviceCode": "NW_05_BLAC_2C_1",
+      "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
+    },
+    {
+      "lineName": "5",
+      "lineId": "zwEFaZ",
+      "serviceCode": "NW_05_BLAC_5_1",
+      "serviceDescription": "VICTORIA HOSPITAL - BLACKPOOL TOWN CENTRE - HALFWAY HOUSE"
+    }
+  ],
+  "termTime": false,
+  "carnet": false
+}
