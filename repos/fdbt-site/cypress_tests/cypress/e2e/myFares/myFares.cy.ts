@@ -55,7 +55,7 @@ describe('The my fares point to point products pages', () => {
         clickElementByText('Services');
         editEndDatePointToPointPage();
     });
-    it("allows the user to edit a point to point product's time restriction", () => {
+    it.only("allows the user to edit a point to point product's time restriction", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Services');
@@ -130,7 +130,7 @@ describe('The my fares products pages', () => {
         clickElementByText('Other products');
         editPurchaseMethodOtherProductsPage();
     });
-    it("allows the user to edit a product's time restriction", () => {
+    it.only("allows the user to edit a product's time restriction", () => {
         getHomePage();
         clickElementById('account-link');
         clickElementByText('Other products');

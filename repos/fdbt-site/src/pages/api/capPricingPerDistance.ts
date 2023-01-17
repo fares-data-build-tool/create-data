@@ -1,7 +1,7 @@
 import { startCase } from 'lodash';
 import { NextApiResponse } from 'next';
 import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
-import { redirectTo } from '../../../src/utils/apiUtils';
+import { getFareTypeFromFromAttributes, redirectTo } from '../../../src/utils/apiUtils';
 import { checkProductOrCapNameIsValid, isCurrency } from '../../../src/utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../../src/utils/sessions';
 import { CapDistancePricing, DistanceCap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
@@ -147,7 +147,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     }
 
     updateSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, distanceCap);
-
+    const fareType = getFareTypeFromFromAttributes(req);
+    if (fareType === 'flatFare') {
+        redirectTo(res, '/ticketConfirmation');
+    }
     redirectTo(res, '/additionalPricingStructures');
     return;
 };

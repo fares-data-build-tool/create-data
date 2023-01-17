@@ -95,7 +95,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/typeOfCap');
             return;
         }
-
+        if (fareType === 'flatFare') {
+            redirectTo(res, '/defineCapPricingPerDistance');
+            return;
+        }
         redirectTo(res, '/multipleProducts');
         return;
     } catch (error) {

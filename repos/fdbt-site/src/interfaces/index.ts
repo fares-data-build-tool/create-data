@@ -83,7 +83,7 @@ export interface Errors {
 }
 
 export interface TicketRepresentationAttribute {
-    name: 'geoZone' | 'multipleServices' | 'hybrid' | 'pointToPointPeriod';
+    name: 'geoZone' | 'multipleServices' | 'hybrid' | 'pointToPointPeriod' | 'multipleServicesPricedByDistance';
 }
 
 export interface TicketRepresentationAttributeWithErrors {
