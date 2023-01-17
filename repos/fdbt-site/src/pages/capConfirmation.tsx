@@ -8,7 +8,7 @@ import {
     SERVICE_LIST_ATTRIBUTE,
     MULTI_TAPS_PRICING_ATTRIBUTE,
     ADDITIONAL_PRICING_ATTRIBUTE,
-    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
 } from '../constants/attributes';
 import { NextPageContextWithSession, ConfirmationElement, Cap, CapDetails } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
@@ -123,7 +123,7 @@ export const buildCapConfirmationElements = (
         confirmationElements.push({
             name: 'Prices',
             content: capDistancePricingContents,
-            href: '/defineCapPricingPerDistance',
+            href: '/definePricingPerDistance',
         });
     }
 
@@ -132,7 +132,7 @@ export const buildCapConfirmationElements = (
             confirmationElements.push({
                 name: `Distance band ${index + 1}`,
                 content: distanceBandContent,
-                href: '/defineCapPricingPerDistance',
+                href: '/definePricingPerDistance',
             });
         });
     }
@@ -224,7 +224,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const multiTapsPricingAttribute = getSessionAttribute(ctx.req, MULTI_TAPS_PRICING_ATTRIBUTE);
 
-    const capDistancePricingAttribute = getSessionAttribute(ctx.req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE);
+    const capDistancePricingAttribute = getSessionAttribute(ctx.req, PRICING_PER_DISTANCE_ATTRIBUTE);
 
     const tapsPricingContents: string[] = [];
     if (multiTapsPricingAttribute && !isWithErrors(multiTapsPricingAttribute)) {

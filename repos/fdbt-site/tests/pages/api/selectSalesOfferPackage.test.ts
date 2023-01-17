@@ -5,9 +5,21 @@ import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import { MultiProduct } from '../../../src/interfaces';
-import selectSalesOfferPackages, { sanitiseReqBody } from '../../../src/pages/api/selectSalesOfferPackage';
+import selectSalesOfferPackages, {
+    getProductsByValues,
+    sanitiseReqBody,
+} from '../../../src/pages/api/selectSalesOfferPackage';
 import * as session from '../../../src/utils/sessions';
-import { expectedSingleTicket, getMockRequestAndResponse } from '../../testData/mockData';
+import {
+    expectedCappedTicket,
+    expectedFlatFareTicket,
+    expectedPeriodGeoZoneTicketWithMultipleProducts,
+    expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
+    expectedPointToPointPeriodTicket,
+    expectedSingleTicket,
+    getMockRequestAndResponse,
+    mockPointToPointProducts,
+} from '../../testData/mockData';
 import * as userData from '../../../src/utils/apiUtils/userData';
 import { ExpiryUnit } from '../../../src/interfaces/matchingJsonTypes';
 
@@ -272,6 +284,60 @@ describe('selectSalesOfferPackage', () => {
                 paymentMethods: ['mobilePhone'],
                 ticketFormats: ['paperTicket', 'smartCard'],
             });
+        });
+    });
+    describe('getProductsByValues', () => {
+        it('returns an object with productName if the ticket is a point to point', () => {
+            expect(getProductsByValues(expectedPointToPointPeriodTicket, undefined, '')).toEqual([
+                {
+                    productName: 'My product',
+                },
+            ]);
+        });
+        it('returns multipleProducts if multipleProducts is present ', () => {
+            expect(getProductsByValues(expectedFlatFareTicket, undefined, '')).toEqual([
+                {
+                    productName: 'Weekly Rider',
+                    productPrice: '7',
+                },
+            ]);
+        });
+        it('returns an object with productName if it is present in the ticket', () => {
+            expect(
+                getProductsByValues(
+                    expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
+                    {
+                        products: [
+                            {
+                                productName: 'Weekly Ticket',
+                                productPrice: '50',
+                            },
+                        ],
+                    },
+                    '',
+                ),
+            ).toEqual([
+                {
+                    productName: 'Weekly Ticket',
+                    productPrice: '50',
+                },
+            ]);
+        });
+        it('returns an object with productName and productPrice (empty) if the price per distance attribute exists', () => {
+            expect(getProductsByValues(expectedCappedTicket, undefined, 'name here')).toEqual([
+                {
+                    productName: 'name here',
+                    productPrice: '',
+                },
+            ]);
+        });
+        it('returns an object name with the default of products and empty productPrice if none of the conditions are met', () => {
+            expect(getProductsByValues(expectedSingleTicket, undefined, '')).toEqual([
+                {
+                    productName: 'product',
+                    productPrice: '',
+                },
+            ]);
         });
     });
 });

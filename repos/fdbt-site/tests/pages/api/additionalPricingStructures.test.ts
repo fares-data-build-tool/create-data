@@ -14,7 +14,7 @@ describe('additionalPricingStructures', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates additional pricing structures info, updates the  ADDITIONAL_PRICING_ATTRIBUTE and then redirects to /capConfirmation if all is valid', () => {
+    it('correctly generates additional capPricing structures info, updates the  ADDITIONAL_PRICING_ATTRIBUTE and then redirects to /capConfirmation if all is valid', () => {
         const mockAdditionalStructuresInfo: AdditionalPricing = {
             pricingStructureStart: '2',
             structureDiscount: '2',
@@ -63,7 +63,7 @@ describe('additionalPricingStructures', () => {
         });
     });
 
-    it('does not generate additional pricing structures info, then redirects to /capConfirmation when no is selected', () => {
+    it('does not generate additional capPricing structures info, then redirects to /capConfirmation when no is selected', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 additionalDiscounts: 'no',
@@ -83,7 +83,7 @@ describe('additionalPricingStructures', () => {
     it('produces an error when pricingStructureStart is empty', () => {
         const errors: ErrorInfo[] = [
             {
-                id: 'pricing-structure-start',
+                id: 'capPricing-structure-start',
                 errorMessage: 'Enter a value for the Time allowance after first journey',
             },
         ];
@@ -144,7 +144,7 @@ describe('validate additional structures input tests', () => {
 
         const errorsResult: ErrorInfo[] = [
             {
-                id: 'pricing-structure-start',
+                id: 'capPricing-structure-start',
                 errorMessage: 'Time allowance after first journey must be a whole number',
             },
         ];
@@ -174,7 +174,7 @@ describe('validate additional structures input tests', () => {
 
         const errorsResult: ErrorInfo[] = [
             {
-                id: 'pricing-structure-start',
+                id: 'capPricing-structure-start',
                 errorMessage: 'Time allowance after first journey cannot be a negative number',
             },
             {

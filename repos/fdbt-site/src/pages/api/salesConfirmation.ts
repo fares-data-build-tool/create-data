@@ -28,6 +28,7 @@ import {
     splitUserDataJsonByProducts,
     insertDataToProductsBucketAndProductsTable,
     getCappedTicketJson,
+    getMultipleServicesByDistanceTicketJson,
 } from '../../utils/apiUtils/userData';
 import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
 
@@ -55,7 +56,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
         } else if (fareType === 'capped') {
-            if (!ticketType || ticketType === 'hybrid' || ticketType === 'pointToPointPeriod') {
+            if (
+                !ticketType ||
+                ticketType === 'hybrid' ||
+                ticketType === 'pointToPointPeriod' ||
+                ticketType === 'multipleServicesPricedByDistance'
+            ) {
                 throw new Error('Capped ticket required a type of ticket representation of geoZone or multiService.');
             }
             userDataJson = await getCappedTicketJson(req, res, ticketType);
@@ -66,6 +72,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     break;
                 case 'multipleServices':
                     userDataJson = getMultipleServicesTicketJson(req, res);
+                    break;
+                case 'multipleServicesPricedByDistance':
+                    userDataJson = getMultipleServicesByDistanceTicketJson(req, res);
                     break;
                 case 'hybrid':
                     userDataJson = await getHybridTicketJson(req, res);
@@ -81,6 +90,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (userDataJson) {
+            console.log(JSON.stringify(userDataJson));
+            //{"products":[{"salesOfferPackages":{"id":1},"pricingByDistance":{"maximumPrice":"5","minimumPrice":"2","capPricing":[{"distanceFrom":"0","distanceTo":"Max","pricePerKm":"4"}],"productName":"flat fare fake"}}],"selectedServices":[{"lineName":"1","lineId":"4YyoI0","serviceCode":"NW_05_BLAC_1_1","serviceDescription":"FLEETWOOD - BLACKPOOL via Promenade"},{"lineName":"2C","lineId":"vySmfewe0","serviceCode":"NW_05_BLAC_2C_1","serviceDescription":"KNOTT END - POULTON - BLACKPOOL"}],"termTime":false}
             const carnetAttribute = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
             const dataFormat = getSessionAttribute(req, TXC_SOURCE_ATTRIBUTE)?.source;
 

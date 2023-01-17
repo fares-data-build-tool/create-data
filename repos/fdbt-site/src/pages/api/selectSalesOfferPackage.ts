@@ -5,16 +5,19 @@ import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     CAPS_ATTRIBUTE,
-    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     TYPE_OF_CAP_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
     CapDetails,
-    DistanceCap,
+    DistancePricingData,
     ErrorInfo,
     FareType,
+    MultiProduct,
+    MultipleProductAttribute,
+    MultipleProductAttributeWithErrors,
     NextApiRequestWithSession,
     ProductWithSalesOfferPackages,
     SchoolFareTypeAttribute,
@@ -26,7 +29,8 @@ import { redirectTo, redirectToError } from '../../utils/apiUtils';
 import { checkPriceIsValid, removeAllWhiteSpace, removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { toArray } from '../../utils';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
-import { SalesOfferPackage, Ticket, WithIds } from '../../interfaces/matchingJsonTypes';
+import { SalesOfferPackage, Ticket, TicketWithIds, WithIds } from '../../interfaces/matchingJsonTypes';
+import { isPointToPointTicket } from '../../../src/interfaces/typeGuards';
 
 interface SanitisedBodyAndErrors {
     sanitisedBody: { [key: string]: SalesOfferPackage[] };
@@ -44,7 +48,7 @@ export const sanitiseReqBody = (
 
     const sanitisedBody = products.reduce((sanitisedBody, product) => {
         const sopInput = req.body[`${productPrefix}${product.productName}`];
-
+        console.log(JSON.stringify(req.body));
         if (!sopInput) {
             errors.push({
                 errorMessage: 'Choose at least one sales offer package from the options',
@@ -83,13 +87,42 @@ export const sanitiseReqBody = (
         errors,
     };
 };
-
+export const getProductsByValues = (
+    ticket: TicketWithIds | undefined,
+    multipleProductAttribute: MultipleProductAttribute | MultipleProductAttributeWithErrors | undefined,
+    pricePerDistanceName: string,
+):
+    | MultiProduct[]
+    | {
+          productName: string;
+          productPrice: string | undefined;
+      }[]
+    | {
+          productName: string;
+      }[] => {
+    // for 'period', 'multiOperator', 'flatFare' that have multiple products
+    const products = [{ productName: 'product', productPrice: '' }];
+    if (multipleProductAttribute) {
+        return multipleProductAttribute.products;
+    }
+    // if it has a price per distance attribute e.g. 'capped' or 'flatFare'
+    if (!!pricePerDistanceName) {
+        return [{ productName: pricePerDistanceName, productPrice: '' }];
+    }
+    if (ticket && 'products' in ticket && 'productName' in ticket.products[0] && 'productPrice' in ticket.products[0]) {
+        return [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }];
+    }
+    if (ticket && 'products' in ticket && 'productName' in ticket.products[0] && isPointToPointTicket(ticket)) {
+        return [{ productName: ticket.products[0].productName }];
+    }
+    return products;
+};
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const multipleProductAttribute = getSessionAttribute(req, MULTIPLE_PRODUCT_ATTRIBUTE);
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
-
+        console.log('ticket', JSON.stringify(ticket));
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
         const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
@@ -98,14 +131,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             fareTypeValue === 'schoolService' && !!schoolFareTypeAttribute
                 ? schoolFareTypeAttribute.schoolFareType
                 : fareTypeValue;
-
+        console.log(fareType);
         let cappedProductName = '';
 
         if (fareType === 'capped') {
             const { typeOfCap } = getSessionAttribute(req, TYPE_OF_CAP_ATTRIBUTE) as TypeOfCap;
 
             if (typeOfCap === 'byDistance') {
-                const distanceCap = getSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE) as DistanceCap;
+                const distanceCap = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
                 cappedProductName = distanceCap.productName;
             } else {
                 const capDetails = getSessionAttribute(req, CAPS_ATTRIBUTE) as CapDetails;
@@ -113,21 +146,17 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
         }
 
-        const products = multipleProductAttribute
-            ? multipleProductAttribute.products
-            : ticket &&
-              'products' in ticket &&
-              'productName' in ticket.products[0] &&
-              'productPrice' in ticket.products[0]
-            ? [{ productName: ticket.products[0].productName, productPrice: ticket.products[0].productPrice }]
-            : ticket &&
-              'products' in ticket &&
-              'productName' in ticket.products[0] &&
-              (ticket.type === 'single' || ticket.type === 'return')
-            ? [{ productName: ticket.products[0].productName }]
-            : !!cappedProductName
-            ? [{ productName: cappedProductName, productPrice: '' }]
-            : [{ productName: 'product', productPrice: '' }];
+        if (fareType === 'flatFare') {
+            const pricingByDistance = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE);
+
+            if (pricingByDistance) {
+                cappedProductName = pricingByDistance.productName;
+            }
+        }
+        console.log(cappedProductName);
+
+        const products = getProductsByValues(ticket, multipleProductAttribute, cappedProductName);
+        console.log(JSON.stringify(products));
 
         const { sanitisedBody, errors } = sanitiseReqBody(req, products);
 
@@ -170,7 +199,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             );
             return;
         }
-
+        console.log('here');
         if (!multipleProductAttribute) {
             const key = !!cappedProductName ? cappedProductName : 'product';
             const salesOfferPackages: SalesOfferPackage[] = sanitisedBody[key];

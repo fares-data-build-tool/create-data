@@ -23,7 +23,7 @@ import {
     POINT_TO_POINT_PRODUCT_ATTRIBUTE,
     CSV_ZONE_FILE_NAME,
     DIRECTION_ATTRIBUTE,
-    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     ConfirmationElement,
@@ -244,7 +244,7 @@ export const buildFlatFarePriceByDistanceConfirmationElements = (
     const confirmationElements: ConfirmationElement[] = [];
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const services = serviceInformation ? serviceInformation.selectedServices : [];
-    const pricePerDistance = getSessionAttribute(ctx.req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE);
+    const pricePerDistance = getSessionAttribute(ctx.req, PRICING_PER_DISTANCE_ATTRIBUTE);
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
     const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
@@ -284,7 +284,7 @@ export const buildFlatFarePriceByDistanceConfirmationElements = (
         confirmationElements.push({
             name: 'Prices',
             content: distancePricingContents,
-            href: '/defineCapPricingPerDistance',
+            href: '/definePricingPerDistance',
         });
     }
 
@@ -293,7 +293,7 @@ export const buildFlatFarePriceByDistanceConfirmationElements = (
             confirmationElements.push({
                 name: `Distance band ${index + 1}`,
                 content: distanceBandContent,
-                href: '/defineCapPricingPerDistance',
+                href: '/definePricingPerDistance',
             });
         });
     }
