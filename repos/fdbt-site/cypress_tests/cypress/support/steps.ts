@@ -1,4 +1,3 @@
-import { random } from 'cypress/types/lodash';
 import {
     startPageLinkClick,
     clickElementById,
@@ -88,9 +87,9 @@ export const completeFlatFarePages = (
         submitButtonClick();
     } else {
         randomlyChooseAndSelectServices();
-        continueButtonClick();        
+        continueButtonClick();
     }
-    
+
     if (isByDistance) {
         completePricingPerDistancePage(productName);
     } else {
