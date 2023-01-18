@@ -83,7 +83,7 @@ export interface Errors {
 }
 
 export interface TicketRepresentationAttribute {
-    name: 'geoZone' | 'multipleServices' | 'hybrid' | 'pointToPointPeriod';
+    name: 'geoZone' | 'multipleServices' | 'hybrid' | 'pointToPointPeriod' | 'multipleServicesPricedByDistance';
 }
 
 export interface TicketRepresentationAttributeWithErrors {
@@ -748,17 +748,17 @@ export interface Cap {
     durationUnits: ExpiryUnit;
 }
 
-export interface CapDistancePricing {
+export interface DistancePricing {
     distanceFrom: string;
     distanceTo: string;
     pricePerKm: string;
 }
 
-export interface DistanceCap {
+export interface DistancePricingData {
     productName: string;
     maximumPrice: string;
     minimumPrice: string;
-    capPricing: CapDistancePricing[];
+    capPricing: DistancePricing[];
 }
 
 export interface MultiTap {

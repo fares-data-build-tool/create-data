@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
+exports[`pages DefinePricingPerDistance should render correctly 1`] = `
 <FullColumnLayout
-  description="Cap Pricing Per Distance entry page of the Create Fares Data Service"
+  description="Pricing Per Distance entry page of the Create Fares Data Service"
   errors={Array []}
-  title="Cap Pricing Per Distance - Create Fares Data Service"
+  title="Pricing Per Distance - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/capPricingPerDistance"
+    action="/api/pricingPerDistance"
     csrfToken=""
     method="post"
   >
@@ -16,9 +16,9 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
     />
     <h1
       className="govuk-heading-l"
-      id="cap-pricing-per-distance-heading"
+      id="cap-capPricing-per-distance-heading"
     >
-      Enter your distance cap details
+      Enter your distance details
     </h1>
     <div
       className="govuk-!-margin-bottom-3 govuk-!-margin-left-1"
@@ -27,12 +27,12 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
         className="govuk-label"
         htmlFor="capped-product-name"
       >
-        Capped product name
+        Product name
       </label>
       <span
         className="govuk-hint"
       >
-        Enter the name of your capped product
+        Enter the name of your product
       </span>
       <div
         className="govuk-input__wrapper"
@@ -47,7 +47,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
             className="govuk-input govuk-input--width-30"
             defaultValue="Product"
             id="capped-product-name"
-            name="cappedProductName"
+            name="productName"
             type="text"
           />
         </FormElementWrapper>
@@ -163,7 +163,9 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
       className="govuk-grid-row"
     >
       <DistanceRow
-        capPricingPerDistanceData={
+        errors={Array []}
+        numberToDisplay={1}
+        pricingPerDistance={
           Object {
             "capPricing": Array [
               Object {
@@ -182,9 +184,7 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
             "productName": "Product",
           }
         }
-        errors={Array []}
-        numberOfCapToDisplay={1}
-        setCapPricingPerDistanceData={[Function]}
+        setPricingPerDistance={[Function]}
       />
       <div
         className="flex-container"
@@ -209,9 +209,9 @@ exports[`pages defineCapPricingPerDistance should render correctly 1`] = `
 </FullColumnLayout>
 `;
 
-exports[`pages defineCapPricingPerDistance should render error messaging when errors are passed 1`] = `
+exports[`pages DefinePricingPerDistance should render error messaging when errors are passed 1`] = `
 <FullColumnLayout
-  description="Cap Pricing Per Distance entry page of the Create Fares Data Service"
+  description="Pricing Per Distance entry page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -220,10 +220,10 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
       },
     ]
   }
-  title="Cap Pricing Per Distance - Create Fares Data Service"
+  title="Pricing Per Distance - Create Fares Data Service"
 >
   <CsrfForm
-    action="/api/capPricingPerDistance"
+    action="/api/pricingPerDistance"
     csrfToken=""
     method="post"
   >
@@ -239,9 +239,9 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
     />
     <h1
       className="govuk-heading-l"
-      id="cap-pricing-per-distance-heading"
+      id="cap-capPricing-per-distance-heading"
     >
-      Enter your distance cap details
+      Enter your distance details
     </h1>
     <div
       className="govuk-!-margin-bottom-3 govuk-!-margin-left-1"
@@ -250,12 +250,12 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
         className="govuk-label"
         htmlFor="capped-product-name"
       >
-        Capped product name
+        Product name
       </label>
       <span
         className="govuk-hint"
       >
-        Enter the name of your capped product
+        Enter the name of your product
       </span>
       <div
         className="govuk-input__wrapper"
@@ -277,7 +277,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             className="govuk-input govuk-input--width-30"
             defaultValue="Product"
             id="capped-product-name"
-            name="cappedProductName"
+            name="productName"
             type="text"
           />
         </FormElementWrapper>
@@ -421,7 +421,16 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
       className="govuk-grid-row"
     >
       <DistanceRow
-        capPricingPerDistanceData={
+        errors={
+          Array [
+            Object {
+              "errorMessage": "Enter a value for the distance",
+              "id": "distance-to-0",
+            },
+          ]
+        }
+        numberToDisplay={2}
+        pricingPerDistance={
           Object {
             "capPricing": Array [
               Object {
@@ -440,16 +449,7 @@ exports[`pages defineCapPricingPerDistance should render error messaging when er
             "productName": "Product",
           }
         }
-        errors={
-          Array [
-            Object {
-              "errorMessage": "Enter a value for the distance",
-              "id": "distance-to-0",
-            },
-          ]
-        }
-        numberOfCapToDisplay={2}
-        setCapPricingPerDistanceData={[Function]}
+        setPricingPerDistance={[Function]}
       />
       <div
         className="flex-container"

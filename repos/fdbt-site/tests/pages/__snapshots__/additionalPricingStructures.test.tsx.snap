@@ -187,7 +187,7 @@ exports[`pages additionalPricingStructures should render error messaging when er
     Array [
       Object {
         "errorMessage": "Enter a value for the Time allowance after first journey",
-        "id": "pricing-structure-start",
+        "id": "capPricing-structure-start",
       },
     ]
   }
@@ -198,7 +198,7 @@ exports[`pages additionalPricingStructures should render error messaging when er
       Array [
         Object {
           "errorMessage": "Enter a value for the Time allowance after first journey",
-          "id": "pricing-structure-start",
+          "id": "capPricing-structure-start",
         },
       ]
     }
@@ -285,7 +285,7 @@ exports[`pages additionalPricingStructures should render error messaging when er
                   Array [
                     Object {
                       "errorMessage": "Enter a value for the Time allowance after first journey",
-                      "id": "pricing-structure-start",
+                      "id": "capPricing-structure-start",
                     },
                   ]
                 }
@@ -333,7 +333,7 @@ exports[`pages additionalPricingStructures should render error messaging when er
                   Array [
                     Object {
                       "errorMessage": "Enter a value for the Time allowance after first journey",
-                      "id": "pricing-structure-start",
+                      "id": "capPricing-structure-start",
                     },
                   ]
                 }

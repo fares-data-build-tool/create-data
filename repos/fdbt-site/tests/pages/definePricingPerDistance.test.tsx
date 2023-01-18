@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import DefineCapPricingPerDistance from '../../src/pages/defineCapPricingPerDistance';
+import DefinePricingPerDistance from '../../src/pages/definePricingPerDistance';
 
 describe('pages', () => {
-    describe('defineCapPricingPerDistance', () => {
+    describe('DefinePricingPerDistance', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <DefineCapPricingPerDistance
+                <DefinePricingPerDistance
                     errors={[]}
                     csrfToken=""
-                    capPricePerDistances={{
+                    pricingPerDistanceData={{
                         maximumPrice: '4',
                         minimumPrice: '3',
                         capPricing: [
@@ -26,7 +26,7 @@ describe('pages', () => {
                         ],
                         productName: 'Product',
                     }}
-                    numberOfCapInitial={1}
+                    numberOfEntitesByDistanceInitial={1}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -34,7 +34,7 @@ describe('pages', () => {
 
         it('should render error messaging when errors are passed', () => {
             const tree = shallow(
-                <DefineCapPricingPerDistance
+                <DefinePricingPerDistance
                     errors={[
                         {
                             id: `distance-to-0`,
@@ -42,7 +42,7 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
-                    capPricePerDistances={{
+                    pricingPerDistanceData={{
                         maximumPrice: '4',
                         minimumPrice: '3',
                         capPricing: [
@@ -59,7 +59,7 @@ describe('pages', () => {
                         ],
                         productName: 'Product',
                     }}
-                    numberOfCapInitial={2}
+                    numberOfEntitesByDistanceInitial={2}
                 />,
             );
             expect(tree).toMatchSnapshot();

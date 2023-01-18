@@ -8,7 +8,15 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
         const { ticketType } = req.body;
 
-        if (['geoZone', 'hybrid', 'multipleServices', 'pointToPointPeriod'].includes(ticketType)) {
+        if (
+            [
+                'geoZone',
+                'hybrid',
+                'multipleServices',
+                'pointToPointPeriod',
+                'multipleServicesPricedByDistance',
+            ].includes(ticketType)
+        ) {
             const ticketTypeObject: TicketRepresentationAttribute = { name: ticketType };
             const isScheme = isSchemeOperator(req, res);
 
@@ -20,6 +28,9 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                     redirectTo(res, '/csvZoneUpload');
                     return;
                 case 'multipleServices':
+                    redirectTo(res, isScheme ? '/reuseOperatorGroup' : '/serviceList?selectAll=false');
+                    return;
+                case 'multipleServicesPricedByDistance':
                     redirectTo(res, isScheme ? '/reuseOperatorGroup' : '/serviceList?selectAll=false');
                     return;
                 case 'pointToPointPeriod':

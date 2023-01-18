@@ -87,6 +87,7 @@ export const completeFlatFarePages = (
         randomlyChooseAndSelectServices();
         continueButtonClick();
     }
+
     getElementById('multiple-product-name-0').type(productName);
     getElementById('multiple-product-price-0').type('50.50');
 

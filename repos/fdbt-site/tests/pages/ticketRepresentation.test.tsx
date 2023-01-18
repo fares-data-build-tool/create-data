@@ -8,7 +8,15 @@ describe('pages', () => {
     describe('ticketRepresentation', () => {
         it('should render correctly when the fare type is a period ticket', () => {
             const tree = shallow(
-                <TicketRepresentation fareType="period" errors={[]} csrfToken="" showHybrid showPointToPoint />,
+                <TicketRepresentation
+                    fareType="period"
+                    errors={[]}
+                    csrfToken=""
+                    showHybrid
+                    showPointToPoint
+                    isDevOrTest
+                    showFlatFlare={false}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
@@ -21,6 +29,8 @@ describe('pages', () => {
                     csrfToken=""
                     showHybrid={false}
                     showPointToPoint
+                    isDevOrTest
+                    showFlatFlare
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -39,6 +49,8 @@ describe('pages', () => {
                     csrfToken=""
                     showHybrid
                     showPointToPoint
+                    showFlatFlare
+                    isDevOrTest
                 />,
             );
             expect(tree).toMatchSnapshot();
