@@ -6,7 +6,7 @@ import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
-    SERVICE_LIST_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
@@ -178,7 +178,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
               }`
             : '';
     const nocCode = getAndValidateNoc(ctx);
-    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
+    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
     const serviceListErrors =
         serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)

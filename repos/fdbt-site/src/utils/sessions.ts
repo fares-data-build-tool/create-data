@@ -77,6 +77,7 @@ import {
     ADDITIONAL_PRICING_ATTRIBUTE,
     EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -245,6 +246,7 @@ export interface SessionAttributeTypes {
         | AdditionalPricing
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
     [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
+    [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
