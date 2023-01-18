@@ -139,6 +139,9 @@ export interface UserDataUploadsProps {
     poundsOrPence?: string | null;
     csrfToken: string;
     backHref: string;
+    serviceList: ServicesInfo[];
+    buttonText: string;
+    dataSourceAttribute: TxcSourceAttribute;
 }
 
 export interface NumberOfStagesAttributeWithError {
