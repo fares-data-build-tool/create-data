@@ -1,18 +1,25 @@
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import { expectedFlatFareTicket, getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import pricingPerDistance, { validateInput } from '../../../src/pages/api/pricingPerDistance';
 import { DistancePricingData, DistancePricing, ErrorInfo } from '../../../src/interfaces';
-import { PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
+} from '../../../src/constants/attributes';
+import * as userData from '../../../src/utils/apiUtils/userData';
 
 describe('pricingPerDistance', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const writeHeadMock = jest.fn();
+    const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
+    s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
 
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates cap info, updates the PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', () => {
+    it('correctly generates cap info, updates the PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', async () => {
         const mockCapInfo: DistancePricingData = {
             maximumPrice: '4',
             minimumPrice: '3',
@@ -44,14 +51,41 @@ describe('pricingPerDistance', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        pricingPerDistance(req, res);
+        await pricingPerDistance(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, mockCapInfo);
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/additionalPricingStructures' });
     });
 
-    it('produces an error when distanceTo is empty', () => {
+    it('correctly generates cap info, updates the ticket and then redirects to /product details if all is valid', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                distanceFrom1: '2',
+                distanceTo0: '2',
+                maximumPrice: '4',
+                minimumPrice: '3',
+                pricePerKm1: '5',
+                pricePerKm0: '5',
+                productName: 'Product',
+            },
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedFlatFareTicket,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '2',
+                    matchingJsonLink: 'test/path',
+                },
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await pricingPerDistance(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, undefined);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/products/productDetails?productId=2' });
+    });
+
+    it('produces an error when distanceTo is empty', async () => {
         const errors: ErrorInfo[] = [
             {
                 id: `distance-to-0`,
@@ -75,7 +109,7 @@ describe('pricingPerDistance', () => {
             },
         });
 
-        pricingPerDistance(req, res);
+        await pricingPerDistance(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '4',
@@ -97,7 +131,7 @@ describe('pricingPerDistance', () => {
         });
     });
 
-    it('produces an error when distanceFrom is empty', () => {
+    it('produces an error when distanceFrom is empty', async () => {
         const errors: ErrorInfo[] = [
             {
                 id: `distance-from-1`,
@@ -121,7 +155,7 @@ describe('pricingPerDistance', () => {
             },
         });
 
-        pricingPerDistance(req, res);
+        await pricingPerDistance(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             errors,
@@ -139,7 +173,7 @@ describe('pricingPerDistance', () => {
         });
     });
 
-    it('produces an error when maximumPrice is empty', () => {
+    it('produces an error when maximumPrice is empty', async () => {
         const errors: ErrorInfo[] = [
             {
                 id: `maximum-price`,
@@ -159,7 +193,7 @@ describe('pricingPerDistance', () => {
             },
         });
 
-        pricingPerDistance(req, res);
+        await pricingPerDistance(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '',
@@ -181,7 +215,7 @@ describe('pricingPerDistance', () => {
         });
     });
 
-    it('produces an error when minimumPrice is empty', () => {
+    it('produces an error when minimumPrice is empty', async () => {
         const errors: ErrorInfo[] = [
             {
                 id: `minimum-price`,
@@ -201,7 +235,7 @@ describe('pricingPerDistance', () => {
             },
         });
 
-        pricingPerDistance(req, res);
+        await pricingPerDistance(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '3',
@@ -223,7 +257,7 @@ describe('pricingPerDistance', () => {
         });
     });
 
-    it('produces an error when pricePerKm is empty', () => {
+    it('produces an error when pricePerKm is empty', async () => {
         const errors: ErrorInfo[] = [
             {
                 id: `price-per-km-1`,
@@ -243,7 +277,7 @@ describe('pricingPerDistance', () => {
             },
         });
 
-        pricingPerDistance(req, res);
+        await pricingPerDistance(req, res);
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '3',

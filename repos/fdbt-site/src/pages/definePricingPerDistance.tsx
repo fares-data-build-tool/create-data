@@ -6,9 +6,14 @@ import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { PRICING_PER_DISTANCE_ATTRIBUTE } from '../constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
+} from '../constants/attributes';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { isWithErrors } from '../interfaces/typeGuards';
+import BackButton from '../components/BackButton';
 
 const title = 'Pricing Per Distance - Create Fares Data Service';
 const description = 'Pricing Per Distance entry page of the Create Fares Data Service';
@@ -18,6 +23,7 @@ interface DefinePricingPerDistanceProps {
     csrfToken: string;
     pricingPerDistanceData: DistancePricingData;
     numberOfEntitesByDistanceInitial: number;
+    backHref: string;
 }
 
 const DefineCapPricingPerDistance = ({
@@ -25,11 +31,13 @@ const DefineCapPricingPerDistance = ({
     csrfToken,
     pricingPerDistanceData,
     numberOfEntitesByDistanceInitial,
+    backHref,
 }: DefinePricingPerDistanceProps): ReactElement => {
     const [numberOfEntitesByDistance, setnumberOfEntitesByDistances] = useState(numberOfEntitesByDistanceInitial);
     const [pricingPerDistance, setPricingPerDistance] = useState(pricingPerDistanceData);
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <CsrfForm action="/api/pricingPerDistance" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
@@ -239,11 +247,27 @@ const DefineCapPricingPerDistance = ({
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefinePricingPerDistanceProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const pricingPerDistanceData: DistancePricingData | WithErrors<DistancePricingData> | undefined =
-        getSessionAttribute(ctx.req, PRICING_PER_DISTANCE_ATTRIBUTE);
+    let pricingPerDistanceData: DistancePricingData | WithErrors<DistancePricingData> | undefined = getSessionAttribute(
+        ctx.req,
+        PRICING_PER_DISTANCE_ATTRIBUTE,
+    );
     let errors: ErrorInfo[] = [];
     if (pricingPerDistanceData && isWithErrors(pricingPerDistanceData)) {
         errors = pricingPerDistanceData.errors;
+    }
+
+    const ticketJson = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    let backHref = '';
+    if (ticketJson && matchingJsonMetaData) {
+        backHref = `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+            matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+        }`;
+        const product = ticketJson.products[0];
+        if ('pricingByDistance' in product) {
+            pricingPerDistanceData = product.pricingByDistance as DistancePricingData;
+        }
     }
 
     return {
@@ -257,6 +281,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
             },
             csrfToken,
             numberOfEntitesByDistanceInitial: pricingPerDistanceData?.capPricing?.length || 1,
+            backHref,
         },
     };
 };

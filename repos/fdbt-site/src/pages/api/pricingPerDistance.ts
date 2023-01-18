@@ -1,10 +1,16 @@
 import { startCase } from 'lodash';
 import { NextApiResponse } from 'next';
-import { PRICING_PER_DISTANCE_ATTRIBUTE } from '../../constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
+} from '../../constants/attributes';
 import { getFareTypeFromFromAttributes, redirectTo } from '../../utils/apiUtils';
 import { checkProductOrCapNameIsValid, isCurrency } from '../../utils/apiUtils/validator';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { DistancePricing, DistancePricingData, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
+import { Ticket, WithIds } from '../../interfaces/matchingJsonTypes';
 
 export const checkInputIsValid = (inputtedValue: string | undefined, inputType: string): string => {
     let error;
@@ -110,7 +116,7 @@ export const validateInput = (
     return errors;
 };
 
-export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const capPricePerDistances: DistancePricing[] = [];
     let i = 0;
     let errors: ErrorInfo[] = [];
@@ -143,6 +149,32 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             ...distanceCap,
         });
         redirectTo(res, '/definePricingPerDistance');
+        return;
+    }
+
+    const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    // edit mode
+    if (ticket && matchingJsonMetaData) {
+        const product = ticket.products[0];
+        const updatedProduct = { ...product, pricingByDistance: distanceCap };
+
+        // edit mode
+        const updatedTicket: WithIds<Ticket> = {
+            ...ticket,
+            products: [updatedProduct],
+        };
+
+        // put the now updated matching json into s3
+        await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+        updateSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE, undefined);
+        redirectTo(
+            res,
+            `/products/productDetails?productId=${matchingJsonMetaData.productId}${
+                matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+            }`,
+        );
         return;
     }
 

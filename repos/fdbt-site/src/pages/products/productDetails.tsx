@@ -9,7 +9,12 @@ import {
     getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource,
     getServiceByIdAndDataSource,
 } from '../../data/auroradb';
-import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation } from '../../interfaces';
+import {
+    ProductDetailsElement,
+    NextPageContextWithSession,
+    ProductDateInformation,
+    DistancePricingData,
+} from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
@@ -470,6 +475,35 @@ const createProductDetails = async (
             name: 'Product expiry',
             content: [sentenceCaseString(product.productValidity)],
             editLink: '/selectPeriodValidity',
+        });
+    }
+
+    if (ticket.type === 'flatFare' && 'pricingByDistance' in product) {
+        const pricePerDistance = product.pricingByDistance as DistancePricingData;
+
+        productDetailsElements.push({
+            id: 'pricing-by-distance-price',
+            name: 'Prices',
+            content: [`Min price - £${pricePerDistance.minimumPrice}`, `Max price - £${pricePerDistance.maximumPrice}`],
+            editLink: '/definePricingPerDistance',
+        });
+
+        const distanceBands: string[] = [];
+        pricePerDistance.capPricing.forEach((capDistance, index) => {
+            distanceBands.push(
+                `${capDistance.distanceFrom} km  - ${
+                    index === pricePerDistance.capPricing.length - 1 ? 'End of journey' : `${capDistance.distanceTo} km`
+                }, Price - £${capDistance.pricePerKm} per km`,
+            );
+        });
+
+        distanceBands.forEach((distanceBandContent, index) => {
+            productDetailsElements.push({
+                name: `Distance band ${index + 1}`,
+                content: [distanceBandContent],
+                editLink: '/definePricingPerDistance',
+                id: `pricing-by-distance-band-${index}`,
+            });
         });
     }
 
