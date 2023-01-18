@@ -316,7 +316,7 @@ export const completePricingPerDistancePage = (productName: string): void => {
         cy.log(`Row(${i}): ${fromDistance}, ${toDistance}, Price: ${pricePerKm}`);
         getElementById(`price-per-km-${i}`).type(pricePerKm);
 
-        if (i != 0) {
+        if (i !== 0) {
             getElementById(`distance-from-${i}`).clear().type(fromDistance);
         }
 
