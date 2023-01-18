@@ -1,12 +1,31 @@
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent from '../components/UserDataUploads';
-import { FARE_ZONE_ATTRIBUTE } from '../constants/attributes';
+import {
+    FARE_ZONE_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    TXC_SOURCE_ATTRIBUTE,
+} from '../constants/attributes';
 import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
 import HowToUploadFareZone from '../assets/files/How-to-Upload-a-Fare-Zone.pdf';
-import { NextPageContextWithSession, ErrorInfo, UserDataUploadsProps, FareZoneWithErrors } from '../interfaces';
-import { getSessionAttribute } from '../utils/sessions';
-import { getCsrfToken } from '../utils';
+import {
+    NextPageContextWithSession,
+    ErrorInfo,
+    UserDataUploadsProps,
+    FareZoneWithErrors,
+    ServicesInfo,
+    TxcSourceAttribute,
+} from '../interfaces';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { isServiceListAttributeWithErrors } from './serviceList';
+import {
+    getAllServicesByNocCode,
+    getServicesByNocCodeAndDataSource,
+    getTndsServicesByNocAndModes,
+} from 'src/data/auroradb';
+import { redirectTo } from 'src/utils/apiUtils';
 
 const title = 'CSV Zone Upload - Create Fares Data Service';
 const description = 'CSV Zone Upload page of the Create Fares Data Service';
@@ -37,11 +56,56 @@ export const isFareZoneAttributeWithErrors = (
     fareZoneAttribute: string | FareZoneWithErrors,
 ): fareZoneAttribute is FareZoneWithErrors => (fareZoneAttribute as FareZoneWithErrors).errors !== undefined;
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: UserDataUploadsProps }> => {
     const fareZoneAttribute = getSessionAttribute(ctx.req, FARE_ZONE_ATTRIBUTE);
     const errors: ErrorInfo[] =
         fareZoneAttribute && isFareZoneAttributeWithErrors(fareZoneAttribute) ? fareZoneAttribute.errors : [];
 
+    const nocCode = getAndValidateNoc(ctx);
+    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
+    let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
+    const serviceListErrors =
+        serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
+            ? serviceListAttribute.errors
+            : [];
+
+    const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
+
+    if (!dataSourceAttribute) {
+        const services = await getAllServicesByNocCode(nocCode);
+        const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
+
+        if (!hasBodsServices && !modesAttribute) {
+            if (ctx.res) {
+                redirectTo(ctx.res, '/noServices');
+            } else {
+                throw new Error(`No services found for NOC Code: ${nocCode}`);
+            }
+        }
+        // removed as TNDS is being disabled until further notice
+        // const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
+        updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
+            source: hasBodsServices ? 'bods' : 'tnds',
+            hasBods: true,
+            hasTnds: false,
+        });
+        dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
+    }
+
+    const { selectAll } = ctx.query;
+
+    let chosenDataSourceServices;
+    if (modesAttribute) {
+        chosenDataSourceServices = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
+    }
+    chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+
+    const serviceList: ServicesInfo[] = chosenDataSourceServices.map((service) => {
+        return {
+            ...service,
+            checked: !selectAll || (selectAll !== 'true' && selectAll !== 'false') ? false : selectAll !== 'false',
+        };
+    });
     return {
         props: {
             csvUploadApiRoute: '/api/csvZoneUpload',
@@ -54,10 +118,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
             csvTemplateDisplayName: 'Download fare zone CSV template - File Type CSV - File Size 673B',
             csvTemplateAttachmentUrl: FareZoneExampleCsv,
             csvTemplateSize: '673B',
-            errors,
+            errors: [...errors, ...serviceListErrors],
             detailSummary: "My fare zone won't upload",
             csrfToken: getCsrfToken(ctx),
             backHref: '',
+            showPriceOption: true,
+            serviceList,
+            buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
+            dataSourceAttribute,
         },
     };
 };
