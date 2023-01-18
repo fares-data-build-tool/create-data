@@ -151,7 +151,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             csrfToken,
             showHybrid: fareType === 'period' && !isScheme,
             showPointToPoint: fareType === 'period' && !isCarnet && !isScheme,
-            showFlatFlare: fareType === 'flatFare' && !isScheme,
+            showFlatFlare: fareType === 'flatFare' && !isScheme && !isCarnet,
             isDevOrTest,
         },
     };
