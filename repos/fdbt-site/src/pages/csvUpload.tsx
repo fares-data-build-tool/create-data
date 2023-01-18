@@ -5,29 +5,12 @@ import {
     CSV_UPLOAD_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
-    MULTI_MODAL_ATTRIBUTE,
-    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
-    TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
 import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
 import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
-import {
-    NextPageContextWithSession,
-    ErrorInfo,
-    UserDataUploadsProps,
-    ServicesInfo,
-    TxcSourceAttribute,
-} from '../interfaces';
-import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
-import FormElementWrapper from 'src/components/FormElementWrapper';
-import {
-    getAllServicesByNocCode,
-    getServicesByNocCodeAndDataSource,
-    getTndsServicesByNocAndModes,
-} from 'src/data/auroradb';
-import { redirectTo } from 'src/utils/apiUtils';
-import { isServiceListAttributeWithErrors } from './serviceList';
+import { NextPageContextWithSession, ErrorInfo, UserDataUploadsProps } from '../interfaces';
+import { getSessionAttribute } from '../utils/sessions';
+import { getCsrfToken } from '../utils';
 
 const title = 'CSV Upload - Create Fares Data Service';
 const description = 'CSV Upload page of the Create Fares Data Service';
@@ -46,7 +29,7 @@ const CsvUpload = ({ errors, ...props }: UserDataUploadsProps): ReactElement => 
                         <li>Not filling in every fare stage on the diagonal row</li>
                     </ul>
                     <p>
-                        Use the help file htmlFor a more detailed guide on constructing a fares triangle in the required
+                        Use the help file for a more detailed guide on constructing a fares triangle in the required
                         format or download the fares triangle template to create a new file.
                     </p>
                 </>
@@ -55,7 +38,7 @@ const CsvUpload = ({ errors, ...props }: UserDataUploadsProps): ReactElement => 
     </BaseLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: UserDataUploadsProps }> => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
     const csvUploadAttribute = getSessionAttribute(ctx.req, CSV_UPLOAD_ATTRIBUTE);
     const errors: ErrorInfo[] = csvUploadAttribute?.errors ?? [];
     const poundsOrPence = csvUploadAttribute?.poundsOrPence ?? null;
@@ -83,8 +66,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
             csvTemplateSize: '255B',
             errors,
-            backHref,
+            detailSummary: "My fare triangle won't upload",
+            showPriceOption: true,
             poundsOrPence,
+            csrfToken: getCsrfToken(ctx),
+            backHref,
         },
     };
 };
