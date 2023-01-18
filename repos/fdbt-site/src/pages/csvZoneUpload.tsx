@@ -126,6 +126,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             serviceList,
             buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
             dataSourceAttribute,
+            isFareZone: true,
         },
     };
 };

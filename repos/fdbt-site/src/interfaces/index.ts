@@ -142,6 +142,7 @@ export interface UserDataUploadsProps {
     serviceList?: ServicesInfo[];
     buttonText?: string;
     dataSourceAttribute?: TxcSourceAttribute;
+    isFareZone?: boolean;
 }
 
 export interface NumberOfStagesAttributeWithError {
