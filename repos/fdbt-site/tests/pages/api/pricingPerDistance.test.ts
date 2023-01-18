@@ -1,10 +1,10 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import capPricingPerDistance, { validateInput } from '../../../src/pages/api/capPricingPerDistance';
-import { CapDistancePricing, DistanceCap, ErrorInfo } from '../../../src/interfaces';
-import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
+import pricingPerDistance, { validateInput } from '../../../src/pages/api/pricingPerDistance';
+import { DistancePricingData, DistancePricing, ErrorInfo } from '../../../src/interfaces';
+import { PRICING_PER_DISTANCE_ATTRIBUTE } from '../../../src/constants/attributes';
 
-describe('capPricingPerDistance', () => {
+describe('pricingPerDistance', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const writeHeadMock = jest.fn();
 
@@ -12,8 +12,8 @@ describe('capPricingPerDistance', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates cap info, updates the CAP_PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', () => {
-        const mockCapInfo: DistanceCap = {
+    it('correctly generates cap info, updates the PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', () => {
+        const mockCapInfo: DistancePricingData = {
             maximumPrice: '4',
             minimumPrice: '3',
             capPricing: [
@@ -39,14 +39,14 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '3',
                 pricePerKm1: '5',
                 pricePerKm0: '5',
-                cappedProductName: 'Product',
+                productName: 'Product',
             },
             mockWriteHeadFn: writeHeadMock,
         });
 
-        capPricingPerDistance(req, res);
+        pricingPerDistance(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, mockCapInfo);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, mockCapInfo);
 
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/additionalPricingStructures' });
     });
@@ -71,13 +71,13 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '3',
                 pricePerKm1: '5',
                 pricePerKm0: '6',
-                cappedProductName: 'Product',
+                productName: 'Product',
             },
         });
 
-        capPricingPerDistance(req, res);
+        pricingPerDistance(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '4',
             minimumPrice: '3',
             capPricing: [
@@ -117,13 +117,13 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '3',
                 pricePerKm1: '5',
                 pricePerKm0: '5',
-                cappedProductName: 'Product',
+                productName: 'Product',
             },
         });
 
-        capPricingPerDistance(req, res);
+        pricingPerDistance(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             errors,
             maximumPrice: '4',
             minimumPrice: '3',
@@ -155,13 +155,13 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '3',
                 pricePerKm1: '5',
                 pricePerKm0: '2',
-                cappedProductName: 'Product',
+                productName: 'Product',
             },
         });
 
-        capPricingPerDistance(req, res);
+        pricingPerDistance(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '',
             minimumPrice: '3',
             capPricing: [
@@ -197,13 +197,13 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '',
                 pricePerKm1: '5',
                 pricePerKm0: '5',
-                cappedProductName: 'Product',
+                productName: 'Product',
             },
         });
 
-        capPricingPerDistance(req, res);
+        pricingPerDistance(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '3',
             minimumPrice: '',
             capPricing: [
@@ -239,13 +239,13 @@ describe('capPricingPerDistance', () => {
                 minimumPrice: '2',
                 pricePerKm0: '2',
                 pricePerKm1: '',
-                cappedProductName: 'Product',
+                productName: 'Product',
             },
         });
 
-        capPricingPerDistance(req, res);
+        pricingPerDistance(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '3',
             minimumPrice: '2',
             capPricing: [
@@ -264,7 +264,7 @@ describe('capPricingPerDistance', () => {
 
 describe('validate input tests', () => {
     it('validates input for distance from', () => {
-        const capPricePerDistances: CapDistancePricing[] = [
+        const pricePerDistances: DistancePricing[] = [
             {
                 distanceFrom: '0',
                 distanceTo: '2',
@@ -284,13 +284,13 @@ describe('validate input tests', () => {
             },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, '3', '4', 'Product');
+        const errors = validateInput(pricePerDistances, 1, '3', '4', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });
 
     it('validates input for distance to', () => {
-        const capPricePerDistances: CapDistancePricing[] = [
+        const pricePerDistances: DistancePricing[] = [
             {
                 distanceFrom: '0',
                 distanceTo: 'b',
@@ -310,13 +310,13 @@ describe('validate input tests', () => {
             },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, '3', '4', 'Product');
+        const errors = validateInput(pricePerDistances, 1, '3', '4', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });
 
     it('validates input for maximum price', () => {
-        const capPricePerDistances: CapDistancePricing[] = [
+        const pricePerDistances: DistancePricing[] = [
             {
                 distanceFrom: '0',
                 distanceTo: '3',
@@ -332,13 +332,13 @@ describe('validate input tests', () => {
             { id: `maximum-price`, errorMessage: 'This must be a valid price in pounds and pence' },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, '2', 'a', 'Product');
+        const errors = validateInput(pricePerDistances, 1, '2', 'a', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });
 
     it('validates input for minimum price', () => {
-        const capPricePerDistances: CapDistancePricing[] = [
+        const pricePerDistances: DistancePricing[] = [
             {
                 distanceFrom: '0',
                 distanceTo: '3',
@@ -354,13 +354,13 @@ describe('validate input tests', () => {
             { id: `minimum-price`, errorMessage: 'This must be a valid price in pounds and pence' },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, 'a', '2', 'Product');
+        const errors = validateInput(pricePerDistances, 1, 'a', '2', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });
 
     it('validates input for price per km', () => {
-        const capPricePerDistances: CapDistancePricing[] = [
+        const pricePerDistances: DistancePricing[] = [
             {
                 distanceFrom: '0',
                 distanceTo: '3',
@@ -376,13 +376,13 @@ describe('validate input tests', () => {
             { id: `price-per-km-1`, errorMessage: 'This must be a valid price in pounds and pence' },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, '1', '2', 'Product');
+        const errors = validateInput(pricePerDistances, 1, '1', '2', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });
 
     it('validates ranges so that distanceFrom must be less than distanceTo and distanceTo of prior row is equal to distanceFrom', () => {
-        const capPricePerDistances: CapDistancePricing[] = [
+        const pricePerDistances: DistancePricing[] = [
             {
                 distanceFrom: '0',
                 distanceTo: '3',
@@ -411,7 +411,7 @@ describe('validate input tests', () => {
             { id: 'distance-from-1', errorMessage: 'Distance from must be less than distance to in the same row' },
         ];
 
-        const errors = validateInput(capPricePerDistances, 1, '1', '2', 'Product');
+        const errors = validateInput(pricePerDistances, 1, '1', '2', 'Product');
 
         expect(errors).toEqual(errorsResult);
     });

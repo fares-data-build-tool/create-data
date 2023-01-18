@@ -1,4 +1,4 @@
-import { AdditionalPricing, CapDetails, DistanceCap, MultiTap } from './index';
+import { AdditionalPricing, CapDetails, DistancePricingData, MultiTap } from './index';
 
 export interface PointToPointCarnetProductDetails extends BaseProduct {
     productName: string;
@@ -44,8 +44,13 @@ export interface FlatFareProductDetails extends BaseProduct {
     carnetDetails?: CarnetDetails;
 }
 
+export interface PriceByDistanceProductDetails extends BaseProduct {
+    pricingByDistance: DistancePricingData;
+    carnetDetails?: CarnetDetails;
+}
+
 export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
-    products: FlatFareProductDetails[];
+    products: FlatFareProductDetails[] | PriceByDistanceProductDetails[];
     termTime: boolean;
     selectedServices: SelectedService[];
     operatorName: string;
@@ -261,6 +266,11 @@ export interface Product {
     productDurationUnits?: string;
     productEndTime?: string;
     carnetDetails?: CarnetDetails;
+    pricingByDistance?: DistancePricingData;
+}
+
+export interface FlatFareByDistanceProduct {
+    pricingByDistance: DistancePricingData;
 }
 
 export interface CappedGeoZoneTicket extends BaseTicket<'capped'> {
@@ -286,8 +296,12 @@ export interface CappedProductDetails extends BaseProduct {
 }
 
 export interface ByDistanceCapInfo {
-    capDetails: DistanceCap;
+    capDetails: DistancePricingData;
     additionalDiscount?: AdditionalPricing;
+}
+
+export interface ByDistanceInfo {
+    pricingByDistance: DistancePricingData;
 }
 
 export interface ByTapCapInfo {

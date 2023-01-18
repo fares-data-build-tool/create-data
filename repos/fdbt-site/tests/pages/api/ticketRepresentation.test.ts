@@ -85,6 +85,21 @@ describe('ticketRepresentation', () => {
         });
     });
 
+    it('should return 302 redirect to /serviceList (with selectAll=false) when the user selects the service selection multipleServicesPricedByDistance  option', () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { ticketType: 'multipleServicesPricedByDistance' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        ticketRepresentation(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/serviceList?selectAll=false',
+        });
+    });
+
     it('should return 302 redirect to /service when the user selects the pointToPointPeriod option', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},

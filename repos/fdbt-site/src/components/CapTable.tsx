@@ -4,7 +4,7 @@ import ExpirySelector from './ExpirySelector';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 
 interface CapTableProps {
-    numberOfCapsToDisplay: number;
+    numberOfEntitesByDistancesToDisplay: number;
     errors: ErrorInfo[];
     userInputtedCaps: Cap[];
 }
@@ -133,19 +133,23 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInputtedCaps
 );
 
 export const renderRows = (
-    numberOfCapsToDisplay: number,
+    numberOfEntitesByDistancesToDisplay: number,
     errors: ErrorInfo[],
     userInputtedCaps: Cap[] = [],
 ): ReactElement[] => {
     const elements: ReactElement[] = [];
-    for (let i = 0; i < numberOfCapsToDisplay; i += 1) {
+    for (let i = 0; i < numberOfEntitesByDistancesToDisplay; i += 1) {
         elements.push(renderTable(i, errors, userInputtedCaps));
     }
     return elements;
 };
 
-const CapTable = ({ errors, userInputtedCaps = [], numberOfCapsToDisplay }: CapTableProps): ReactElement => {
-    return <div>{renderRows(numberOfCapsToDisplay, errors, userInputtedCaps)}</div>;
+const CapTable = ({
+    errors,
+    userInputtedCaps = [],
+    numberOfEntitesByDistancesToDisplay,
+}: CapTableProps): ReactElement => {
+    return <div>{renderRows(numberOfEntitesByDistancesToDisplay, errors, userInputtedCaps)}</div>;
 };
 
 export default CapTable;

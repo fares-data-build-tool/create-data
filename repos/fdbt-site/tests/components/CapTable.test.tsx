@@ -5,7 +5,7 @@ import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
 
 describe('CapTable', () => {
     it('should render the table upon first opening of page', () => {
-        const wrapper = shallow(<CapTable errors={[]} userInputtedCaps={[]} numberOfCapsToDisplay={1} />);
+        const wrapper = shallow(<CapTable errors={[]} userInputtedCaps={[]} numberOfEntitesByDistancesToDisplay={1} />);
         expect(wrapper).toMatchSnapshot();
     });
     it('should render the table with no errors', () => {
@@ -26,7 +26,7 @@ describe('CapTable', () => {
                         durationUnits: ExpiryUnit.DAY,
                     },
                 ]}
-                numberOfCapsToDisplay={2}
+                numberOfEntitesByDistancesToDisplay={2}
             />,
         );
         expect(wrapper).toMatchSnapshot();
@@ -50,7 +50,7 @@ describe('CapTable', () => {
                         durationUnits: ExpiryUnit.DAY,
                     },
                 ]}
-                numberOfCapsToDisplay={2}
+                numberOfEntitesByDistancesToDisplay={2}
             />,
         );
         expect(wrapper).toMatchSnapshot();

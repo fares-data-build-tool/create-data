@@ -27,7 +27,7 @@ describe('The flat fare faretype product journey', () => {
         isFinished();
     });
 
-    it.only('completes successfully for pricing by distance', () => {
+    it('completes successfully for pricing by distance', () => {
         selectFareType('flatFare', false);
         defineUserTypeAndTimeRestrictions();
         clickElementById('radio-option-multipleServicesPricedByDistance');

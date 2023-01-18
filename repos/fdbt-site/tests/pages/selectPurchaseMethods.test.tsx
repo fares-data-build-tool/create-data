@@ -5,7 +5,7 @@ import { getSalesOfferPackagesByNocCode } from '../../src/data/auroradb';
 import {
     FARE_TYPE_ATTRIBUTE,
     TYPE_OF_CAP_ATTRIBUTE,
-    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
 } from '../../src/constants/attributes';
@@ -310,7 +310,8 @@ describe('pages', () => {
                     session: {
                         [FARE_TYPE_ATTRIBUTE]: { fareType: 'capped' },
                         [TYPE_OF_CAP_ATTRIBUTE]: { typeOfCap: 'byDistance' },
-                        [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: {
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: undefined,
+                        [PRICING_PER_DISTANCE_ATTRIBUTE]: {
                             productName: 'product name',
                             maximumPrice: '',
                             minimumPrice: '',

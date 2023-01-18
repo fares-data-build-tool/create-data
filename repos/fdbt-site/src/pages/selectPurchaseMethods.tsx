@@ -4,7 +4,7 @@ import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import {
     CAPS_ATTRIBUTE,
-    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
@@ -16,7 +16,7 @@ import {
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import {
     CapDetails,
-    DistanceCap,
+    DistancePricingData,
     ErrorInfo,
     NextPageContextWithSession,
     ProductInfo,
@@ -32,6 +32,7 @@ import { removeAllWhiteSpace } from '../utils/apiUtils/validator';
 import { PurchaseMethodCardBody } from './viewPurchaseMethods';
 import { SalesOfferPackage, FromDb } from '../interfaces/matchingJsonTypes';
 import BackButton from '../components/BackButton';
+import { getProductsByValues } from './api/selectSalesOfferPackage';
 
 const pageTitle = 'Select Purchase Methods - Create Fares Data Service';
 const pageDescription = 'Purchase Methods selection page of the Create Fares Data Service';
@@ -284,7 +285,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         const { typeOfCap } = getSessionAttribute(ctx.req, TYPE_OF_CAP_ATTRIBUTE) as TypeOfCap;
 
         if (typeOfCap === 'byDistance') {
-            const distanceCap = getSessionAttribute(ctx.req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE) as DistanceCap;
+            const distanceCap = getSessionAttribute(ctx.req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
             cappedProductName = distanceCap.productName;
         } else {
             const capDetails = getSessionAttribute(ctx.req, CAPS_ATTRIBUTE) as CapDetails;
@@ -292,12 +293,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }
     }
 
-    const products =
-        ['period', 'multiOperator', 'flatFare'].includes(fareType) && multipleProductAttribute
-            ? multipleProductAttribute.products
-            : !!cappedProductName
-            ? [{ productName: cappedProductName, productPrice: '' }]
-            : [{ productName: 'product', productPrice: '' }];
+    if (fareType === 'flatFare') {
+        const pricingByDistance = getSessionAttribute(ctx.req, PRICING_PER_DISTANCE_ATTRIBUTE);
+
+        if (pricingByDistance) {
+            cappedProductName = pricingByDistance.productName;
+        }
+    }
+
+    const products = getProductsByValues(ticket, multipleProductAttribute, cappedProductName);
 
     const selected: { [key: string]: SalesOfferPackage[] } | undefined =
         sopAttribute &&
