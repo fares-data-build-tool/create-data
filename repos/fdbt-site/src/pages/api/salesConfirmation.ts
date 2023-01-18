@@ -28,6 +28,7 @@ import {
     splitUserDataJsonByProducts,
     insertDataToProductsBucketAndProductsTable,
     getCappedTicketJson,
+    getMultipleServicesByDistanceTicketJson,
 } from '../../utils/apiUtils/userData';
 import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
 
@@ -55,7 +56,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
         } else if (fareType === 'capped') {
-            if (!ticketType || ticketType === 'hybrid' || ticketType === 'pointToPointPeriod') {
+            if (
+                !ticketType ||
+                ticketType === 'hybrid' ||
+                ticketType === 'pointToPointPeriod' ||
+                ticketType === 'multipleServicesPricedByDistance'
+            ) {
                 throw new Error('Capped ticket required a type of ticket representation of geoZone or multiService.');
             }
             userDataJson = await getCappedTicketJson(req, res, ticketType);
@@ -66,6 +72,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     break;
                 case 'multipleServices':
                     userDataJson = getMultipleServicesTicketJson(req, res);
+                    break;
+                case 'multipleServicesPricedByDistance':
+                    userDataJson = getMultipleServicesByDistanceTicketJson(req, res);
                     break;
                 case 'hybrid':
                     userDataJson = await getHybridTicketJson(req, res);

@@ -28,7 +28,7 @@ import {
     UNASSIGNED_STOPS_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
     TYPE_OF_CAP_ATTRIBUTE,
-    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
     ADDITIONAL_PRICING_ATTRIBUTE,
     MULTI_TAPS_PRICING_ATTRIBUTE,
     CAPS_ATTRIBUTE,
@@ -54,7 +54,7 @@ import {
     TicketPeriodWithInput,
     Direction,
     TypeOfCap,
-    DistanceCap,
+    DistancePricingData,
     AdditionalPricing,
     MultiTapPricing,
     CapDetails,
@@ -109,6 +109,8 @@ import {
     ByTapCapInfo,
     CappedTicket,
     ExpiryUnit,
+    FlatFareMultipleServices,
+    PriceByDistanceProductDetails,
 } from '../../interfaces/matchingJsonTypes';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
@@ -439,14 +441,14 @@ export const getCappedTicketJson = async (
         json = getCappedMultipleServicesTicketJson(req, res);
     }
 
-    const { typeOfCap } = getSessionAttribute(req, TYPE_OF_CAP_ATTRIBUTE) as TypeOfCap;
-
     let capData;
     let productName = '';
 
+    const { typeOfCap } = getSessionAttribute(req, TYPE_OF_CAP_ATTRIBUTE) as TypeOfCap;
+
     switch (typeOfCap) {
         case 'byDistance':
-            const distanceCap = getSessionAttribute(req, CAP_PRICING_PER_DISTANCE_ATTRIBUTE) as DistanceCap;
+            const distanceCap = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
             const additionalDiscount = getSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE) as
                 | AdditionalPricing
                 | undefined;
@@ -594,14 +596,57 @@ export const getCappedMultipleServicesTicketJson = (
     };
 };
 
+export const getMultipleServicesByDistanceTicketJson = (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): WithIds<FlatFareMultipleServices> => {
+    const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
+    const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
+    const { selectedServices } = serviceListAttribute;
+    const pricingByDistance = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
+    const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE) as SalesOfferPackage[];
+    const baseTicketAttributes = getBaseTicketAttributes(req, res, 'flatFare');
+
+    if (
+        !operatorAttribute ||
+        !operatorAttribute.name ||
+        !pricingByDistance ||
+        !salesOfferPackages ||
+        salesOfferPackages.length <= 0
+    ) {
+        logger.error('Attributes missing / incorrect', {
+            operatorAttribute,
+            pricingByDistance,
+            salesOfferPackages,
+        });
+        throw new Error(`Could not create flat fare by distance ticket json. Necessary attributes could not be found.`);
+    }
+
+    const { name } = operatorAttribute;
+
+    const data = [
+        {
+            salesOfferPackages,
+            pricingByDistance,
+        },
+    ] as PriceByDistanceProductDetails[];
+
+    return {
+        operatorName: name,
+        ...baseTicketAttributes,
+        products: data,
+        selectedServices,
+        termTime: isTermTime(req),
+    } as WithIds<FlatFareMultipleServices>;
+};
+
 export const getMultipleServicesTicketJson = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
 ): WithIds<PeriodMultipleServicesTicket> | WithIds<MultiOperatorMultipleServicesTicket> => {
-    const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const { selectedServices } = serviceListAttribute;
-
+    const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
     if (basePeriodTicketAttributes.type === 'multiOperator') {
         const additionalOperators = getSessionAttribute(
             req,
@@ -610,6 +655,7 @@ export const getMultipleServicesTicketJson = (
 
         const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
         const operatorGroupId = multiOpAttribute && multiOpAttribute.id ? multiOpAttribute.id : undefined;
+
         return {
             ...basePeriodTicketAttributes,
             selectedServices,

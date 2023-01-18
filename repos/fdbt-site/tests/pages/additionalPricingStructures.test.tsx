@@ -24,7 +24,7 @@ describe('pages', () => {
                 <AdditionalPricingStructures
                     errors={[
                         {
-                            id: 'pricing-structure-start',
+                            id: 'capPricing-structure-start',
                             errorMessage: 'Enter a value for the Time allowance after first journey',
                         },
                     ]}

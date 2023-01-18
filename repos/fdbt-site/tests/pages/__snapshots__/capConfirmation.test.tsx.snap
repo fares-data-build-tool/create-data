@@ -46,12 +46,12 @@ exports[`pages capConfirmation should render correctly for capped ticket by dist
             "content": Array [
               "Min price: £2, Max price: £4",
             ],
-            "href": "/defineCapPricingPerDistance",
+            "href": "/definePricingPerDistance",
             "name": "Prices",
           },
           Object {
             "content": "0 km - End of journey, Price per km: £4",
-            "href": "/defineCapPricingPerDistance",
+            "href": "/definePricingPerDistance",
             "name": "Distance band 1",
           },
           Object {

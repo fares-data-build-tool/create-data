@@ -1,11 +1,12 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import { NextApiRequestWithSession } from '../../interfaces/index';
+import { NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces/index';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
@@ -86,6 +87,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });
 
+        const ticketType = (getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE) as TicketRepresentationAttribute)
+            .name;
+
         if (fareType === 'multiOperator') {
             redirectTo(res, '/reuseOperatorGroup');
             return;
@@ -95,7 +99,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/typeOfCap');
             return;
         }
-
+        if (ticketType === 'multipleServicesPricedByDistance') {
+            redirectTo(res, '/definePricingPerDistance');
+            return;
+        }
         redirectTo(res, '/multipleProducts');
         return;
     } catch (error) {

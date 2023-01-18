@@ -29,7 +29,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/selectCappedProductGroup');
             return;
         } else if (typeOfCap === 'byDistance') {
-            redirectTo(res, '/defineCapPricingPerDistance');
+            redirectTo(res, '/definePricingPerDistance');
             return;
         } else if (typeOfCap === 'byTaps') {
             redirectTo(res, '/multiTapsPricing');
