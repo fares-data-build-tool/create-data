@@ -8,7 +8,7 @@ import {
 import { getFareTypeFromFromAttributes, redirectTo } from '../../utils/apiUtils';
 import { checkProductOrCapNameIsValid, isCurrency } from '../../utils/apiUtils/validator';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { DistancePricing, DistancePricingData, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { DistanceBand, DistancePricingData, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 import { Ticket, WithIds } from '../../interfaces/matchingJsonTypes';
 
@@ -36,7 +36,7 @@ export const checkInputIsValid = (inputtedValue: string | undefined, inputType: 
 };
 
 export const validateInput = (
-    pricePerDistances: DistancePricing[],
+    pricePerDistances: DistanceBand[],
     lastIndex: number,
     minimumPrice: string,
     maximumPrice: string,
@@ -47,7 +47,7 @@ export const validateInput = (
     const productNameError = checkProductOrCapNameIsValid(productName, 'product');
     if (productNameError) {
         errors.push({
-            id: 'capped-product-name',
+            id: 'product-name',
             errorMessage: productNameError,
         });
     }
@@ -117,7 +117,7 @@ export const validateInput = (
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
-    const pricePerDistances: DistancePricing[] = [];
+    const pricePerDistances: DistanceBand[] = [];
     let i = 0;
     let errors: ErrorInfo[] = [];
     const { productName, minimumPrice, maximumPrice } = req.body;
@@ -140,7 +140,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     const distancePricing: DistancePricingData = {
         maximumPrice,
         minimumPrice,
-        capPricing: pricePerDistances,
+        distanceBands: pricePerDistances,
         productName: productName,
     };
     if (errors.length > 0) {

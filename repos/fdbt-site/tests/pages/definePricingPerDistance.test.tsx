@@ -12,7 +12,7 @@ describe('pages', () => {
                     pricingPerDistanceData={{
                         maximumPrice: '4',
                         minimumPrice: '3',
-                        capPricing: [
+                        distanceBands: [
                             {
                                 distanceFrom: '0',
                                 distanceTo: '2',
@@ -41,7 +41,7 @@ describe('pages', () => {
                     pricingPerDistanceData={{
                         maximumPrice: '4',
                         minimumPrice: '3',
-                        capPricing: [
+                        distanceBands: [
                             {
                                 distanceFrom: '0',
                                 distanceTo: '2',
@@ -75,7 +75,7 @@ describe('pages', () => {
                     pricingPerDistanceData={{
                         maximumPrice: '4',
                         minimumPrice: '3',
-                        capPricing: [
+                        distanceBands: [
                             {
                                 distanceFrom: '0',
                                 distanceTo: '',

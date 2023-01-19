@@ -1233,7 +1233,7 @@ export const expectedCappedTicket: WithIds<CappedTicket> = {
             productName: 'Product 1',
             maximumPrice: '2',
             minimumPrice: '1',
-            capPricing: [
+            distanceBands: [
                 {
                     distanceFrom: '0',
                     distanceTo: 'Max',

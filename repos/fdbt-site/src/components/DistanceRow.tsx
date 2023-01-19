@@ -51,19 +51,19 @@ export const renderTable = (
                                         type="text"
                                         disabled={index === 0}
                                         onChange={(e) => {
-                                            const items = [...pricingPerDistance.capPricing];
-                                            const item = { ...pricingPerDistance.capPricing[index] };
+                                            const items = [...pricingPerDistance.distanceBands];
+                                            const item = { ...pricingPerDistance.distanceBands[index] };
                                             item.distanceFrom = e.target.value;
                                             items[index] = item;
                                             setPricingPerDistance({
                                                 ...pricingPerDistance,
-                                                capPricing: items,
+                                                distanceBands: items,
                                             });
                                         }}
                                         value={
                                             index === 0
                                                 ? '0'
-                                                : pricingPerDistance?.capPricing[index]?.distanceFrom || ''
+                                                : pricingPerDistance?.distanceBands[index]?.distanceFrom || ''
                                         }
                                     />
                                 </FormElementWrapper>
@@ -102,19 +102,19 @@ export const renderTable = (
                                         name={`distanceTo${index}`}
                                         type="text"
                                         onChange={(e) => {
-                                            const items = [...pricingPerDistance.capPricing];
-                                            const item = { ...pricingPerDistance.capPricing[index] };
+                                            const items = [...pricingPerDistance.distanceBands];
+                                            const item = { ...pricingPerDistance.distanceBands[index] };
                                             item.distanceTo = e.target.value;
                                             items[index] = item;
                                             setPricingPerDistance({
                                                 ...pricingPerDistance,
-                                                capPricing: items,
+                                                distanceBands: items,
                                             });
                                         }}
                                         value={
                                             index + 1 === numberOfRows
                                                 ? 'Max'
-                                                : pricingPerDistance?.capPricing[index]?.distanceTo || ''
+                                                : pricingPerDistance?.distanceBands[index]?.distanceTo || ''
                                         }
                                         disabled={index + 1 === numberOfRows}
                                     />
@@ -149,16 +149,16 @@ export const renderTable = (
                                         name={`pricePerKm${index}`}
                                         type="text"
                                         onChange={(e) => {
-                                            const items = [...pricingPerDistance.capPricing];
-                                            const item = { ...pricingPerDistance.capPricing[index] };
+                                            const items = [...pricingPerDistance.distanceBands];
+                                            const item = { ...pricingPerDistance.distanceBands[index] };
                                             item.pricePerKm = e.target.value;
                                             items[index] = item;
                                             setPricingPerDistance({
                                                 ...pricingPerDistance,
-                                                capPricing: items,
+                                                distanceBands: items,
                                             });
                                         }}
-                                        value={pricingPerDistance?.capPricing[index]?.pricePerKm || ''}
+                                        value={pricingPerDistance?.distanceBands[index]?.pricePerKm || ''}
                                     />
                                 </FormElementWrapper>
                             </div>

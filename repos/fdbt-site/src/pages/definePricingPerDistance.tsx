@@ -27,7 +27,7 @@ interface DefinePricingPerDistanceProps {
     backHref: string;
 }
 
-const DefineCapPricingPerDistance = ({
+const DefinePricingPerDistance = ({
     errors,
     csrfToken,
     pricingPerDistanceData,
@@ -42,25 +42,25 @@ const DefineCapPricingPerDistance = ({
             <CsrfForm action="/api/pricingPerDistance" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
-                    <h1 className="govuk-heading-l" id="cap-capPricing-per-distance-heading">
+                    <h1 className="govuk-heading-l" id="pricing-per-distance-heading">
                         Enter your distance details
                     </h1>
 
                     <div className="govuk-!-margin-bottom-3 govuk-!-margin-left-1">
-                        <label className="govuk-label" htmlFor="capped-product-name">
+                        <label className="govuk-label" htmlFor="product-name">
                             Product name
                         </label>
                         <span className="govuk-hint">Enter the name of your product</span>
                         <div className="govuk-input__wrapper">
                             <FormElementWrapper
                                 errors={errors}
-                                errorId="capped-product-name"
+                                errorId="product-name"
                                 errorClass="govuk-input--error"
                                 hideText
                             >
                                 <input
                                     className="govuk-input govuk-input--width-30"
-                                    id="capped-product-name"
+                                    id="product-name"
                                     name="productName"
                                     type="text"
                                     defaultValue={pricingPerDistance.productName || ''}
@@ -163,35 +163,37 @@ const DefineCapPricingPerDistance = ({
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
                                     onClick={(): void => {
                                         setnumberOfEntitesByDistances(numberOfEntitesByDistance + 1);
-                                        const items = [...pricingPerDistance.capPricing];
-                                        let item = { ...pricingPerDistance.capPricing[numberOfEntitesByDistance - 1] };
+                                        const items = [...pricingPerDistance.distanceBands];
+                                        let item = {
+                                            ...pricingPerDistance.distanceBands[numberOfEntitesByDistance - 1],
+                                        };
                                         item.distanceTo = '';
                                         items[numberOfEntitesByDistance - 1] = item;
                                         setPricingPerDistance({
                                             ...pricingPerDistance,
-                                            capPricing: items,
+                                            distanceBands: items,
                                         });
-                                        item = { ...pricingPerDistance.capPricing[numberOfEntitesByDistance] };
+                                        item = { ...pricingPerDistance.distanceBands[numberOfEntitesByDistance] };
                                         item.distanceTo = 'Max';
                                         items[numberOfEntitesByDistance] = item;
                                         setPricingPerDistance({
                                             ...pricingPerDistance,
-                                            capPricing: items,
+                                            distanceBands: items,
                                         });
                                         for (let i = 0; i < numberOfEntitesByDistance; i += 1) {
                                             if (
-                                                !pricingPerDistance?.capPricing[i]?.distanceFrom &&
+                                                !pricingPerDistance?.distanceBands[i]?.distanceFrom &&
                                                 i !== 0 &&
-                                                pricingPerDistance?.capPricing[i - 1]?.distanceTo
+                                                pricingPerDistance?.distanceBands[i - 1]?.distanceTo
                                             ) {
-                                                const items = [...pricingPerDistance.capPricing];
-                                                item = { ...pricingPerDistance.capPricing[i] };
-                                                item.distanceFrom = pricingPerDistance.capPricing[i - 1].distanceTo;
+                                                const items = [...pricingPerDistance.distanceBands];
+                                                item = { ...pricingPerDistance.distanceBands[i] };
+                                                item.distanceFrom = pricingPerDistance.distanceBands[i - 1].distanceTo;
                                                 item.distanceTo = '';
                                                 items[i] = item;
                                                 setPricingPerDistance({
                                                     ...pricingPerDistance,
-                                                    capPricing: items,
+                                                    distanceBands: items,
                                                 });
                                             }
                                         }
@@ -212,14 +214,14 @@ const DefineCapPricingPerDistance = ({
                                         setPricingPerDistance((current) => {
                                             const copy = { ...current };
                                             if (numberOfEntitesByDistance !== 1) {
-                                                if (copy?.capPricing[numberOfEntitesByDistance - 1]?.distanceFrom) {
-                                                    copy.capPricing[numberOfEntitesByDistance - 1].distanceFrom = '';
+                                                if (copy?.distanceBands[numberOfEntitesByDistance - 1]?.distanceFrom) {
+                                                    copy.distanceBands[numberOfEntitesByDistance - 1].distanceFrom = '';
                                                 }
-                                                if (copy?.capPricing[numberOfEntitesByDistance - 1]?.distanceTo) {
-                                                    copy.capPricing[numberOfEntitesByDistance - 1].distanceTo = '';
+                                                if (copy?.distanceBands[numberOfEntitesByDistance - 1]?.distanceTo) {
+                                                    copy.distanceBands[numberOfEntitesByDistance - 1].distanceTo = '';
                                                 }
-                                                if (copy?.capPricing[numberOfEntitesByDistance - 1]?.pricePerKm) {
-                                                    copy.capPricing[numberOfEntitesByDistance - 1].pricePerKm = '';
+                                                if (copy?.distanceBands[numberOfEntitesByDistance - 1]?.pricePerKm) {
+                                                    copy.distanceBands[numberOfEntitesByDistance - 1].pricePerKm = '';
                                                 }
                                             }
                                             return { ...copy };
@@ -276,16 +278,16 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         props: {
             errors,
             pricingPerDistanceData: pricingPerDistanceData || {
-                capPricing: [{ distanceFrom: '0', distanceTo: 'Max', pricePerKm: '' }],
+                distanceBands: [{ distanceFrom: '0', distanceTo: 'Max', pricePerKm: '' }],
                 minimumPrice: '',
                 maximumPrice: '',
                 productName: '',
             },
             csrfToken,
-            numberOfEntitesByDistanceInitial: pricingPerDistanceData?.capPricing?.length || 1,
+            numberOfEntitesByDistanceInitial: pricingPerDistanceData?.distanceBands?.length || 1,
             backHref,
         },
     };
 };
 
-export default DefineCapPricingPerDistance;
+export default DefinePricingPerDistance;

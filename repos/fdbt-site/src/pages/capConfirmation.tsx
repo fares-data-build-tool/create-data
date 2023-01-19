@@ -242,10 +242,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             `Max price - £${capDistancePricingAttribute.maximumPrice}`,
         ];
 
-        capDistancePricingAttribute.capPricing.forEach((capDistance, index) => {
+        capDistancePricingAttribute.distanceBands.forEach((capDistance, index) => {
             distanceBands.push(
                 `${capDistance.distanceFrom} km  - ${
-                    index === capDistancePricingAttribute.capPricing.length - 1
+                    index === capDistancePricingAttribute.distanceBands.length - 1
                         ? 'End of journey'
                         : `${capDistance.distanceTo} km`
                 }, Price - £${capDistance.pricePerKm} per km`,
