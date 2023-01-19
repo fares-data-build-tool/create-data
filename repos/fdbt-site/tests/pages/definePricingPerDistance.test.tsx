@@ -27,6 +27,36 @@ describe('pages', () => {
                         productName: 'Product',
                     }}
                     numberOfEntitesByDistanceInitial={1}
+                    backHref=""
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly in edit mode', () => {
+            const tree = shallow(
+                <DefinePricingPerDistance
+                    errors={[]}
+                    csrfToken=""
+                    pricingPerDistanceData={{
+                        maximumPrice: '4',
+                        minimumPrice: '3',
+                        capPricing: [
+                            {
+                                distanceFrom: '0',
+                                distanceTo: '2',
+                                pricePerKm: '5',
+                            },
+                            {
+                                distanceFrom: '2',
+                                distanceTo: 'Max',
+                                pricePerKm: '5',
+                            },
+                        ],
+                        productName: 'Product',
+                    }}
+                    numberOfEntitesByDistanceInitial={1}
+                    backHref="/products/productDetails?productId=1"
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -60,6 +90,7 @@ describe('pages', () => {
                         productName: 'Product',
                     }}
                     numberOfEntitesByDistanceInitial={2}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();

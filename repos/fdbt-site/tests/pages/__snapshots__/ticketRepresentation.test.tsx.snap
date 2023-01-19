@@ -56,8 +56,8 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
                   "value": "pointToPointPeriod",
                 },
                 Object {
-                  "hint": "A single trip on a specific service or set of services, priced by distance",
-                  "label": "Multi service, priced by distance",
+                  "hint": "Single trip on a specific service or set of services, priced by distance",
+                  "label": "A ticket for a set of services, priced by distance",
                   "value": "multipleServicesPricedByDistance",
                 },
               ]
@@ -234,8 +234,8 @@ exports[`pages ticketRepresentation should render error messaging when errors ar
                   "value": "hybrid",
                 },
                 Object {
-                  "hint": "A single trip on a specific service or set of services, priced by distance",
-                  "label": "Multi service, priced by distance",
+                  "hint": "Single trip on a specific service or set of services, priced by distance",
+                  "label": "A ticket for a set of services, priced by distance",
                   "value": "multipleServicesPricedByDistance",
                 },
               ]

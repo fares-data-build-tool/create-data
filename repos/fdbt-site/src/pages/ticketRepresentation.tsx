@@ -119,8 +119,8 @@ const TicketRepresentation = ({
                                             ? [
                                                   {
                                                       value: 'multipleServicesPricedByDistance',
-                                                      label: 'Multi service, priced by distance',
-                                                      hint: 'A single trip on a specific service or set of services, priced by distance',
+                                                      label: 'A ticket for a set of services, priced by distance',
+                                                      hint: 'Single trip on a specific service or set of services, priced by distance',
                                                   },
                                               ]
                                             : []),

@@ -473,6 +473,35 @@ const createProductDetails = async (
         });
     }
 
+    if ('pricingByDistance' in product && product.pricingByDistance) {
+        const { pricingByDistance } = product;
+
+        productDetailsElements.push({
+            id: 'pricing-by-distance-price',
+            name: 'Prices',
+            content: [
+                `Min price - £${pricingByDistance.minimumPrice}`,
+                `Max price - £${pricingByDistance.maximumPrice}`,
+            ],
+            editLink: '/definePricingPerDistance',
+        });
+
+        pricingByDistance.capPricing.forEach((capDistance, index) => {
+            productDetailsElements.push({
+                name: `Distance band ${index + 1}`,
+                content: [
+                    `${capDistance.distanceFrom} km  - ${
+                        index === pricingByDistance.capPricing.length - 1
+                            ? 'End of journey'
+                            : `${capDistance.distanceTo} km`
+                    }, Price - £${capDistance.pricePerKm} per km`,
+                ],
+                editLink: '/definePricingPerDistance',
+                id: `pricing-by-distance-band-${index}`,
+            });
+        });
+    }
+
     productDetailsElements.push({
         id: 'purchase-methods',
         name: 'Purchase methods',
