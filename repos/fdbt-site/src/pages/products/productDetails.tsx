@@ -474,28 +474,28 @@ const createProductDetails = async (
     }
 
     if ('pricingByDistance' in product && product.pricingByDistance) {
-        const pricePerDistance = product.pricingByDistance;
+        const { pricingByDistance } = product;
 
         productDetailsElements.push({
             id: 'pricing-by-distance-price',
             name: 'Prices',
-            content: [`Min price - £${pricePerDistance.minimumPrice}`, `Max price - £${pricePerDistance.maximumPrice}`],
+            content: [
+                `Min price - £${pricingByDistance.minimumPrice}`,
+                `Max price - £${pricingByDistance.maximumPrice}`,
+            ],
             editLink: '/definePricingPerDistance',
         });
 
-        const distanceBands: string[] = [];
-        pricePerDistance.capPricing.forEach((capDistance, index) => {
-            distanceBands.push(
-                `${capDistance.distanceFrom} km  - ${
-                    index === pricePerDistance.capPricing.length - 1 ? 'End of journey' : `${capDistance.distanceTo} km`
-                }, Price - £${capDistance.pricePerKm} per km`,
-            );
-        });
-
-        distanceBands.forEach((distanceBandContent, index) => {
+        pricingByDistance.capPricing.forEach((capDistance, index) => {
             productDetailsElements.push({
                 name: `Distance band ${index + 1}`,
-                content: [distanceBandContent],
+                content: [
+                    `${capDistance.distanceFrom} km  - ${
+                        index === pricingByDistance.capPricing.length - 1
+                            ? 'End of journey'
+                            : `${capDistance.distanceTo} km`
+                    }, Price - £${capDistance.pricePerKm} per km`,
+                ],
                 editLink: '/definePricingPerDistance',
                 id: `pricing-by-distance-band-${index}`,
             });
