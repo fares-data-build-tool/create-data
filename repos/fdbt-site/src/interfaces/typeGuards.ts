@@ -40,6 +40,7 @@ import {
     PeriodExpiry,
     CapExpiry,
     CapStartInfo,
+    FlatFareMultipleServices,
 } from './matchingJsonTypes';
 
 export const isNotEmpty = <T>(value: T | null | undefined): value is T => value !== null && value !== undefined;
@@ -178,3 +179,11 @@ export const isMultiOperatorMultipleServicesTicket = (
     (ticket as MultiOperatorMultipleServicesTicket).additionalOperators &&
     (ticket as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0 &&
     'selectedServices' in ticket;
+
+export const isFlatFarePricedByDistanceTicket = (
+    ticket: Ticket | WithIds<Ticket>,
+): ticket is FlatFareMultipleServices =>
+    !!ticket &&
+    ticket.type === 'flatFare' &&
+    (ticket as FlatFareMultipleServices).products.length > 0 &&
+    'pricingByDistance' in ticket.products[0];

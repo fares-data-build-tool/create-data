@@ -160,7 +160,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const product = ticket.products[0];
         const updatedProduct = { ...product, pricingByDistance: distanceCap };
 
-        // edit mode
         const updatedTicket: WithIds<Ticket> = {
             ...ticket,
             products: [updatedProduct],

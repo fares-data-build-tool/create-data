@@ -14,6 +14,7 @@ import {
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { isWithErrors } from '../interfaces/typeGuards';
 import BackButton from '../components/BackButton';
+import { PriceByDistanceProductDetails } from '../interfaces/matchingJsonTypes';
 
 const title = 'Pricing Per Distance - Create Fares Data Service';
 const description = 'Pricing Per Distance entry page of the Create Fares Data Service';
@@ -264,9 +265,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         backHref = `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
             matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
         }`;
-        const product = ticketJson.products[0];
-        if ('pricingByDistance' in product) {
-            pricingPerDistanceData = product.pricingByDistance as DistancePricingData;
+
+        if (!pricingPerDistanceData) {
+            const product = ticketJson.products[0] as PriceByDistanceProductDetails;
+            pricingPerDistanceData = product.pricingByDistance;
         }
     }
 

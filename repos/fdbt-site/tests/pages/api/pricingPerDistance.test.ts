@@ -19,7 +19,7 @@ describe('pricingPerDistance', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates cap info, updates the PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', async () => {
+    it('correctly generates pricing info, updates the PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', async () => {
         const mockCapInfo: DistancePricingData = {
             maximumPrice: '4',
             minimumPrice: '3',
@@ -58,7 +58,7 @@ describe('pricingPerDistance', () => {
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/additionalPricingStructures' });
     });
 
-    it('correctly generates cap info, updates the ticket and then redirects to /product details if all is valid', async () => {
+    it('correctly generates pricing info, updates the ticket and then redirects to /product details if all is valid', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 distanceFrom1: '2',
