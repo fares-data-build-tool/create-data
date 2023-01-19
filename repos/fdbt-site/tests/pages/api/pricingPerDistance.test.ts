@@ -1,7 +1,7 @@
 import { expectedFlatFareTicket, getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import pricingPerDistance, { validateInput } from '../../../src/pages/api/pricingPerDistance';
-import { DistancePricingData, DistancePricing, ErrorInfo } from '../../../src/interfaces';
+import { DistancePricingData, DistanceBand, ErrorInfo } from '../../../src/interfaces';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
@@ -23,7 +23,7 @@ describe('pricingPerDistance', () => {
         const mockPricingDataInfo: DistancePricingData = {
             maximumPrice: '4',
             minimumPrice: '3',
-            capPricing: [
+            distanceBands: [
                 {
                     distanceFrom: '0',
                     distanceTo: '2',
@@ -114,7 +114,7 @@ describe('pricingPerDistance', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '4',
             minimumPrice: '3',
-            capPricing: [
+            distanceBands: [
                 {
                     distanceFrom: '0',
                     distanceTo: '',
@@ -161,7 +161,7 @@ describe('pricingPerDistance', () => {
             errors,
             maximumPrice: '4',
             minimumPrice: '3',
-            capPricing: [
+            distanceBands: [
                 { distanceFrom: '0', distanceTo: '2', pricePerKm: '5' },
                 {
                     distanceFrom: '',
@@ -198,7 +198,7 @@ describe('pricingPerDistance', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '',
             minimumPrice: '3',
-            capPricing: [
+            distanceBands: [
                 {
                     distanceFrom: '0',
                     distanceTo: '2',
@@ -240,7 +240,7 @@ describe('pricingPerDistance', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '3',
             minimumPrice: '',
-            capPricing: [
+            distanceBands: [
                 {
                     distanceFrom: '0',
                     distanceTo: '2',
@@ -282,7 +282,7 @@ describe('pricingPerDistance', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             maximumPrice: '3',
             minimumPrice: '2',
-            capPricing: [
+            distanceBands: [
                 { distanceFrom: '0', distanceTo: '2', pricePerKm: '2' },
                 {
                     distanceFrom: '2',
@@ -298,7 +298,7 @@ describe('pricingPerDistance', () => {
 
 describe('validate input tests', () => {
     it('validates input for distance from', () => {
-        const pricePerDistances: DistancePricing[] = [
+        const pricePerDistances: DistanceBand[] = [
             {
                 distanceFrom: '0',
                 distanceTo: '2',
@@ -324,7 +324,7 @@ describe('validate input tests', () => {
     });
 
     it('validates input for distance to', () => {
-        const pricePerDistances: DistancePricing[] = [
+        const pricePerDistances: DistanceBand[] = [
             {
                 distanceFrom: '0',
                 distanceTo: 'b',
@@ -350,7 +350,7 @@ describe('validate input tests', () => {
     });
 
     it('validates input for maximum price', () => {
-        const pricePerDistances: DistancePricing[] = [
+        const pricePerDistances: DistanceBand[] = [
             {
                 distanceFrom: '0',
                 distanceTo: '3',
@@ -372,7 +372,7 @@ describe('validate input tests', () => {
     });
 
     it('validates input for minimum price', () => {
-        const pricePerDistances: DistancePricing[] = [
+        const pricePerDistances: DistanceBand[] = [
             {
                 distanceFrom: '0',
                 distanceTo: '3',
@@ -394,7 +394,7 @@ describe('validate input tests', () => {
     });
 
     it('validates input for price per km', () => {
-        const pricePerDistances: DistancePricing[] = [
+        const pricePerDistances: DistanceBand[] = [
             {
                 distanceFrom: '0',
                 distanceTo: '3',
@@ -416,7 +416,7 @@ describe('validate input tests', () => {
     });
 
     it('validates ranges so that distanceFrom must be less than distanceTo and distanceTo of prior row is equal to distanceFrom', () => {
-        const pricePerDistances: DistancePricing[] = [
+        const pricePerDistances: DistanceBand[] = [
             {
                 distanceFrom: '0',
                 distanceTo: '3',

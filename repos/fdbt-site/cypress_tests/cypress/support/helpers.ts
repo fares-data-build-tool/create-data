@@ -298,7 +298,7 @@ export const selectRandomOptionFromDropDown = (dropDownId: string): void => {
 };
 
 export const completePricingPerDistancePage = (productName: string): void => {
-    getElementById('capped-product-name').type(productName);
+    getElementById('product-name').type(productName);
     getElementById('minimum-price').type('1.0');
     getElementById('maximum-price').type('2.6');
 

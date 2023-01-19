@@ -16,7 +16,7 @@ exports[`pages DefinePricingPerDistance should render correctly 1`] = `
     />
     <h1
       className="govuk-heading-l"
-      id="cap-capPricing-per-distance-heading"
+      id="pricing-per-distance-heading"
     >
       Enter your distance details
     </h1>
@@ -25,7 +25,7 @@ exports[`pages DefinePricingPerDistance should render correctly 1`] = `
     >
       <label
         className="govuk-label"
-        htmlFor="capped-product-name"
+        htmlFor="product-name"
       >
         Product name
       </label>
@@ -39,14 +39,14 @@ exports[`pages DefinePricingPerDistance should render correctly 1`] = `
       >
         <FormElementWrapper
           errorClass="govuk-input--error"
-          errorId="capped-product-name"
+          errorId="product-name"
           errors={Array []}
           hideText={true}
         >
           <input
             className="govuk-input govuk-input--width-30"
             defaultValue="Product"
-            id="capped-product-name"
+            id="product-name"
             name="productName"
             type="text"
           />
@@ -167,7 +167,7 @@ exports[`pages DefinePricingPerDistance should render correctly 1`] = `
         numberToDisplay={1}
         pricingPerDistance={
           Object {
-            "capPricing": Array [
+            "distanceBands": Array [
               Object {
                 "distanceFrom": "0",
                 "distanceTo": "2",
@@ -228,7 +228,7 @@ exports[`pages DefinePricingPerDistance should render correctly in edit mode 1`]
     />
     <h1
       className="govuk-heading-l"
-      id="cap-capPricing-per-distance-heading"
+      id="pricing-per-distance-heading"
     >
       Enter your distance details
     </h1>
@@ -237,7 +237,7 @@ exports[`pages DefinePricingPerDistance should render correctly in edit mode 1`]
     >
       <label
         className="govuk-label"
-        htmlFor="capped-product-name"
+        htmlFor="product-name"
       >
         Product name
       </label>
@@ -251,14 +251,14 @@ exports[`pages DefinePricingPerDistance should render correctly in edit mode 1`]
       >
         <FormElementWrapper
           errorClass="govuk-input--error"
-          errorId="capped-product-name"
+          errorId="product-name"
           errors={Array []}
           hideText={true}
         >
           <input
             className="govuk-input govuk-input--width-30"
             defaultValue="Product"
-            id="capped-product-name"
+            id="product-name"
             name="productName"
             type="text"
           />
@@ -379,7 +379,7 @@ exports[`pages DefinePricingPerDistance should render correctly in edit mode 1`]
         numberToDisplay={1}
         pricingPerDistance={
           Object {
-            "capPricing": Array [
+            "distanceBands": Array [
               Object {
                 "distanceFrom": "0",
                 "distanceTo": "2",
@@ -451,7 +451,7 @@ exports[`pages DefinePricingPerDistance should render error messaging when error
     />
     <h1
       className="govuk-heading-l"
-      id="cap-capPricing-per-distance-heading"
+      id="pricing-per-distance-heading"
     >
       Enter your distance details
     </h1>
@@ -460,7 +460,7 @@ exports[`pages DefinePricingPerDistance should render error messaging when error
     >
       <label
         className="govuk-label"
-        htmlFor="capped-product-name"
+        htmlFor="product-name"
       >
         Product name
       </label>
@@ -474,7 +474,7 @@ exports[`pages DefinePricingPerDistance should render error messaging when error
       >
         <FormElementWrapper
           errorClass="govuk-input--error"
-          errorId="capped-product-name"
+          errorId="product-name"
           errors={
             Array [
               Object {
@@ -488,7 +488,7 @@ exports[`pages DefinePricingPerDistance should render error messaging when error
           <input
             className="govuk-input govuk-input--width-30"
             defaultValue="Product"
-            id="capped-product-name"
+            id="product-name"
             name="productName"
             type="text"
           />
@@ -644,7 +644,7 @@ exports[`pages DefinePricingPerDistance should render error messaging when error
         numberToDisplay={2}
         pricingPerDistance={
           Object {
-            "capPricing": Array [
+            "distanceBands": Array [
               Object {
                 "distanceFrom": "0",
                 "distanceTo": "",

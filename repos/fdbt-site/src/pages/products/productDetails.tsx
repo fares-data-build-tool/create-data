@@ -486,12 +486,12 @@ const createProductDetails = async (
             editLink: '/definePricingPerDistance',
         });
 
-        pricingByDistance.capPricing.forEach((capDistance, index) => {
+        pricingByDistance.distanceBands.forEach((capDistance, index) => {
             productDetailsElements.push({
                 name: `Distance band ${index + 1}`,
                 content: [
                     `${capDistance.distanceFrom} km  - ${
-                        index === pricingByDistance.capPricing.length - 1
+                        index === pricingByDistance.distanceBands.length - 1
                             ? 'End of journey'
                             : `${capDistance.distanceTo} km`
                     }, Price - £${capDistance.pricePerKm} per km`,

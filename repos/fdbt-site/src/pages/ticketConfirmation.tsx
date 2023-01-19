@@ -271,10 +271,12 @@ export const buildFlatFarePriceByDistanceConfirmationElements = (
             `Max price - £${pricePerDistance.maximumPrice}`,
         ];
 
-        pricePerDistance.capPricing.forEach((capDistance, index) => {
+        pricePerDistance.distanceBands.forEach((capDistance, index) => {
             distanceBands.push(
                 `${capDistance.distanceFrom} km  - ${
-                    index === pricePerDistance.capPricing.length - 1 ? 'End of journey' : `${capDistance.distanceTo} km`
+                    index === pricePerDistance.distanceBands.length - 1
+                        ? 'End of journey'
+                        : `${capDistance.distanceTo} km`
                 }, Price - £${capDistance.pricePerKm} per km`,
             );
         });
