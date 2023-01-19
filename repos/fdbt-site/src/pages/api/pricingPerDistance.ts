@@ -36,7 +36,7 @@ export const checkInputIsValid = (inputtedValue: string | undefined, inputType: 
 };
 
 export const validateInput = (
-    capPricePerDistances: DistancePricing[],
+    pricePerDistances: DistancePricing[],
     lastIndex: number,
     minimumPrice: string,
     maximumPrice: string,
@@ -44,11 +44,11 @@ export const validateInput = (
 ): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
 
-    const cappedProductNameError = checkProductOrCapNameIsValid(productName, 'product');
-    if (cappedProductNameError) {
+    const productNameError = checkProductOrCapNameIsValid(productName, 'product');
+    if (productNameError) {
         errors.push({
             id: 'capped-product-name',
-            errorMessage: cappedProductNameError,
+            errorMessage: productNameError,
         });
     }
     const minimumPriceError = checkInputIsValid(minimumPrice, 'price');
@@ -65,8 +65,8 @@ export const validateInput = (
             errorMessage: maximumPriceError,
         });
     }
-    capPricePerDistances.forEach((cap, index: number) => {
-        const { distanceFrom, distanceTo, pricePerKm } = cap;
+    pricePerDistances.forEach((distancePricing, index: number) => {
+        const { distanceFrom, distanceTo, pricePerKm } = distancePricing;
 
         if (lastIndex !== index) {
             const distanceToError = checkInputIsValid(distanceTo, 'distance');
@@ -96,15 +96,15 @@ export const validateInput = (
         }
     });
 
-    for (let i = capPricePerDistances.length - 1; i >= 1; i--) {
-        if (Number(capPricePerDistances[i].distanceFrom) !== Number(capPricePerDistances[i - 1].distanceTo)) {
+    for (let i = pricePerDistances.length - 1; i >= 1; i--) {
+        if (Number(pricePerDistances[i].distanceFrom) !== Number(pricePerDistances[i - 1].distanceTo)) {
             errors.push({
                 id: `distance-from-${i}`,
                 errorMessage: 'Distance from must be the same as distance to in the previous row',
             });
         }
-        if (capPricePerDistances[i].distanceTo !== 'Max') {
-            if (Number(capPricePerDistances[i].distanceFrom) >= Number(capPricePerDistances[i].distanceTo)) {
+        if (pricePerDistances[i].distanceTo !== 'Max') {
+            if (Number(pricePerDistances[i].distanceFrom) >= Number(pricePerDistances[i].distanceTo)) {
                 errors.push({
                     id: `distance-from-${i}`,
                     errorMessage: 'Distance from must be less than distance to in the same row',
@@ -117,7 +117,7 @@ export const validateInput = (
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
-    const capPricePerDistances: DistancePricing[] = [];
+    const pricePerDistances: DistancePricing[] = [];
     let i = 0;
     let errors: ErrorInfo[] = [];
     const { productName, minimumPrice, maximumPrice } = req.body;
@@ -126,27 +126,27 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const distanceFrom = req.body[`distanceFrom${i}`];
         const distanceTo = req.body[`distanceTo${i}`];
         const pricePerKm = req.body[`pricePerKm${i}`];
-        const capPricingPerDistance = {
+        const distancePricing = {
             distanceFrom,
             distanceTo,
             pricePerKm,
         };
-        capPricePerDistances.push(capPricingPerDistance);
+        pricePerDistances.push(distancePricing);
         i += 1;
     }
-    capPricePerDistances[0] = { ...capPricePerDistances[0], distanceFrom: '0' };
-    capPricePerDistances[i - 1] = { ...capPricePerDistances[i - 1], distanceTo: 'Max' };
-    errors = validateInput(capPricePerDistances, i - 1, minimumPrice, maximumPrice, productName);
-    const distanceCap: DistancePricingData = {
+    pricePerDistances[0] = { ...pricePerDistances[0], distanceFrom: '0' };
+    pricePerDistances[i - 1] = { ...pricePerDistances[i - 1], distanceTo: 'Max' };
+    errors = validateInput(pricePerDistances, i - 1, minimumPrice, maximumPrice, productName);
+    const distancePricing: DistancePricingData = {
         maximumPrice,
         minimumPrice,
-        capPricing: capPricePerDistances,
+        capPricing: pricePerDistances,
         productName: productName,
     };
     if (errors.length > 0) {
         updateSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE, {
             errors,
-            ...distanceCap,
+            ...distancePricing,
         });
         redirectTo(res, '/definePricingPerDistance');
         return;
@@ -158,7 +158,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     // edit mode
     if (ticket && matchingJsonMetaData) {
         const product = ticket.products[0];
-        const updatedProduct = { ...product, pricingByDistance: distanceCap };
+        const updatedProduct = { ...product, pricingByDistance: distancePricing };
 
         const updatedTicket: WithIds<Ticket> = {
             ...ticket,
@@ -177,7 +177,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         return;
     }
 
-    updateSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE, distanceCap);
+    updateSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE, distancePricing);
     const fareType = getFareTypeFromFromAttributes(req);
     if (fareType === 'flatFare') {
         redirectTo(res, '/ticketConfirmation');
