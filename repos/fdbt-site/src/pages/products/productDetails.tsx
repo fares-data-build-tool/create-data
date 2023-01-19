@@ -9,12 +9,7 @@ import {
     getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource,
     getServiceByIdAndDataSource,
 } from '../../data/auroradb';
-import {
-    ProductDetailsElement,
-    NextPageContextWithSession,
-    ProductDateInformation,
-    DistancePricingData,
-} from '../../interfaces';
+import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
@@ -478,8 +473,8 @@ const createProductDetails = async (
         });
     }
 
-    if (ticket.type === 'flatFare' && 'pricingByDistance' in product) {
-        const pricePerDistance = product.pricingByDistance as DistancePricingData;
+    if ('pricingByDistance' in product && product.pricingByDistance) {
+        const pricePerDistance = product.pricingByDistance;
 
         productDetailsElements.push({
             id: 'pricing-by-distance-price',
