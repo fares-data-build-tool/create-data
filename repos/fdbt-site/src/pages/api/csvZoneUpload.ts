@@ -146,64 +146,67 @@ export const processCsv = async (
     }
 };
 
-export const processServices = (
-    formData: FileData,
-): { serviceErrors: ErrorInfo[]; selectedServices: SelectedService[] } => {
+export const processServices = (req: NextApiRequestWithSession, formData: FileData): { serviceErrors: ErrorInfo[] } => {
     const fields = formData.fields;
+
     if (!fields) {
-        return { serviceErrors: [], selectedServices: [] };
+        throw new Error('Unable to fetch the form data');
     }
-    const isYesSelected = fields['exempt'] === 'yes';
+    const clickedYes = 'exempt' in fields && fields['exempt'] === 'yes';
+
+    const dataFields: { [key: string]: string | string[] } = fields;
+    delete dataFields['poundsOrPence'];
+    delete dataFields['exempt'];
+
+    const selectedServices: SelectedService[] = [];
+    if (clickedYes) {
+        Object.entries(dataFields).forEach((entry) => {
+            const lineNameLineIdServiceCodeStartDate = entry[0];
+            const description = entry[1];
+            let serviceDescription: string;
+            if (isArray(description)) {
+                [serviceDescription] = description;
+            } else {
+                serviceDescription = description;
+            }
+            const splitData = lineNameLineIdServiceCodeStartDate.split('#');
+            selectedServices.push({
+                lineName: splitData[0],
+                lineId: splitData[1],
+                serviceCode: splitData[2],
+                startDate: splitData[3],
+                serviceDescription,
+            });
+        });
+    }
 
     const errors: ErrorInfo[] = [];
-
-    if (isYesSelected) {
-        errors.push({ id: '', errorMessage: 'Choose at least one service from the options' });
+    if (clickedYes && selectedServices.length === 0) {
+        //console.log('in the block');
+        errors.push({ id: 'checkbox-0', errorMessage: 'Choose at least one service from the options' });
+        updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { errors });
+    } else {
+        updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { selectedServices });
     }
 
-    const requestBody: { [key: string]: string | string[] } = fields;
-    const selectedServices: SelectedService[] = [];
-
-    Object.entries(requestBody).forEach((entry) => {
-        const lineNameLineIdServiceCodeStartDate = entry[0];
-        const description = entry[1];
-        let serviceDescription: string;
-        if (isArray(description)) {
-            [serviceDescription] = description;
-        } else {
-            serviceDescription = description;
-        }
-        const splitData = lineNameLineIdServiceCodeStartDate.split('#');
-        selectedServices.push({
-            lineName: splitData[0],
-            lineId: splitData[1],
-            serviceCode: splitData[2],
-            startDate: splitData[3],
-            serviceDescription,
-        });
-    });
-    //console.log(selectedServices);
-
-    return { serviceErrors: errors, selectedServices };
+    return { serviceErrors: errors };
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
 
-        const { serviceErrors, selectedServices } = processServices(formData);
+        const { serviceErrors } = processServices(req, formData);
         const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
         const fileName = formData.name;
 
+        const errors: ErrorInfo[] = serviceErrors;
         if (fileError) {
-            const errors: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: fileError }];
-            setFareZoneAttributeAndRedirect(req, res, errors);
-            return;
+            errors.push({ id: 'csv-upload', errorMessage: fileError });
         }
 
-        if (serviceErrors) {
-            updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { selectedServices });
-            redirectTo(res, '/csvZoneUpload');
+        if (errors.length > 0) {
+            setFareZoneAttributeAndRedirect(req, res, errors);
             return;
         }
 

@@ -24,8 +24,8 @@ import {
     getAllServicesByNocCode,
     getServicesByNocCodeAndDataSource,
     getTndsServicesByNocAndModes,
-} from 'src/data/auroradb';
-import { redirectTo } from 'src/utils/apiUtils';
+} from '../data/auroradb';
+import { redirectTo } from '../utils/apiUtils';
 
 const title = 'CSV Zone Upload - Create Fares Data Service';
 const description = 'CSV Zone Upload page of the Create Fares Data Service';
@@ -62,6 +62,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         fareZoneAttribute && isFareZoneAttributeWithErrors(fareZoneAttribute) ? fareZoneAttribute.errors : [];
 
     const nocCode = getAndValidateNoc(ctx);
+    //updateSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, undefined);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
     const serviceListErrors =
@@ -92,18 +93,28 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }
 
-    const { selectAll } = ctx.query;
+    //const { selectAll } = ctx.query;
 
+    const selectedServices =
+        serviceListAttribute &&
+        !isServiceListAttributeWithErrors(serviceListAttribute) &&
+        'selectedServices' in serviceListAttribute
+            ? serviceListAttribute.selectedServices
+            : [];
     let chosenDataSourceServices;
     if (modesAttribute) {
         chosenDataSourceServices = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
     }
     chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
+    const selectedLineIds = selectedServices.map((service) => service.lineId);
+    //console.log(chosenDataSourceServices);
+    //console.log({ selectedServices });
+    //const selectAll = true;
     const serviceList: ServicesInfo[] = chosenDataSourceServices.map((service) => {
         return {
             ...service,
-            checked: !selectAll || (selectAll !== 'true' && selectAll !== 'false') ? false : selectAll !== 'false',
+            checked: selectedLineIds.includes(service.lineId),
         };
     });
     return {
@@ -118,15 +129,18 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             csvTemplateDisplayName: 'Download fare zone CSV template - File Type CSV - File Size 673B',
             csvTemplateAttachmentUrl: FareZoneExampleCsv,
             csvTemplateSize: '673B',
-            errors: [...errors, ...serviceListErrors],
+            errors: [...errors],
             detailSummary: "My fare zone won't upload",
             csrfToken: getCsrfToken(ctx),
             backHref: '',
             showPriceOption: true,
             serviceList,
-            buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
+            buttonText: serviceList.every((service) => service.checked)
+                ? 'Unselect All Services'
+                : 'Select All Services',
             dataSourceAttribute,
             isFareZone: true,
+            clickedYes: serviceList.some((service) => service.checked) || serviceListErrors.length > 0,
         },
     };
 };

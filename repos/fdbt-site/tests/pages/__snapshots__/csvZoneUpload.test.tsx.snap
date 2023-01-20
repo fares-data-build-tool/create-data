@@ -8,6 +8,7 @@ exports[`pages csvzoneupload should render correctly 1`] = `
 >
   <UserDataUploadComponent
     backHref=""
+    clickedYes={false}
     csrfToken=""
     csvTemplateAttachmentUrl=""
     csvTemplateDisplayName=""
@@ -36,6 +37,42 @@ exports[`pages csvzoneupload should render correctly 1`] = `
     guidanceDocAttachmentUrl=""
     guidanceDocDisplayName=""
     guidanceDocSize=""
+    isFareZone={true}
+    serviceList={
+      Array [
+        Object {
+          "checked": false,
+          "description": "IW Bus Service 123",
+          "destination": "Leeds",
+          "id": 11,
+          "lineId": "3h3vb32ik",
+          "lineName": "123",
+          "origin": "Manchester",
+          "serviceCode": "NW_05_BLAC_123_1",
+          "startDate": "05/02/2020",
+        },
+        Object {
+          "checked": false,
+          "description": "Big Blue Bus Service X1",
+          "id": 12,
+          "lineId": "3h3vb32ik",
+          "lineName": "X1",
+          "origin": "Edinburgh",
+          "serviceCode": "NW_05_BLAC_X1_1",
+          "startDate": "06/02/2020",
+        },
+        Object {
+          "checked": false,
+          "description": "This is some kind of bus service",
+          "destination": "London",
+          "id": 13,
+          "lineId": "3h3vb32ik",
+          "lineName": "Infinity Line",
+          "serviceCode": "WY_13_IWBT_07_1",
+          "startDate": "07/02/2020",
+        },
+      ]
+    }
   />
 </BaseLayout>
 `;

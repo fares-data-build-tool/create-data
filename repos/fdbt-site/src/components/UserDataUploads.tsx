@@ -29,6 +29,7 @@ const UserDataUploadComponent = ({
     dataSourceAttribute,
     serviceList,
     isFareZone,
+    clickedYes,
 }: UserDataUploadsProps): ReactElement => {
     const seen: string[] = [];
     const uniqueServiceLists =
@@ -160,39 +161,39 @@ const UserDataUploadComponent = ({
                                                 Are there services within this zone which are not included?
                                             </h2>
                                         </legend>
-                                        <div className="govuk-radios" data-module="govuk-radios">
-                                            <div className="govuk-radios__item">
-                                                <input
-                                                    className="govuk-radios__input"
-                                                    id="yes"
-                                                    name="exempt"
-                                                    type="radio"
-                                                    value="yes"
-                                                    data-aria-controls="conditional-yes"
-                                                />
-                                                <label className="govuk-label govuk-radios__label" htmlFor="yes">
-                                                    Yes
-                                                </label>
-                                            </div>
-                                            <div
-                                                className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                                                id="conditional-yes"
-                                            >
-                                                <div className="govuk-form-group">
-                                                    <fieldset className="govuk-fieldset">
-                                                        <input
-                                                            type="submit"
-                                                            name="selectAll"
-                                                            value={buttonText}
-                                                            id="select-all-button"
-                                                            className="govuk-button govuk-button--secondary"
-                                                        />
-                                                        <FormElementWrapper
-                                                            errors={errors}
-                                                            errorId="checkbox-0"
-                                                            errorClass=""
-                                                            addFormGroupError={false}
-                                                        >
+                                        <FormElementWrapper
+                                            errorId="checkbox-0"
+                                            errorClass="govuk-form-group--error"
+                                            errors={errors}
+                                        >
+                                            <div className="govuk-radios" data-module="govuk-radios">
+                                                <div className="govuk-radios__item">
+                                                    <input
+                                                        className="govuk-radios__input"
+                                                        id="yes"
+                                                        name="exempt"
+                                                        type="radio"
+                                                        value="yes"
+                                                        data-aria-controls="conditional-yes"
+                                                        defaultChecked={clickedYes}
+                                                    />
+                                                    <label className="govuk-label govuk-radios__label" htmlFor="yes">
+                                                        Yes
+                                                    </label>
+                                                </div>
+                                                <div
+                                                    className="govuk-radios__conditional govuk-radios__conditional--hidden"
+                                                    id="conditional-yes"
+                                                >
+                                                    <div className="govuk-form-group">
+                                                        <fieldset className="govuk-fieldset">
+                                                            <input
+                                                                type="submit"
+                                                                name="selectAll"
+                                                                value={buttonText}
+                                                                id="select-all-button"
+                                                                className="govuk-button govuk-button--secondary"
+                                                            />
                                                             <div className="govuk-checkboxes">
                                                                 {uniqueServiceLists.map((service, index) => {
                                                                     const {
@@ -206,6 +207,7 @@ const UserDataUploadComponent = ({
                                                                     } = service;
 
                                                                     const checkboxTitles =
+                                                                        dataSourceAttribute &&
                                                                         dataSourceAttribute.source === 'tnds'
                                                                             ? `${lineName} - ${description}`
                                                                             : `${lineName} ${origin || 'N/A'} - ${
@@ -237,23 +239,24 @@ const UserDataUploadComponent = ({
                                                                     );
                                                                 })}
                                                             </div>
-                                                        </FormElementWrapper>
-                                                    </fieldset>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                                <div className="govuk-radios__item">
+                                                    <input
+                                                        className="govuk-radios__input"
+                                                        id="no"
+                                                        name="exempt"
+                                                        type="radio"
+                                                        value="no"
+                                                        defaultChecked={!clickedYes}
+                                                    />
+                                                    <label className="govuk-label govuk-radios__label" htmlFor="no">
+                                                        No
+                                                    </label>
                                                 </div>
                                             </div>
-                                            <div className="govuk-radios__item">
-                                                <input
-                                                    className="govuk-radios__input"
-                                                    id="no"
-                                                    name="exempt"
-                                                    type="radio"
-                                                    value="no"
-                                                />
-                                                <label className="govuk-label govuk-radios__label" htmlFor="no">
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
+                                        </FormElementWrapper>
                                     </fieldset>
                                 </div>
                             </div>

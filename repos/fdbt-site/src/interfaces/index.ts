@@ -143,6 +143,7 @@ export interface UserDataUploadsProps {
     buttonText?: string;
     dataSourceAttribute?: TxcSourceAttribute;
     isFareZone?: boolean;
+    clickedYes?: boolean;
 }
 
 export interface NumberOfStagesAttributeWithError {
