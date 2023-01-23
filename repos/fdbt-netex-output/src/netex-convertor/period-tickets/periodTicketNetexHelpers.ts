@@ -52,6 +52,7 @@ import {
     NetexObject,
     replaceIWBusCoNocCode,
 } from '../sharedHelpers';
+import { startCase } from 'lodash';
 
 export const getBaseSchemeOperatorInfo = async (
     userPeriodTicket: BaseSchemeOperatorTicket,
@@ -768,7 +769,7 @@ export const getPeriodConditionsElement = (
     product: { productName: string; productValidity?: string },
 ): NetexObject => {
     let usagePeriodValidity = {};
-
+    const type = userPeriodTicket.type;
     if ('productValidity' in product) {
         usagePeriodValidity = {
             UsageValidityPeriod: {
@@ -804,12 +805,31 @@ export const getPeriodConditionsElement = (
             },
             LimitationGroupingType: { $t: 'AND' },
             limitations: {
-                FrequencyOfUse: {
-                    version: '1.0',
-                    id: `op:Pass@${product.productName}@frequency`,
-                    FrequencyOfUseType: { $t: userPeriodTicket.type === 'flatFare' ? 'single' : 'unlimited' },
-                },
-                ...usagePeriodValidity,
+                ...(isFlatFareType(userPeriodTicket)
+                    ? {
+                          RoundTrip: {
+                              version: '1.0',
+                              id: `Tariff@${type}@condition@direction`,
+                              Name: { $t: `${startCase(type)} Trip` },
+                              TripType: { $t: `${type}` },
+                          },
+                          FrequencyOfUse: {
+                              version: '1.0',
+                              id: `Tariff@${type}@oneTrip`,
+                              Name: { $t: 'One trip no transfers' },
+                              FrequencyOfUseType: { $t: 'none' },
+                              MaximalFrequency: { $t: '1' },
+                          },
+                          ...usagePeriodValidity,
+                      }
+                    : {
+                          FrequencyOfUse: {
+                              version: '1.0',
+                              id: `op:Pass@${product.productName}@frequency`,
+                              FrequencyOfUseType: { $t: userPeriodTicket.type === 'flatFare' ? 'single' : 'unlimited' },
+                          },
+                          ...usagePeriodValidity,
+                      }),
             },
         },
     };

@@ -184,8 +184,14 @@
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
                     <limitations>
-                      <FrequencyOfUse version="1.0" id="op:Pass@test@frequency">
-                        <FrequencyOfUseType>single</FrequencyOfUseType>
+                      <RoundTrip version="1.0" id="Tariff@flatFare@condition@direction">
+                        <Name>Flat Fare Trip</Name>
+                        <TripType>flatFare</TripType>
+                      </RoundTrip>
+                      <FrequencyOfUse version="1.0" id="Tariff@flatFare@oneTrip">
+                        <Name>One trip no transfers</Name>
+                        <FrequencyOfUseType>none</FrequencyOfUseType>
+                        <MaximalFrequency>1</MaximalFrequency>
                       </FrequencyOfUse>
                     </limitations>
                   </GenericParameterAssignment>
