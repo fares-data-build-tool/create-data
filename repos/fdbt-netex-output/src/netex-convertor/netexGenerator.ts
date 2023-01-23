@@ -353,8 +353,9 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
     const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
         const priceFareFrameToUpdate = { ...priceFareFrame };
+        const isPricedByDistance = 'pricingByDistance' in ticket.products[0];
 
-        if (!('pricingByDistance' in ticket.products[0])) {
+        if (!isPricedByDistance) {
             delete priceFareFrameToUpdate.geographicalUnits;
             delete priceFareFrameToUpdate.tariffs.Tariff.GeographicalUnitRef;
             delete priceFareFrameToUpdate.tariffs.Tariff.geographicalIntervals;
@@ -378,7 +379,6 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         tariff.fareStructureElements.FareStructureElement = fareStructuresElements;
 
         if (isFlatFareType(ticket)) {
-            const isPricedByDistance = 'pricingByDistance' in ticket.products[0];
             const typeOfTariffRef = isPricedByDistance ? 'fxc:Distance_kilometers' : 'fxc:flat';
             const tariffBasis = isPricedByDistance ? 'distance' : 'flat';
 
