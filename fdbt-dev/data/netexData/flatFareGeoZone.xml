@@ -276,7 +276,7 @@
                       </RoundTrip>
                       <FrequencyOfUse version="1.0" id="Tariff@flatFare@oneTrip">
                         <Name>One trip no transfers</Name>
-                        <FrequencyOfUseType>none</FrequencyOfUseType>
+                        <FrequencyOfUseType>single</FrequencyOfUseType>
                         <MaximalFrequency>1</MaximalFrequency>
                       </FrequencyOfUse>
                     </limitations>

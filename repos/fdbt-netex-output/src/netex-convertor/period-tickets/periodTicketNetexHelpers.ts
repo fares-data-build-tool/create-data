@@ -986,7 +986,7 @@ export const getPeriodConditionsElement = (
                               version: '1.0',
                               id: `Tariff@${type}@oneTrip`,
                               Name: { $t: 'One trip no transfers' },
-                              FrequencyOfUseType: { $t: 'none' },
+                              FrequencyOfUseType: { $t: 'single' },
                               MaximalFrequency: { $t: '1' },
                           },
                           ...usagePeriodValidity,
@@ -995,7 +995,7 @@ export const getPeriodConditionsElement = (
                           FrequencyOfUse: {
                               version: '1.0',
                               id: `op:Pass@${product.productName}@frequency`,
-                              FrequencyOfUseType: { $t: userPeriodTicket.type === 'flatFare' ? 'single' : 'unlimited' },
+                              FrequencyOfUseType: { $t: 'unlimited' },
                           },
                           ...usagePeriodValidity,
                       }),
