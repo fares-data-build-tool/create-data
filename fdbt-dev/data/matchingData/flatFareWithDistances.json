@@ -1,13 +1,21 @@
 {
-  "operatorName": "Test Operator",
+  "operatorName": "Blackpool Transport",
   "nocCode": "BLAC",
   "type": "flatFare",
-  "passengerType": { "id": 1 },
+  "passengerType": "senior",
+  "ageRange": "Yes",
+  "ageRangeMin": "65",
+  "proof": "Yes",
+  "proofDocuments": ["identityDocument"],
   "email": "test@example.com",
   "uuid": "BLACec063873",
-  "ticketPeriod": { "startDate": "2023-05-11T00:00:00.000Z" },
+  "ticketPeriod": {
+    "startDate": "2010-12-17T00:00:00.000Z",
+    "endDate": "2028-12-17T23:59:59.999Z"
+  },
   "products": [
     {
+      "productName": "Flat Fare With Distances",
       "salesOfferPackages": [
         {
           "id": 1,
@@ -22,8 +30,12 @@
       "pricingByDistance": {
         "maximumPrice": "8",
         "minimumPrice": "6",
-        "capPricing": [
-          { "distanceFrom": "0", "distanceTo": "Max", "pricePerKm": "2" }
+        "distanceBands": [
+          { "distanceFrom": "0", "distanceTo": "2", "pricePerKm": "3" },
+          { "distanceFrom": "2", "distanceTo": "4", "pricePerKm": "2" },
+          { "distanceFrom": "4", "distanceTo": "5", "pricePerKm": "1.50" },
+          { "distanceFrom": "5", "distanceTo": "8", "pricePerKm": "1" },
+          { "distanceFrom": "8", "distanceTo": "Max", "pricePerKm": "0.50" }
         ],
         "productName": "Flat Fare With Distances"
       }
@@ -50,5 +62,6 @@
     }
   ],
   "termTime": false,
-  "carnet": false
+  "carnet": false,
+  "timeRestriction": []
 }

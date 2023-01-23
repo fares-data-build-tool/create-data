@@ -1,4 +1,4 @@
-import { PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
+import { PointToPointPeriodTicket, PriceByDistanceProduct } from 'fdbt-types/matchingJsonTypes';
 import {
     isBaseSchemeOperatorInfo,
     isGeoZoneTicket,
@@ -20,6 +20,7 @@ import {
     ValidBetween,
 } from '../types';
 import {
+    getGeographicalIntervals,
     getGeoZoneFareTable,
     getGroupOfLinesList,
     getGroupOfOperators,
@@ -28,6 +29,7 @@ import {
     getMultiServiceFareTable,
     getOrganisations,
     getPreassignedFareProducts,
+    getPricedByDistancePriceGroups,
     getSalesOfferPackageList,
     getScheduledStopPointsList,
     getTimeIntervals,
@@ -351,6 +353,13 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
     const updatePriceFareFrame = (priceFareFrame: NetexObject): NetexObject => {
         const priceFareFrameToUpdate = { ...priceFareFrame };
+        const isPricedByDistance = 'pricingByDistance' in ticket.products[0];
+
+        if (!isPricedByDistance) {
+            delete priceFareFrameToUpdate.geographicalUnits;
+            delete priceFareFrameToUpdate.tariffs.Tariff.GeographicalUnitRef;
+            delete priceFareFrameToUpdate.tariffs.Tariff.geographicalIntervals;
+        }
 
         priceFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${ticketIdentifier}@pass:op`;
         const tariff = priceFareFrameToUpdate.tariffs.Tariff;
@@ -370,12 +379,21 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         tariff.fareStructureElements.FareStructureElement = fareStructuresElements;
 
         if (isFlatFareType(ticket)) {
+            const typeOfTariffRef = isPricedByDistance ? 'fxc:Distance_kilometers' : 'fxc:flat';
+            const tariffBasis = isPricedByDistance ? 'distance' : 'flat';
+
             tariff.TypeOfTariffRef = {
                 version: 'fxc:v1.0',
-                ref: 'fxc:flat',
+                ref: typeOfTariffRef,
             };
 
-            tariff.TariffBasis = { $t: 'flat' };
+            tariff.TariffBasis = { $t: tariffBasis };
+
+            if (isPricedByDistance) {
+                tariff.geographicalIntervals.GeographicalInterval = getGeographicalIntervals(
+                    ticket.products[0] as PriceByDistanceProduct,
+                );
+            }
         }
         tariff.validityConditions = {
             ValidBetween: {
@@ -486,22 +504,33 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 coreData.ticketUserConcat,
             );
         } else if ('zoneName' in ticket && 'selectedServices' in ticket) {
+            delete fareTableFareFrameToUpdate.priceGroups;
             fareTableFareFrameToUpdate.fareTables.FareTable = getHybridFareTable(
                 ticket,
                 coreData.placeholderGroupOfProductsName,
                 coreData.ticketUserConcat,
             );
         } else if ('zoneName' in ticket) {
+            delete fareTableFareFrameToUpdate.priceGroups;
             fareTableFareFrameToUpdate.fareTables.FareTable = getGeoZoneFareTable(
                 ticket,
                 coreData.placeholderGroupOfProductsName,
                 coreData.ticketUserConcat,
             );
         } else if ('selectedServices' in ticket || 'schemeOperatorName' in ticket) {
-            fareTableFareFrameToUpdate.fareTables.FareTable = getMultiServiceFareTable(
-                ticket,
-                coreData.ticketUserConcat,
-            );
+            if ('pricingByDistance' in ticket.products[0]) {
+                delete fareTableFareFrameToUpdate.fareTables;
+                fareTableFareFrameToUpdate.priceGroups.PriceGroup = getPricedByDistancePriceGroups(
+                    ticket.products[0],
+                    coreData.ticketUserConcat,
+                );
+            } else {
+                delete fareTableFareFrameToUpdate.priceGroups;
+                fareTableFareFrameToUpdate.fareTables.FareTable = getMultiServiceFareTable(
+                    ticket,
+                    coreData.ticketUserConcat,
+                );
+            }
         } else {
             assertNever(ticket);
         }

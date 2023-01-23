@@ -7,7 +7,7 @@ export interface PointToPointCarnetProductDetails extends BaseProduct {
 
 export type FlatFareGeoZoneTicket = Omit<PeriodGeoZoneTicket, 'products' | 'type'> & {
     type: 'flatFare';
-    products: FlatFareProductDetails[];
+    products: FlatFareProduct[];
 };
 
 export interface PeriodGeoZoneTicket extends BasePeriodTicket {
@@ -38,18 +38,18 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     termTime: boolean;
 }
 
-export interface FlatFareProductDetails extends BaseProduct {
+export interface FlatFareProduct extends BaseProduct {
     productName: string;
     productPrice: string;
     carnetDetails?: CarnetDetails;
 }
 
-export interface PriceByDistanceProductDetails extends BaseProduct {
+export interface PriceByDistanceProduct extends BaseProduct {
     pricingByDistance: DistancePricingData;
 }
 
 export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
-    products: FlatFareProductDetails[] | PriceByDistanceProductDetails[];
+    products: FlatFareProduct[] | PriceByDistanceProduct[];
     termTime: boolean;
     selectedServices: SelectedService[];
     operatorName: string;
@@ -127,7 +127,7 @@ export interface AdditionalOperator {
 
 export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
     type: 'flatFare';
-    products: FlatFareProductDetails[];
+    products: FlatFareProduct[];
     additionalOperators: AdditionalOperator[];
 }
 

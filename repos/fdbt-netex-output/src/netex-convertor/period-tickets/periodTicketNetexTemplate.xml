@@ -178,6 +178,11 @@
 					<prerequisites>
 						<FareFrameRef version="1.0" ref="" />
 					</prerequisites>
+                    <geographicalUnits>
+                        <GeographicalUnit version="1.0" id="kilometers">
+                            <Name>Kilometers</Name>
+                        </GeographicalUnit>
+                    </geographicalUnits>
 					<!--====Tariff Structure ==== -->
                     <tariffs>
 						<Tariff version="1.0" id="">
@@ -192,7 +197,9 @@
 							<GroupOfOperatorsRef version="1.0" ref=""/>
 							<OperatorRef version="1.0" ref=""></OperatorRef>
                             <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal" />
-                            <TariffBasis>zone</TariffBasis>							
+                            <TariffBasis>zone</TariffBasis>
+                            <GeographicalUnitRef version="1.0" ref="kilometers"/>
+                            <geographicalIntervals></geographicalIntervals>							
 							<!--- ====Fare Structure======= -->
 							<timeIntervals></timeIntervals>
 							<!-- ==FARE STRUCTURE ELEMENTS -->
@@ -220,6 +227,7 @@
                     <prerequisites>
                         <FareFrameRef version="1.0" ref="" />
                     </prerequisites>
+                    <priceGroups></priceGroups>
 					<fareTables></fareTables>
 				</FareFrame>
 				<ServiceFrame version="1.0" id="operator@Network@Line_1" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
