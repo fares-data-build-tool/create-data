@@ -676,7 +676,7 @@ export const getPointToPointConditionsElement = (ticket: PointToPointTicket): Ne
                     version: '1.0',
                     id: `Tariff@${typeOfPointToPoint}@oneTrip`,
                     Name: { $t: 'One trip no transfers' },
-                    FrequencyOfUseType: { $t: 'none' },
+                    FrequencyOfUseType: { $t: 'single' },
                     MaximalFrequency: { $t: '1' },
                 },
                 ...usagePeriodValidity,
