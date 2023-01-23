@@ -16,7 +16,7 @@ import {
     BaseSchemeOperatorTicket,
     Ticket,
     ProductDetails,
-    FlatFareProductDetails,
+    FlatFareProduct,
     isGeoZoneTicket,
     isMultiServiceTicket,
     isSchemeOperatorFlatFareTicket,
@@ -489,7 +489,7 @@ export const getFareStructuresElements = (
 };
 
 export const getCarnetQualityStructureFactorRef = (
-    product: ProductDetails | BaseProduct | PointToPointCarnetProductDetails | FlatFareProductDetails,
+    product: ProductDetails | BaseProduct | PointToPointCarnetProductDetails | FlatFareProduct,
 ): NetexObject =>
     'carnetDetails' in product
         ? {

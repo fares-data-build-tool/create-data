@@ -52,6 +52,9 @@ describe('generateAll', () => {
 
         const netexGen = await netexGenerator(ticket, operatorData);
         const generatedNetex = await netexGen.generate();
+        // if (fileName === 'flatFareWithDistances.json') {
+        //     console.log(generatedNetex);
+        // }
         const parsedXsl = libxslt.parse(xsl);
         const transformedNetex = parsedXsl.apply(generatedNetex);
 
