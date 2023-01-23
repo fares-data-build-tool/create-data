@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent from '../components/UserDataUploads';
 import {
@@ -27,15 +27,29 @@ import {
 } from '../data/auroradb';
 import { redirectTo } from '../utils/apiUtils';
 import FormElementWrapper from '../components/FormElementWrapper';
+import BackButton from '../components/BackButton';
+import ErrorSummary from '../components/ErrorSummary';
+import FileAttachment from '../components/FileAttachment';
+import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
+import csvImage from '../assets/images/csv.png';
+import CsrfForm from '../components/CsrfForm';
 
 const title = 'CSV Zone Upload - Create Fares Data Service';
 const description = 'CSV Zone Upload page of the Create Fares Data Service';
 
 interface CSVZoneUploadProps extends UserDataUploadsProps {
     serviceList: ServicesInfo[];
-    buttonText?: string;
+    buttonText: string;
     dataSourceAttribute: TxcSourceAttribute;
     clickedYes: boolean;
+    backHref: string;
+    guidanceDocDisplayName: string;
+    guidanceDocAttachmentUrl: string;
+    guidanceDocSize: string;
+    csvTemplateDisplayName: string;
+    csvTemplateAttachmentUrl: string;
+    csvTemplateSize: string;
+    csrfToken: string;
 }
 
 const CsvZoneUpload = ({
@@ -44,141 +58,197 @@ const CsvZoneUpload = ({
     clickedYes,
     dataSourceAttribute,
     buttonText,
+    backHref,
+    guidanceDocDisplayName,
+    guidanceDocAttachmentUrl,
+    guidanceDocSize,
+    csvTemplateDisplayName,
+    csvTemplateAttachmentUrl,
+    csvTemplateSize,
+    csrfToken,
     ...uploadProps
 }: CSVZoneUploadProps): ReactElement => {
     const seen: string[] = [];
     const uniqueServiceLists =
-        serviceList?.filter((item) => (seen.includes(item.lineId) ? false : seen.push(item.lineId))) ?? [];
+        serviceList.filter((item) => (seen.includes(item.lineId) ? false : seen.push(item.lineId))) ?? [];
+
+    const isDefaultChecked = serviceList.every((service) => service.checked);
+    const [getButtonText, updateButtonText] = useState(buttonText);
+    const [isCheckedAll, updateChecked] = useState(isDefaultChecked);
+
+    const toggleAllServices = (): void => {
+        if (!isCheckedAll) {
+            updateButtonText('Unselect All Services');
+        } else {
+            updateButtonText('Select All Services');
+        }
+        updateChecked(!isCheckedAll);
+    };
 
     return (
         <BaseLayout title={title} description={description} errors={errors}>
-            <UserDataUploadComponent
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...uploadProps}
-                errors={errors}
-                detailBody={
-                    <>
-                        <p>Some common issues with fare zone uploads include:</p>
-                        <ul className="govuk-list govuk-list--bullet">
-                            <li>Commas in fare zone names</li>
-                        </ul>
-                        <p>
-                            Use the help file document for a more detailed help on constructing a fare zone CSV in the
-                            required format or download the .csv template to create a new file.
-                        </p>
-                    </>
-                }
-            />
-            <div>
-                <div className="govuk-warning-text">
-                    <span className="govuk-warning-text__icon" aria-hidden="true">
-                        !
-                    </span>
-                    <strong className="govuk-warning-text__text">
-                        <span className="govuk-warning-text__assistive">Warning</span>
-                        If there are services exempt, you can omit them by selecting yes below and selecting the
-                        services you want to omit.
-                    </strong>
-                </div>
-                <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
-                            <h2 className="govuk-fieldset__heading">
-                                Are there services within this zone which are not included?
-                            </h2>
-                        </legend>
-                        <FormElementWrapper errorId="checkbox-0" errorClass="govuk-form-group--error" errors={errors}>
-                            <div className="govuk-radios" data-module="govuk-radios">
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="yes"
-                                        name="exempt"
-                                        type="radio"
-                                        value="yes"
-                                        data-aria-controls="conditional-yes"
-                                        defaultChecked={clickedYes}
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="yes">
-                                        Yes
-                                    </label>
-                                </div>
-                                <div
-                                    className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                                    id="conditional-yes"
+            <div className="govuk-grid-row">
+                <div className="govuk-grid-column-two-thirds">
+                    {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
+                    <ErrorSummary errors={errors} />
+                    <CsrfForm
+                        action="/api/csvZoneUpload"
+                        method="post"
+                        encType="multipart/form-data"
+                        csrfToken={csrfToken}
+                    >
+                        <UserDataUploadComponent
+                            // eslint-disable-next-line react/jsx-props-no-spreading
+                            {...uploadProps}
+                            errors={errors}
+                            detailBody={
+                                <>
+                                    <p>Some common issues with fare zone uploads include:</p>
+                                    <ul className="govuk-list govuk-list--bullet">
+                                        <li>Commas in fare zone names</li>
+                                    </ul>
+                                    <p>
+                                        Use the help file document for a more detailed help on constructing a fare zone
+                                        CSV in the required format or download the .csv template to create a new file.
+                                    </p>
+                                </>
+                            }
+                        />
+                    </CsrfForm>
+                    <div>
+                        <div className="govuk-warning-text">
+                            <span className="govuk-warning-text__icon" aria-hidden="true">
+                                !
+                            </span>
+                            <strong className="govuk-warning-text__text">
+                                <span className="govuk-warning-text__assistive">Warning</span>
+                                If there are services exempt, you can omit them by selecting yes below and selecting the
+                                services you want to omit.
+                            </strong>
+                        </div>
+                        <div className="govuk-form-group">
+                            <fieldset className="govuk-fieldset">
+                                <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    <h2 className="govuk-fieldset__heading">
+                                        Are there services within this zone which are not included?
+                                    </h2>
+                                </legend>
+                                <FormElementWrapper
+                                    errorId="checkbox-0"
+                                    errorClass="govuk-form-group--error"
+                                    errors={errors}
                                 >
-                                    <div className="govuk-form-group">
-                                        <fieldset className="govuk-fieldset">
+                                    <div className="govuk-radios" data-module="govuk-radios">
+                                        <div className="govuk-radios__item">
                                             <input
-                                                type="submit"
-                                                name="selectAll"
-                                                value={buttonText}
-                                                id="select-all-button"
-                                                className="govuk-button govuk-button--secondary"
+                                                className="govuk-radios__input"
+                                                id="yes"
+                                                name="exempt"
+                                                type="radio"
+                                                value="yes"
+                                                data-aria-controls="conditional-yes"
+                                                defaultChecked={clickedYes}
                                             />
-                                            <div className="govuk-checkboxes">
-                                                {uniqueServiceLists.map((service, index) => {
-                                                    const {
-                                                        lineName,
-                                                        lineId,
-                                                        serviceCode,
-                                                        description,
-                                                        checked,
-                                                        origin,
-                                                        destination,
-                                                    } = service;
+                                            <label className="govuk-label govuk-radios__label" htmlFor="yes">
+                                                Yes
+                                            </label>
+                                        </div>
+                                        <div
+                                            className="govuk-radios__conditional govuk-radios__conditional--hidden"
+                                            id="conditional-yes"
+                                        >
+                                            <div className="govuk-form-group">
+                                                <fieldset className="govuk-fieldset">
+                                                    <input
+                                                        type="submit"
+                                                        name="selectAll"
+                                                        value={getButtonText}
+                                                        id="select-all-button"
+                                                        className="govuk-button govuk-button--secondary"
+                                                        onClick={toggleAllServices}
+                                                    />
+                                                    <div className="govuk-checkboxes">
+                                                        {uniqueServiceLists.map((service, index) => {
+                                                            const {
+                                                                lineName,
+                                                                lineId,
+                                                                serviceCode,
+                                                                description,
+                                                                checked,
+                                                                origin,
+                                                                destination,
+                                                            } = service;
 
-                                                    const checkboxTitles =
-                                                        dataSourceAttribute && dataSourceAttribute.source === 'tnds'
-                                                            ? `${lineName} - ${description}`
-                                                            : `${lineName} ${origin || 'N/A'} - ${
-                                                                  destination || 'N/A'
-                                                              }`;
+                                                            const checkboxTitles =
+                                                                dataSourceAttribute &&
+                                                                dataSourceAttribute.source === 'tnds'
+                                                                    ? `${lineName} - ${description}`
+                                                                    : `${lineName} ${origin || 'N/A'} - ${
+                                                                          destination || 'N/A'
+                                                                      }`;
 
-                                                    const checkBoxValues = `${description}`;
+                                                            const checkBoxValues = `${description}`;
 
-                                                    return (
-                                                        <div
-                                                            className="govuk-checkboxes__item"
-                                                            key={`checkbox-item-${lineName}`}
-                                                        >
-                                                            <input
-                                                                className="govuk-checkboxes__input"
-                                                                id={`checkbox-${index}`}
-                                                                name={`${lineName}#${lineId}#${serviceCode}`}
-                                                                type="checkbox"
-                                                                value={checkBoxValues}
-                                                                defaultChecked={checked}
-                                                            />
-                                                            <label
-                                                                className="govuk-label govuk-checkboxes__label"
-                                                                htmlFor={`checkbox-${index}`}
-                                                            >
-                                                                {checkboxTitles}
-                                                            </label>
-                                                        </div>
-                                                    );
-                                                })}
+                                                            return (
+                                                                <div
+                                                                    className="govuk-checkboxes__item"
+                                                                    key={`checkbox-item-${lineName}`}
+                                                                >
+                                                                    <input
+                                                                        className="govuk-checkboxes__input"
+                                                                        id={`checkbox-${index}`}
+                                                                        name={`${lineName}#${lineId}#${serviceCode}`}
+                                                                        type="checkbox"
+                                                                        value={checkBoxValues}
+                                                                        defaultChecked={checked || isCheckedAll}
+                                                                    />
+                                                                    <label
+                                                                        className="govuk-label govuk-checkboxes__label"
+                                                                        htmlFor={`checkbox-${index}`}
+                                                                    >
+                                                                        {checkboxTitles}
+                                                                    </label>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </fieldset>
                                             </div>
-                                        </fieldset>
+                                        </div>
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id="no"
+                                                name="exempt"
+                                                type="radio"
+                                                value="no"
+                                                defaultChecked={!clickedYes}
+                                            />
+                                            <label className="govuk-label govuk-radios__label" htmlFor="no">
+                                                No
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="govuk-radios__item">
-                                    <input
-                                        className="govuk-radios__input"
-                                        id="no"
-                                        name="exempt"
-                                        type="radio"
-                                        value="no"
-                                        defaultChecked={!clickedYes}
-                                    />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="no">
-                                        No
-                                    </label>
-                                </div>
-                            </div>
-                        </FormElementWrapper>
-                    </fieldset>
+                                </FormElementWrapper>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="govuk-grid-column-one-third">
+                    <h2 className="govuk-heading-s">Help documents</h2>
+                    <FileAttachment
+                        displayName={guidanceDocDisplayName}
+                        attachmentUrl={`${guidanceDocAttachmentUrl}`}
+                        imageUrl={guidanceDocImage}
+                        size={guidanceDocSize}
+                    />
+                    <FileAttachment
+                        displayName={csvTemplateDisplayName}
+                        attachmentUrl={`${csvTemplateAttachmentUrl}`}
+                        imageUrl={csvImage}
+                        size={csvTemplateSize}
+                    />
                 </div>
             </div>
         </BaseLayout>
@@ -246,7 +316,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     });
     return {
         props: {
-            csvUploadApiRoute: '/api/csvZoneUpload',
             csvUploadTitle: 'Upload fare zone',
             csvUploadHintText:
                 'Upload a fare zone as a .csv or MS Excel file. A fare zone is made up of all the relevant NaPTAN or ATCO codes within a geographical area. Refer to the help documents section to download a help file or a template.',

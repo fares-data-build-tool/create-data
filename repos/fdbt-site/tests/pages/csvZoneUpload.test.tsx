@@ -41,7 +41,6 @@ describe('pages', () => {
         it('should render correctly', () => {
             const tree = shallow(
                 <CsvZoneUpload
-                    csvUploadApiRoute=""
                     csvUploadTitle="Upload fare zone as CSV"
                     csvUploadHintText=""
                     guidanceDocDisplayName=""
@@ -56,6 +55,7 @@ describe('pages', () => {
                     serviceList={mockServiceList}
                     clickedYes={false}
                     dataSourceAttribute={{ source: 'bods', hasBods: true, hasTnds: false }}
+                    buttonText="Select All Services"
                 />,
             );
             expect(tree).toMatchSnapshot();

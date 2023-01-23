@@ -123,22 +123,13 @@ export type WithErrors<T> = {
 } & T;
 
 export interface UserDataUploadsProps {
-    csvUploadApiRoute: string;
     csvUploadHintText: string;
     csvUploadTitle: string;
-    guidanceDocDisplayName: string;
-    guidanceDocAttachmentUrl: string;
-    guidanceDocSize: string;
-    csvTemplateDisplayName: string;
-    csvTemplateAttachmentUrl: string;
-    csvTemplateSize: string;
     errors: ErrorInfo[];
     detailSummary?: string;
     detailBody?: ReactElement;
     showPriceOption?: boolean;
     poundsOrPence?: string | null;
-    csrfToken: string;
-    backHref: string;
 }
 
 export interface NumberOfStagesAttributeWithError {
