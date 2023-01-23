@@ -54,8 +54,8 @@ describe('pages', () => {
                     csrfToken=""
                     backHref=""
                     serviceList={mockServiceList}
-                    isFareZone={true}
                     clickedYes={false}
+                    dataSourceAttribute={{ source: 'bods', hasBods: true, hasTnds: false }}
                 />,
             );
             expect(tree).toMatchSnapshot();

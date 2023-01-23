@@ -8,7 +8,6 @@ exports[`pages csvzoneupload should render correctly 1`] = `
 >
   <UserDataUploadComponent
     backHref=""
-    clickedYes={false}
     csrfToken=""
     csvTemplateAttachmentUrl=""
     csvTemplateDisplayName=""
@@ -37,42 +36,135 @@ exports[`pages csvzoneupload should render correctly 1`] = `
     guidanceDocAttachmentUrl=""
     guidanceDocDisplayName=""
     guidanceDocSize=""
-    isFareZone={true}
-    serviceList={
-      Array [
-        Object {
-          "checked": false,
-          "description": "IW Bus Service 123",
-          "destination": "Leeds",
-          "id": 11,
-          "lineId": "3h3vb32ik",
-          "lineName": "123",
-          "origin": "Manchester",
-          "serviceCode": "NW_05_BLAC_123_1",
-          "startDate": "05/02/2020",
-        },
-        Object {
-          "checked": false,
-          "description": "Big Blue Bus Service X1",
-          "id": 12,
-          "lineId": "3h3vb32ik",
-          "lineName": "X1",
-          "origin": "Edinburgh",
-          "serviceCode": "NW_05_BLAC_X1_1",
-          "startDate": "06/02/2020",
-        },
-        Object {
-          "checked": false,
-          "description": "This is some kind of bus service",
-          "destination": "London",
-          "id": 13,
-          "lineId": "3h3vb32ik",
-          "lineName": "Infinity Line",
-          "serviceCode": "WY_13_IWBT_07_1",
-          "startDate": "07/02/2020",
-        },
-      ]
-    }
   />
+  <div>
+    <div
+      className="govuk-warning-text"
+    >
+      <span
+        aria-hidden="true"
+        className="govuk-warning-text__icon"
+      >
+        !
+      </span>
+      <strong
+        className="govuk-warning-text__text"
+      >
+        <span
+          className="govuk-warning-text__assistive"
+        >
+          Warning
+        </span>
+        If there are services exempt, you can omit them by selecting yes below and selecting the services you want to omit.
+      </strong>
+    </div>
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--m"
+        >
+          <h2
+            className="govuk-fieldset__heading"
+          >
+            Are there services within this zone which are not included?
+          </h2>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-form-group--error"
+          errorId="checkbox-0"
+          errors={Array []}
+        >
+          <div
+            className="govuk-radios"
+            data-module="govuk-radios"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                data-aria-controls="conditional-yes"
+                defaultChecked={false}
+                id="yes"
+                name="exempt"
+                type="radio"
+                value="yes"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="yes"
+              >
+                Yes
+              </label>
+            </div>
+            <div
+              className="govuk-radios__conditional govuk-radios__conditional--hidden"
+              id="conditional-yes"
+            >
+              <div
+                className="govuk-form-group"
+              >
+                <fieldset
+                  className="govuk-fieldset"
+                >
+                  <input
+                    className="govuk-button govuk-button--secondary"
+                    id="select-all-button"
+                    name="selectAll"
+                    type="submit"
+                  />
+                  <div
+                    className="govuk-checkboxes"
+                  >
+                    <div
+                      className="govuk-checkboxes__item"
+                      key="checkbox-item-123"
+                    >
+                      <input
+                        className="govuk-checkboxes__input"
+                        defaultChecked={false}
+                        id="checkbox-0"
+                        name="123#3h3vb32ik#NW_05_BLAC_123_1"
+                        type="checkbox"
+                        value="IW Bus Service 123"
+                      />
+                      <label
+                        className="govuk-label govuk-checkboxes__label"
+                        htmlFor="checkbox-0"
+                      >
+                        123 Manchester - Leeds
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                className="govuk-radios__input"
+                defaultChecked={true}
+                id="no"
+                name="exempt"
+                type="radio"
+                value="no"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="no"
+              >
+                No
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+  </div>
 </BaseLayout>
 `;

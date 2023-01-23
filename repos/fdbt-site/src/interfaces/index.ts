@@ -139,11 +139,6 @@ export interface UserDataUploadsProps {
     poundsOrPence?: string | null;
     csrfToken: string;
     backHref: string;
-    serviceList?: ServicesInfo[];
-    buttonText?: string;
-    dataSourceAttribute?: TxcSourceAttribute;
-    isFareZone?: boolean;
-    clickedYes?: boolean;
 }
 
 export interface NumberOfStagesAttributeWithError {

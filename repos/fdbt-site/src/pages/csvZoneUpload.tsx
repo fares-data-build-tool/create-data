@@ -26,43 +26,175 @@ import {
     getTndsServicesByNocAndModes,
 } from '../data/auroradb';
 import { redirectTo } from '../utils/apiUtils';
+import FormElementWrapper from '../components/FormElementWrapper';
 
 const title = 'CSV Zone Upload - Create Fares Data Service';
 const description = 'CSV Zone Upload page of the Create Fares Data Service';
 
-const CsvZoneUpload = ({ errors, ...uploadProps }: UserDataUploadsProps): ReactElement => (
-    <BaseLayout title={title} description={description} errors={errors}>
-        <UserDataUploadComponent
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...uploadProps}
-            errors={errors}
-            detailBody={
-                <>
-                    <p>Some common issues with fare zone uploads include:</p>
-                    <ul className="govuk-list govuk-list--bullet">
-                        <li>Commas in fare zone names</li>
-                    </ul>
-                    <p>
-                        Use the help file document for a more detailed help on constructing a fare zone CSV in the
-                        required format or download the .csv template to create a new file.
-                    </p>
-                </>
-            }
-        />
-    </BaseLayout>
-);
+interface CSVZoneUploadProps extends UserDataUploadsProps {
+    serviceList: ServicesInfo[];
+    buttonText?: string;
+    dataSourceAttribute: TxcSourceAttribute;
+    clickedYes: boolean;
+}
+
+const CsvZoneUpload = ({
+    errors,
+    serviceList,
+    clickedYes,
+    dataSourceAttribute,
+    buttonText,
+    ...uploadProps
+}: CSVZoneUploadProps): ReactElement => {
+    const seen: string[] = [];
+    const uniqueServiceLists =
+        serviceList?.filter((item) => (seen.includes(item.lineId) ? false : seen.push(item.lineId))) ?? [];
+
+    return (
+        <BaseLayout title={title} description={description} errors={errors}>
+            <UserDataUploadComponent
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...uploadProps}
+                errors={errors}
+                detailBody={
+                    <>
+                        <p>Some common issues with fare zone uploads include:</p>
+                        <ul className="govuk-list govuk-list--bullet">
+                            <li>Commas in fare zone names</li>
+                        </ul>
+                        <p>
+                            Use the help file document for a more detailed help on constructing a fare zone CSV in the
+                            required format or download the .csv template to create a new file.
+                        </p>
+                    </>
+                }
+            />
+            <div>
+                <div className="govuk-warning-text">
+                    <span className="govuk-warning-text__icon" aria-hidden="true">
+                        !
+                    </span>
+                    <strong className="govuk-warning-text__text">
+                        <span className="govuk-warning-text__assistive">Warning</span>
+                        If there are services exempt, you can omit them by selecting yes below and selecting the
+                        services you want to omit.
+                    </strong>
+                </div>
+                <div className="govuk-form-group">
+                    <fieldset className="govuk-fieldset">
+                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
+                            <h2 className="govuk-fieldset__heading">
+                                Are there services within this zone which are not included?
+                            </h2>
+                        </legend>
+                        <FormElementWrapper errorId="checkbox-0" errorClass="govuk-form-group--error" errors={errors}>
+                            <div className="govuk-radios" data-module="govuk-radios">
+                                <div className="govuk-radios__item">
+                                    <input
+                                        className="govuk-radios__input"
+                                        id="yes"
+                                        name="exempt"
+                                        type="radio"
+                                        value="yes"
+                                        data-aria-controls="conditional-yes"
+                                        defaultChecked={clickedYes}
+                                    />
+                                    <label className="govuk-label govuk-radios__label" htmlFor="yes">
+                                        Yes
+                                    </label>
+                                </div>
+                                <div
+                                    className="govuk-radios__conditional govuk-radios__conditional--hidden"
+                                    id="conditional-yes"
+                                >
+                                    <div className="govuk-form-group">
+                                        <fieldset className="govuk-fieldset">
+                                            <input
+                                                type="submit"
+                                                name="selectAll"
+                                                value={buttonText}
+                                                id="select-all-button"
+                                                className="govuk-button govuk-button--secondary"
+                                            />
+                                            <div className="govuk-checkboxes">
+                                                {uniqueServiceLists.map((service, index) => {
+                                                    const {
+                                                        lineName,
+                                                        lineId,
+                                                        serviceCode,
+                                                        description,
+                                                        checked,
+                                                        origin,
+                                                        destination,
+                                                    } = service;
+
+                                                    const checkboxTitles =
+                                                        dataSourceAttribute && dataSourceAttribute.source === 'tnds'
+                                                            ? `${lineName} - ${description}`
+                                                            : `${lineName} ${origin || 'N/A'} - ${
+                                                                  destination || 'N/A'
+                                                              }`;
+
+                                                    const checkBoxValues = `${description}`;
+
+                                                    return (
+                                                        <div
+                                                            className="govuk-checkboxes__item"
+                                                            key={`checkbox-item-${lineName}`}
+                                                        >
+                                                            <input
+                                                                className="govuk-checkboxes__input"
+                                                                id={`checkbox-${index}`}
+                                                                name={`${lineName}#${lineId}#${serviceCode}`}
+                                                                type="checkbox"
+                                                                value={checkBoxValues}
+                                                                defaultChecked={checked}
+                                                            />
+                                                            <label
+                                                                className="govuk-label govuk-checkboxes__label"
+                                                                htmlFor={`checkbox-${index}`}
+                                                            >
+                                                                {checkboxTitles}
+                                                            </label>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div className="govuk-radios__item">
+                                    <input
+                                        className="govuk-radios__input"
+                                        id="no"
+                                        name="exempt"
+                                        type="radio"
+                                        value="no"
+                                        defaultChecked={!clickedYes}
+                                    />
+                                    <label className="govuk-label govuk-radios__label" htmlFor="no">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </FormElementWrapper>
+                    </fieldset>
+                </div>
+            </div>
+        </BaseLayout>
+    );
+};
 
 export const isFareZoneAttributeWithErrors = (
     fareZoneAttribute: string | FareZoneWithErrors,
 ): fareZoneAttribute is FareZoneWithErrors => (fareZoneAttribute as FareZoneWithErrors).errors !== undefined;
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: UserDataUploadsProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: CSVZoneUploadProps }> => {
     const fareZoneAttribute = getSessionAttribute(ctx.req, FARE_ZONE_ATTRIBUTE);
     const errors: ErrorInfo[] =
         fareZoneAttribute && isFareZoneAttributeWithErrors(fareZoneAttribute) ? fareZoneAttribute.errors : [];
 
     const nocCode = getAndValidateNoc(ctx);
-    //updateSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, undefined);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
     const serviceListErrors =
@@ -93,8 +225,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }
 
-    //const { selectAll } = ctx.query;
-
     const selectedServices =
         serviceListAttribute &&
         !isServiceListAttributeWithErrors(serviceListAttribute) &&
@@ -108,9 +238,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
     const selectedLineIds = selectedServices.map((service) => service.lineId);
-    //console.log(chosenDataSourceServices);
-    //console.log({ selectedServices });
-    //const selectAll = true;
     const serviceList: ServicesInfo[] = chosenDataSourceServices.map((service) => {
         return {
             ...service,
@@ -129,17 +256,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             csvTemplateDisplayName: 'Download fare zone CSV template - File Type CSV - File Size 673B',
             csvTemplateAttachmentUrl: FareZoneExampleCsv,
             csvTemplateSize: '673B',
-            errors: [...errors],
+            errors,
             detailSummary: "My fare zone won't upload",
             csrfToken: getCsrfToken(ctx),
             backHref: '',
-            showPriceOption: true,
             serviceList,
             buttonText: serviceList.every((service) => service.checked)
                 ? 'Unselect All Services'
                 : 'Select All Services',
             dataSourceAttribute,
-            isFareZone: true,
             clickedYes: serviceList.some((service) => service.checked) || serviceListErrors.length > 0,
         },
     };
