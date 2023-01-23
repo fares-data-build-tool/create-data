@@ -314,96 +314,6 @@ export const completeCappedDistanceJourney = (): void => {
     continueButtonClick();
 };
 
-export const completeCappedTapsJourney = (): void => {
-    clickElementById('radio-option-byTaps');
-    continueButtonClick();
-    clickElementById('multi-tap-price-0').type('2.99');
-    clickElementById('add-another-button');
-    clickElementById('multi-tap-price-1').type('3.54');
-    continueButtonClick();
-    completeCapCreatePages();
-};
-
-export const completeCapValidity = (): void => {
-    const randomSelector = getRandomNumber(1, 3);
-    switch (randomSelector) {
-        case 1: {
-            cy.log('Click At the end of a calendar day');
-            clickElementById('cap-end-calendar');
-            break;
-        }
-        case 2: {
-            cy.log('Click At the end of a 24 hour period');
-            clickElementById('cap-twenty-four-hours');
-            break;
-        }
-        case 3: {
-            cy.log('Click Fare day end');
-            clickElementById('cap-end-of-service');
-            break;
-        }
-        default: {
-            throwInvalidRandomSelectorError();
-        }
-    }
-    continueButtonClick();
-};
-
-export const completeCapStartTime = (): void => {
-    const randomSelectorSecond = getRandomNumber(1, 2);
-    switch (randomSelectorSecond) {
-        case 1: {
-            cy.log('Click Fixed weekdays');
-            clickElementById('fixed-weekdays');
-            selectRandomOptionFromDropDown('start-day');
-            break;
-        }
-        case 2: {
-            cy.log('Click Rolling days');
-            clickElementById('rolling-days');
-            break;
-        }
-        default: {
-            throwInvalidRandomSelectorError();
-        }
-    }
-    continueButtonClick();
-    continueButtonClick();
-};
-
-export const completeCapCreatePages = (): void => {
-    const randomName = getRandomNumber(1, 200);
-    clickElementById('capped-product-name').type(`Capped distance product ${randomName}`);
-    clickElementById('cap-name-0').type('My Cap');
-    clickElementById('cap-price-0').type('2.34');
-    clickElementById('cap-period-duration-quantity-0').type('2');
-    selectRandomOptionFromDropDown('cap-duration-unit-0');
-    continueButtonClick();
-
-    completeCapValidity();
-    completeCapStartTime();
-
-    randomlyDeterminePurchaseType();
-    completeProductDateInformationPage();
-    continueButtonClick();
-};
-
-export const completeCappedProductJourney = (): void => {
-    clickElementById('radio-option-byProducts');
-    continueButtonClick();
-    const randomSelectorSecond = getRandomNumber(0, 1);
-    clickElementById(`product-group-${randomSelectorSecond}-radio`);
-    continueButtonClick();
-    completeCapCreatePages();
-};
-
-export const completeCappedGeoZonePages = (): void => {
-    clickElementById('radio-option-geoZone');
-    continueButtonClick();
-    uploadFile('csv-upload', 'fareZone.csv');
-    submitButtonClick();
-};
-
 export const completePeriodMultiServicePages = (
     numberOfProducts?: number,
     multiProductNamePrefix?: string,
@@ -414,13 +324,6 @@ export const completePeriodMultiServicePages = (
     randomlyChooseAndSelectServices();
     continueButtonClick();
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
-};
-
-export const completeCappedMultiServicePages = (): void => {
-    clickElementById('radio-option-multipleServices');
-    continueButtonClick();
-    randomlyChooseAndSelectServices();
-    continueButtonClick();
 };
 
 export const completeHybridPages = (
