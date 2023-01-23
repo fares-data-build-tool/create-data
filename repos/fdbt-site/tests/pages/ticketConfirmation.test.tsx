@@ -16,6 +16,7 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../../src/constants/attributes';
 import { ConfirmationElement, MultiOperatorInfo, Operator } from '../../src/interfaces';
 import TicketConfirmation, {
@@ -235,7 +236,7 @@ describe('pages', () => {
                     },
                 });
                 const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length;
-                const totalExpectedLength = 2 + numberOfElementsDueToProducts;
+                const totalExpectedLength = 3 + numberOfElementsDueToProducts;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -253,11 +254,12 @@ describe('pages', () => {
                         [MULTIPLE_OPERATOR_ATTRIBUTE]: {
                             selectedOperators: mockAdditionalOperators,
                         },
+                        [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: undefined,
                     },
                 });
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
-                expect(confirmationElements).toHaveLength(6);
+                expect(confirmationElements).toHaveLength(7);
             });
 
             it('should build confirmation elements for a period multiService ticket with a single product', () => {
@@ -299,7 +301,7 @@ describe('pages', () => {
                 });
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
-                expect(confirmationElements).toHaveLength(7);
+                expect(confirmationElements).toHaveLength(8);
             });
 
             it('should build confirmation elements for a multi operator multiService ticket with multiple products', () => {
@@ -378,7 +380,7 @@ describe('pages', () => {
                 });
                 const confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
-                expect(confirmationElements).toHaveLength(2);
+                expect(confirmationElements).toHaveLength(3);
             });
         });
 
