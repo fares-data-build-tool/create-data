@@ -24,6 +24,7 @@ import {
     CSV_ZONE_FILE_NAME,
     DIRECTION_ATTRIBUTE,
     PRICING_PER_DISTANCE_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     ConfirmationElement,
@@ -342,7 +343,10 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const multiOpAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute;
     const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as AdditionalOperator[];
     const fileName = getSessionAttribute(ctx.req, CSV_ZONE_FILE_NAME);
-
+    const exemptedServiceAttribute = getSessionAttribute(
+        ctx.req,
+        SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    ) as ServiceListAttribute;
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
     const hybrid = ticketRepresentation === 'hybrid';
@@ -352,6 +356,15 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         confirmationElements.push({
             name: 'Zone',
             content: `You uploaded a fare zone CSV file${!!fileName ? ` named: ${fileName}` : '.'}`,
+            href: 'csvZoneUpload',
+        });
+
+        confirmationElements.push({
+            name: `Exempted services`,
+            content:
+                exemptedServiceAttribute && exemptedServiceAttribute.selectedServices.length > 0
+                    ? `${exemptedServiceAttribute.selectedServices.map((service) => service.lineName).join(', ')}`
+                    : 'N/A',
             href: 'csvZoneUpload',
         });
     }
