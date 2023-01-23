@@ -11,34 +11,86 @@ import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Tria
 import { NextPageContextWithSession, ErrorInfo, UserDataUploadsProps } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
+import BackButton from '../components/BackButton';
+import ErrorSummary from '../components/ErrorSummary';
+import FileAttachment from '../components/FileAttachment';
+import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
+import csvImage from '../assets/images/csv.png';
+import CsrfForm from '../components/CsrfForm';
 
 const title = 'CSV Upload - Create Fares Data Service';
 const description = 'CSV Upload page of the Create Fares Data Service';
 
-const CsvUpload = ({ errors, ...props }: UserDataUploadsProps): ReactElement => (
+interface CsvUploadProps extends UserDataUploadsProps {
+    backHref: string;
+    guidanceDocDisplayName: string;
+    guidanceDocAttachmentUrl: string;
+    guidanceDocSize: string;
+    csvTemplateDisplayName: string;
+    csvTemplateAttachmentUrl: string;
+    csvTemplateSize: string;
+    csrfToken: string;
+}
+
+const CsvUpload = ({
+    errors,
+    backHref,
+    guidanceDocDisplayName,
+    guidanceDocAttachmentUrl,
+    guidanceDocSize,
+    csvTemplateDisplayName,
+    csvTemplateAttachmentUrl,
+    csvTemplateSize,
+    csrfToken,
+    ...props
+}: CsvUploadProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={errors}>
-        <UserDataUploadComponent
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...props}
-            errors={errors}
-            detailBody={
-                <>
-                    <p>Some common issues with fares triangle uploads include:</p>
-                    <ul className="govuk-list govuk-list--bullet">
-                        <li>Commas in fare stage names</li>
-                        <li>Not filling in every fare stage on the diagonal row</li>
-                    </ul>
-                    <p>
-                        Use the help file for a more detailed guide on constructing a fares triangle in the required
-                        format or download the fares triangle template to create a new file.
-                    </p>
-                </>
-            }
-        />
+        <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+                {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
+                <ErrorSummary errors={errors} />
+                <CsrfForm action="/api/csvUpload" method="post" encType="multipart/form-data" csrfToken={csrfToken}>
+                    <UserDataUploadComponent
+                        // eslint-disable-next-line react/jsx-props-no-spreading
+                        {...props}
+                        errors={errors}
+                        detailBody={
+                            <>
+                                <p>Some common issues with fares triangle uploads include:</p>
+                                <ul className="govuk-list govuk-list--bullet">
+                                    <li>Commas in fare stage names</li>
+                                    <li>Not filling in every fare stage on the diagonal row</li>
+                                </ul>
+                                <p>
+                                    Use the help file for a more detailed guide on constructing a fares triangle in the
+                                    required format or download the fares triangle template to create a new file.
+                                </p>
+                            </>
+                        }
+                    />
+                </CsrfForm>
+            </div>
+
+            <div className="govuk-grid-column-one-third">
+                <h2 className="govuk-heading-s">Help documents</h2>
+                <FileAttachment
+                    displayName={guidanceDocDisplayName}
+                    attachmentUrl={`${guidanceDocAttachmentUrl}`}
+                    imageUrl={guidanceDocImage}
+                    size={guidanceDocSize}
+                />
+                <FileAttachment
+                    displayName={csvTemplateDisplayName}
+                    attachmentUrl={`${csvTemplateAttachmentUrl}`}
+                    imageUrl={csvImage}
+                    size={csvTemplateSize}
+                />
+            </div>
+        </div>
     </BaseLayout>
 );
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: UserDataUploadsProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: CsvUploadProps } => {
     const csvUploadAttribute = getSessionAttribute(ctx.req, CSV_UPLOAD_ATTRIBUTE);
     const errors: ErrorInfo[] = csvUploadAttribute?.errors ?? [];
     const poundsOrPence = csvUploadAttribute?.poundsOrPence ?? null;
@@ -55,7 +107,6 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Us
 
     return {
         props: {
-            csvUploadApiRoute: '/api/csvUpload',
             csvUploadTitle: 'Upload fares triangle',
             csvUploadHintText:
                 'Upload a fares triangle as a .csv or MS Excel file. Refer to the help documents section to download a help file or a fares triangle template.',

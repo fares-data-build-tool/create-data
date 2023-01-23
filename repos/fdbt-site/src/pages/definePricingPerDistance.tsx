@@ -14,7 +14,7 @@ import {
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { isWithErrors } from '../interfaces/typeGuards';
 import BackButton from '../components/BackButton';
-import { PriceByDistanceProductDetails } from '../interfaces/matchingJsonTypes';
+import { PriceByDistanceProduct } from '../interfaces/matchingJsonTypes';
 
 const title = 'Pricing Per Distance - Create Fares Data Service';
 const description = 'Pricing Per Distance entry page of the Create Fares Data Service';
@@ -269,7 +269,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         }`;
 
         if (!pricingPerDistanceData) {
-            const product = ticketJson.products[0] as PriceByDistanceProductDetails;
+            const product = ticketJson.products[0] as PriceByDistanceProduct;
             pricingPerDistanceData = product.pricingByDistance;
         }
     }

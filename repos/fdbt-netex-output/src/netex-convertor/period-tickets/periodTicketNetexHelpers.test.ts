@@ -1,6 +1,12 @@
 import { GeoZoneTicket, SchemeOperator } from '../../types';
 import * as netexHelpers from './periodTicketNetexHelpers';
-import { getGroupOfLinesList, getGroupOfOperators, getOrganisations } from './periodTicketNetexHelpers';
+import {
+    getGeographicalIntervalPrices,
+    getGeographicalIntervals,
+    getGroupOfLinesList,
+    getGroupOfOperators,
+    getOrganisations,
+} from './periodTicketNetexHelpers';
 import {
     periodGeoZoneTicket,
     periodMultipleServicesTicket,
@@ -664,6 +670,212 @@ describe('periodTicketNetexHelpers', () => {
                     ShortName: { $t: 'Some Random Bus Co' },
                     TradingName: { $t: '' },
                     id: 'noc:Some Random Bus Co-Y',
+                    version: '1.0',
+                },
+            ]);
+        });
+    });
+
+    describe('getGeographicalIntervals', () => {
+        it('returns an array of geographical intervals for a given pricing per distance', () => {
+            const input = {
+                productName: 'Flat Fare With Distances',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        name: 'cash',
+                        description: 'Purchase method automatically created',
+                        purchaseLocations: ['onBoard'],
+                        paymentMethods: ['cash'],
+                        ticketFormats: ['paperTicket'],
+                        isCapped: false,
+                    },
+                ],
+                pricingByDistance: {
+                    maximumPrice: '8',
+                    minimumPrice: '6',
+                    distanceBands: [
+                        { distanceFrom: '0', distanceTo: '2', pricePerKm: '3' },
+                        { distanceFrom: '2', distanceTo: '4', pricePerKm: '2' },
+                        { distanceFrom: '4', distanceTo: '5', pricePerKm: '1.50' },
+                        { distanceFrom: '5', distanceTo: '8', pricePerKm: '1' },
+                        { distanceFrom: '8', distanceTo: 'Max', pricePerKm: '0.50' },
+                    ],
+                    productName: 'Flat Fare With Distances',
+                },
+            };
+
+            const result = getGeographicalIntervals(input);
+
+            expect(result).toStrictEqual([
+                {
+                    EndGeographicalValue: { $t: '1' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 0km to 1km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '0' },
+                    id: 'distance_band_0_to_1',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '2' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 1km to 2km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '1' },
+                    id: 'distance_band_1_to_2',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '3' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 2km to 3km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '2' },
+                    id: 'distance_band_2_to_3',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '4' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 3km to 4km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '3' },
+                    id: 'distance_band_3_to_4',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '5' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 4km to 5km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '4' },
+                    id: 'distance_band_4_to_5',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '6' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 5km to 6km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '5' },
+                    id: 'distance_band_5_to_6',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '7' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 6km to 7km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '6' },
+                    id: 'distance_band_6_to_7',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '8' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 7km to 8km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '7' },
+                    id: 'distance_band_7_to_8',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '100' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 8km to the next, until end of the journey' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '8' },
+                    id: 'distance_band_8_to_Max',
+                    version: '1.0',
+                },
+            ]);
+        });
+    });
+
+    describe('getGeographicalIntervalPrices', () => {
+        it('returns an array of geographical interval prices for a given array of distance bands', () => {
+            const input = [
+                { distanceFrom: '0', distanceTo: '2', pricePerKm: '3' },
+                { distanceFrom: '2', distanceTo: '4', pricePerKm: '2' },
+                { distanceFrom: '4', distanceTo: '5', pricePerKm: '1.50' },
+                { distanceFrom: '5', distanceTo: '8', pricePerKm: '1' },
+                { distanceFrom: '8', distanceTo: 'Max', pricePerKm: '0.50' },
+            ];
+
+            const result = getGeographicalIntervalPrices(input);
+
+            expect(result).toStrictEqual([
+                {
+                    Amount: { $t: '3' },
+                    GeographicalIntervalRef: { ref: 'distance_band_0_to_1', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_0_to_1',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '3' },
+                    GeographicalIntervalRef: { ref: 'distance_band_1_to_2', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_1_to_2',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '2' },
+                    GeographicalIntervalRef: { ref: 'distance_band_2_to_3', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_2_to_3',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '2' },
+                    GeographicalIntervalRef: { ref: 'distance_band_3_to_4', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_3_to_4',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '1.50' },
+                    GeographicalIntervalRef: { ref: 'distance_band_4_to_5', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_4_to_5',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '1' },
+                    GeographicalIntervalRef: { ref: 'distance_band_5_to_6', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_5_to_6',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '1' },
+                    GeographicalIntervalRef: { ref: 'distance_band_6_to_7', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_6_to_7',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '1' },
+                    GeographicalIntervalRef: { ref: 'distance_band_7_to_8', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_7_to_8',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '0.50' },
+                    GeographicalIntervalRef: { ref: 'distance_band_8_to_Max', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_8_to_Max',
                     version: '1.0',
                 },
             ]);

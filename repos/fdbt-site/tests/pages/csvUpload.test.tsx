@@ -7,7 +7,6 @@ describe('pages', () => {
         it('should render correctly', () => {
             const tree = shallow(
                 <CsvUpload
-                    csvUploadApiRoute=""
                     csvUploadTitle="Upload fares triangle as CSV"
                     csvUploadHintText=""
                     guidanceDocDisplayName=""

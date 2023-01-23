@@ -7,7 +7,11 @@ import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
 import * as sessions from '../../../src/utils/sessions';
 import * as dynamo from '../../../src/data/auroradb';
-import { FARE_ZONE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../../../src/constants/attributes';
+import {
+    FARE_ZONE_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+} from '../../../src/constants/attributes';
 
 const putDataInS3Spy = jest.spyOn(s3, 'putDataInS3');
 jest.mock('../../../src/data/auroradb');
@@ -49,11 +53,14 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
-                name: 'file',
-                files: file,
-                fileContents: csv,
-            });
+            jest.spyOn(fileUpload, 'getFormData')
+                .mockImplementation()
+                .mockResolvedValue({
+                    name: 'file',
+                    files: file,
+                    fileContents: csv,
+                    fields: { exempt: 'no' },
+                });
 
             jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
@@ -83,11 +90,14 @@ describe('csvZoneUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
-            name: 'file',
-            files: file,
-            fileContents: csvData.testCsv,
-        });
+        jest.spyOn(fileUpload, 'getFormData')
+            .mockImplementation()
+            .mockResolvedValue({
+                name: 'file',
+                files: file,
+                fileContents: csvData.testCsv,
+                fields: { exempt: 'no' },
+            });
 
         jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
@@ -97,6 +107,70 @@ describe('csvZoneUpload', () => {
             Location: '/multipleProducts',
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, 'Town Centre');
+    });
+
+    it('should return 302 redirect to /multipleProducts when valid a service is exempted and valid file is processed and put in S3', async () => {
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
+                },
+            },
+        };
+
+        jest.spyOn(fileUpload, 'getFormData')
+            .mockImplementation()
+            .mockResolvedValue({
+                name: 'file',
+                files: file,
+                fileContents: csvData.testCsv,
+                fields: {
+                    exempt: 'yes',
+                    '1#4YyoI0#NW_05_BLAC_1_1': 'FLEETWOOD - BLACKPOOL via Promenade',
+                    '2C#vySmfewe0#NW_05_BLAC_2C_1': 'KNOTT END - POULTON - BLACKPOOL',
+                    '3#Jk79kC#NW_05_BLAC_3_1': 'MERESIDE - BLACKPOOL - CLEVELEYS - CLEVELEYS PARK',
+                },
+            });
+
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
+
+        const selectedServices = {
+            selectedServices: [
+                {
+                    lineId: '4YyoI0',
+                    lineName: '1',
+                    serviceCode: 'NW_05_BLAC_1_1',
+                    serviceDescription: 'FLEETWOOD - BLACKPOOL via Promenade',
+                    startDate: undefined,
+                },
+                {
+                    lineId: 'vySmfewe0',
+                    lineName: '2C',
+                    serviceCode: 'NW_05_BLAC_2C_1',
+                    serviceDescription: 'KNOTT END - POULTON - BLACKPOOL',
+                    startDate: undefined,
+                },
+                {
+                    lineId: 'Jk79kC',
+                    lineName: '3',
+                    serviceCode: 'NW_05_BLAC_3_1',
+                    serviceDescription: 'MERESIDE - BLACKPOOL - CLEVELEYS - CLEVELEYS PARK',
+                    startDate: undefined,
+                },
+            ],
+        };
+
+        await csvZoneUpload.default(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/multipleProducts',
+        });
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, 'Town Centre');
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, selectedServices);
     });
 
     it('should return 302 redirect to /searchOperators if fareType is multiOperator, and when valid file is processed and put in S3', async () => {
@@ -122,11 +196,14 @@ describe('csvZoneUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
-            name: 'file',
-            files: file,
-            fileContents: csvData.testCsv,
-        });
+        jest.spyOn(fileUpload, 'getFormData')
+            .mockImplementation()
+            .mockResolvedValue({
+                name: 'file',
+                files: file,
+                fileContents: csvData.testCsv,
+                fields: { exempt: 'no' },
+            });
 
         jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
@@ -161,11 +238,14 @@ describe('csvZoneUpload', () => {
             },
         };
 
-        jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
-            name: 'file',
-            files: file,
-            fileContents: csvData.testCsv,
-        });
+        jest.spyOn(fileUpload, 'getFormData')
+            .mockImplementation()
+            .mockResolvedValue({
+                name: 'file',
+                files: file,
+                fileContents: csvData.testCsv,
+                fields: { exempt: 'no' },
+            });
 
         jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
@@ -210,6 +290,41 @@ describe('csvZoneUpload', () => {
         });
     });
 
+    it('should redirect to /csvZoneUpload when an user selected yes in exempt service but not selected any service', async () => {
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): string {
+                    return '';
+                },
+            },
+        };
+
+        jest.spyOn(fileUpload, 'getFormData')
+            .mockImplementation()
+            .mockResolvedValue({
+                name: 'file',
+                files: file,
+                fileContents: csvData.testCsvWithEmptyCells,
+                fields: { exempt: 'yes' },
+            });
+
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
+
+        await csvZoneUpload.default(req, res);
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, {
+            errors: [{ errorMessage: 'Choose at least one service from the options', id: 'checkbox-0' }],
+        });
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/csvZoneUpload',
+        });
+    });
+
     describe('fileIsValid', () => {
         it('should return 302 redirect to /csvZoneUpload when an empty file is attached', async () => {
             const file = {
@@ -224,11 +339,14 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
-                name: 'file',
-                files: file,
-                fileContents: '',
-            });
+            jest.spyOn(fileUpload, 'getFormData')
+                .mockImplementation()
+                .mockResolvedValue({
+                    name: 'file',
+                    files: file,
+                    fileContents: '',
+                    fields: { exempt: 'no' },
+                });
 
             jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
@@ -261,11 +379,14 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
-                name: 'file',
-                files: file,
-                fileContents: csvData.testCsv,
-            });
+            jest.spyOn(fileUpload, 'getFormData')
+                .mockImplementation()
+                .mockResolvedValue({
+                    name: 'file',
+                    files: file,
+                    fileContents: csvData.testCsv,
+                    fields: { exempt: 'no' },
+                });
 
             jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
@@ -298,11 +419,14 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
-                name: 'file',
-                files: file,
-                fileContents: csvData.testCsv,
-            });
+            jest.spyOn(fileUpload, 'getFormData')
+                .mockImplementation()
+                .mockResolvedValue({
+                    name: 'file',
+                    files: file,
+                    fileContents: csvData.testCsv,
+                    fields: { exempt: 'no' },
+                });
 
             jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
@@ -337,11 +461,14 @@ describe('csvZoneUpload', () => {
                 },
             };
 
-            jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
-                name: 'file',
-                files: file,
-                fileContents: 'i am a virus',
-            });
+            jest.spyOn(fileUpload, 'getFormData')
+                .mockImplementation()
+                .mockResolvedValue({
+                    name: 'file',
+                    files: file,
+                    fileContents: 'i am a virus',
+                    fields: { exempt: 'no' },
+                });
 
             jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(true);
 

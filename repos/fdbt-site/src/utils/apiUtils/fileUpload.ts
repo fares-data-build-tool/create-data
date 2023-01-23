@@ -7,7 +7,7 @@ import { ALLOWED_CSV_FILE_TYPES, ALLOWED_XLSX_FILE_TYPES } from '../../constants
 import logger from '../logger';
 import { containsViruses } from './virusScan';
 
-interface FileData {
+export interface FileData {
     name: string;
     files: formidable.Files;
     fileContents: string;
