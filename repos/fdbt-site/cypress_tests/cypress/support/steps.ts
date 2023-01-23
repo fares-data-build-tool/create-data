@@ -314,13 +314,6 @@ export const completeCappedDistanceJourney = (): void => {
     continueButtonClick();
 };
 
-export const completeCappedGeoZonePages = (): void => {
-    clickElementById('radio-option-geoZone');
-    continueButtonClick();
-    uploadFile('csv-upload', 'fareZone.csv');
-    submitButtonClick();
-};
-
 export const completePeriodMultiServicePages = (
     numberOfProducts?: number,
     multiProductNamePrefix?: string,
@@ -331,13 +324,6 @@ export const completePeriodMultiServicePages = (
     randomlyChooseAndSelectServices();
     continueButtonClick();
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix, isCarnet);
-};
-
-export const completeCappedMultiServicePages = (): void => {
-    clickElementById('radio-option-multipleServices');
-    continueButtonClick();
-    randomlyChooseAndSelectServices();
-    continueButtonClick();
 };
 
 export const completeHybridPages = (
