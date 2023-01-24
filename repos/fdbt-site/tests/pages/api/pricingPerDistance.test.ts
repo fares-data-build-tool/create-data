@@ -349,6 +349,32 @@ describe('validate input tests', () => {
         expect(errors).toEqual(errorsResult);
     });
 
+    it('checks that distances input must be whole numbers', () => {
+        const pricePerDistances: DistanceBand[] = [
+            {
+                distanceFrom: '0',
+                distanceTo: '1.56',
+                pricePerKm: '5',
+            },
+            {
+                distanceFrom: '3',
+                distanceTo: 'Max',
+                pricePerKm: '5',
+            },
+        ];
+        const errorsResult: ErrorInfo[] = [
+            { id: 'distance-to-0', errorMessage: 'Distances must be whole numbers' },
+            {
+                id: 'distance-from-1',
+                errorMessage: 'Distance from must be the same as distance to in the previous row',
+            },
+        ];
+
+        const errors = validateInput(pricePerDistances, 1, '3', '4', 'Product');
+
+        expect(errors).toEqual(errorsResult);
+    });
+
     it('validates input for maximum price', () => {
         const pricePerDistances: DistanceBand[] = [
             {
