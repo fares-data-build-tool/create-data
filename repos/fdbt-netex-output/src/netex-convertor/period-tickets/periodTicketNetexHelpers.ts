@@ -938,7 +938,7 @@ export const getPeriodConditionsElement = (
     product: { productName: string; productValidity?: string },
 ): NetexObject => {
     let usagePeriodValidity = {};
-    const type = userPeriodTicket.type;
+    const type = 'single';
     if ('productValidity' in product) {
         usagePeriodValidity = {
             UsageValidityPeriod: {
