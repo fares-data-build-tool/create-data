@@ -344,12 +344,16 @@ export const deleteMultipleObjectsFromS3 = async (keys: string[], bucketName: st
             message: `Deleting ${keys.join(', ')} in ${bucketName}`,
         });
 
-        const bucketKeys = keys.map((key) => ({ Key: key }));
-        const bucketParams = {
-            Bucket: bucketName,
-            Delete: { Objects: bucketKeys },
-        };
-        await s3.deleteObjects(bucketParams).promise();
+        for (let i = 0; i <= keys.length / 1000; i++) {
+            const batchKeys = keys.slice(1000 * i, 1000 * (i + 1));
+            const bucketKeys = batchKeys.map((key) => ({ Key: key }));
+
+            const bucketParams = {
+                Bucket: bucketName,
+                Delete: { Objects: bucketKeys },
+            };
+            await s3.deleteObjects(bucketParams).promise();
+        }
     } catch (error) {
         throw new Error(`Deletion of ${keys.join(', ')} in ${bucketName} unsuccessful: ${(error as Error).stack}`);
     }
