@@ -21,7 +21,7 @@ export const checkInputIsValid = (inputtedValue: string | undefined, inputType: 
         error = `${startCase(inputType)}s cannot be negative numbers`;
     } else if (!isCurrency(inputtedValue) && inputType === 'price') {
         error = 'This must be a valid price in pounds and pence';
-    } else if (!Number.isInteger(Number(inputtedValue)) && inputtedValue !== 'Max') {
+    } else if (!Number.isInteger(Number(inputtedValue)) && inputtedValue !== 'Max' && inputType !== 'price') {
         error = 'Distances must be whole numbers';
     }
 

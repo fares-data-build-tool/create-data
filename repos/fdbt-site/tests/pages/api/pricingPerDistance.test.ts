@@ -21,7 +21,7 @@ describe('pricingPerDistance', () => {
 
     it('correctly generates pricing by distance info, updates the PRICING_PER_DISTANCE_ATTRIBUTE and then redirects to /additionalPricingStructures if all is valid', async () => {
         const mockPricingDataInfo: DistancePricingData = {
-            maximumPrice: '4',
+            maximumPrice: '4.50',
             minimumPrice: '3',
             distanceBands: [
                 {
@@ -42,7 +42,7 @@ describe('pricingPerDistance', () => {
             body: {
                 distanceFrom1: '2',
                 distanceTo0: '2',
-                maximumPrice: '4',
+                maximumPrice: '4.50',
                 minimumPrice: '3',
                 pricePerKm1: '5',
                 pricePerKm0: '5',
