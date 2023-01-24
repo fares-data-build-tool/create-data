@@ -59,7 +59,6 @@ import {
     NetexObject,
     replaceIWBusCoNocCode,
 } from '../sharedHelpers';
-import { startCase } from 'lodash';
 
 export const getBaseSchemeOperatorInfo = async (
     userPeriodTicket: BaseSchemeOperatorTicket,
@@ -938,7 +937,7 @@ export const getPeriodConditionsElement = (
     product: { productName: string; productValidity?: string },
 ): NetexObject => {
     let usagePeriodValidity = {};
-    const type = userPeriodTicket.type;
+
     if ('productValidity' in product) {
         usagePeriodValidity = {
             UsageValidityPeriod: {
@@ -978,13 +977,13 @@ export const getPeriodConditionsElement = (
                     ? {
                           RoundTrip: {
                               version: '1.0',
-                              id: `Tariff@${type}@condition@direction`,
-                              Name: { $t: `${startCase(type)} Trip` },
-                              TripType: { $t: `${type}` },
+                              id: `Tariff@single@condition@direction`,
+                              Name: { $t: `Single Trip` },
+                              TripType: { $t: `single` },
                           },
                           FrequencyOfUse: {
                               version: '1.0',
-                              id: `Tariff@${type}@oneTrip`,
+                              id: `Tariff@single@oneTrip`,
                               Name: { $t: 'One trip no transfers' },
                               FrequencyOfUseType: { $t: 'single' },
                               MaximalFrequency: { $t: '1' },
