@@ -144,7 +144,7 @@ export const renderTable = (
                                     addFormGroupError={false}
                                 >
                                     <input
-                                        className="govuk-input govuk-input--width-3 govuk-currency-input__inner__input"
+                                        className="govuk-input govuk-input--width-3"
                                         id={`price-per-km-${index}`}
                                         name={`pricePerKm${index}`}
                                         type="text"

@@ -311,7 +311,7 @@ describe('validate input tests', () => {
             },
         ];
         const errorsResult: ErrorInfo[] = [
-            { id: `distance-from-1`, errorMessage: 'Distances must be numbers to 2 decimal places' },
+            { id: `distance-from-1`, errorMessage: 'Distances must be whole numbers' },
             {
                 id: 'distance-from-1',
                 errorMessage: 'Distance from must be the same as distance to in the previous row',
@@ -337,7 +337,7 @@ describe('validate input tests', () => {
             },
         ];
         const errorsResult: ErrorInfo[] = [
-            { id: 'distance-to-0', errorMessage: 'Distances must be numbers to 2 decimal places' },
+            { id: 'distance-to-0', errorMessage: 'Distances must be whole numbers' },
             {
                 id: 'distance-from-1',
                 errorMessage: 'Distance from must be the same as distance to in the previous row',
