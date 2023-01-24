@@ -76,7 +76,7 @@ const CsvZoneUpload = ({
     const [checkedServices, updateChecked] = useState(uniqueServiceLists.filter((service) => service.checked));
 
     const toggleAllServices = (): void => {
-        if (checkedServices.length !== uniqueServiceLists.length) {
+        if (checkedServices.length !== uniqueServiceLists.length && getButtonText === 'Select All Services') {
             updateButtonText('Unselect All Services');
             updateChecked(uniqueServiceLists);
         } else {
