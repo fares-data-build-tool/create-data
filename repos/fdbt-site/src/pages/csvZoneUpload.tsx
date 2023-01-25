@@ -72,17 +72,28 @@ const CsvZoneUpload = ({
     const uniqueServiceLists =
         serviceList.filter((item) => (seen.includes(item.lineId) ? false : seen.push(item.lineId))) ?? [];
 
-    const isDefaultChecked = serviceList.every((service) => service.checked);
     const [getButtonText, updateButtonText] = useState(buttonText);
-    const [isCheckedAll, updateChecked] = useState(isDefaultChecked);
+    const [checkedServices, updateChecked] = useState(uniqueServiceLists.filter((service) => service.checked));
 
     const toggleAllServices = (): void => {
-        if (!isCheckedAll) {
+        if (checkedServices.length !== uniqueServiceLists.length && getButtonText === 'Select All Services') {
             updateButtonText('Unselect All Services');
+            updateChecked(uniqueServiceLists);
         } else {
             updateButtonText('Select All Services');
+            updateChecked([]);
         }
-        updateChecked(!isCheckedAll);
+    };
+
+    const updateCheckedServiceList = (e: React.ChangeEvent<HTMLInputElement>, lineId: string) => {
+        if (!e.target.checked) {
+            updateChecked(checkedServices.filter((service) => service.lineId !== lineId));
+        } else {
+            const serviceToAdd = uniqueServiceLists.find((service) => service.lineId === lineId);
+            if (serviceToAdd) {
+                updateChecked([...checkedServices, serviceToAdd]);
+            }
+        }
     };
 
     return (
@@ -160,7 +171,7 @@ const CsvZoneUpload = ({
                                                 <div className="govuk-form-group">
                                                     <fieldset className="govuk-fieldset">
                                                         <input
-                                                            type="submit"
+                                                            type="button"
                                                             name="selectAll"
                                                             value={getButtonText}
                                                             id="select-all-button"
@@ -200,7 +211,16 @@ const CsvZoneUpload = ({
                                                                             name={`${lineName}#${lineId}#${serviceCode}`}
                                                                             type="checkbox"
                                                                             value={checkBoxValues}
-                                                                            defaultChecked={checked || isCheckedAll}
+                                                                            checked={
+                                                                                !!checkedServices.find(
+                                                                                    (service) =>
+                                                                                        service.lineId === lineId,
+                                                                                )
+                                                                            }
+                                                                            defaultChecked={checked}
+                                                                            onChange={(e) =>
+                                                                                updateCheckedServiceList(e, lineId)
+                                                                            }
                                                                         />
                                                                         <label
                                                                             className="govuk-label govuk-checkboxes__label"
