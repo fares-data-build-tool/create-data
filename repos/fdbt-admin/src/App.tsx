@@ -8,7 +8,7 @@ import AddUser from './pages/AddUser';
 import DeleteUser from './pages/DeleteUser';
 import DeleteExport from './pages/DeleteExport';
 import EditUser from './pages/EditUser';
-import ListIncompleteExports from './pages/ListIncompleteExports';
+import Reporting from './pages/Reporting';
 import ListUsers from './pages/ListUsers';
 import ResendInvite from './pages/ResendInvite';
 
@@ -55,8 +55,8 @@ const App = (): ReactElement => {
                         <ResendInvite isFullAdmin={isFullAdmin} />
                     </Route>
                     {/* Exports */}
-                    <Route path="/listIncompleteExports">
-                        <ListIncompleteExports isFullAdmin={isFullAdmin} />
+                    <Route path="/reporting">
+                        <Reporting isFullAdmin={isFullAdmin} />
                     </Route>
                     <Route path="/deleteExport/:exportName">
                         <DeleteExport isFullAdmin={isFullAdmin} />
