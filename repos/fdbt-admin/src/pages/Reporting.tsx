@@ -29,10 +29,10 @@ const dateIsWithinNumberOfDays = (date: Date, numberOfDays: number): boolean => 
 const netexFilesGenerated = (activeNocs: string[], netexFiles: ObjectList, timeframe: 30 | 365): number => {
     let nocsThatHaveGeneratedNetex = 0;
     activeNocs.forEach((noc) => {
-        const netexFilesForNoc = netexFiles.filter(
+        const netexFilesForNoc = netexFiles.find(
             (file) => file.Key?.includes(noc) && dateIsWithinNumberOfDays(file.LastModified as Date, timeframe),
         );
-        if (netexFilesForNoc.length > 0) {
+        if (netexFilesForNoc) {
             nocsThatHaveGeneratedNetex += 1;
         }
     });
