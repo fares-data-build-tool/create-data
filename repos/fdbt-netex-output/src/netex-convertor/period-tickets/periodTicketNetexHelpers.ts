@@ -369,9 +369,11 @@ const getMultiServiceList = (
                                                 Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
                                                 TimeIntervalRef: {
                                                     version: '1.0',
-                                                    ref: `op:Tariff@${
-                                                        product.productName
-                                                    }@${product.productDuration.replace(' ', '-')}`,
+                                                    ref: `op:Tariff@${product.productName}${
+                                                        product.productDuration
+                                                            ? `@${product.productDuration.replace(' ', '-')}`
+                                                            : ''
+                                                    }`,
                                                 },
                                             },
                                         },
