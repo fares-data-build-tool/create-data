@@ -158,6 +158,48 @@ exports[`pages multipleProduct should render correctly for a flat fare non carne
 </FullColumnLayout>
 `;
 
+exports[`pages multipleProduct should render correctly for a multi operator flat fare 1`] = `
+<FullColumnLayout
+  description="Multiple Product entry page of the Create Fares Data Service"
+  errors={Array []}
+  title="Multiple Product - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/multipleProducts"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="multiple-product-page-heading"
+    >
+      Enter your product details
+    </h1>
+    <div
+      className="govuk-grid-row"
+    >
+      <ProductRow
+        carnet={false}
+        errors={Array []}
+        flatFare={true}
+        numberOfProductsToDisplay={1}
+        school={false}
+        userInput={Array []}
+      />
+      <input
+        className="govuk-button govuk-!-margin-left-3"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</FullColumnLayout>
+`;
+
 exports[`pages multipleProduct should render correctly for a non flat fare non carnet 1`] = `
 <FullColumnLayout
   description="Multiple Product entry page of the Create Fares Data Service"

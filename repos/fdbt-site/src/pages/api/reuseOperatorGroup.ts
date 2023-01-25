@@ -72,7 +72,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         ).name;
         redirectTo(
             res,
-            ticketRepresentation === 'multipleServices' ? '/multiOperatorServiceList' : '/multipleProducts',
+            ticketRepresentation === 'multipleServices' ||
+                ticketRepresentation === 'multipleServicesFlatFareMultiOperator'
+                ? '/multiOperatorServiceList'
+                : '/multipleProducts',
         );
         return;
     } catch (error) {
