@@ -646,7 +646,7 @@ export const getMultipleServicesTicketJson = (
 ): WithIds<PeriodMultipleServicesTicket> | WithIds<MultiOperatorMultipleServicesTicket> => {
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const { selectedServices } = serviceListAttribute;
-    const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'multiOperator');
+    const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
     if (basePeriodTicketAttributes.type === 'multiOperator') {
         const additionalOperators = getSessionAttribute(
             req,
