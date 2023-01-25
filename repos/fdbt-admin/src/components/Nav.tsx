@@ -25,8 +25,8 @@ const Nav = ({ isFullAdmin }: NavProps): ReactElement => (
             Add New User
         </NavAnchor>
         {isFullAdmin && (
-            <NavAnchor to="/listIncompleteExports" as={Link}>
-                Incomplete Exports List
+            <NavAnchor to="/reporting" as={Link}>
+                Reporting
             </NavAnchor>
         )}
         <StyledSignOutButton className="" />
