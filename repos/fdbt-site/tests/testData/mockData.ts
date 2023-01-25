@@ -3058,6 +3058,60 @@ export const expectedFlatFareGeoZoneTicket: WithIds<FlatFareGeoZoneTicket> = {
     ],
 };
 
+export const expectedFlatFareGeoZoneTicketWithExemptions: WithIds<FlatFareGeoZoneTicket> = {
+    operatorName: 'test',
+    passengerType: { id: 9 },
+    type: 'flatFare',
+    nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
+    zoneName: 'my flat fare zone',
+    stops: zoneStops,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'Flat fare with geo zone',
+            productPrice: '7',
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 3,
+                    price: undefined,
+                },
+            ],
+        },
+    ],
+    exemptedServices: [
+        {
+            lineName: '100',
+            lineId: '3h3rthsrty56y5',
+            serviceCode: '11-444-_-y08-1',
+            serviceDescription: 'Test Under Lyne - Glossop',
+            startDate: '07/04/2020',
+        },
+        {
+            lineName: '101',
+            lineId: '3h34t43deefsf',
+            serviceCode: 'NW_01_MCT_391_1',
+            serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+            startDate: '23/04/2019',
+        },
+        {
+            lineName: '102',
+            lineId: '34tvwevdsvb32ik',
+            serviceCode: 'NW_04_MCTR_232_1',
+            serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+            startDate: '06/04/2020',
+        },
+    ],
+};
+
 export const expectedSchemeOperatorTicket = (
     type: BaseSchemeOperatorTicket['type'],
 ): WithBaseIds<BaseSchemeOperatorTicket> => {

@@ -8,11 +8,13 @@ export interface PointToPointCarnetProductDetails extends BaseProduct {
 export type FlatFareGeoZoneTicket = Omit<PeriodGeoZoneTicket, 'products' | 'type'> & {
     type: 'flatFare';
     products: FlatFareProduct[];
+    exemptedServices?: SelectedService[];
 };
 
 export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     zoneName: string;
     stops: Stop[];
+    exemptedServices?: SelectedService[];
 }
 
 export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator' | 'capped'> {
