@@ -6,7 +6,6 @@ import Page from '@govuk-react/page';
 import Nav from './components/Nav';
 import AddUser from './pages/AddUser';
 import DeleteUser from './pages/DeleteUser';
-import DeleteExport from './pages/DeleteExport';
 import EditUser from './pages/EditUser';
 import Reporting from './pages/Reporting';
 import ListUsers from './pages/ListUsers';
@@ -38,7 +37,6 @@ const App = (): ReactElement => {
         <BrowserRouter>
             <Page header={<Nav isFullAdmin={isFullAdmin} />}>
                 <Switch>
-                    {/* Users */}
                     <Route path="/listUsers">
                         <ListUsers isFullAdmin={isFullAdmin} />
                     </Route>
@@ -54,12 +52,8 @@ const App = (): ReactElement => {
                     <Route path="/resendInvite/:username">
                         <ResendInvite isFullAdmin={isFullAdmin} />
                     </Route>
-                    {/* Exports */}
                     <Route path="/reporting">
                         <Reporting isFullAdmin={isFullAdmin} />
-                    </Route>
-                    <Route path="/deleteExport/:exportName">
-                        <DeleteExport isFullAdmin={isFullAdmin} />
                     </Route>
                     {/* Root */}
                     <Route path="/">
