@@ -122,7 +122,8 @@ export const getLinesList = (
         | PeriodMultipleServicesTicket
         | MultiOperatorMultipleServicesTicket
         | SchemeOperatorFlatFareTicket
-        | SchemeOperatorMultiServiceTicket,
+        | SchemeOperatorMultiServiceTicket
+        | HybridPeriodTicket,
     website: string,
     operatorData: Operator[],
 ): Line[] => {
