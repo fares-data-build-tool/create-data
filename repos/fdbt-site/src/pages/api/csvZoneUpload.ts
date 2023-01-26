@@ -249,7 +249,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     ...ticket,
                     zoneName: userFareZones[0].FareZoneName,
                     stops,
-                    exemptedServices: selectedServices,
+                    ...(selectedServices.length > 0 && { exemptedServices: selectedServices }),
                 };
 
                 // put the now updated matching json into s3
