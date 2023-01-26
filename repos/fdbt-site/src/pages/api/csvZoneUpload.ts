@@ -215,89 +215,87 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        if (fileContents) {
-            const userFareZones = await processCsv(fileContents, req, res);
-            if (!userFareZones) {
-                const errors: ErrorInfo[] = [
-                    { id: 'csv-upload', errorMessage: 'Unable to find any user fare zones for uploaded CSV zone.' },
-                ];
-                setFareZoneAttributeAndRedirect(req, res, errors);
+        const userFareZones = await processCsv(fileContents, req, res);
+        if (!userFareZones) {
+            const errors: ErrorInfo[] = [
+                { id: 'csv-upload', errorMessage: 'Unable to find any user fare zones for uploaded CSV zone.' },
+            ];
+            setFareZoneAttributeAndRedirect(req, res, errors);
+            return;
+        }
+        const atcoCodes: string[] = userFareZones.map((fareZone) => fareZone.AtcoCodes);
+        const deduplicatedAtcoCodes = uniq(atcoCodes);
+        let stops = [];
+        try {
+            stops = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
+        } catch (error) {
+            const errors: ErrorInfo[] = [
+                {
+                    id: 'csv-upload',
+                    errorMessage: 'Incorrect ATCO/NaPTAN codes detected in file. All codes must be correct.',
+                },
+            ];
+            setFareZoneAttributeAndRedirect(req, res, errors);
+            return;
+        }
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+        // check to see if we are in edit mode
+        if (ticket && matchingJsonMetaData) {
+            // overriding the existing object
+            const updatedTicket = {
+                ...ticket,
+                zoneName: userFareZones[0].FareZoneName,
+                stops,
+                ...(selectedServices.length > 0 && { exemptedServices: selectedServices }),
+            };
+
+            // put the now updated matching json into s3
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, undefined);
+            redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData?.productId}`);
+            return;
+        } else {
+            const uuid = getUuidFromSession(req);
+            await putDataInS3(fileContents, `${uuid}.csv`, false);
+            updateSessionAttribute(req, CSV_ZONE_FILE_NAME, fileName);
+
+            const fareZoneName = userFareZones[0].FareZoneName;
+            const nocCode = getAndValidateNoc(req, res);
+
+            if (!nocCode) {
+                throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
+            }
+
+            await putDataInS3(userFareZones, `fare-zone/${nocCode}/${uuid}.json`, true);
+            updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
+            const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
+
+            if (fareType === 'multiOperator' || isSchemeOperator(req, res)) {
+                redirectTo(res, '/reuseOperatorGroup');
                 return;
             }
-            const atcoCodes: string[] = userFareZones.map((fareZone) => fareZone.AtcoCodes);
-            const deduplicatedAtcoCodes = uniq(atcoCodes);
-            let stops = [];
-            try {
-                stops = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
-            } catch (error) {
-                const errors: ErrorInfo[] = [
-                    {
-                        id: 'csv-upload',
-                        errorMessage: 'Incorrect ATCO/NaPTAN codes detected in file. All codes must be correct.',
-                    },
-                ];
-                setFareZoneAttributeAndRedirect(req, res, errors);
-                return;
-            }
-            const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
 
-            const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
-            // check to see if we are in edit mode
-            if (ticket && matchingJsonMetaData) {
-                // overriding the existing object
-                const updatedTicket = {
-                    ...ticket,
-                    zoneName: userFareZones[0].FareZoneName,
-                    stops,
-                    ...(selectedServices.length > 0 && { exemptedServices: selectedServices }),
-                };
-
-                // put the now updated matching json into s3
-                await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
-                updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, undefined);
-                redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData?.productId}`);
-                return;
-            } else {
-                const uuid = getUuidFromSession(req);
-                await putDataInS3(fileContents, `${uuid}.csv`, false);
-                updateSessionAttribute(req, CSV_ZONE_FILE_NAME, fileName);
-
-                const fareZoneName = userFareZones[0].FareZoneName;
-                const nocCode = getAndValidateNoc(req, res);
-
-                if (!nocCode) {
-                    throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
+            if (fareType === 'period') {
+                const ticketType = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
+                if (!ticketType || !('name' in ticketType)) {
+                    throw new Error('No ticket type set for period ticket');
                 }
 
-                await putDataInS3(userFareZones, `fare-zone/${nocCode}/${uuid}.json`, true);
-                updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
-                const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
-
-                if (fareType === 'multiOperator' || isSchemeOperator(req, res)) {
-                    redirectTo(res, '/reuseOperatorGroup');
+                if (ticketType.name === 'hybrid') {
+                    redirectTo(res, '/serviceList?selectAll=false');
                     return;
                 }
+            }
 
-                if (fareType === 'period') {
-                    const ticketType = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
-                    if (!ticketType || !('name' in ticketType)) {
-                        throw new Error('No ticket type set for period ticket');
-                    }
-
-                    if (ticketType.name === 'hybrid') {
-                        redirectTo(res, '/serviceList?selectAll=false');
-                        return;
-                    }
-                }
-
-                if (fareType === 'capped') {
-                    redirectTo(res, '/typeOfCap');
-                    return;
-                }
-
-                redirectTo(res, '/multipleProducts');
+            if (fareType === 'capped') {
+                redirectTo(res, '/typeOfCap');
                 return;
             }
+
+            redirectTo(res, '/multipleProducts');
+            return;
         }
     } catch (error) {
         const message = 'There was a problem uploading the CSV:';
