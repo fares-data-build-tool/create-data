@@ -25,6 +25,7 @@ import {
 import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
+import { isGeoZoneTicket } from 'src/interfaces/typeGuards';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -313,12 +314,12 @@ const createProductDetails = async (
         });
     }
 
-    if ('exemptedServices' in ticket && ticket.exemptedServices) {
+    if (isGeoZoneTicket(ticket)) {
         productDetailsElements.push({
             id: 'exempted-services',
             name: 'Exempted Services',
             content:
-                ticket.exemptedServices.length > 0
+                ticket.exemptedServices && ticket.exemptedServices.length > 0
                     ? [ticket.exemptedServices.map((service) => service.lineName).join(', ')]
                     : ['N/A'],
             editLink: '/csvZoneUpload',
