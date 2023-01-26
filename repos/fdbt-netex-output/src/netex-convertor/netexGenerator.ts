@@ -253,10 +253,10 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             return serviceFrameToUpdate;
         }
 
-        if ('exemptedServices' in ticket) {
+        if ('exemptedServices' in ticket && ticket.exemptedServices) {
             serviceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ServiceFrame_UK_PI_NETWORK:${coreData.placeholderGroupOfProductsName}:op`;
 
-            const lines = getExemptedLinesList(ticket, coreData.url);
+            const lines = getExemptedLinesList(ticket.exemptedServices, ticket.nocCode, coreData.url);
 
             serviceFrameToUpdate.lines.Line = lines;
             serviceFrameToUpdate.groupsOfLines.GroupOfLines = getExemptedGroupOfLinesList(

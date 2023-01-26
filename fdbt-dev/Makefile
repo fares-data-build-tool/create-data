@@ -155,10 +155,12 @@ generate-validate-p2p-period: generate-p2p-period validate-latest-file
 generate-flat-fare-geo-zone:
 	./scripts/trigger_netex_convertor.sh flatFareGeoZone
 
-generate-validate-geo-zone-with-exceptions:
+generate-validate-flat-fare-geo-zone: generate-flat-fare-geo-zone validate-latest-file
+
+generate-geo-zone-with-exceptions:
 	./scripts/trigger_netex_convertor.sh flatFareWithExemptions
 
-generate-validate-flat-fare-geo-zone: generate-flat-fare-geo-zone validate-latest-file
+generate-validate-geo-zone-with-exceptions: generate-geo-zone-with-exceptions validate-latest-file
 
 generate-scheme-multiple-services:
 	./scripts/trigger_netex_convertor.sh schemeOperatorMultiServices

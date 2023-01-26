@@ -8,7 +8,6 @@ import {
     SchemeOperatorGeoZoneTicket,
     PriceByDistanceProduct,
     DistanceBand,
-    PeriodGeoZoneTicket,
 } from 'fdbt-types/matchingJsonTypes';
 import * as db from '../../data/auroradb';
 import {
@@ -192,33 +191,26 @@ export const getLinesList = (
     return linesList;
 };
 
-export const getExemptedLinesList = (
-    userPeriodTicket: FlatFareGeoZoneTicket | PeriodGeoZoneTicket,
-    website: string,
-): Line[] => {
+export const getExemptedLinesList = (exemptedServices: SelectedService[], nocCode: string, website: string): Line[] => {
     const linesList: Line[] = [];
 
-    const duplicateLines = userPeriodTicket.exemptedServices
-        ? userPeriodTicket.exemptedServices.map(service => ({
-              version: '1.0',
-              id: service.lineId,
-              Name: { $t: `Line ${service.lineName}` },
-              Description: { $t: service.serviceDescription },
-              Url: { $t: website },
-              PublicCode: { $t: service.lineName },
-              PrivateCode: service.lineId
-                  ? {
-                        type: 'txc:Line@id',
-                        $t: service.lineId,
-                    }
-                  : {},
-              OperatorRef: {
-                  version: '1.0',
-                  ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
-              },
-              LineType: { $t: 'local' },
-          }))
-        : [];
+    const duplicateLines = exemptedServices.map(service => ({
+        version: '1.0',
+        id: service.lineId,
+        Name: { $t: `Line ${service.lineName}` },
+        Description: { $t: service.serviceDescription },
+        Url: { $t: website },
+        PublicCode: { $t: service.lineName },
+        PrivateCode: {
+            type: 'txc:Line@id',
+            $t: service.lineId,
+        },
+        OperatorRef: {
+            version: '1.0',
+            ref: `noc:${replaceIWBusCoNocCode(nocCode)}`,
+        },
+        LineType: { $t: 'local' },
+    }));
     const seen: string[] = [];
     return (
         linesList?.concat(duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id)))) ?? []
