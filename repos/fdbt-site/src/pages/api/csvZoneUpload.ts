@@ -6,6 +6,8 @@ import {
     FARE_ZONE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import {
@@ -22,7 +24,8 @@ import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
 import uniq from 'lodash/uniq';
 import { isArray } from 'lodash';
-import { SelectedService } from 'src/interfaces/matchingJsonTypes';
+import { SelectedService } from '../../interfaces/matchingJsonTypes';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 
 export interface FareZoneWithErrors {
     errors: ErrorInfo[];
@@ -146,7 +149,10 @@ export const processCsv = async (
     }
 };
 
-export const processServices = (req: NextApiRequestWithSession, formData: FileData): { serviceErrors: ErrorInfo[] } => {
+export const processServices = (
+    req: NextApiRequestWithSession,
+    formData: FileData,
+): { serviceErrors: ErrorInfo[]; selectedServices: SelectedService[] } => {
     const fields = formData.fields;
 
     if (!fields) {
@@ -189,14 +195,14 @@ export const processServices = (req: NextApiRequestWithSession, formData: FileDa
         updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { selectedServices });
     }
 
-    return { serviceErrors: errors };
+    return { serviceErrors: errors, selectedServices };
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
 
-        const { serviceErrors } = processServices(req, formData);
+        const { serviceErrors, selectedServices } = processServices(req, formData);
         const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
         const fileName = formData.name;
 
@@ -211,11 +217,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (fileContents) {
-            const uuid = getUuidFromSession(req);
-            await putDataInS3(fileContents, `${uuid}.csv`, false);
             const userFareZones = await processCsv(fileContents, req, res);
-            updateSessionAttribute(req, CSV_ZONE_FILE_NAME, fileName);
-
             if (!userFareZones) {
                 const errors: ErrorInfo[] = [
                     { id: 'csv-upload', errorMessage: 'Unable to find any user fare zones for uploaded CSV zone.' },
@@ -223,12 +225,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 setFareZoneAttributeAndRedirect(req, res, errors);
                 return;
             }
-
             const atcoCodes: string[] = userFareZones.map((fareZone) => fareZone.AtcoCodes);
             const deduplicatedAtcoCodes = uniq(atcoCodes);
-
+            let stops = [];
             try {
-                await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
+                stops = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
             } catch (error) {
                 const errors: ErrorInfo[] = [
                     {
@@ -239,42 +240,65 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 setFareZoneAttributeAndRedirect(req, res, errors);
                 return;
             }
+            const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
 
-            const fareZoneName = userFareZones[0].FareZoneName;
-            const nocCode = getAndValidateNoc(req, res);
+            const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+            // check to see if we are in edit mode
+            if (ticket && matchingJsonMetaData) {
+                // overriding the existing object
+                const updatedTicket = {
+                    ...ticket,
+                    zoneName: userFareZones[0].FareZoneName,
+                    stops,
+                    exemptedServices: selectedServices,
+                };
 
-            if (!nocCode) {
-                throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
-            }
-
-            await putDataInS3(userFareZones, `fare-zone/${nocCode}/${uuid}.json`, true);
-            updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
-            const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
-
-            if (fareType === 'multiOperator' || isSchemeOperator(req, res)) {
-                redirectTo(res, '/reuseOperatorGroup');
+                // put the now updated matching json into s3
+                await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+                updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, undefined);
+                redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData?.productId}`);
                 return;
-            }
+            } else {
+                const uuid = getUuidFromSession(req);
+                await putDataInS3(fileContents, `${uuid}.csv`, false);
+                updateSessionAttribute(req, CSV_ZONE_FILE_NAME, fileName);
 
-            if (fareType === 'period') {
-                const ticketType = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
-                if (!ticketType || !('name' in ticketType)) {
-                    throw new Error('No ticket type set for period ticket');
+                const fareZoneName = userFareZones[0].FareZoneName;
+                const nocCode = getAndValidateNoc(req, res);
+
+                if (!nocCode) {
+                    throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
                 }
 
-                if (ticketType.name === 'hybrid') {
-                    redirectTo(res, '/serviceList?selectAll=false');
+                await putDataInS3(userFareZones, `fare-zone/${nocCode}/${uuid}.json`, true);
+                updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
+                const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
+
+                if (fareType === 'multiOperator' || isSchemeOperator(req, res)) {
+                    redirectTo(res, '/reuseOperatorGroup');
                     return;
                 }
-            }
 
-            if (fareType === 'capped') {
-                redirectTo(res, '/typeOfCap');
+                if (fareType === 'period') {
+                    const ticketType = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
+                    if (!ticketType || !('name' in ticketType)) {
+                        throw new Error('No ticket type set for period ticket');
+                    }
+
+                    if (ticketType.name === 'hybrid') {
+                        redirectTo(res, '/serviceList?selectAll=false');
+                        return;
+                    }
+                }
+
+                if (fareType === 'capped') {
+                    redirectTo(res, '/typeOfCap');
+                    return;
+                }
+
+                redirectTo(res, '/multipleProducts');
                 return;
             }
-
-            redirectTo(res, '/multipleProducts');
-            return;
         }
     } catch (error) {
         const message = 'There was a problem uploading the CSV:';

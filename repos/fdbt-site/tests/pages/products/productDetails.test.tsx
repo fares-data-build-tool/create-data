@@ -662,7 +662,7 @@ describe('myfares pages', () => {
                     endDate: '18/12/2020',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
-                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'] },
+                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
                             id: 'passenger-type',
                             name: 'Passenger type',
@@ -733,7 +733,7 @@ describe('myfares pages', () => {
                     endDate: '18/12/2020',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Multi operator'] },
-                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'] },
+                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
                             id: 'passenger-type',
                             name: 'Passenger type',
@@ -884,7 +884,7 @@ describe('myfares pages', () => {
                     endDate: '18/12/2020',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
-                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'] },
+                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
                             id: 'passenger-type',
                             name: 'Passenger type',

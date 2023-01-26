@@ -305,7 +305,24 @@ const createProductDetails = async (
     }
 
     if ('zoneName' in ticket) {
-        productDetailsElements.push({ id: 'zone', name: 'Zone', content: [ticket.zoneName] });
+        productDetailsElements.push({
+            id: 'zone',
+            name: 'Zone',
+            content: [ticket.zoneName],
+            editLink: '/csvZoneUpload',
+        });
+    }
+
+    if ('exemptedServices' in ticket && ticket.exemptedServices) {
+        productDetailsElements.push({
+            id: 'exempted-services',
+            name: 'Exempted Services',
+            content:
+                ticket.exemptedServices.length > 0
+                    ? [ticket.exemptedServices.map((service) => service.lineName).join(', ')]
+                    : ['N/A'],
+            editLink: '/csvZoneUpload',
+        });
     }
 
     const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
