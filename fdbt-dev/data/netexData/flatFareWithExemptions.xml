@@ -292,6 +292,14 @@
                     <validityParameters>
                       <GroupOfLinesRef version="1.0" ref="BLAC@groupOfLines@1"/>
                     </validityParameters>
+                    <includes>
+                      <GenericParameterAssignment version="1.0" id="it_is_random-groupsOfLinesWrapper" order="2">
+                        <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:cannot_access"/>
+                        <validityParameters>
+                          <GroupOfLinesRef version="1.0" ref="BLAC@groupOfLines@1"/>
+                        </validityParameters>
+                      </GenericParameterAssignment>
+                    </includes>
                   </GenericParameterAssignment>
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult">

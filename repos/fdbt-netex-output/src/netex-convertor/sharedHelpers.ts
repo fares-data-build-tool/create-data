@@ -490,6 +490,7 @@ export const getFareStructuresElements = (
                     availabilityElementId,
                     validityParametersObject,
                     hasTimeRestriction,
+                    product.productName,
                     groupOfLinesRef,
                 ),
             );

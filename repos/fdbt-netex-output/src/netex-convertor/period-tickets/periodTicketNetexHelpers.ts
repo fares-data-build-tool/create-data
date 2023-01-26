@@ -926,8 +926,8 @@ export const getExemptionsElement = (
     id: string,
     validityParametersObject: {},
     hasTimeRestriction: boolean,
-    productName?: string,
-    groupOfLinesRef?: string,
+    productName: string,
+    groupOfLinesRef: string,
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
@@ -954,25 +954,23 @@ export const getExemptionsElement = (
         },
         ValidityParameterGroupingType: { $t: 'NOT' },
         validityParameters: validityParametersObject,
-        includes: groupOfLinesRef
-            ? {
-                  GenericParameterAssignment: {
-                      version: '1.0',
-                      id: `${productName}-groupsOfLinesWrapper`,
-                      order: '2',
-                      TypeOfAccessRightAssignmentRef: {
-                          version: 'fxc:v1.0',
-                          ref: 'fxc:cannot_access',
-                      },
-                      validityParameters: {
-                          GroupOfLinesRef: {
-                              version: '1.0',
-                              ref: groupOfLinesRef,
-                          },
-                      },
-                  },
-              }
-            : null,
+        includes: {
+            GenericParameterAssignment: {
+                version: '1.0',
+                id: `${productName}-groupsOfLinesWrapper`,
+                order: '2',
+                TypeOfAccessRightAssignmentRef: {
+                    version: 'fxc:v1.0',
+                    ref: 'fxc:cannot_access',
+                },
+                validityParameters: {
+                    GroupOfLinesRef: {
+                        version: '1.0',
+                        ref: groupOfLinesRef,
+                    },
+                },
+            },
+        },
     },
 });
 
