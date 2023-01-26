@@ -279,7 +279,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 ...ticket,
                 zoneName: fareZoneName,
                 stops,
-                ...(selectedServices.length > 0 && { exemptedServices: selectedServices }),
+                ...(selectedServices.length > 0
+                    ? { exemptedServices: selectedServices }
+                    : { exemptedServices: undefined }),
             };
 
             // put the now updated matching json into s3
