@@ -122,10 +122,7 @@ export const getLinesList = (
         | PeriodMultipleServicesTicket
         | MultiOperatorMultipleServicesTicket
         | SchemeOperatorFlatFareTicket
-        | SchemeOperatorMultiServiceTicket
-        | HybridPeriodTicket
-        | FlatFareGeoZoneTicket
-        | PeriodGeoZoneTicket,
+        | SchemeOperatorMultiServiceTicket,
     website: string,
     operatorData: Operator[],
 ): Line[] => {
@@ -162,7 +159,7 @@ export const getLinesList = (
         });
     }
 
-    if (!isSchemeOperatorFlatFareTicket(userPeriodTicket) && 'selectedServices' in userPeriodTicket) {
+    if (!isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
         const duplicateLines = userPeriodTicket.selectedServices
             ? userPeriodTicket.selectedServices.map(service => ({
                   version: '1.0',
