@@ -418,6 +418,7 @@ export const getFareStructuresElements = (
     const productFareStructureElements = ticket.products.flatMap(product => {
         let availabilityElementId = '';
         let validityParametersObject = {};
+        let result = [];
         const hasTimeRestriction = ticket.timeRestriction.length > 0;
 
         if (isGeoZoneTicket(ticket)) {
@@ -446,7 +447,7 @@ export const getFareStructuresElements = (
                 },
             };
 
-            const result = [
+            result = [
                 getPeriodAvailabilityElement(
                     zonalAvailabilityElementId,
                     zonalValidityParametersObject,
@@ -457,27 +458,8 @@ export const getFareStructuresElements = (
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
-
-            if (hasExceptions) {
-                availabilityElementId = `Tariff@${product.productName}@exempt_lines`;
-                validityParametersObject = {
-                    GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
-                };
-                result.push(
-                    getExemptionsElement(
-                        zonalAvailabilityElementId,
-                        zonalValidityParametersObject,
-                        hasTimeRestriction,
-                        product.productName,
-                        groupOfLinesRef,
-                    ),
-                );
-            }
-            return result;
-        }
-
-        if ('productDuration' in product) {
-            const result = [
+        } else if ('productDuration' in product) {
+            result = [
                 getPeriodAvailabilityElement(
                     availabilityElementId,
                     validityParametersObject,
@@ -487,32 +469,17 @@ export const getFareStructuresElements = (
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
-            if (hasExceptions) {
-                availabilityElementId = `Tariff@${product.productName}@exempt_lines`;
-                validityParametersObject = {
-                    GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
-                };
-                result.push(
-                    getExemptionsElement(
-                        availabilityElementId,
-                        validityParametersObject,
-                        hasTimeRestriction,
-                        groupOfLinesRef,
-                    ),
-                );
-            }
-            return result;
+        } else {
+            result = [
+                getPeriodAvailabilityElement(
+                    availabilityElementId,
+                    validityParametersObject,
+                    hasTimeRestriction,
+                    groupOfLinesRef,
+                ),
+                getPeriodConditionsElement(ticket, product),
+            ];
         }
-
-        const result = [
-            getPeriodAvailabilityElement(
-                availabilityElementId,
-                validityParametersObject,
-                hasTimeRestriction,
-                groupOfLinesRef,
-            ),
-            getPeriodConditionsElement(ticket, product),
-        ];
         if (hasExceptions) {
             availabilityElementId = `Tariff@${product.productName}@exempt_lines`;
             validityParametersObject = {
@@ -527,6 +494,7 @@ export const getFareStructuresElements = (
                 ),
             );
         }
+
         return result;
     });
 
