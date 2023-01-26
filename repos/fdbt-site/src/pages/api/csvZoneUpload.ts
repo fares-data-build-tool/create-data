@@ -188,7 +188,6 @@ export const processServices = (
 
     const errors: ErrorInfo[] = [];
     if (clickedYes && selectedServices.length === 0) {
-        //console.log('in the block');
         errors.push({ id: 'checkbox-0', errorMessage: 'Choose at least one service from the options' });
         updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { errors });
     } else {
