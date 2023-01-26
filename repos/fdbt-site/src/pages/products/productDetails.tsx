@@ -25,7 +25,7 @@ import {
 import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
-import { isGeoZoneTicket } from 'src/interfaces/typeGuards';
+import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
