@@ -8,6 +8,7 @@ import {
     SchemeOperatorGeoZoneTicket,
     PriceByDistanceProduct,
     DistanceBand,
+    PeriodGeoZoneTicket,
 } from 'fdbt-types/matchingJsonTypes';
 import * as db from '../../data/auroradb';
 import {
@@ -122,13 +123,16 @@ export const getLinesList = (
         | MultiOperatorMultipleServicesTicket
         | SchemeOperatorFlatFareTicket
         | SchemeOperatorMultiServiceTicket
-        | HybridPeriodTicket,
+        | HybridPeriodTicket
+        | FlatFareGeoZoneTicket
+        | PeriodGeoZoneTicket,
     website: string,
     operatorData: Operator[],
 ): Line[] => {
     let linesList: Line[] = [];
 
     if (isMultiOperatorMultipleServicesTicket(userPeriodTicket) || isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
+        console.log('oops');
         linesList = userPeriodTicket.additionalOperators.flatMap((operator): Line[] => {
             const currentOperator = operatorData.find(o => o.nocCode === operator.nocCode);
 
@@ -159,7 +163,7 @@ export const getLinesList = (
         });
     }
 
-    if (!isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
+    if (!isSchemeOperatorFlatFareTicket(userPeriodTicket) && 'selectedServices' in userPeriodTicket) {
         const duplicateLines = userPeriodTicket.selectedServices
             ? userPeriodTicket.selectedServices.map(service => ({
                   version: '1.0',
@@ -191,8 +195,62 @@ export const getLinesList = (
     return linesList;
 };
 
+export const getExemptedLinesList = (
+    userPeriodTicket: FlatFareGeoZoneTicket | PeriodGeoZoneTicket,
+    website: string,
+): Line[] => {
+    const linesList: Line[] = [];
+
+    const duplicateLines = userPeriodTicket.exemptedServices
+        ? userPeriodTicket.exemptedServices.map(service => ({
+              version: '1.0',
+              id: service.lineId,
+              Name: { $t: `Line ${service.lineName}` },
+              Description: { $t: service.serviceDescription },
+              Url: { $t: website },
+              PublicCode: { $t: service.lineName },
+              PrivateCode: service.lineId
+                  ? {
+                        type: 'txc:Line@id',
+                        $t: service.lineId,
+                    }
+                  : {},
+              OperatorRef: {
+                  version: '1.0',
+                  ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
+              },
+              LineType: { $t: 'local' },
+          }))
+        : [];
+    const seen: string[] = [];
+    return (
+        linesList?.concat(duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id)))) ?? []
+    );
+};
+
+export const getExemptedGroupOfLinesList = (operatorIdentifier: string, lines: Line[]): GroupOfLines[] => {
+    const lineReferences = lines.map(line => line.id);
+    console.log(lineReferences);
+    return [
+        {
+            version: '1.0',
+            id: `${operatorIdentifier}@groupOfLines@1`,
+            Name: {
+                $t: `A group of exempt services.`,
+            },
+            members: {
+                LineRef: lineReferences.map(lineRef => ({
+                    version: '1.0',
+                    ref: lineRef,
+                })),
+            },
+        },
+    ];
+};
+
 export const getGroupOfLinesList = (operatorIdentifier: string, isHybrid: boolean, lines: Line[]): GroupOfLines[] => {
     const lineReferences = lines.map(line => line.id);
+    console.log(lineReferences);
     return [
         {
             version: '1.0',
@@ -862,6 +920,60 @@ export const getPeriodAvailabilityElement = (
                       TypeOfAccessRightAssignmentRef: {
                           version: 'fxc:v1.0',
                           ref: 'fxc:can_access',
+                      },
+                      validityParameters: {
+                          GroupOfLinesRef: {
+                              version: '1.0',
+                              ref: groupOfLinesRef,
+                          },
+                      },
+                  },
+              }
+            : null,
+    },
+});
+
+export const getExemptionsElement = (
+    id: string,
+    validityParametersObject: {},
+    hasTimeRestriction: boolean,
+    productName?: string,
+    groupOfLinesRef?: string,
+): NetexObject => ({
+    version: '1.0',
+    id: `op:${id}`,
+    Name: { $t: 'Available lines and/or zones' },
+    TypeOfFareStructureElementRef: {
+        version: 'fxc:v1.0',
+        ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
+    },
+    qualityStructureFactors: hasTimeRestriction
+        ? {
+              FareDemandFactorRef: {
+                  ref: 'op@Tariff@Demand',
+                  version: '1.0',
+              },
+          }
+        : null,
+    GenericParameterAssignment: {
+        id,
+        version: '1.0',
+        order: '1',
+        TypeOfAccessRightAssignmentRef: {
+            version: 'fxc:v1.0',
+            ref: 'fxc:cannot_access',
+        },
+        ValidityParameterGroupingType: { $t: 'NOT' },
+        validityParameters: validityParametersObject,
+        includes: groupOfLinesRef
+            ? {
+                  GenericParameterAssignment: {
+                      version: '1.0',
+                      id: `${productName}-groupsOfLinesWrapper`,
+                      order: '2',
+                      TypeOfAccessRightAssignmentRef: {
+                          version: 'fxc:v1.0',
+                          ref: 'fxc:cannot_access',
                       },
                       validityParameters: {
                           GroupOfLinesRef: {

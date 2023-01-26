@@ -34,6 +34,7 @@ import {
 import {
     getBaseSchemeOperatorInfo,
     getDurationElement,
+    getExemptionsElement,
     getLineRefList,
     getPeriodAvailabilityElement,
     getPeriodConditionsElement,
@@ -381,6 +382,7 @@ export const getFareStructuresElements = (
     lineName: string,
     placeholderGroupOfProductsName: string,
     groupOfLinesRef: string,
+    hasExceptions: boolean,
 ): NetexObject[] => {
     const fareStructureElements: NetexObject[] = [];
 
@@ -425,6 +427,7 @@ export const getFareStructuresElements = (
                     version: '1.0',
                     ref: `op:${placeholderGroupOfProductsName}@${ticket.zoneName}`,
                 },
+                ...(groupOfLinesRef && hasExceptions && { GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef } }),
             };
         } else if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket)) {
             availabilityElementId = `Tariff@${product.productName}@access_lines`;
@@ -444,7 +447,7 @@ export const getFareStructuresElements = (
                 },
             };
 
-            return [
+            const result = [
                 getPeriodAvailabilityElement(
                     zonalAvailabilityElementId,
                     zonalValidityParametersObject,
@@ -455,10 +458,23 @@ export const getFareStructuresElements = (
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
+
+            if (hasExceptions) {
+                result.push(
+                    getExemptionsElement(
+                        zonalAvailabilityElementId,
+                        zonalValidityParametersObject,
+                        hasTimeRestriction,
+                        product.productName,
+                        groupOfLinesRef,
+                    ),
+                );
+            }
+            return result;
         }
 
         if ('productDuration' in product) {
-            return [
+            const result = [
                 getPeriodAvailabilityElement(
                     availabilityElementId,
                     validityParametersObject,
@@ -468,9 +484,20 @@ export const getFareStructuresElements = (
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
+            if (hasExceptions) {
+                result.push(
+                    getExemptionsElement(
+                        availabilityElementId,
+                        validityParametersObject,
+                        hasTimeRestriction,
+                        groupOfLinesRef,
+                    ),
+                );
+            }
+            return result;
         }
 
-        return [
+        const result = [
             getPeriodAvailabilityElement(
                 availabilityElementId,
                 validityParametersObject,
@@ -479,6 +506,17 @@ export const getFareStructuresElements = (
             ),
             getPeriodConditionsElement(ticket, product),
         ];
+        if (hasExceptions) {
+            result.push(
+                getExemptionsElement(
+                    availabilityElementId,
+                    validityParametersObject,
+                    hasTimeRestriction,
+                    groupOfLinesRef,
+                ),
+            );
+        }
+        return result;
     });
 
     fareStructureElements.push(...productFareStructureElements);
