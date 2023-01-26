@@ -132,7 +132,6 @@ export const getLinesList = (
     let linesList: Line[] = [];
 
     if (isMultiOperatorMultipleServicesTicket(userPeriodTicket) || isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
-        console.log('oops');
         linesList = userPeriodTicket.additionalOperators.flatMap((operator): Line[] => {
             const currentOperator = operatorData.find(o => o.nocCode === operator.nocCode);
 
@@ -230,7 +229,7 @@ export const getExemptedLinesList = (
 
 export const getExemptedGroupOfLinesList = (operatorIdentifier: string, lines: Line[]): GroupOfLines[] => {
     const lineReferences = lines.map(line => line.id);
-    console.log(lineReferences);
+
     return [
         {
             version: '1.0',
@@ -250,7 +249,7 @@ export const getExemptedGroupOfLinesList = (operatorIdentifier: string, lines: L
 
 export const getGroupOfLinesList = (operatorIdentifier: string, isHybrid: boolean, lines: Line[]): GroupOfLines[] => {
     const lineReferences = lines.map(line => line.id);
-    console.log(lineReferences);
+
     return [
         {
             version: '1.0',
@@ -942,7 +941,7 @@ export const getExemptionsElement = (
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
-    Name: { $t: 'Available lines and/or zones' },
+    Name: { $t: 'Exempted Services' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',

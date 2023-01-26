@@ -427,7 +427,6 @@ export const getFareStructuresElements = (
                     version: '1.0',
                     ref: `op:${placeholderGroupOfProductsName}@${ticket.zoneName}`,
                 },
-                ...(groupOfLinesRef && hasExceptions && { GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef } }),
             };
         } else if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket)) {
             availabilityElementId = `Tariff@${product.productName}@access_lines`;
@@ -460,6 +459,10 @@ export const getFareStructuresElements = (
             ];
 
             if (hasExceptions) {
+                availabilityElementId = `Tariff@${product.productName}@exempt_lines`;
+                validityParametersObject = {
+                    GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
+                };
                 result.push(
                     getExemptionsElement(
                         zonalAvailabilityElementId,
@@ -485,6 +488,10 @@ export const getFareStructuresElements = (
                 getPeriodConditionsElement(ticket, product),
             ];
             if (hasExceptions) {
+                availabilityElementId = `Tariff@${product.productName}@exempt_lines`;
+                validityParametersObject = {
+                    GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
+                };
                 result.push(
                     getExemptionsElement(
                         availabilityElementId,
@@ -507,6 +514,10 @@ export const getFareStructuresElements = (
             getPeriodConditionsElement(ticket, product),
         ];
         if (hasExceptions) {
+            availabilityElementId = `Tariff@${product.productName}@exempt_lines`;
+            validityParametersObject = {
+                GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
+            };
             result.push(
                 getExemptionsElement(
                     availabilityElementId,
