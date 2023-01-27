@@ -24,7 +24,7 @@ import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
 import uniq from 'lodash/uniq';
 import { isArray } from 'lodash';
-import { SelectedService, Stop } from '../../interfaces/matchingJsonTypes';
+import { SelectedService } from '../../interfaces/matchingJsonTypes';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 
 export interface FareZoneWithErrors {
@@ -150,9 +150,8 @@ export const processCsv = async (
 };
 
 export const processServices = (
-    req: NextApiRequestWithSession,
     formData: FileData,
-): { serviceErrors: ErrorInfo[]; selectedServices: SelectedService[] } => {
+): { serviceErrors: ErrorInfo[]; selectedServices: SelectedService[]; clickedYes: boolean } => {
     const fields = formData.fields;
 
     if (!fields) {
@@ -189,28 +188,31 @@ export const processServices = (
     const errors: ErrorInfo[] = [];
     if (clickedYes && selectedServices.length === 0) {
         errors.push({ id: 'checkbox-0', errorMessage: 'Choose at least one service from the options' });
-        updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { errors });
     } else {
-        updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { selectedServices });
+        return { selectedServices, clickedYes, serviceErrors: [] };
     }
 
-    return { serviceErrors: errors, selectedServices };
+    return { serviceErrors: errors, selectedServices, clickedYes };
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
-        const { serviceErrors, selectedServices } = processServices(req, formData);
+        const { serviceErrors, selectedServices, clickedYes } = processServices(formData);
         const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
         const fileName = formData.name;
         const errors: ErrorInfo[] = serviceErrors;
+
         if (fileError) {
             errors.push({ id: 'csv-upload', errorMessage: fileError });
         }
+
         if (errors.length > 0) {
+            updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { errors });
             setFareZoneAttributeAndRedirect(req, res, errors);
             return;
         }
+
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
         const isInEditMode = ticket && matchingJsonMetaData;
@@ -227,15 +229,18 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const fareZoneName = userFareZones[0].FareZoneName;
         const atcoCodes: string[] = userFareZones.map((fareZone) => fareZone.AtcoCodes);
         const deduplicatedAtcoCodes = uniq(atcoCodes);
-        let stops: Stop[] = [];
 
         if (!isInEditMode) {
             const uuid = getUuidFromSession(req);
             await putDataInS3(fileContents, `${uuid}.csv`, false);
             updateSessionAttribute(req, CSV_ZONE_FILE_NAME, fileName);
 
+            if (clickedYes) {
+                updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { selectedServices });
+            }
+
             try {
-                stops = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
+                await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
             } catch (error) {
                 const errors: ErrorInfo[] = [
                     {
@@ -250,27 +255,33 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (!nocCode) {
                 throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
             }
+
             await putDataInS3(userFareZones, `fare-zone/${nocCode}/${uuid}.json`, true);
             updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
             const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
+
             if (fareType === 'multiOperator' || isSchemeOperator(req, res)) {
                 redirectTo(res, '/reuseOperatorGroup');
                 return;
             }
+
             if (fareType === 'period') {
                 const ticketType = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
                 if (!ticketType || !('name' in ticketType)) {
                     throw new Error('No ticket type set for period ticket');
                 }
+
                 if (ticketType.name === 'hybrid') {
                     redirectTo(res, '/serviceList?selectAll=false');
                     return;
                 }
             }
+
             if (fareType === 'capped') {
                 redirectTo(res, '/typeOfCap');
                 return;
             }
+
             redirectTo(res, '/multipleProducts');
             return;
         } else {
@@ -278,12 +289,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const updatedTicket = {
                 ...ticket,
                 zoneName: fareZoneName,
-                stops,
                 ...(selectedServices.length > 0
                     ? { exemptedServices: selectedServices }
                     : { exemptedServices: undefined }),
             };
-
             // put the now updated matching json into s3
             await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
             updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, undefined);

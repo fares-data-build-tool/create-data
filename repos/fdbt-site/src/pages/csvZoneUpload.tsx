@@ -344,6 +344,31 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         };
     });
 
+    const commonProps = {
+        csvUploadTitle: 'Upload fare zone',
+        csvUploadHintText:
+            'Upload a fare zone as a .csv or MS Excel file. A fare zone is made up of all the relevant NaPTAN or ATCO codes within a geographical area. Refer to the help documents section to download a help file or a template.',
+        guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 826KB',
+        guidanceDocAttachmentUrl: HowToUploadFareZone,
+        guidanceDocSize: '967KB',
+        csvTemplateDisplayName: 'Download fare zone CSV template - File Type CSV - File Size 673B',
+        csvTemplateAttachmentUrl: FareZoneExampleCsv,
+        csvTemplateSize: '673B',
+        errors,
+        detailSummary: "My fare zone won't upload",
+        csrfToken: getCsrfToken(ctx),
+        backHref,
+        dataSourceAttribute,
+    };
+
+    const getButtonText = (serviceList: ServicesInfo[]) => {
+        return serviceList.every((service) => service.checked) ? 'Unselect All Services' : 'Select All Services';
+    };
+
+    const hasClickedYes = (serviceList: ServicesInfo[]) => {
+        return serviceList.some((service) => service.checked) || serviceListErrors.length > 0;
+    };
+
     if (ticket && matchingJsonMetaData) {
         let services: string[] = [];
         if ('exemptedServices' in ticket && ticket.exemptedServices) {
@@ -360,49 +385,19 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         });
         return {
             props: {
-                csvUploadTitle: 'Upload fare zone',
-                csvUploadHintText:
-                    'Upload a fare zone as a .csv or MS Excel file. A fare zone is made up of all the relevant NaPTAN or ATCO codes within a geographical area. Refer to the help documents section to download a help file or a template.',
-                guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 826KB',
-                guidanceDocAttachmentUrl: HowToUploadFareZone,
-                guidanceDocSize: '967KB',
-                csvTemplateDisplayName: 'Download fare zone CSV template - File Type CSV - File Size 673B',
-                csvTemplateAttachmentUrl: FareZoneExampleCsv,
-                csvTemplateSize: '673B',
-                errors,
-                detailSummary: "My fare zone won't upload",
-                csrfToken: getCsrfToken(ctx),
-                backHref,
+                ...commonProps,
                 serviceList: serviceListEdit,
-                buttonText: serviceListEdit.every((service) => service.checked)
-                    ? 'Unselect All Services'
-                    : 'Select All Services',
-                dataSourceAttribute,
-                clickedYes: serviceListEdit.some((service) => service.checked) || serviceListErrors.length > 0,
+                buttonText: getButtonText(serviceListEdit),
+                clickedYes: hasClickedYes(serviceListEdit),
             },
         };
     }
     return {
         props: {
-            csvUploadTitle: 'Upload fare zone',
-            csvUploadHintText:
-                'Upload a fare zone as a .csv or MS Excel file. A fare zone is made up of all the relevant NaPTAN or ATCO codes within a geographical area. Refer to the help documents section to download a help file or a template.',
-            guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 826KB',
-            guidanceDocAttachmentUrl: HowToUploadFareZone,
-            guidanceDocSize: '967KB',
-            csvTemplateDisplayName: 'Download fare zone CSV template - File Type CSV - File Size 673B',
-            csvTemplateAttachmentUrl: FareZoneExampleCsv,
-            csvTemplateSize: '673B',
-            errors,
-            detailSummary: "My fare zone won't upload",
-            csrfToken: getCsrfToken(ctx),
-            backHref,
+            ...commonProps,
             serviceList,
-            buttonText: serviceList.every((service) => service.checked)
-                ? 'Unselect All Services'
-                : 'Select All Services',
-            dataSourceAttribute,
-            clickedYes: serviceList.some((service) => service.checked) || serviceListErrors.length > 0,
+            buttonText: getButtonText(serviceList),
+            clickedYes: hasClickedYes(serviceList),
         },
     };
 };
