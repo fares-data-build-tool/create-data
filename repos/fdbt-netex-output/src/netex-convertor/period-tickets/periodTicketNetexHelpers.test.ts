@@ -1026,7 +1026,7 @@ describe('periodTicketNetexHelpers', () => {
                     includes: {
                         GenericParameterAssignment: {
                             version: '1.0',
-                            id: `test-groupsOfLinesWrapper`,
+                            id: 'test-exemptedGroupsOfLinesWrapper',
                             order: '2',
                             TypeOfAccessRightAssignmentRef: {
                                 version: 'fxc:v1.0',

@@ -957,7 +957,7 @@ export const getExemptionsElement = (
         includes: {
             GenericParameterAssignment: {
                 version: '1.0',
-                id: `${productName}-groupsOfLinesWrapper`,
+                id: `${productName}-exemptedGroupsOfLinesWrapper`,
                 order: '2',
                 TypeOfAccessRightAssignmentRef: {
                     version: 'fxc:v1.0',
