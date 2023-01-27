@@ -22,6 +22,7 @@ import {
     SchemeOperatorGeoZoneTicket,
     SingleTicket,
     Stop,
+    CappedTicket,
 } from '../../src/interfaces/matchingJsonTypes';
 import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
@@ -55,6 +56,7 @@ import {
     OperatorGroup,
     ProductToDisplay,
     ServiceToDisplay,
+    MultiOperatorMultipleServicesTicket,
 } from '../../src/interfaces';
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
@@ -1215,6 +1217,32 @@ const mockFullTimeRestriction: FullTimeRestriction[] = [
         ],
     },
 ];
+
+export const expectedCappedTicket: WithIds<CappedTicket> = {
+    nocCode: 'BLAC',
+    type: 'capped',
+    passengerType: { id: 1 },
+    email: 'test@example.com',
+    uuid: 'BLAC28ac10f0',
+    ticketPeriod: { startDate: '2020-02-01T00:00:00.000Z' },
+    products: [{ productName: '', salesOfferPackages: [{ id: 1, price: undefined }] }],
+    operatorName: 'Blackpool Transport',
+    carnet: false,
+    cappedProductInfo: {
+        capDetails: {
+            productName: 'Product 1',
+            maximumPrice: '2',
+            minimumPrice: '1',
+            distanceBands: [
+                {
+                    distanceFrom: '0',
+                    distanceTo: 'Max',
+                    pricePerKm: '2',
+                },
+            ],
+        },
+    },
+};
 
 export const expectedSingleTicket: WithIds<SingleTicket> = {
     type: 'single',
@@ -2773,177 +2801,178 @@ export const expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts: Wit
     ],
 };
 
-export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators = {
-    operatorName: 'test',
-    type: 'multiOperator',
-    nocCode: 'TEST',
-    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
-    email: 'test@example.com',
-    passengerType: { id: 9 },
-    termTime: false,
-    timeRestriction: { id: 2 },
-    ticketPeriod: {
-        startDate: '2020-12-17T09:30:46.0Z',
-        endDate: '2020-12-18T09:30:46.0Z',
-    },
-    operatorGroupId: 1,
-    products: [
-        {
-            productName: 'Weekly Ticket',
-            productPrice: '50',
-            productDuration: '5 weeks',
-            productValidity: 'fareDayEnd',
-            salesOfferPackages: [
-                {
-                    id: 1,
-                    price: undefined,
-                },
-                {
-                    id: 2,
-                    price: undefined,
-                },
-            ],
-            carnetDetails: undefined,
+export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators: WithIds<MultiOperatorMultipleServicesTicket> =
+    {
+        operatorName: 'test',
+        type: 'multiOperator',
+        nocCode: 'TEST',
+        uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+        email: 'test@example.com',
+        passengerType: { id: 9 },
+        termTime: false,
+        timeRestriction: { id: 2 },
+        ticketPeriod: {
+            startDate: '2020-12-17T09:30:46.0Z',
+            endDate: '2020-12-18T09:30:46.0Z',
         },
-        {
-            productName: 'Day Ticket',
-            productPrice: '2.50',
-            productDuration: '1 year',
-            productValidity: 'fareDayEnd',
-            salesOfferPackages: [
-                {
-                    id: 1,
-                    price: undefined,
-                },
-                {
-                    id: 2,
-                    price: undefined,
-                },
-            ],
-            carnetDetails: undefined,
-        },
-        {
-            productName: 'Monthly Ticket',
-            productPrice: '200',
-            productDuration: '28 months',
-            productValidity: 'fareDayEnd',
-            salesOfferPackages: [
-                {
-                    id: 1,
-                    price: undefined,
-                },
-                {
-                    id: 2,
-                    price: undefined,
-                },
-            ],
-            carnetDetails: undefined,
-        },
-    ],
-    selectedServices: [
-        {
-            lineName: '12A',
-            lineId: '3h3vb32ik',
-            serviceCode: 'NW_05_BLAC_12A_1',
-            startDate: '13/05/2020',
-            serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
-        },
-        {
-            lineName: '6',
-            lineId: '3h3vb32ik',
-            serviceCode: 'NW_05_BLAC_6_1',
-            startDate: '08/05/2020',
-            serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
-        },
-        {
-            lineName: '101',
-            lineId: '3h3vb32ik',
-            serviceCode: 'NW_05_BLAC_101_1',
-            startDate: '06/05/2020',
-            serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
-        },
-    ],
-    additionalOperators: [
-        {
-            nocCode: 'WBTR',
-            selectedServices: [
-                {
-                    lineName: '343',
-                    lineId: '3h3vsergesrhg',
-                    serviceCode: '11-444-_-y08-1',
-                    serviceDescription: 'Test Under Lyne - Glossop',
-                    startDate: '07/04/2020',
-                },
-                {
-                    lineName: '444',
-                    lineId: '3h3vtrhtherhed',
-                    serviceCode: 'NW_01_MCT_391_1',
-                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
-                    startDate: '23/04/2019',
-                },
-                {
-                    lineName: '543',
-                    lineId: '3h3vb32ik',
-                    serviceCode: 'NW_04_MCTR_232_1',
-                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
-                    startDate: '06/04/2020',
-                },
-            ],
-        },
-        {
-            nocCode: 'BLAC',
-            selectedServices: [
-                {
-                    lineName: '100',
-                    lineId: '3h3rthsrty56y5',
-                    serviceCode: '11-444-_-y08-1',
-                    serviceDescription: 'Test Under Lyne - Glossop',
-                    startDate: '07/04/2020',
-                },
-                {
-                    lineName: '101',
-                    lineId: '3h34t43deefsf',
-                    serviceCode: 'NW_01_MCT_391_1',
-                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
-                    startDate: '23/04/2019',
-                },
-                {
-                    lineName: '102',
-                    lineId: '34tvwevdsvb32ik',
-                    serviceCode: 'NW_04_MCTR_232_1',
-                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
-                    startDate: '06/04/2020',
-                },
-            ],
-        },
-        {
-            nocCode: 'LEDS',
-            selectedServices: [
-                {
-                    lineName: '63',
-                    lineId: '45t34gvfdx2ik',
-                    serviceCode: '11-444-_-y08-1',
-                    serviceDescription: 'Test Under Lyne - Glossop',
-                    startDate: '07/04/2020',
-                },
-                {
-                    lineName: '64',
-                    lineId: 'q45g4rgergik',
-                    serviceCode: 'NW_01_MCT_391_1',
-                    serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
-                    startDate: '23/04/2019',
-                },
-                {
-                    lineName: '65',
-                    lineId: 'q34ttfwerfsxfc',
-                    serviceCode: 'NW_04_MCTR_232_1',
-                    serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
-                    startDate: '06/04/2020',
-                },
-            ],
-        },
-    ],
-};
+        operatorGroupId: 1,
+        products: [
+            {
+                productName: 'Weekly Ticket',
+                productPrice: '50',
+                productDuration: '5 weeks',
+                productValidity: 'fareDayEnd',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
+                carnetDetails: undefined,
+            },
+            {
+                productName: 'Day Ticket',
+                productPrice: '2.50',
+                productDuration: '1 year',
+                productValidity: 'fareDayEnd',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
+                carnetDetails: undefined,
+            },
+            {
+                productName: 'Monthly Ticket',
+                productPrice: '200',
+                productDuration: '28 months',
+                productValidity: 'fareDayEnd',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
+                carnetDetails: undefined,
+            },
+        ],
+        selectedServices: [
+            {
+                lineName: '12A',
+                lineId: '3h3vb32ik',
+                serviceCode: 'NW_05_BLAC_12A_1',
+                startDate: '13/05/2020',
+                serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+            },
+            {
+                lineName: '6',
+                lineId: '3h3vb32ik',
+                serviceCode: 'NW_05_BLAC_6_1',
+                startDate: '08/05/2020',
+                serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+            },
+            {
+                lineName: '101',
+                lineId: '3h3vb32ik',
+                serviceCode: 'NW_05_BLAC_101_1',
+                startDate: '06/05/2020',
+                serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+            },
+        ],
+        additionalOperators: [
+            {
+                nocCode: 'WBTR',
+                selectedServices: [
+                    {
+                        lineName: '343',
+                        lineId: '3h3vsergesrhg',
+                        serviceCode: '11-444-_-y08-1',
+                        serviceDescription: 'Test Under Lyne - Glossop',
+                        startDate: '07/04/2020',
+                    },
+                    {
+                        lineName: '444',
+                        lineId: '3h3vtrhtherhed',
+                        serviceCode: 'NW_01_MCT_391_1',
+                        serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                        startDate: '23/04/2019',
+                    },
+                    {
+                        lineName: '543',
+                        lineId: '3h3vb32ik',
+                        serviceCode: 'NW_04_MCTR_232_1',
+                        serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                        startDate: '06/04/2020',
+                    },
+                ],
+            },
+            {
+                nocCode: 'BLAC',
+                selectedServices: [
+                    {
+                        lineName: '100',
+                        lineId: '3h3rthsrty56y5',
+                        serviceCode: '11-444-_-y08-1',
+                        serviceDescription: 'Test Under Lyne - Glossop',
+                        startDate: '07/04/2020',
+                    },
+                    {
+                        lineName: '101',
+                        lineId: '3h34t43deefsf',
+                        serviceCode: 'NW_01_MCT_391_1',
+                        serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                        startDate: '23/04/2019',
+                    },
+                    {
+                        lineName: '102',
+                        lineId: '34tvwevdsvb32ik',
+                        serviceCode: 'NW_04_MCTR_232_1',
+                        serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                        startDate: '06/04/2020',
+                    },
+                ],
+            },
+            {
+                nocCode: 'LEDS',
+                selectedServices: [
+                    {
+                        lineName: '63',
+                        lineId: '45t34gvfdx2ik',
+                        serviceCode: '11-444-_-y08-1',
+                        serviceDescription: 'Test Under Lyne - Glossop',
+                        startDate: '07/04/2020',
+                    },
+                    {
+                        lineName: '64',
+                        lineId: 'q45g4rgergik',
+                        serviceCode: 'NW_01_MCT_391_1',
+                        serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                        startDate: '23/04/2019',
+                    },
+                    {
+                        lineName: '65',
+                        lineId: 'q34ttfwerfsxfc',
+                        serviceCode: 'NW_04_MCTR_232_1',
+                        serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                        startDate: '06/04/2020',
+                    },
+                ],
+            },
+        ],
+    };
 
 export const expectedFlatFareTicket: WithIds<FlatFareGeoZoneTicket> | WithIds<FlatFareMultipleServices> = {
     operatorName: 'test',
@@ -3025,6 +3054,60 @@ export const expectedFlatFareGeoZoneTicket: WithIds<FlatFareGeoZoneTicket> = {
                     price: undefined,
                 },
             ],
+        },
+    ],
+};
+
+export const expectedFlatFareGeoZoneTicketWithExemptions: WithIds<FlatFareGeoZoneTicket> = {
+    operatorName: 'test',
+    passengerType: { id: 9 },
+    type: 'flatFare',
+    nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
+    zoneName: 'my flat fare zone',
+    stops: zoneStops,
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'Flat fare with geo zone',
+            productPrice: '7',
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 3,
+                    price: undefined,
+                },
+            ],
+        },
+    ],
+    exemptedServices: [
+        {
+            lineName: '100',
+            lineId: '3h3rthsrty56y5',
+            serviceCode: '11-444-_-y08-1',
+            serviceDescription: 'Test Under Lyne - Glossop',
+            startDate: '07/04/2020',
+        },
+        {
+            lineName: '101',
+            lineId: '3h34t43deefsf',
+            serviceCode: 'NW_01_MCT_391_1',
+            serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+            startDate: '23/04/2019',
+        },
+        {
+            lineName: '102',
+            lineId: '34tvwevdsvb32ik',
+            serviceCode: 'NW_04_MCTR_232_1',
+            serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+            startDate: '06/04/2020',
         },
     ],
 };

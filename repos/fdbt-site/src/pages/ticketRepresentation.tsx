@@ -24,6 +24,8 @@ interface TicketRepresentationProps {
     csrfToken: string;
     showHybrid: boolean;
     showPointToPoint: boolean;
+    showFlatFlare: boolean;
+    isDevOrTest: boolean;
 }
 
 const getFareTypeDesc = (fareType: TicketType) => {
@@ -63,6 +65,8 @@ const TicketRepresentation = ({
     csrfToken,
     showHybrid,
     showPointToPoint,
+    showFlatFlare,
+    isDevOrTest,
 }: TicketRepresentationProps): ReactElement => {
     const fareTypeDesc = getFareTypeDesc(fareType);
     const fareTypeHint = getFareTypeHint(fareType);
@@ -111,6 +115,15 @@ const TicketRepresentation = ({
                                                   },
                                               ]
                                             : []),
+                                        ...(showFlatFlare && isDevOrTest
+                                            ? [
+                                                  {
+                                                      value: 'multipleServicesPricedByDistance',
+                                                      label: 'A ticket for a set of services, priced by distance',
+                                                      hint: 'Single trip on a specific service or set of services, priced by distance',
+                                                  },
+                                              ]
+                                            : []),
                                     ]}
                                 />
                             </FormElementWrapper>
@@ -129,6 +142,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
     const ticketType = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
     const isCarnet = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
     const isScheme = isSchemeOperator(ctx);
+    const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
 
     return {
         props: {
@@ -137,6 +151,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             csrfToken,
             showHybrid: fareType === 'period' && !isScheme,
             showPointToPoint: fareType === 'period' && !isCarnet && !isScheme,
+            showFlatFlare: fareType === 'flatFare' && !isScheme && !isCarnet,
+            isDevOrTest,
         },
     };
 };

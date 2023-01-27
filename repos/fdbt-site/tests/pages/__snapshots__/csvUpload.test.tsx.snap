@@ -6,40 +6,70 @@ exports[`pages csvUpload should render correctly 1`] = `
   errors={Array []}
   title="CSV Upload - Create Fares Data Service"
 >
-  <UserDataUploadComponent
-    backHref=""
-    csrfToken=""
-    csvTemplateAttachmentUrl=""
-    csvTemplateDisplayName=""
-    csvTemplateSize=""
-    csvUploadApiRoute=""
-    csvUploadHintText=""
-    csvUploadTitle="Upload fares triangle as CSV"
-    detailBody={
-      <React.Fragment>
-        <p>
-          Some common issues with fares triangle uploads include:
-        </p>
-        <ul
-          className="govuk-list govuk-list--bullet"
-        >
-          <li>
-            Commas in fare stage names
-          </li>
-          <li>
-            Not filling in every fare stage on the diagonal row
-          </li>
-        </ul>
-        <p>
-          Use the help file for a more detailed guide on constructing a fares triangle in the required format or download the fares triangle template to create a new file.
-        </p>
-      </React.Fragment>
-    }
-    errors={Array []}
-    guidanceDocAttachmentUrl=""
-    guidanceDocDisplayName=""
-    guidanceDocSize=""
-    showPriceOption={true}
-  />
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <ErrorSummary
+        errors={Array []}
+      />
+      <CsrfForm
+        action="/api/csvUpload"
+        csrfToken=""
+        encType="multipart/form-data"
+        method="post"
+      >
+        <UserDataUploadComponent
+          csvUploadHintText=""
+          csvUploadTitle="Upload fares triangle as CSV"
+          detailBody={
+            <React.Fragment>
+              <p>
+                Some common issues with fares triangle uploads include:
+              </p>
+              <ul
+                className="govuk-list govuk-list--bullet"
+              >
+                <li>
+                  Commas in fare stage names
+                </li>
+                <li>
+                  Not filling in every fare stage on the diagonal row
+                </li>
+              </ul>
+              <p>
+                Use the help file for a more detailed guide on constructing a fares triangle in the required format or download the fares triangle template to create a new file.
+              </p>
+            </React.Fragment>
+          }
+          errors={Array []}
+          showPriceOption={true}
+        />
+      </CsrfForm>
+    </div>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <h2
+        className="govuk-heading-s"
+      >
+        Help documents
+      </h2>
+      <FileAttachment
+        attachmentUrl=""
+        displayName=""
+        imageUrl={Object {}}
+        size=""
+      />
+      <FileAttachment
+        attachmentUrl=""
+        displayName=""
+        imageUrl={Object {}}
+        size=""
+      />
+    </div>
+  </div>
 </BaseLayout>
 `;

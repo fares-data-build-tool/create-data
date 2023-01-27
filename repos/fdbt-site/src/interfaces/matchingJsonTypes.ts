@@ -1,4 +1,4 @@
-import { AdditionalPricing, CapDetails, DistanceCap, MultiTap } from './index';
+import { AdditionalPricing, CapDetails, DistancePricingData, MultiTap } from './index';
 
 export interface PointToPointCarnetProductDetails extends BaseProduct {
     productName: string;
@@ -7,12 +7,14 @@ export interface PointToPointCarnetProductDetails extends BaseProduct {
 
 export type FlatFareGeoZoneTicket = Omit<PeriodGeoZoneTicket, 'products' | 'type'> & {
     type: 'flatFare';
-    products: FlatFareProductDetails[];
+    products: FlatFareProduct[];
+    exemptedServices?: SelectedService[];
 };
 
 export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     zoneName: string;
     stops: Stop[];
+    exemptedServices?: SelectedService[];
 }
 
 export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator' | 'capped'> {
@@ -38,14 +40,18 @@ export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     termTime: boolean;
 }
 
-export interface FlatFareProductDetails extends BaseProduct {
+export interface FlatFareProduct extends BaseProduct {
     productName: string;
     productPrice: string;
     carnetDetails?: CarnetDetails;
 }
 
+export interface PriceByDistanceProduct extends BaseProduct {
+    pricingByDistance: DistancePricingData;
+}
+
 export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
-    products: FlatFareProductDetails[];
+    products: FlatFareProduct[] | PriceByDistanceProduct[];
     termTime: boolean;
     selectedServices: SelectedService[];
     operatorName: string;
@@ -123,7 +129,7 @@ export interface AdditionalOperator {
 
 export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
     type: 'flatFare';
-    products: FlatFareProductDetails[];
+    products: FlatFareProduct[];
     additionalOperators: AdditionalOperator[];
 }
 
@@ -261,6 +267,11 @@ export interface Product {
     productDurationUnits?: string;
     productEndTime?: string;
     carnetDetails?: CarnetDetails;
+    pricingByDistance?: DistancePricingData;
+}
+
+export interface FlatFareByDistanceProduct {
+    pricingByDistance: DistancePricingData;
 }
 
 export interface CappedGeoZoneTicket extends BaseTicket<'capped'> {
@@ -286,8 +297,12 @@ export interface CappedProductDetails extends BaseProduct {
 }
 
 export interface ByDistanceCapInfo {
-    capDetails: DistanceCap;
+    capDetails: DistancePricingData;
     additionalDiscount?: AdditionalPricing;
+}
+
+export interface ByDistanceInfo {
+    pricingByDistance: DistancePricingData;
 }
 
 export interface ByTapCapInfo {

@@ -28,7 +28,7 @@ export const validateAdditionalStructuresInput = (
     const errors: ErrorInfo[] = [];
     const pricingStructureStartError = checkInputIsValid(pricingStructureStart, 'Time allowance after first journey');
     if (pricingStructureStartError) {
-        errors.push({ id: 'pricing-structure-start', errorMessage: pricingStructureStartError });
+        errors.push({ id: 'capPricing-structure-start', errorMessage: pricingStructureStartError });
     }
     const structureDiscountError = checkInputIsValid(structureDiscount, 'Percentage discount');
     if (structureDiscountError) {

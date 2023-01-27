@@ -18,17 +18,17 @@ interface CreateCapsProps {
     userInput: Cap[];
     productName: string;
     csrfToken: string;
-    numberOfCapsToRender: number;
+    numberOfEntitesByDistancesToRender: number;
 }
 
 const CreateCaps = ({
     errors = [],
     userInput = [],
     csrfToken,
-    numberOfCapsToRender,
+    numberOfEntitesByDistancesToRender,
     productName,
 }: CreateCapsProps): ReactElement => {
-    const [numberOfCaps, setNumberOfCaps] = useState(numberOfCapsToRender);
+    const [numberOfEntitesByDistances, setnumberOfEntitesByDistances] = useState(numberOfEntitesByDistancesToRender);
 
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
@@ -63,14 +63,18 @@ const CreateCaps = ({
                     </div>
 
                     <div className="govuk-grid-row">
-                        <CapTable numberOfCapsToDisplay={numberOfCaps} errors={errors} userInputtedCaps={userInput} />
+                        <CapTable
+                            numberOfEntitesByDistancesToDisplay={numberOfEntitesByDistances}
+                            errors={errors}
+                            userInputtedCaps={userInput}
+                        />
                         <div className="flex-container">
-                            {numberOfCaps < 10 ? (
+                            {numberOfEntitesByDistances < 10 ? (
                                 <button
                                     id="add-another-button"
                                     type="button"
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
-                                    onClick={(): void => setNumberOfCaps(numberOfCaps + 1)}
+                                    onClick={(): void => setnumberOfEntitesByDistances(numberOfEntitesByDistances + 1)}
                                 >
                                     Add another cap
                                 </button>
@@ -78,12 +82,12 @@ const CreateCaps = ({
                                 ''
                             )}
 
-                            {numberOfCaps > 1 ? (
+                            {numberOfEntitesByDistances > 1 ? (
                                 <button
                                     id="remove-button"
                                     type="button"
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
-                                    onClick={(): void => setNumberOfCaps(numberOfCaps - 1)}
+                                    onClick={(): void => setnumberOfEntitesByDistances(numberOfEntitesByDistances - 1)}
                                 >
                                     Remove last cap
                                 </button>
@@ -108,7 +112,7 @@ const CreateCaps = ({
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: CreateCapsProps } => {
     const csrfToken = getCsrfToken(ctx);
     const capsAttribute = getSessionAttribute(ctx.req, CAPS_ATTRIBUTE);
-    const numberOfCapsToRender = !!capsAttribute ? capsAttribute.caps.length : 1;
+    const numberOfEntitesByDistancesToRender = !!capsAttribute ? capsAttribute.caps.length : 1;
 
     return {
         props: {
@@ -116,7 +120,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Cr
             userInput: capsAttribute ? capsAttribute.caps : [],
             productName: capsAttribute ? capsAttribute.productName : '',
             csrfToken,
-            numberOfCapsToRender,
+            numberOfEntitesByDistancesToRender,
         },
     };
 };

@@ -72,11 +72,12 @@ import {
     EDIT_CARNET_PROPERTIES_ERROR,
     CAP_EXPIRY_ATTRIBUTE,
     CAP_START_ATTRIBUTE,
-    CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
     MULTI_TAPS_PRICING_ATTRIBUTE,
     ADDITIONAL_PRICING_ATTRIBUTE,
     EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -136,7 +137,7 @@ import {
     ManageOperatorGroupWithErrors,
     TypeOfCap,
     ManageProductGroupWithErrors,
-    DistanceCap,
+    DistancePricingData,
     MultiTapPricing,
     AdditionalPricing,
     CapDetails,
@@ -239,12 +240,13 @@ export interface SessionAttributeTypes {
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
     [CAP_START_ATTRIBUTE]: CapStartInfo | ErrorInfo[];
-    [CAP_PRICING_PER_DISTANCE_ATTRIBUTE]: DistanceCap | WithErrors<DistanceCap>;
+    [PRICING_PER_DISTANCE_ATTRIBUTE]: DistancePricingData | WithErrors<DistancePricingData>;
     [MULTI_TAPS_PRICING_ATTRIBUTE]: MultiTapPricing | WithErrors<MultiTapPricing>;
     [ADDITIONAL_PRICING_ATTRIBUTE]:
         | AdditionalPricing
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
     [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
+    [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

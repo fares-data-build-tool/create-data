@@ -83,7 +83,7 @@ export interface Errors {
 }
 
 export interface TicketRepresentationAttribute {
-    name: 'geoZone' | 'multipleServices' | 'hybrid' | 'pointToPointPeriod';
+    name: 'geoZone' | 'multipleServices' | 'hybrid' | 'pointToPointPeriod' | 'multipleServicesPricedByDistance';
 }
 
 export interface TicketRepresentationAttributeWithErrors {
@@ -123,22 +123,13 @@ export type WithErrors<T> = {
 } & T;
 
 export interface UserDataUploadsProps {
-    csvUploadApiRoute: string;
     csvUploadHintText: string;
     csvUploadTitle: string;
-    guidanceDocDisplayName: string;
-    guidanceDocAttachmentUrl: string;
-    guidanceDocSize: string;
-    csvTemplateDisplayName: string;
-    csvTemplateAttachmentUrl: string;
-    csvTemplateSize: string;
     errors: ErrorInfo[];
     detailSummary?: string;
     detailBody?: ReactElement;
     showPriceOption?: boolean;
     poundsOrPence?: string | null;
-    csrfToken: string;
-    backHref: string;
 }
 
 export interface NumberOfStagesAttributeWithError {
@@ -748,17 +739,17 @@ export interface Cap {
     durationUnits: ExpiryUnit;
 }
 
-export interface CapDistancePricing {
+export interface DistanceBand {
     distanceFrom: string;
     distanceTo: string;
     pricePerKm: string;
 }
 
-export interface DistanceCap {
+export interface DistancePricingData {
     productName: string;
     maximumPrice: string;
     minimumPrice: string;
-    capPricing: CapDistancePricing[];
+    distanceBands: DistanceBand[];
 }
 
 export interface MultiTap {

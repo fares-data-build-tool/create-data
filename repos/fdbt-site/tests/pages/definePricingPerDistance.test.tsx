@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import DefineCapPricingPerDistance from '../../src/pages/defineCapPricingPerDistance';
+import DefinePricingPerDistance from '../../src/pages/definePricingPerDistance';
 
 describe('pages', () => {
-    describe('defineCapPricingPerDistance', () => {
+    describe('DefinePricingPerDistance', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <DefineCapPricingPerDistance
+                <DefinePricingPerDistance
                     errors={[]}
                     csrfToken=""
-                    capPricePerDistances={{
+                    pricingPerDistanceData={{
                         maximumPrice: '4',
                         minimumPrice: '3',
-                        capPricing: [
+                        distanceBands: [
                             {
                                 distanceFrom: '0',
                                 distanceTo: '2',
@@ -26,7 +26,37 @@ describe('pages', () => {
                         ],
                         productName: 'Product',
                     }}
-                    numberOfCapInitial={1}
+                    numberOfEntitesByDistanceInitial={1}
+                    backHref=""
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly in edit mode', () => {
+            const tree = shallow(
+                <DefinePricingPerDistance
+                    errors={[]}
+                    csrfToken=""
+                    pricingPerDistanceData={{
+                        maximumPrice: '4',
+                        minimumPrice: '3',
+                        distanceBands: [
+                            {
+                                distanceFrom: '0',
+                                distanceTo: '2',
+                                pricePerKm: '5',
+                            },
+                            {
+                                distanceFrom: '2',
+                                distanceTo: 'Max',
+                                pricePerKm: '5',
+                            },
+                        ],
+                        productName: 'Product',
+                    }}
+                    numberOfEntitesByDistanceInitial={1}
+                    backHref="/products/productDetails?productId=1"
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -34,7 +64,7 @@ describe('pages', () => {
 
         it('should render error messaging when errors are passed', () => {
             const tree = shallow(
-                <DefineCapPricingPerDistance
+                <DefinePricingPerDistance
                     errors={[
                         {
                             id: `distance-to-0`,
@@ -42,10 +72,10 @@ describe('pages', () => {
                         },
                     ]}
                     csrfToken=""
-                    capPricePerDistances={{
+                    pricingPerDistanceData={{
                         maximumPrice: '4',
                         minimumPrice: '3',
-                        capPricing: [
+                        distanceBands: [
                             {
                                 distanceFrom: '0',
                                 distanceTo: '',
@@ -59,7 +89,8 @@ describe('pages', () => {
                         ],
                         productName: 'Product',
                     }}
-                    numberOfCapInitial={2}
+                    numberOfEntitesByDistanceInitial={2}
+                    backHref=""
                 />,
             );
             expect(tree).toMatchSnapshot();

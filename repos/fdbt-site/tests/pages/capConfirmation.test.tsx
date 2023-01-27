@@ -213,17 +213,17 @@ describe('pages', () => {
                     },
                     {
                         content: ['Min price: £2, Max price: £9'],
-                        href: '/defineCapPricingPerDistance',
+                        href: '/definePricingPerDistance',
                         name: 'Prices',
                     },
                     {
                         content: '0 km - 2 km, Price per km: £4',
-                        href: '/defineCapPricingPerDistance',
+                        href: '/definePricingPerDistance',
                         name: 'Distance band 1',
                     },
                     {
                         content: '2 km - End of journey, Price per km: £3',
-                        href: '/defineCapPricingPerDistance',
+                        href: '/definePricingPerDistance',
                         name: 'Distance band 2',
                     },
                     {

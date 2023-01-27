@@ -23,6 +23,8 @@ import {
     POINT_TO_POINT_PRODUCT_ATTRIBUTE,
     CSV_ZONE_FILE_NAME,
     DIRECTION_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     ConfirmationElement,
@@ -237,6 +239,71 @@ export const buildPointToPointPeriodConfirmationElements = (ctx: NextPageContext
     return confirmationElements;
 };
 
+export const buildFlatFarePriceByDistanceConfirmationElements = (
+    ctx: NextPageContextWithSession,
+): ConfirmationElement[] => {
+    const confirmationElements: ConfirmationElement[] = [];
+    const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
+    const services = serviceInformation.selectedServices;
+    const pricePerDistance = getSessionAttribute(ctx.req, PRICING_PER_DISTANCE_ATTRIBUTE);
+    const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
+    const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
+    const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
+    confirmationElements.push(
+        {
+            name: `${opName}${opName ? 's' : 'S'}ervices`,
+            content: `${services.map((service) => service.lineName).join(', ')}`,
+            href: 'serviceList',
+        },
+        {
+            name: 'TransXChange source',
+            content: dataSource.toUpperCase(),
+            href: 'serviceList',
+        },
+    );
+
+    let distancePricingContents: string[] = [];
+
+    const distanceBands: string[] = [];
+
+    if (pricePerDistance && !isWithErrors(pricePerDistance)) {
+        distancePricingContents = [
+            `Min price - £${pricePerDistance.minimumPrice}`,
+            `Max price - £${pricePerDistance.maximumPrice}`,
+        ];
+
+        pricePerDistance.distanceBands.forEach((capDistance, index) => {
+            distanceBands.push(
+                `${capDistance.distanceFrom} km  - ${
+                    index === pricePerDistance.distanceBands.length - 1
+                        ? 'End of journey'
+                        : `${capDistance.distanceTo} km`
+                }, Price - £${capDistance.pricePerKm} per km`,
+            );
+        });
+    }
+
+    if (distancePricingContents.length > 0) {
+        confirmationElements.push({
+            name: 'Prices',
+            content: distancePricingContents,
+            href: '/definePricingPerDistance',
+        });
+    }
+
+    if (distanceBands.length > 0) {
+        distanceBands.forEach((distanceBandContent, index) => {
+            confirmationElements.push({
+                name: `Distance band ${index + 1}`,
+                content: distanceBandContent,
+                href: '/definePricingPerDistance',
+            });
+        });
+    }
+
+    return confirmationElements;
+};
+
 const addProductDetails = (
     product: Product | MultiProduct | PointToPointPeriodProduct,
     confirmationElements: ConfirmationElement[],
@@ -276,7 +343,10 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const multiOpAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute;
     const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as AdditionalOperator[];
     const fileName = getSessionAttribute(ctx.req, CSV_ZONE_FILE_NAME);
-
+    const exemptedServiceAttribute = getSessionAttribute(
+        ctx.req,
+        SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    ) as ServiceListAttribute;
     const services = serviceInformation ? serviceInformation.selectedServices : [];
     const zone = ticketRepresentation === 'geoZone';
     const hybrid = ticketRepresentation === 'hybrid';
@@ -286,6 +356,15 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         confirmationElements.push({
             name: 'Zone',
             content: `You uploaded a fare zone CSV file${!!fileName ? ` named: ${fileName}` : '.'}`,
+            href: 'csvZoneUpload',
+        });
+
+        confirmationElements.push({
+            name: `Exempted services`,
+            content:
+                exemptedServiceAttribute && exemptedServiceAttribute.selectedServices.length > 0
+                    ? `${exemptedServiceAttribute.selectedServices.map((service) => service.lineName).join(', ')}`
+                    : 'N/A',
             href: 'csvZoneUpload',
         });
     }
@@ -405,6 +484,10 @@ export const buildPeriodOrFlatFareConfirmationElements = (ctx: NextPageContextWi
 
     if (ticketRepresentationAttribute.name === 'pointToPointPeriod') {
         return buildPointToPointPeriodConfirmationElements(ctx);
+    }
+
+    if (ticketRepresentationAttribute.name === 'multipleServicesPricedByDistance') {
+        return buildFlatFarePriceByDistanceConfirmationElements(ctx);
     }
     return buildPeriodOrMultiOpTicketConfirmationElements(ctx);
 };

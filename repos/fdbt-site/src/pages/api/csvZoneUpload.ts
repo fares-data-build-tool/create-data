@@ -5,6 +5,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     FARE_ZONE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import {
@@ -16,10 +17,12 @@ import {
 } from '../../utils/apiUtils';
 import { putDataInS3 } from '../../data/s3';
 import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode } from '../../data/auroradb';
-import { getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
+import { FileData, getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
 import uniq from 'lodash/uniq';
+import { isArray } from 'lodash';
+import { SelectedService } from 'src/interfaces/matchingJsonTypes';
 
 export interface FareZoneWithErrors {
     errors: ErrorInfo[];
@@ -143,14 +146,66 @@ export const processCsv = async (
     }
 };
 
+export const processServices = (req: NextApiRequestWithSession, formData: FileData): { serviceErrors: ErrorInfo[] } => {
+    const fields = formData.fields;
+
+    if (!fields) {
+        throw new Error('Unable to fetch the form data');
+    }
+    const clickedYes = 'exempt' in fields && fields['exempt'] === 'yes';
+
+    const dataFields: { [key: string]: string | string[] } = fields;
+    delete dataFields['poundsOrPence'];
+    delete dataFields['exempt'];
+
+    const selectedServices: SelectedService[] = [];
+    if (clickedYes) {
+        Object.entries(dataFields).forEach((entry) => {
+            const lineNameLineIdServiceCodeStartDate = entry[0];
+            const description = entry[1];
+            let serviceDescription: string;
+            if (isArray(description)) {
+                [serviceDescription] = description;
+            } else {
+                serviceDescription = description;
+            }
+            const splitData = lineNameLineIdServiceCodeStartDate.split('#');
+            selectedServices.push({
+                lineName: splitData[0],
+                lineId: splitData[1],
+                serviceCode: splitData[2],
+                startDate: splitData[3],
+                serviceDescription,
+            });
+        });
+    }
+
+    const errors: ErrorInfo[] = [];
+    if (clickedYes && selectedServices.length === 0) {
+        //console.log('in the block');
+        errors.push({ id: 'checkbox-0', errorMessage: 'Choose at least one service from the options' });
+        updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { errors });
+    } else {
+        updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { selectedServices });
+    }
+
+    return { serviceErrors: errors };
+};
+
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
+
+        const { serviceErrors } = processServices(req, formData);
         const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
         const fileName = formData.name;
 
+        const errors: ErrorInfo[] = serviceErrors;
         if (fileError) {
-            const errors: ErrorInfo[] = [{ id: 'csv-upload', errorMessage: fileError }];
+            errors.push({ id: 'csv-upload', errorMessage: fileError });
+        }
+
+        if (errors.length > 0) {
             setFareZoneAttributeAndRedirect(req, res, errors);
             return;
         }

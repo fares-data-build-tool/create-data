@@ -1,20 +1,20 @@
 import React, { ReactElement } from 'react';
-import { DistanceCap, ErrorInfo } from '../interfaces';
+import { DistancePricingData, ErrorInfo } from '../interfaces';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 
 interface DistanceRowProps {
-    numberOfCapToDisplay: number;
+    numberToDisplay: number;
     errors: ErrorInfo[];
-    capPricingPerDistanceData: DistanceCap;
-    setCapPricingPerDistanceData: React.Dispatch<React.SetStateAction<DistanceCap>>;
+    pricingPerDistance: DistancePricingData;
+    setPricingPerDistance: React.Dispatch<React.SetStateAction<DistancePricingData>>;
 }
 
 export const renderTable = (
     index: number,
     errors: ErrorInfo[],
     numberOfRows: number,
-    capPricingPerDistanceData: DistanceCap,
-    setCapPricingPerDistanceData: React.Dispatch<React.SetStateAction<DistanceCap>>,
+    pricingPerDistance: DistancePricingData,
+    setPricingPerDistance: React.Dispatch<React.SetStateAction<DistancePricingData>>,
 ): ReactElement => {
     return (
         <fieldset key={index} className="govuk-fieldset">
@@ -51,19 +51,19 @@ export const renderTable = (
                                         type="text"
                                         disabled={index === 0}
                                         onChange={(e) => {
-                                            const items = [...capPricingPerDistanceData.capPricing];
-                                            const item = { ...capPricingPerDistanceData.capPricing[index] };
+                                            const items = [...pricingPerDistance.distanceBands];
+                                            const item = { ...pricingPerDistance.distanceBands[index] };
                                             item.distanceFrom = e.target.value;
                                             items[index] = item;
-                                            setCapPricingPerDistanceData({
-                                                ...capPricingPerDistanceData,
-                                                capPricing: items,
+                                            setPricingPerDistance({
+                                                ...pricingPerDistance,
+                                                distanceBands: items,
                                             });
                                         }}
                                         value={
                                             index === 0
                                                 ? '0'
-                                                : capPricingPerDistanceData?.capPricing[index]?.distanceFrom || ''
+                                                : pricingPerDistance?.distanceBands[index]?.distanceFrom || ''
                                         }
                                     />
                                 </FormElementWrapper>
@@ -102,19 +102,19 @@ export const renderTable = (
                                         name={`distanceTo${index}`}
                                         type="text"
                                         onChange={(e) => {
-                                            const items = [...capPricingPerDistanceData.capPricing];
-                                            const item = { ...capPricingPerDistanceData.capPricing[index] };
+                                            const items = [...pricingPerDistance.distanceBands];
+                                            const item = { ...pricingPerDistance.distanceBands[index] };
                                             item.distanceTo = e.target.value;
                                             items[index] = item;
-                                            setCapPricingPerDistanceData({
-                                                ...capPricingPerDistanceData,
-                                                capPricing: items,
+                                            setPricingPerDistance({
+                                                ...pricingPerDistance,
+                                                distanceBands: items,
                                             });
                                         }}
                                         value={
                                             index + 1 === numberOfRows
                                                 ? 'Max'
-                                                : capPricingPerDistanceData?.capPricing[index]?.distanceTo || ''
+                                                : pricingPerDistance?.distanceBands[index]?.distanceTo || ''
                                         }
                                         disabled={index + 1 === numberOfRows}
                                     />
@@ -144,21 +144,21 @@ export const renderTable = (
                                     addFormGroupError={false}
                                 >
                                     <input
-                                        className="govuk-input govuk-input--width-3 govuk-currency-input__inner__input"
+                                        className="govuk-input govuk-input--width-3"
                                         id={`price-per-km-${index}`}
                                         name={`pricePerKm${index}`}
                                         type="text"
                                         onChange={(e) => {
-                                            const items = [...capPricingPerDistanceData.capPricing];
-                                            const item = { ...capPricingPerDistanceData.capPricing[index] };
+                                            const items = [...pricingPerDistance.distanceBands];
+                                            const item = { ...pricingPerDistance.distanceBands[index] };
                                             item.pricePerKm = e.target.value;
                                             items[index] = item;
-                                            setCapPricingPerDistanceData({
-                                                ...capPricingPerDistanceData,
-                                                capPricing: items,
+                                            setPricingPerDistance({
+                                                ...pricingPerDistance,
+                                                distanceBands: items,
                                             });
                                         }}
-                                        value={capPricingPerDistanceData?.capPricing[index]?.pricePerKm || ''}
+                                        value={pricingPerDistance?.distanceBands[index]?.pricePerKm || ''}
                                     />
                                 </FormElementWrapper>
                             </div>
@@ -173,25 +173,23 @@ export const renderTable = (
 export const renderRows = (
     numberOfRows: number,
     errors: ErrorInfo[],
-    capPricingPerDistanceData: DistanceCap,
-    setCapPricingPerDistanceData: React.Dispatch<React.SetStateAction<DistanceCap>>,
+    pricingPerDistance: DistancePricingData,
+    setPricingPerDistance: React.Dispatch<React.SetStateAction<DistancePricingData>>,
 ): ReactElement[] => {
     const elements: ReactElement[] = [];
     for (let i = 0; i < numberOfRows; i += 1) {
-        elements.push(renderTable(i, errors, numberOfRows, capPricingPerDistanceData, setCapPricingPerDistanceData));
+        elements.push(renderTable(i, errors, numberOfRows, pricingPerDistance, setPricingPerDistance));
     }
     return elements;
 };
 
 const DistanceRow = ({
-    numberOfCapToDisplay,
+    numberToDisplay,
     errors,
-    capPricingPerDistanceData,
-    setCapPricingPerDistanceData,
+    pricingPerDistance,
+    setPricingPerDistance,
 }: DistanceRowProps): ReactElement => {
-    return (
-        <div>{renderRows(numberOfCapToDisplay, errors, capPricingPerDistanceData, setCapPricingPerDistanceData)}</div>
-    );
+    return <div>{renderRows(numberToDisplay, errors, pricingPerDistance, setPricingPerDistance)}</div>;
 };
 
 export default DistanceRow;

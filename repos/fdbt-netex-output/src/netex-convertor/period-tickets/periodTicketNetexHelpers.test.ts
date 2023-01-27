@@ -1,6 +1,12 @@
 import { GeoZoneTicket, SchemeOperator } from '../../types';
 import * as netexHelpers from './periodTicketNetexHelpers';
-import { getGroupOfLinesList, getGroupOfOperators, getOrganisations } from './periodTicketNetexHelpers';
+import {
+    getGeographicalIntervalPrices,
+    getGeographicalIntervals,
+    getGroupOfLinesList,
+    getGroupOfOperators,
+    getOrganisations,
+} from './periodTicketNetexHelpers';
 import {
     periodGeoZoneTicket,
     periodMultipleServicesTicket,
@@ -10,6 +16,7 @@ import {
 } from '../../test-data/matchingData';
 import { operatorData, multiOperatorList } from '../test-data/operatorData';
 import * as db from '../../data/auroradb';
+import { replaceIWBusCoNocCode } from '../sharedHelpers';
 
 describe('periodTicketNetexHelpers', () => {
     const { stops } = periodGeoZoneTicket;
@@ -667,6 +674,374 @@ describe('periodTicketNetexHelpers', () => {
                     version: '1.0',
                 },
             ]);
+        });
+    });
+
+    describe('getGeographicalIntervals', () => {
+        it('returns an array of geographical intervals for a given pricing per distance', () => {
+            const input = {
+                productName: 'Flat Fare With Distances',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        name: 'cash',
+                        description: 'Purchase method automatically created',
+                        purchaseLocations: ['onBoard'],
+                        paymentMethods: ['cash'],
+                        ticketFormats: ['paperTicket'],
+                        isCapped: false,
+                    },
+                ],
+                pricingByDistance: {
+                    maximumPrice: '8',
+                    minimumPrice: '6',
+                    distanceBands: [
+                        { distanceFrom: '0', distanceTo: '2', pricePerKm: '3' },
+                        { distanceFrom: '2', distanceTo: '4', pricePerKm: '2' },
+                        { distanceFrom: '4', distanceTo: '5', pricePerKm: '1.50' },
+                        { distanceFrom: '5', distanceTo: '8', pricePerKm: '1' },
+                        { distanceFrom: '8', distanceTo: 'Max', pricePerKm: '0.50' },
+                    ],
+                    productName: 'Flat Fare With Distances',
+                },
+            };
+
+            const result = getGeographicalIntervals(input);
+
+            expect(result).toStrictEqual([
+                {
+                    EndGeographicalValue: { $t: '1' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 0km to 1km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '0' },
+                    id: 'distance_band_0_to_1',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '2' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 1km to 2km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '1' },
+                    id: 'distance_band_1_to_2',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '3' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 2km to 3km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '2' },
+                    id: 'distance_band_2_to_3',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '4' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 3km to 4km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '3' },
+                    id: 'distance_band_3_to_4',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '5' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 4km to 5km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '4' },
+                    id: 'distance_band_4_to_5',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '6' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 5km to 6km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '5' },
+                    id: 'distance_band_5_to_6',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '7' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 6km to 7km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '6' },
+                    id: 'distance_band_6_to_7',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '8' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 7km to 8km' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '7' },
+                    id: 'distance_band_7_to_8',
+                    version: '1.0',
+                },
+                {
+                    EndGeographicalValue: { $t: '100' },
+                    GeographicalUnitRef: { ref: 'kilometers', version: '1.0' },
+                    IntervalType: { $t: 'distance' },
+                    Name: { $t: 'One kilometer, 8km to the next, until end of the journey' },
+                    NumberOfUnits: { $t: '1' },
+                    StartGeographicalValue: { $t: '8' },
+                    id: 'distance_band_8_to_Max',
+                    version: '1.0',
+                },
+            ]);
+        });
+    });
+
+    describe('getGeographicalIntervalPrices', () => {
+        it('returns an array of geographical interval prices for a given array of distance bands', () => {
+            const input = [
+                { distanceFrom: '0', distanceTo: '2', pricePerKm: '3' },
+                { distanceFrom: '2', distanceTo: '4', pricePerKm: '2' },
+                { distanceFrom: '4', distanceTo: '5', pricePerKm: '1.50' },
+                { distanceFrom: '5', distanceTo: '8', pricePerKm: '1' },
+                { distanceFrom: '8', distanceTo: 'Max', pricePerKm: '0.50' },
+            ];
+
+            const result = getGeographicalIntervalPrices(input);
+
+            expect(result).toStrictEqual([
+                {
+                    Amount: { $t: '3' },
+                    GeographicalIntervalRef: { ref: 'distance_band_0_to_1', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_0_to_1',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '3' },
+                    GeographicalIntervalRef: { ref: 'distance_band_1_to_2', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_1_to_2',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '2' },
+                    GeographicalIntervalRef: { ref: 'distance_band_2_to_3', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_2_to_3',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '2' },
+                    GeographicalIntervalRef: { ref: 'distance_band_3_to_4', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_3_to_4',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '1.50' },
+                    GeographicalIntervalRef: { ref: 'distance_band_4_to_5', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_4_to_5',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '1' },
+                    GeographicalIntervalRef: { ref: 'distance_band_5_to_6', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_5_to_6',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '1' },
+                    GeographicalIntervalRef: { ref: 'distance_band_6_to_7', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_6_to_7',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '1' },
+                    GeographicalIntervalRef: { ref: 'distance_band_7_to_8', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_7_to_8',
+                    version: '1.0',
+                },
+                {
+                    Amount: { $t: '0.50' },
+                    GeographicalIntervalRef: { ref: 'distance_band_8_to_Max', version: '1.0' },
+                    Units: { $t: '1' },
+                    id: 'price_for_1km_travelling_8_to_Max',
+                    version: '1.0',
+                },
+            ]);
+        });
+    });
+
+    describe('getExemptedLinesList', () => {
+        it('returns a NeTEx list of exempted lines', () => {
+            const exemptedServices = [
+                {
+                    lineName: '1',
+                    lineId: '4YyoI0',
+                    serviceCode: 'NW_05_BLAC_1_1',
+                    serviceDescription: 'FLEETWOOD - BLACKPOOL via Promenade',
+                    startDate: '11/06/2020',
+                },
+                {
+                    lineName: '2',
+                    lineId: 'YpQjUw',
+                    serviceCode: 'NW_05_BLAC_2_1',
+                    serviceDescription: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
+                    startDate: '11/06/2020',
+                },
+            ];
+            const exemptionElement = netexHelpers.getExemptedLinesList(exemptedServices, 'BLAC', 'www.unittest.com');
+
+            expect(exemptionElement).toStrictEqual([
+                {
+                    version: '1.0',
+                    id: '4YyoI0',
+                    Name: { $t: 'Line 1' },
+                    Description: { $t: 'FLEETWOOD - BLACKPOOL via Promenade' },
+                    Url: { $t: 'www.unittest.com' },
+                    PublicCode: { $t: '1' },
+                    PrivateCode: {
+                        type: 'txc:Line@id',
+                        $t: '4YyoI0',
+                    },
+                    OperatorRef: {
+                        version: '1.0',
+                        ref: `noc:${replaceIWBusCoNocCode('BLAC')}`,
+                    },
+                    LineType: { $t: 'local' },
+                },
+                {
+                    version: '1.0',
+                    id: 'YpQjUw',
+                    Name: { $t: 'Line 2' },
+                    Description: { $t: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients' },
+                    Url: { $t: 'www.unittest.com' },
+                    PublicCode: { $t: '2' },
+                    PrivateCode: {
+                        type: 'txc:Line@id',
+                        $t: 'YpQjUw',
+                    },
+                    OperatorRef: {
+                        version: '1.0',
+                        ref: `noc:${replaceIWBusCoNocCode('BLAC')}`,
+                    },
+                    LineType: { $t: 'local' },
+                },
+            ]);
+        });
+    });
+
+    describe('getExemptedGroupOfLinesList', () => {
+        it('returns a NeTEx list of exempted lines as a group', () => {
+            const exemptedLines = [
+                {
+                    version: '1.0',
+                    id: '4YyoI0',
+                    Name: { $t: 'Line 1' },
+                    Description: { $t: 'FLEETWOOD - BLACKPOOL via Promenade' },
+                    Url: { $t: 'www.unittest.com' },
+                    PublicCode: { $t: '1' },
+                    PrivateCode: {
+                        type: 'txc:Line@id',
+                        $t: '4YyoI0',
+                    },
+                    OperatorRef: {
+                        version: '1.0',
+                        ref: `noc:${replaceIWBusCoNocCode('BLAC')}`,
+                    },
+                    LineType: { $t: 'local' },
+                },
+                {
+                    version: '1.0',
+                    id: 'YpQjUw',
+                    Name: { $t: 'Line 2' },
+                    Description: { $t: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients' },
+                    Url: { $t: 'www.unittest.com' },
+                    PublicCode: { $t: '2' },
+                    PrivateCode: {
+                        type: 'txc:Line@id',
+                        $t: 'YpQjUw',
+                    },
+                    OperatorRef: {
+                        version: '1.0',
+                        ref: `noc:${replaceIWBusCoNocCode('BLAC')}`,
+                    },
+                    LineType: { $t: 'local' },
+                },
+            ];
+            const exemptionElement = netexHelpers.getExemptedGroupOfLinesList('abc', exemptedLines);
+            const lineReferences = exemptedLines.map(line => line.id);
+            expect(exemptionElement).toStrictEqual([
+                {
+                    version: '1.0',
+                    id: 'abc@groupOfLines@1',
+                    Name: {
+                        $t: `A group of exempt services.`,
+                    },
+                    members: {
+                        LineRef: lineReferences.map(lineRef => ({
+                            version: '1.0',
+                            ref: lineRef,
+                        })),
+                    },
+                },
+            ]);
+        });
+    });
+
+    describe('getExemptionsElement', () => {
+        it('returns a NeTEx object containing reference to exempt group of lines', () => {
+            const exemptionElement = netexHelpers.getExemptionsElement('abc', {}, false, 'test', 'BLAC@groupOfLines@1');
+
+            expect(exemptionElement).toStrictEqual({
+                version: '1.0',
+                id: 'op:abc',
+                Name: { $t: 'Exempted Services' },
+                TypeOfFareStructureElementRef: {
+                    version: 'fxc:v1.0',
+                    ref: 'fxc:access',
+                },
+                qualityStructureFactors: null,
+                GenericParameterAssignment: {
+                    id: 'abc',
+                    version: '1.0',
+                    order: '1',
+                    TypeOfAccessRightAssignmentRef: {
+                        version: 'fxc:v1.0',
+                        ref: 'fxc:cannot_access',
+                    },
+                    ValidityParameterGroupingType: { $t: 'NOT' },
+                    validityParameters: {},
+                    includes: {
+                        GenericParameterAssignment: {
+                            version: '1.0',
+                            id: 'test-exemptedGroupsOfLinesWrapper',
+                            order: '2',
+                            TypeOfAccessRightAssignmentRef: {
+                                version: 'fxc:v1.0',
+                                ref: 'fxc:cannot_access',
+                            },
+                            validityParameters: {
+                                GroupOfLinesRef: {
+                                    version: '1.0',
+                                    ref: 'BLAC@groupOfLines@1',
+                                },
+                            },
+                        },
+                    },
+                },
+            });
         });
     });
 });

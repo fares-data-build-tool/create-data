@@ -8,6 +8,7 @@ import { getTag } from '../products/services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
+import { FlatFareByDistanceProduct, Product } from 'src/interfaces/matchingJsonTypes';
 
 const title = 'Other products - Create Fares Data Service';
 const description = 'View and access your other products in one place.';
@@ -16,6 +17,13 @@ interface OtherProductsProps {
     otherProducts: MyFaresOtherFaresProduct[];
     csrfToken: string;
 }
+
+const getProductName = (innerProduct: Product | FlatFareByDistanceProduct): string => {
+    if ('pricingByDistance' in innerProduct) {
+        return innerProduct.pricingByDistance?.productName || '';
+    }
+    return 'productName' in innerProduct ? innerProduct.productName : '';
+};
 
 const buildCopyUrl = (productId: string, csrfToken: string) => {
     return `/api/copyProduct?id=${productId}&_csrf=${csrfToken}`;
@@ -179,7 +187,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
                 return Promise.all(
                     matchingJson.products?.map(async (innerProduct) => {
-                        const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
+                        const productDescription = getProductName(innerProduct as Product);
                         const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
                         const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
                         const passengerType = await getPassengerTypeNameByIdAndNoc(matchingJson.passengerType.id, noc);

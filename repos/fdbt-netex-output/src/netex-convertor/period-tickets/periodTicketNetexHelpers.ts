@@ -6,6 +6,8 @@ import {
     SchemeOperatorTicket,
     SchemeOperatorMultiServiceTicket,
     SchemeOperatorGeoZoneTicket,
+    PriceByDistanceProduct,
+    DistanceBand,
 } from 'fdbt-types/matchingJsonTypes';
 import * as db from '../../data/auroradb';
 import {
@@ -38,6 +40,11 @@ import {
     User,
     OperatorWithExpandedAddress,
     SchemeOperatorWithExpandedAddress,
+    GeographicalInterval,
+    FlatFareProduct,
+    PriceGroup,
+    GeographicalIntervalPrice,
+    SalesOfferPackagePrice,
 } from '../../types';
 
 import {
@@ -184,8 +191,55 @@ export const getLinesList = (
     return linesList;
 };
 
+export const getExemptedLinesList = (exemptedServices: SelectedService[], nocCode: string, website: string): Line[] => {
+    const linesList: Line[] = [];
+
+    const duplicateLines = exemptedServices.map(service => ({
+        version: '1.0',
+        id: service.lineId,
+        Name: { $t: `Line ${service.lineName}` },
+        Description: { $t: service.serviceDescription },
+        Url: { $t: website },
+        PublicCode: { $t: service.lineName },
+        PrivateCode: {
+            type: 'txc:Line@id',
+            $t: service.lineId,
+        },
+        OperatorRef: {
+            version: '1.0',
+            ref: `noc:${replaceIWBusCoNocCode(nocCode)}`,
+        },
+        LineType: { $t: 'local' },
+    }));
+    const seen: string[] = [];
+    return (
+        linesList?.concat(duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id)))) ?? []
+    );
+};
+
+export const getExemptedGroupOfLinesList = (operatorIdentifier: string, lines: Line[]): GroupOfLines[] => {
+    const lineReferences = lines.map(line => line.id);
+
+    return [
+        {
+            version: '1.0',
+            id: `${operatorIdentifier}@groupOfLines@1`,
+            Name: {
+                $t: `A group of exempt services.`,
+            },
+            members: {
+                LineRef: lineReferences.map(lineRef => ({
+                    version: '1.0',
+                    ref: lineRef,
+                })),
+            },
+        },
+    ];
+};
+
 export const getGroupOfLinesList = (operatorIdentifier: string, isHybrid: boolean, lines: Line[]): GroupOfLines[] => {
     const lineReferences = lines.map(line => line.id);
+
     return [
         {
             version: '1.0',
@@ -414,7 +468,9 @@ const getFlatFareList = (
                             DistanceMatrixElementPrice: {
                                 version: '1.0',
                                 id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
-                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
+                                Amount: {
+                                    $t: `${salesOfferPackage.price || (product as FlatFareProduct).productPrice}`,
+                                },
                             },
                         },
                     },
@@ -422,6 +478,103 @@ const getFlatFareList = (
             };
         });
     });
+
+export const getGeographicalIntervalPrices = (distanceBands: DistanceBand[]): GeographicalIntervalPrice[] => {
+    const prices = distanceBands.flatMap(band => {
+        const { distanceTo, distanceFrom } = band;
+        let currentDistanceBand = 0;
+        const numberOfPricesToGenerate = Number(distanceTo) - Number(distanceFrom);
+        const prices = [];
+
+        for (let i = 0; i < numberOfPricesToGenerate; i++) {
+            prices.push({
+                id: `price_for_1km_travelling_${Number(distanceFrom) + currentDistanceBand}_to_${Number(distanceFrom) +
+                    currentDistanceBand +
+                    1}`,
+                version: '1.0',
+                Amount: {
+                    $t: band.pricePerKm,
+                },
+                Units: {
+                    $t: '1',
+                },
+                GeographicalIntervalRef: {
+                    version: '1.0',
+                    ref: `distance_band_${Number(distanceFrom) + currentDistanceBand}_to_${Number(distanceFrom) +
+                        currentDistanceBand +
+                        1}`,
+                },
+            });
+
+            currentDistanceBand += 1;
+
+            if (Number(distanceFrom) + currentDistanceBand === Number(distanceTo)) {
+                currentDistanceBand = 1;
+            }
+        }
+
+        return prices;
+    });
+
+    const lastDistanceBand = distanceBands[distanceBands.length - 1];
+
+    prices.push({
+        id: `price_for_1km_travelling_${lastDistanceBand.distanceFrom}_to_${lastDistanceBand.distanceTo}`,
+        version: '1.0',
+        Amount: {
+            $t: lastDistanceBand.pricePerKm,
+        },
+        Units: {
+            $t: '1',
+        },
+        GeographicalIntervalRef: {
+            version: '1.0',
+            ref: `distance_band_${lastDistanceBand.distanceFrom}_to_${lastDistanceBand.distanceTo}`,
+        },
+    });
+
+    return prices;
+};
+
+export const getPricedByDistanceSalesOfferPackages = (
+    product: PriceByDistanceProduct,
+    ticketUserConcat: string,
+): SalesOfferPackagePrice[] => {
+    return product.salesOfferPackages.map(sop => {
+        return {
+            id: `SOP@Prices@${product.productName}_${sop.name}`,
+            version: '1.0',
+            SalesOfferPackageRef: {
+                ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${sop.name}`,
+                version: '1.0',
+            },
+        };
+    });
+};
+
+export const getPricedByDistancePriceGroups = (
+    product: PriceByDistanceProduct,
+    ticketUserConcat: string,
+): PriceGroup[] => {
+    return [
+        {
+            version: '1.0',
+            id: `op:${product.productName}:distance_prices`,
+            Name: { $t: `${product.productName} - prices per distance` },
+            members: {
+                GeographicalIntervalPrice: getGeographicalIntervalPrices(product.pricingByDistance.distanceBands),
+            },
+        },
+        {
+            version: '1.0',
+            id: `op:${product.productName}:sales_offer_packages`,
+            Name: { $t: `${product.productName} - sales offer packages` },
+            members: {
+                SalesOfferPackagePrice: getPricedByDistanceSalesOfferPackages(product, ticketUserConcat),
+            },
+        },
+    ];
+};
 
 export const getMultiServiceFareTable = (
     userPeriodTicket:
@@ -536,6 +689,69 @@ const getFlatFareFareStructureElementRefs = (elementZeroRef: string, productName
     },
 ];
 
+export const getGeographicalIntervals = (product: PriceByDistanceProduct): GeographicalInterval[] => {
+    const { distanceBands } = product.pricingByDistance;
+    const intervals: GeographicalInterval[] = [];
+
+    distanceBands.forEach(band => {
+        const numberOfKilometresInBand = Number(band.distanceTo) - Number(band.distanceFrom);
+        for (let i = 0; i < numberOfKilometresInBand; i++) {
+            const fromNumber = Number(band.distanceFrom) + i;
+            intervals.push({
+                id: `distance_band_${fromNumber}_to_${fromNumber + 1}`,
+                version: '1.0',
+                Name: {
+                    $t: `One kilometer, ${fromNumber}km to ${fromNumber + 1}km`,
+                },
+                StartGeographicalValue: {
+                    $t: fromNumber.toString(),
+                },
+                EndGeographicalValue: {
+                    $t: `${fromNumber + 1}`,
+                },
+                NumberOfUnits: {
+                    $t: '1',
+                },
+                IntervalType: {
+                    $t: 'distance',
+                },
+                GeographicalUnitRef: {
+                    version: '1.0',
+                    ref: 'kilometers',
+                },
+            });
+        }
+    });
+
+    const lastBand = distanceBands[distanceBands.length - 1];
+
+    intervals.push({
+        id: `distance_band_${lastBand.distanceFrom}_to_${lastBand.distanceTo}`,
+        version: '1.0',
+        Name: {
+            $t: `One kilometer, ${lastBand.distanceFrom}km to the next, until end of the journey`,
+        },
+        StartGeographicalValue: {
+            $t: lastBand.distanceFrom,
+        },
+        EndGeographicalValue: {
+            $t: '100',
+        },
+        NumberOfUnits: {
+            $t: '1',
+        },
+        IntervalType: {
+            $t: 'distance',
+        },
+        GeographicalUnitRef: {
+            version: '1.0',
+            ref: 'kilometers',
+        },
+    });
+
+    return intervals;
+};
+
 export const getPreassignedFareProducts = (
     userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorTicket,
     nocCodeNocFormat: string,
@@ -649,7 +865,7 @@ export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
         return [];
     });
 
-    return timeIntervals.length ? timeIntervals : undefined;
+    return timeIntervals.length > 0 ? timeIntervals : undefined;
 };
 
 export const getPeriodAvailabilityElement = (
@@ -703,6 +919,58 @@ export const getPeriodAvailabilityElement = (
                   },
               }
             : null,
+    },
+});
+
+export const getExemptionsElement = (
+    id: string,
+    validityParametersObject: {},
+    hasTimeRestriction: boolean,
+    productName: string,
+    groupOfLinesRef: string,
+): NetexObject => ({
+    version: '1.0',
+    id: `op:${id}`,
+    Name: { $t: 'Exempted Services' },
+    TypeOfFareStructureElementRef: {
+        version: 'fxc:v1.0',
+        ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
+    },
+    qualityStructureFactors: hasTimeRestriction
+        ? {
+              FareDemandFactorRef: {
+                  ref: 'op@Tariff@Demand',
+                  version: '1.0',
+              },
+          }
+        : null,
+    GenericParameterAssignment: {
+        id,
+        version: '1.0',
+        order: '1',
+        TypeOfAccessRightAssignmentRef: {
+            version: 'fxc:v1.0',
+            ref: 'fxc:cannot_access',
+        },
+        ValidityParameterGroupingType: { $t: 'NOT' },
+        validityParameters: validityParametersObject,
+        includes: {
+            GenericParameterAssignment: {
+                version: '1.0',
+                id: `${productName}-exemptedGroupsOfLinesWrapper`,
+                order: '2',
+                TypeOfAccessRightAssignmentRef: {
+                    version: 'fxc:v1.0',
+                    ref: 'fxc:cannot_access',
+                },
+                validityParameters: {
+                    GroupOfLinesRef: {
+                        version: '1.0',
+                        ref: groupOfLinesRef,
+                    },
+                },
+            },
+        },
     },
 });
 
@@ -804,12 +1072,31 @@ export const getPeriodConditionsElement = (
             },
             LimitationGroupingType: { $t: 'AND' },
             limitations: {
-                FrequencyOfUse: {
-                    version: '1.0',
-                    id: `op:Pass@${product.productName}@frequency`,
-                    FrequencyOfUseType: { $t: userPeriodTicket.type === 'flatFare' ? 'single' : 'unlimited' },
-                },
-                ...usagePeriodValidity,
+                ...(isFlatFareType(userPeriodTicket)
+                    ? {
+                          RoundTrip: {
+                              version: '1.0',
+                              id: `Tariff@single@condition@direction`,
+                              Name: { $t: `Single Trip` },
+                              TripType: { $t: `single` },
+                          },
+                          FrequencyOfUse: {
+                              version: '1.0',
+                              id: `Tariff@single@oneTrip`,
+                              Name: { $t: 'One trip no transfers' },
+                              FrequencyOfUseType: { $t: 'single' },
+                              MaximalFrequency: { $t: '1' },
+                          },
+                          ...usagePeriodValidity,
+                      }
+                    : {
+                          FrequencyOfUse: {
+                              version: '1.0',
+                              id: `op:Pass@${product.productName}@frequency`,
+                              FrequencyOfUseType: { $t: 'unlimited' },
+                          },
+                          ...usagePeriodValidity,
+                      }),
             },
         },
     };

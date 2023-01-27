@@ -1,60 +1,69 @@
 import React, { ReactElement, useState } from 'react';
 import { FullColumnLayout } from '../layout/Layout';
 import DistanceRow from '../components/DistanceRow';
-import { DistanceCap, ErrorInfo, NextPageContextWithSession, WithErrors } from '../interfaces';
+import { DistancePricingData, ErrorInfo, NextPageContextWithSession, WithErrors } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import CsrfForm from '../components/CsrfForm';
 import { getCsrfToken } from '../utils';
-import { getSessionAttribute } from '../../src/utils/sessions';
-import { CAP_PRICING_PER_DISTANCE_ATTRIBUTE } from '../../src/constants/attributes';
-import FormElementWrapper, { FormGroupWrapper } from '../../src/components/FormElementWrapper';
-import { isWithErrors } from '../../src/interfaces/typeGuards';
+import { getSessionAttribute } from '../utils/sessions';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    PRICING_PER_DISTANCE_ATTRIBUTE,
+} from '../constants/attributes';
+import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
+import { isWithErrors } from '../interfaces/typeGuards';
+import BackButton from '../components/BackButton';
+import { PriceByDistanceProduct } from '../interfaces/matchingJsonTypes';
 
-const title = 'Cap Pricing Per Distance - Create Fares Data Service';
-const description = 'Cap Pricing Per Distance entry page of the Create Fares Data Service';
+const title = 'Pricing Per Distance - Create Fares Data Service';
+const description = 'Pricing Per Distance entry page of the Create Fares Data Service';
 
-interface DefineCapPricingPerDistanceProps {
+interface DefinePricingPerDistanceProps {
     errors: ErrorInfo[];
     csrfToken: string;
-    capPricePerDistances: DistanceCap;
-    numberOfCapInitial: number;
+    pricingPerDistanceData: DistancePricingData;
+    numberOfEntitesByDistanceInitial: number;
+    backHref: string;
 }
 
-const DefineCapPricingPerDistance = ({
+const DefinePricingPerDistance = ({
     errors,
     csrfToken,
-    capPricePerDistances,
-    numberOfCapInitial,
-}: DefineCapPricingPerDistanceProps): ReactElement => {
-    const [numberOfCap, setNumberOfCaps] = useState(numberOfCapInitial);
-    const [capPricingPerDistanceData, setCapPricingPerDistanceData] = useState(capPricePerDistances);
+    pricingPerDistanceData,
+    numberOfEntitesByDistanceInitial,
+    backHref,
+}: DefinePricingPerDistanceProps): ReactElement => {
+    const [numberOfEntitesByDistance, setnumberOfEntitesByDistances] = useState(numberOfEntitesByDistanceInitial);
+    const [pricingPerDistance, setPricingPerDistance] = useState(pricingPerDistanceData);
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
-            <CsrfForm action="/api/capPricingPerDistance" method="post" csrfToken={csrfToken}>
+            {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
+            <CsrfForm action="/api/pricingPerDistance" method="post" csrfToken={csrfToken}>
                 <>
                     <ErrorSummary errors={errors} />
-                    <h1 className="govuk-heading-l" id="cap-pricing-per-distance-heading">
-                        Enter your distance cap details
+                    <h1 className="govuk-heading-l" id="pricing-per-distance-heading">
+                        Enter your distance details
                     </h1>
 
                     <div className="govuk-!-margin-bottom-3 govuk-!-margin-left-1">
-                        <label className="govuk-label" htmlFor="capped-product-name">
-                            Capped product name
+                        <label className="govuk-label" htmlFor="product-name">
+                            Product name
                         </label>
-                        <span className="govuk-hint">Enter the name of your capped product</span>
+                        <span className="govuk-hint">Enter the name of your product</span>
                         <div className="govuk-input__wrapper">
                             <FormElementWrapper
                                 errors={errors}
-                                errorId="capped-product-name"
+                                errorId="product-name"
                                 errorClass="govuk-input--error"
                                 hideText
                             >
                                 <input
                                     className="govuk-input govuk-input--width-30"
-                                    id="capped-product-name"
-                                    name="cappedProductName"
+                                    id="product-name"
+                                    name="productName"
                                     type="text"
-                                    defaultValue={capPricingPerDistanceData.productName || ''}
+                                    defaultValue={pricingPerDistance.productName || ''}
                                 />
                             </FormElementWrapper>
                         </div>
@@ -86,12 +95,12 @@ const DefineCapPricingPerDistance = ({
                                                 name="minimumPrice"
                                                 type="text"
                                                 onChange={(e) => {
-                                                    setCapPricingPerDistanceData({
-                                                        ...capPricingPerDistanceData,
+                                                    setPricingPerDistance({
+                                                        ...pricingPerDistance,
                                                         minimumPrice: e.target.value,
                                                     });
                                                 }}
-                                                value={capPricingPerDistanceData.minimumPrice || ''}
+                                                value={pricingPerDistance.minimumPrice || ''}
                                             />
                                         </FormElementWrapper>
                                     </div>
@@ -126,12 +135,12 @@ const DefineCapPricingPerDistance = ({
                                                 name="maximumPrice"
                                                 type="text"
                                                 onChange={(e) => {
-                                                    setCapPricingPerDistanceData({
-                                                        ...capPricingPerDistanceData,
+                                                    setPricingPerDistance({
+                                                        ...pricingPerDistance,
                                                         maximumPrice: e.target.value,
                                                     });
                                                 }}
-                                                value={capPricingPerDistanceData.maximumPrice || ''}
+                                                value={pricingPerDistance.maximumPrice || ''}
                                             />
                                         </FormElementWrapper>
                                     </div>
@@ -141,49 +150,50 @@ const DefineCapPricingPerDistance = ({
                     </div>
                     <div className="govuk-grid-row">
                         <DistanceRow
-                            numberOfCapToDisplay={numberOfCap}
+                            numberToDisplay={numberOfEntitesByDistance}
                             errors={errors}
-                            capPricingPerDistanceData={capPricingPerDistanceData}
-                            setCapPricingPerDistanceData={setCapPricingPerDistanceData}
+                            pricingPerDistance={pricingPerDistance}
+                            setPricingPerDistance={setPricingPerDistance}
                         />
                         <div className="flex-container">
-                            {numberOfCap < 10 ? (
+                            {numberOfEntitesByDistance < 10 ? (
                                 <button
                                     id="add-another-button"
                                     type="button"
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3 time-restrictions-button-placement"
                                     onClick={(): void => {
-                                        setNumberOfCaps(numberOfCap + 1);
-                                        const items = [...capPricingPerDistanceData.capPricing];
-                                        let item = { ...capPricingPerDistanceData.capPricing[numberOfCap - 1] };
+                                        setnumberOfEntitesByDistances(numberOfEntitesByDistance + 1);
+                                        const items = [...pricingPerDistance.distanceBands];
+                                        let item = {
+                                            ...pricingPerDistance.distanceBands[numberOfEntitesByDistance - 1],
+                                        };
                                         item.distanceTo = '';
-                                        items[numberOfCap - 1] = item;
-                                        setCapPricingPerDistanceData({
-                                            ...capPricingPerDistanceData,
-                                            capPricing: items,
+                                        items[numberOfEntitesByDistance - 1] = item;
+                                        setPricingPerDistance({
+                                            ...pricingPerDistance,
+                                            distanceBands: items,
                                         });
-                                        item = { ...capPricingPerDistanceData.capPricing[numberOfCap] };
+                                        item = { ...pricingPerDistance.distanceBands[numberOfEntitesByDistance] };
                                         item.distanceTo = 'Max';
-                                        items[numberOfCap] = item;
-                                        setCapPricingPerDistanceData({
-                                            ...capPricingPerDistanceData,
-                                            capPricing: items,
+                                        items[numberOfEntitesByDistance] = item;
+                                        setPricingPerDistance({
+                                            ...pricingPerDistance,
+                                            distanceBands: items,
                                         });
-                                        for (let i = 0; i < numberOfCap; i += 1) {
+                                        for (let i = 0; i < numberOfEntitesByDistance; i += 1) {
                                             if (
-                                                !capPricingPerDistanceData?.capPricing[i]?.distanceFrom &&
+                                                !pricingPerDistance?.distanceBands[i]?.distanceFrom &&
                                                 i !== 0 &&
-                                                capPricingPerDistanceData?.capPricing[i - 1]?.distanceTo
+                                                pricingPerDistance?.distanceBands[i - 1]?.distanceTo
                                             ) {
-                                                const items = [...capPricingPerDistanceData.capPricing];
-                                                item = { ...capPricingPerDistanceData.capPricing[i] };
-                                                item.distanceFrom =
-                                                    capPricingPerDistanceData.capPricing[i - 1].distanceTo;
+                                                const items = [...pricingPerDistance.distanceBands];
+                                                item = { ...pricingPerDistance.distanceBands[i] };
+                                                item.distanceFrom = pricingPerDistance.distanceBands[i - 1].distanceTo;
                                                 item.distanceTo = '';
                                                 items[i] = item;
-                                                setCapPricingPerDistanceData({
-                                                    ...capPricingPerDistanceData,
-                                                    capPricing: items,
+                                                setPricingPerDistance({
+                                                    ...pricingPerDistance,
+                                                    distanceBands: items,
                                                 });
                                             }
                                         }
@@ -195,28 +205,28 @@ const DefineCapPricingPerDistance = ({
                                 ''
                             )}
 
-                            {numberOfCap > 1 ? (
+                            {numberOfEntitesByDistance > 1 ? (
                                 <button
                                     id="remove-button"
                                     type="button"
                                     className="govuk-button govuk-button--secondary govuk-!-margin-left-3 govuk-!-margin-bottom-3"
                                     onClick={(): void => {
-                                        setCapPricingPerDistanceData((current) => {
+                                        setPricingPerDistance((current) => {
                                             const copy = { ...current };
-                                            if (numberOfCap !== 1) {
-                                                if (copy?.capPricing[numberOfCap - 1]?.distanceFrom) {
-                                                    copy.capPricing[numberOfCap - 1].distanceFrom = '';
+                                            if (numberOfEntitesByDistance !== 1) {
+                                                if (copy?.distanceBands[numberOfEntitesByDistance - 1]?.distanceFrom) {
+                                                    copy.distanceBands[numberOfEntitesByDistance - 1].distanceFrom = '';
                                                 }
-                                                if (copy?.capPricing[numberOfCap - 1]?.distanceTo) {
-                                                    copy.capPricing[numberOfCap - 1].distanceTo = '';
+                                                if (copy?.distanceBands[numberOfEntitesByDistance - 1]?.distanceTo) {
+                                                    copy.distanceBands[numberOfEntitesByDistance - 1].distanceTo = '';
                                                 }
-                                                if (copy?.capPricing[numberOfCap - 1]?.pricePerKm) {
-                                                    copy.capPricing[numberOfCap - 1].pricePerKm = '';
+                                                if (copy?.distanceBands[numberOfEntitesByDistance - 1]?.pricePerKm) {
+                                                    copy.distanceBands[numberOfEntitesByDistance - 1].pricePerKm = '';
                                                 }
                                             }
                                             return { ...copy };
                                         });
-                                        setNumberOfCaps(numberOfCap - 1);
+                                        setnumberOfEntitesByDistances(numberOfEntitesByDistance - 1);
                                     }}
                                 >
                                     Remove last row
@@ -238,30 +248,46 @@ const DefineCapPricingPerDistance = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefineCapPricingPerDistanceProps } => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: DefinePricingPerDistanceProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const capPricePerDistances: DistanceCap | WithErrors<DistanceCap> | undefined = getSessionAttribute(
+    let pricingPerDistanceData: DistancePricingData | WithErrors<DistancePricingData> | undefined = getSessionAttribute(
         ctx.req,
-        CAP_PRICING_PER_DISTANCE_ATTRIBUTE,
+        PRICING_PER_DISTANCE_ATTRIBUTE,
     );
     let errors: ErrorInfo[] = [];
-    if (capPricePerDistances && isWithErrors(capPricePerDistances)) {
-        errors = capPricePerDistances.errors;
+    if (pricingPerDistanceData && isWithErrors(pricingPerDistanceData)) {
+        errors = pricingPerDistanceData.errors;
+    }
+
+    const ticketJson = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    let backHref = '';
+    if (ticketJson && matchingJsonMetaData) {
+        backHref = `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+            matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+        }`;
+
+        if (!pricingPerDistanceData) {
+            const product = ticketJson.products[0] as PriceByDistanceProduct;
+            pricingPerDistanceData = product.pricingByDistance;
+        }
     }
 
     return {
         props: {
             errors,
-            capPricePerDistances: capPricePerDistances || {
-                capPricing: [{ distanceFrom: '0', distanceTo: 'Max', pricePerKm: '' }],
+            pricingPerDistanceData: pricingPerDistanceData || {
+                distanceBands: [{ distanceFrom: '0', distanceTo: 'Max', pricePerKm: '' }],
                 minimumPrice: '',
                 maximumPrice: '',
                 productName: '',
             },
             csrfToken,
-            numberOfCapInitial: capPricePerDistances?.capPricing?.length || 1,
+            numberOfEntitesByDistanceInitial: pricingPerDistanceData?.distanceBands?.length || 1,
+            backHref,
         },
     };
 };
 
-export default DefineCapPricingPerDistance;
+export default DefinePricingPerDistance;

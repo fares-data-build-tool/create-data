@@ -167,7 +167,7 @@ export interface BaseProduct {
     salesOfferPackages: SalesOfferPackage[];
 }
 
-export interface FlatFareProductDetails extends BaseProduct {
+export interface FlatFareProduct extends BaseProduct {
     productName: string;
     productPrice: string;
     carnetDetails?: CarnetDetails;
@@ -262,7 +262,7 @@ export const isSchemeOperatorFlatFareTicket = (
     isSchemeOperatorTicket(data) && (data as SchemeOperatorFlatFareTicket).additionalOperators !== undefined;
 
 export const isProductDetails = (
-    product: ProductDetails | FlatFareProductDetails | PointToPointCarnetProductDetails | BaseProduct,
+    product: ProductDetails | FlatFareProduct | PointToPointCarnetProductDetails | BaseProduct,
 ): product is ProductDetails => (product as ProductDetails).productDuration !== undefined;
 
 export const isBaseSchemeOperatorInfo = (operatorInfo: Operator | SchemeOperator): operatorInfo is SchemeOperator =>
@@ -357,6 +357,63 @@ export interface SalesOfferPackageElement {
     };
     PreassignedFareProductRef: {
         ref: string;
+    };
+}
+
+export interface GeographicalInterval {
+    id: string;
+    version: string;
+    Name: {
+        $t: string;
+    };
+    StartGeographicalValue: {
+        $t: string;
+    };
+    EndGeographicalValue: {
+        $t: string;
+    };
+    NumberOfUnits: {
+        $t: string;
+    };
+    IntervalType: {
+        $t: string;
+    };
+    GeographicalUnitRef: {
+        version: string;
+        ref: string;
+    }
+}
+
+export interface GeographicalIntervalPrice {
+    id: string;
+    version: string;
+    Amount: {
+        $t: string;
+    };
+    Units: {
+        $t: string;
+    };
+    GeographicalIntervalRef: {
+        version: string;
+        ref: string;
+    }
+}
+
+export interface PriceGroup {
+    id: string;
+    version: string;
+    Name: {
+        $t: string;
+    };
+    members: { GeographicalIntervalPrice: GeographicalIntervalPrice[] } | { SalesOfferPackagePrice: SalesOfferPackagePrice[] };
+}
+
+export interface SalesOfferPackagePrice {
+    id: string;
+    version: string;
+    SalesOfferPackageRef: {
+        ref: string;
+        version: string;
     };
 }
 
