@@ -305,16 +305,13 @@ const createProductDetails = async (
         }
     }
 
-    if ('zoneName' in ticket) {
+    if (isGeoZoneTicket(ticket)) {
         productDetailsElements.push({
             id: 'zone',
             name: 'Zone',
             content: [ticket.zoneName],
             editLink: '/csvZoneUpload',
         });
-    }
-
-    if (isGeoZoneTicket(ticket)) {
         productDetailsElements.push({
             id: 'exempted-services',
             name: 'Exempted Services',
