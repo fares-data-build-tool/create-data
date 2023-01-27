@@ -296,10 +296,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
-    const serviceListErrors =
-        serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
-            ? serviceListAttribute.errors
-            : [];
 
     const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
 
@@ -366,7 +362,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     };
 
     const hasClickedYes = (serviceList: ServicesInfo[]) => {
-        return serviceList.some((service) => service.checked) || serviceListErrors.length > 0;
+        return serviceList.some((service) => service.checked);
     };
 
     if (ticket && matchingJsonMetaData) {
