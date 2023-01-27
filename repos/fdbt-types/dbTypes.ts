@@ -101,18 +101,6 @@ export interface RawSalesOfferPackage {
     ticketFormats: string;
 }
 
-export interface GroupOfProductsDb {
-    id: number;
-    products: string;
-    name: string;
-}
-
-export interface GroupOfProducts {
-    id: number;
-    productIds: string[];
-    name: string;
-}
-
 export interface GroupPassengerTypeDb {
     id: number;
     name: string;
