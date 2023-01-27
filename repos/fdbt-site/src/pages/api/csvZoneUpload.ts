@@ -24,7 +24,7 @@ import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
 import uniq from 'lodash/uniq';
 import { isArray } from 'lodash';
-import { SelectedService } from '../../interfaces/matchingJsonTypes';
+import { SelectedService, Stop } from '../../interfaces/matchingJsonTypes';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 
 export interface FareZoneWithErrors {
@@ -230,6 +230,20 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const atcoCodes: string[] = userFareZones.map((fareZone) => fareZone.AtcoCodes);
         const deduplicatedAtcoCodes = uniq(atcoCodes);
 
+        let stops: Stop[] = [];
+        try {
+            stops = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
+        } catch (error) {
+            const errors: ErrorInfo[] = [
+                {
+                    id: 'csv-upload',
+                    errorMessage: 'Incorrect ATCO/NaPTAN codes detected in file. All codes must be correct.',
+                },
+            ];
+            setFareZoneAttributeAndRedirect(req, res, errors);
+            return;
+        }
+
         if (!isInEditMode) {
             const uuid = getUuidFromSession(req);
             await putDataInS3(fileContents, `${uuid}.csv`, false);
@@ -239,18 +253,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { selectedServices });
             }
 
-            try {
-                await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
-            } catch (error) {
-                const errors: ErrorInfo[] = [
-                    {
-                        id: 'csv-upload',
-                        errorMessage: 'Incorrect ATCO/NaPTAN codes detected in file. All codes must be correct.',
-                    },
-                ];
-                setFareZoneAttributeAndRedirect(req, res, errors);
-                return;
-            }
             const nocCode = getAndValidateNoc(req, res);
             if (!nocCode) {
                 throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
@@ -289,6 +291,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const updatedTicket = {
                 ...ticket,
                 zoneName: fareZoneName,
+                stops,
                 ...(selectedServices.length > 0
                     ? { exemptedServices: selectedServices }
                     : { exemptedServices: undefined }),
