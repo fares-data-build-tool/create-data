@@ -150,7 +150,9 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                         <Table.Cell>
                             <Details summary="Registered NOCs">
                                 {' '}
-                                <CSVLink data={mapIntoArrayOfArrays(registeredNocs)}>Download as csv</CSVLink>
+                                <CSVLink filename="registeredNocs.csv" data={mapIntoArrayOfArrays(registeredNocs)}>
+                                    Download as csv
+                                </CSVLink>
                                 <br />
                                 {registeredNocs.join(', ')}
                             </Details>
@@ -160,7 +162,9 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     <Table.Row key="30-day-netex">
                         <Table.Cell>
                             <Details summary="NOCs who have generated NeTEx in the last 30 days">
-                                <CSVLink data={mapIntoArrayOfArrays(thirtyDayNetex)}>Download as csv</CSVLink>
+                                <CSVLink filename="thirtyDayNetexNocs.csv" data={mapIntoArrayOfArrays(thirtyDayNetex)}>
+                                    Download as csv
+                                </CSVLink>
                                 <br />
                                 {thirtyDayNetex.join(', ')}
                             </Details>
@@ -170,7 +174,9 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     <Table.Row key="year-netex">
                         <Table.Cell>
                             <Details summary="NOCs who have generated NeTEx in the last year">
-                                <CSVLink data={mapIntoArrayOfArrays(yearNetex)}>Download as csv</CSVLink>
+                                <CSVLink filename="yearNetexNocs.csv" data={mapIntoArrayOfArrays(yearNetex)}>
+                                    Download as csv
+                                </CSVLink>
                                 <br />
                                 {yearNetex.join(', ')}
                             </Details>
