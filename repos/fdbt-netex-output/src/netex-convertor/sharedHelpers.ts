@@ -39,6 +39,7 @@ import {
     getPeriodAvailabilityElement,
     getPeriodConditionsElement,
     getPeriodEligibilityElement,
+    getTimeRestrictionsElement,
 } from './period-tickets/periodTicketNetexHelpers';
 import {
     getPointToPointConditionsElement,
@@ -484,6 +485,11 @@ export const getFareStructuresElements = (
                 GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
             };
             result.push(getExemptionsElement(availabilityElementId, validityParametersObject, hasTimeRestriction));
+        }
+
+        if( hasTimeRestriction){
+            availabilityElementId = `Tariff@${product.productName}@availability`;
+            result.push(getTimeRestrictionsElement(availabilityElementId));
         }
 
         return result;

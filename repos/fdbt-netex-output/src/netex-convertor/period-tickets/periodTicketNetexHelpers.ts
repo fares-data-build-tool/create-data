@@ -902,6 +902,22 @@ export const getPeriodAvailabilityElement = (
     },
 });
 
+export const getTimeRestrictionsElement = (id: string): NetexObject => ({
+    version: '1.0',
+    id: `op:${id}`,
+    Name: { $t: 'Time restrictions' },
+    TypeOfFareStructureElementRef: {
+        version: 'fxc:v1.0',
+        ref: 'fxc:access_when',
+    },
+    qualityStructureFactors: {
+        FareDemandFactorRef: {
+            ref: 'op@Tariff@Demand',
+            version: '1.0',
+        },
+    },
+});
+
 export const getExemptionsElement = (
     id: string,
     validityParametersObject: {},
