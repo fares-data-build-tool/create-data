@@ -872,12 +872,11 @@ export const getPeriodAvailabilityElement = (
     id: string,
     validityParametersObject: {},
     hasTimeRestriction: boolean,
-    productName?: string,
-    groupOfLinesRef?: string,
+    isHybrid?: boolean,
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
-    Name: { $t: 'Available lines and/or zones' },
+    Name: { $t: isHybrid ? 'Available lines' : 'Available lines and/or zones' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
@@ -900,25 +899,6 @@ export const getPeriodAvailabilityElement = (
         },
         ValidityParameterGroupingType: { $t: 'OR' },
         validityParameters: validityParametersObject,
-        includes: groupOfLinesRef
-            ? {
-                  GenericParameterAssignment: {
-                      version: '1.0',
-                      id: `${productName}-groupsOfLinesWrapper`,
-                      order: '2',
-                      TypeOfAccessRightAssignmentRef: {
-                          version: 'fxc:v1.0',
-                          ref: 'fxc:can_access',
-                      },
-                      validityParameters: {
-                          GroupOfLinesRef: {
-                              version: '1.0',
-                              ref: groupOfLinesRef,
-                          },
-                      },
-                  },
-              }
-            : null,
     },
 });
 
@@ -926,8 +906,6 @@ export const getExemptionsElement = (
     id: string,
     validityParametersObject: {},
     hasTimeRestriction: boolean,
-    productName: string,
-    groupOfLinesRef: string,
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
@@ -954,23 +932,6 @@ export const getExemptionsElement = (
         },
         ValidityParameterGroupingType: { $t: 'NOT' },
         validityParameters: validityParametersObject,
-        includes: {
-            GenericParameterAssignment: {
-                version: '1.0',
-                id: `${productName}-exemptedGroupsOfLinesWrapper`,
-                order: '2',
-                TypeOfAccessRightAssignmentRef: {
-                    version: 'fxc:v1.0',
-                    ref: 'fxc:cannot_access',
-                },
-                validityParameters: {
-                    GroupOfLinesRef: {
-                        version: '1.0',
-                        ref: groupOfLinesRef,
-                    },
-                },
-            },
-        },
     },
 });
 
