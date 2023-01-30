@@ -16,6 +16,7 @@ describe('pages', () => {
                     showPointToPoint
                     showMultiOperator
                     showFlatFlare={false}
+                    isDevOrTest
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -31,6 +32,7 @@ describe('pages', () => {
                     showPointToPoint
                     showMultiOperator={true}
                     showFlatFlare
+                    isDevOrTest
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -51,6 +53,7 @@ describe('pages', () => {
                     showPointToPoint
                     showFlatFlare
                     showMultiOperator
+                    isDevOrTest
                 />,
             );
             expect(tree).toMatchSnapshot();
