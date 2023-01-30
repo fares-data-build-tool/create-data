@@ -13,6 +13,7 @@ import { getProductsMatchingJson } from '../../../src/data/s3';
 import ProductDetails, { getServerSideProps } from '../../../src/pages/products/productDetails';
 import {
     expectedCarnetReturnTicket,
+    expectedFlatFareGeoZoneTicketWithExemptions,
     expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
     expectedPointToPointPeriodTicket,
@@ -662,7 +663,13 @@ describe('myfares pages', () => {
                     endDate: '18/12/2020',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
-                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'] },
+                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
+                        {
+                            id: 'exempted-services',
+                            name: 'Exempted Services',
+                            content: ['N/A'],
+                            editLink: '/csvZoneUpload',
+                        },
                         {
                             id: 'passenger-type',
                             name: 'Passenger type',
@@ -733,7 +740,13 @@ describe('myfares pages', () => {
                     endDate: '18/12/2020',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Multi operator'] },
-                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'] },
+                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
+                        {
+                            id: 'exempted-services',
+                            name: 'Exempted Services',
+                            content: ['N/A'],
+                            editLink: '/csvZoneUpload',
+                        },
                         {
                             id: 'passenger-type',
                             name: 'Passenger type',
@@ -884,7 +897,13 @@ describe('myfares pages', () => {
                     endDate: '18/12/2020',
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
-                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'] },
+                        { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
+                        {
+                            id: 'exempted-services',
+                            name: 'Exempted Services',
+                            content: ['N/A'],
+                            editLink: '/csvZoneUpload',
+                        },
                         {
                             id: 'passenger-type',
                             name: 'Passenger type',
@@ -1010,6 +1029,72 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: '2021-12-17T00:00:00.000Z',
+                },
+            });
+        });
+
+        it('correctly returns the elements which should be displayed on the page for a Flat Fare GeoZone Ticket with Exemptions', async () => {
+            (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
+                ...expectedFlatFareGeoZoneTicketWithExemptions,
+            });
+
+            const ctx = getMockContext({ query: { productId: '1' } });
+            expect(await getServerSideProps(ctx)).toStrictEqual({
+                props: {
+                    requiresAttention: false,
+                    backHref: '/products/otherProducts',
+                    productName: 'Flat fare with geo zone',
+                    startDate: '17/12/2020',
+                    endDate: '18/12/2020',
+                    productDetailsElements: [
+                        { name: 'Fare type', id: 'fare-type', content: ['Flat fare'] },
+                        { id: 'zone', name: 'Zone', content: ['my flat fare zone'], editLink: '/csvZoneUpload' },
+                        {
+                            id: 'exempted-services',
+                            name: 'Exempted Services',
+                            content: ['100, 101, 102'],
+                            editLink: '/csvZoneUpload',
+                        },
+                        {
+                            id: 'passenger-type',
+                            name: 'Passenger type',
+                            content: ['Test Passenger Type'],
+                            editLink: '/selectPassengerType',
+                        },
+                        {
+                            id: 'time-restriction',
+                            name: 'Time restriction',
+                            content: ['N/A'],
+                            editLink: '/selectTimeRestrictions',
+                        },
+                        {
+                            id: 'purchase-methods',
+                            name: 'Purchase methods',
+                            content: ['SOP 2', 'SOP 1'],
+                            editLink: '/selectPurchaseMethods',
+                        },
+                        {
+                            id: 'start-date',
+                            name: 'Start date',
+                            content: ['17/12/2020'],
+                            editLink: '/productDateInformation',
+                        },
+                        {
+                            id: 'end-date',
+                            name: 'End date',
+                            content: ['18/12/2020'],
+                            editLink: '/productDateInformation',
+                        },
+                    ],
+                    productId: '1',
+                    serviceId: '',
+                    copiedProduct: false,
+                    cannotGenerateReturn: false,
+                    isSingle: false,
+                    lineId: '',
+                    passengerTypeId: 9,
+                    csrfToken: '',
+                    fareTriangleModified: undefined,
                 },
             });
         });
