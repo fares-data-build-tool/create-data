@@ -262,6 +262,31 @@ describe('pages', () => {
                 expect(confirmationElements).toHaveLength(7);
             });
 
+            it('should build confirmation elements for a  multi operator flat fare ticket geo zone ticket', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [SERVICE_LIST_ATTRIBUTE]: undefined,
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'geoZoneFlatFareMultiOperator' },
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                            products: [
+                                {
+                                    productName: 'Some Product',
+                                    productPrice: '12',
+                                },
+                            ],
+                        },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
+                const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+                expect(confirmationElements).toContainEqual(confirmationElementStructure);
+                expect(confirmationElements).toHaveLength(3);
+            });
+
             it('should build confirmation elements for a period multiService ticket with a single product', () => {
                 const ctx = getMockContext({
                     session: {

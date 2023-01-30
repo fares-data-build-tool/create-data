@@ -192,8 +192,55 @@ export const getLinesList = (
     return linesList;
 };
 
+export const getExemptedLinesList = (exemptedServices: SelectedService[], nocCode: string, website: string): Line[] => {
+    const linesList: Line[] = [];
+
+    const duplicateLines = exemptedServices.map(service => ({
+        version: '1.0',
+        id: service.lineId,
+        Name: { $t: `Line ${service.lineName}` },
+        Description: { $t: service.serviceDescription },
+        Url: { $t: website },
+        PublicCode: { $t: service.lineName },
+        PrivateCode: {
+            type: 'txc:Line@id',
+            $t: service.lineId,
+        },
+        OperatorRef: {
+            version: '1.0',
+            ref: `noc:${replaceIWBusCoNocCode(nocCode)}`,
+        },
+        LineType: { $t: 'local' },
+    }));
+    const seen: string[] = [];
+    return (
+        linesList?.concat(duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id)))) ?? []
+    );
+};
+
+export const getExemptedGroupOfLinesList = (operatorIdentifier: string, lines: Line[]): GroupOfLines[] => {
+    const lineReferences = lines.map(line => line.id);
+
+    return [
+        {
+            version: '1.0',
+            id: `${operatorIdentifier}@groupOfLines@1`,
+            Name: {
+                $t: `A group of exempt services.`,
+            },
+            members: {
+                LineRef: lineReferences.map(lineRef => ({
+                    version: '1.0',
+                    ref: lineRef,
+                })),
+            },
+        },
+    ];
+};
+
 export const getGroupOfLinesList = (operatorIdentifier: string, isHybrid: boolean, lines: Line[]): GroupOfLines[] => {
     const lineReferences = lines.map(line => line.id);
+
     return [
         {
             version: '1.0',
@@ -828,12 +875,11 @@ export const getPeriodAvailabilityElement = (
     id: string,
     validityParametersObject: {},
     hasTimeRestriction: boolean,
-    productName?: string,
-    groupOfLinesRef?: string,
+    isHybrid?: boolean,
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
-    Name: { $t: 'Available lines and/or zones' },
+    Name: { $t: isHybrid ? 'Available lines' : 'Available lines and/or zones' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
@@ -856,25 +902,39 @@ export const getPeriodAvailabilityElement = (
         },
         ValidityParameterGroupingType: { $t: 'OR' },
         validityParameters: validityParametersObject,
-        includes: groupOfLinesRef
-            ? {
-                  GenericParameterAssignment: {
-                      version: '1.0',
-                      id: `${productName}-groupsOfLinesWrapper`,
-                      order: '2',
-                      TypeOfAccessRightAssignmentRef: {
-                          version: 'fxc:v1.0',
-                          ref: 'fxc:can_access',
-                      },
-                      validityParameters: {
-                          GroupOfLinesRef: {
-                              version: '1.0',
-                              ref: groupOfLinesRef,
-                          },
-                      },
-                  },
-              }
-            : null,
+    },
+});
+
+export const getExemptionsElement = (
+    id: string,
+    validityParametersObject: {},
+    hasTimeRestriction: boolean,
+): NetexObject => ({
+    version: '1.0',
+    id: `op:${id}`,
+    Name: { $t: 'Exempted Services' },
+    TypeOfFareStructureElementRef: {
+        version: 'fxc:v1.0',
+        ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
+    },
+    qualityStructureFactors: hasTimeRestriction
+        ? {
+              FareDemandFactorRef: {
+                  ref: 'op@Tariff@Demand',
+                  version: '1.0',
+              },
+          }
+        : null,
+    GenericParameterAssignment: {
+        id,
+        version: '1.0',
+        order: '1',
+        TypeOfAccessRightAssignmentRef: {
+            version: 'fxc:v1.0',
+            ref: 'fxc:cannot_access',
+        },
+        ValidityParameterGroupingType: { $t: 'NOT' },
+        validityParameters: validityParametersObject,
     },
 });
 

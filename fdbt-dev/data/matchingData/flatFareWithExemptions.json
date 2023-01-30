@@ -218,19 +218,22 @@
       "lineName": "1",
       "lineId": "4YyoI0",
       "serviceCode": "NW_05_BLAC_1_1",
-      "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade"
+      "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade",
+      "startDate": "06/05/2020"
     },
     {
       "lineName": "2",
       "lineId": "YpQjUw",
       "serviceCode": "NW_05_BLAC_2_1",
-      "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients"
+      "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients",
+      "startDate": "08/05/2020"
     },
     {
       "lineName": "2C",
       "lineId": "vySmfewe0",
       "serviceCode": "NW_05_BLAC_2C_1",
-      "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
+      "serviceDescription": "KNOTT END - POULTON - BLACKPOOL",
+      "startDate": "09/05/2020"
     }
   ],
   "carnet": false

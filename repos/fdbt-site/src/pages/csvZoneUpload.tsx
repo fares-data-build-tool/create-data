@@ -3,6 +3,8 @@ import { BaseLayout } from '../layout/Layout';
 import UserDataUploadComponent from '../components/UserDataUploads';
 import {
     FARE_ZONE_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
@@ -285,13 +287,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const errors: ErrorInfo[] =
         fareZoneAttribute && isFareZoneAttributeWithErrors(fareZoneAttribute) ? fareZoneAttribute.errors : [];
 
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const backHref =
+        ticket && matchingJsonMetaData ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}` : '';
+
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
-    const serviceListErrors =
-        serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
-            ? serviceListAttribute.errors
-            : [];
 
     const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
 
@@ -335,27 +339,61 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             checked: selectedLineIds.includes(service.lineId),
         };
     });
+
+    const commonProps = {
+        csvUploadTitle: 'Upload fare zone',
+        csvUploadHintText:
+            'Upload a fare zone as a .csv or MS Excel file. A fare zone is made up of all the relevant NaPTAN or ATCO codes within a geographical area. Refer to the help documents section to download a help file or a template.',
+        guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 826KB',
+        guidanceDocAttachmentUrl: HowToUploadFareZone,
+        guidanceDocSize: '967KB',
+        csvTemplateDisplayName: 'Download fare zone CSV template - File Type CSV - File Size 673B',
+        csvTemplateAttachmentUrl: FareZoneExampleCsv,
+        csvTemplateSize: '673B',
+        errors,
+        detailSummary: "My fare zone won't upload",
+        csrfToken: getCsrfToken(ctx),
+        backHref,
+        dataSourceAttribute,
+    };
+
+    const getButtonText = (serviceList: ServicesInfo[]) => {
+        return serviceList.every((service) => service.checked) ? 'Unselect All Services' : 'Select All Services';
+    };
+
+    const hasClickedYes = (serviceList: ServicesInfo[]) => {
+        return serviceList.some((service) => service.checked);
+    };
+
+    if (ticket && matchingJsonMetaData) {
+        let services: string[] = [];
+        if ('exemptedServices' in ticket && ticket.exemptedServices) {
+            services = ticket.exemptedServices.map((service) => {
+                return service.lineId;
+            });
+        }
+
+        const serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
+            return {
+                ...service,
+                checked: services.includes(service.lineId),
+            };
+        });
+        return {
+            props: {
+                ...commonProps,
+                serviceList: serviceListEdit,
+                buttonText: getButtonText(serviceListEdit),
+                clickedYes: hasClickedYes(serviceListEdit),
+            },
+        };
+    }
     return {
         props: {
-            csvUploadTitle: 'Upload fare zone',
-            csvUploadHintText:
-                'Upload a fare zone as a .csv or MS Excel file. A fare zone is made up of all the relevant NaPTAN or ATCO codes within a geographical area. Refer to the help documents section to download a help file or a template.',
-            guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 826KB',
-            guidanceDocAttachmentUrl: HowToUploadFareZone,
-            guidanceDocSize: '967KB',
-            csvTemplateDisplayName: 'Download fare zone CSV template - File Type CSV - File Size 673B',
-            csvTemplateAttachmentUrl: FareZoneExampleCsv,
-            csvTemplateSize: '673B',
-            errors,
-            detailSummary: "My fare zone won't upload",
-            csrfToken: getCsrfToken(ctx),
-            backHref: '',
+            ...commonProps,
             serviceList,
-            buttonText: serviceList.every((service) => service.checked)
-                ? 'Unselect All Services'
-                : 'Select All Services',
-            dataSourceAttribute,
-            clickedYes: serviceList.some((service) => service.checked) || serviceListErrors.length > 0,
+            buttonText: getButtonText(serviceList),
+            clickedYes: hasClickedYes(serviceList),
         },
     };
 };

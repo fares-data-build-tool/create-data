@@ -83,7 +83,14 @@ export interface Errors {
 }
 
 export interface TicketRepresentationAttribute {
-    name: 'geoZone' | 'multipleServices' | 'hybrid' | 'pointToPointPeriod' | 'multipleServicesPricedByDistance';
+    name:
+        | 'geoZone'
+        | 'multipleServices'
+        | 'hybrid'
+        | 'pointToPointPeriod'
+        | 'multipleServicesPricedByDistance'
+        | 'multipleServicesFlatFareMultiOperator'
+        | 'geoZoneFlatFareMultiOperator';
 }
 
 export interface TicketRepresentationAttributeWithErrors {

@@ -6,6 +6,8 @@ import {
     FARE_ZONE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import {
@@ -22,7 +24,8 @@ import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
 import uniq from 'lodash/uniq';
 import { isArray } from 'lodash';
-import { SelectedService } from 'src/interfaces/matchingJsonTypes';
+import { SelectedService, Stop } from '../../interfaces/matchingJsonTypes';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 
 export interface FareZoneWithErrors {
     errors: ErrorInfo[];
@@ -146,7 +149,9 @@ export const processCsv = async (
     }
 };
 
-export const processServices = (req: NextApiRequestWithSession, formData: FileData): { serviceErrors: ErrorInfo[] } => {
+export const processServices = (
+    formData: FileData,
+): { serviceErrors: ErrorInfo[]; selectedServices: SelectedService[]; clickedYes: boolean } => {
     const fields = formData.fields;
 
     if (!fields) {
@@ -182,67 +187,73 @@ export const processServices = (req: NextApiRequestWithSession, formData: FileDa
 
     const errors: ErrorInfo[] = [];
     if (clickedYes && selectedServices.length === 0) {
-        //console.log('in the block');
         errors.push({ id: 'checkbox-0', errorMessage: 'Choose at least one service from the options' });
-        updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { errors });
     } else {
-        updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { selectedServices });
+        return { selectedServices, clickedYes, serviceErrors: [] };
     }
 
-    return { serviceErrors: errors };
+    return { serviceErrors: errors, selectedServices, clickedYes };
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const formData = await getFormData(req);
-
-        const { serviceErrors } = processServices(req, formData);
+        const { serviceErrors, selectedServices, clickedYes } = processServices(formData);
         const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
         const fileName = formData.name;
-
         const errors: ErrorInfo[] = serviceErrors;
+
         if (fileError) {
             errors.push({ id: 'csv-upload', errorMessage: fileError });
         }
 
         if (errors.length > 0) {
+            updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { errors });
             setFareZoneAttributeAndRedirect(req, res, errors);
             return;
         }
 
-        if (fileContents) {
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+        const isInEditMode = ticket && matchingJsonMetaData;
+        const userFareZones = await processCsv(fileContents, req, res);
+
+        if (!userFareZones) {
+            const errors: ErrorInfo[] = [
+                { id: 'csv-upload', errorMessage: 'Unable to find any user fare zones for uploaded CSV zone.' },
+            ];
+            setFareZoneAttributeAndRedirect(req, res, errors);
+            return;
+        }
+
+        const fareZoneName = userFareZones[0].FareZoneName;
+        const atcoCodes: string[] = userFareZones.map((fareZone) => fareZone.AtcoCodes);
+        const deduplicatedAtcoCodes = uniq(atcoCodes);
+
+        let stops: Stop[] = [];
+        try {
+            stops = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
+        } catch (error) {
+            const errors: ErrorInfo[] = [
+                {
+                    id: 'csv-upload',
+                    errorMessage: 'Incorrect ATCO/NaPTAN codes detected in file. All codes must be correct.',
+                },
+            ];
+            setFareZoneAttributeAndRedirect(req, res, errors);
+            return;
+        }
+
+        if (!isInEditMode) {
             const uuid = getUuidFromSession(req);
             await putDataInS3(fileContents, `${uuid}.csv`, false);
-            const userFareZones = await processCsv(fileContents, req, res);
             updateSessionAttribute(req, CSV_ZONE_FILE_NAME, fileName);
 
-            if (!userFareZones) {
-                const errors: ErrorInfo[] = [
-                    { id: 'csv-upload', errorMessage: 'Unable to find any user fare zones for uploaded CSV zone.' },
-                ];
-                setFareZoneAttributeAndRedirect(req, res, errors);
-                return;
+            if (clickedYes) {
+                updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { selectedServices });
             }
 
-            const atcoCodes: string[] = userFareZones.map((fareZone) => fareZone.AtcoCodes);
-            const deduplicatedAtcoCodes = uniq(atcoCodes);
-
-            try {
-                await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
-            } catch (error) {
-                const errors: ErrorInfo[] = [
-                    {
-                        id: 'csv-upload',
-                        errorMessage: 'Incorrect ATCO/NaPTAN codes detected in file. All codes must be correct.',
-                    },
-                ];
-                setFareZoneAttributeAndRedirect(req, res, errors);
-                return;
-            }
-
-            const fareZoneName = userFareZones[0].FareZoneName;
             const nocCode = getAndValidateNoc(req, res);
-
             if (!nocCode) {
                 throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
             }
@@ -274,6 +285,21 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
 
             redirectTo(res, '/multipleProducts');
+            return;
+        } else {
+            // is in edit mode
+            const updatedTicket = {
+                ...ticket,
+                zoneName: fareZoneName,
+                stops,
+                ...(selectedServices.length > 0
+                    ? { exemptedServices: selectedServices }
+                    : { exemptedServices: undefined }),
+            };
+            // put the now updated matching json into s3
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, undefined);
+            redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData?.productId}`);
             return;
         }
     } catch (error) {

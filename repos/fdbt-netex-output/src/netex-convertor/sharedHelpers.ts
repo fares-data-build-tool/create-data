@@ -34,6 +34,7 @@ import {
 import {
     getBaseSchemeOperatorInfo,
     getDurationElement,
+    getExemptionsElement,
     getLineRefList,
     getPeriodAvailabilityElement,
     getPeriodConditionsElement,
@@ -384,6 +385,7 @@ export const getFareStructuresElements = (
     lineName: string,
     placeholderGroupOfProductsName: string,
     groupOfLinesRef: string,
+    hasExceptions: boolean,
 ): NetexObject[] => {
     const fareStructureElements: NetexObject[] = [];
 
@@ -419,6 +421,7 @@ export const getFareStructuresElements = (
     const productFareStructureElements = ticket.products.flatMap(product => {
         let availabilityElementId = '';
         let validityParametersObject = {};
+        let result = [];
         const hasTimeRestriction = ticket.timeRestriction.length > 0;
 
         if (isGeoZoneTicket(ticket)) {
@@ -447,41 +450,46 @@ export const getFareStructuresElements = (
                 },
             };
 
-            return [
+            result = [
                 getPeriodAvailabilityElement(
                     zonalAvailabilityElementId,
                     zonalValidityParametersObject,
                     hasTimeRestriction,
-                    product.productName,
-                    groupOfLinesRef,
                 ),
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
-        }
 
-        if ('productDuration' in product) {
-            return [
-                getPeriodAvailabilityElement(
-                    availabilityElementId,
-                    validityParametersObject,
-                    hasTimeRestriction,
-                    groupOfLinesRef,
-                ),
+            availabilityElementId = `Tariff@${product.productName}@access_lines`;
+            validityParametersObject = {
+                GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
+            };
+            result = [
+                ...result,
+                // Add another fare structure element for hybrid tickets to reference group of lines
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction, true),
+            ];
+        } else if ('productDuration' in product) {
+            result = [
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
+        } else {
+            result = [
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
+                getPeriodConditionsElement(ticket, product),
+            ];
+        }
+        if (hasExceptions) {
+            availabilityElementId = `Tariff@${product.productName}@exempt_lines`;
+            validityParametersObject = {
+                GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
+            };
+            result.push(getExemptionsElement(availabilityElementId, validityParametersObject, hasTimeRestriction));
         }
 
-        return [
-            getPeriodAvailabilityElement(
-                availabilityElementId,
-                validityParametersObject,
-                hasTimeRestriction,
-                groupOfLinesRef,
-            ),
-            getPeriodConditionsElement(ticket, product),
-        ];
+        return result;
     });
 
     fareStructureElements.push(...productFareStructureElements);

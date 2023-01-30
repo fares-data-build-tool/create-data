@@ -6,6 +6,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../constants/attributes';
 import ProductRow from '../components/ProductRow';
 import { ErrorInfo, NextPageContextWithSession, MultiProduct } from '../interfaces';
@@ -105,8 +106,14 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const csrfToken = getCsrfToken(ctx);
     const multiProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const carnetFareTypeAttribute = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
+    const ticketRepresentationAttribute = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
+
     const carnet = carnetFareTypeAttribute === undefined ? false : carnetFareTypeAttribute;
 
+    const ticketRepresentation =
+        ticketRepresentationAttribute && !isWithErrors(ticketRepresentationAttribute)
+            ? ticketRepresentationAttribute.name
+            : '';
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     if (!fareTypeAttribute || isFareTypeAttributeWithErrors(fareTypeAttribute)) {
         throw new Error('Faretype attribute not found, could not ascertain fareType.');
@@ -115,7 +122,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     const { fareType } = fareTypeAttribute;
     const schoolFareType = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
     const flatFare =
-        fareType === 'flatFare' || (fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare');
+        fareType === 'flatFare' ||
+        (fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare') ||
+        ticketRepresentation === 'multipleServicesFlatFareMultiOperator' ||
+        ticketRepresentation === 'geoZoneFlatFareMultiOperator';
     const numberOfProductsToRender = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) || 1;
 
     return {

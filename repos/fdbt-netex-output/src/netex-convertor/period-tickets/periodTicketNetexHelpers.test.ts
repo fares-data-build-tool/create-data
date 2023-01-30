@@ -16,6 +16,7 @@ import {
 } from '../../test-data/matchingData';
 import { operatorData, multiOperatorList } from '../test-data/operatorData';
 import * as db from '../../data/auroradb';
+import { replaceIWBusCoNocCode } from '../sharedHelpers';
 
 describe('periodTicketNetexHelpers', () => {
     const { stops } = periodGeoZoneTicket;
@@ -879,6 +880,151 @@ describe('periodTicketNetexHelpers', () => {
                     version: '1.0',
                 },
             ]);
+        });
+    });
+
+    describe('getExemptedLinesList', () => {
+        it('returns a NeTEx list of exempted lines', () => {
+            const exemptedServices = [
+                {
+                    lineName: '1',
+                    lineId: '4YyoI0',
+                    serviceCode: 'NW_05_BLAC_1_1',
+                    serviceDescription: 'FLEETWOOD - BLACKPOOL via Promenade',
+                    startDate: '11/06/2020',
+                },
+                {
+                    lineName: '2',
+                    lineId: 'YpQjUw',
+                    serviceCode: 'NW_05_BLAC_2_1',
+                    serviceDescription: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
+                    startDate: '11/06/2020',
+                },
+            ];
+            const exemptionElement = netexHelpers.getExemptedLinesList(exemptedServices, 'BLAC', 'www.unittest.com');
+
+            expect(exemptionElement).toStrictEqual([
+                {
+                    version: '1.0',
+                    id: '4YyoI0',
+                    Name: { $t: 'Line 1' },
+                    Description: { $t: 'FLEETWOOD - BLACKPOOL via Promenade' },
+                    Url: { $t: 'www.unittest.com' },
+                    PublicCode: { $t: '1' },
+                    PrivateCode: {
+                        type: 'txc:Line@id',
+                        $t: '4YyoI0',
+                    },
+                    OperatorRef: {
+                        version: '1.0',
+                        ref: `noc:${replaceIWBusCoNocCode('BLAC')}`,
+                    },
+                    LineType: { $t: 'local' },
+                },
+                {
+                    version: '1.0',
+                    id: 'YpQjUw',
+                    Name: { $t: 'Line 2' },
+                    Description: { $t: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients' },
+                    Url: { $t: 'www.unittest.com' },
+                    PublicCode: { $t: '2' },
+                    PrivateCode: {
+                        type: 'txc:Line@id',
+                        $t: 'YpQjUw',
+                    },
+                    OperatorRef: {
+                        version: '1.0',
+                        ref: `noc:${replaceIWBusCoNocCode('BLAC')}`,
+                    },
+                    LineType: { $t: 'local' },
+                },
+            ]);
+        });
+    });
+
+    describe('getExemptedGroupOfLinesList', () => {
+        it('returns a NeTEx list of exempted lines as a group', () => {
+            const exemptedLines = [
+                {
+                    version: '1.0',
+                    id: '4YyoI0',
+                    Name: { $t: 'Line 1' },
+                    Description: { $t: 'FLEETWOOD - BLACKPOOL via Promenade' },
+                    Url: { $t: 'www.unittest.com' },
+                    PublicCode: { $t: '1' },
+                    PrivateCode: {
+                        type: 'txc:Line@id',
+                        $t: '4YyoI0',
+                    },
+                    OperatorRef: {
+                        version: '1.0',
+                        ref: `noc:${replaceIWBusCoNocCode('BLAC')}`,
+                    },
+                    LineType: { $t: 'local' },
+                },
+                {
+                    version: '1.0',
+                    id: 'YpQjUw',
+                    Name: { $t: 'Line 2' },
+                    Description: { $t: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients' },
+                    Url: { $t: 'www.unittest.com' },
+                    PublicCode: { $t: '2' },
+                    PrivateCode: {
+                        type: 'txc:Line@id',
+                        $t: 'YpQjUw',
+                    },
+                    OperatorRef: {
+                        version: '1.0',
+                        ref: `noc:${replaceIWBusCoNocCode('BLAC')}`,
+                    },
+                    LineType: { $t: 'local' },
+                },
+            ];
+            const exemptionElement = netexHelpers.getExemptedGroupOfLinesList('abc', exemptedLines);
+            const lineReferences = exemptedLines.map(line => line.id);
+            expect(exemptionElement).toStrictEqual([
+                {
+                    version: '1.0',
+                    id: 'abc@groupOfLines@1',
+                    Name: {
+                        $t: `A group of exempt services.`,
+                    },
+                    members: {
+                        LineRef: lineReferences.map(lineRef => ({
+                            version: '1.0',
+                            ref: lineRef,
+                        })),
+                    },
+                },
+            ]);
+        });
+    });
+
+    describe('getExemptionsElement', () => {
+        it('returns a NeTEx object containing reference to exempt group of lines', () => {
+            const exemptionElement = netexHelpers.getExemptionsElement('abc', {}, false);
+
+            expect(exemptionElement).toStrictEqual({
+                version: '1.0',
+                id: 'op:abc',
+                Name: { $t: 'Exempted Services' },
+                TypeOfFareStructureElementRef: {
+                    version: 'fxc:v1.0',
+                    ref: 'fxc:access',
+                },
+                qualityStructureFactors: null,
+                GenericParameterAssignment: {
+                    id: 'abc',
+                    version: '1.0',
+                    order: '1',
+                    TypeOfAccessRightAssignmentRef: {
+                        version: 'fxc:v1.0',
+                        ref: 'fxc:cannot_access',
+                    },
+                    ValidityParameterGroupingType: { $t: 'NOT' },
+                    validityParameters: {},
+                },
+            });
         });
     });
 });
