@@ -1002,7 +1002,7 @@ describe('periodTicketNetexHelpers', () => {
 
     describe('getExemptionsElement', () => {
         it('returns a NeTEx object containing reference to exempt group of lines', () => {
-            const exemptionElement = netexHelpers.getExemptionsElement('abc', {}, false, 'test', 'BLAC@groupOfLines@1');
+            const exemptionElement = netexHelpers.getExemptionsElement('abc', {}, false);
 
             expect(exemptionElement).toStrictEqual({
                 version: '1.0',
@@ -1023,23 +1023,6 @@ describe('periodTicketNetexHelpers', () => {
                     },
                     ValidityParameterGroupingType: { $t: 'NOT' },
                     validityParameters: {},
-                    includes: {
-                        GenericParameterAssignment: {
-                            version: '1.0',
-                            id: 'test-exemptedGroupsOfLinesWrapper',
-                            order: '2',
-                            TypeOfAccessRightAssignmentRef: {
-                                version: 'fxc:v1.0',
-                                ref: 'fxc:cannot_access',
-                            },
-                            validityParameters: {
-                                GroupOfLinesRef: {
-                                    version: '1.0',
-                                    ref: 'BLAC@groupOfLines@1',
-                                },
-                            },
-                        },
-                    },
                 },
             });
         });

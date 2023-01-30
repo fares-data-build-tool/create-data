@@ -4,3 +4,5 @@ declare module '@govuk-react/heading';
 declare module '@govuk-react/page';
 declare module '@govuk-react/table';
 declare module '@govuk-react/button';
+declare module '@govuk-react/loading-box';
+declare module '@govuk-react/details';

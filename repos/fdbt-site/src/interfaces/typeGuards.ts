@@ -51,7 +51,7 @@ export const isPointToPointTicket = (
     ticket: PeriodTicket | PointToPointTicket | WithIds<Ticket>,
 ): ticket is PointToPointTicket => (ticket as PointToPointTicket).lineName !== undefined;
 
-export const isGeoZoneTicket = (ticket: PeriodTicket | PointToPointTicket): ticket is GeoZoneTicket =>
+export const isGeoZoneTicket = (ticket: PeriodTicket | PointToPointTicket | WithIds<Ticket>): ticket is GeoZoneTicket =>
     (ticket as GeoZoneTicket).zoneName !== undefined;
 
 export const isFareTypeAttributeWithErrors = (

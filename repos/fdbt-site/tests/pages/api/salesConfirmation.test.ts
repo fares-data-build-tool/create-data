@@ -98,6 +98,22 @@ describe('salesConfirmation', () => {
         expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
     });
 
+    it('gets geoZone json for a multi operator flat fare geoZone ticket', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {},
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'geoZoneFlatFareMultiOperator',
+                },
+            },
+        });
+
+        await salesConfirmation(req, res);
+
+        expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
+    });
+
     it('gets multiService json for a period multiService ticket', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {},
@@ -121,6 +137,22 @@ describe('salesConfirmation', () => {
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'multipleServices',
+                },
+            },
+        });
+
+        await salesConfirmation(req, res);
+
+        expect(getMultipleServicesTicketJsonSpy).toBeCalledWith(req, res);
+    });
+
+    it('gets multiService json for a multi operator flat fare ticket with set of services', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {},
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'multipleServicesFlatFareMultiOperator',
                 },
             },
         });

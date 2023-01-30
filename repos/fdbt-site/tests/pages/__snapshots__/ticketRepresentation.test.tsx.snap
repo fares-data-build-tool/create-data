@@ -51,6 +51,16 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
                   "value": "multipleServices",
                 },
                 Object {
+                  "hint": "A flat fare multi operator ticket for travel on specific service or set of services",
+                  "label": "Flat fare, for a set of services",
+                  "value": "multipleServicesFlatFareMultiOperator",
+                },
+                Object {
+                  "hint": "A flat fare multi operator ticket for travel within a geographical zone",
+                  "label": "Flat fare, within a geographical zone",
+                  "value": "geoZoneFlatFareMultiOperator",
+                },
+                Object {
                   "hint": "Unlimited travel between two fixed points in both directions",
                   "label": "Point to Point",
                   "value": "pointToPointPeriod",
@@ -125,6 +135,16 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
                   "hint": "Unlimited travel on specific service or set of services",
                   "label": "A ticket for a set of services",
                   "value": "multipleServices",
+                },
+                Object {
+                  "hint": "A flat fare multi operator ticket for travel on specific service or set of services",
+                  "label": "Flat fare, for a set of services",
+                  "value": "multipleServicesFlatFareMultiOperator",
+                },
+                Object {
+                  "hint": "A flat fare multi operator ticket for travel within a geographical zone",
+                  "label": "Flat fare, within a geographical zone",
+                  "value": "geoZoneFlatFareMultiOperator",
                 },
                 Object {
                   "hint": "Unlimited travel between two fixed points in both directions",
@@ -222,6 +242,16 @@ exports[`pages ticketRepresentation should render error messaging when errors ar
                   "hint": "Unlimited travel on specific service or set of services",
                   "label": "A ticket for a set of services",
                   "value": "multipleServices",
+                },
+                Object {
+                  "hint": "A flat fare multi operator ticket for travel on specific service or set of services",
+                  "label": "Flat fare, for a set of services",
+                  "value": "multipleServicesFlatFareMultiOperator",
+                },
+                Object {
+                  "hint": "A flat fare multi operator ticket for travel within a geographical zone",
+                  "label": "Flat fare, within a geographical zone",
+                  "value": "geoZoneFlatFareMultiOperator",
                 },
                 Object {
                   "hint": "Unlimited travel between two fixed points in both directions",

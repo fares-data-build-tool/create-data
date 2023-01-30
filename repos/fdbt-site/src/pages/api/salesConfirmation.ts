@@ -60,7 +60,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 !ticketType ||
                 ticketType === 'hybrid' ||
                 ticketType === 'pointToPointPeriod' ||
-                ticketType === 'multipleServicesPricedByDistance'
+                ticketType === 'multipleServicesPricedByDistance' ||
+                ticketType === 'geoZoneFlatFareMultiOperator' ||
+                ticketType === 'multipleServicesFlatFareMultiOperator'
             ) {
                 throw new Error('Capped ticket required a type of ticket representation of geoZone or multiService.');
             }
@@ -68,9 +70,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         } else if (['period', 'multiOperator', 'flatFare'].includes(fareType)) {
             switch (ticketType) {
                 case 'geoZone':
+                case 'geoZoneFlatFareMultiOperator':
                     userDataJson = await getGeoZoneTicketJson(req, res);
                     break;
                 case 'multipleServices':
+                case 'multipleServicesFlatFareMultiOperator':
                     userDataJson = getMultipleServicesTicketJson(req, res);
                     break;
                 case 'multipleServicesPricedByDistance':

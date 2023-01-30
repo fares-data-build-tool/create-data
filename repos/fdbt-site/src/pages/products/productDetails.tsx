@@ -25,6 +25,7 @@ import {
 import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
+import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -304,8 +305,22 @@ const createProductDetails = async (
         }
     }
 
-    if ('zoneName' in ticket) {
-        productDetailsElements.push({ id: 'zone', name: 'Zone', content: [ticket.zoneName] });
+    if (isGeoZoneTicket(ticket)) {
+        productDetailsElements.push({
+            id: 'zone',
+            name: 'Zone',
+            content: [ticket.zoneName],
+            editLink: '/csvZoneUpload',
+        });
+        productDetailsElements.push({
+            id: 'exempted-services',
+            name: 'Exempted Services',
+            content:
+                ticket.exemptedServices && ticket.exemptedServices.length > 0
+                    ? [ticket.exemptedServices.map((service) => service.lineName).join(', ')]
+                    : ['N/A'],
+            editLink: '/csvZoneUpload',
+        });
     }
 
     const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);

@@ -15,6 +15,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 'multipleServices',
                 'pointToPointPeriod',
                 'multipleServicesPricedByDistance',
+                'multipleServicesFlatFareMultiOperator',
+                'geoZoneFlatFareMultiOperator',
             ].includes(ticketType)
         ) {
             const ticketTypeObject: TicketRepresentationAttribute = { name: ticketType };
@@ -24,12 +26,12 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
             switch (ticketType) {
                 case 'geoZone':
+                case 'geoZoneFlatFareMultiOperator':
                 case 'hybrid':
                     redirectTo(res, '/csvZoneUpload');
                     return;
                 case 'multipleServices':
-                    redirectTo(res, isScheme ? '/reuseOperatorGroup' : '/serviceList?selectAll=false');
-                    return;
+                case 'multipleServicesFlatFareMultiOperator':
                 case 'multipleServicesPricedByDistance':
                     redirectTo(res, isScheme ? '/reuseOperatorGroup' : '/serviceList?selectAll=false');
                     return;

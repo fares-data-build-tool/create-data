@@ -348,7 +348,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     ) as ServiceListAttribute;
     const services = serviceInformation ? serviceInformation.selectedServices : [];
-    const zone = ticketRepresentation === 'geoZone';
+    const zone = ticketRepresentation === 'geoZone' || ticketRepresentation === 'geoZoneFlatFareMultiOperator';
     const hybrid = ticketRepresentation === 'hybrid';
     const pointToPointPeriod = ticketRepresentation === 'pointToPointPeriod';
 

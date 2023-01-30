@@ -42,6 +42,7 @@ export interface FlatFareProduct extends BaseProduct {
 }
 
 export interface PriceByDistanceProduct extends BaseProduct {
+    productName: string;
     pricingByDistance: DistancePricingData;
 }
 

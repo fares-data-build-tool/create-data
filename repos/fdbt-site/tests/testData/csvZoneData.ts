@@ -11,6 +11,17 @@ export const testCsv: string =
     ',TestNaptan-TC8,TestATCO-TC8,\n' +
     ',TestNaptan-TC9,TestATCO-TC9,\n';
 
+export const secondTestCsv: string =
+    'FareZoneName,NaptanCodes,AtcoCodes,\n' +
+    'Edited Town Centre,TestNaptan-TC1,TestATCO-TC1,\n' +
+    ',TestNaptan-TC2,TestATCO-TC2,\n' +
+    ',TestNaptan-TC3,TestATCO-TC3,\n' +
+    ',TestNaptan-TC4,TestATCO-TC4,\n' +
+    ',TestNaptan-TC5,TestATCO-TC5,\n' +
+    ',TestNaptan-TC6,TestATCO-TC6,\n' +
+    ',TestNaptan-TC7,TestATCO-TC7,\n' +
+    ',TestNaptan-TC8,TestATCO-TC8,\n';
+
 export const unprocessedTestCsv = {
     Bucket: 'fdbt-raw-user-data',
     Key: '780e3459-6305-4ae5-9082-b925b92cb46c',

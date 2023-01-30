@@ -14,8 +14,9 @@ describe('pages', () => {
                     csrfToken=""
                     showHybrid
                     showPointToPoint
-                    isDevOrTest
+                    showMultiOperator
                     showFlatFlare={false}
+                    isDevOrTest
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -29,8 +30,9 @@ describe('pages', () => {
                     csrfToken=""
                     showHybrid={false}
                     showPointToPoint
-                    isDevOrTest
+                    showMultiOperator={true}
                     showFlatFlare
+                    isDevOrTest
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -50,6 +52,7 @@ describe('pages', () => {
                     showHybrid
                     showPointToPoint
                     showFlatFlare
+                    showMultiOperator
                     isDevOrTest
                 />,
             );
