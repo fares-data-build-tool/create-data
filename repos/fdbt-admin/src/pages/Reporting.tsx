@@ -149,7 +149,6 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     <Table.Row key="nocs">
                         <Table.Cell>
                             <Details summary="Registered NOCs">
-                                {' '}
                                 <CSVLink filename="registeredNocs.csv" data={mapIntoArrayOfArrays(registeredNocs)}>
                                     Download as csv
                                 </CSVLink>
