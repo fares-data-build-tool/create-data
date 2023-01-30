@@ -26,6 +26,7 @@ interface TicketRepresentationProps {
     showPointToPoint: boolean;
     showFlatFlare: boolean;
     showMultiOperator: boolean;
+    isDevOrTest: boolean;
 }
 
 const getFareTypeDesc = (fareType: TicketType) => {
@@ -67,6 +68,7 @@ const TicketRepresentation = ({
     showPointToPoint,
     showFlatFlare,
     showMultiOperator,
+    isDevOrTest,
 }: TicketRepresentationProps): ReactElement => {
     const fareTypeDesc = getFareTypeDesc(fareType);
     const fareTypeHint = getFareTypeHint(fareType);
@@ -97,7 +99,7 @@ const TicketRepresentation = ({
                                             label: 'A ticket for a set of services',
                                             hint: fareTypeHint.multipleServices,
                                         },
-                                        ...(showMultiOperator
+                                        ...(showMultiOperator && isDevOrTest
                                             ? [
                                                   {
                                                       value: 'multipleServicesFlatFareMultiOperator',
@@ -156,6 +158,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
     const ticketType = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
     const isCarnet = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
     const isScheme = isSchemeOperator(ctx);
+    const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
 
     return {
         props: {
@@ -166,6 +169,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             showPointToPoint: fareType === 'period' && !isCarnet && !isScheme,
             showFlatFlare: fareType === 'flatFare' && !isScheme && !isCarnet,
             showMultiOperator: fareType === 'multiOperator',
+            isDevOrTest,
         },
     };
 };
