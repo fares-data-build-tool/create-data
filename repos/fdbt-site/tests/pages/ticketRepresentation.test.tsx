@@ -14,6 +14,7 @@ describe('pages', () => {
                     csrfToken=""
                     showHybrid
                     showPointToPoint
+                    showMultiOperator
                     isDevOrTest
                     showFlatFlare={false}
                 />,
@@ -29,6 +30,7 @@ describe('pages', () => {
                     csrfToken=""
                     showHybrid={false}
                     showPointToPoint
+                    showMultiOperator={true}
                     isDevOrTest
                     showFlatFlare
                 />,
@@ -50,6 +52,7 @@ describe('pages', () => {
                     showHybrid
                     showPointToPoint
                     showFlatFlare
+                    showMultiOperator
                     isDevOrTest
                 />,
             );

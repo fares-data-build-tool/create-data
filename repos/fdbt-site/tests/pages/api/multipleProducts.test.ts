@@ -22,6 +22,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import * as sessions from '../../../src/utils/sessions';
 
@@ -307,6 +308,54 @@ describe('multipleProducts', () => {
         jest.spyOn(apiUtils, 'setCookieOnResponseObject');
         multipleProduct(req, res);
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketConfirmation' });
+    });
+
+    it('redirects to ticket confirmation for a multi operator flat fare ticket', () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                multipleProductNameInput0: 'Best Product',
+                multipleProductPriceInput0: '2.00',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: {
+                    fareType: 'multiOperator',
+                },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'multipleServicesFlatFareMultiOperator',
+                },
+            },
+        });
+
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+        multipleProduct(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketConfirmation' });
+    });
+
+    it('redirects to page for a multi operator ticket with no flat fare ', () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                multipleProductNameInput0: 'Best Product',
+                multipleProductPriceInput0: '2.00',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: {
+                    fareType: 'multiOperator',
+                },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'multipleServices',
+                },
+            },
+        });
+
+        jest.spyOn(apiUtils, 'setCookieOnResponseObject');
+        multipleProduct(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/multipleProducts' });
     });
 
     describe('getErrorsForSession', () => {

@@ -5,9 +5,10 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { ErrorInfo, MultiProduct, MultiProductWithErrors, NextApiRequestWithSession } from '../../interfaces';
-import { isFareTypeAttributeWithErrors } from '../../interfaces/typeGuards';
+import { isFareTypeAttributeWithErrors, isWithErrors } from '../../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { redirectTo, redirectToError } from '../../utils/apiUtils';
 
@@ -255,10 +256,17 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (!fareTypeAttribute || isFareTypeAttributeWithErrors(fareTypeAttribute)) {
             throw new Error('Faretype attribute not found, could not ascertain fareType.');
         }
+        const ticketRepresentationAttribute = getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE);
+        const ticketRepresentation =
+            ticketRepresentationAttribute && !isWithErrors(ticketRepresentationAttribute)
+                ? ticketRepresentationAttribute.name
+                : '';
         const schoolFareType = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
         const isFlatFare =
             fareTypeAttribute.fareType === 'flatFare' ||
-            (fareTypeAttribute.fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare');
+            (fareTypeAttribute.fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare') ||
+            ticketRepresentation === 'multipleServicesFlatFareMultiOperator' ||
+            ticketRepresentation === 'geoZoneFlatFareMultiOperator';
         const multipleProducts: MultiProduct[] = [];
         let i = 0;
         while (req.body[`multipleProductNameInput${i}`] !== undefined) {
