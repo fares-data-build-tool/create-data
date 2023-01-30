@@ -177,7 +177,7 @@ describe('csvZoneUpload', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, 'Town Centre');
         expect(updateSessionAttributeSpy).toBeCalledWith(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, selectedServices);
     });
-    it('happy path for flat fare geozone should update exemptions and csv and redirect to product details page', async () => {
+    it('should update exemptions, zoneName and stops when in edit mode and redirect to product details page', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: null,
