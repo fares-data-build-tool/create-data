@@ -119,12 +119,14 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     });
                 });
 
-                setRegisteredNocs(nocs.sort());
+                const sortedNocs = nocs.sort();
+
+                setRegisteredNocs(sortedNocs);
 
                 getExportsFromMatchingDataBucket()
                     .then((netexData) => {
-                        setThirtyDayNetex(netexFilesGenerated(nocs.sort(), netexData, 30));
-                        setYearNetex(netexFilesGenerated(nocs.sort(), netexData, 365));
+                        setThirtyDayNetex(netexFilesGenerated(sortedNocs, netexData, 30));
+                        setYearNetex(netexFilesGenerated(sortedNocs, netexData, 365));
                         setLoaded(true);
                     })
                     .catch((err) => {
@@ -149,10 +151,17 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     <Table.Row key="nocs">
                         <Table.Cell>
                             <Details summary="Registered NOCs">
-                                <CSVLink filename="registeredNocs.csv" data={mapIntoArrayOfArrays(registeredNocs)}>
-                                    Download as csv
-                                </CSVLink>
-                                <br />
+                                {registeredNocs.length > 0 && (
+                                    <>
+                                        <CSVLink
+                                            filename="registeredNocs.csv"
+                                            data={mapIntoArrayOfArrays(registeredNocs)}
+                                        >
+                                            Download as csv
+                                        </CSVLink>
+                                        <br />
+                                    </>
+                                )}
                                 {registeredNocs.join(', ')}
                             </Details>
                         </Table.Cell>
@@ -161,10 +170,17 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     <Table.Row key="30-day-netex">
                         <Table.Cell>
                             <Details summary="NOCs who have generated NeTEx in the last 30 days">
-                                <CSVLink filename="thirtyDayNetexNocs.csv" data={mapIntoArrayOfArrays(thirtyDayNetex)}>
-                                    Download as csv
-                                </CSVLink>
-                                <br />
+                                {thirtyDayNetex.length > 0 && (
+                                    <>
+                                        <CSVLink
+                                            filename="thirtyDayNetexNocs.csv"
+                                            data={mapIntoArrayOfArrays(thirtyDayNetex)}
+                                        >
+                                            Download as csv
+                                        </CSVLink>
+                                        <br />
+                                    </>
+                                )}
                                 {thirtyDayNetex.join(', ')}
                             </Details>
                         </Table.Cell>
@@ -173,10 +189,15 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     <Table.Row key="year-netex">
                         <Table.Cell>
                             <Details summary="NOCs who have generated NeTEx in the last year">
-                                <CSVLink filename="yearNetexNocs.csv" data={mapIntoArrayOfArrays(yearNetex)}>
-                                    Download as csv
-                                </CSVLink>
-                                <br />
+                                {yearNetex.length > 0 && (
+                                    <>
+                                        <CSVLink filename="yearNetexNocs.csv" data={mapIntoArrayOfArrays(yearNetex)}>
+                                            Download as csv
+                                        </CSVLink>
+                                        <br />
+                                    </>
+                                )}
+
                                 {yearNetex.join(', ')}
                             </Details>
                         </Table.Cell>
