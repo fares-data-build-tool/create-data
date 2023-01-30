@@ -314,6 +314,9 @@ export const getDistributionChannel = (purchaseLocation: string): string => {
 
 export const isFlatFareType = (ticket: Ticket): boolean => ticket.type === 'flatFare';
 
+export const isMultiOpFlatFareType = (ticket: Ticket): boolean =>
+    ticket.type === 'multiOperator' && ticket.products.length > 0 && !('productValidity' in ticket.products[0]);
+
 export const getProductType = (ticket: Ticket): string => {
     if (isFlatFareType(ticket) || isSingleTicket(ticket)) {
         return 'singleTrip';

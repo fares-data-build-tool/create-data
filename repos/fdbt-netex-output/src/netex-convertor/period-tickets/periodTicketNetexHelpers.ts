@@ -56,6 +56,7 @@ import {
     getProfileRef,
     getUserProfile,
     isFlatFareType,
+    isMultiOpFlatFareType,
     NetexObject,
     replaceIWBusCoNocCode,
 } from '../sharedHelpers';
@@ -975,7 +976,7 @@ export const getPeriodConditionsElement = (
             },
             LimitationGroupingType: { $t: 'AND' },
             limitations: {
-                ...(isFlatFareType(userPeriodTicket)
+                ...(isFlatFareType(userPeriodTicket) || isMultiOpFlatFareType(userPeriodTicket)
                     ? {
                           RoundTrip: {
                               version: '1.0',
