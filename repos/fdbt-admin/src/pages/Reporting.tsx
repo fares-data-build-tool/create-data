@@ -1,6 +1,9 @@
 import { ReactElement, useEffect, useState } from 'react';
+import { CSVLink } from 'react-csv';
 import { H1 } from '@govuk-react/heading';
 import Table from '@govuk-react/table';
+import Details from '@govuk-react/details';
+import LoadingBox from '@govuk-react/loading-box';
 import { BrowserRouter, Redirect } from 'react-router-dom';
 import { ObjectList } from 'aws-sdk/clients/s3';
 import { UsersListType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
@@ -14,6 +17,10 @@ interface ReportingProps {
     isFullAdmin: boolean;
 }
 
+const mapIntoArrayOfArrays = (input: string[]): string[][] => {
+    return input.map((item) => [item]);
+};
+
 const dateIsWithinNumberOfDays = (date: Date, numberOfDays: number): boolean => {
     const today = new Date().getTime();
     const inputtedDate = date.getTime();
@@ -26,14 +33,21 @@ const dateIsWithinNumberOfDays = (date: Date, numberOfDays: number): boolean => 
     return daysBetweenDates < numberOfDays;
 };
 
-const netexFilesGenerated = (activeNocs: string[], netexFiles: ObjectList, timeframe: 30 | 365): number => {
-    let nocsThatHaveGeneratedNetex = 0;
+const netexFileMatchesNoc = (fileName: string, noc: string): boolean => {
+    const nocPart = fileName.split('/exports/')[0];
+    return nocPart === noc;
+};
+
+const netexFilesGenerated = (activeNocs: string[], netexFiles: ObjectList, timeframe: 30 | 365): string[] => {
+    const nocsThatHaveGeneratedNetex: string[] = [];
     activeNocs.forEach((noc) => {
         const netexFilesForNoc = netexFiles.find(
-            (file) => file.Key?.includes(noc) && dateIsWithinNumberOfDays(file.LastModified as Date, timeframe),
+            (file) =>
+                netexFileMatchesNoc(file.Key as string, noc) &&
+                dateIsWithinNumberOfDays(file.LastModified as Date, timeframe),
         );
         if (netexFilesForNoc) {
-            nocsThatHaveGeneratedNetex += 1;
+            nocsThatHaveGeneratedNetex.push(noc);
         }
     });
     return nocsThatHaveGeneratedNetex;
@@ -41,23 +55,24 @@ const netexFilesGenerated = (activeNocs: string[], netexFiles: ObjectList, timef
 
 const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
     const [loaded, setLoaded] = useState<boolean>(false);
-    const [netexFiles, setNetexFiles] = useState<ObjectList>([]);
     const [users, setUsers] = useState<UsersListType>([]);
     const [registeredNocs, setRegisteredNocs] = useState<string[]>([]);
+    const [thirtyDayNetex, setThirtyDayNetex] = useState<string[]>([]);
+    const [yearNetex, setYearNetex] = useState<string[]>([]);
+
+    const getUsers = async (): Promise<UsersListType> => {
+        const { client, userPoolId } = await getCognitoClientAndUserPool();
+
+        return listUsersInPool(client, userPoolId);
+    };
+
+    const getExportsFromMatchingDataBucket = async (): Promise<ObjectList> => {
+        const { client } = await getS3Client();
+        const bucketName = getBucketName(NETEX_DATA_BUCKET_PREFIX);
+        return listBucketObjects(client, bucketName);
+    };
 
     useEffect(() => {
-        const getUsers = async (): Promise<UsersListType> => {
-            const { client, userPoolId } = await getCognitoClientAndUserPool();
-
-            return listUsersInPool(client, userPoolId);
-        };
-
-        const getExportsFromMatchingDataBucket = async (): Promise<ObjectList> => {
-            const { client } = await getS3Client();
-            const bucketName = getBucketName(NETEX_DATA_BUCKET_PREFIX);
-            return listBucketObjects(client, bucketName);
-        };
-
         getUsers()
             .then((data) => {
                 const filteredData = data.filter((user) => {
@@ -69,7 +84,7 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     const accountConfirmed = user?.UserStatus === 'CONFIRMED';
 
                     if (
-                        !emailToLower.includes('kpmg') &&
+                        emailToLower.includes('kpmg') &&
                         !emailToLower.includes('dft.gov.uk') &&
                         !hasTestNoc &&
                         accountConfirmed
@@ -88,8 +103,8 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     const nocString = user.Attributes?.find((attribute) => attribute.Name === 'custom:noc')
                         ?.Value as string;
                     const usersNocs = [];
-                    if (nocString.includes(',')) {
-                        const splitNocs = nocString.split(',');
+                    if (nocString.includes('|')) {
+                        const splitNocs = nocString.split('|');
                         splitNocs.forEach((noc) => {
                             usersNocs.push(noc);
                         });
@@ -104,61 +119,66 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     });
                 });
 
-                setRegisteredNocs(nocs);
+                setRegisteredNocs(nocs.sort());
 
                 getExportsFromMatchingDataBucket()
-                    .then((netexData) => setNetexFiles(netexData))
+                    .then((netexData) => {
+                        setThirtyDayNetex(netexFilesGenerated(nocs.sort(), netexData, 30));
+                        setYearNetex(netexFilesGenerated(nocs.sort(), netexData, 365));
+                        setLoaded(true);
+                    })
                     .catch((err) => {
                         console.error(err);
-                        setNetexFiles([]);
                     });
-
-                setLoaded(true);
             })
             .catch((err) => {
                 console.error(err);
-
                 setUsers([]);
             });
     }, []);
 
-    const placeholder = (
-        <Table.Row>
-            <Table.Cell>Loading</Table.Cell>
-        </Table.Row>
-    );
-
-    const table = (
-        <>
-            <Table.Row key="users">
-                <Table.Cell>Number of registered users, discounting any DFT or KPMG accounts</Table.Cell>
-                <Table.Cell>{users.length}</Table.Cell>
-            </Table.Row>
-            <Table.Row key="nocs">
-                <Table.Cell>Number of registered NOCs</Table.Cell>
-                <Table.Cell>{registeredNocs.length}</Table.Cell>
-            </Table.Row>
-            <Table.Row key="30-day-netex">
-                <Table.Cell>Number of NOCs who have generated NeTEx in the last 30 days</Table.Cell>
-                <Table.Cell>{netexFilesGenerated(registeredNocs, netexFiles, 30)}</Table.Cell>
-            </Table.Row>
-            <Table.Row key="year-netex">
-                <Table.Cell>Number of NOCs who have generated NeTEx in the last year</Table.Cell>
-                <Table.Cell>{netexFilesGenerated(registeredNocs, netexFiles, 365)}</Table.Cell>
-            </Table.Row>
-        </>
-    );
-
     return isFullAdmin ? (
         <>
-            <H1>Reporting</H1>
-            <Table>
-                <Table.Row>
-                    <Table.CellHeader>Statistic</Table.CellHeader>
-                    <Table.CellHeader>Count</Table.CellHeader>
-                </Table.Row>
-                {loaded ? table : placeholder}
-            </Table>
+            <LoadingBox loading={!loaded}>
+                <H1>Reporting</H1>
+                <Table>
+                    <Table.Row key="users">
+                        <Table.Cell>Registered users, discounting any DFT or KPMG accounts</Table.Cell>
+                        <Table.Cell>{users.length}</Table.Cell>
+                    </Table.Row>
+                    <Table.Row key="nocs">
+                        <Table.Cell>
+                            <Details summary="Registered NOCs">
+                                {' '}
+                                <CSVLink data={mapIntoArrayOfArrays(registeredNocs)}>Download as csv</CSVLink>
+                                <br />
+                                {registeredNocs.join(', ')}
+                            </Details>
+                        </Table.Cell>
+                        <Table.Cell>{registeredNocs.length}</Table.Cell>
+                    </Table.Row>
+                    <Table.Row key="30-day-netex">
+                        <Table.Cell>
+                            <Details summary="NOCs who have generated NeTEx in the last 30 days">
+                                <CSVLink data={mapIntoArrayOfArrays(thirtyDayNetex)}>Download as csv</CSVLink>
+                                <br />
+                                {thirtyDayNetex.join(', ')}
+                            </Details>
+                        </Table.Cell>
+                        <Table.Cell>{thirtyDayNetex.length}</Table.Cell>
+                    </Table.Row>
+                    <Table.Row key="year-netex">
+                        <Table.Cell>
+                            <Details summary="NOCs who have generated NeTEx in the last year">
+                                <CSVLink data={mapIntoArrayOfArrays(yearNetex)}>Download as csv</CSVLink>
+                                <br />
+                                {yearNetex.join(', ')}
+                            </Details>
+                        </Table.Cell>
+                        <Table.Cell>{yearNetex.length}</Table.Cell>
+                    </Table.Row>
+                </Table>
+            </LoadingBox>
         </>
     ) : (
         <BrowserRouter>
