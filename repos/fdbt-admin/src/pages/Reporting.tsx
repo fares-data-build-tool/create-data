@@ -84,7 +84,7 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     const accountConfirmed = user?.UserStatus === 'CONFIRMED';
 
                     if (
-                        emailToLower.includes('kpmg') &&
+                        !emailToLower.includes('kpmg') &&
                         !emailToLower.includes('dft.gov.uk') &&
                         !hasTestNoc &&
                         accountConfirmed
