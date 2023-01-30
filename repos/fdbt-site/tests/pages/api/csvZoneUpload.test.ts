@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Cookies from 'cookies';
-import { getMockRequestAndResponse } from '../../testData/mockData';
+import { expectedFlatFareGeoZoneTicketWithExemptions, getMockRequestAndResponse } from '../../testData/mockData';
 import * as csvZoneUpload from '../../../src/pages/api/csvZoneUpload';
 import * as fileUpload from '../../../src/utils/apiUtils/fileUpload';
 import * as virusCheck from '../../../src/utils/apiUtils/virusScan';
@@ -11,10 +12,14 @@ import {
     FARE_ZONE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
 } from '../../../src/constants/attributes';
+import * as userData from '../../../src/utils/apiUtils/userData';
 
 const putDataInS3Spy = jest.spyOn(s3, 'putDataInS3');
 jest.mock('../../../src/data/auroradb');
+jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
 
 describe('csvZoneUpload', () => {
     const writeHeadMock = jest.fn();
@@ -171,6 +176,107 @@ describe('csvZoneUpload', () => {
         });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, FARE_ZONE_ATTRIBUTE, 'Town Centre');
         expect(updateSessionAttributeSpy).toBeCalledWith(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, selectedServices);
+    });
+    it('happy path for flat fare geozone should update exemptions and csv and redirect to product details page', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: null,
+            uuid: {},
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: expectedFlatFareGeoZoneTicketWithExemptions,
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '1',
+                    serviceId: '2',
+                    matchingJsonLink: 'matchingJsonLink',
+                },
+            },
+        });
+
+        const stops = expectedFlatFareGeoZoneTicketWithExemptions.stops.splice(0, -1);
+
+        const updatedTicket = {
+            operatorName: 'test',
+            passengerType: { id: 9 },
+            type: 'flatFare',
+            nocCode: 'TEST',
+            uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+            email: 'test@example.com',
+            zoneName: 'Edited Town Centre',
+            stops,
+            ticketPeriod: {
+                startDate: '2020-12-17T09:30:46.0Z',
+                endDate: '2020-12-18T09:30:46.0Z',
+            },
+            products: [
+                {
+                    productName: 'Flat fare with geo zone',
+                    productPrice: '7',
+                    salesOfferPackages: [
+                        {
+                            id: 1,
+                            price: undefined,
+                        },
+                        {
+                            id: 3,
+                            price: undefined,
+                        },
+                    ],
+                },
+            ],
+            exemptedServices: [
+                {
+                    lineId: '4YyoI0',
+                    lineName: '1',
+                    serviceCode: 'NW_05_BLAC_1_1',
+                    serviceDescription: 'FLEETWOOD - BLACKPOOL via Promenade',
+                    startDate: undefined,
+                },
+                {
+                    lineId: 'vySmfewe0',
+                    lineName: '2C',
+                    serviceCode: 'NW_05_BLAC_2C_1',
+                    serviceDescription: 'KNOTT END - POULTON - BLACKPOOL',
+                    startDate: undefined,
+                },
+            ],
+        };
+
+        const file = {
+            'csv-upload': {
+                size: 999,
+                path: 'string',
+                name: 'string',
+                type: 'text/csv',
+                toJSON(): any {
+                    return '';
+                },
+            },
+        };
+
+        jest.spyOn(fileUpload, 'getFormData')
+            .mockImplementation()
+            .mockResolvedValue({
+                name: 'file',
+                files: file,
+                fileContents: csvData.secondTestCsv,
+                fields: {
+                    exempt: 'yes',
+                    '1#4YyoI0#NW_05_BLAC_1_1': 'FLEETWOOD - BLACKPOOL via Promenade',
+                    '2C#vySmfewe0#NW_05_BLAC_2C_1': 'KNOTT END - POULTON - BLACKPOOL',
+                },
+            });
+
+        jest.spyOn(dynamo, 'batchGetStopsByAtcoCode').mockImplementation().mockResolvedValue(stops);
+
+        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
+
+        await csvZoneUpload.default(req, res);
+
+        expect(userData.putUserDataInProductsBucketWithFilePath).toBeCalledWith(updatedTicket, 'matchingJsonLink');
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/products/productDetails?productId=1',
+        });
     });
 
     it('should return 302 redirect to /searchOperators if fareType is multiOperator, and when valid file is processed and put in S3', async () => {
