@@ -48,7 +48,7 @@
         "lint:fix": "eslint --fix . --ext .ts,.tsx",
         "test:ci": "CI=true react-scripts test",
         "preinstall": "npx npm-force-resolutions",
-        "precommit": "npm run test:ci && tsc"
+        "precommit": "lint-staged && npm run test:ci && tsc"
     },
     "lint-staged": {
         "./**/*.{ts,tsx}": [
@@ -95,6 +95,5 @@
         "lint-staged": "^10.5.3",
         "prettier": "^2.2.1",
         "pretty-quick": "^3.1.0"
-    },
-    "type": "module"
+    }
 }
