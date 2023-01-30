@@ -217,7 +217,7 @@
               </timeIntervals>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@Best_product_one@access_zones">
-                  <Name>Available zones</Name>
+                  <Name>Available lines and/or zones</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
                   <GenericParameterAssignment id="Tariff@Best_product_one@access_zones" version="1.0" order="1">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>

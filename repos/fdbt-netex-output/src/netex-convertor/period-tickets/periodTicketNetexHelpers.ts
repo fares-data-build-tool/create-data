@@ -876,7 +876,7 @@ export const getPeriodAvailabilityElement = (
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
-    Name: { $t: isHybrid ? 'Available lines' : 'Available zones' },
+    Name: { $t: isHybrid ? 'Available lines' : 'Available lines and/or zones' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',

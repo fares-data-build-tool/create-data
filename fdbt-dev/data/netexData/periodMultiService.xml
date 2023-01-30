@@ -222,7 +222,7 @@
               </qualityStructureFactors>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@Test_Product_1@access_lines">
-                  <Name>Available zones</Name>
+                  <Name>Available lines and/or zones</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access_when"/>
                   <qualityStructureFactors>
                     <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
