@@ -487,7 +487,7 @@ export const getFareStructuresElements = (
             result.push(getExemptionsElement(availabilityElementId, validityParametersObject, hasTimeRestriction));
         }
 
-        if( hasTimeRestriction){
+        if (hasTimeRestriction) {
             availabilityElementId = `Tariff@${product.productName}@availability`;
             result.push(getTimeRestrictionsElement(availabilityElementId));
         }
