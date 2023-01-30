@@ -114,4 +114,34 @@ describe('ticketRepresentation', () => {
             Location: '/service',
         });
     });
+
+    it('should return 302 redirect to /csvZoneUpload when the user selects a geoZoneFlatFareMultiOperator option', () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { ticketType: 'geoZoneFlatFareMultiOperator' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        ticketRepresentation(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/csvZoneUpload',
+        });
+    });
+
+    it('should return 302 redirect to /serviceList (with selectAll=false) when user selects a multipleServicesFlatFareMultiOperator option', () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { ticketType: 'multipleServicesFlatFareMultiOperator' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        ticketRepresentation(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/serviceList?selectAll=false',
+        });
+    });
 });
