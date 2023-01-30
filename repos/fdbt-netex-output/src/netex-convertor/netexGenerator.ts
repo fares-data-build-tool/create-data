@@ -20,6 +20,8 @@ import {
     ValidBetween,
 } from '../types';
 import {
+    getExemptedGroupOfLinesList,
+    getExemptedLinesList,
     getGeographicalIntervals,
     getGeoZoneFareTable,
     getGroupOfLinesList,
@@ -251,6 +253,20 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             return serviceFrameToUpdate;
         }
 
+        if ('exemptedServices' in ticket && ticket.exemptedServices) {
+            serviceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ServiceFrame_UK_PI_NETWORK:${coreData.placeholderGroupOfProductsName}:op`;
+
+            const lines = getExemptedLinesList(ticket.exemptedServices, ticket.nocCode, coreData.url);
+
+            serviceFrameToUpdate.lines.Line = lines;
+            serviceFrameToUpdate.groupsOfLines.GroupOfLines = getExemptedGroupOfLinesList(
+                coreData.operatorIdentifier,
+                lines,
+            );
+
+            return serviceFrameToUpdate;
+        }
+
         delete serviceFrameToUpdate.groupsOfLines;
 
         if ('lineName' in ticket) {
@@ -375,6 +391,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             coreData.lineName,
             coreData.placeholderGroupOfProductsName,
             `${coreData.operatorIdentifier}@groupOfLines@1`,
+            'exemptedServices' in ticket,
         );
         tariff.fareStructureElements.FareStructureElement = fareStructuresElements;
 

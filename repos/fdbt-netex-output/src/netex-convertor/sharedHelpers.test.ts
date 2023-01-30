@@ -290,6 +290,7 @@ describe('Shared Helpers', () => {
                 '',
                 placeHolderText,
                 'groupOfLinesRef',
+                false,
             );
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
@@ -315,6 +316,7 @@ describe('Shared Helpers', () => {
                 '',
                 placeHolderText,
                 'groupOfLinesRef',
+                false,
             );
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
@@ -340,6 +342,7 @@ describe('Shared Helpers', () => {
                 '',
                 placeHolderText,
                 'groupOfLinesRef',
+                false,
             );
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
@@ -364,6 +367,7 @@ describe('Shared Helpers', () => {
                 '',
                 placeHolderText,
                 'groupOfLinesRef',
+                false,
             );
 
             const expectedAccessZonesFareStructureElement = {

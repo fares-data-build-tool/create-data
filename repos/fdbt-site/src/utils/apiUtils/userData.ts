@@ -35,6 +35,7 @@ import {
     CAP_EXPIRY_ATTRIBUTE,
     CAP_START_ATTRIBUTE,
     CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
     batchGetStopsByAtcoCode,
@@ -547,6 +548,7 @@ export const getGeoZoneTicketJson = async (
 
     const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
+    const exemptions = getSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE) as ServiceListAttribute;
 
     if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName)) {
         throw new Error('Could not create geo zone ticket json. Necessary cookies and session objects not found.');
@@ -577,6 +579,7 @@ export const getGeoZoneTicketJson = async (
         stops: zoneStops,
         ...(additionalNocs && { additionalNocs }),
         ...(operatorGroupId && { operatorGroupId }),
+        ...(exemptions && { exemptedServices: exemptions.selectedServices }),
     };
 };
 

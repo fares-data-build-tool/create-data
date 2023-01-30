@@ -2,6 +2,7 @@ import {
     UNASSIGNED_STOPS_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from './../../../../src/constants/attributes';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
@@ -67,6 +68,7 @@ import {
     expectedSchemeOperatorMultiServicesTicket,
     expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInServices,
     expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
+    expectedFlatFareGeoZoneTicketWithExemptions,
 } from '../../../testData/mockData';
 import { CarnetExpiryUnit, ExpiryUnit, PeriodExpiry, TicketType } from '../../../../src/interfaces/matchingJsonTypes';
 
@@ -1235,6 +1237,93 @@ describe('userData', () => {
             });
             const result = await getGeoZoneTicketJson(req, res);
             expect(result).toEqual(expectedFlatFareGeoZoneTicket);
+        });
+
+        it('should return a FlatFareTicket object for geo zone with exemptions', async () => {
+            const atcoCodes: string[] = ['13003305E', '13003622B', '13003655B'];
+
+            jest.spyOn(s3, 'getCsvZoneUploadData').mockImplementation(() => Promise.resolve(atcoCodes));
+            jest.spyOn(auroradb, 'batchGetStopsByAtcoCode').mockImplementation(() => Promise.resolve(zoneStops));
+
+            const { req, res } = getMockRequestAndResponse({
+                session: {
+                    [SERVICE_LIST_ATTRIBUTE]: undefined,
+                    [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                        products: [
+                            {
+                                productName: 'Flat fare with geo zone',
+                                productPrice: '7',
+                            },
+                        ] as MultiProduct[],
+                    },
+                    [FARE_ZONE_ATTRIBUTE]: 'my flat fare zone',
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'flatFare' },
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: '2020-12-17T09:30:46.0Z',
+                        endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
+                    },
+                    [SALES_OFFER_PACKAGES_ATTRIBUTE]: [
+                        {
+                            productName: 'Flat fare with geo zone',
+                            salesOfferPackages: [
+                                {
+                                    id: 1,
+                                    name: 'Onboard (cash)',
+                                    description: '',
+                                    purchaseLocations: ['onBoard'],
+                                    paymentMethods: ['cash'],
+                                    ticketFormats: ['paperTicket'],
+                                    isCapped: false,
+                                },
+                                {
+                                    id: 3,
+                                    name: 'Online (smart card)',
+                                    description: '',
+                                    purchaseLocations: ['online'],
+                                    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
+                                    ticketFormats: ['smartCard'],
+                                    isCapped: false,
+                                },
+                            ],
+                        },
+                    ],
+                    [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: {
+                        selectedServices: [
+                            {
+                                lineName: '100',
+                                lineId: '3h3rthsrty56y5',
+                                serviceCode: '11-444-_-y08-1',
+                                serviceDescription: 'Test Under Lyne - Glossop',
+                                startDate: '07/04/2020',
+                            },
+                            {
+                                lineName: '101',
+                                lineId: '3h34t43deefsf',
+                                serviceCode: 'NW_01_MCT_391_1',
+                                serviceDescription: 'Macclesfield - Bollington - Poynton - Stockport',
+                                startDate: '23/04/2019',
+                            },
+                            {
+                                lineName: '102',
+                                lineId: '34tvwevdsvb32ik',
+                                serviceCode: 'NW_04_MCTR_232_1',
+                                serviceDescription: 'Ashton - Hurst Cross - Broadoak Circular',
+                                startDate: '06/04/2020',
+                            },
+                        ],
+                    },
+                },
+            });
+            const result = await getGeoZoneTicketJson(req, res);
+            expect(result).toEqual(expectedFlatFareGeoZoneTicketWithExemptions);
         });
     });
 
