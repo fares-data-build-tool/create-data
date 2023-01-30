@@ -868,47 +868,15 @@ export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
     return timeIntervals.length > 0 ? timeIntervals : undefined;
 };
 
-export const getHybridGroupOfLinesElement = (
-    id: string,
-    validityParametersObject: {},
-    hasTimeRestriction: boolean,
-): NetexObject => ({
-    version: '1.0',
-    id: `op:${id}`,
-    Name: { $t: 'Available lines' },
-    TypeOfFareStructureElementRef: {
-        version: 'fxc:v1.0',
-        ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
-    },
-    qualityStructureFactors: hasTimeRestriction
-        ? {
-              FareDemandFactorRef: {
-                  ref: 'op@Tariff@Demand',
-                  version: '1.0',
-              },
-          }
-        : null,
-    GenericParameterAssignment: {
-        id,
-        version: '1.0',
-        order: '1',
-        TypeOfAccessRightAssignmentRef: {
-            version: 'fxc:v1.0',
-            ref: 'fxc:can_access',
-        },
-        ValidityParameterGroupingType: { $t: 'OR' },
-        validityParameters: validityParametersObject,
-    },
-});
-
 export const getPeriodAvailabilityElement = (
     id: string,
     validityParametersObject: {},
     hasTimeRestriction: boolean,
+    isHybrid?: boolean,
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
-    Name: { $t: 'Available zones' },
+    Name: { $t: isHybrid ? 'Available lines' : 'Available zones' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',

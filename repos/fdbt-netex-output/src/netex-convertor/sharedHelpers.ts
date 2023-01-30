@@ -35,7 +35,6 @@ import {
     getBaseSchemeOperatorInfo,
     getDurationElement,
     getExemptionsElement,
-    getHybridGroupOfLinesElement,
     getLineRefList,
     getPeriodAvailabilityElement,
     getPeriodConditionsElement,
@@ -464,7 +463,8 @@ export const getFareStructuresElements = (
             };
             result = [
                 ...result,
-                getHybridGroupOfLinesElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
+                // Add another fare structure element for hybrid tickets to reference group of lines
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction, true),
             ];
         } else if ('productDuration' in product) {
             result = [
