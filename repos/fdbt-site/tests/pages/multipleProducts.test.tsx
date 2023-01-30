@@ -6,6 +6,7 @@ import {
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
+    TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../src/constants/attributes';
 
 describe('pages', () => {
@@ -85,6 +86,28 @@ describe('pages', () => {
             expect(wrapper).toMatchSnapshot();
         });
 
+        it('should render correctly for a multi operator flat fare', () => {
+            getMockContext({
+                cookies: {},
+                body: null,
+                session: {
+                    [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServicesFlatFareMultiOperator' },
+                },
+            });
+            const wrapper = shallow(
+                <MultipleProducts
+                    numberOfProductsToRender={1}
+                    errors={[]}
+                    userInput={[]}
+                    csrfToken=""
+                    flatFare
+                    carnet={false}
+                    school={false}
+                />,
+            );
+            expect(wrapper).toMatchSnapshot();
+        });
+
         describe('getServerSideProps', () => {
             beforeEach(() => {
                 jest.clearAllMocks();
@@ -103,6 +126,23 @@ describe('pages', () => {
 
                 expect(result.props.numberOfProductsToRender).toBe(2);
                 expect(result.props.carnet).toBe(true);
+                expect(result.props.flatFare).toBe(true);
+            });
+
+            it('should return number of products to render, whether the ticket is multi operator flat fare', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [FARE_TYPE_ATTRIBUTE]: {
+                            fareType: 'multioperator',
+                        },
+                        [NUMBER_OF_PRODUCTS_ATTRIBUTE]: undefined,
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServicesFlatFareMultiOperator' },
+                    },
+                });
+                const result = getServerSideProps(ctx);
+
+                expect(result.props.numberOfProductsToRender).toBe(1);
+                expect(result.props.carnet).toBe(false);
                 expect(result.props.flatFare).toBe(true);
             });
 

@@ -25,6 +25,7 @@ interface TicketRepresentationProps {
     showHybrid: boolean;
     showPointToPoint: boolean;
     showFlatFlare: boolean;
+    showMultiOperator: boolean;
     isDevOrTest: boolean;
 }
 
@@ -66,6 +67,7 @@ const TicketRepresentation = ({
     showHybrid,
     showPointToPoint,
     showFlatFlare,
+    showMultiOperator,
     isDevOrTest,
 }: TicketRepresentationProps): ReactElement => {
     const fareTypeDesc = getFareTypeDesc(fareType);
@@ -97,6 +99,20 @@ const TicketRepresentation = ({
                                             label: 'A ticket for a set of services',
                                             hint: fareTypeHint.multipleServices,
                                         },
+                                        ...(showMultiOperator
+                                            ? [
+                                                  {
+                                                      value: 'multipleServicesFlatFareMultiOperator',
+                                                      label: 'Flat fare, for a set of services',
+                                                      hint: 'A flat fare multi operator ticket for travel on specific service or set of services',
+                                                  },
+                                                  {
+                                                      value: 'geoZoneFlatFareMultiOperator',
+                                                      label: 'Flat fare, within a geographical zone',
+                                                      hint: 'A flat fare multi operator ticket for travel within a geographical zone',
+                                                  },
+                                              ]
+                                            : []),
                                         ...(showPointToPoint
                                             ? [
                                                   {
@@ -152,6 +168,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             showHybrid: fareType === 'period' && !isScheme,
             showPointToPoint: fareType === 'period' && !isCarnet && !isScheme,
             showFlatFlare: fareType === 'flatFare' && !isScheme && !isCarnet,
+            showMultiOperator: fareType === 'multiOperator',
             isDevOrTest,
         },
     };
