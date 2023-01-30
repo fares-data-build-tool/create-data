@@ -149,7 +149,7 @@
               <TariffBasis>flat</TariffBasis>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@test@access_lines">
-                  <Name>Available lines and/or zones</Name>
+                  <Name>Available zones</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
                   <GenericParameterAssignment id="Tariff@test@access_lines" version="1.0" order="1">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>

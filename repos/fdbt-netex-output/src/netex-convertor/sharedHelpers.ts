@@ -35,6 +35,7 @@ import {
     getBaseSchemeOperatorInfo,
     getDurationElement,
     getExemptionsElement,
+    getHybridGroupOfLinesElement,
     getLineRefList,
     getPeriodAvailabilityElement,
     getPeriodConditionsElement,
@@ -452,31 +453,28 @@ export const getFareStructuresElements = (
                     zonalAvailabilityElementId,
                     zonalValidityParametersObject,
                     hasTimeRestriction,
-                    product.productName,
-                    groupOfLinesRef,
                 ),
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
+
+            availabilityElementId = `Tariff@${product.productName}@access_lines`;
+            validityParametersObject = {
+                GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
+            };
+            result = [
+                ...result,
+                getHybridGroupOfLinesElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
+            ];
         } else if ('productDuration' in product) {
             result = [
-                getPeriodAvailabilityElement(
-                    availabilityElementId,
-                    validityParametersObject,
-                    hasTimeRestriction,
-                    groupOfLinesRef,
-                ),
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
         } else {
             result = [
-                getPeriodAvailabilityElement(
-                    availabilityElementId,
-                    validityParametersObject,
-                    hasTimeRestriction,
-                    groupOfLinesRef,
-                ),
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
                 getPeriodConditionsElement(ticket, product),
             ];
         }
@@ -485,15 +483,7 @@ export const getFareStructuresElements = (
             validityParametersObject = {
                 GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
             };
-            result.push(
-                getExemptionsElement(
-                    availabilityElementId,
-                    validityParametersObject,
-                    hasTimeRestriction,
-                    product.productName,
-                    groupOfLinesRef,
-                ),
-            );
+            result.push(getExemptionsElement(availabilityElementId, validityParametersObject, hasTimeRestriction));
         }
 
         return result;

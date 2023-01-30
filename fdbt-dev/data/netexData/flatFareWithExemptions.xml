@@ -248,7 +248,7 @@
               </qualityStructureFactors>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@it_is_random@access_zones">
-                  <Name>Available lines and/or zones</Name>
+                  <Name>Available zones</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access_when"/>
                   <qualityStructureFactors>
                     <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
@@ -292,14 +292,6 @@
                     <validityParameters>
                       <GroupOfLinesRef version="1.0" ref="BLAC@groupOfLines@1"/>
                     </validityParameters>
-                    <includes>
-                      <GenericParameterAssignment version="1.0" id="it_is_random-exemptedGroupsOfLinesWrapper" order="2">
-                        <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:cannot_access"/>
-                        <validityParameters>
-                          <GroupOfLinesRef version="1.0" ref="BLAC@groupOfLines@1"/>
-                        </validityParameters>
-                      </GenericParameterAssignment>
-                    </includes>
                   </GenericParameterAssignment>
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult">

@@ -298,9 +298,10 @@ describe('Shared Helpers', () => {
 
             namesOfTypesOfFareStructureElements.forEach(name => {
                 expect(
-                    name === 'Available lines and/or zones' ||
+                    name === 'Available zones' ||
                         name === 'Eligible user types' ||
-                        name === 'Conditions of travel',
+                        name === 'Conditions of travel' ||
+                        name === 'Available lines',
                 ).toBeTruthy();
             });
 
@@ -324,7 +325,8 @@ describe('Shared Helpers', () => {
 
             namesOfTypesOfFareStructureElements.forEach(name => {
                 expect(
-                    name === 'Available lines and/or zones' ||
+                    name === 'Available zones' ||
+                        name === 'Available lines' ||
                         name.includes('Available duration combination') ||
                         name === 'Eligible user types' ||
                         name === 'Conditions of travel',
@@ -350,7 +352,8 @@ describe('Shared Helpers', () => {
 
             namesOfTypesOfFareStructureElements.forEach(name => {
                 expect(
-                    name === 'Available lines and/or zones' ||
+                    name === 'Available zones' ||
+                        name === 'Available lines' ||
                         name.includes('Available duration combination') ||
                         name === 'Eligible user types' ||
                         name === 'Conditions of travel',

@@ -868,16 +868,14 @@ export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
     return timeIntervals.length > 0 ? timeIntervals : undefined;
 };
 
-export const getPeriodAvailabilityElement = (
+export const getHybridGroupOfLinesElement = (
     id: string,
     validityParametersObject: {},
     hasTimeRestriction: boolean,
-    productName?: string,
-    groupOfLinesRef?: string,
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
-    Name: { $t: 'Available lines and/or zones' },
+    Name: { $t: 'Available lines' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
         ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
@@ -900,25 +898,39 @@ export const getPeriodAvailabilityElement = (
         },
         ValidityParameterGroupingType: { $t: 'OR' },
         validityParameters: validityParametersObject,
-        includes: groupOfLinesRef
-            ? {
-                  GenericParameterAssignment: {
-                      version: '1.0',
-                      id: `${productName}-groupsOfLinesWrapper`,
-                      order: '2',
-                      TypeOfAccessRightAssignmentRef: {
-                          version: 'fxc:v1.0',
-                          ref: 'fxc:can_access',
-                      },
-                      validityParameters: {
-                          GroupOfLinesRef: {
-                              version: '1.0',
-                              ref: groupOfLinesRef,
-                          },
-                      },
-                  },
-              }
-            : null,
+    },
+});
+
+export const getPeriodAvailabilityElement = (
+    id: string,
+    validityParametersObject: {},
+    hasTimeRestriction: boolean,
+): NetexObject => ({
+    version: '1.0',
+    id: `op:${id}`,
+    Name: { $t: 'Available zones' },
+    TypeOfFareStructureElementRef: {
+        version: 'fxc:v1.0',
+        ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
+    },
+    qualityStructureFactors: hasTimeRestriction
+        ? {
+              FareDemandFactorRef: {
+                  ref: 'op@Tariff@Demand',
+                  version: '1.0',
+              },
+          }
+        : null,
+    GenericParameterAssignment: {
+        id,
+        version: '1.0',
+        order: '1',
+        TypeOfAccessRightAssignmentRef: {
+            version: 'fxc:v1.0',
+            ref: 'fxc:can_access',
+        },
+        ValidityParameterGroupingType: { $t: 'OR' },
+        validityParameters: validityParametersObject,
     },
 });
 
@@ -926,8 +938,6 @@ export const getExemptionsElement = (
     id: string,
     validityParametersObject: {},
     hasTimeRestriction: boolean,
-    productName: string,
-    groupOfLinesRef: string,
 ): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
@@ -954,23 +964,6 @@ export const getExemptionsElement = (
         },
         ValidityParameterGroupingType: { $t: 'NOT' },
         validityParameters: validityParametersObject,
-        includes: {
-            GenericParameterAssignment: {
-                version: '1.0',
-                id: `${productName}-exemptedGroupsOfLinesWrapper`,
-                order: '2',
-                TypeOfAccessRightAssignmentRef: {
-                    version: 'fxc:v1.0',
-                    ref: 'fxc:cannot_access',
-                },
-                validityParameters: {
-                    GroupOfLinesRef: {
-                        version: '1.0',
-                        ref: groupOfLinesRef,
-                    },
-                },
-            },
-        },
     },
 });
 
