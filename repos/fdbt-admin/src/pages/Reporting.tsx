@@ -150,7 +150,7 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     </Table.Row>
                     <Table.Row key="nocs">
                         <Table.Cell>
-                            <Details summary="Registered NOC's">
+                            <Details summary="Registered NOCs">
                                 {registeredNocs.length > 0 && (
                                     <>
                                         <CSVLink
@@ -169,7 +169,7 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     </Table.Row>
                     <Table.Row key="30-day-netex">
                         <Table.Cell>
-                            <Details summary="NOC's who have generated NeTEx in the last 30 days">
+                            <Details summary="NOCs who have generated NeTEx in the last 30 days">
                                 {thirtyDayNetex.length > 0 && (
                                     <>
                                         <CSVLink
@@ -188,7 +188,7 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     </Table.Row>
                     <Table.Row key="year-netex">
                         <Table.Cell>
-                            <Details summary="NOC's who have generated NeTEx in the last year">
+                            <Details summary="NOCs who have generated NeTEx in the last year">
                                 {yearNetex.length > 0 && (
                                     <>
                                         <CSVLink filename="yearNetexNocs.csv" data={mapIntoArrayOfArrays(yearNetex)}>
