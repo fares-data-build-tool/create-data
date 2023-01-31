@@ -232,10 +232,7 @@
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@Week_Rider@access_lines">
                   <Name>Available lines and/or zones</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access_when"/>
-                  <qualityStructureFactors>
-                    <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
-                  </qualityStructureFactors>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
                   <GenericParameterAssignment id="Tariff@Week_Rider@access_lines" version="1.0" order="1">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
@@ -309,6 +306,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Week_Rider@durations@adult"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Week_Rider@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@Week_Rider@availability"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>

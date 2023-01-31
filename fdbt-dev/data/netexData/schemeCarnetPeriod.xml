@@ -303,6 +303,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@jakes@durations@anyone"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@jakes@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@anyone"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@jakes@availability"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>

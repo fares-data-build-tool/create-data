@@ -791,6 +791,20 @@ export const getPreassignedFareProducts = (
             });
         }
 
+        if (userPeriodTicket.timeRestriction) {
+            fareStructureElementRefs.push({
+                version: '1.0',
+                ref: `op:Tariff@${product.productName}@availability`,
+            });
+        }
+
+        if ('exemptedServices' in userPeriodTicket && userPeriodTicket.exemptedServices) {
+            fareStructureElementRefs.push({
+                version: '1.0',
+                ref: `op:Tariff@${product.productName}@exempt_lines`,
+            });
+        }
+
         return {
             version: '1.0',
             id: `op:Pass@${product.productName}_${passengerType}`,
@@ -871,7 +885,6 @@ export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
 export const getPeriodAvailabilityElement = (
     id: string,
     validityParametersObject: {},
-    hasTimeRestriction: boolean,
     isHybrid?: boolean,
 ): NetexObject => ({
     version: '1.0',
@@ -879,16 +892,8 @@ export const getPeriodAvailabilityElement = (
     Name: { $t: isHybrid ? 'Available lines' : 'Available lines and/or zones' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
-        ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
+        ref: 'fxc:access',
     },
-    qualityStructureFactors: hasTimeRestriction
-        ? {
-              FareDemandFactorRef: {
-                  ref: 'op@Tariff@Demand',
-                  version: '1.0',
-              },
-          }
-        : null,
     GenericParameterAssignment: {
         id,
         version: '1.0',
