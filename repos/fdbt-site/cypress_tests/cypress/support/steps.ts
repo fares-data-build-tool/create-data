@@ -653,6 +653,48 @@ export const editFareTrianglePointToPointPage = (): void => {
     });
 };
 
+export const editFareZone = (): void => {
+    getElementById('zone').then((element) => {
+        cy.wrap(element.text()).as('oldZone');
+        if (element.text() === 'Test Town Centre') {
+            clickElementById('zone-link');
+            uploadFile('csv-upload', 'fareZoneEdited.csv');
+        } else {
+            clickElementById('zone-link');
+            uploadFile('csv-upload', 'fareZone.csv');
+        }
+        submitButtonClick();
+        cy.get('@oldZone').then((zone) => {
+            getElementById('zone')
+                .invoke('text')
+                .then((text) => {
+                    expect(text.toString()).to.not.equal(zone.toString());
+                });
+        });
+        clickElementByText('Back');
+    });
+};
+
+export const editExemptedServices = (): void => {
+    clickElementById('exempted-services-link');
+    const randomSelector = getRandomNumber(1, 2);
+    if (randomSelector === 1) {
+        clickElementById('yes');
+        randomlyChooseAndSelectServices(true);
+    } else {
+        clickElementById('no');
+        cy.wrap('N/A').as('input');
+    }
+    uploadFile('csv-upload', 'fareZoneEdited.csv');
+    submitButtonClick();
+    cy.get('@input').then((input) => {
+        const inputText = input.toString();
+        const result = inputText === 'N/A' ? inputText : inputText.split(',').join(', ');
+        getElementById('exempted-services').should('have.text', result);
+    });
+    clickElementByText('Back');
+};
+
 export const deleteMultiOperatorProduct = (): void => {
     let numberOfProducts = 0;
     cy.get(`[data-card-count]`).then((element) => {
