@@ -315,7 +315,7 @@ const createProductDetails = async (
         productDetailsElements.push({
             id: 'stops',
             name: 'Stops',
-            content: [ticket.stops.map((stop) => stop.stopName).join(', ')],
+            content: [ticket.stops.length.toString()],
             editLink: '/csvZoneUpload',
         });
         productDetailsElements.push({

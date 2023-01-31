@@ -667,9 +667,7 @@ describe('myfares pages', () => {
                         {
                             id: 'stops',
                             name: 'Stops',
-                            content: [
-                                'Westlea shops, The Avenue Shops, Interchange Stand B, Adolphus Place, The Avenue - Essex Crescent, New Strangford Road, New Tempest Road - York House, Mount Pleasant, Viceroy Street, Vane Terrace - Castlereagh, Estate Hail and Ride, Kingston Avenue, Park, Laurel Avenue, Sophia Street',
-                            ],
+                            content: ['15'],
                             editLink: '/csvZoneUpload',
                         },
                         {
@@ -752,9 +750,7 @@ describe('myfares pages', () => {
                         {
                             id: 'stops',
                             name: 'Stops',
-                            content: [
-                                'Westlea shops, The Avenue Shops, Interchange Stand B, Adolphus Place, The Avenue - Essex Crescent, New Strangford Road, New Tempest Road - York House, Mount Pleasant, Viceroy Street, Vane Terrace - Castlereagh, Estate Hail and Ride, Kingston Avenue, Park, Laurel Avenue, Sophia Street',
-                            ],
+                            content: ['15'],
                             editLink: '/csvZoneUpload',
                         },
                         {
@@ -917,9 +913,7 @@ describe('myfares pages', () => {
                         {
                             id: 'stops',
                             name: 'Stops',
-                            content: [
-                                'Westlea shops, The Avenue Shops, Interchange Stand B, Adolphus Place, The Avenue - Essex Crescent, New Strangford Road, New Tempest Road - York House, Mount Pleasant, Viceroy Street, Vane Terrace - Castlereagh, Estate Hail and Ride, Kingston Avenue, Park, Laurel Avenue, Sophia Street',
-                            ],
+                            content: ['15'],
                             editLink: '/csvZoneUpload',
                         },
                         {
@@ -1076,9 +1070,7 @@ describe('myfares pages', () => {
                         {
                             id: 'stops',
                             name: 'Stops',
-                            content: [
-                                'Westlea shops, The Avenue Shops, Interchange Stand B, Adolphus Place, The Avenue - Essex Crescent, New Strangford Road, New Tempest Road - York House, Mount Pleasant, Viceroy Street, Vane Terrace - Castlereagh, Estate Hail and Ride, Kingston Avenue, Park, Laurel Avenue, Sophia Street',
-                            ],
+                            content: ['15'],
                             editLink: '/csvZoneUpload',
                         },
                         {
