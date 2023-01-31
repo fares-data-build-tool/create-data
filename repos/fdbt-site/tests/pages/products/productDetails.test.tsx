@@ -665,6 +665,14 @@ describe('myfares pages', () => {
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
                         { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
+                            id: 'stops',
+                            name: 'Stops',
+                            content: [
+                                'Westlea shops, The Avenue Shops, Interchange Stand B, Adolphus Place, The Avenue - Essex Crescent, New Strangford Road, New Tempest Road - York House, Mount Pleasant, Viceroy Street, Vane Terrace - Castlereagh, Estate Hail and Ride, Kingston Avenue, Park, Laurel Avenue, Sophia Street',
+                            ],
+                            editLink: '/csvZoneUpload',
+                        },
+                        {
                             id: 'exempted-services',
                             name: 'Exempted Services',
                             content: ['N/A'],
@@ -741,6 +749,14 @@ describe('myfares pages', () => {
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Multi operator'] },
                         { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
+                        {
+                            id: 'stops',
+                            name: 'Stops',
+                            content: [
+                                'Westlea shops, The Avenue Shops, Interchange Stand B, Adolphus Place, The Avenue - Essex Crescent, New Strangford Road, New Tempest Road - York House, Mount Pleasant, Viceroy Street, Vane Terrace - Castlereagh, Estate Hail and Ride, Kingston Avenue, Park, Laurel Avenue, Sophia Street',
+                            ],
+                            editLink: '/csvZoneUpload',
+                        },
                         {
                             id: 'exempted-services',
                             name: 'Exempted Services',
@@ -899,6 +915,14 @@ describe('myfares pages', () => {
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
                         { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
+                            id: 'stops',
+                            name: 'Stops',
+                            content: [
+                                'Westlea shops, The Avenue Shops, Interchange Stand B, Adolphus Place, The Avenue - Essex Crescent, New Strangford Road, New Tempest Road - York House, Mount Pleasant, Viceroy Street, Vane Terrace - Castlereagh, Estate Hail and Ride, Kingston Avenue, Park, Laurel Avenue, Sophia Street',
+                            ],
+                            editLink: '/csvZoneUpload',
+                        },
+                        {
                             id: 'exempted-services',
                             name: 'Exempted Services',
                             content: ['N/A'],
@@ -1049,6 +1073,14 @@ describe('myfares pages', () => {
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Flat fare'] },
                         { id: 'zone', name: 'Zone', content: ['my flat fare zone'], editLink: '/csvZoneUpload' },
+                        {
+                            id: 'stops',
+                            name: 'Stops',
+                            content: [
+                                'Westlea shops, The Avenue Shops, Interchange Stand B, Adolphus Place, The Avenue - Essex Crescent, New Strangford Road, New Tempest Road - York House, Mount Pleasant, Viceroy Street, Vane Terrace - Castlereagh, Estate Hail and Ride, Kingston Avenue, Park, Laurel Avenue, Sophia Street',
+                            ],
+                            editLink: '/csvZoneUpload',
+                        },
                         {
                             id: 'exempted-services',
                             name: 'Exempted Services',

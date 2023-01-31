@@ -671,7 +671,20 @@ export const editFareZone = (): void => {
                     expect(text.toString()).to.not.equal(zone.toString());
                 });
         });
-        clickElementByText('Back');
+    });
+};
+
+export const editFareZoneStops = (): void => {
+    getElementById('stops').then((element) => {
+        cy.wrap(element.text()).as('oldStops');
+        editFareZone();
+        cy.get('@oldStops').then((stops) => {
+            getElementById('stops')
+                .invoke('text')
+                .then((text) => {
+                    expect(text.toString()).to.not.equal(stops.toString());
+                });
+        });
     });
 };
 

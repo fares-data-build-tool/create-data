@@ -313,6 +313,12 @@ const createProductDetails = async (
             editLink: '/csvZoneUpload',
         });
         productDetailsElements.push({
+            id: 'stops',
+            name: 'Stops',
+            content: [ticket.stops.map((stop) => stop.stopName).join(', ')],
+            editLink: '/csvZoneUpload',
+        });
+        productDetailsElements.push({
             id: 'exempted-services',
             name: 'Exempted Services',
             content:
