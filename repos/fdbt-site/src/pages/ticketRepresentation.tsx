@@ -131,7 +131,7 @@ const TicketRepresentation = ({
                                                   },
                                               ]
                                             : []),
-                                        ...(showFlatFlare
+                                        ...(showFlatFlare && isDevOrTest
                                             ? [
                                                   {
                                                       value: 'multipleServicesPricedByDistance',

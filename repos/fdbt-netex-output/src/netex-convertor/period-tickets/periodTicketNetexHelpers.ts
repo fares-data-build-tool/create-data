@@ -791,6 +791,27 @@ export const getPreassignedFareProducts = (
             });
         }
 
+        if (isHybridTicket(userPeriodTicket)) {
+            fareStructureElementRefs.push({
+                version: '1.0',
+                ref: `op:Tariff@${product.productName}@access_lines`,
+            });
+        }
+
+        if (userPeriodTicket.timeRestriction && userPeriodTicket.timeRestriction.length > 0) {
+            fareStructureElementRefs.push({
+                version: '1.0',
+                ref: `op:Tariff@${userPeriodTicket.type}@availability`,
+            });
+        }
+
+        if ('exemptedServices' in userPeriodTicket && userPeriodTicket.exemptedServices) {
+            fareStructureElementRefs.push({
+                version: '1.0',
+                ref: `op:Tariff@${product.productName}@exempt_lines`,
+            });
+        }
+
         return {
             version: '1.0',
             id: `op:Pass@${product.productName}_${passengerType}`,
@@ -871,7 +892,6 @@ export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
 export const getPeriodAvailabilityElement = (
     id: string,
     validityParametersObject: {},
-    hasTimeRestriction: boolean,
     isHybrid?: boolean,
 ): NetexObject => ({
     version: '1.0',
@@ -879,16 +899,8 @@ export const getPeriodAvailabilityElement = (
     Name: { $t: isHybrid ? 'Available lines' : 'Available lines and/or zones' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
-        ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
+        ref: 'fxc:access',
     },
-    qualityStructureFactors: hasTimeRestriction
-        ? {
-              FareDemandFactorRef: {
-                  ref: 'op@Tariff@Demand',
-                  version: '1.0',
-              },
-          }
-        : null,
     GenericParameterAssignment: {
         id,
         version: '1.0',
@@ -899,6 +911,22 @@ export const getPeriodAvailabilityElement = (
         },
         ValidityParameterGroupingType: { $t: 'OR' },
         validityParameters: validityParametersObject,
+    },
+});
+
+export const getTimeRestrictionsElement = (id: string): NetexObject => ({
+    version: '1.0',
+    id: `op:${id}`,
+    Name: { $t: 'Time restrictions' },
+    TypeOfFareStructureElementRef: {
+        version: 'fxc:v1.0',
+        ref: 'fxc:access_when',
+    },
+    qualityStructureFactors: {
+        FareDemandFactorRef: {
+            ref: 'op@Tariff@Demand',
+            version: '1.0',
+        },
     },
 });
 
