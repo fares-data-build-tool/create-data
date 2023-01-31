@@ -411,19 +411,28 @@ const getMultiServiceList = (
                                             ...getProfileRef(userPeriodTicket),
                                         },
                                         prices: {
-                                            TimeIntervalPrice: {
-                                                version: '1.0',
-                                                id: `op:${product.productName}@${salesOfferPackage.name}@service`,
-                                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
-                                                TimeIntervalRef: {
-                                                    version: '1.0',
-                                                    ref: `op:Tariff@${product.productName}${
-                                                        product.productDuration
-                                                            ? `@${product.productDuration.replace(' ', '-')}`
-                                                            : ''
-                                                    }`,
-                                                },
-                                            },
+                                            TimeIntervalPrice:
+                                                'productDuration' in product
+                                                    ? {
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@service`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                          TimeIntervalRef: {
+                                                              version: '1.0',
+                                                              ref: `op:Tariff@${
+                                                                  product.productName
+                                                              }@${product.productDuration.replace(' ', '-')}`,
+                                                          },
+                                                      }
+                                                    : {
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@service`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                      },
                                         },
                                     },
                                 },

@@ -32,8 +32,8 @@
       <ValidBetween>
         <FromDate>2002-02-01T00:00:00.000Z</FromDate>
       </ValidBetween>
-      <Name>Fares for Test Operator</Name>
-      <Description>Period ticket for Test Operator</Description>
+      <Name>Fares for Blackpool Transport</Name>
+      <Description>Period ticket for Blackpool Transport</Description>
       <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
       <codespaces>
         <CodespaceRef ref="epd_data"/>
@@ -80,7 +80,7 @@
                 <ResponsibilityRoleAssignment version="1.0" id="op:tariff_data@creates">
                   <DataRoleType>creates</DataRoleType>
                   <StakeholderRoleType>FareManagement</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Test Operator</ResponsibleOrganisationRef>
+                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Blackpool Transport</ResponsibleOrganisationRef>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -90,7 +90,7 @@
                 <ResponsibilityRoleAssignment version="1.0" id="op:network_data@creates">
                   <DataRoleType>creates</DataRoleType>
                   <StakeholderRoleType>Planning</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Test Operator</ResponsibleOrganisationRef>
+                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Blackpool Transport</ResponsibleOrganisationRef>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -100,13 +100,27 @@
               <Name>Operator Branding</Name>
               <values>
                 <Branding version="1.0" id="op:BLAC@brand">
-                  <Name>Test Operator</Name>
+                  <Name>Blackpool Transport</Name>
                   <Url>http://www.blackpooltransport.com</Url>
                 </Branding>
               </values>
             </ValueSet>
           </typesOfValue>
           <organisations>
+            <Operator version="1.0" id="noc:WBTR">
+              <PublicCode>WBTR</PublicCode>
+              <Name>Warrington's Own Buses</Name>
+              <ShortName>Warrington's Own Buses</ShortName>
+              <TradingName>Warrington Borough Transport Ltd</TradingName>
+              <ContactDetails>
+                <Phone>01925634296</Phone>
+                <Url>http://warringtonsownbuses.co.uk/</Url>
+              </ContactDetails>
+              <Address>
+                <Street>Wilderspool Causeway, Warrington, Cheshire WA4 6PT</Street>
+              </Address>
+              <PrimaryMode>bus</PrimaryMode>
+            </Operator>
             <Operator version="1.0" id="noc:NWBT">
               <PublicCode>NWBT</PublicCode>
               <Name>Pilkingtonbus</Name>
@@ -140,6 +154,7 @@
             <GroupOfOperators version="1.0" id="operators@bus">
               <Name>Bus Operators</Name>
               <members>
+                <OperatorRef version="1.0" ref="noc:WBTR">Warrington's Own Buses</OperatorRef>
                 <OperatorRef version="1.0" ref="noc:NWBT">Pilkingtonbus</OperatorRef>
                 <OperatorRef version="1.0" ref="noc:BLAC">Blackpool Transport</OperatorRef>
               </members>
@@ -331,7 +346,7 @@
           </prerequisites>
           <fareTables>
             <FareTable version="1.0" id="op:fareTable@firstprod@Online_(smart_card)@services">
-              <Name>firstprod - Online (smart card) - 6 services</Name>
+              <Name>firstprod - Online (smart card) - 7 services</Name>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@firstprod_adult"/>
               </pricesFor>
@@ -351,7 +366,6 @@
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:firstprod@Online_(smart_card)@service">
                               <Amount>1</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@firstprod"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -362,7 +376,7 @@
               </includes>
             </FareTable>
             <FareTable version="1.0" id="op:fareTable@firstprod@Mobile_App@services">
-              <Name>firstprod - Mobile App - 6 services</Name>
+              <Name>firstprod - Mobile App - 7 services</Name>
               <pricesFor>
                 <PreassignedFareProductRef version="1.0" ref="op:Pass@firstprod_adult"/>
               </pricesFor>
@@ -382,7 +396,6 @@
                           <prices>
                             <TimeIntervalPrice version="1.0" id="op:firstprod@Mobile_App@service">
                               <Amount>1</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@firstprod"/>
                             </TimeIntervalPrice>
                           </prices>
                         </FareTable>
@@ -398,20 +411,31 @@
           <Description>This frame contains the stop and line definitions for the service.</Description>
           <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
           <lines>
-            <Line version="1.0" id="xZ0pem">
-              <Name>Line 263</Name>
-              <Description>Bradford - Dewsbury</Description>
-              <PublicCode>263</PublicCode>
-              <PrivateCode type="txc:Line@id">xZ0pem</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:LNUD"/>
+            <Line version="1.0" id="AD1146649_RJ1_Outbound">
+              <Name>Line 5</Name>
+              <Description>LONDON - ESSEX - BIRMINGHAM</Description>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
+              <PublicCode>5</PublicCode>
+              <PrivateCode type="txc:Line@id">AD1146649_RJ1_Outbound</PrivateCode>
+              <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
-            <Line version="1.0" id="UCfzQk">
-              <Name>Line 342</Name>
-              <Description>Almondbury - Huddersfield</Description>
-              <PublicCode>342</PublicCode>
-              <PrivateCode type="txc:Line@id">UCfzQk</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:LNUD"/>
+            <Line version="1.0" id="FD1146649_RJ1_Outbound">
+              <Name>Line 4</Name>
+              <Description>EDINBURGH - GLASGOW - LEEDS</Description>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
+              <PublicCode>4</PublicCode>
+              <PrivateCode type="txc:Line@id">FD1146649_RJ1_Outbound</PrivateCode>
+              <OperatorRef version="1.0" ref="noc:WBTR"/>
+              <LineType>local</LineType>
+            </Line>
+            <Line version="1.0" id="XC1146649_RJ1_Outbound">
+              <Name>Line 7</Name>
+              <Description>HULL - WIGAN - BOLTON</Description>
+              <Url>http://warringtonsownbuses.co.uk/</Url>
+              <PublicCode>7</PublicCode>
+              <PrivateCode type="txc:Line@id">XC1146649_RJ1_Outbound</PrivateCode>
+              <OperatorRef version="1.0" ref="noc:WBTR"/>
               <LineType>local</LineType>
             </Line>
             <Line version="1.0" id="02SfpM">
@@ -455,8 +479,9 @@
             <GroupOfLines version="1.0" id="BLAC@groupOfLines@1">
               <Name>A group of available services.</Name>
               <members>
-                <LineRef version="1.0" ref="xZ0pem"/>
-                <LineRef version="1.0" ref="UCfzQk"/>
+                <LineRef version="1.0" ref="AD1146649_RJ1_Outbound"/>
+                <LineRef version="1.0" ref="FD1146649_RJ1_Outbound"/>
+                <LineRef version="1.0" ref="XC1146649_RJ1_Outbound"/>
                 <LineRef version="1.0" ref="02SfpM"/>
                 <LineRef version="1.0" ref="M0L2FP"/>
                 <LineRef version="1.0" ref="YpQjUw"/>

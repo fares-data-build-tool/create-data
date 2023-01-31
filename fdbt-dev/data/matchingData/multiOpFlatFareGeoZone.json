@@ -1,26 +1,37 @@
 {
-  "nocCode": "BLAC",
+  "operatorName": "Blackpool Transport",
+  "additionalNocs": [
+    "WBTR",
+    "DCCL",
+    "HCTY"
+  ],
   "type": "multiOperator",
-  "passengerType": "adult",
-  "ageRange": "Yes",
-  "ageRangeMin": "18",
-  "ageRangeMax": "65",
+  "nocCode": "BLAC",
   "email": "test@example.com",
   "uuid": "BLACf6e63487",
   "timeRestriction": [
     {
       "day": "monday",
-      "timeBands": [{ "startTime": "0900", "endTime": "1800" }]
+      "timeBands": [
+        {
+          "startTime": "0900",
+          "endTime": "1800"
+        }
+      ]
     },
     {
       "day": "thursday",
-      "timeBands": [{ "startTime": "0800", "endTime": "1700" }]
+      "timeBands": [
+        {
+          "startTime": "0800",
+          "endTime": "1700"
+        }
+      ]
     }
   ],
   "ticketPeriod": {
     "startDate": "2002-02-01T00:00:00.000Z"
   },
-  "operatorName": "Test Operator",
   "products": [
     {
       "productName": "JTest00",
@@ -29,22 +40,38 @@
         {
           "name": "Onboard (cash)",
           "description": "",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["cash"],
-          "ticketFormats": ["paperTicket"],
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "cash"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ],
           "price": "2.99"
         },
         {
           "name": "Onboard (contactless)",
           "description": "",
-          "purchaseLocations": ["onBoard"],
-          "paymentMethods": ["contactlessPaymentCard"],
-          "ticketFormats": ["paperTicket"],
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "contactlessPaymentCard"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ],
           "price": "2.99"
         }
       ]
     }
   ],
+  "passengerType": "adult",
+  "ageRange": "Yes",
+  "ageRangeMin": "18",
+  "ageRangeMax": "65",
   "zoneName": "Test Town Centre",
   "stops": [
     {
@@ -218,10 +245,5 @@
       "street": "Midgley Road"
     }
   ],
-  "additionalNocs": [
-    "LNUD",
-    "NWBT"
-  ],
-  "operatorGroupId": 1,
   "carnet": false
 }

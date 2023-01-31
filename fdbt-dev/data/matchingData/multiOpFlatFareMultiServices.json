@@ -1,6 +1,54 @@
 {
-  "nocCode": "BLAC",
+  "operatorName": "Blackpool Transport",
+  "additionalOperators": [
+    {
+      "nocCode": "WBTR",
+      "selectedServices": [
+        {
+          "lineName": "5",
+          "lineId": "AD1146649_RJ1_Outbound",
+          "serviceCode": "NW_05_WBTR_3_1",
+          "startDate": "05/04/2020",
+          "serviceDescription": "LONDON - ESSEX - BIRMINGHAM"
+        },
+        {
+          "lineName": "4",
+          "lineId": "FD1146649_RJ1_Outbound",
+          "serviceCode": "NW_05_WBTR_7_1",
+          "startDate": "05/04/2020",
+          "serviceDescription": "EDINBURGH - GLASGOW - LEEDS"
+        },
+        {
+          "lineName": "7",
+          "lineId": "XC1146649_RJ1_Outbound",
+          "serviceCode": "NW_05_WBTR_6_1",
+          "startDate": "05/04/2020",
+          "serviceDescription": "HULL - WIGAN - BOLTON"
+        }
+      ]
+    },
+    {
+      "nocCode": "NWBT",
+      "selectedServices": [
+        {
+          "lineName": "15A",
+          "lineId": "02SfpM",
+          "serviceCode": "NW_05_NWBT_15A_1",
+          "startDate": "28/03/2020",
+          "serviceDescription": "BURNLEY - BURNLEY via Branch Road, Moorland Road"
+        },
+        {
+          "lineName": "65",
+          "lineId": "M0L2FP",
+          "serviceCode": "NW_05_NWBT_65_1",
+          "startDate": "28/03/2020",
+          "serviceDescription": "BURNLEY - NELSON via Sycamore Avenue, Lowerhouse, Slade Lane, Higham, Barrowford"
+        }
+      ]
+    }
+  ],
   "type": "multiOperator",
+  "nocCode": "BLAC",
   "passengerType": "adult",
   "ageRange": "Yes",
   "ageRangeMin": "18",
@@ -48,7 +96,7 @@
   "ticketPeriod": {
     "startDate": "2002-02-01T00:00:00.000Z"
   },
-  "operatorName": "Test Operator",
+
   "products": [
     {
       "productName": "firstprod",
@@ -102,47 +150,6 @@
       "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
     }
   ],
-  "additionalOperators": [
-    {
-      "nocCode": "LNUD",
-      "selectedServices": [
-        {
-          "lineName": "263",
-          "lineId": "xZ0pem",
-          "serviceCode": "YWAO263",
-          "startDate": "25/02/2019",
-          "serviceDescription": "Bradford - Dewsbury"
-        },
-        {
-          "lineName": "342",
-          "lineId": "UCfzQk",
-          "serviceCode": "YWBO342",
-          "startDate": "25/03/2020",
-          "serviceDescription": "Almondbury - Huddersfield"
-        }
-      ]
-    },
-    {
-      "nocCode": "NWBT",
-      "selectedServices": [
-        {
-          "lineName": "15A",
-          "lineId": "02SfpM",
-          "serviceCode": "NW_05_NWBT_15A_1",
-          "startDate": "28/03/2020",
-          "serviceDescription": "BURNLEY - BURNLEY via Branch Road, Moorland Road"
-        },
-        {
-          "lineName": "65",
-          "lineId": "M0L2FP",
-          "serviceCode": "NW_05_NWBT_65_1",
-          "startDate": "28/03/2020",
-          "serviceDescription": "BURNLEY - NELSON via Sycamore Avenue, Lowerhouse, Slade Lane, Higham, Barrowford"
-        }
-      ]
-    }
-  ],
   "termTime": false,
-  "operatorGroupId": 1,
   "carnet": false
 }
