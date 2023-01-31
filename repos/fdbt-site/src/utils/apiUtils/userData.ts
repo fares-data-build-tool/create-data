@@ -111,7 +111,6 @@ import {
     CappedTicket,
     ExpiryUnit,
     FlatFareMultipleServices,
-    PriceByDistanceProduct,
 } from '../../interfaces/matchingJsonTypes';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
@@ -631,8 +630,9 @@ export const getMultipleServicesByDistanceTicketJson = (
         {
             salesOfferPackages,
             pricingByDistance,
+            productName: pricingByDistance.productName,
         },
-    ] as PriceByDistanceProduct[];
+    ];
 
     return {
         operatorName: name,

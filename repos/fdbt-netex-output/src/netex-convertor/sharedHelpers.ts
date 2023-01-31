@@ -39,6 +39,7 @@ import {
     getPeriodAvailabilityElement,
     getPeriodConditionsElement,
     getPeriodEligibilityElement,
+    getTimeRestrictionsElement,
 } from './period-tickets/periodTicketNetexHelpers';
 import {
     getPointToPointConditionsElement,
@@ -451,11 +452,7 @@ export const getFareStructuresElements = (
             };
 
             result = [
-                getPeriodAvailabilityElement(
-                    zonalAvailabilityElementId,
-                    zonalValidityParametersObject,
-                    hasTimeRestriction,
-                ),
+                getPeriodAvailabilityElement(zonalAvailabilityElementId, zonalValidityParametersObject),
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
@@ -467,17 +464,17 @@ export const getFareStructuresElements = (
             result = [
                 ...result,
                 // Add another fare structure element for hybrid tickets to reference group of lines
-                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction, true),
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, true),
             ];
         } else if ('productDuration' in product) {
             result = [
-                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject),
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
         } else {
             result = [
-                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject, hasTimeRestriction),
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject),
                 getPeriodConditionsElement(ticket, product),
             ];
         }
@@ -487,6 +484,11 @@ export const getFareStructuresElements = (
                 GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
             };
             result.push(getExemptionsElement(availabilityElementId, validityParametersObject, hasTimeRestriction));
+        }
+
+        if (hasTimeRestriction) {
+            availabilityElementId = `Tariff@${ticket.type}@availability`;
+            result.push(getTimeRestrictionsElement(availabilityElementId));
         }
 
         return result;

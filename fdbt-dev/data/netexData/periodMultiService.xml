@@ -223,10 +223,7 @@
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@Test_Product_1@access_lines">
                   <Name>Available lines and/or zones</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access_when"/>
-                  <qualityStructureFactors>
-                    <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
-                  </qualityStructureFactors>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
                   <GenericParameterAssignment id="Tariff@Test_Product_1@access_lines" version="1.0" order="1">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
@@ -259,6 +256,13 @@
                       </UsageValidityPeriod>
                     </limitations>
                   </GenericParameterAssignment>
+                </FareStructureElement>
+                <FareStructureElement version="1.0" id="op:Tariff@period@availability">
+                  <Name>Time restrictions</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access_when"/>
+                  <qualityStructureFactors>
+                    <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
+                  </qualityStructureFactors>
                 </FareStructureElement>
                 <FareStructureElement version="1.0" id="op:Tariff@eligibility@youngPerson">
                   <Name>Eligible user types</Name>
@@ -296,6 +300,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_1@durations@youngPerson"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Test_Product_1@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@youngPerson"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@period@availability"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
