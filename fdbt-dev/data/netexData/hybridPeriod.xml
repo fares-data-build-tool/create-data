@@ -296,6 +296,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Best_product_one@durations@anyone"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Best_product_one@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@anyone"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@Best_product_one@access_lines"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Best_product_one@availability"/>
                   </fareStructureElements>
                 </ValidableElement>

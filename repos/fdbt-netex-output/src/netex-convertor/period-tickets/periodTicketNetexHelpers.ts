@@ -791,6 +791,13 @@ export const getPreassignedFareProducts = (
             });
         }
 
+        if (isHybridTicket(userPeriodTicket)) {
+            fareStructureElementRefs.push({
+                version: '1.0',
+                ref: `op:Tariff@${product.productName}@access_lines`,
+            });
+        }
+
         if (userPeriodTicket.timeRestriction) {
             fareStructureElementRefs.push({
                 version: '1.0',
