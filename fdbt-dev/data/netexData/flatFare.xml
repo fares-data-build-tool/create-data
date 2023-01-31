@@ -212,7 +212,6 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@access_lines"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@senior"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@availability"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>

@@ -798,10 +798,10 @@ export const getPreassignedFareProducts = (
             });
         }
 
-        if (userPeriodTicket.timeRestriction) {
+        if (userPeriodTicket.timeRestriction && userPeriodTicket.timeRestriction.length > 0) {
             fareStructureElementRefs.push({
                 version: '1.0',
-                ref: `op:Tariff@${product.productName}@availability`,
+                ref: `op:Tariff@${userPeriodTicket.type}@availability`,
             });
         }
 

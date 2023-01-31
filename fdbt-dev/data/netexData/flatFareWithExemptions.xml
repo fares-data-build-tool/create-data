@@ -291,7 +291,7 @@
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@it_is_random@availability">
+                <FareStructureElement version="1.0" id="op:Tariff@flatFare@availability">
                   <Name>Time restrictions</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access_when"/>
                   <qualityStructureFactors>
@@ -330,7 +330,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@it_is_random@access_zones"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@it_is_random@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@it_is_random@availability"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@flatFare@availability"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@it_is_random@exempt_lines"/>
                   </fareStructureElements>
                 </ValidableElement>

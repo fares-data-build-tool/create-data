@@ -334,7 +334,7 @@
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Product_1@availability">
+                <FareStructureElement version="1.0" id="op:Tariff@period@availability">
                   <Name>Time restrictions</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access_when"/>
                   <qualityStructureFactors>
@@ -375,7 +375,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@durations@adult"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@availability"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@period@availability"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>

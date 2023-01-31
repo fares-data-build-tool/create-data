@@ -484,7 +484,7 @@ export const getFareStructuresElements = (
         }
 
         if (hasTimeRestriction) {
-            availabilityElementId = `Tariff@${product.productName}@availability`;
+            availabilityElementId = `Tariff@${ticket.type}@availability`;
             result.push(getTimeRestrictionsElement(availabilityElementId));
         }
 

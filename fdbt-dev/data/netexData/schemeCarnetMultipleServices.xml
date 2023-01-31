@@ -256,7 +256,6 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@test@durations@child"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@test@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@child"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@test@availability"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
