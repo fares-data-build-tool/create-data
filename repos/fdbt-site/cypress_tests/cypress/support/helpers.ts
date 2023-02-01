@@ -523,10 +523,18 @@ export const completeSalesOfferPackagesForMultipleProducts = (
     }
 };
 
-export const randomlyChooseAndSelectServices = (): void => {
+export const randomlyChooseAndSelectServices = (isExempted?: boolean): void => {
     // to unselect all boxes when editing
-    clickElementById('select-all-button');
-    clickElementById('select-all-button');
+    if (isExempted) {
+        cy.get('.govuk-checkboxes__input').each((checkbox) => {
+            if (checkbox.prop('checked')) {
+                cy.wrap(checkbox).uncheck();
+            }
+        });
+    } else {
+        clickElementById('select-all-button');
+        clickElementById('select-all-button');
+    }
     const randomSelector = getRandomNumber(1, 4);
     switch (randomSelector) {
         case 1: {
@@ -655,6 +663,8 @@ export const addOtherProductsIfNotPresent = (): void => {
     cy.wrap(numberOfFlatFareProducts).as('numberOfFlatFareProducts');
     let numberOfFlatFareCarnetProducts = 0;
     cy.wrap(numberOfFlatFareCarnetProducts).as('numberOfFlatFareCarnetProducts');
+    let flatFareWithExemptions = false;
+    cy.wrap(flatFareWithExemptions).as('flatFareWithExemptions');
 
     cy.get(`[data-card-count]`).then((element) => {
         const totNumberOfProducts = Number(element.attr('data-card-count'));
@@ -701,6 +711,16 @@ export const addOtherProductsIfNotPresent = (): void => {
             isFinished();
             cy.log('Flat fare product set up');
         }
+        getHomePage();
+        clickElementById('manage-fares-link');
+        clickElementByText('Other products');
+        getElementByClass('govuk-table__row').each(($row) => {
+            const rowText = $row.text();
+            if (rowText.includes('Flat Fare Exemptions Test Product')) {
+                flatFareWithExemptions = true;
+                cy.wrap(flatFareWithExemptions).as('flatFareWithExemptions');
+            }
+        });
     });
 
     cy.get('@numberOfFlatFareCarnetProducts').then((numberOfFlatFareProducts) => {
@@ -711,6 +731,19 @@ export const addOtherProductsIfNotPresent = (): void => {
             completeSalesPages(3, 'Flat fare carnet ');
             isFinished();
             cy.log('Flat fare carnet product set up');
+        }
+    });
+
+    cy.get('@flatFareWithExemptions').then((flatFareWithExemptions) => {
+        if (flatFareWithExemptions.toString() === 'false') {
+            selectFareType('flatFare', false);
+            defineUserTypeAndTimeRestrictions();
+            clickElementById('radio-option-geoZone');
+            continueButtonClick();
+            completeFlatFarePages('Flat Fare Exemptions Test Product', false, false, true, false);
+            completeSalesPages();
+            isFinished();
+            cy.log('Flat fare with exemptions product set up');
         }
     });
 };

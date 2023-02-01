@@ -8,7 +8,6 @@ import {
 } from './helpers';
 import { addSingleMultiOperatorGroup } from './multiOperatorGroups';
 import { enterPassengerTypeDetails, addGroupPassengerType } from './passengerTypes';
-import { addSingleProductGroup } from './productGroups';
 import { addPurchaseMethod } from './purchaseMethods';
 import { addTimeRestriction } from './timeRestrictions';
 
@@ -29,10 +28,6 @@ before(() => {
 
     addSingleProductIfNotPresent();
     addOtherProductsIfNotPresent();
-    getHomePage();
-    clickElementById('account-link');
-    clickElementByText('Product groups');
-    addTestProductGroups();
     cy.log('Global Settings set up for LNUD');
 
     // Disabling the below, as schemes are currently not fully supported
@@ -80,24 +75,6 @@ const addTestOperatorGroups = (): void => {
             }
             if (!operatorGroupsValue.includes('test2')) {
                 addSingleMultiOperatorGroup('test2', false, false);
-            }
-        });
-    });
-};
-
-const addTestProductGroups = (): void => {
-    cy.get(`[data-card-count]`).then((element) => {
-        const numberofProductGroups = Number(element.attr('data-card-count'));
-        cy.log(`There are ${numberofProductGroups} product groups`);
-        cy.get(`[product-groups]`).then((element) => {
-            const productGroups = element.attr('product-groups').toString();
-
-            const productGroupsValue = productGroups.split(',');
-            if (!productGroupsValue.includes('test')) {
-                addSingleProductGroup('test', false);
-            }
-            if (!productGroupsValue.includes('test2')) {
-                addSingleProductGroup('test2', true);
             }
         });
     });

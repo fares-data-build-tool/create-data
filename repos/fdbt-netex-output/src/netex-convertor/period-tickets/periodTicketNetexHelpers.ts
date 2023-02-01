@@ -56,6 +56,7 @@ import {
     getProfileRef,
     getUserProfile,
     isFlatFareType,
+    isMultiOpFlatFareType,
     NetexObject,
     replaceIWBusCoNocCode,
 } from '../sharedHelpers';
@@ -356,7 +357,7 @@ export const getGeoZoneFareTable = (
     });
 };
 
-const getMultiServiceList = (
+export const getMultiServiceList = (
     userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorMultiServiceTicket,
     ticketUserConcat: string,
 ): NetexObject[] => {
@@ -410,17 +411,28 @@ const getMultiServiceList = (
                                             ...getProfileRef(userPeriodTicket),
                                         },
                                         prices: {
-                                            TimeIntervalPrice: {
-                                                version: '1.0',
-                                                id: `op:${product.productName}@${salesOfferPackage.name}@service`,
-                                                Amount: { $t: `${salesOfferPackage.price || product.productPrice}` },
-                                                TimeIntervalRef: {
-                                                    version: '1.0',
-                                                    ref: `op:Tariff@${
-                                                        product.productName
-                                                    }@${product.productDuration.replace(' ', '-')}`,
-                                                },
-                                            },
+                                            TimeIntervalPrice:
+                                                'productDuration' in product
+                                                    ? {
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@service`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                          TimeIntervalRef: {
+                                                              version: '1.0',
+                                                              ref: `op:Tariff@${
+                                                                  product.productName
+                                                              }@${product.productDuration.replace(' ', '-')}`,
+                                                          },
+                                                      }
+                                                    : {
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@service`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                      },
                                         },
                                     },
                                 },
@@ -827,9 +839,10 @@ export const getPreassignedFareProducts = (
             },
             TypeOfFareProductRef: {
                 version: 'fxc:v1.0',
-                ref: isFlatFareType(userPeriodTicket)
-                    ? 'fxc:standard_product@trip@single'
-                    : 'fxc:standard_product@pass@period',
+                ref:
+                    isFlatFareType(userPeriodTicket) || isMultiOpFlatFareType(userPeriodTicket)
+                        ? 'fxc:standard_product@trip@single'
+                        : 'fxc:standard_product@pass@period',
             },
             OperatorRef: {
                 version: '1.0',
@@ -1061,7 +1074,7 @@ export const getPeriodConditionsElement = (
             },
             LimitationGroupingType: { $t: 'AND' },
             limitations: {
-                ...(isFlatFareType(userPeriodTicket)
+                ...(isFlatFareType(userPeriodTicket) || isMultiOpFlatFareType(userPeriodTicket)
                     ? {
                           RoundTrip: {
                               version: '1.0',

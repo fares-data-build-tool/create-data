@@ -665,6 +665,12 @@ describe('myfares pages', () => {
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
                         { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
+                            id: 'stops',
+                            name: 'Number of stops',
+                            content: ['15'],
+                            editLink: '/csvZoneUpload',
+                        },
+                        {
                             id: 'exempted-services',
                             name: 'Exempted Services',
                             content: ['N/A'],
@@ -741,6 +747,12 @@ describe('myfares pages', () => {
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Multi operator'] },
                         { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
+                        {
+                            id: 'stops',
+                            name: 'Number of stops',
+                            content: ['15'],
+                            editLink: '/csvZoneUpload',
+                        },
                         {
                             id: 'exempted-services',
                             name: 'Exempted Services',
@@ -899,6 +911,12 @@ describe('myfares pages', () => {
                         { name: 'Fare type', id: 'fare-type', content: ['Period'] },
                         { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
+                            id: 'stops',
+                            name: 'Number of stops',
+                            content: ['15'],
+                            editLink: '/csvZoneUpload',
+                        },
+                        {
                             id: 'exempted-services',
                             name: 'Exempted Services',
                             content: ['N/A'],
@@ -1049,6 +1067,12 @@ describe('myfares pages', () => {
                     productDetailsElements: [
                         { name: 'Fare type', id: 'fare-type', content: ['Flat fare'] },
                         { id: 'zone', name: 'Zone', content: ['my flat fare zone'], editLink: '/csvZoneUpload' },
+                        {
+                            id: 'stops',
+                            name: 'Number of stops',
+                            content: ['15'],
+                            editLink: '/csvZoneUpload',
+                        },
                         {
                             id: 'exempted-services',
                             name: 'Exempted Services',

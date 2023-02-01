@@ -313,6 +313,12 @@ const createProductDetails = async (
             editLink: '/csvZoneUpload',
         });
         productDetailsElements.push({
+            id: 'stops',
+            name: 'Number of stops',
+            content: [ticket.stops.length.toString()],
+            editLink: '/csvZoneUpload',
+        });
+        productDetailsElements.push({
             id: 'exempted-services',
             name: 'Exempted Services',
             content:

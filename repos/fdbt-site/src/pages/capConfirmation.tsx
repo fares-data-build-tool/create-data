@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import {
     TYPE_OF_CAP_ATTRIBUTE,
     CAPS_ATTRIBUTE,
-    CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
     CAP_EXPIRY_ATTRIBUTE,
     CAP_START_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
@@ -16,8 +15,7 @@ import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute } from '../utils/sessions';
 import { isCapExpiry, isCapStartInfo, isWithErrors } from '../interfaces/typeGuards';
-import { getCsrfToken, sentenceCaseString, getAndValidateNoc } from '../utils';
-import { getProductGroupByNocAndId } from '../data/auroradb';
+import { getCsrfToken, sentenceCaseString } from '../utils';
 import { isServiceListAttributeWithErrors } from '../../src/pages/serviceList';
 
 const title = 'Cap Confirmation - Create Fares Data Service';
@@ -25,7 +23,6 @@ const description = 'Cap Confirmation page of the Create Fares Data Service';
 
 interface CapConfirmationProps {
     typeOfCap: string;
-    productGroupName: string;
     cappedProductName: string;
     caps: Cap[];
     capValidity: string;
@@ -40,7 +37,6 @@ interface CapConfirmationProps {
 
 export const buildCapConfirmationElements = (
     typeOfCap: string,
-    productGroupName: string,
     cappedProductName: string,
     caps: Cap[],
     capValidity: string,
@@ -58,14 +54,6 @@ export const buildCapConfirmationElements = (
             href: 'typeOfCap',
         },
     ];
-
-    if (productGroupName) {
-        confirmationElements.push({
-            name: 'Product group name',
-            content: productGroupName,
-            href: '/selectCappedProductGroup',
-        });
-    }
 
     if (cappedProductName) {
         confirmationElements.push({
@@ -150,7 +138,6 @@ export const buildCapConfirmationElements = (
 
 const CapConfirmation = ({
     typeOfCap,
-    productGroupName,
     cappedProductName,
     caps,
     capValidity,
@@ -170,7 +157,6 @@ const CapConfirmation = ({
                     header="Cap Information"
                     confirmationElements={buildCapConfirmationElements(
                         typeOfCap,
-                        productGroupName,
                         cappedProductName,
                         caps,
                         capValidity,
@@ -188,9 +174,8 @@ const CapConfirmation = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: CapConfirmationProps }> => {
+export const getServerSideProps = (ctx: NextPageContextWithSession): { props: CapConfirmationProps } => {
     const csrfToken = getCsrfToken(ctx);
-    const noc = getAndValidateNoc(ctx);
 
     const typeOfCapAttribute = getSessionAttribute(ctx.req, TYPE_OF_CAP_ATTRIBUTE);
     const additionalPricingAttribute = getSessionAttribute(ctx.req, ADDITIONAL_PRICING_ATTRIBUTE);
@@ -201,13 +186,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const capAttribute = getSessionAttribute(ctx.req, CAPS_ATTRIBUTE) as CapDetails | undefined;
     const capStartAttribute = getSessionAttribute(ctx.req, CAP_START_ATTRIBUTE);
-
-    const productGroupIdAttribute = getSessionAttribute(ctx.req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE);
-
-    const productGroupName =
-        productGroupIdAttribute && typeof productGroupIdAttribute === 'string'
-            ? (await getProductGroupByNocAndId(noc, Number.parseInt(productGroupIdAttribute)))?.name
-            : '';
 
     const caps = capAttribute?.caps || [];
     const cappedProductName = capAttribute?.productName;
@@ -270,7 +248,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     return {
         props: {
             typeOfCap: typeOfCapAttribute.typeOfCap,
-            productGroupName: productGroupName || '',
             cappedProductName: cappedProductName || '',
             caps,
             capValidity,

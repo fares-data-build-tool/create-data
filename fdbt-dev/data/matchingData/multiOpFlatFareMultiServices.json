@@ -1,0 +1,155 @@
+{
+  "operatorName": "Blackpool Transport",
+  "additionalOperators": [
+    {
+      "nocCode": "WBTR",
+      "selectedServices": [
+        {
+          "lineName": "5",
+          "lineId": "AD1146649_RJ1_Outbound",
+          "serviceCode": "NW_05_WBTR_3_1",
+          "startDate": "05/04/2020",
+          "serviceDescription": "LONDON - ESSEX - BIRMINGHAM"
+        },
+        {
+          "lineName": "4",
+          "lineId": "FD1146649_RJ1_Outbound",
+          "serviceCode": "NW_05_WBTR_7_1",
+          "startDate": "05/04/2020",
+          "serviceDescription": "EDINBURGH - GLASGOW - LEEDS"
+        },
+        {
+          "lineName": "7",
+          "lineId": "XC1146649_RJ1_Outbound",
+          "serviceCode": "NW_05_WBTR_6_1",
+          "startDate": "05/04/2020",
+          "serviceDescription": "HULL - WIGAN - BOLTON"
+        }
+      ]
+    },
+    {
+      "nocCode": "NWBT",
+      "selectedServices": [
+        {
+          "lineName": "15A",
+          "lineId": "02SfpM",
+          "serviceCode": "NW_05_NWBT_15A_1",
+          "startDate": "28/03/2020",
+          "serviceDescription": "BURNLEY - BURNLEY via Branch Road, Moorland Road"
+        },
+        {
+          "lineName": "65",
+          "lineId": "M0L2FP",
+          "serviceCode": "NW_05_NWBT_65_1",
+          "startDate": "28/03/2020",
+          "serviceDescription": "BURNLEY - NELSON via Sycamore Avenue, Lowerhouse, Slade Lane, Higham, Barrowford"
+        }
+      ]
+    }
+  ],
+  "type": "multiOperator",
+  "nocCode": "BLAC",
+  "passengerType": "adult",
+  "ageRange": "Yes",
+  "ageRangeMin": "18",
+  "ageRangeMax": "65",
+  "email": "test@example.com",
+  "uuid": "BLACc6613dbf",
+  "timeRestriction": [
+    {
+      "day": "monday",
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
+    },
+    {
+      "day": "tuesday",
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
+    },
+    {
+      "day": "wednesday",
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
+    },
+    {
+      "day": "thursday",
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
+    }
+  ],
+  "ticketPeriod": {
+    "startDate": "2002-02-01T00:00:00.000Z"
+  },
+
+  "products": [
+    {
+      "productName": "firstprod",
+      "productPrice": "1",
+      "salesOfferPackages": [
+        {
+          "name": "Online (smart card)",
+          "description": "Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.",
+          "purchaseLocations": [
+            "online"
+          ],
+          "paymentMethods": [
+            "directDebit",
+            "creditCard",
+            "debitCard"
+          ],
+          "ticketFormats": [
+            "smartCard"
+          ]
+        },
+        {
+          "name": "Mobile App",
+          "description": "Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.",
+          "purchaseLocations": [
+            "mobileDevice"
+          ],
+          "paymentMethods": [
+            "debitCard",
+            "creditCard",
+            "mobilePhone",
+            "directDebit"
+          ],
+          "ticketFormats": [
+            "mobileApp"
+          ]
+        }
+      ]
+    }
+  ],
+  "selectedServices": [
+    {
+      "lineName": "2",
+      "lineId": "YpQjUw",
+      "serviceCode": "NW_05_BLAC_2_1",
+      "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients"
+    },
+    {
+      "lineName": "2C",
+      "lineId": "vySmfewe0",
+      "serviceCode": "NW_05_BLAC_2C_1",
+      "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
+    }
+  ],
+  "termTime": false,
+  "carnet": false
+}
