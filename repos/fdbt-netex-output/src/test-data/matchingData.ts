@@ -3031,6 +3031,223 @@ export const multiOperatorGeoZoneTicket: MultiOperatorGeoZoneTicket = {
     },
 };
 
+export const multiOperatorFlatFareMultiServicesTicket = {
+    operatorName: 'Blackpool Transport',
+    additionalOperators: [
+        {
+            nocCode: 'WBTR',
+            selectedServices: [
+                {
+                    lineName: '5',
+                    lineId: 'AK1146649_RJ522_Outbound',
+                    serviceCode: 'NW_05_WBTR_3_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'LONDON - ESSEX - BIRMINGHAM',
+                },
+                {
+                    lineName: '4',
+                    lineId: 'AK12349_RJ12_Inbound',
+                    serviceCode: 'NW_05_WBTR_7_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'EDINBURGH - GLASGOW - LEEDS',
+                },
+                {
+                    lineName: '7',
+                    lineId: 'AK11329_RJ12_Inbound',
+                    serviceCode: 'NW_05_WBTR_6_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'HULL - WIGAN - BOLTON',
+                },
+            ],
+        },
+        {
+            nocCode: 'DCCL',
+            selectedServices: [
+                {
+                    lineName: '663',
+                    lineId: 'AK1146649_RCX52_Inbound',
+                    serviceCode: 'NW_05_DCCL_3_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'LEEDS - WAKEFIELD - YORK',
+                },
+                {
+                    lineName: '77',
+                    lineId: 'AK1146319_RJ52_Inbound',
+                    serviceCode: 'NW_05_DCCL_7_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'BEESTON - HUNSLET - CITY CENTRE',
+                },
+                {
+                    lineName: '65',
+                    lineId: 'AK233649_RJ52_Inbound',
+                    serviceCode: 'NW_05_DCCL_6_1',
+                    startDate: '05/04/2020',
+                    serviceDescription: 'LIVERPOOL - MANCHESTER - BOLTON',
+                },
+            ],
+        },
+    ],
+    type: 'multiOperator',
+    nocCode: 'BLAC',
+    email: 'test@example.com',
+    termTime: false,
+    uuid: 'BLACc1363964',
+    timeRestriction: [
+        {
+            day: 'monday',
+            timeBands: [{ startTime: '', endTime: '' }],
+        },
+        {
+            day: 'tuesday',
+            timeBands: [{ startTime: '', endTime: '' }],
+        },
+        {
+            day: 'wednesday',
+            timeBands: [{ startTime: '', endTime: '' }],
+        },
+        {
+            day: 'thursday',
+            timeBands: [{ startTime: '', endTime: '' }],
+        },
+    ],
+    products: [
+        {
+            productName: 'Test Product 1',
+            productPrice: '3',
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    name: 'Online (smart card)',
+                    description:
+                        'Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.',
+                    purchaseLocations: ['online'],
+                    paymentMethods: ['directDebit', 'creditCard', 'debitCard'],
+                    ticketFormats: ['smartCard'],
+                },
+                {
+                    id: 2,
+                    name: 'Mobile App',
+                    description:
+                        'Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.',
+                    purchaseLocations: ['mobileDevice'],
+                    paymentMethods: ['debitCard', 'creditCard', 'mobilePhone', 'directDebit'],
+                    ticketFormats: ['mobileApp'],
+                },
+            ],
+        },
+    ],
+    passengerType: 'youngPerson',
+    ageRange: 'Yes',
+    ageRangeMin: '16',
+    ageRangeMax: '25',
+    proof: 'Yes',
+    proofDocuments: ['identityDocument'],
+    selectedServices: [
+        {
+            lineName: '25',
+            lineId: 'AK114649_RJ52_Inbound',
+            serviceCode: 'NW_07_BLAC_25_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'KNOTT END - POULTON - BLACKPOOL',
+        },
+        {
+            lineName: '25',
+            lineId: 'AK1216649_RJ52_Inbound',
+            serviceCode: 'NW_07_BLAC_25_2',
+            startDate: '13/04/2020',
+            serviceDescription: 'BLACKPOOL - ST ANNES - LYTHAM',
+        },
+        {
+            lineName: '4',
+            lineId: 'AK1146649_RJ52_Inbound',
+            serviceCode: 'NW_05_BLAC_4_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'CLEVELEYS - MERESIDE via Blackpool',
+        },
+        {
+            lineName: '19',
+            lineId: 'AK22346649_RJ5_Outbound',
+            serviceCode: 'NW_05_BLAC_19_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)',
+        },
+        {
+            lineName: '1',
+            lineId: 'AK114s649_FF5_Outbound',
+            serviceCode: 'NW_05_BLAC_1_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'FLEETWOOD - BLACKPOOL via Promenade',
+        },
+        {
+            lineName: '2',
+            lineId: 'AK1146649_RJ667_Outbound',
+            serviceCode: 'NW_05_BLAC_2_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
+        },
+        {
+            lineName: '5',
+            lineId: 'AK1146649_RJ5_Outbound',
+            serviceCode: 'NW_05_BLAC_5_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'VICTORIA HOSPITAL - BLACKPOOL TOWN CENTRE - HALFWAY HOUSE',
+        },
+        {
+            lineName: '9',
+            lineId: 'PK11434534566_RJ19_Outbound',
+            serviceCode: 'NW_05_BLAC_9_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'CLEVELEYS - BLACKPOOL via Bispham',
+        },
+        {
+            lineName: '14',
+            lineId: 'PK123219_RJ19_Outbound',
+            serviceCode: 'NW_05_BLAC_14_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'FLEETWOOD - BLACKPOOL via Layton',
+        },
+        {
+            lineName: '18',
+            lineId: 'PK1146649_RJ19_Outbound',
+            serviceCode: 'NW_05_BLAC_18_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'BLACKPOOL - MERESIDE via South Shore',
+        },
+        {
+            lineName: '11',
+            lineId: '',
+            serviceCode: 'NW_05_BLAC_11_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'LYTHAM - BLACKPOOL via St Annes',
+        },
+        {
+            lineName: '3',
+            lineId: 'PK1146649_RJ1_Outbound',
+            serviceCode: 'NW_05_BLAC_3_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'MERESIDE - BLACKPOOL - CLEVELEYS - CLEVELEYS PARK',
+        },
+        {
+            lineName: '7',
+            lineId: 'PK1146649_RJ2_Outbound',
+            serviceCode: 'NW_05_BLAC_7_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'CLEVELEYS - BLACKPOOL - ST ANNES CLIFTON HOSPITAL',
+        },
+        {
+            lineName: '6',
+            lineId: 'PK1146649_RJ4_Outbound',
+            serviceCode: 'NW_05_BLAC_6_1',
+            startDate: '05/04/2020',
+            serviceDescription: 'MERESIDE - BLACKPOOL - GRANGE PARK',
+        },
+    ],
+    ticketPeriod: {
+        startDate: '2010-12-17T09:30:46.0Z',
+        endDate: '2028-12-17T09:30:46.0Z',
+    },
+};
+
 export const multiOperatorMultiServiceTicket: MultiOperatorMultipleServicesTicket = {
     operatorName: 'Blackpool Transport',
     additionalOperators: [

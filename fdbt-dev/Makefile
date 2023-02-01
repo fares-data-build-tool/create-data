@@ -97,6 +97,16 @@ generate-multi-op-multi-service:
 
 generate-validate-multi-op-multi-service: generate-multi-op-multi-service validate-latest-file
 
+generate-multi-op-flat-fare-geo-zone:
+	./scripts/trigger_netex_convertor.sh multiOpFlatFareGeoZone
+
+generate-validate-multi-op-flat-fare-geo-zone: generate-multi-op-flat-fare-geo-zone validate-latest-file
+
+generate-multi-op-flat-fare-multi-service:
+	./scripts/trigger_netex_convertor.sh multiOpFlatFareMultiServices
+
+generate-validate-multi-op-multi-service: generate-multi-op-flat-fare-multi-service validate-latest-file
+
 generate-scheme-operator-geo-zone:
 	./scripts/trigger_netex_convertor.sh schemeOperatorGeoZone
 

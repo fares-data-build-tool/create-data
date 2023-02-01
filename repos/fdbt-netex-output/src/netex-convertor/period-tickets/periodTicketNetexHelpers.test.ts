@@ -13,10 +13,12 @@ import {
     flatFareTicket,
     carnetPeriodGeoZoneTicket,
     carnetPeriodMultipleServicesTicket,
+    multiOperatorFlatFareMultiServicesTicket,
 } from '../../test-data/matchingData';
 import { operatorData, multiOperatorList } from '../test-data/operatorData';
 import * as db from '../../data/auroradb';
 import { replaceIWBusCoNocCode } from '../sharedHelpers';
+import { PeriodMultipleServicesTicket } from 'fdbt-types/matchingJsonTypes';
 
 describe('periodTicketNetexHelpers', () => {
     const { stops } = periodGeoZoneTicket;
@@ -91,6 +93,60 @@ describe('periodTicketNetexHelpers', () => {
             },
         },
     });
+
+    const multiOpFlatFareFareTableSchema = {
+        version: '1.0',
+        id: expect.any(String),
+        Name: {
+            $t: expect.any(String),
+        },
+        pricesFor: {
+            PreassignedFareProductRef: {
+                version: '1.0',
+                ref: expect.any(String),
+            },
+        },
+        includes: {
+            FareTable: {
+                version: '1.0',
+                id: expect.any(String),
+                Name: {
+                    $t: expect.any(String),
+                },
+                includes: {
+                    FareTable: {
+                        version: '1.0',
+                        id: expect.any(String),
+                        pricesFor: {
+                            SalesOfferPackageRef: {
+                                version: '1.0',
+                                ref: expect.any(String),
+                            },
+                        },
+                        includes: {
+                            FareTable: {
+                                version: '1.0',
+                                id: expect.any(String),
+                                limitations: {
+                                    UserProfileRef: {
+                                        version: '1.0',
+                                        ref: expect.any(String),
+                                    },
+                                },
+                                prices: {
+                                    TimeIntervalPrice: {
+                                        version: '1.0',
+                                        id: expect.any(String),
+                                        Amount: { $t: expect.any(String) },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    };
 
     const geoZoneFareTableSchema = (carnet: boolean): {} => ({
         version: '1.0',
@@ -323,6 +379,37 @@ describe('periodTicketNetexHelpers', () => {
             expect(flatFareFareTables).toHaveLength(expectedLength);
             flatFareFareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(flatFareFareTableSchema);
+            });
+        });
+    });
+
+    describe('getMultiServiceList', () => {
+        it('returns a list of fare table objects when given multi operator flat fare matching data', () => {
+            const expectedLength = multiOperatorFlatFareMultiServicesTicket.products
+                .map(product => product.salesOfferPackages.length)
+                .reduce((a, b) => a + b);
+
+            const flatFareFareTables = netexHelpers.getMultiServiceList(
+                multiOperatorFlatFareMultiServicesTicket as PeriodMultipleServicesTicket,
+                'test',
+            );
+            expect(flatFareFareTables).toHaveLength(expectedLength);
+
+            flatFareFareTables.forEach(fareTable => {
+                expect(fareTable).toEqual(multiOpFlatFareFareTableSchema);
+            });
+        });
+
+        it('returns a list of fare table objects when given multi operator matching data', () => {
+            const expectedLength = periodMultipleServicesTicket.products
+                .map(product => product.salesOfferPackages.length)
+                .reduce((a, b) => a + b);
+
+            const flatFareFareTables = netexHelpers.getMultiServiceList(periodMultipleServicesTicket, 'test');
+            expect(flatFareFareTables).toHaveLength(expectedLength);
+
+            flatFareFareTables.forEach(fareTable => {
+                expect(fareTable).toEqual(multiServiceFareTableSchema(false));
             });
         });
     });
