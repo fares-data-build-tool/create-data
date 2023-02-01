@@ -839,9 +839,10 @@ export const getPreassignedFareProducts = (
             },
             TypeOfFareProductRef: {
                 version: 'fxc:v1.0',
-                ref: isFlatFareType(userPeriodTicket)
-                    ? 'fxc:standard_product@trip@single'
-                    : 'fxc:standard_product@pass@period',
+                ref:
+                    isFlatFareType(userPeriodTicket) || isMultiOpFlatFareType(userPeriodTicket)
+                        ? 'fxc:standard_product@trip@single'
+                        : 'fxc:standard_product@pass@period',
             },
             OperatorRef: {
                 version: '1.0',

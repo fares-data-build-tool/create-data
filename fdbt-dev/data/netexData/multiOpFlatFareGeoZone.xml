@@ -15,7 +15,7 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
+            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
             <PreassignedFareProductRef version="1.0" ref="op:Pass@JTest00_adult"/>
             <BrandingRef version="1.0" ref="op:BLAC@brand"/>
             <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
@@ -33,7 +33,7 @@
         <FromDate>2002-02-01T00:00:00.000Z</FromDate>
       </ValidBetween>
       <Name>Fares for Blackpool Transport</Name>
-      <Description>Period ticket for Blackpool Transport</Description>
+      <Description>Flat fare ticket for Blackpool Transport</Description>
       <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
       <codespaces>
         <CodespaceRef ref="epd_data"/>
@@ -254,8 +254,8 @@
               </validityConditions>
               <Name>Tariff for JTest00</Name>
               <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
-              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
-              <TariffBasis>zone</TariffBasis>
+              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
+              <TariffBasis>flat</TariffBasis>
               <qualityStructureFactors>
                 <FareDemandFactor id="op@Tariff@Demand" version="1.0">
                   <validityConditions>
@@ -358,7 +358,7 @@
               <Name>JTest00</Name>
               <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@JTest00_adult@travel">
@@ -376,7 +376,7 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@JTest00_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
+              <ProductType>singleTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>

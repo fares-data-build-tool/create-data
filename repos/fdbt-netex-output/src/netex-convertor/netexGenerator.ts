@@ -55,6 +55,7 @@ import {
     getNetexTemplateAsJson,
     getTimeRestrictions,
     isFlatFareType,
+    isMultiOpFlatFareType,
     NetexObject,
 } from './sharedHelpers';
 
@@ -117,7 +118,10 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
             publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.TypeOfFareProductRef = {
                 version: 'fxc:v1.0',
-                ref: isFlatFareType(ticket) ? 'fxc:standard_product@trip@single' : 'fxc:standard_product@pass@period',
+                ref:
+                    isFlatFareType(ticket) || isMultiOpFlatFareType(ticket)
+                        ? 'fxc:standard_product@trip@single'
+                        : 'fxc:standard_product@pass@period',
             };
         }
 
@@ -165,9 +169,10 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             compositeFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:CompositeFrame_UK_PI_${ticketTypeInsert}_FARE_OFFER:Pass@${coreData.placeholderGroupOfProductsName}:op`;
             compositeFrameToUpdate.Name.$t = `Fares for ${operatorName}`;
 
-            compositeFrameToUpdate.Description.$t = isFlatFareType(ticket)
-                ? `Flat fare ticket for ${operatorName}`
-                : `Period ticket for ${operatorName}`;
+            compositeFrameToUpdate.Description.$t =
+                isFlatFareType(ticket) || isMultiOpFlatFareType(ticket)
+                    ? `Flat fare ticket for ${operatorName}`
+                    : `Period ticket for ${operatorName}`;
         }
 
         return compositeFrameToUpdate;
@@ -395,7 +400,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         );
         tariff.fareStructureElements.FareStructureElement = fareStructuresElements;
 
-        if (isFlatFareType(ticket)) {
+        if (isFlatFareType(ticket) || isMultiOpFlatFareType(ticket)) {
             const typeOfTariffRef = isPricedByDistance ? 'fxc:Distance_kilometers' : 'fxc:flat';
             const tariffBasis = isPricedByDistance ? 'distance' : 'flat';
 
