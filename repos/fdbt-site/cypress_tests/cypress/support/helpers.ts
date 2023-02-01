@@ -711,12 +711,16 @@ export const addOtherProductsIfNotPresent = (): void => {
             isFinished();
             cy.log('Flat fare product set up');
         }
-        getElementByClass('govuk-table__body')
-            .contains('[class=govuk-table__row]', 'Flat Fare Exemptions Test Product')
-            .then(() => {
+        getHomePage();
+        clickElementById('manage-fares-link');
+        clickElementByText('Other products');
+        getElementByClass('govuk-table__row').each(($row) => {
+            const rowText = $row.text();
+            if (rowText.includes('Flat Fare Exemptions Test Product')) {
                 flatFareWithExemptions = true;
                 cy.wrap(flatFareWithExemptions).as('flatFareWithExemptions');
-            });
+            }
+        });
     });
 
     cy.get('@numberOfFlatFareCarnetProducts').then((numberOfFlatFareProducts) => {
