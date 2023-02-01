@@ -14,7 +14,10 @@ import {
     editCarnetExpiry,
     editEndDateOtherProductsPage,
     editEndDatePointToPointPage,
+    editExemptedServices,
     editFareTrianglePointToPointPage,
+    editFareZone,
+    editFareZoneStops,
     editOperatorGroupMultiOperatorProductsPage,
     editPassengerTypeOtherProductsPage,
     editPassengerTypePointToPointPage,
@@ -195,6 +198,44 @@ describe('The my fares products pages', () => {
             .click()
             .then(() => {
                 editProductExpiry();
+            });
+    });
+    it("allows the user to edit a product's zone name", () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Other products');
+        getElementByClass('govuk-table__body')
+            .contains('[class=govuk-table__row]', 'Flat Fare Exemptions Test Product')
+            .find('td a')
+            .click()
+            .then(() => {
+                editFareZone();
+                clickElementByText('Back');
+            });
+    });
+    it("allows the user to edit a product's exempted services", () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Other products');
+        getElementByClass('govuk-table__body')
+            .contains('[class=govuk-table__row]', 'Flat Fare Exemptions Test Product')
+            .find('td a')
+            .click()
+            .then(() => {
+                editExemptedServices();
+            });
+    });
+    it("allows the user to edit a product's stops", () => {
+        getHomePage();
+        clickElementById('account-link');
+        clickElementByText('Other products');
+        getElementByClass('govuk-table__body')
+            .contains('[class=govuk-table__row]', 'Flat Fare Exemptions Test Product')
+            .find('td a')
+            .click()
+            .then(() => {
+                editFareZoneStops();
+                clickElementByText('Back');
             });
     });
 });
