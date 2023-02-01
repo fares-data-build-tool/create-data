@@ -98,11 +98,6 @@ exports[`pages capConfirmation should render correctly for capped ticket by prod
             "name": "Cap type",
           },
           Object {
-            "content": "capped-product-group-name",
-            "href": "/selectCappedProductGroup",
-            "name": "Product group name",
-          },
-          Object {
             "content": "By products cap",
             "href": "/createCaps",
             "name": "Capped product name",

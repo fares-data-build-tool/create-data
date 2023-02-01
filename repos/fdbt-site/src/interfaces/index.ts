@@ -223,7 +223,6 @@ export interface GlobalSettingsCounts {
     fareDayEndSet: boolean;
     operatorDetailsSet: boolean;
     operatorGroupsCount: number;
-    productGroupsCount: number;
 }
 
 export interface PassengerAttributes {
