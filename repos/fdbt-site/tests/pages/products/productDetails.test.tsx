@@ -666,7 +666,7 @@ describe('myfares pages', () => {
                         { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
                             id: 'stops',
-                            name: 'Stops',
+                            name: 'Number of stops',
                             content: ['15'],
                             editLink: '/csvZoneUpload',
                         },
@@ -749,7 +749,7 @@ describe('myfares pages', () => {
                         { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
                             id: 'stops',
-                            name: 'Stops',
+                            name: 'Number of stops',
                             content: ['15'],
                             editLink: '/csvZoneUpload',
                         },
@@ -912,7 +912,7 @@ describe('myfares pages', () => {
                         { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
                             id: 'stops',
-                            name: 'Stops',
+                            name: 'Number of stops',
                             content: ['15'],
                             editLink: '/csvZoneUpload',
                         },
@@ -1069,7 +1069,7 @@ describe('myfares pages', () => {
                         { id: 'zone', name: 'Zone', content: ['my flat fare zone'], editLink: '/csvZoneUpload' },
                         {
                             id: 'stops',
-                            name: 'Stops',
+                            name: 'Number of stops',
                             content: ['15'],
                             editLink: '/csvZoneUpload',
                         },

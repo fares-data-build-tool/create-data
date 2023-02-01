@@ -314,7 +314,7 @@ const createProductDetails = async (
         });
         productDetailsElements.push({
             id: 'stops',
-            name: 'Stops',
+            name: 'Number of stops',
             content: [ticket.stops.length.toString()],
             editLink: '/csvZoneUpload',
         });
