@@ -357,7 +357,7 @@ export const getGeoZoneFareTable = (
     });
 };
 
-const getMultiServiceList = (
+export const getMultiServiceList = (
     userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorMultiServiceTicket,
     ticketUserConcat: string,
 ): NetexObject[] => {
