@@ -385,7 +385,7 @@ describe('periodTicketNetexHelpers', () => {
 
     describe('getMultiServiceList', () => {
         it('returns a list of fare table objects when given multi operator flat fare matching data', () => {
-            const expectedLength = periodMultipleServicesTicket.products
+            const expectedLength = multiOperatorFlatFareMultiServicesTicket.products
                 .map(product => product.salesOfferPackages.length)
                 .reduce((a, b) => a + b);
 
@@ -397,6 +397,19 @@ describe('periodTicketNetexHelpers', () => {
 
             flatFareFareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(multiOpFlatFareFareTableSchema);
+            });
+        });
+
+        it('returns a list of fare table objects when given multi operator matching data', () => {
+            const expectedLength = periodMultipleServicesTicket.products
+                .map(product => product.salesOfferPackages.length)
+                .reduce((a, b) => a + b);
+
+            const flatFareFareTables = netexHelpers.getMultiServiceList(periodMultipleServicesTicket, 'test');
+            expect(flatFareFareTables).toHaveLength(expectedLength);
+
+            flatFareFareTables.forEach(fareTable => {
+                expect(fareTable).toEqual(multiServiceFareTableSchema(false));
             });
         });
     });
