@@ -15,8 +15,8 @@ describe('pages', () => {
                     showHybrid
                     showPointToPoint
                     showMultiOperator
-                    isDevOrTest
                     showFlatFlare={false}
+                    isDevOrTest
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -31,8 +31,8 @@ describe('pages', () => {
                     showHybrid={false}
                     showPointToPoint
                     showMultiOperator={true}
-                    isDevOrTest
                     showFlatFlare
+                    isDevOrTest
                 />,
             );
             expect(tree).toMatchSnapshot();

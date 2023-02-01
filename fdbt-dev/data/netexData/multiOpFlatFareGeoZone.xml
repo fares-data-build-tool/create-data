@@ -12,13 +12,13 @@
             <FromDate>2017-01-01T00:00:00Z</FromDate>
           </AvailabilityCondition>
         </selectionValidityConditions>
-        <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
+        <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
             <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
+            <PreassignedFareProductRef version="1.0" ref="op:Pass@JTest00_adult"/>
             <BrandingRef version="1.0" ref="op:BLAC@brand"/>
+            <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
           </objectReferences>
         </NetworkFilterByValue>
       </NetworkFrameTopic>
@@ -28,10 +28,9 @@
     </RequestPolicy>
   </PublicationRequest>
   <dataObjects>
-    <CompositeFrame version="1.0" id="epd:UK:BLAC:CompositeFrame_UK_PI_LINE_FARE_OFFER:Pass@BLAC_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
+    <CompositeFrame version="1.0" id="epd:UK:BLAC:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@BLAC_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
       <ValidBetween>
-        <FromDate>2010-12-17T00:00:00.000Z</FromDate>
-        <ToDate>2028-12-17T23:59:59.999Z</ToDate>
+        <FromDate>2002-02-01T00:00:00.000Z</FromDate>
       </ValidBetween>
       <Name>Fares for Blackpool Transport</Name>
       <Description>Flat fare ticket for Blackpool Transport</Description>
@@ -108,6 +107,48 @@
             </ValueSet>
           </typesOfValue>
           <organisations>
+            <Operator version="1.0" id="noc:WBTR">
+              <PublicCode>WBTR</PublicCode>
+              <Name>Warrington's Own Buses</Name>
+              <ShortName>Warrington's Own Buses</ShortName>
+              <TradingName>Warrington Borough Transport Ltd</TradingName>
+              <ContactDetails>
+                <Phone>01925634296</Phone>
+                <Url>http://warringtonsownbuses.co.uk/</Url>
+              </ContactDetails>
+              <Address>
+                <Street>Wilderspool Causeway, Warrington, Cheshire WA4 6PT</Street>
+              </Address>
+              <PrimaryMode>bus</PrimaryMode>
+            </Operator>
+            <Operator version="1.0" id="noc:DCCL">
+              <PublicCode>DCCL</PublicCode>
+              <Name>Durham County Council</Name>
+              <ShortName>Durham County Council</ShortName>
+              <TradingName>Durham County Council</TradingName>
+              <ContactDetails>
+                <Phone>0300 026 0000</Phone>
+                <Url>http://www.durhamCountyCouncil.co.uk/</Url>
+              </ContactDetails>
+              <Address>
+                <Street>County Hall, Aykley Heads, Durham DH1 5UL</Street>
+              </Address>
+              <PrimaryMode>bus</PrimaryMode>
+            </Operator>
+            <Operator version="1.0" id="noc:HCTY">
+              <PublicCode>HCTY</PublicCode>
+              <Name>Connexions Buses</Name>
+              <ShortName>Connexions Buses</ShortName>
+              <TradingName>Harrogate Coach Travel Ltd</TradingName>
+              <ContactDetails>
+                <Phone>01423339600</Phone>
+                <Url>http://www.connexionsbuses.com/</Url>
+              </ContactDetails>
+              <Address>
+                <Street>Unit 3, South Field Lane, Tockwith, York YO26 7QP</Street>
+              </Address>
+              <PrimaryMode>bus</PrimaryMode>
+            </Operator>
             <Operator version="1.0" id="noc:BLAC">
               <PublicCode>BLAC</PublicCode>
               <Name>Blackpool Transport</Name>
@@ -117,17 +158,83 @@
                 <Phone>01253 473001</Phone>
                 <Url>http://www.blackpooltransport.com</Url>
               </ContactDetails>
-              <OrganisationType>operator</OrganisationType>
               <Address>
                 <Street>Rigby Road, Blackpool FY1 5DD</Street>
               </Address>
               <PrimaryMode>bus</PrimaryMode>
-              <CustomerServiceContactDetails>
-                <Email>enquiries@blackpooltransport.com</Email>
-              </CustomerServiceContactDetails>
             </Operator>
           </organisations>
+          <groupsOfOperators>
+            <GroupOfOperators version="1.0" id="operators@bus">
+              <Name>Bus Operators</Name>
+              <members>
+                <OperatorRef version="1.0" ref="noc:WBTR">Warrington's Own Buses</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:DCCL">Durham County Council</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:HCTY">Connexions Buses</OperatorRef>
+                <OperatorRef version="1.0" ref="noc:BLAC">Blackpool Transport</OperatorRef>
+              </members>
+            </GroupOfOperators>
+          </groupsOfOperators>
         </ResourceFrame>
+        <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_NETWORK:BLAC_products@pass:op" responsibilitySetRef="op:network_data">
+          <Name>BLAC_products Network</Name>
+          <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP"/>
+          <FrameDefaults>
+            <DefaultResponsibilitySetRef version="1.0" ref="op:network_data"/>
+          </FrameDefaults>
+          <prerequisites>
+            <ResourceFrameRef version="1.0" ref="epd:UK:BLAC:ResourceFrame_UK_PI_COMMON:BLAC:op"/>
+          </prerequisites>
+          <fareZones>
+            <FareZone version="1.0" id="op:BLAC_products@Test_Town_Centre">
+              <Name>Test Town Centre</Name>
+              <Description>Test Town Centre BLAC_products Zone</Description>
+              <members>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:CHEPJWM">The Towers, Park Street, Macclesfield</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:wrgdpma">Dog &amp; Partridge, New Manchester Road, Paddington</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:MANATDWT">Manchester Rd, MANCHESTER RD, Hollinwood</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:MANDGADW">Bower Fold, Mottram Rd, Bower Fold</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:MANJTPJW">Oak Road, WARBURTON LANE, Partington</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:MANPATDT">Meadow Close, BOOTH ROAD, Little Lever</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:lanatgjp">Church Road, Church Road, Great Plumpton</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:lanawtwg">Hare and Hounds, Whalley Road, Clayton-le-Moors</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:langjpaw">Skippool Avenue, Breck Road, Poulton-le-Fylde</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:lanpamtw">Lytham St Annes HTC, Church Road, Ansdell</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:blpadadw">Torsway Avenue, Newton Drive, Kingscote</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:blpadwgm">Spencer Court, Talbot Road, Central</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:mergjpjd">Mesnes Park, Park Road North, Newton le Willows</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:merdwgmt">Grosvenor Road, St Helens Road, Prescot</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:32900357">Campbell Avenue, Hamilton Drive, Holgate</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:45010202">Main Street St Johns Close, Main Street, Aberford</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:45019529">Midgley Road Spring Villas, Midgley Road, Mytholmroyd</ScheduledStopPointRef>
+              </members>
+              <types>
+                <TypeOfZoneRef ref="fxc:fare_zone@multi_operator" version="fxc:v1.0"/>
+              </types>
+              <projections>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0076467">Park Street, Macclesfield, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0043040">New Manchester Road, Paddington, Warrington</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0028839">MANCHESTER RD, Hollinwood, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0028586">Mottram Rd, Bower Fold, Stalybridge</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0075113">WARBURTON LANE, Partington, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0028979">BOOTH ROAD, Little Lever, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0015836">Church Road, Great Plumpton, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0015881">Whalley Road, Clayton-le-Moors, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0016583">Breck Road, Poulton-le-Fylde, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0015826">Church Road, Ansdell, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0035280">Newton Drive, Kingscote, Blackpool</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0079370">Talbot Road, Central, Blackpool</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0029817">Park Road North, Newton le Willows, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0052682">St Helens Road, Prescot, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0043596">Hamilton Drive, Holgate, York</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0032162">Main Street, Aberford, Leeds</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0033244">Midgley Road, Mytholmroyd, Hebden Bridge</TopographicProjectionRef>
+              </projections>
+              <ZoneTopology>nested</ZoneTopology>
+              <ScopingMethod>explicitStops</ScopingMethod>
+            </FareZone>
+          </fareZones>
+        </FareFrame>
         <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:BLAC_products@pass:op" responsibilitySetRef="op:tariffs">
           <Name>Fare products</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRODUCT:FXCP"/>
@@ -135,16 +242,18 @@
             <DefaultCodespaceRef ref="op_data"/>
             <DefaultResponsibilitySetRef version="1.0" ref="op:tariffs"/>
           </FrameDefaults>
+          <prerequisites>
+            <FareFrameRef version="1.0" ref="epd:UK:BLAC:FareFrame_UK_PI_FARE_NETWORK:BLAC_products@pass:op"/>
+          </prerequisites>
           <tariffs>
             <Tariff version="1.0" id="op:Tariff@BLAC_products">
               <validityConditions>
                 <ValidBetween>
-                  <FromDate>2010-12-17T00:00:00.000Z</FromDate>
-                  <ToDate>2028-12-17T23:59:59.999Z</ToDate>
+                  <FromDate>2002-02-01T00:00:00.000Z</FromDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Tariff for Weekly Rider</Name>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <Name>Tariff for JTest00</Name>
+              <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
               <TariffBasis>flat</TariffBasis>
               <qualityStructureFactors>
@@ -153,51 +262,22 @@
                     <AvailabilityCondition id="op@Tariff@Condition" version="1.0">
                       <IsAvailable>true</IsAvailable>
                       <dayTypes>
-                        <FareDayType id="op@Tariff@DayType@bankHoliday" version="1.0">
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Everyday</DaysOfWeek>
-                              <HolidayTypes>NationalHoliday</HolidayTypes>
-                            </PropertyOfDay>
-                          </properties>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@tuesday" version="1.0">
+                        <FareDayType id="op@Tariff@DayType@monday" version="1.0">
                           <EarliestTime>09:00:00</EarliestTime>
                           <properties>
                             <PropertyOfDay>
-                              <DaysOfWeek>Tuesday</DaysOfWeek>
+                              <DaysOfWeek>Monday</DaysOfWeek>
                             </PropertyOfDay>
                           </properties>
                           <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_tuesday@timeband_1">
+                            <Timeband version="1.0" id="op:timeband_for_monday@timeband_1">
                               <StartTime>09:00:00</StartTime>
-                              <EndTime>17:00:00</EndTime>
-                            </Timeband>
-                            <Timeband version="1.0" id="op:timeband_for_tuesday@timeband_2">
-                              <StartTime>18:00:00</StartTime>
-                              <EndTime>22:00:00</EndTime>
-                            </Timeband>
-                          </timebands>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@wednesday" version="1.0">
-                          <EarliestTime>13:50:00</EarliestTime>
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Wednesday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_wednesday@timeband_1">
-                              <StartTime>13:50:00</StartTime>
-                              <EndTime>19:50:00</EndTime>
-                            </Timeband>
-                            <Timeband version="1.0" id="op:timeband_for_wednesday@timeband_2">
-                              <StartTime>23:50:00</StartTime>
+                              <EndTime>18:00:00</EndTime>
                             </Timeband>
                           </timebands>
                         </FareDayType>
                         <FareDayType id="op@Tariff@DayType@thursday" version="1.0">
-                          <EarliestTime>00:00:00</EarliestTime>
+                          <EarliestTime>08:00:00</EarliestTime>
                           <properties>
                             <PropertyOfDay>
                               <DaysOfWeek>Thursday</DaysOfWeek>
@@ -205,8 +285,8 @@
                           </properties>
                           <timebands>
                             <Timeband version="1.0" id="op:timeband_for_thursday@timeband_1">
-                              <StartTime>00:00:00</StartTime>
-                              <EndTime>23:59:00</EndTime>
+                              <StartTime>08:00:00</StartTime>
+                              <EndTime>17:00:00</EndTime>
                             </Timeband>
                           </timebands>
                         </FareDayType>
@@ -216,46 +296,21 @@
                 </FareDemandFactor>
               </qualityStructureFactors>
               <fareStructureElements>
-                <FareStructureElement version="1.0" id="op:Tariff@group">
-                  <Name>Eligible groups</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:groups"/>
-                  <GenericParameterAssignment id="op:Tariff@group" version="1.0" order="0">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
-                    <LimitationGroupingType>OR</LimitationGroupingType>
-                    <limitations>
-                      <GroupTicket id="op:group" version="1.0">
-                        <MaximumNumberOfPersons>5</MaximumNumberOfPersons>
-                        <companionProfiles>
-                          <CompanionProfile version="1.0" id="op:companion@adult-0">
-                            <UserProfileRef version="1.0" ref="op:adult-0"/>
-                            <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-                            <MaximumNumberOfPersons>2</MaximumNumberOfPersons>
-                          </CompanionProfile>
-                          <CompanionProfile version="1.0" id="op:companion@child-1">
-                            <UserProfileRef version="1.0" ref="op:child-1"/>
-                            <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-                            <MaximumNumberOfPersons>3</MaximumNumberOfPersons>
-                          </CompanionProfile>
-                        </companionProfiles>
-                      </GroupTicket>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Weekly_Rider@access_lines">
+                <FareStructureElement version="1.0" id="op:Tariff@JTest00@access_zones">
                   <Name>Available lines and/or zones</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
-                  <GenericParameterAssignment id="Tariff@Weekly_Rider@access_lines" version="1.0" order="1">
+                  <GenericParameterAssignment id="Tariff@JTest00@access_zones" version="1.0" order="1">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
-                      <GroupOfLinesRef version="1.0" ref="BLAC@groupOfLines@1"/>
+                      <FareZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement id="op:Tariff@Weekly_Rider@conditions_of_travel" version="1.0">
+                <FareStructureElement id="op:Tariff@JTest00@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
-                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Weekly_Rider@conditions_of_travel">
+                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@JTest00@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
                     <limitations>
@@ -271,14 +326,14 @@
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@flatFare@availability">
+                <FareStructureElement version="1.0" id="op:Tariff@multiOperator@availability">
                   <Name>Time restrictions</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access_when"/>
                   <qualityStructureFactors>
                     <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
                   </qualityStructureFactors>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult-0">
+                <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
                   <GenericParameterAssignment id="op:Tariff@adult-0" version="1.0" order="0">
@@ -290,25 +345,7 @@
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <UserType>adult</UserType>
                         <MinimumAge>18</MinimumAge>
-                        <ProofRequired>identityDocument</ProofRequired>
-                      </UserProfile>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@eligibility@child-1">
-                  <Name>Eligible user types</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@child-1" version="1.0" order="0">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
-                    <LimitationGroupingType>XOR</LimitationGroupingType>
-                    <limitations>
-                      <UserProfile version="1.0" id="op:child-1">
-                        <Name>child</Name>
-                        <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
-                        <UserType>child</UserType>
-                        <MinimumAge>5</MinimumAge>
-                        <MaximumAge>17</MaximumAge>
-                        <ProofRequired>identityDocument</ProofRequired>
+                        <MaximumAge>65</MaximumAge>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -317,139 +354,68 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Weekly_Rider_group">
-              <Name>Weekly Rider</Name>
+            <PreassignedFareProduct version="1.0" id="op:Pass@JTest00_adult">
+              <Name>JTest00</Name>
               <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
               <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Weekly_Rider_group@travel">
+                <ValidableElement version="1.0" id="op:Pass@JTest00_adult@travel">
                   <Name>Rides available for specified durations</Name>
                   <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@access_lines"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@group"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@flatFare@availability"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@JTest00@access_zones"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@JTest00@conditions_of_travel"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@multiOperator@availability"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Weekly_Rider_group@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Weekly_Rider_group@travel"/>
+                <AccessRightInProduct version="1.0" id="op:Pass@JTest00_adult@travel" order="1">
+                  <ValidableElementRef version="1.0" ref="op:Pass@JTest00_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
               <ProductType>singleTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)">
-              <Name>Weekly Rider - group - Onboard (cash)</Name>
-              <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
+            <SalesOfferPackage version="1.0" id="Trip@JTest00-JTest00-SOP@Onboard_(cash)">
+              <Name>JTest00 - adult - Onboard (cash)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@JTest00-JTest00-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@JTest00-JTest00-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@JTest00_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(contactless)">
-              <Name>Weekly Rider - group - Onboard (contactless)</Name>
-              <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
+            <SalesOfferPackage version="1.0" id="Trip@JTest00-JTest00-SOP@Onboard_(contactless)">
+              <Name>JTest00 - adult - Onboard (contactless)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@JTest00-JTest00-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@JTest00-JTest00-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Online_(smart_card)">
-              <Name>Weekly Rider - group - Online (smart card)</Name>
-              <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Online_(smart_card)@online" order="1">
-                  <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
-                  <DistributionChannelType>online</DistributionChannelType>
-                  <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Online_(smart_card)@smartCard" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Mobile_App">
-              <Name>Weekly Rider - group - Mobile App</Name>
-              <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Mobile_App@mobileDevice" order="1">
-                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
-                  <DistributionChannelType>mobileDevice</DistributionChannelType>
-                  <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Mobile_App@mobileApp" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing">
-              <Name>Weekly Rider - group - All Encompassing</Name>
-              <Description>All currently available options selected</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing@onBoard" order="1">
-                  <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
-                  <DistributionChannelType>onBoard</DistributionChannelType>
-                  <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
-                </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing@online" order="2">
-                  <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
-                  <DistributionChannelType>online</DistributionChannelType>
-                  <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
-                </DistributionAssignment>
-                <DistributionAssignment version="any" id="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing@mobileDevice" order="3">
-                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
-                  <DistributionChannelType>mobileDevice</DistributionChannelType>
-                  <PaymentMethods>cash debitCard creditCard mobilePhone</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-All_Encompassing@paperTicket" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-                </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-All_Encompassing@mobileApp" version="1.0" order="2">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-                </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-All_Encompassing@smartCard" version="1.0" order="3">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@JTest00_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:BLAC_products@pass:op" responsibilitySetRef="op:tariffs">
-          <Name>Prices for Weekly Rider</Name>
+          <Name>Prices for JTest00</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP"/>
           <FrameDefaults>
             <DefaultCodespaceRef ref="op_data"/>
@@ -459,261 +425,74 @@
             <FareFrameRef version="1.0" ref="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:BLAC_products@pass:op"/>
           </prerequisites>
           <fareTables>
-            <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(cash)">
-              <Name>Weekly Rider</Name>
+            <FareTable version="1.0" id="op:fareTable@JTest00@Onboard_(cash)@zone">
+              <Name>JTest00 - Onboard (cash) - Test Town Centre</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@JTest00_adult"/>
               </pricesFor>
-              <limitations>
-                <GroupTicketRef version="1.0" ref="op:group"/>
-              </limitations>
               <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(cash)@group">
-                  <Name>FareTable for Weekly Rider</Name>
-                  <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Onboard_(cash)@group">
-                      <Amount>14</Amount>
-                    </DistanceMatrixElementPrice>
-                  </prices>
+                <FareTable version="1.0" id="op:JTest00@Onboard_(cash)@adult@product-0@SOP-0@zone">
+                  <Name>FareTable for JTest00</Name>
+                  <specifics>
+                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                  </specifics>
+                  <includes>
+                    <FareTable version="1.0" id="op:JTest00@Onboard_(cash)@adult@zone@nested">
+                      <pricesFor>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@JTest00-JTest00-SOP@Onboard_(cash)"/>
+                      </pricesFor>
+                      <includes>
+                        <FareTable version="1.0" id="op:JTest00@Onboard_(cash)@adult@zone@nested@prices">
+                          <limitations>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
+                          </limitations>
+                          <prices>
+                            <DistanceMatrixElementPrice version="1.0" id="op:JTest00@Onboard_(cash)@adult">
+                              <Amount>2.99</Amount>
+                            </DistanceMatrixElementPrice>
+                          </prices>
+                        </FareTable>
+                      </includes>
+                    </FareTable>
+                  </includes>
                 </FareTable>
               </includes>
             </FareTable>
-            <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(contactless)">
-              <Name>Weekly Rider</Name>
+            <FareTable version="1.0" id="op:fareTable@JTest00@Onboard_(contactless)@zone">
+              <Name>JTest00 - Onboard (contactless) - Test Town Centre</Name>
               <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(contactless)"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@JTest00_adult"/>
               </pricesFor>
-              <limitations>
-                <GroupTicketRef version="1.0" ref="op:group"/>
-              </limitations>
               <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@group">
-                  <Name>FareTable for Weekly Rider</Name>
-                  <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Onboard_(contactless)@group">
-                      <Amount>14</Amount>
-                    </DistanceMatrixElementPrice>
-                  </prices>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:Weekly_Rider@Online_(smart_card)">
-              <Name>Weekly Rider</Name>
-              <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Online_(smart_card)"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-              </pricesFor>
-              <limitations>
-                <GroupTicketRef version="1.0" ref="op:group"/>
-              </limitations>
-              <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@Online_(smart_card)@group">
-                  <Name>FareTable for Weekly Rider</Name>
-                  <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Online_(smart_card)@group">
-                      <Amount>14</Amount>
-                    </DistanceMatrixElementPrice>
-                  </prices>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:Weekly_Rider@Mobile_App">
-              <Name>Weekly Rider</Name>
-              <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Mobile_App"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-              </pricesFor>
-              <limitations>
-                <GroupTicketRef version="1.0" ref="op:group"/>
-              </limitations>
-              <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@Mobile_App@group">
-                  <Name>FareTable for Weekly Rider</Name>
-                  <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@Mobile_App@group">
-                      <Amount>14</Amount>
-                    </DistanceMatrixElementPrice>
-                  </prices>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:Weekly_Rider@All_Encompassing">
-              <Name>Weekly Rider</Name>
-              <pricesFor>
-                <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_group"/>
-              </pricesFor>
-              <limitations>
-                <GroupTicketRef version="1.0" ref="op:group"/>
-              </limitations>
-              <includes>
-                <FareTable version="1.0" id="op:Weekly_Rider@All_Encompassing@group">
-                  <Name>FareTable for Weekly Rider</Name>
-                  <prices>
-                    <DistanceMatrixElementPrice version="1.0" id="op:Weekly_Rider@All_Encompassing@group">
-                      <Amount>14</Amount>
-                    </DistanceMatrixElementPrice>
-                  </prices>
+                <FareTable version="1.0" id="op:JTest00@Onboard_(contactless)@adult@product-0@SOP-1@zone">
+                  <Name>FareTable for JTest00</Name>
+                  <specifics>
+                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
+                  </specifics>
+                  <includes>
+                    <FareTable version="1.0" id="op:JTest00@Onboard_(contactless)@adult@zone@nested">
+                      <pricesFor>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@JTest00-JTest00-SOP@Onboard_(contactless)"/>
+                      </pricesFor>
+                      <includes>
+                        <FareTable version="1.0" id="op:JTest00@Onboard_(contactless)@adult@zone@nested@prices">
+                          <limitations>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
+                          </limitations>
+                          <prices>
+                            <DistanceMatrixElementPrice version="1.0" id="op:JTest00@Onboard_(contactless)@adult">
+                              <Amount>2.99</Amount>
+                            </DistanceMatrixElementPrice>
+                          </prices>
+                        </FareTable>
+                      </includes>
+                    </FareTable>
+                  </includes>
                 </FareTable>
               </includes>
             </FareTable>
           </fareTables>
         </FareFrame>
-        <ServiceFrame version="1.0" id="epd:UK:BLAC:ServiceFrame_UK_PI_NETWORK:BLAC_products:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
-          <Description>This frame contains the stop and line definitions for the service.</Description>
-          <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
-          <lines>
-            <Line version="1.0" id="PK1146649_RJ1_Outbound">
-              <Name>Line 25</Name>
-              <Description>KNOTT END - POULTON - BLACKPOOL</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>25</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ1_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ2_Outbound">
-              <Name>Line 25</Name>
-              <Description>BLACKPOOL - ST ANNES - LYTHAM</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>25</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ2_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ4_Outbound">
-              <Name>Line 4</Name>
-              <Description>CLEVELEYS - MERESIDE via Blackpool</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>4</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ4_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ19_Outbound">
-              <Name>Line 19</Name>
-              <Description>STAINING - BLACKPOOL via Victoria Hospital (Main Entrance)</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>19</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ19_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ01_Outbound">
-              <Name>Line 1</Name>
-              <Description>FLEETWOOD - BLACKPOOL via Promenade</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>1</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ01_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ02_Outbound">
-              <Name>Line 2</Name>
-              <Description>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>2</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ02_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ05_Outbound">
-              <Name>Line 5</Name>
-              <Description>VICTORIA HOSPITAL - BLACKPOOL TOWN CENTRE - HALFWAY HOUSE</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>5</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ05_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ9_Outbound">
-              <Name>Line 9</Name>
-              <Description>CLEVELEYS - BLACKPOOL via Bispham</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>9</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ9_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ014_Outbound">
-              <Name>Line 14</Name>
-              <Description>FLEETWOOD - BLACKPOOL via Layton</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>14</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ014_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ018_Outbound">
-              <Name>Line 18</Name>
-              <Description>BLACKPOOL - MERESIDE via South Shore</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>18</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ018_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ011_Outbound">
-              <Name>Line 11</Name>
-              <Description>LYTHAM - BLACKPOOL via St Annes</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>11</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ011_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ003_Outbound">
-              <Name>Line 3</Name>
-              <Description>MERESIDE - BLACKPOOL - CLEVELEYS - CLEVELEYS PARK</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>3</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ003_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ007_Outbound">
-              <Name>Line 7</Name>
-              <Description>CLEVELEYS - BLACKPOOL - ST ANNES CLIFTON HOSPITAL</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>7</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ007_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-            <Line version="1.0" id="PK1146649_RJ006_Outbound">
-              <Name>Line 6</Name>
-              <Description>MERESIDE - BLACKPOOL - GRANGE PARK</Description>
-              <Url>http://www.blackpooltransport.com</Url>
-              <PublicCode>6</PublicCode>
-              <PrivateCode type="txc:Line@id">PK1146649_RJ006_Outbound</PrivateCode>
-              <OperatorRef version="1.0" ref="noc:BLAC"/>
-              <LineType>local</LineType>
-            </Line>
-          </lines>
-          <groupsOfLines>
-            <GroupOfLines version="1.0" id="BLAC@groupOfLines@1">
-              <Name>A group of available services.</Name>
-              <members>
-                <LineRef version="1.0" ref="PK1146649_RJ1_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ2_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ4_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ19_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ01_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ02_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ05_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ9_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ014_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ018_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ011_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ003_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ007_Outbound"/>
-                <LineRef version="1.0" ref="PK1146649_RJ006_Outbound"/>
-              </members>
-            </GroupOfLines>
-          </groupsOfLines>
-        </ServiceFrame>
       </frames>
     </CompositeFrame>
     <CompositeFrame id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">

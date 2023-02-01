@@ -16,7 +16,7 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
 
 export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator'> {
     operatorName: string;
-    products: ProductDetails[];
+    products: ProductDetails[] | FlatFareProduct[];
     fareDayEnd?: string;
 }
 
@@ -42,6 +42,7 @@ export interface FlatFareProduct extends BaseProduct {
 }
 
 export interface PriceByDistanceProduct extends BaseProduct {
+    productName: string;
     pricingByDistance: DistancePricingData;
 }
 

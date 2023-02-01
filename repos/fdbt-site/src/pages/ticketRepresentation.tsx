@@ -99,7 +99,7 @@ const TicketRepresentation = ({
                                             label: 'A ticket for a set of services',
                                             hint: fareTypeHint.multipleServices,
                                         },
-                                        ...(showMultiOperator
+                                        ...(showMultiOperator && isDevOrTest
                                             ? [
                                                   {
                                                       value: 'multipleServicesFlatFareMultiOperator',

@@ -301,7 +301,8 @@ describe('Shared Helpers', () => {
                     name === 'Available lines and/or zones' ||
                         name === 'Eligible user types' ||
                         name === 'Conditions of travel' ||
-                        name === 'Available lines',
+                        name === 'Available lines' ||
+                        name === 'Time restrictions',
                 ).toBeTruthy();
             });
 
@@ -309,7 +310,7 @@ describe('Shared Helpers', () => {
         });
 
         it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
-            const expectedLength = periodMultipleServicesTicket.products.length * 3 + 1;
+            const expectedLength = periodMultipleServicesTicket.products.length * 3 + 2;
             const result = sharedHelpers.getFareStructuresElements(
                 periodMultipleServicesTicket,
                 false,
@@ -329,7 +330,8 @@ describe('Shared Helpers', () => {
                         name === 'Available lines' ||
                         name.includes('Available duration combination') ||
                         name === 'Eligible user types' ||
-                        name === 'Conditions of travel',
+                        name === 'Conditions of travel' ||
+                        name === 'Time restrictions',
                 ).toBeTruthy();
             });
             expect(result.length).toBe(expectedLength);
@@ -356,7 +358,8 @@ describe('Shared Helpers', () => {
                         name === 'Available lines' ||
                         name.includes('Available duration combination') ||
                         name === 'Eligible user types' ||
-                        name === 'Conditions of travel',
+                        name === 'Conditions of travel' ||
+                        name === 'Time restrictions',
                 ).toBeTruthy();
             });
             expect(result.length).toBe(expectedLength);
