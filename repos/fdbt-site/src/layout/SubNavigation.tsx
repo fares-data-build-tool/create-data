@@ -22,6 +22,7 @@ const SubNavigation = (): ReactElement => {
 
                 <ul className="app-subnav__section">
                     {link('/globalSettings', 'Settings overview')}
+                    {link('/viewCaps', 'Caps')}
                     {link('/viewPassengerTypes', 'Passenger types')}
                     {link('/viewPurchaseMethods', 'Purchase methods')}
                     {link('/viewTimeRestrictions', 'Time restrictions')}

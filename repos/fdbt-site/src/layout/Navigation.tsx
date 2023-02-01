@@ -64,6 +64,7 @@ const Navigation = (): ReactElement => (
                 className={`app-navigation__list-item ${
                     isActivePage([
                         'globalSettings',
+                        'viewCaps',
                         'viewPassengerTypes',
                         'viewPurchaseMethods',
                         'viewTimeRestrictions',

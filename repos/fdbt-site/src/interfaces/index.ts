@@ -217,6 +217,7 @@ export interface SettingsOverview {
 }
 
 export interface GlobalSettingsCounts {
+    capCount: number;
     passengerTypesCount: number;
     purchaseMethodsCount: number;
     timeRestrictionsCount: number;
@@ -267,6 +268,12 @@ export interface ResponseWithLocals extends ServerResponse {
         nonce: string;
         csrfToken: string;
     };
+}
+
+export interface PremadeCaps {
+    id: number;
+    contents: DbTimeRestriction[];
+    isExpiry: boolean;
 }
 
 export interface PremadeTimeRestriction {

@@ -10,6 +10,7 @@ import {
     ServiceCount,
     MyFaresService,
     ServiceWithOriginAndDestination,
+    PremadeCaps,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
@@ -65,6 +66,13 @@ interface NaptanInfo {
 interface NaptanAtcoCodes {
     naptanCode: string;
     atcoCode: string;
+}
+
+interface RawCaps {
+    id: number;
+    noc: string;
+    contents: string;
+    isExpiry: boolean;
 }
 
 interface RawTimeRestriction {
@@ -1059,6 +1067,34 @@ export const updateTimeRestriction = async (
         await executeQuery(updateQuery, [name, contents, id, nocCode]);
     } catch (error) {
         throw new Error(`Could not update time restriction. ${error.stack}`);
+    }
+};
+
+export const getCapsByNocCode = async (nocCode: string): Promise<PremadeCaps[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving caps for given noc',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, contents, isExpiry
+            FROM caps
+            WHERE noc = ?
+        `;
+
+        const queryResults = await executeQuery<RawCaps[]>(queryInput, [nocCode]);
+
+        return (
+            queryResults.map((item) => ({
+                id: item.id,
+                contents: JSON.parse(item.contents),
+                isExpiry: item.isExpiry,
+            })) || []
+        );
+    } catch (error) {
+        throw new Error(`Could not retrieve caps by nocCode from AuroraDB: ${error.stack}`);
     }
 };
 

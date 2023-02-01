@@ -34,6 +34,12 @@ exports[`pages globalSettings should render correctly in a non-test env 1`] = `
         />
         <SettingOverview
           count={0}
+          description="Define your different types of caps and their expiries"
+          href="/viewCaps"
+          name="Caps"
+        />
+        <SettingOverview
+          count={0}
           description="Define age range and required proof documents of your passengers as well as passenger groups"
           href="/viewPassengerTypes"
           name="Passenger types"
@@ -105,6 +111,12 @@ exports[`pages globalSettings should render correctly in test env 1`] = `
         </p>
         <hr
           className="govuk-section-break govuk-section-break--l govuk-section-break--visible"
+        />
+        <SettingOverview
+          count={0}
+          description="Define your different types of caps and their expiries"
+          href="/viewCaps"
+          name="Caps"
         />
         <SettingOverview
           count={0}

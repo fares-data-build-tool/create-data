@@ -8,6 +8,7 @@ import {
     getFareDayEnd,
     getOperatorDetails,
     getOperatorGroupsByNoc,
+    getCapsByNocCode,
 } from '../data/auroradb';
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -39,6 +40,12 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             default settings.
                         </p>
                         <hr className="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
+                        <SettingOverview
+                            href="/viewCaps"
+                            name="Caps"
+                            description="Define your different types of caps and their expiries"
+                            count={globalSettingsCounts.capCount}
+                        />
                         <SettingOverview
                             href="/viewPassengerTypes"
                             name="Passenger types"
@@ -93,6 +100,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const referer = extractGlobalSettingsReferer(ctx);
 
+    const savedCaps = await getCapsByNocCode(noc);
     const savedPassengerTypes = await getPassengerTypesByNocCode(noc, 'single');
     const savedGroupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(noc);
     const savedTimeRestrictions = await getTimeRestrictionByNocCode(noc);
@@ -102,6 +110,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const operatorGroups = await getOperatorGroupsByNoc(noc);
 
     const globalSettingsCounts: GlobalSettingsCounts = {
+        capCount: savedCaps.length,
         passengerTypesCount: savedPassengerTypes.length + savedGroupPassengerTypes.length,
         timeRestrictionsCount: savedTimeRestrictions.length,
         purchaseMethodsCount: purchaseMethodsCount.length,

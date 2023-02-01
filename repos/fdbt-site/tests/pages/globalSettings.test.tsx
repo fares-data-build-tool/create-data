@@ -7,6 +7,7 @@ describe('pages', () => {
     describe('globalSettings', () => {
         it('should render correctly in test env', () => {
             const globalSettingsCounts: GlobalSettingsCounts = {
+                capCount: 0,
                 passengerTypesCount: 0,
                 timeRestrictionsCount: 3,
                 purchaseMethodsCount: 7,
@@ -20,6 +21,7 @@ describe('pages', () => {
 
         it('should render correctly in a non-test env', () => {
             const globalSettingsCounts: GlobalSettingsCounts = {
+                capCount: 0,
                 passengerTypesCount: 0,
                 timeRestrictionsCount: 3,
                 purchaseMethodsCount: 7,

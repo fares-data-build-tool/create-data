@@ -16,7 +16,6 @@ export const extractGlobalSettingsReferer = (ctx: NextPageContextWithSession): s
             'fareType',
             'reuseOperatorGroup',
             'selectCapValidity',
-            'selectCappedProductGroup',
         ].includes(refererPage)
     ) {
         updateSessionAttribute(ctx.req, GS_REFERER, refererPage);
