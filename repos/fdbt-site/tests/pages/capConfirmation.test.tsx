@@ -9,7 +9,6 @@ describe('pages', () => {
             const tree = shallow(
                 <CapConfirmation
                     typeOfCap="byProducts"
-                    productGroupName="capped-product-group-name"
                     cappedProductName="By products cap"
                     caps={[
                         {
@@ -36,7 +35,6 @@ describe('pages', () => {
             const tree = shallow(
                 <CapConfirmation
                     typeOfCap="byTaps"
-                    productGroupName=""
                     cappedProductName="By taps cap"
                     caps={[
                         {
@@ -63,7 +61,6 @@ describe('pages', () => {
             const tree = shallow(
                 <CapConfirmation
                     typeOfCap="byDistance"
-                    productGroupName=""
                     cappedProductName="By distance cap"
                     caps={[
                         {
@@ -90,7 +87,6 @@ describe('pages', () => {
             it('should create confirmation elements for capped ticket by products', () => {
                 const result = buildCapConfirmationElements(
                     'byProducts',
-                    'capped-product-group-name',
                     'By products cap',
                     [{ name: 'Cap 1', price: '2', durationAmount: '1', durationUnits: ExpiryUnit.DAY }],
                     'endOfCalendarDay',
@@ -103,11 +99,6 @@ describe('pages', () => {
                 );
                 expect(result).toStrictEqual([
                     { content: 'Pricing by products ', href: 'typeOfCap', name: 'Cap type' },
-                    {
-                        content: 'capped-product-group-name',
-                        href: '/selectCappedProductGroup',
-                        name: 'Product group name',
-                    },
                     {
                         content: 'By products cap',
                         href: '/createCaps',
@@ -139,7 +130,6 @@ describe('pages', () => {
             it('should create confirmation elements for capped ticket by taps', () => {
                 const result = buildCapConfirmationElements(
                     'byTaps',
-                    '',
                     'By taps cap',
                     [{ name: 'Cap 1', price: '2', durationAmount: '1', durationUnits: ExpiryUnit.DAY }],
                     '24hr',
@@ -188,7 +178,6 @@ describe('pages', () => {
             it('should create confirmation elements for capped ticket by distance', () => {
                 const result = buildCapConfirmationElements(
                     'byDistance',
-                    '',
                     'By distance cap',
                     [],
                     '',
