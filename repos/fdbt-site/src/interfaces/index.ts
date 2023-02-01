@@ -272,7 +272,7 @@ export interface ResponseWithLocals extends ServerResponse {
 
 export interface PremadeCaps {
     id: number;
-    contents: DbTimeRestriction[];
+    contents: {};
     isExpiry: boolean;
 }
 
