@@ -217,6 +217,7 @@ export interface SettingsOverview {
 }
 
 export interface GlobalSettingsCounts {
+    capCount: number;
     passengerTypesCount: number;
     purchaseMethodsCount: number;
     timeRestrictionsCount: number;

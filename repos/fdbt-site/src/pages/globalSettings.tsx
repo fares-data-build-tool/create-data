@@ -77,6 +77,12 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
                             count={globalSettingsCounts.operatorDetailsSet}
                         />
+                        <SettingOverview
+                            href="/viewCaps"
+                            name="Caps"
+                            description="Define your different types of caps and their expiries"
+                            count={globalSettingsCounts.capCount}
+                        />
                     </div>
                 </div>
             </BaseLayout>
@@ -93,6 +99,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const referer = extractGlobalSettingsReferer(ctx);
 
+    const savedCaps = [];
     const savedPassengerTypes = await getPassengerTypesByNocCode(noc, 'single');
     const savedGroupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(noc);
     const savedTimeRestrictions = await getTimeRestrictionByNocCode(noc);
@@ -102,6 +109,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const operatorGroups = await getOperatorGroupsByNoc(noc);
 
     const globalSettingsCounts: GlobalSettingsCounts = {
+        capCount: savedCaps.length,
         passengerTypesCount: savedPassengerTypes.length + savedGroupPassengerTypes.length,
         timeRestrictionsCount: savedTimeRestrictions.length,
         purchaseMethodsCount: purchaseMethodsCount.length,

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages globalSettings should render correctly in a non-test env 1`] = `
+exports[`pages globalSettings should render correctly 1`] = `
 <Fragment>
   <BaseLayout
     description="View and access your settings in one place."
@@ -68,79 +68,11 @@ exports[`pages globalSettings should render correctly in a non-test env 1`] = `
           href="/manageOperatorDetails"
           name="Operator details"
         />
-      </div>
-    </div>
-  </BaseLayout>
-</Fragment>
-`;
-
-exports[`pages globalSettings should render correctly in test env 1`] = `
-<Fragment>
-  <BaseLayout
-    description="View and access your settings in one place."
-    referer="hello"
-    showNavigation={true}
-    title="Operator Settings - Create Fares Data Service"
-  >
-    <div
-      className="govuk-grid-row"
-    >
-      <div
-        className="govuk-grid-column-one-quarter"
-      >
-        <SubNavigation />
-      </div>
-      <div
-        className="govuk-grid-column-three-quarters"
-      >
-        <h1
-          className="govuk-heading-xl"
-        >
-          Settings overview
-        </h1>
-        <p
-          className="govuk-body-m"
-        >
-          Operators may customise the following definitions relevant to their fares or choose to use default settings.
-        </p>
-        <hr
-          className="govuk-section-break govuk-section-break--l govuk-section-break--visible"
-        />
         <SettingOverview
           count={0}
-          description="Define age range and required proof documents of your passengers as well as passenger groups"
-          href="/viewPassengerTypes"
-          name="Passenger types"
-        />
-        <SettingOverview
-          count={7}
-          description="Define the way your tickets are sold, including where they are bought, the payment method and format"
-          href="/viewPurchaseMethods"
-          name="Purchase methods"
-        />
-        <SettingOverview
-          count={3}
-          description="Define certain days and time periods that your tickets can be used within"
-          href="/viewTimeRestrictions"
-          name="Time restrictions"
-        />
-        <SettingOverview
-          count={true}
-          description="If your fare day extends past midnight, define its end time"
-          href="/manageFareDayEnd"
-          name="Fare day end"
-        />
-        <SettingOverview
-          count={2}
-          description="Define your operator groups - these will be used in multi operator tickets"
-          href="/viewOperatorGroups"
-          name="Operator groups"
-        />
-        <SettingOverview
-          count={true}
-          description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
-          href="/manageOperatorDetails"
-          name="Operator details"
+          description="Define your different types of caps and their expiries"
+          href="/viewCaps"
+          name="Caps"
         />
       </div>
     </div>

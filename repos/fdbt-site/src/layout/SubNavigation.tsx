@@ -28,6 +28,7 @@ const SubNavigation = (): ReactElement => {
                     {link('/manageFareDayEnd', 'Fare day end')}
                     {link('/viewOperatorGroups', 'Operator groups')}
                     {link('/manageOperatorDetails', 'Operator details')}
+                    {link('/viewCaps', 'Caps')}
                 </ul>
             </nav>
         </div>
