@@ -8,7 +8,6 @@ import {
     getFareDayEnd,
     getOperatorDetails,
     getOperatorGroupsByNoc,
-    getCapsByNocCode,
 } from '../data/auroradb';
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -40,12 +39,6 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             default settings.
                         </p>
                         <hr className="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
-                        <SettingOverview
-                            href="/viewCaps"
-                            name="Caps"
-                            description="Define your different types of caps and their expiries"
-                            count={globalSettingsCounts.capCount}
-                        />
                         <SettingOverview
                             href="/viewPassengerTypes"
                             name="Passenger types"
@@ -84,6 +77,12 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                             description="Define your operator contact details - these will be included in your fares data and therefore may be presented to passengers"
                             count={globalSettingsCounts.operatorDetailsSet}
                         />
+                        <SettingOverview
+                            href="/viewCaps"
+                            name="Caps"
+                            description="Define your different types of caps and their expiries"
+                            count={globalSettingsCounts.capCount}
+                        />
                     </div>
                 </div>
             </BaseLayout>
@@ -100,7 +99,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const referer = extractGlobalSettingsReferer(ctx);
 
-    const savedCaps = await getCapsByNocCode(noc);
+    const savedCaps = [];
     const savedPassengerTypes = await getPassengerTypesByNocCode(noc, 'single');
     const savedGroupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(noc);
     const savedTimeRestrictions = await getTimeRestrictionByNocCode(noc);

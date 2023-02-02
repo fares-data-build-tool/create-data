@@ -22,13 +22,13 @@ const SubNavigation = (): ReactElement => {
 
                 <ul className="app-subnav__section">
                     {link('/globalSettings', 'Settings overview')}
-                    {link('/viewCaps', 'Caps')}
                     {link('/viewPassengerTypes', 'Passenger types')}
                     {link('/viewPurchaseMethods', 'Purchase methods')}
                     {link('/viewTimeRestrictions', 'Time restrictions')}
                     {link('/manageFareDayEnd', 'Fare day end')}
                     {link('/viewOperatorGroups', 'Operator groups')}
                     {link('/manageOperatorDetails', 'Operator details')}
+                    {link('/viewCaps', 'Caps')}
                 </ul>
             </nav>
         </div>

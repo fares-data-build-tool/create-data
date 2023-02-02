@@ -2,20 +2,18 @@ import React, { ReactElement } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
-import { extractGlobalSettingsReferer } from '../utils/globalSettings';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { ErrorInfo } from '../interfaces';
 
 const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
 
 interface CapProps {
-    referer: string | null;
     viewCapErrors: ErrorInfo[];
 }
 
-const ViewCap = ({ referer, viewCapErrors = [] }: CapProps): ReactElement => {
+const ViewCap = ({ viewCapErrors = [] }: CapProps): ReactElement => {
     return (
-        <BaseLayout title={title} description={description} showNavigation referer={referer}>
+        <BaseLayout title={title} description={description} showNavigation>
             <div>
                 <ErrorSummary errors={viewCapErrors} />
             </div>
@@ -35,10 +33,9 @@ const ViewCap = ({ referer, viewCapErrors = [] }: CapProps): ReactElement => {
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: CapProps } => {
+export const getServerSideProps = (): { props: CapProps } => {
     return {
         props: {
-            referer: extractGlobalSettingsReferer(ctx),
             viewCapErrors: [],
         },
     };
