@@ -7,11 +7,14 @@ import * as db from '../../../src/data/auroradb';
 import { CapExpiry } from '../../../src/interfaces/matchingJsonTypes';
 import * as userData from '../../../src/utils/apiUtils/userData';
 
+
 describe('capValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const writeHeadMock = jest.fn();
     const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
     s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
+
+    const upsertOperatorDetailsSpy = jest.spyOn(db, 'upsertOperatorDetails');
 
     beforeEach(() => {
         jest.spyOn(db, 'getFareDayEnd').mockImplementation(() => Promise.resolve('2200'));

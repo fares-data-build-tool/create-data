@@ -30,7 +30,14 @@ import {
     MyFaresOtherProduct,
     DbProduct,
 } from '../interfaces/dbTypes';
-import { Stop, FromDb, SalesOfferPackage, CompanionInfo, OperatorDetails } from '../interfaces/matchingJsonTypes';
+import {
+    Stop,
+    FromDb,
+    SalesOfferPackage,
+    CompanionInfo,
+    OperatorDetails,
+    CapExpiry,
+} from '../interfaces/matchingJsonTypes';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -1700,6 +1707,30 @@ export const upsertFareDayEnd = async (nocCode: string, fareDayEnd: string): Pro
         }
     } catch (error) {
         throw new Error(`Could not insert fare day end into the fareDayEnd table. ${error}`);
+    }
+};
+
+export const upsertCapExpiry = async (nocCode: string, capExpiry: CapExpiry): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'upserting cap expiry',
+        nocCode,
+    });
+
+    try {
+        const updateQuery = `UPDATE caps
+                             SET contents = ?
+                             WHERE nocCode = ?
+                             AND isExpiry = 1`;
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [JSON.stringify(capExpiry), nocCode]);
+        if (meta.affectedRows > 1) {
+            throw Error(`Updated too many rows when updating cap expiry ${meta}`);
+        } else if (meta.affectedRows === 0) {
+            const insertQuery = `INSERT INTO caps (contents, nocCode, isExpiry) VALUES (?, ?, 1)`;
+            await executeQuery(insertQuery, [JSON.stringify(capExpiry), nocCode]);
+        }
+    } catch (error) {
+        throw new Error(`Could not insert caps expiry into the caps table. ${error}`);
     }
 };
 

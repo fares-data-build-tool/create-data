@@ -28,8 +28,33 @@ const ViewCap = ({ viewCapErrors = [] }: CapProps): ReactElement => {
                         Define your different types of caps and their expiries
                     </p>
                 </div>
+
+                <div>
+                    <h2 className="govuk-heading-l">Cap Expiry</h2>
+                    {true ? (
+                        <CapExpiry />
+                    ) : (
+                        <p className="govuk-body">
+                            <em>You currently have not set up cap expiry.</em>
+                        </p>
+                    )}
+
+                    <a className="govuk-button" data-module="govuk-button" href="/selectCapValidity">
+                        Add cap expiry
+                    </a>
+                </div>
             </div>
         </BaseLayout>
+    );
+};
+
+const CapExpiry = (): ReactElement => {
+    return (
+        <>
+            <div>
+                <p>At the end of a calendar day</p>
+            </div>
+        </>
     );
 };
 

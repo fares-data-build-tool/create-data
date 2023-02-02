@@ -3,16 +3,17 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { CAP_EXPIRY_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { getFareDayEnd } from '../../data/auroradb';
+import { getFareDayEnd, upsertCapExpiry } from '../../data/auroradb';
 import { CapExpiry } from '../../interfaces/matchingJsonTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const errors: ErrorInfo[] = [];
         const { capValid } = req.body;
+        const noc = getAndValidateNoc(req, res);
         if (capValid) {
             let productEndTime = '';
-            const endOfFareDay = await getFareDayEnd(getAndValidateNoc(req, res));
+            const endOfFareDay = await getFareDayEnd(noc);
 
             if (capValid === 'fareDayEnd') {
                 if (!endOfFareDay) {
@@ -35,9 +36,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 productEndTime: productEndTime,
             };
 
-            updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, capExpiryAttributeValue);
+            await upsertCapExpiry(noc, capExpiryAttributeValue);
 
-            redirectTo(res, '/defineCapStart');
+            redirectTo(res, '/viewCaps');
             return;
         } else {
             errors.push({
