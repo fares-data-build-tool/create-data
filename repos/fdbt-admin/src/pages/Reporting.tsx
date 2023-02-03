@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
-import { H1 } from '@govuk-react/heading';
+import { H1, H3 } from '@govuk-react/heading';
+import BarChart from 'react-easy-bar-chart';
 import Table from '@govuk-react/table';
 import Details from '@govuk-react/details';
 import LoadingBox from '@govuk-react/loading-box';
@@ -12,62 +13,20 @@ import { listUsersInPool } from '../data/cognito';
 import getS3Client from '../utils/s3';
 import { getBucketName, listBucketObjects } from '../data/s3';
 import { NETEX_DATA_BUCKET_PREFIX, PRODUCTS_DATA_BUCKET_PREFIX } from '../constants';
+import {
+    createGraphData,
+    formatGraphDataForCsv,
+    getProductCount,
+    GraphData,
+    mapIntoArrayOfArrays,
+    netexFilesGenerated,
+    productsCreated,
+    typesOfProductsCreated,
+} from '../utils/helpers';
 
 interface ReportingProps {
     isFullAdmin: boolean;
 }
-
-const mapIntoArrayOfArrays = (input: string[]): string[][] => {
-    return input.map((item) => [item]);
-};
-
-const dateIsWithinNumberOfDays = (date: Date, numberOfDays: number): boolean => {
-    const today = new Date().getTime();
-    const inputtedDate = date.getTime();
-
-    const msBetweenDates = Math.abs(inputtedDate - today);
-
-    // 👇️ convert ms to days                 hour   min  sec   ms
-    const daysBetweenDates = msBetweenDates / (24 * 60 * 60 * 1000);
-
-    return daysBetweenDates < numberOfDays;
-};
-
-const netexFileMatchesNoc = (fileName: string, noc: string): boolean => {
-    const nocPart = fileName.split('/exports/')[0];
-    return nocPart === noc;
-};
-
-const netexFilesGenerated = (activeNocs: string[], netexFiles: ObjectList, timeframe: 30 | 365): string[] => {
-    const nocsThatHaveGeneratedNetex: string[] = [];
-    activeNocs.forEach((noc) => {
-        const netexFilesForNoc = netexFiles.find(
-            (file) =>
-                netexFileMatchesNoc(file.Key as string, noc) &&
-                dateIsWithinNumberOfDays(file.LastModified as Date, timeframe),
-        );
-        if (netexFilesForNoc) {
-            nocsThatHaveGeneratedNetex.push(noc);
-        }
-    });
-    return nocsThatHaveGeneratedNetex;
-};
-
-const productMatchesNoc = (fileName: string, noc: string): boolean => {
-    const nocPart = fileName.split('/')[0];
-    return nocPart === noc;
-};
-
-const productsCreated = (activeNocs: string[], products: ObjectList): string[] => {
-    const nocsThatHaveCreatedProducts: string[] = [];
-    activeNocs.forEach((noc) => {
-        const productsForNoc = products.find((file) => productMatchesNoc(file.Key as string, noc));
-        if (productsForNoc) {
-            nocsThatHaveCreatedProducts.push(noc);
-        }
-    });
-    return nocsThatHaveCreatedProducts;
-};
 
 const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
     const [loaded, setLoaded] = useState<boolean>(false);
@@ -76,6 +35,7 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
     const [nocsWhoCreatedProducts, setNocsWhoCreatedProducts] = useState<string[]>([]);
     const [thirtyDayNetex, setThirtyDayNetex] = useState<string[]>([]);
     const [yearNetex, setYearNetex] = useState<string[]>([]);
+    const [graphData, setGraphData] = useState<GraphData[]>([]);
 
     const getUsers = async (): Promise<UsersListType> => {
         const { client, userPoolId } = await getCognitoClientAndUserPool();
@@ -107,7 +67,7 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     const accountConfirmed = user?.UserStatus === 'CONFIRMED';
 
                     if (
-                        emailToLower.includes('kpmg') &&
+                        !emailToLower.includes('kpmg') &&
                         !emailToLower.includes('dft.gov.uk') &&
                         !hasTestNoc &&
                         accountConfirmed
@@ -158,6 +118,8 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                 getProductsFromProductsDataBucket()
                     .then((products) => {
                         setNocsWhoCreatedProducts(productsCreated(sortedNocs, products));
+                        const types = typesOfProductsCreated(products);
+                        setGraphData(createGraphData(types));
                         setLoaded(true);
                     })
                     .catch((err) => {
@@ -254,6 +216,22 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                         <Table.Cell>{yearNetex.length}</Table.Cell>
                     </Table.Row>
                 </Table>
+                {loaded && graphData.length > 0 && (
+                    <>
+                        <H3>Created products (not necessarily exported) </H3>
+                        <BarChart
+                            xAxis="Hover over bars to see fare type and count"
+                            yAxis={`${getProductCount(graphData)} total products`}
+                            height={400}
+                            width={800}
+                            data={graphData}
+                        />
+                        <br />
+                        <CSVLink filename="createdProducts.csv" data={formatGraphDataForCsv(graphData)}>
+                            Download as csv
+                        </CSVLink>
+                    </>
+                )}
             </LoadingBox>
         </>
     ) : (
