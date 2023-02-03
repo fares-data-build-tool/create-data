@@ -48,6 +48,7 @@ exports[`pages capValidity should render correctly 1`] = `
               "radioError": Array [],
               "radios": Array [
                 Object {
+                  "defaultChecked": false,
                   "id": "cap-end-calendar",
                   "label": " At the end of a calendar day",
                   "name": "capValid",
@@ -58,6 +59,7 @@ exports[`pages capValidity should render correctly 1`] = `
                   "value": "endOfCalendarDay",
                 },
                 Object {
+                  "defaultChecked": false,
                   "id": "cap-twenty-four-hours",
                   "label": "At the end of a 24 hour period",
                   "name": "capValid",
@@ -69,6 +71,7 @@ exports[`pages capValidity should render correctly 1`] = `
                 },
                 Object {
                   "dataAriaControls": "cap-validity-end-of-service-required-conditional",
+                  "defaultChecked": false,
                   "disableAutoSelect": true,
                   "id": "cap-end-of-service",
                   "inputErrors": Array [],
@@ -174,6 +177,7 @@ exports[`pages capValidity should render error messaging when errors are passed 
               "radioError": Array [],
               "radios": Array [
                 Object {
+                  "defaultChecked": false,
                   "id": "cap-end-calendar",
                   "label": " At the end of a calendar day",
                   "name": "capValid",
@@ -184,6 +188,7 @@ exports[`pages capValidity should render error messaging when errors are passed 
                   "value": "endOfCalendarDay",
                 },
                 Object {
+                  "defaultChecked": false,
                   "id": "cap-twenty-four-hours",
                   "label": "At the end of a 24 hour period",
                   "name": "capValid",
@@ -195,6 +200,7 @@ exports[`pages capValidity should render error messaging when errors are passed 
                 },
                 Object {
                   "dataAriaControls": "cap-validity-end-of-service-required-conditional",
+                  "defaultChecked": false,
                   "disableAutoSelect": true,
                   "id": "cap-end-of-service",
                   "inputErrors": Array [],

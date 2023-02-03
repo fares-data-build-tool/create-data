@@ -6478,6 +6478,7 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-twenty-four-hours',
@@ -6488,6 +6489,7 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'cap-twenty-four-hours-hint',
                 content: 'The cap applies to journeys made within 24hrs of the first tap',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-end-of-service',
@@ -6500,6 +6502,7 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'cap-end-of-service-hint',
                 content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',
@@ -6601,6 +6604,7 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-twenty-four-hours',
@@ -6611,6 +6615,7 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
                 id: 'cap-twenty-four-hours-hint',
                 content: 'The cap applies to journeys made within 24hrs of the first tap',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-end-of-service',
@@ -6624,6 +6629,7 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
                 id: 'cap-end-of-service-hint',
                 content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',
@@ -6730,6 +6736,7 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-twenty-four-hours',
@@ -6740,6 +6747,7 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
                 id: 'cap-twenty-four-hours-hint',
                 content: 'The cap applies to journeys made within 24hrs of the first tap',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-end-of-service',
@@ -6753,6 +6761,7 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
                 id: 'cap-end-of-service-hint',
                 content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',

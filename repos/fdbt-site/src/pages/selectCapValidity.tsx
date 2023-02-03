@@ -8,7 +8,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { getAndValidateNoc, getCsrfToken, getErrorsByIds } from '../utils';
 import RadioConditionalInput from '../components/RadioConditionalInput';
 import { isCapExpiry } from '../interfaces/typeGuards';
-import { getFareDayEnd } from '../data/auroradb';
+import { getCapExpiry, getFareDayEnd } from '../data/auroradb';
 
 const title = 'Cap Validity - Create Fares Data Service';
 const description = 'Cap Validity selection page of the Create Fares Data Service';
@@ -19,7 +19,11 @@ interface CapValidityProps {
     csrfToken: string;
 }
 
-export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioConditionalInputFieldset => {
+export const getFieldset = (
+    errors: ErrorInfo[],
+    endOfFareDay?: string,
+    capExpiry?: string,
+): RadioConditionalInputFieldset => {
     const CapValidityFieldSet: RadioConditionalInputFieldset = {
         heading: {
             id: 'cap-validity',
@@ -36,6 +40,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
                     id: 'cap-end-calendar-hint',
                     content: 'The cap applies to journeys made before midnight',
                 },
+                defaultChecked: capExpiry === 'endOfCalendarDay',
             },
             {
                 id: 'cap-twenty-four-hours',
@@ -46,6 +51,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
                     id: 'cap-twenty-four-hours-hint',
                     content: 'The cap applies to journeys made within 24hrs of the first tap',
                 },
+                defaultChecked: capExpiry === '24hr',
             },
             {
                 id: 'cap-end-of-service',
@@ -58,6 +64,7 @@ export const getFieldset = (errors: ErrorInfo[], endOfFareDay?: string): RadioCo
                     id: 'cap-end-of-service-hint',
                     content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
                 },
+                defaultChecked: capExpiry === 'fareDayEnd',
                 inputHint: {
                     id: 'product-end-time-hint',
                     content: 'You can update your fare day end in operator settings',
@@ -123,13 +130,19 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     let errors: ErrorInfo[] = [];
     const csrfToken = getCsrfToken(ctx);
     const capExpiryAttribute = getSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE);
-    const endOfFareDay = await getFareDayEnd(getAndValidateNoc(ctx));
+    const noc = getAndValidateNoc(ctx);
+    const endOfFareDay = await getFareDayEnd(noc);
+    const dbCapExpiry = await getCapExpiry(noc);
+    let capExpirySelected = dbCapExpiry ? JSON.parse(dbCapExpiry).productValidity : '';
 
+    if (isCapExpiry(capExpiryAttribute)) {
+        capExpirySelected = capExpiryAttribute.productValidity;
+    }
     if (capExpiryAttribute && !isCapExpiry(capExpiryAttribute)) {
         errors = capExpiryAttribute.filter((err) => err.id !== 'product-end-time' || !endOfFareDay);
     }
 
-    const fieldset: RadioConditionalInputFieldset = getFieldset(errors, endOfFareDay);
+    const fieldset: RadioConditionalInputFieldset = getFieldset(errors, endOfFareDay, capExpirySelected);
 
     return {
         props: {

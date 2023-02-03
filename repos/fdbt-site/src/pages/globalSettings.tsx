@@ -80,7 +80,7 @@ const GlobalSettings = ({ globalSettingsCounts, referer }: GlobalSettingsProps):
                         <SettingOverview
                             href="/viewCaps"
                             name="Caps"
-                            description="Define your different types of caps and their expiries"
+                            description="Define your different types of caps and when they expire"
                             count={globalSettingsCounts.capCount}
                         />
                     </div>

@@ -7,14 +7,14 @@ import * as db from '../../../src/data/auroradb';
 import { CapExpiry } from '../../../src/interfaces/matchingJsonTypes';
 import * as userData from '../../../src/utils/apiUtils/userData';
 
-
 describe('capValidity', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const writeHeadMock = jest.fn();
     const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
     s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
 
-    const upsertOperatorDetailsSpy = jest.spyOn(db, 'upsertOperatorDetails');
+    const upsertCapExpirySpy = jest.spyOn(db, 'upsertCapExpiry');
+    upsertCapExpirySpy.mockImplementation();
 
     beforeEach(() => {
         jest.spyOn(db, 'getFareDayEnd').mockImplementation(() => Promise.resolve('2200'));
@@ -24,10 +24,9 @@ describe('capValidity', () => {
         jest.resetAllMocks();
     });
 
-    it('correctly generates product info, updates the CAP_EXPIRY_ATTRIBUTE and then redirects to /ticketConfirmation if all is valid', async () => {
+    it('correctly generates product info, then redirects to /viewCaps if all is valid', async () => {
         const mockProductInfo: CapExpiry = {
             productValidity: '24hr',
-            productEndTime: '',
         };
 
         const { req, res } = getMockRequestAndResponse({
@@ -37,24 +36,26 @@ describe('capValidity', () => {
 
         await capValidity(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_EXPIRY_ATTRIBUTE, mockProductInfo);
+        expect(upsertCapExpirySpy).toBeCalledWith('TEST', mockProductInfo);
 
-        expect(writeHeadMock).toBeCalledWith(302, { Location: '/defineCapStart' });
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/viewCaps' });
     });
 
-    it('correctly generates product info, updates the CAP_EXPIRY_ATTRIBUTE with productEndTime empty even if supplied, if end of service day is not selected', async () => {
+    it('correctly generates product info, updates the db with productEndTime empty even if supplied, if fare end day is not selected', async () => {
         const mockProductInfo: CapExpiry = {
             productValidity: '24hr',
-            productEndTime: '',
         };
 
         const { req, res } = getMockRequestAndResponse({
             body: { capValid: '24hr', productEndTime: '2300' },
+            mockWriteHeadFn: writeHeadMock,
         });
 
         await capValidity(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAP_EXPIRY_ATTRIBUTE, mockProductInfo);
+        expect(upsertCapExpirySpy).toBeCalledWith('TEST', mockProductInfo);
+
+        expect(writeHeadMock).toBeCalledWith(302, { Location: '/viewCaps' });
     });
 
     it('correctly generates cap expiry error info, updates the CAP_EXPIRY_ATTRIBUTE and then redirects to capValidity page when there is no cap validity info', async () => {

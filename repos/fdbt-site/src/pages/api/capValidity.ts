@@ -11,8 +11,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const errors: ErrorInfo[] = [];
         const { capValid } = req.body;
         const noc = getAndValidateNoc(req, res);
+
         if (capValid) {
-            let productEndTime = '';
             const endOfFareDay = await getFareDayEnd(noc);
 
             if (capValid === 'fareDayEnd') {
@@ -26,18 +26,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     redirectTo(res, '/selectCapValidity');
 
                     return;
-                } else {
-                    productEndTime = endOfFareDay;
                 }
             }
 
             const capExpiryAttributeValue: CapExpiry = {
                 productValidity: capValid,
-                productEndTime: productEndTime,
             };
+            updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, undefined);
 
             await upsertCapExpiry(noc, capExpiryAttributeValue);
-
             redirectTo(res, '/viewCaps');
             return;
         } else {
