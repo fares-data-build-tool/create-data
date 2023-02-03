@@ -11,7 +11,7 @@ import { getCognitoClientAndUserPool } from '../utils/cognito';
 import { listUsersInPool } from '../data/cognito';
 import getS3Client from '../utils/s3';
 import { getBucketName, listBucketObjects } from '../data/s3';
-import { NETEX_DATA_BUCKET_PREFIX } from '../constants';
+import { NETEX_DATA_BUCKET_PREFIX, PRODUCTS_DATA_BUCKET_PREFIX } from '../constants';
 
 interface ReportingProps {
     isFullAdmin: boolean;
@@ -53,10 +53,27 @@ const netexFilesGenerated = (activeNocs: string[], netexFiles: ObjectList, timef
     return nocsThatHaveGeneratedNetex;
 };
 
+const productMatchesNoc = (fileName: string, noc: string): boolean => {
+    const nocPart = fileName.split('/')[0];
+    return nocPart === noc;
+};
+
+const productsCreated = (activeNocs: string[], products: ObjectList): string[] => {
+    const nocsThatHaveCreatedProducts: string[] = [];
+    activeNocs.forEach((noc) => {
+        const productsForNoc = products.find((file) => productMatchesNoc(file.Key as string, noc));
+        if (productsForNoc) {
+            nocsThatHaveCreatedProducts.push(noc);
+        }
+    });
+    return nocsThatHaveCreatedProducts;
+};
+
 const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
     const [loaded, setLoaded] = useState<boolean>(false);
     const [users, setUsers] = useState<UsersListType>([]);
     const [registeredNocs, setRegisteredNocs] = useState<string[]>([]);
+    const [nocsWhoCreatedProducts, setNocsWhoCreatedProducts] = useState<string[]>([]);
     const [thirtyDayNetex, setThirtyDayNetex] = useState<string[]>([]);
     const [yearNetex, setYearNetex] = useState<string[]>([]);
 
@@ -72,6 +89,12 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
         return listBucketObjects(client, bucketName);
     };
 
+    const getProductsFromProductsDataBucket = async (): Promise<ObjectList> => {
+        const { client } = await getS3Client();
+        const bucketName = getBucketName(PRODUCTS_DATA_BUCKET_PREFIX);
+        return listBucketObjects(client, bucketName);
+    };
+
     useEffect(() => {
         getUsers()
             .then((data) => {
@@ -84,7 +107,7 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     const accountConfirmed = user?.UserStatus === 'CONFIRMED';
 
                     if (
-                        !emailToLower.includes('kpmg') &&
+                        emailToLower.includes('kpmg') &&
                         !emailToLower.includes('dft.gov.uk') &&
                         !hasTestNoc &&
                         accountConfirmed
@@ -127,6 +150,14 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                     .then((netexData) => {
                         setThirtyDayNetex(netexFilesGenerated(sortedNocs, netexData, 30));
                         setYearNetex(netexFilesGenerated(sortedNocs, netexData, 365));
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                getProductsFromProductsDataBucket()
+                    .then((products) => {
+                        setNocsWhoCreatedProducts(productsCreated(sortedNocs, products));
                         setLoaded(true);
                     })
                     .catch((err) => {
@@ -166,6 +197,25 @@ const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
                             </Details>
                         </Table.Cell>
                         <Table.Cell>{registeredNocs.length}</Table.Cell>
+                    </Table.Row>
+                    <Table.Row key="nocs-who-made-products">
+                        <Table.Cell>
+                            <Details summary="NOCs who have created products">
+                                {registeredNocs.length > 0 && (
+                                    <>
+                                        <CSVLink
+                                            filename="nocsWhoMadeProducts.csv"
+                                            data={mapIntoArrayOfArrays(nocsWhoCreatedProducts)}
+                                        >
+                                            Download as csv
+                                        </CSVLink>
+                                        <br />
+                                    </>
+                                )}
+                                {nocsWhoCreatedProducts.join(', ')}
+                            </Details>
+                        </Table.Cell>
+                        <Table.Cell>{nocsWhoCreatedProducts.length}</Table.Cell>
                     </Table.Row>
                     <Table.Row key="30-day-netex">
                         <Table.Cell>
