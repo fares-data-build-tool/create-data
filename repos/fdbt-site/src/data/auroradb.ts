@@ -1725,10 +1725,10 @@ export const getCapExpiry = async (nocCode: string): Promise<string | undefined>
         `;
 
         const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode]);
-        //if (queryResults.length > 0)
+
         return queryResults[0]?.contents;
     } catch (error) {
-        throw new Error(`Could not retrieve fare day end by nocCode from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve cap expiry by nocCode from AuroraDB: ${error.stack}`);
     }
 };
 
