@@ -6,7 +6,6 @@ export interface FareTypeCount {
     flatFare: number;
     period: number;
     multiOperator: number;
-    schoolService: number;
 }
 
 export interface GraphData {
@@ -76,7 +75,6 @@ export const typesOfProductsCreated = (products: ObjectList): FareTypeCount => {
         flatFare: 0,
         period: 0,
         multiOperator: 0,
-        schoolService: 0,
     };
 
     products.forEach((product) => {
