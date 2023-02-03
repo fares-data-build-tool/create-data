@@ -11,13 +11,16 @@ import { ErrorInfo } from '../../src/interfaces';
 describe('pages', () => {
     describe('capValidity', () => {
         it('should render correctly', () => {
-            const tree = shallow(<CapValidity errors={[]} csrfToken="" fieldset={mockSelectCapValidityFieldset} />);
+            const tree = shallow(
+                <CapValidity capExpirySelected="" errors={[]} csrfToken="" fieldset={mockSelectCapValidityFieldset} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render error messaging when errors are passed', () => {
             const tree = shallow(
                 <CapValidity
+                    capExpirySelected=""
                     errors={[
                         {
                             errorMessage: 'Choose an option regarding your cap ticket validity',

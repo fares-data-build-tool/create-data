@@ -6,6 +6,9 @@ import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc } from '../utils';
 import { getCapExpiry, getFareDayEnd } from '../data/auroradb';
 import { CapExpiry } from '../interfaces/matchingJsonTypes';
+import { updateSessionAttribute } from '../utils/sessions';
+import { CAP_EXPIRY_ATTRIBUTE } from '../constants/attributes';
+import { validityHintText } from './selectCapValidity';
 
 const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
@@ -35,7 +38,7 @@ const ViewCaps = ({ capValidity, fareDayEnd, viewCapErrors = [] }: CapProps): Re
                 <div className="govuk-grid-column-three-quarters">
                     <h1 className="govuk-heading-xl">Caps</h1>
                     <p className="govuk-body govuk-!-margin-bottom-8">
-                        Define your different types of caps and when they expire
+                        Define your different types of caps and when they expire.
                     </p>
 
                     <div>
@@ -45,7 +48,7 @@ const ViewCaps = ({ capValidity, fareDayEnd, viewCapErrors = [] }: CapProps): Re
                         ) : (
                             <>
                                 <p className="govuk-body">
-                                    <em>You currently have not set up cap expiry.</em>
+                                    <em>You currently have no cap expiry saved.</em>
                                 </p>
                                 <a className="govuk-button" data-module="govuk-button" href="/selectCapValidity">
                                     Add cap expiry
@@ -85,6 +88,8 @@ const CapExpiryCard = ({ capValidity, fareDayEnd }: CapExpiryCardProps): ReactEl
                                 ? 'At the end of a 24 hour period'
                                 : 'Fare day end'}
                         </h4>
+                        <p className="govuk-body-s govuk-!-margin-bottom-2">{validityHintText[capValidity]}</p>
+
                         {capValidity === 'fareDayEnd' ? (
                             <p className="govuk-body-s govuk-!-margin-bottom-2">
                                 {fareDayEnd.substring(0, 2)}:{fareDayEnd.substring(2, 4)}
@@ -103,6 +108,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const capValidity = dbCapExpiry ? (JSON.parse(dbCapExpiry) as CapExpiry).productValidity : '';
     const dbFareDayEnd = await getFareDayEnd(noc);
     const fareDayEnd = dbFareDayEnd ? dbFareDayEnd : '';
+
+    updateSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE, undefined);
 
     return {
         props: {

@@ -9,11 +9,19 @@ import { getAndValidateNoc, getCsrfToken, getErrorsByIds } from '../utils';
 import RadioConditionalInput from '../components/RadioConditionalInput';
 import { isCapExpiry } from '../interfaces/typeGuards';
 import { getCapExpiry, getFareDayEnd } from '../data/auroradb';
+import BackButton from '../components/BackButton';
 
 const title = 'Cap Validity - Create Fares Data Service';
 const description = 'Cap Validity selection page of the Create Fares Data Service';
 
+export const validityHintText: { [key: string]: string } = {
+    endOfCalendarDay: 'The cap applies to journeys made before midnight',
+    '24hr': 'The cap applies to journeys made within 24hrs of the first tap',
+    fareDayEnd: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+};
+
 interface CapValidityProps {
+    capExpirySelected: string;
     errors: ErrorInfo[];
     fieldset: RadioConditionalInputFieldset;
     csrfToken: string;
@@ -38,7 +46,7 @@ export const getFieldset = (
                 label: ' At the end of a calendar day',
                 radioButtonHint: {
                     id: 'cap-end-calendar-hint',
-                    content: 'The cap applies to journeys made before midnight',
+                    content: validityHintText['endOfCalendarDay'],
                 },
                 defaultChecked: capExpiry === 'endOfCalendarDay',
             },
@@ -49,7 +57,7 @@ export const getFieldset = (
                 label: 'At the end of a 24 hour period',
                 radioButtonHint: {
                     id: 'cap-twenty-four-hours-hint',
-                    content: 'The cap applies to journeys made within 24hrs of the first tap',
+                    content: validityHintText['24hr'],
                 },
                 defaultChecked: capExpiry === '24hr',
             },
@@ -62,7 +70,7 @@ export const getFieldset = (
                 label: 'Fare day end',
                 radioButtonHint: {
                     id: 'cap-end-of-service-hint',
-                    content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+                    content: validityHintText['fareDayEnd'],
                 },
                 defaultChecked: capExpiry === 'fareDayEnd',
                 inputHint: {
@@ -88,11 +96,12 @@ export const getFieldset = (
     return CapValidityFieldSet;
 };
 
-const CapValidity = ({ errors = [], fieldset, csrfToken }: CapValidityProps): ReactElement => {
+const CapValidity = ({ capExpirySelected, errors = [], fieldset, csrfToken }: CapValidityProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/capValidity" method="post" csrfToken={csrfToken}>
                 <>
+                    {!capExpirySelected ? <BackButton href="/viewCaps" /> : null}
                     <ErrorSummary errors={errors}>
                         {errors.some((error) => error.id === 'product-end-time') && (
                             <p className="govuk-body-m govuk-!-margin-bottom-0 govuk-!-margin-top-4">
@@ -146,6 +155,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     return {
         props: {
+            capExpirySelected,
             errors,
             fieldset,
             csrfToken,

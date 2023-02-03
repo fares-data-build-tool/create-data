@@ -88,7 +88,7 @@ const ManageOperatorDetails = ({
                         <h1 className="govuk-heading-xl">Operator Details</h1>
                         <p className="govuk-body govuk-!-margin-bottom-4" id={'operator-details-text'}>
                             This information will be included in your fares data and therefore may be presented to
-                            passengers
+                            passengers.
                         </p>
                         <CsrfForm action="/api/manageOperatorDetails" method="post" csrfToken={csrfToken}>
                             {inputDetails.map((details) => (

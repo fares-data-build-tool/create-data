@@ -11,6 +11,9 @@ exports[`pages capValidity should render correctly 1`] = `
     csrfToken=""
     method="post"
   >
+    <BackButton
+      href="/viewCaps"
+    />
     <ErrorSummary
       errors={Array []}
     />
@@ -133,6 +136,9 @@ exports[`pages capValidity should render error messaging when errors are passed 
     csrfToken=""
     method="post"
   >
+    <BackButton
+      href="/viewCaps"
+    />
     <ErrorSummary
       errors={
         Array [
