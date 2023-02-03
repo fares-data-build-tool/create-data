@@ -53,7 +53,7 @@ exports[`pages capValidity should render correctly 1`] = `
                 Object {
                   "defaultChecked": false,
                   "id": "cap-end-calendar",
-                  "label": " At the end of a calendar day",
+                  "label": "At the end of a calendar day",
                   "name": "capValid",
                   "radioButtonHint": Object {
                     "content": "The cap applies to journeys made before midnight",
@@ -75,7 +75,7 @@ exports[`pages capValidity should render correctly 1`] = `
                 Object {
                   "dataAriaControls": "cap-validity-end-of-service-required-conditional",
                   "defaultChecked": false,
-                  "disableAutoSelect": true,
+                  "disableAutoSelect": false,
                   "id": "cap-end-of-service",
                   "inputErrors": Array [],
                   "inputHint": Object {
@@ -185,7 +185,7 @@ exports[`pages capValidity should render error messaging when errors are passed 
                 Object {
                   "defaultChecked": false,
                   "id": "cap-end-calendar",
-                  "label": " At the end of a calendar day",
+                  "label": "At the end of a calendar day",
                   "name": "capValid",
                   "radioButtonHint": Object {
                     "content": "The cap applies to journeys made before midnight",
@@ -207,7 +207,7 @@ exports[`pages capValidity should render error messaging when errors are passed 
                 Object {
                   "dataAriaControls": "cap-validity-end-of-service-required-conditional",
                   "defaultChecked": false,
-                  "disableAutoSelect": true,
+                  "disableAutoSelect": false,
                   "id": "cap-end-of-service",
                   "inputErrors": Array [],
                   "inputHint": Object {

@@ -21,7 +21,6 @@ export const validityHintText: { [key: string]: string } = {
 };
 
 interface CapValidityProps {
-    capExpirySelected: string;
     errors: ErrorInfo[];
     fieldset: RadioConditionalInputFieldset;
     csrfToken: string;
@@ -43,7 +42,7 @@ export const getFieldset = (
                 id: 'cap-end-calendar',
                 name: 'capValid',
                 value: 'endOfCalendarDay',
-                label: ' At the end of a calendar day',
+                label: 'At the end of a calendar day',
                 radioButtonHint: {
                     id: 'cap-end-calendar-hint',
                     content: validityHintText['endOfCalendarDay'],
@@ -63,7 +62,7 @@ export const getFieldset = (
             },
             {
                 id: 'cap-end-of-service',
-                disableAutoSelect: true,
+                disableAutoSelect: false,
                 name: 'capValid',
                 value: 'fareDayEnd',
                 dataAriaControls: 'cap-validity-end-of-service-required-conditional',
@@ -96,12 +95,12 @@ export const getFieldset = (
     return CapValidityFieldSet;
 };
 
-const CapValidity = ({ capExpirySelected, errors = [], fieldset, csrfToken }: CapValidityProps): ReactElement => {
+const CapValidity = ({ errors = [], fieldset, csrfToken }: CapValidityProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/capValidity" method="post" csrfToken={csrfToken}>
                 <>
-                    {!capExpirySelected ? <BackButton href="/viewCaps" /> : null}
+                    <BackButton href="/viewCaps" />
                     <ErrorSummary errors={errors}>
                         {errors.some((error) => error.id === 'product-end-time') && (
                             <p className="govuk-body-m govuk-!-margin-bottom-0 govuk-!-margin-top-4">
@@ -155,7 +154,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     return {
         props: {
-            capExpirySelected,
             errors,
             fieldset,
             csrfToken,

@@ -6473,7 +6473,7 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
             id: 'cap-end-calendar',
             name: 'capValid',
             value: 'endOfCalendarDay',
-            label: ' At the end of a calendar day',
+            label: 'At the end of a calendar day',
             radioButtonHint: {
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
@@ -6495,7 +6495,7 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
             id: 'cap-end-of-service',
             name: 'capValid',
             value: 'fareDayEnd',
-            disableAutoSelect: true,
+            disableAutoSelect: false,
             dataAriaControls: 'cap-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
@@ -6599,7 +6599,7 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
             id: 'cap-end-calendar',
             name: 'capValid',
             value: 'endOfCalendarDay',
-            label: ' At the end of a calendar day',
+            label: 'At the end of a calendar day',
             radioButtonHint: {
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
@@ -6622,7 +6622,7 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
             name: 'capValid',
             value: 'fareDayEnd',
 
-            disableAutoSelect: true,
+            disableAutoSelect: false,
             dataAriaControls: 'cap-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
@@ -6731,7 +6731,7 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
             id: 'cap-end-calendar',
             name: 'capValid',
             value: 'endOfCalendarDay',
-            label: ' At the end of a calendar day',
+            label: 'At the end of a calendar day',
             radioButtonHint: {
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
@@ -6753,8 +6753,7 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
             id: 'cap-end-of-service',
             name: 'capValid',
             value: 'fareDayEnd',
-
-            disableAutoSelect: true,
+            disableAutoSelect: false,
             dataAriaControls: 'cap-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
