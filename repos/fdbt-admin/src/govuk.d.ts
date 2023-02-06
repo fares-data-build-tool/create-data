@@ -6,3 +6,4 @@ declare module '@govuk-react/table';
 declare module '@govuk-react/button';
 declare module '@govuk-react/loading-box';
 declare module '@govuk-react/details';
+declare module 'react-easy-bar-chart';
