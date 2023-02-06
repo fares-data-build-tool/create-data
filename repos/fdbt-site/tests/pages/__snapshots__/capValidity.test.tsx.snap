@@ -2,15 +2,18 @@
 
 exports[`pages capValidity should render correctly 1`] = `
 <TwoThirdsLayout
-  description="Cap Validity selection page of the Create Fares Data Service"
+  description="Cap Expiry selection page of the Create Fares Data Service"
   errors={Array []}
-  title="Cap Validity - Create Fares Data Service"
+  title="Cap Expiry - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/capValidity"
     csrfToken=""
     method="post"
   >
+    <BackButton
+      href="/viewCaps"
+    />
     <ErrorSummary
       errors={Array []}
     />
@@ -18,7 +21,7 @@ exports[`pages capValidity should render correctly 1`] = `
       className="govuk-form-group "
     >
       <fieldset
-        aria-describedby="cap-validity-page-heading"
+        aria-describedby="cap-expiry-page-heading"
         className="govuk-fieldset"
       >
         <legend
@@ -26,14 +29,14 @@ exports[`pages capValidity should render correctly 1`] = `
         >
           <h1
             className="govuk-fieldset__heading"
-            id="cap-validity-page-heading"
+            id="cap-expiry-page-heading"
           >
             When does the cap expire?
           </h1>
         </legend>
         <span
           className="govuk-hint"
-          id="cap-validity-hint"
+          id="cap-expiry-hint"
         >
           We need to know the time that this cap would be valid until
         </span>
@@ -48,8 +51,9 @@ exports[`pages capValidity should render correctly 1`] = `
               "radioError": Array [],
               "radios": Array [
                 Object {
+                  "defaultChecked": false,
                   "id": "cap-end-calendar",
-                  "label": " At the end of a calendar day",
+                  "label": "At the end of a calendar day",
                   "name": "capValid",
                   "radioButtonHint": Object {
                     "content": "The cap applies to journeys made before midnight",
@@ -58,6 +62,7 @@ exports[`pages capValidity should render correctly 1`] = `
                   "value": "endOfCalendarDay",
                 },
                 Object {
+                  "defaultChecked": false,
                   "id": "cap-twenty-four-hours",
                   "label": "At the end of a 24 hour period",
                   "name": "capValid",
@@ -68,7 +73,8 @@ exports[`pages capValidity should render correctly 1`] = `
                   "value": "24hr",
                 },
                 Object {
-                  "dataAriaControls": "cap-validity-end-of-service-required-conditional",
+                  "dataAriaControls": "cap-expiry-end-of-service-required-conditional",
+                  "defaultChecked": false,
                   "disableAutoSelect": true,
                   "id": "cap-end-of-service",
                   "inputErrors": Array [],
@@ -114,7 +120,7 @@ exports[`pages capValidity should render correctly 1`] = `
 
 exports[`pages capValidity should render error messaging when errors are passed 1`] = `
 <TwoThirdsLayout
-  description="Cap Validity selection page of the Create Fares Data Service"
+  description="Cap Expiry selection page of the Create Fares Data Service"
   errors={
     Array [
       Object {
@@ -123,13 +129,16 @@ exports[`pages capValidity should render error messaging when errors are passed 
       },
     ]
   }
-  title="Cap Validity - Create Fares Data Service"
+  title="Cap Expiry - Create Fares Data Service"
 >
   <CsrfForm
     action="/api/capValidity"
     csrfToken=""
     method="post"
   >
+    <BackButton
+      href="/viewCaps"
+    />
     <ErrorSummary
       errors={
         Array [
@@ -144,7 +153,7 @@ exports[`pages capValidity should render error messaging when errors are passed 
       className="govuk-form-group govuk-form-group--error"
     >
       <fieldset
-        aria-describedby="cap-validity-page-heading"
+        aria-describedby="cap-expiry-page-heading"
         className="govuk-fieldset"
       >
         <legend
@@ -152,14 +161,14 @@ exports[`pages capValidity should render error messaging when errors are passed 
         >
           <h1
             className="govuk-fieldset__heading"
-            id="cap-validity-page-heading"
+            id="cap-expiry-page-heading"
           >
             When does the cap expire?
           </h1>
         </legend>
         <span
           className="govuk-hint"
-          id="cap-validity-hint"
+          id="cap-expiry-hint"
         >
           We need to know the time that this cap would be valid until
         </span>
@@ -174,8 +183,9 @@ exports[`pages capValidity should render error messaging when errors are passed 
               "radioError": Array [],
               "radios": Array [
                 Object {
+                  "defaultChecked": false,
                   "id": "cap-end-calendar",
-                  "label": " At the end of a calendar day",
+                  "label": "At the end of a calendar day",
                   "name": "capValid",
                   "radioButtonHint": Object {
                     "content": "The cap applies to journeys made before midnight",
@@ -184,6 +194,7 @@ exports[`pages capValidity should render error messaging when errors are passed 
                   "value": "endOfCalendarDay",
                 },
                 Object {
+                  "defaultChecked": false,
                   "id": "cap-twenty-four-hours",
                   "label": "At the end of a 24 hour period",
                   "name": "capValid",
@@ -194,7 +205,8 @@ exports[`pages capValidity should render error messaging when errors are passed 
                   "value": "24hr",
                 },
                 Object {
-                  "dataAriaControls": "cap-validity-end-of-service-required-conditional",
+                  "dataAriaControls": "cap-expiry-end-of-service-required-conditional",
+                  "defaultChecked": false,
                   "disableAutoSelect": true,
                   "id": "cap-end-of-service",
                   "inputErrors": Array [],

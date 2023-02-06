@@ -3,16 +3,17 @@ import { updateSessionAttribute } from '../../utils/sessions';
 import { CAP_EXPIRY_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { getFareDayEnd } from '../../data/auroradb';
+import { getFareDayEnd, upsertCapExpiry } from '../../data/auroradb';
 import { CapExpiry } from '../../interfaces/matchingJsonTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const errors: ErrorInfo[] = [];
         const { capValid } = req.body;
+        const noc = getAndValidateNoc(req, res);
+
         if (capValid) {
-            let productEndTime = '';
-            const endOfFareDay = await getFareDayEnd(getAndValidateNoc(req, res));
+            const endOfFareDay = await getFareDayEnd(noc);
 
             if (capValid === 'fareDayEnd') {
                 if (!endOfFareDay) {
@@ -22,22 +23,19 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     });
 
                     updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, errors);
-                    redirectTo(res, '/selectCapValidity');
+                    redirectTo(res, '/selectCapExpiry');
 
                     return;
-                } else {
-                    productEndTime = endOfFareDay;
                 }
             }
 
             const capExpiryAttributeValue: CapExpiry = {
                 productValidity: capValid,
-                productEndTime: productEndTime,
             };
+            updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, undefined);
 
-            updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, capExpiryAttributeValue);
-
-            redirectTo(res, '/defineCapStart');
+            await upsertCapExpiry(noc, capExpiryAttributeValue);
+            redirectTo(res, '/viewCaps');
             return;
         } else {
             errors.push({
@@ -45,7 +43,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 errorMessage: 'Choose an option regarding your cap ticket validity',
             });
             updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, errors);
-            redirectTo(res, '/selectCapValidity');
+            redirectTo(res, '/selectCapExpiry');
             return;
         }
     } catch (error) {
