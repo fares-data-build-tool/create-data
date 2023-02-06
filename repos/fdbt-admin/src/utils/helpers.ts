@@ -67,8 +67,8 @@ export const productsCreated = (activeNocs: string[], products: ObjectList): str
 };
 
 export const typesOfProductsCreated = (products: ObjectList): FareTypeCount => {
-    // some real nocs are used for testing, so these need to be discounted
-    const nocsToIgnore = ['IWBusCo', 'SYRK', 'TNXB'];
+    // SYRK is used for testing, so needs to be discounted
+    const nocsToIgnore = ['IWBusCo', 'SYRK'];
     const count: FareTypeCount = {
         single: 0,
         return: 0,
