@@ -27,14 +27,7 @@ import {
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
-    TYPE_OF_CAP_ATTRIBUTE,
     PRICING_PER_DISTANCE_ATTRIBUTE,
-    ADDITIONAL_PRICING_ATTRIBUTE,
-    MULTI_TAPS_PRICING_ATTRIBUTE,
-    CAPS_ATTRIBUTE,
-    CAP_EXPIRY_ATTRIBUTE,
-    CAP_START_ATTRIBUTE,
-    CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
@@ -54,13 +47,8 @@ import {
     TicketPeriod,
     TicketPeriodWithInput,
     Direction,
-    TypeOfCap,
     DistancePricingData,
-    AdditionalPricing,
-    MultiTapPricing,
-    CapDetails,
     ServiceListAttribute,
-    OperatorAttribute,
 } from '../../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import {
@@ -102,14 +90,6 @@ import {
     Stop,
     Ticket,
     AdditionalOperator,
-    CapExpiry,
-    CapStartInfo,
-    ByProductsCapInfo,
-    ByDistanceCapInfo,
-    SelectedService,
-    ByTapCapInfo,
-    CappedTicket,
-    ExpiryUnit,
     FlatFareMultipleServices,
 } from '../../interfaces/matchingJsonTypes';
 
@@ -429,116 +409,6 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     };
 };
 
-export const getCappedTicketJson = async (
-    req: NextApiRequestWithSession,
-    res: NextApiResponse,
-    ticketType: 'geoZone' | 'multipleServices',
-): Promise<WithIds<CappedTicket>> => {
-    let json;
-    if (ticketType === 'geoZone') {
-        json = await getCappedGeoZoneTicketJson(req, res);
-    } else {
-        json = getCappedMultipleServicesTicketJson(req, res);
-    }
-
-    let capData;
-    let productName = '';
-
-    const { typeOfCap } = getSessionAttribute(req, TYPE_OF_CAP_ATTRIBUTE) as TypeOfCap;
-
-    switch (typeOfCap) {
-        case 'byDistance':
-            const distanceCap = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
-            const additionalDiscount = getSessionAttribute(req, ADDITIONAL_PRICING_ATTRIBUTE) as
-                | AdditionalPricing
-                | undefined;
-            const distanceCappedProductInfo: ByDistanceCapInfo = {
-                capDetails: distanceCap,
-                ...(!!additionalDiscount && additionalDiscount),
-            };
-            capData = { cappedProductInfo: distanceCappedProductInfo };
-            productName = distanceCappedProductInfo.capDetails.productName;
-            break;
-        case 'byTaps':
-            const tapCap = getSessionAttribute(req, MULTI_TAPS_PRICING_ATTRIBUTE) as MultiTapPricing;
-            const capDetails = getSessionAttribute(req, CAPS_ATTRIBUTE) as CapDetails;
-            const capExpiry = getSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE) as CapExpiry;
-            const capStart = getSessionAttribute(req, CAP_START_ATTRIBUTE) as CapStartInfo;
-            const byTapCappedProductInfo: ByTapCapInfo = {
-                tapDetails: tapCap.tapDetails,
-                capDetails,
-                capExpiry,
-                capStart,
-            };
-            capData = {
-                cappedProductInfo: byTapCappedProductInfo,
-            };
-            productName = capDetails.productName;
-            break;
-        case 'byProducts':
-            const productGroupId = getSessionAttribute(req, CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE) as string;
-            const byProductsCapDetails = getSessionAttribute(req, CAPS_ATTRIBUTE) as CapDetails;
-            const byProductsCapExpiry = getSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE) as CapExpiry;
-            const byProductsCapStart = getSessionAttribute(req, CAP_START_ATTRIBUTE) as CapStartInfo;
-            const cappedProductInfo: ByProductsCapInfo = {
-                productGroup: { id: Number(productGroupId) },
-                capDetails: byProductsCapDetails,
-                capExpiry: byProductsCapExpiry,
-                capStart: byProductsCapStart,
-            };
-            capData = {
-                cappedProductInfo,
-                products: [{ productName: byProductsCapDetails.productName }],
-            };
-            productName = byProductsCapDetails.productName;
-            break;
-        default:
-            throw new Error('Invalid type of cap.');
-    }
-
-    const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE) as SalesOfferPackage[];
-    const periodExpiryAttributeInfo = getSessionAttribute(req, PERIOD_EXPIRY_ATTRIBUTE) as PeriodExpiry;
-
-    const products = getProductsAndSalesOfferPackages<WithIds<CappedTicket>>(
-        [{ productName, salesOfferPackages }],
-        { products: [{ productName, productDuration: '', productDurationUnits: ExpiryUnit.HOUR }] },
-        periodExpiryAttributeInfo,
-    );
-
-    capData = { ...capData, products };
-
-    return { ...json, ...capData } as WithIds<CappedTicket>;
-};
-
-export const getCappedGeoZoneTicketJson = async (
-    req: NextApiRequestWithSession,
-    res: NextApiResponse,
-): Promise<{ zoneName: string; stops: Stop[]; operatorName: string } & WithBaseIds<BaseTicket<'capped'>>> => {
-    const baseAttributes = getBaseTicketAttributes(req, res, 'capped');
-    const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
-    const operatorName = (getSessionAttribute(req, OPERATOR_ATTRIBUTE) as OperatorAttribute).name || '';
-
-    if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName)) {
-        throw new Error('Could not create geo zone ticket json. Necessary cookies and session objects not found.');
-    }
-
-    const atcoCodes: string[] = await getCsvZoneUploadData(
-        `fare-zone/${baseAttributes.nocCode}/${baseAttributes.uuid}.json`,
-    );
-    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
-
-    if (zoneStops.length === 0) {
-        throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
-    }
-
-    return {
-        ...baseAttributes,
-        zoneName: fareZoneName,
-        stops: zoneStops,
-        operatorName,
-    };
-};
-
 export const getGeoZoneTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
@@ -579,22 +449,6 @@ export const getGeoZoneTicketJson = async (
         ...(additionalNocs && { additionalNocs }),
         ...(operatorGroupId && { operatorGroupId }),
         ...(exemptions && { exemptedServices: exemptions.selectedServices }),
-    };
-};
-
-export const getCappedMultipleServicesTicketJson = (
-    req: NextApiRequestWithSession,
-    res: NextApiResponse,
-): { selectedServices: SelectedService[]; operatorName: string } & WithBaseIds<BaseTicket<'capped'>> => {
-    const baseAttributes = getBaseTicketAttributes(req, res, 'capped');
-    const operatorName = (getSessionAttribute(req, OPERATOR_ATTRIBUTE) as OperatorAttribute).name || '';
-    const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
-    const { selectedServices } = serviceListAttribute;
-
-    return {
-        ...baseAttributes,
-        selectedServices,
-        operatorName,
     };
 };
 

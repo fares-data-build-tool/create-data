@@ -1,4 +1,4 @@
-import { AdditionalPricing, CapDetails, DistancePricingData, MultiTap } from './index';
+import { DistancePricingData } from './index';
 
 export interface PointToPointCarnetProductDetails extends BaseProduct {
     productName: string;
@@ -17,7 +17,7 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     exemptedServices?: SelectedService[];
 }
 
-export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator' | 'capped'> {
+export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator'> {
     operatorName: string;
     products: ProductDetails[];
     fareDayEnd?: string;
@@ -52,7 +52,7 @@ export interface PriceByDistanceProduct extends BaseProduct {
 }
 
 export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
-    products: FlatFareProduct[] | PriceByDistanceProduct[];
+    products: (PriceByDistanceProduct | FlatFareProduct)[];
     termTime: boolean;
     selectedServices: SelectedService[];
     operatorName: string;
@@ -82,13 +82,12 @@ export interface CapStartInfo {
 
 export type FromDb<T> = T & { id: number };
 
-export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return' | 'capped';
+export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
 
 export type Ticket =
     | PointToPointTicket
     | GeoZoneTicket
     | PeriodMultipleServicesTicket
-    | CappedTicket
     | FlatFareTicket
     | SchemeOperatorGeoZoneTicket
     | SchemeOperatorFlatFareTicket
@@ -109,8 +108,7 @@ export type TicketWithIds =
     | WithIds<MultiOperatorMultipleServicesTicket>
     | WithIds<MultiOperatorGeoZoneTicket>
     | WithIds<PointToPointPeriodTicket>
-    | WithIds<PeriodHybridTicket>
-    | WithIds<CappedTicket>;
+    | WithIds<PeriodHybridTicket>;
 
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
@@ -273,51 +271,6 @@ export interface Product {
 
 export interface FlatFareByDistanceProduct {
     pricingByDistance: DistancePricingData;
-}
-
-export interface CappedGeoZoneTicket extends BaseTicket<'capped'> {
-    cappedProductInfo: ByDistanceCapInfo | ByTapCapInfo | ByProductsCapInfo;
-    type: 'capped';
-    products: CappedProductDetails[];
-    zoneName: string;
-    stops: Stop[];
-    operatorName: string;
-}
-
-export interface CappedMultipleServicesTicket extends Omit<BaseTicket<'capped'>, 'products'> {
-    cappedProductInfo: ByDistanceCapInfo | ByTapCapInfo | ByProductsCapInfo;
-    products: CappedProductDetails[];
-    selectedServices: SelectedService[];
-    operatorName: string;
-}
-
-export type CappedTicket = CappedGeoZoneTicket | CappedMultipleServicesTicket;
-
-export interface CappedProductDetails extends BaseProduct {
-    productName: string;
-}
-
-export interface ByDistanceCapInfo {
-    capDetails: DistancePricingData;
-    additionalDiscount?: AdditionalPricing;
-}
-
-export interface ByDistanceInfo {
-    pricingByDistance: DistancePricingData;
-}
-
-export interface ByTapCapInfo {
-    tapDetails: MultiTap;
-    capDetails: CapDetails;
-    capExpiry: PeriodExpiry;
-    capStart: CapStartInfo;
-}
-
-export interface ByProductsCapInfo {
-    productGroup: { id: number };
-    capDetails: CapDetails;
-    capExpiry: PeriodExpiry;
-    capStart: CapStartInfo;
 }
 
 export interface ProductDetails extends BaseProduct {
