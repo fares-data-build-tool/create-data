@@ -33,7 +33,7 @@ exports[`pages manage operator details should render correctly 1`] = `
           className="govuk-body govuk-!-margin-bottom-4"
           id="operator-details-text"
         >
-          This information will be included in your fares data and therefore may be presented to passengers
+          This information will be included in your fares data and therefore may be presented to passengers.
         </p>
         <CsrfForm
           action="/api/manageOperatorDetails"
@@ -384,7 +384,7 @@ exports[`pages manage operator details should render error state if error 1`] = 
           className="govuk-body govuk-!-margin-bottom-4"
           id="operator-details-text"
         >
-          This information will be included in your fares data and therefore may be presented to passengers
+          This information will be included in your fares data and therefore may be presented to passengers.
         </p>
         <CsrfForm
           action="/api/manageOperatorDetails"
@@ -1140,7 +1140,7 @@ exports[`pages manage operator details should render popup if saved 1`] = `
           className="govuk-body govuk-!-margin-bottom-4"
           id="operator-details-text"
         >
-          This information will be included in your fares data and therefore may be presented to passengers
+          This information will be included in your fares data and therefore may be presented to passengers.
         </p>
         <CsrfForm
           action="/api/manageOperatorDetails"

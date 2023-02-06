@@ -109,7 +109,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         }
         updateSessionAttribute(req, CAPS_ATTRIBUTE, { caps, productName: cappedProductName });
 
-        redirectTo(res, '/selectCapValidity');
+        redirectTo(res, '/selectCapExpiry');
         return;
     } catch (error) {
         const message = 'There was a problem in the create caps API:';

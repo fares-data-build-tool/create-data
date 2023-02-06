@@ -6436,7 +6436,7 @@ export const mockCapValidityFieldset: RadioConditionalInputFieldset = {
             name: 'capValid',
             value: 'fareDayEnd',
             disableAutoSelect: true,
-            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
             label: 'End of service day',
             radioButtonHint: {
                 id: 'cap-end-of-service-hint',
@@ -6473,11 +6473,12 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
             id: 'cap-end-calendar',
             name: 'capValid',
             value: 'endOfCalendarDay',
-            label: ' At the end of a calendar day',
+            label: 'At the end of a calendar day',
             radioButtonHint: {
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-twenty-four-hours',
@@ -6488,18 +6489,20 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
                 id: 'cap-twenty-four-hours-hint',
                 content: 'The cap applies to journeys made within 24hrs of the first tap',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-end-of-service',
             name: 'capValid',
             value: 'fareDayEnd',
             disableAutoSelect: true,
-            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
                 id: 'cap-end-of-service-hint',
                 content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',
@@ -6554,7 +6557,7 @@ export const mockCapValidityFieldsetWithErrors: RadioConditionalInputFieldset = 
             value: 'fareDayEnd',
 
             disableAutoSelect: true,
-            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
                 id: 'cap-end-of-service-hint',
@@ -6596,11 +6599,12 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
             id: 'cap-end-calendar',
             name: 'capValid',
             value: 'endOfCalendarDay',
-            label: ' At the end of a calendar day',
+            label: 'At the end of a calendar day',
             radioButtonHint: {
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-twenty-four-hours',
@@ -6611,19 +6615,20 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
                 id: 'cap-twenty-four-hours-hint',
                 content: 'The cap applies to journeys made within 24hrs of the first tap',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-end-of-service',
             name: 'capValid',
             value: 'fareDayEnd',
-
             disableAutoSelect: true,
-            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
                 id: 'cap-end-of-service-hint',
                 content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',
@@ -6683,7 +6688,7 @@ export const mockCapValidityFieldsetWithInputErrors: RadioConditionalInputFields
             value: 'fareDayEnd',
 
             disableAutoSelect: true,
-            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
                 id: 'cap-end-of-service-hint',
@@ -6725,11 +6730,12 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
             id: 'cap-end-calendar',
             name: 'capValid',
             value: 'endOfCalendarDay',
-            label: ' At the end of a calendar day',
+            label: 'At the end of a calendar day',
             radioButtonHint: {
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-twenty-four-hours',
@@ -6740,19 +6746,20 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
                 id: 'cap-twenty-four-hours-hint',
                 content: 'The cap applies to journeys made within 24hrs of the first tap',
             },
+            defaultChecked: false,
         },
         {
             id: 'cap-end-of-service',
+            disableAutoSelect: true,
             name: 'capValid',
             value: 'fareDayEnd',
-
-            disableAutoSelect: true,
-            dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+            dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
                 id: 'cap-end-of-service-hint',
                 content: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
             },
+            defaultChecked: false,
             inputHint: {
                 id: 'product-end-time-hint',
                 content: 'You can update your fare day end in operator settings',
