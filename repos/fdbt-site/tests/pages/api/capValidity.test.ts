@@ -75,7 +75,7 @@ describe('capValidity', () => {
 
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAP_EXPIRY_ATTRIBUTE, errors);
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/selectCapValidity',
+            Location: '/selectCapExpiry',
         });
     });
 
@@ -102,7 +102,7 @@ describe('capValidity', () => {
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAP_EXPIRY_ATTRIBUTE, errors);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/selectCapValidity',
+            Location: '/selectCapExpiry',
         });
     });
 });

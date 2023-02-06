@@ -8,7 +8,7 @@ import { getCapExpiry, getFareDayEnd } from '../data/auroradb';
 import { CapExpiry } from '../interfaces/matchingJsonTypes';
 import { updateSessionAttribute } from '../utils/sessions';
 import { CAP_EXPIRY_ATTRIBUTE } from '../constants/attributes';
-import { validityHintText } from './selectCapValidity';
+import { expiryHintText } from './selectCapExpiry';
 
 const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
@@ -50,7 +50,7 @@ const ViewCaps = ({ capValidity, fareDayEnd, viewCapErrors = [] }: CapProps): Re
                                 <p className="govuk-body">
                                     <em>You currently have no cap expiry saved.</em>
                                 </p>
-                                <a className="govuk-button" data-module="govuk-button" href="/selectCapValidity">
+                                <a className="govuk-button" data-module="govuk-button" href="/selectCapExpiry">
                                     Add cap expiry
                                 </a>
                             </>
@@ -73,7 +73,7 @@ const CapExpiryCard = ({ capValidity, fareDayEnd }: CapExpiryCardProps): ReactEl
                                 <li className="actions__item">
                                     <a
                                         className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                        href="/selectCapValidity"
+                                        href="/selectCapExpiry"
                                     >
                                         Edit
                                     </a>
@@ -88,7 +88,7 @@ const CapExpiryCard = ({ capValidity, fareDayEnd }: CapExpiryCardProps): ReactEl
                                 ? 'At the end of a 24 hour period'
                                 : 'Fare day end'}
                         </h4>
-                        <p className="govuk-body-s govuk-!-margin-bottom-2">{validityHintText[capValidity]}</p>
+                        <p className="govuk-body-s govuk-!-margin-bottom-2">{expiryHintText[capValidity]}</p>
 
                         {capValidity === 'fareDayEnd' ? (
                             <p className="govuk-body-s govuk-!-margin-bottom-2">

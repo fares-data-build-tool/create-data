@@ -111,7 +111,7 @@ describe('pages', () => {
                     },
                     {
                         content: 'End of calendar day',
-                        href: '/selectCapValidity',
+                        href: '/selectCapExpiry',
                         name: 'Cap expiry',
                     },
                     {
@@ -154,7 +154,7 @@ describe('pages', () => {
                     },
                     {
                         content: '24 hr',
-                        href: '/selectCapValidity',
+                        href: '/selectCapExpiry',
                         name: 'Cap expiry',
                     },
                     {

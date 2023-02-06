@@ -23,7 +23,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     });
 
                     updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, errors);
-                    redirectTo(res, '/selectCapValidity');
+                    redirectTo(res, '/selectCapExpiry');
 
                     return;
                 }
@@ -43,7 +43,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 errorMessage: 'Choose an option regarding your cap ticket validity',
             });
             updateSessionAttribute(req, CAP_EXPIRY_ATTRIBUTE, errors);
-            redirectTo(res, '/selectCapValidity');
+            redirectTo(res, '/selectCapExpiry');
             return;
         }
     } catch (error) {

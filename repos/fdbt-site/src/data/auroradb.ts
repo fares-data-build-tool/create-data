@@ -1635,6 +1635,7 @@ export const upsertFareDayEnd = async (nocCode: string, fareDayEnd: string): Pro
         throw new Error(`Could not insert fare day end into the fareDayEnd table. ${error}`);
     }
 };
+
 export const getCapExpiry = async (nocCode: string): Promise<string | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1651,7 +1652,7 @@ export const getCapExpiry = async (nocCode: string): Promise<string | undefined>
         `;
 
         const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode]);
-
+        // contents will be like {"productValidity":"fareDayEnd"} or {"productValidity":"24hr"}
         return queryResults[0]?.contents;
     } catch (error) {
         throw new Error(`Could not retrieve cap expiry by nocCode from AuroraDB: ${error.stack}`);

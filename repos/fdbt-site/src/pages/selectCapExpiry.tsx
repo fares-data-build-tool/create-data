@@ -11,16 +11,16 @@ import { isCapExpiry } from '../interfaces/typeGuards';
 import { getCapExpiry, getFareDayEnd } from '../data/auroradb';
 import BackButton from '../components/BackButton';
 
-const title = 'Cap Validity - Create Fares Data Service';
-const description = 'Cap Validity selection page of the Create Fares Data Service';
+const title = 'Cap Expiry - Create Fares Data Service';
+const description = 'Cap Expiry selection page of the Create Fares Data Service';
 
-export const validityHintText: { [key: string]: string } = {
+export const expiryHintText: { [expiry: string]: string } = {
     endOfCalendarDay: 'The cap applies to journeys made before midnight',
     '24hr': 'The cap applies to journeys made within 24hrs of the first tap',
     fareDayEnd: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
 };
 
-interface CapValidityProps {
+interface CapExpiryProps {
     errors: ErrorInfo[];
     fieldset: RadioConditionalInputFieldset;
     csrfToken: string;
@@ -31,7 +31,7 @@ export const getFieldset = (
     endOfFareDay?: string,
     capExpiry?: string,
 ): RadioConditionalInputFieldset => {
-    const CapValidityFieldSet: RadioConditionalInputFieldset = {
+    const CapExpiryFieldSet: RadioConditionalInputFieldset = {
         heading: {
             id: 'cap-validity',
             content: 'Is this ticket only valid on certain days or times?',
@@ -45,7 +45,7 @@ export const getFieldset = (
                 label: 'At the end of a calendar day',
                 radioButtonHint: {
                     id: 'cap-end-calendar-hint',
-                    content: validityHintText['endOfCalendarDay'],
+                    content: expiryHintText['endOfCalendarDay'],
                 },
                 defaultChecked: capExpiry === 'endOfCalendarDay',
             },
@@ -56,7 +56,7 @@ export const getFieldset = (
                 label: 'At the end of a 24 hour period',
                 radioButtonHint: {
                     id: 'cap-twenty-four-hours-hint',
-                    content: validityHintText['24hr'],
+                    content: expiryHintText['24hr'],
                 },
                 defaultChecked: capExpiry === '24hr',
             },
@@ -65,11 +65,11 @@ export const getFieldset = (
                 disableAutoSelect: capExpiry !== 'fareDayEnd',
                 name: 'capValid',
                 value: 'fareDayEnd',
-                dataAriaControls: 'cap-validity-end-of-service-required-conditional',
+                dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
                 label: 'Fare day end',
                 radioButtonHint: {
                     id: 'cap-end-of-service-hint',
-                    content: validityHintText['fareDayEnd'],
+                    content: expiryHintText['fareDayEnd'],
                 },
                 defaultChecked: capExpiry === 'fareDayEnd',
                 inputHint: {
@@ -92,10 +92,10 @@ export const getFieldset = (
         ],
         radioError: getErrorsByIds(['cap-end-calendar'], errors),
     };
-    return CapValidityFieldSet;
+    return CapExpiryFieldSet;
 };
 
-const CapValidity = ({ errors = [], fieldset, csrfToken }: CapValidityProps): ReactElement => {
+const CapExpiry = ({ errors = [], fieldset, csrfToken }: CapExpiryProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/capValidity" method="post" csrfToken={csrfToken}>
@@ -115,13 +115,13 @@ const CapValidity = ({ errors = [], fieldset, csrfToken }: CapValidityProps): Re
                         )}
                     </ErrorSummary>
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-                        <fieldset className="govuk-fieldset" aria-describedby="cap-validity-page-heading">
+                        <fieldset className="govuk-fieldset" aria-describedby="cap-expiry-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h1 className="govuk-fieldset__heading" id="cap-validity-page-heading">
+                                <h1 className="govuk-fieldset__heading" id="cap-expiry-page-heading">
                                     When does the cap expire?
                                 </h1>
                             </legend>
-                            <span className="govuk-hint" id="cap-validity-hint">
+                            <span className="govuk-hint" id="cap-expiry-hint">
                                 We need to know the time that this cap would be valid until
                             </span>
                             <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
@@ -134,7 +134,7 @@ const CapValidity = ({ errors = [], fieldset, csrfToken }: CapValidityProps): Re
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: CapValidityProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: CapExpiryProps }> => {
     let errors: ErrorInfo[] = [];
     const csrfToken = getCsrfToken(ctx);
     const capExpiryAttribute = getSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE);
@@ -161,4 +161,4 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     };
 };
 
-export default CapValidity;
+export default CapExpiry;

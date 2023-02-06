@@ -112,7 +112,7 @@ exports[`pages capConfirmation should render correctly for capped ticket by prod
           },
           Object {
             "content": "24 hr",
-            "href": "/selectCapValidity",
+            "href": "/selectCapExpiry",
             "name": "Cap expiry",
           },
           Object {
@@ -178,7 +178,7 @@ exports[`pages capConfirmation should render correctly for capped ticket by taps
           },
           Object {
             "content": "24 hr",
-            "href": "/selectCapValidity",
+            "href": "/selectCapExpiry",
             "name": "Cap expiry",
           },
           Object {

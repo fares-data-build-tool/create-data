@@ -79,7 +79,7 @@ export const buildCapConfirmationElements = (
         confirmationElements.push({
             name: 'Cap expiry',
             content: sentenceCaseString(capValidity),
-            href: '/selectCapValidity',
+            href: '/selectCapExpiry',
         });
     }
 

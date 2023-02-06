@@ -48,7 +48,7 @@ exports[`pages view caps should render correctly on no cap expiry 1`] = `
         <a
           className="govuk-button"
           data-module="govuk-button"
-          href="/selectCapValidity"
+          href="/selectCapExpiry"
         >
           Add cap expiry
         </a>
