@@ -97,7 +97,7 @@ exports[`pages view caps should render correctly when cap validity is 24 hr 1`] 
           Cap expiry
         </h2>
         <CapExpiryCard
-          capValidity="24hr"
+          capExpiry="24hr"
           fareDayEnd=""
         />
       </div>
@@ -145,7 +145,7 @@ exports[`pages view caps should render correctly when cap validity is fare day e
           Cap expiry
         </h2>
         <CapExpiryCard
-          capValidity="fareDayEnd"
+          capExpiry="fareDayEnd"
           fareDayEnd="2323"
         />
       </div>

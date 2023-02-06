@@ -14,17 +14,17 @@ const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
 
 interface CapProps {
-    capValidity: string;
+    capExpiry: string;
     fareDayEnd: string;
     viewCapErrors: ErrorInfo[];
 }
 
 interface CapExpiryCardProps {
-    capValidity: string;
+    capExpiry: string;
     fareDayEnd: string;
 }
 
-const ViewCaps = ({ capValidity, fareDayEnd, viewCapErrors = [] }: CapProps): ReactElement => {
+const ViewCaps = ({ capExpiry, fareDayEnd, viewCapErrors = [] }: CapProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description} showNavigation>
             <div>
@@ -43,8 +43,8 @@ const ViewCaps = ({ capValidity, fareDayEnd, viewCapErrors = [] }: CapProps): Re
 
                     <div>
                         <h2 className="govuk-heading-l">Cap expiry</h2>
-                        {capValidity ? (
-                            <CapExpiryCard capValidity={capValidity} fareDayEnd={fareDayEnd} />
+                        {capExpiry ? (
+                            <CapExpiryCard capExpiry={capExpiry} fareDayEnd={fareDayEnd} />
                         ) : (
                             <>
                                 <p className="govuk-body">
@@ -62,7 +62,7 @@ const ViewCaps = ({ capValidity, fareDayEnd, viewCapErrors = [] }: CapProps): Re
     );
 };
 
-const CapExpiryCard = ({ capValidity, fareDayEnd }: CapExpiryCardProps): ReactElement => {
+const CapExpiryCard = ({ capExpiry: capExpiry, fareDayEnd }: CapExpiryCardProps): ReactElement => {
     return (
         <>
             <div className="card-row">
@@ -82,15 +82,15 @@ const CapExpiryCard = ({ capValidity, fareDayEnd }: CapExpiryCardProps): ReactEl
                         </div>
 
                         <h4 className="govuk-heading-m govuk-!-padding-bottom-4">
-                            {capValidity === 'endOfCalendarDay'
+                            {capExpiry === 'endOfCalendarDay'
                                 ? 'At the end of a calendar day'
-                                : capValidity === '24hr'
+                                : capExpiry === '24hr'
                                 ? 'At the end of a 24 hour period'
                                 : 'Fare day end'}
                         </h4>
-                        <p className="govuk-body-s govuk-!-margin-bottom-2">{expiryHintText[capValidity]}</p>
+                        <p className="govuk-body-s govuk-!-margin-bottom-2">{expiryHintText[capExpiry]}</p>
 
-                        {capValidity === 'fareDayEnd' ? (
+                        {capExpiry === 'fareDayEnd' ? (
                             <p className="govuk-body-s govuk-!-margin-bottom-2">
                                 {fareDayEnd.substring(0, 2)}:{fareDayEnd.substring(2, 4)}
                             </p>
@@ -105,7 +105,7 @@ const CapExpiryCard = ({ capValidity, fareDayEnd }: CapExpiryCardProps): ReactEl
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: CapProps }> => {
     const noc = getAndValidateNoc(ctx);
     const dbCapExpiry = await getCapExpiry(noc);
-    const capValidity = dbCapExpiry ? (JSON.parse(dbCapExpiry) as CapExpiry).productValidity : '';
+    const capExpiry = dbCapExpiry ? (JSON.parse(dbCapExpiry) as CapExpiry).productValidity : '';
     const dbFareDayEnd = await getFareDayEnd(noc);
     const fareDayEnd = dbFareDayEnd ? dbFareDayEnd : '';
 
@@ -113,7 +113,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     return {
         props: {
-            capValidity,
+            capExpiry,
             fareDayEnd,
             viewCapErrors: [],
         },
