@@ -75,7 +75,7 @@ exports[`pages capValidity should render correctly 1`] = `
                 Object {
                   "dataAriaControls": "cap-validity-end-of-service-required-conditional",
                   "defaultChecked": false,
-                  "disableAutoSelect": false,
+                  "disableAutoSelect": true,
                   "id": "cap-end-of-service",
                   "inputErrors": Array [],
                   "inputHint": Object {
@@ -207,7 +207,7 @@ exports[`pages capValidity should render error messaging when errors are passed 
                 Object {
                   "dataAriaControls": "cap-validity-end-of-service-required-conditional",
                   "defaultChecked": false,
-                  "disableAutoSelect": false,
+                  "disableAutoSelect": true,
                   "id": "cap-end-of-service",
                   "inputErrors": Array [],
                   "inputHint": Object {

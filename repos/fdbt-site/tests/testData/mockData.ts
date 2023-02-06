@@ -6495,7 +6495,7 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
             id: 'cap-end-of-service',
             name: 'capValid',
             value: 'fareDayEnd',
-            disableAutoSelect: false,
+            disableAutoSelect: true,
             dataAriaControls: 'cap-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
@@ -6621,8 +6621,7 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
             id: 'cap-end-of-service',
             name: 'capValid',
             value: 'fareDayEnd',
-
-            disableAutoSelect: false,
+            disableAutoSelect: true,
             dataAriaControls: 'cap-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
@@ -6751,9 +6750,9 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
         },
         {
             id: 'cap-end-of-service',
+            disableAutoSelect: true,
             name: 'capValid',
             value: 'fareDayEnd',
-            disableAutoSelect: false,
             dataAriaControls: 'cap-validity-end-of-service-required-conditional',
             label: 'Fare day end',
             radioButtonHint: {
