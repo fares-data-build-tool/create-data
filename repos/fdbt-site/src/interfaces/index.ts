@@ -16,6 +16,7 @@ import {
     TicketType,
     ExpiryUnit,
     AdditionalOperator,
+    CapStartInfo,
 } from './matchingJsonTypes';
 
 // Session Attributes and Cookies
@@ -733,6 +734,10 @@ export interface CapDetails {
     productName: string;
 }
 
+export interface CreateCaps {
+    cap: Cap;
+    capStart?:CapStartInfo;
+}
 export interface GroupOfProducts {
     id: number;
     productIds: string[];

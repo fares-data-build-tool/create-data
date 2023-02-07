@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
-import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc } from '../utils';
 import { getCapExpiry, getFareDayEnd } from '../data/auroradb';
 import { CapExpiry } from '../interfaces/matchingJsonTypes';
@@ -14,6 +14,7 @@ const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
 
 interface CapProps {
+    caps: Cap[];
     capExpiry: string;
     fareDayEnd: string;
     viewCapErrors: ErrorInfo[];
@@ -24,7 +25,7 @@ interface CapExpiryCardProps {
     fareDayEnd: string;
 }
 
-const ViewCaps = ({ capExpiry, fareDayEnd, viewCapErrors = [] }: CapProps): ReactElement => {
+const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [] }: CapProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description} showNavigation>
             <div>
@@ -56,9 +57,73 @@ const ViewCaps = ({ capExpiry, fareDayEnd, viewCapErrors = [] }: CapProps): Reac
                             </>
                         )}
                     </div>
+
+                    <div>
+                        <h2 className="govuk-heading-l">Caps</h2>
+                        {capExpiry ? (
+                          <>
+                          {caps.length !== 0 ? (<p className="govuk-body">
+                              <em>You currently have no caps saved.</em>
+                          </p>): <CapCard /> }
+                          
+                          <a className="govuk-button" data-module="govuk-button" href="/createCaps">
+                              Add caps
+                          </a>
+                      </>
+                        ) : (
+                            <NoCapsCard />
+                        )}
+                    </div>
                 </div>
             </div>
         </BaseLayout>
+    );
+};
+
+const NoCapsCard = (): ReactElement => {
+    return (
+        <>
+            <div className="govuk-inset-text">
+                Cap expiry must be created before caps can be created.
+            </div>
+
+            <p className="govuk-body">
+                <em>You currently have no caps saved.</em>
+            </p>
+        </>
+    );
+};
+
+const CapCard = (): ReactElement => {
+    return (
+        <>
+            <div className="card-row">
+                <div className="card" id="cap-expiry">
+                    <div className="card__body">
+                        <div className="card__actions">
+                            <ul className="actions__list">
+                                <li className="actions__item">
+                                    <a
+                                        className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+                                        href="/selectCapExpiry"
+                                    >
+                                        Edit
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <h4 className="govuk-heading-m govuk-!-padding-bottom-4">
+                            Heading
+                        </h4>
+                        <p className="govuk-body-s govuk-!-margin-bottom-2">Text 1</p>
+                        <p className="govuk-body-s govuk-!-margin-bottom-2">
+                            Text 2
+                        </p>                        
+                    </div>
+                </div>
+            </div>
+        </>
     );
 };
 
@@ -113,6 +178,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     return {
         props: {
+            caps: [],
             capExpiry,
             fareDayEnd,
             viewCapErrors: [],

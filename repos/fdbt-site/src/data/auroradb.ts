@@ -10,6 +10,7 @@ import {
     ServiceCount,
     MyFaresService,
     ServiceWithOriginAndDestination,
+    Cap,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
@@ -1680,6 +1681,32 @@ export const upsertCapExpiry = async (nocCode: string, capExpiry: CapExpiry): Pr
         }
     } catch (error) {
         throw new Error(`Could not insert caps expiry into the caps table. ${error}`);
+    }
+};
+
+export const insertCaps = async (
+    nocCode: string,
+    cap: Cap,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'inserting caps for given noc and cap',
+        noc: nocCode,
+        cap,
+    });
+
+    const contents = JSON.stringify(cap);
+
+    const insertQuery = `INSERT INTO caps
+    (noc, contents, isExpiry)
+    VALUES (?, ?, 0)`;
+    try {
+        await executeQuery(insertQuery, [
+            nocCode,
+            contents,
+        ]);
+    } catch (error) {
+        throw new Error(`Could not insert caps into the caps table. ${error.stack}`);
     }
 };
 
