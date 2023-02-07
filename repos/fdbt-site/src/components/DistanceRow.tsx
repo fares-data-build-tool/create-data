@@ -19,7 +19,7 @@ export const renderTable = (
     return (
         <fieldset key={index} className="govuk-fieldset">
             <legend className="govuk-fieldset__legend govuk-visually-hidden">
-                Enter details for cap distance banding ${index + 1}
+                Enter details for distance banding ${index + 1}
             </legend>
             <div className="flex-container">
                 <div className="govuk-!-margin-left-4 govuk-!-margin-right-2">

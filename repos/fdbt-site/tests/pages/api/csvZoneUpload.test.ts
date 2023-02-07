@@ -321,48 +321,6 @@ describe('csvZoneUpload', () => {
         expect(updateSessionAttributeSpy).toBeCalledWith(multiOperatorReq, FARE_ZONE_ATTRIBUTE, 'Town Centre');
     });
 
-    it('should return 302 redirect to /typeOfCap if fareType is capped, and when valid file is processed and put in S3', async () => {
-        const cappedTicketReq = getMockRequestAndResponse({
-            cookieValues: {},
-            body: null,
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-            session: {
-                [FARE_TYPE_ATTRIBUTE]: { fareType: 'capped' },
-            },
-        }).req;
-
-        const file = {
-            'csv-upload': {
-                size: 999,
-                path: 'string',
-                name: 'string',
-                type: 'text/csv',
-                toJSON(): string {
-                    return '';
-                },
-            },
-        };
-
-        jest.spyOn(fileUpload, 'getFormData')
-            .mockImplementation()
-            .mockResolvedValue({
-                name: 'file',
-                files: file,
-                fileContents: csvData.testCsv,
-                fields: { exempt: 'no' },
-            });
-
-        jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
-
-        await csvZoneUpload.default(cappedTicketReq, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/typeOfCap',
-        });
-        expect(updateSessionAttributeSpy).toBeCalledWith(cappedTicketReq, FARE_ZONE_ATTRIBUTE, 'Town Centre');
-    });
-
     it('should redirect to /error when an error is thrown in the default', async () => {
         const file = {
             'csv-upload': {

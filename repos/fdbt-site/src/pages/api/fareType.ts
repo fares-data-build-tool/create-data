@@ -46,21 +46,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
                 const reformedFareType = camelCase(fareType.split('carnet')[1]) as 'flatFare' | 'period';
                 updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, { fareType: reformedFareType });
-                redirectTo(res, '/selectPassengerType');
 
-                return;
-            }
-            updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, false);
-            if (fareType === 'cappedProduct') {
-                updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
-                    fareType: 'capped',
-                });
                 redirectTo(res, '/selectPassengerType');
                 return;
             }
+
+            updateSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE, false);
             updateSessionAttribute(req, FARE_TYPE_ATTRIBUTE, {
                 fareType,
             });
+
             if (fareType === 'schoolService') {
                 updateSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE, {
                     schoolFareType: 'period',
@@ -68,6 +63,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }
 
             redirectTo(res, '/selectPassengerType');
+            return;
         } else {
             const errors: ErrorInfo[] = [
                 { id: 'radio-option-single', errorMessage: 'Choose a fare type from the options' },
@@ -76,6 +72,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 errors,
             });
             redirectTo(res, '/fareType');
+            return;
         }
     } catch (error) {
         const message = 'There was a problem selecting the fare type.';
