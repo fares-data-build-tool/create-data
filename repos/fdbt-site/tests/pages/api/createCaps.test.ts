@@ -11,7 +11,7 @@ describe('createCaps', () => {
 
     beforeEach(jest.resetAllMocks);
 
-    it('redirects back to /createCaps if there is no user entry', () => {
+    it('redirects back to /createCaps if there is no user entry', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 cappedProductName: '',
@@ -23,7 +23,7 @@ describe('createCaps', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
@@ -42,7 +42,7 @@ describe('createCaps', () => {
         });
     });
 
-    it('redirects back to /createCaps if the user entry contains mistakes', () => {
+    it('redirects back to /createCaps if the user entry contains mistakes', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 cappedProductName: 'Product',
@@ -62,7 +62,7 @@ describe('createCaps', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
@@ -89,7 +89,7 @@ describe('createCaps', () => {
         });
     });
 
-    it('redirects to /createCaps if two caps have the same name', () => {
+    it('redirects to /createCaps if two caps have the same name', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 cappedProductName: 'Product',
@@ -105,7 +105,7 @@ describe('createCaps', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
@@ -124,7 +124,7 @@ describe('createCaps', () => {
         });
     });
 
-    it('redirects back to /createCaps if the user enters 0 as an input', () => {
+    it('redirects back to /createCaps if the user enters 0 as an input', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 cappedProductName: 'Product',
@@ -136,7 +136,7 @@ describe('createCaps', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
@@ -149,7 +149,7 @@ describe('createCaps', () => {
         });
     });
 
-    it('redirects back to /createCaps if the user enters 000 as an input', () => {
+    it('redirects back to /createCaps if the user enters 000 as an input', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 cappedProductName: 'Product',
@@ -161,7 +161,7 @@ describe('createCaps', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
@@ -174,7 +174,7 @@ describe('createCaps', () => {
         });
     });
 
-    it('redirects back to /createCaps if the user doesnt provide a product name', () => {
+    it('redirects back to /createCaps if the user doesnt provide a product name', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 capNameInput0: 'Name',
@@ -185,7 +185,7 @@ describe('createCaps', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
