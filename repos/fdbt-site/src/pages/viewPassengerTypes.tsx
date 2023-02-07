@@ -77,7 +77,7 @@ const ViewPassengerTypes = ({
                 <div className="govuk-grid-column-three-quarters">
                     <h1 className="govuk-heading-xl">Passenger types</h1>
                     <p className="govuk-body govuk-!-margin-bottom-8">
-                        Define age range and required proof documents of your passengers as well as passenger groups
+                        Define age range and required proof documents of your passengers as well as passenger groups.
                     </p>
 
                     <div>

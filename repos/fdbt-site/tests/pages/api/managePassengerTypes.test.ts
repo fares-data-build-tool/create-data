@@ -338,7 +338,7 @@ describe('managePassengerTypes', () => {
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/viewPassengerTypes' });
     });
 
-    it('should call updateSessionAttribute with undefined & upsertSinglePassengerType when not in Edit mode', async () => {
+    it('should call updateSessionAttribute with undefined & updateSinglePassengerType when not in Edit mode', async () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: {

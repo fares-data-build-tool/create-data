@@ -61,7 +61,7 @@ const ViewPurchaseMethods = ({
                         <h1 className="govuk-heading-xl">Purchase methods</h1>
                         <p className="govuk-body govuk-!-margin-bottom-8">
                             Define the way your tickets are sold, including where they are bought, the payment method
-                            and format
+                            and format.
                         </p>
 
                         <div>

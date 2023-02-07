@@ -23,7 +23,6 @@ const errorId = 'radio-option-single';
 interface FareTypeProps {
     operatorName: string;
     schemeOp: boolean;
-    isDevOrTest: boolean;
     errors: ErrorInfo[];
     csrfToken: string;
 }
@@ -34,7 +33,7 @@ export const buildUuid = (noc: string): string => {
     return noc + uuid.substring(0, 8);
 };
 
-const buildRadioProps = (schemeOp: boolean, isDevOrTest: boolean): RadioOption[] => {
+const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
     if (schemeOp) {
         return [
             {
@@ -98,18 +97,10 @@ const buildRadioProps = (schemeOp: boolean, isDevOrTest: boolean): RadioOption[]
         },
     ];
 
-    if (isDevOrTest) {
-        radioProps.push({
-            value: 'cappedProduct',
-            label: 'Capped product',
-            hint: 'A cap applicable over a number of days or weeks',
-        });
-    }
-
     return radioProps;
 };
 
-const FareType = ({ operatorName, schemeOp, isDevOrTest, errors = [], csrfToken }: FareTypeProps): ReactElement => {
+const FareType = ({ operatorName, schemeOp, errors = [], csrfToken }: FareTypeProps): ReactElement => {
     return (
         <TwoThirdsLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
@@ -126,7 +117,7 @@ const FareType = ({ operatorName, schemeOp, isDevOrTest, errors = [], csrfToken 
                                 {operatorName}
                             </span>
                             <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
-                                <RadioButtons options={buildRadioProps(schemeOp, isDevOrTest)} inputName="fareType" />
+                                <RadioButtons options={buildRadioProps(schemeOp)} inputName="fareType" />
                             </FormElementWrapper>
                         </fieldset>
                     </div>
@@ -138,7 +129,6 @@ const FareType = ({ operatorName, schemeOp, isDevOrTest, errors = [], csrfToken 
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: FareTypeProps }> => {
-    const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
     updateSessionAttribute(ctx.req, GS_REFERER, undefined);
     const csrfToken = getCsrfToken(ctx);
     const schemeOp = isSchemeOperator(ctx);
@@ -178,7 +168,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const errors: ErrorInfo[] =
         fareTypeAttribute && isFareTypeAttributeWithErrors(fareTypeAttribute) ? fareTypeAttribute.errors : [];
 
-    return { props: { operatorName, schemeOp, errors, isDevOrTest, csrfToken } };
+    return { props: { operatorName, schemeOp, errors, csrfToken } };
 };
 
 export default FareType;

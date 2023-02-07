@@ -27,7 +27,6 @@ import {
     putUserDataInProductsBucket,
     splitUserDataJsonByProducts,
     insertDataToProductsBucketAndProductsTable,
-    getCappedTicketJson,
     getMultipleServicesByDistanceTicketJson,
 } from '../../utils/apiUtils/userData';
 import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
@@ -35,11 +34,6 @@ import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const fareType = getFareTypeFromFromAttributes(req);
-
-        if (fareType === 'capped') {
-            redirectTo(res, '/productCreated');
-            return;
-        }
 
         const uuid = getUuidFromSession(req);
 
@@ -55,18 +49,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson = getSingleTicketJson(req, res);
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
-        } else if (fareType === 'capped') {
-            if (
-                !ticketType ||
-                ticketType === 'hybrid' ||
-                ticketType === 'pointToPointPeriod' ||
-                ticketType === 'multipleServicesPricedByDistance' ||
-                ticketType === 'geoZoneFlatFareMultiOperator' ||
-                ticketType === 'multipleServicesFlatFareMultiOperator'
-            ) {
-                throw new Error('Capped ticket required a type of ticket representation of geoZone or multiService.');
-            }
-            userDataJson = await getCappedTicketJson(req, res, ticketType);
         } else if (['period', 'multiOperator', 'flatFare'].includes(fareType)) {
             switch (ticketType) {
                 case 'geoZone':

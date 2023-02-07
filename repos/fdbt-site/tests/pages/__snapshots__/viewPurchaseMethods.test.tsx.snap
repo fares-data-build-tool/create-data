@@ -76,7 +76,7 @@ exports[`pages view purchase methods should render correctly with no purchase me
         <p
           className="govuk-body govuk-!-margin-bottom-8"
         >
-          Define the way your tickets are sold, including where they are bought, the payment method and format
+          Define the way your tickets are sold, including where they are bought, the payment method and format.
         </p>
         <div>
           <NoPurchaseMethods
@@ -179,7 +179,7 @@ exports[`pages view purchase methods should render correctly with no purchase me
         <p
           className="govuk-body govuk-!-margin-bottom-8"
         >
-          Define the way your tickets are sold, including where they are bought, the payment method and format
+          Define the way your tickets are sold, including where they are bought, the payment method and format.
         </p>
         <div>
           <NoPurchaseMethods
@@ -247,7 +247,7 @@ exports[`pages view purchase methods should render correctly with purchase metho
         <p
           className="govuk-body govuk-!-margin-bottom-8"
         >
-          Define the way your tickets are sold, including where they are bought, the payment method and format
+          Define the way your tickets are sold, including where they are bought, the payment method and format.
         </p>
         <div>
           <PurchaseMethods
@@ -386,7 +386,7 @@ exports[`pages view purchase methods should render correctly with purchase metho
         <p
           className="govuk-body govuk-!-margin-bottom-8"
         >
-          Define the way your tickets are sold, including where they are bought, the payment method and format
+          Define the way your tickets are sold, including where they are bought, the payment method and format.
         </p>
         <div>
           <PurchaseMethods

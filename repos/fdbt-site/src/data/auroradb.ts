@@ -570,49 +570,6 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
     }
 };
 
-/**
- * For a given national operator code and line id, the function returns a
- * subset of information about each service.
- *
- *
- * @remarks
- * Only brings back services from `bods`.
- *
- *
- * @param noc - The national operator code
- * @param lineId - The line id of the service(s)
- *
- * @returns An array of RawService.
- */
-export const getServicesByNocAndLineId = async (noc: string, lineId: string): Promise<RawService[]> => {
-    const nationalOperatorCode = replaceInternalNocCode(noc);
-
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving services for a given noc and line id',
-        noc,
-        lineId,
-    });
-
-    const query = `
-      SELECT ol.id,
-             ol.startDate,
-             ol.endDate
-      FROM txcOperatorLine ol
-      WHERE ol.nocCode = ?
-      AND ol.lineId = ?
-      AND ol.dataSource = 'bods'
-    `;
-
-    const result = await executeQuery<RawService[]>(query, [nationalOperatorCode, lineId]);
-
-    return result.map((result) => ({
-        ...result,
-        startDate: convertDateFormat(result.startDate),
-        endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
-    }));
-};
-
 export const getServiceByIdAndDataSource = async (
     nocCode: string,
     id: number,
@@ -1204,37 +1161,6 @@ export const insertGroupPassengerType = async (
     await executeQuery(insertQuery, [contents, true, name, nocCode]);
 };
 
-export const upsertSinglePassengerType = async (
-    nocCode: string,
-    passengerType: PassengerType,
-    name: string,
-): Promise<void> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'upserting passenger type for given noc and name',
-        nocCode,
-        name,
-    });
-
-    const contents = JSON.stringify(passengerType);
-
-    try {
-        const updateQuery = `UPDATE passengerType
-                             SET contents = ?
-                             WHERE name = ?
-                             AND isGroup = ?
-                             AND nocCode = ?`;
-        const meta = await executeQuery<ResultSetHeader>(updateQuery, [contents, name, false, nocCode]);
-        if (meta.affectedRows > 1) {
-            throw Error(`Updated too many rows when updating passenger type ${meta}`);
-        } else if (meta.affectedRows === 0) {
-            await insertSinglePassengerType(nocCode, passengerType, name);
-        }
-    } catch (error) {
-        throw new Error(`Could not insert passenger type into the passengerType table. ${error}`);
-    }
-};
-
 export const updateSinglePassengerType = async (noc: string, passengerType: SinglePassengerType): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1758,20 +1684,21 @@ export const upsertCapExpiry = async (nocCode: string, capExpiry: CapExpiry): Pr
     }
 };
 
-export const insertCaps = async (noc: string, cap: CreateCaps): Promise<void> => {
+export const insertCaps = async (nocCode: string, cap: CreateCaps): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'inserting caps for given noc and cap',
-        noc,
+        noc: nocCode,
         cap,
     });
 
     const contents = JSON.stringify(cap);
+
     const insertQuery = `INSERT INTO caps
     (noc, contents, isExpiry)
     VALUES (?, ?, 0)`;
     try {
-        await executeQuery(insertQuery, [noc, contents]);
+        await executeQuery(insertQuery, [nocCode, contents]);
     } catch (error) {
         throw new Error(`Could not insert caps into the caps table. ${error.stack}`);
     }

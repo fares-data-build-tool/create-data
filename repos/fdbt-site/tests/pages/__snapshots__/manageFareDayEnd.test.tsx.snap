@@ -36,7 +36,7 @@ exports[`pages manage passenger types should render correctly 1`] = `
           className="govuk-body govuk-!-margin-bottom-4"
           id="fare-day-text"
         >
-          If your fare day extends past midnight, enter the time on the following morning when your tickets expire
+          If your fare day extends past midnight, enter the time on the following morning when your tickets expire.
         </p>
         <div
           className="govuk-inset-text"
@@ -127,7 +127,7 @@ exports[`pages manage passenger types should render error state if error 1`] = `
           className="govuk-body govuk-!-margin-bottom-4"
           id="fare-day-text"
         >
-          If your fare day extends past midnight, enter the time on the following morning when your tickets expire
+          If your fare day extends past midnight, enter the time on the following morning when your tickets expire.
         </p>
         <div
           className="govuk-inset-text"
@@ -228,7 +228,7 @@ exports[`pages manage passenger types should render popup if saved 1`] = `
           className="govuk-body govuk-!-margin-bottom-4"
           id="fare-day-text"
         >
-          If your fare day extends past midnight, enter the time on the following morning when your tickets expire
+          If your fare day extends past midnight, enter the time on the following morning when your tickets expire.
         </p>
         <div
           className="govuk-inset-text"

@@ -712,7 +712,7 @@ export interface ProductToDisplay {
     productName: string;
     startDate: string;
     endDate?: string;
-    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator' | 'capped';
+    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator';
     schoolTicket: boolean;
     serviceLineId: string | null;
     direction: string | null;
