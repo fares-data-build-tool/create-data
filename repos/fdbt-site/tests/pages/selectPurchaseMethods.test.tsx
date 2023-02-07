@@ -2,13 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { getMockContext } from '../testData/mockData';
 import { getSalesOfferPackagesByNocCode } from '../../src/data/auroradb';
-import {
-    FARE_TYPE_ATTRIBUTE,
-    TYPE_OF_CAP_ATTRIBUTE,
-    PRICING_PER_DISTANCE_ATTRIBUTE,
-    MULTIPLE_PRODUCT_ATTRIBUTE,
-    OPERATOR_ATTRIBUTE,
-} from '../../src/constants/attributes';
+import { FARE_TYPE_ATTRIBUTE, MULTIPLE_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import SelectPurchaseMethods, { getServerSideProps, PurchaseMethodsProps } from '../../src/pages/selectPurchaseMethods';
 import { FromDb, SalesOfferPackage } from '../../src/interfaces/matchingJsonTypes';
 
@@ -291,48 +285,6 @@ describe('pages', () => {
                     expect(result.props.purchaseMethodsList).toEqual(expectedSalesOfferPackageList);
                 },
             );
-
-            it('should return expected props when the page is visited by a user with stored sales offer packages on the capped ticket', async () => {
-                const mockSalesOfferPackages: SalesOfferPackage[] = [
-                    {
-                        id: 1,
-                        name: 'Capped Ticket',
-                        description: 'On bus - CreditCard - mobile',
-                        purchaseLocations: ['On Board'],
-                        paymentMethods: ['CreditCard'],
-                        ticketFormats: ['Mobile'],
-                        isCapped: true,
-                    },
-                ];
-                (getSalesOfferPackagesByNocCode as jest.Mock).mockImplementation(() => mockSalesOfferPackages);
-
-                const ctx = getMockContext({
-                    session: {
-                        [FARE_TYPE_ATTRIBUTE]: { fareType: 'capped' },
-                        [TYPE_OF_CAP_ATTRIBUTE]: { typeOfCap: 'byDistance' },
-                        [MULTIPLE_PRODUCT_ATTRIBUTE]: undefined,
-                        [PRICING_PER_DISTANCE_ATTRIBUTE]: {
-                            productName: 'product name',
-                            maximumPrice: '',
-                            minimumPrice: '',
-                            capPricing: [],
-                        },
-                    },
-                });
-
-                const result = await getServerSideProps(ctx);
-                const expectedSalesOfferPackageList: SalesOfferPackage[] = mockSalesOfferPackages.map(
-                    (mockSalesOfferPackage) => {
-                        return {
-                            ...mockSalesOfferPackage,
-                        };
-                    },
-                );
-
-                expect(result.props.errors.length).toBe(0);
-                expect(result.props.products.length).toBe(1);
-                expect(result.props.purchaseMethodsList).toEqual(expectedSalesOfferPackageList);
-            });
 
             it('should throw an error when necessary nocCode is invalid, when the user is not a scheme operator', async () => {
                 const ctx = getMockContext({

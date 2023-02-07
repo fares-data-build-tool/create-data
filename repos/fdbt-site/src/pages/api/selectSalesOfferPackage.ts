@@ -4,15 +4,11 @@ import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
-    CAPS_ATTRIBUTE,
     PRICING_PER_DISTANCE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-    TYPE_OF_CAP_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
-    CapDetails,
-    DistancePricingData,
     ErrorInfo,
     FareType,
     MultipleProductAttribute,
@@ -21,7 +17,6 @@ import {
     ProductWithSalesOfferPackages,
     SchoolFareTypeAttribute,
     SelectSalesOfferPackageWithError,
-    TypeOfCap,
     ProductInfo,
 } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
@@ -124,18 +119,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 : fareTypeValue;
 
         let cappedProductName = '';
-
-        if (fareType === 'capped') {
-            const { typeOfCap } = getSessionAttribute(req, TYPE_OF_CAP_ATTRIBUTE) as TypeOfCap;
-
-            if (typeOfCap === 'byDistance') {
-                const distanceCap = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
-                cappedProductName = distanceCap.productName;
-            } else {
-                const capDetails = getSessionAttribute(req, CAPS_ATTRIBUTE) as CapDetails;
-                cappedProductName = capDetails.productName;
-            }
-        }
 
         if (fareType === 'flatFare') {
             const pricingByDistance = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE);

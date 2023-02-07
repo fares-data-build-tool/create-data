@@ -3,7 +3,6 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import {
-    CAPS_ATTRIBUTE,
     PRICING_PER_DISTANCE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
@@ -11,18 +10,14 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
-    TYPE_OF_CAP_ATTRIBUTE,
 } from '../constants/attributes';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import {
-    CapDetails,
-    DistancePricingData,
     ErrorInfo,
     NextPageContextWithSession,
     ProductInfo,
     ProductWithSalesOfferPackages,
     SchoolFareTypeAttribute,
-    TypeOfCap,
 } from '../interfaces';
 import { isFareType } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
@@ -281,18 +276,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     let cappedProductName = '';
 
-    if (fareType === 'capped') {
-        const { typeOfCap } = getSessionAttribute(ctx.req, TYPE_OF_CAP_ATTRIBUTE) as TypeOfCap;
-
-        if (typeOfCap === 'byDistance') {
-            const distanceCap = getSessionAttribute(ctx.req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
-            cappedProductName = distanceCap.productName;
-        } else {
-            const capDetails = getSessionAttribute(ctx.req, CAPS_ATTRIBUTE) as CapDetails;
-            cappedProductName = capDetails.productName;
-        }
-    }
-
     if (fareType === 'flatFare') {
         const pricingByDistance = getSessionAttribute(ctx.req, PRICING_PER_DISTANCE_ATTRIBUTE);
 
@@ -318,7 +301,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                   )
                   .reduce((result, item) => ({ ...result, [item[0]]: item[1] }), {}));
 
-    const isCapped = fareType === 'capped';
+    const isCapped = false;
 
     return {
         props: {

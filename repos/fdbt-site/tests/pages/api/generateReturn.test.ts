@@ -14,6 +14,7 @@ import {
     getServiceByIdAndDataSource,
 } from '../../../src/data/auroradb';
 import { getProductsMatchingJson } from '../../../src/data/s3';
+import { TicketWithIds } from '../../../src/interfaces/matchingJsonTypes';
 
 const expectedGeneratedReturn = {
     type: 'return',
@@ -364,7 +365,7 @@ describe('findTicketsToMakeReturn', () => {
     });
 
     it('returns an empty array if the ticket compared is not a single', () => {
-        const result = findTicketsToMakeReturn(2, 'outbound', [expectedFlatFareTicket], singleTicket);
+        const result = findTicketsToMakeReturn(2, 'outbound', [expectedFlatFareTicket as TicketWithIds], singleTicket);
         expect(result).toEqual([]);
     });
 

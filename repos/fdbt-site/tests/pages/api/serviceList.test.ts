@@ -159,29 +159,4 @@ describe('serviceList', () => {
             Location: '/products/productDetails?productId=2&serviceId=22D',
         });
     });
-
-    it('redirects to /typeOfCap if input is valid and the user is entering details for a capped ticket', async () => {
-        const serviceInfo = {
-            '64': 'Leeds-Bradford#12/02/12',
-            '45': 'gggggg#02/03/91',
-            '47': 'hhhhhh#23/04/20',
-        };
-
-        const { req, res } = getMockRequestAndResponse({
-            body: { ...serviceInfo },
-            uuid: {},
-            mockWriteHeadFn: writeHeadMock,
-            mockEndFn: jest.fn(),
-            requestHeaders: {
-                referer: `http://localhost:5000${selectAllFalseUrl}`,
-            },
-            session: { [FARE_TYPE_ATTRIBUTE]: { fareType: 'capped' } },
-        });
-
-        await serviceList(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/typeOfCap',
-        });
-    });
 });

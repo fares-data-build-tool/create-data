@@ -279,11 +279,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
             }
 
-            if (fareType === 'capped') {
-                redirectTo(res, '/typeOfCap');
-                return;
-            }
-
             redirectTo(res, '/multipleProducts');
             return;
         } else {

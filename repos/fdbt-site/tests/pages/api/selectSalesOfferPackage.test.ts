@@ -11,7 +11,6 @@ import selectSalesOfferPackages, {
 } from '../../../src/pages/api/selectSalesOfferPackage';
 import * as session from '../../../src/utils/sessions';
 import {
-    expectedCappedTicket,
     expectedFlatFareTicket,
     expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
     expectedPointToPointPeriodTicket,
@@ -19,7 +18,7 @@ import {
     getMockRequestAndResponse,
 } from '../../testData/mockData';
 import * as userData from '../../../src/utils/apiUtils/userData';
-import { ExpiryUnit } from '../../../src/interfaces/matchingJsonTypes';
+import { ExpiryUnit, TicketWithIds } from '../../../src/interfaces/matchingJsonTypes';
 
 describe('selectSalesOfferPackage', () => {
     const writeHeadMock = jest.fn();
@@ -294,7 +293,7 @@ describe('selectSalesOfferPackage', () => {
             ]);
         });
         it('returns multipleProducts if multipleProducts is present ', () => {
-            expect(getProductsByValues(expectedFlatFareTicket, undefined, '')).toEqual([
+            expect(getProductsByValues(expectedFlatFareTicket as TicketWithIds, undefined, '')).toEqual([
                 {
                     productName: 'Weekly Rider',
                     productPrice: '7',
@@ -323,14 +322,6 @@ describe('selectSalesOfferPackage', () => {
                     productPrice: '50',
                     productNameId: '',
                     productPriceId: '',
-                },
-            ]);
-        });
-        it('returns an object with productName and productPrice (empty) if the price per distance attribute exists', () => {
-            expect(getProductsByValues(expectedCappedTicket, undefined, 'name here')).toEqual([
-                {
-                    productName: 'name here',
-                    productPrice: '',
                 },
             ]);
         });

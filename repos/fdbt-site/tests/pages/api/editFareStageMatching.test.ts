@@ -15,6 +15,7 @@ import editFareStageMatching from '../../../src/pages/api/editFareStageMatching'
 import * as index from '../../../src/utils/apiUtils/index';
 import { EditFareStageMatchingWithErrors } from 'src/interfaces';
 import * as userData from '../../../src/utils/apiUtils/userData';
+import { TicketWithIds } from '../../../src/interfaces/matchingJsonTypes';
 
 export const selections = {
     option0: [
@@ -98,7 +99,7 @@ describe('Edit fare stage matching API', () => {
                 ...selections,
             },
             session: {
-                [MATCHING_JSON_ATTRIBUTE]: expectedFlatFareTicket,
+                [MATCHING_JSON_ATTRIBUTE]: expectedFlatFareTicket as TicketWithIds,
                 [MATCHING_JSON_META_DATA_ATTRIBUTE]: { productId: '1', serviceId: '2', matchingJsonLink: 'blah' },
             },
             mockWriteHeadFn: writeHeadMock,
