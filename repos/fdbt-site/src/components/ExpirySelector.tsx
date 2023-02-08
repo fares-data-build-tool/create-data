@@ -16,7 +16,6 @@ interface DurationSelectorProps {
     school?: boolean;
     errors?: ErrorInfo[];
     hideFormGroupError?: boolean;
-    onChangeEvent?: React.MouseEvent<HTMLButtonElement, MouseEvent>;
 }
 
 const ExpirySelector = ({

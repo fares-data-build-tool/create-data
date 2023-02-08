@@ -1684,7 +1684,7 @@ export const upsertCapExpiry = async (nocCode: string, capExpiry: CapExpiry): Pr
     }
 };
 
-export const getCaps = async (nocCode: string): Promise<string[]> => {
+export const getCaps = async (nocCode: string): Promise<FromDb<CapInfo>[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving caps for given nocCode',
@@ -1693,15 +1693,18 @@ export const getCaps = async (nocCode: string): Promise<string[]> => {
 
     try {
         const queryInput = `
-            SELECT contents
+            SELECT id, contents
             FROM caps
             WHERE noc = ?
             AND isExpiry = 0
         `;
 
-        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode]);
+        const queryResults = await executeQuery<{ id: string; contents: string }[]>(queryInput, [nocCode]);
         // contents will be like {"cap":{"name":"cap2","price":"2","durationAmount":"23","durationUnits":"day"},"capStart":{"type":"rollingDays"}}
-        return queryResults.map((item) => item.contents);
+        return queryResults.map((row) => ({
+            id: Number(row.id),
+            ...(JSON.parse(row.contents) as CapInfo),
+        }));
     } catch (error) {
         throw new Error(`Could not retrieve cap expiry by nocCode from AuroraDB: ${error.stack}`);
     }

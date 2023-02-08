@@ -5,7 +5,7 @@ import SubNavigation from '../layout/SubNavigation';
 import { CapInfo, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc, sentenceCaseString } from '../utils';
 import { getCapExpiry, getCaps, getFareDayEnd } from '../data/auroradb';
-import { CapExpiry } from '../interfaces/matchingJsonTypes';
+import { CapExpiry, FromDb } from '../interfaces/matchingJsonTypes';
 import { updateSessionAttribute } from '../utils/sessions';
 import { CAP_EXPIRY_ATTRIBUTE, CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
 import { expiryHintText } from './selectCapExpiry';
@@ -14,7 +14,7 @@ const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
 
 interface CapProps {
-    caps: CapInfo[];
+    caps: FromDb<CapInfo>[];
     capExpiry: string;
     fareDayEnd: string;
     viewCapErrors: ErrorInfo[];
@@ -74,7 +74,7 @@ const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [] }: CapProps)
                                 ) : (
                                     <div className="card-row">
                                         {caps.map((capInfo, index) => (
-                                            <CapCard capInfo={capInfo} index={index} key={index.toString()} />
+                                            <CapCard capInfo={capInfo} index={index} key={capInfo.id.toString()} />
                                         ))}
                                     </div>
                                 )}
@@ -201,8 +201,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const dbFareDayEnd = await getFareDayEnd(noc);
     const fareDayEnd = dbFareDayEnd ? dbFareDayEnd : '';
 
-    const dbCaps = await getCaps(noc);
-    const caps = dbCaps.map((cap) => JSON.parse(cap) as CapInfo);
+    const caps = await getCaps(noc);
     updateSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, CREATE_CAPS_ATTRIBUTE, undefined);
     return {
