@@ -10,7 +10,7 @@ import {
     ServiceCount,
     MyFaresService,
     ServiceWithOriginAndDestination,
-    CreateCaps,
+    CapInfo,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
@@ -1684,7 +1684,30 @@ export const upsertCapExpiry = async (nocCode: string, capExpiry: CapExpiry): Pr
     }
 };
 
-export const insertCaps = async (nocCode: string, cap: CreateCaps): Promise<void> => {
+export const getCaps = async (nocCode: string): Promise<string[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving caps for given nocCode',
+        nocCode,
+    });
+
+    try {
+        const queryInput = `
+            SELECT contents
+            FROM caps
+            WHERE noc = ?
+            AND isExpiry = 0
+        `;
+
+        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode]);
+        // contents will be like {"cap":{"name":"cap2","price":"2","durationAmount":"23","durationUnits":"day"},"capStart":{"type":"rollingDays"}}
+        return queryResults.map((item) => item.contents);
+    } catch (error) {
+        throw new Error(`Could not retrieve cap expiry by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const insertCaps = async (nocCode: string, cap: CapInfo): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'inserting caps for given noc and cap',

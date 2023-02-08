@@ -2,22 +2,27 @@ import React, { ReactElement } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
-import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import { getAndValidateNoc } from '../utils';
-import { getCapExpiry, getFareDayEnd } from '../data/auroradb';
+import { CapInfo, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { getAndValidateNoc, sentenceCaseString } from '../utils';
+import { getCapExpiry, getCaps, getFareDayEnd } from '../data/auroradb';
 import { CapExpiry } from '../interfaces/matchingJsonTypes';
 import { updateSessionAttribute } from '../utils/sessions';
-import { CAP_EXPIRY_ATTRIBUTE } from '../constants/attributes';
+import { CAP_EXPIRY_ATTRIBUTE, CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
 import { expiryHintText } from './selectCapExpiry';
 
 const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
 
 interface CapProps {
-    caps: Cap[];
+    caps: CapInfo[];
     capExpiry: string;
     fareDayEnd: string;
     viewCapErrors: ErrorInfo[];
+}
+
+interface CapCardProps {
+    capInfo: CapInfo;
+    index: Number;
 }
 
 interface CapExpiryCardProps {
@@ -62,12 +67,16 @@ const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [] }: CapProps)
                         <h2 className="govuk-heading-l">Caps</h2>
                         {capExpiry ? (
                             <>
-                                {caps.length !== 0 ? (
+                                {caps.length === 0 ? (
                                     <p className="govuk-body">
                                         <em>You currently have no caps saved.</em>
                                     </p>
                                 ) : (
-                                    <CapCard />
+                                    <div className="card-row">
+                                        {caps.map((capInfo, index) => (
+                                            <CapCard capInfo={capInfo} index={index} key={index.toString()} />
+                                        ))}
+                                    </div>
                                 )}
 
                                 <a className="govuk-button" data-module="govuk-button" href="/createCaps">
@@ -96,29 +105,49 @@ const NoCapsCard = (): ReactElement => {
     );
 };
 
-const CapCard = (): ReactElement => {
+const CapCard = ({ capInfo, index }: CapCardProps): ReactElement => {
     return (
         <>
-            <div className="card-row">
-                <div className="card" id="cap-expiry">
-                    <div className="card__body">
-                        <div className="card__actions">
-                            <ul className="actions__list">
-                                <li className="actions__item">
-                                    <a
-                                        className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                        href="/selectCapExpiry"
-                                    >
-                                        Edit
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <h4 className="govuk-heading-m govuk-!-padding-bottom-4">Heading</h4>
-                        <p className="govuk-body-s govuk-!-margin-bottom-2">Text 1</p>
-                        <p className="govuk-body-s govuk-!-margin-bottom-2">Text 2</p>
+            <div className="card" id={`cap-${index}`}>
+                <div className="card__body">
+                    <div className="card__actions">
+                        <ul className="actions__list">
+                            <li className="actions__item">
+                                <a
+                                    className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
+                                    href="/selectCapExpiry"
+                                >
+                                    Edit
+                                </a>
+                            </li>
+                        </ul>
                     </div>
+
+                    <h4 className="govuk-heading-m govuk-!-padding-bottom-4">{capInfo.cap.name}</h4>
+
+                    <p className="govuk-body-s govuk-!-margin-bottom-2">
+                        <span className="govuk-!-font-weight-bold">Price:</span> {sentenceCaseString(capInfo.cap.price)}
+                    </p>
+
+                    <p className="govuk-body-s govuk-!-margin-bottom-2">
+                        <span className="govuk-!-font-weight-bold">Duration:</span> {capInfo.cap.durationAmount}{' '}
+                        {capInfo.cap.durationUnits}
+                    </p>
+
+                    {capInfo.capStart ? (
+                        <>
+                            <p className="govuk-body-s govuk-!-margin-bottom-2">
+                                <span className="govuk-!-font-weight-bold">Cap start:</span>{' '}
+                                {sentenceCaseString(capInfo.capStart.type)}
+                            </p>
+                            {capInfo.capStart.startDay ? (
+                                <p className="govuk-body-s govuk-!-margin-bottom-2">
+                                    <span className="govuk-!-font-weight-bold">Day:</span>{' '}
+                                    {sentenceCaseString(capInfo.capStart.startDay)}
+                                </p>
+                            ) : null}
+                        </>
+                    ) : null}
                 </div>
             </div>
         </>
@@ -172,11 +201,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const dbFareDayEnd = await getFareDayEnd(noc);
     const fareDayEnd = dbFareDayEnd ? dbFareDayEnd : '';
 
+    const dbCaps = await getCaps(noc);
+    const caps = dbCaps.map((cap) => JSON.parse(cap) as CapInfo);
     updateSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE, undefined);
-
+    updateSessionAttribute(ctx.req, CREATE_CAPS_ATTRIBUTE, undefined);
     return {
         props: {
-            caps: [],
+            caps,
             capExpiry,
             fareDayEnd,
             viewCapErrors: [],

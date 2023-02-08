@@ -85,7 +85,11 @@ describe('createCaps', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
             cap: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '0' },
-            errors: [{ errorMessage: 'Cap prices cannot be zero', id: 'cap-price' }],
+            capStart: { startDay: undefined, type: 'fixedWeekdays' },
+            errors: [
+                { errorMessage: 'Cap prices cannot be zero', id: 'cap-price' },
+                { errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' },
+            ],
         });
     });
 
@@ -109,7 +113,36 @@ describe('createCaps', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
             cap: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '000' },
-            errors: [{ errorMessage: 'Cap prices cannot be zero', id: 'cap-price' }],
+            capStart: { startDay: undefined, type: 'fixedWeekdays' },
+            errors: [
+                { errorMessage: 'Cap prices cannot be zero', id: 'cap-price' },
+                { errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' },
+            ],
+        });
+    });
+
+    it('redirects back to /createCaps if the user enters more than 24 hour duration but not selected cap start', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                cappedProductName: 'Product',
+                capName: 'Name',
+                capPrice: '2',
+                capDuration: '25',
+                capDurationUnits: 'hour',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        await createCaps(req, res);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/createCaps',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
+            cap: { durationAmount: '25', durationUnits: 'hour', name: 'Name', price: '2' },
+            capStart: { startDay: undefined, type: 'fixedWeekdays' },
+            errors: [{ errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' }],
         });
     });
 });

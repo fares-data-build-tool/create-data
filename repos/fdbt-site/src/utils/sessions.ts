@@ -143,7 +143,7 @@ import {
     AdditionalPricing,
     CapDetails,
     EditFareStageMatchingWithErrors,
-    CreateCaps,
+    CapInfo,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -238,7 +238,7 @@ export interface SessionAttributeTypes {
     [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
     [CAPS_ATTRIBUTE]: CapDetails | WithErrors<CapDetails>;
-    [CREATE_CAPS_ATTRIBUTE]: CreateCaps | WithErrors<CreateCaps>;
+    [CREATE_CAPS_ATTRIBUTE]: CapInfo | WithErrors<CapInfo>;
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];

@@ -1,38 +1,52 @@
 import React, { ReactElement, useState } from 'react';
+import { ExpiryUnit } from '../interfaces/matchingJsonTypes';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
-import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { CapInfo, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { isWithErrors } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
 import { getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { upperFirst } from 'lodash';
-import { isADayDuration } from './api/createCaps';
-import { ExpiryUnit } from '../interfaces/matchingJsonTypes';
 
 const title = 'Create Caps - Create Fares Data Service';
 const description = 'Create caps page of the Create Fares Data Service';
+
 const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 interface CreateCapsProps {
     errors: ErrorInfo[];
-    userInput: Cap | null;
+    userInput?: CapInfo;
     csrfToken: string;
 }
+export const isADayDuration = (duration: string | undefined, durationUnit: string | undefined): boolean =>
+    !!durationUnit && !!duration && !(durationUnit === 'hour' && Number(duration) <= 24);
 
 const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): ReactElement => {
-    const optionList: string[] = [];
+    let optionList: string[] = [];
     Object.values(ExpiryUnit).map((unit) => {
         optionList.push(unit);
     });
+    optionList = optionList.filter((option) => option !== 'term');
 
-    const [showCapStartInfo, setCapStartInfo] = useState<boolean>(false);
-    //const [durationAmount, setDurationAmount] = useState<Number>();
+    const capDurationAmount = userInput?.cap.durationAmount;
+    const capDurationUnit = userInput?.cap.durationAmount;
 
-    const handleDuration = (durationUnit: string): void => {
-        setCapStartInfo(isADayDuration('2', durationUnit));
+    const [showCapStartInfo, setCapStartInfo] = useState<boolean>(isADayDuration(capDurationAmount, capDurationUnit));
+    const [durationAmount, setDurationAmount] = useState(capDurationAmount);
+    const [durationUnit, setDurationUnit] = useState(capDurationUnit);
+    const [isStartOfDay, showStartOfDay] = useState(!!userInput?.capStart?.startDay);
+
+    const updateDurationUnit = (durationUnit: string): void => {
+        setDurationUnit(durationUnit);
+        setCapStartInfo(isADayDuration(durationAmount, durationUnit));
+    };
+
+    const updateDurationAmount = (durationAmount: string): void => {
+        setDurationAmount(durationAmount);
+        setCapStartInfo(isADayDuration(durationAmount, durationUnit));
     };
 
     return (
@@ -43,6 +57,9 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
                     <h1 className="govuk-heading-l" id="create-caps-page-heading">
                         Create your fare caps
                     </h1>
+                    <span id="purchase-method-option-hint" className="govuk-hint">
+                        If cap duration is more than a day, please provide input for the cap start.
+                    </span>
 
                     <div className="govuk-grid-row">
                         <fieldset className="govuk-fieldset">
@@ -74,7 +91,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
                                                     type="text"
                                                     aria-describedby="cap-name-hint"
                                                     maxLength={50}
-                                                    defaultValue={userInput ? userInput.name : ''}
+                                                    defaultValue={userInput && userInput.cap ? userInput.cap.name : ''}
                                                 />
                                             </FormElementWrapper>
                                         </>
@@ -112,7 +129,11 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
                                                             type="text"
                                                             aria-describedby="cap-price-hint"
                                                             id="cap-price"
-                                                            defaultValue={userInput?.price ?? ''}
+                                                            defaultValue={
+                                                                userInput && userInput.cap.price
+                                                                    ? userInput.cap.price
+                                                                    : ''
+                                                            }
                                                         />
                                                     </FormElementWrapper>
                                                 </div>
@@ -150,7 +171,12 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
                                                             type="text"
                                                             id="cap-period-duration-quantity"
                                                             aria-describedby="cap-duration-hint"
-                                                            defaultValue={userInput?.durationAmount ?? ''}
+                                                            defaultValue={
+                                                                userInput && userInput.cap.durationAmount
+                                                                    ? userInput.cap.durationAmount
+                                                                    : ''
+                                                            }
+                                                            onChange={(e): void => updateDurationAmount(e.target.value)}
                                                         />
                                                     </FormElementWrapper>
                                                     <FormElementWrapper
@@ -164,8 +190,12 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
                                                             className="govuk-select govuk-select--width-3 expiry-selector-units"
                                                             name="capDurationUnits"
                                                             id="cap-duration-unit"
-                                                            defaultValue={userInput?.durationUnits ?? undefined}
-                                                            onChange={(e): void => handleDuration(e.target.value)}
+                                                            defaultValue={
+                                                                userInput && userInput.cap.durationUnits
+                                                                    ? userInput.cap.durationUnits
+                                                                    : ''
+                                                            }
+                                                            onChange={(e): void => updateDurationUnit(e.target.value)}
                                                         >
                                                             <option value="" disabled key="select-one">
                                                                 Select One
@@ -184,70 +214,81 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
                                     </FormGroupWrapper>
                                 </div>
                             </div>
-                        </fieldset>
 
-                        {showCapStartInfo ? (
-                            <div className="govuk-form-group">
-                                <fieldset className="govuk-fieldset" aria-describedby="fixed-weekdays-hint">
-                                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                        <h1 className="govuk-fieldset__heading">Define when cap is calculated from</h1>
-                                    </legend>
-                                    <h2 className="govuk-heading-m govuk-!-margin-top-6">Business week</h2>
-                                    <span id="fixed-weekdays-hint" className="govuk-hint">
-                                        Which day does your cap&apos;s calculation start on?
-                                    </span>
-                                    <div className="govuk-radios" data-module="govuk-radios">
-                                        <div className="govuk-radios__item">
-                                            <input
-                                                className="govuk-radios__input"
-                                                id="fixed-weekdays"
-                                                name="capStart"
-                                                type="radio"
-                                                value="fixedWeekdays"
-                                                data-aria-controls="conditional-fixed-weekdays"
-                                            />
-                                            <label className="govuk-label govuk-radios__label" htmlFor="fixed-weekdays">
-                                                Fixed weekdays
-                                            </label>
-                                        </div>
-                                        <div
-                                            className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                                            id="conditional-fixed-weekdays"
-                                        >
-                                            <div className="govuk-form-group">
-                                                <label className="govuk-label" htmlFor="start-day">
-                                                    Start
+                            {showCapStartInfo ? (
+                                <>
+                                    <div className="govuk-!-margin-left-4">
+                                        <h2 className="govuk-heading-l govuk-!-margin-top-6">
+                                            Define when cap is calculated from
+                                        </h2>
+                                        <h2 className="govuk-heading-m govuk-!-margin-top-6">Business week</h2>
+                                        <span id="fixed-weekdays-hint" className="govuk-hint">
+                                            Which day does your cap&apos;s calculation start on?
+                                        </span>
+                                        <div className="govuk-radios" data-module="govuk-radios">
+                                            <div className="govuk-radios__item">
+                                                <input
+                                                    className="govuk-radios__input"
+                                                    id="fixed-weekdays"
+                                                    name="capStart"
+                                                    type="radio"
+                                                    value="fixedWeekdays"
+                                                    data-aria-controls="conditional-fixed-weekdays"
+                                                    onChange={(): void => showStartOfDay(true)}
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-radios__label"
+                                                    htmlFor="fixed-weekdays"
+                                                >
+                                                    Fixed weekdays
                                                 </label>
-                                                <select className="govuk-select" id="start-day" name="startDay">
-                                                    {daysOfWeek.map((day) => (
-                                                        <option defaultValue={day[0]} key={day} value={day}>
-                                                            {upperFirst(day)}
-                                                        </option>
-                                                    ))}
-                                                </select>
                                             </div>
-                                        </div>
-                                        <div className="govuk-radios__item">
-                                            <input
-                                                className="govuk-radios__input"
-                                                id="rolling-days"
-                                                name="capStart"
-                                                type="radio"
-                                                value="rollingDays"
-                                                aria-describedby="rolling-days-hint"
-                                            />
-                                            <label className="govuk-label govuk-radios__label" htmlFor="rolling-days">
-                                                Rolling days
-                                            </label>
-                                            <div id="rolling-days-hint" className="govuk-hint govuk-radios__hint">
-                                                Rolling seven days from first journey
+
+                                            <div
+                                                className={`govuk-radios__conditional ${
+                                                    !isStartOfDay && 'govuk-visually-hidden'
+                                                }`}
+                                                id="conditional-fixed-weekdays"
+                                            >
+                                                <div className="govuk-form-group">
+                                                    <label className="govuk-label" htmlFor="start-day">
+                                                        Start
+                                                    </label>
+                                                    <select className="govuk-select" id="start-day" name="startDay">
+                                                        {daysOfWeek.map((day) => (
+                                                            <option defaultValue={day[0]} key={day} value={day}>
+                                                                {upperFirst(day)}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div className="govuk-radios__item">
+                                                <input
+                                                    className="govuk-radios__input"
+                                                    id="rolling-days"
+                                                    name="capStart"
+                                                    type="radio"
+                                                    value="rollingDays"
+                                                    aria-describedby="rolling-days-hint"
+                                                    onChange={(): void => showStartOfDay(false)}
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-radios__label"
+                                                    htmlFor="rolling-days"
+                                                >
+                                                    Rolling days
+                                                </label>
+                                                <div id="rolling-days-hint" className="govuk-hint govuk-radios__hint">
+                                                    Rolling seven days from first journey
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </fieldset>
-                            </div>
-                        ) : null}
-
+                                </>
+                            ) : null}
+                        </fieldset>
                         <input
                             type="submit"
                             value="Continue"
@@ -263,14 +304,15 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
 
 export const getServerSideProps = (ctx: NextPageContextWithSession): { props: CreateCapsProps } => {
     const csrfToken = getCsrfToken(ctx);
+
     const capsAttribute = getSessionAttribute(ctx.req, CREATE_CAPS_ATTRIBUTE);
-    //console.log(capsAttribute);
+    const userInput = capsAttribute ? capsAttribute : undefined;
 
     return {
         props: {
             errors: isWithErrors(capsAttribute) ? capsAttribute.errors : [],
-            userInput: capsAttribute && 'name' in capsAttribute ? capsAttribute : null,
             csrfToken,
+            ...(userInput && { userInput }),
         },
     };
 };

@@ -734,7 +734,7 @@ export interface CapDetails {
     productName: string;
 }
 
-export interface CreateCaps {
+export interface CapInfo {
     cap: Cap;
     capStart?: CapStartInfo;
 }

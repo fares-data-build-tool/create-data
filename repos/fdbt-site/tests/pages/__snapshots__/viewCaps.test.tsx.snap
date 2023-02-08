@@ -115,7 +115,13 @@ exports[`pages view caps should render correctly when cap validity is 24 hr 1`] 
         >
           Caps
         </h2>
-        <CapCard />
+        <p
+          className="govuk-body"
+        >
+          <em>
+            You currently have no caps saved.
+          </em>
+        </p>
         <a
           className="govuk-button"
           data-module="govuk-button"
@@ -178,7 +184,13 @@ exports[`pages view caps should render correctly when cap validity is fare day e
         >
           Caps
         </h2>
-        <CapCard />
+        <p
+          className="govuk-body"
+        >
+          <em>
+            You currently have no caps saved.
+          </em>
+        </p>
         <a
           className="govuk-button"
           data-module="govuk-button"
