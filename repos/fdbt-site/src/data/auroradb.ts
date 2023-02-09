@@ -1783,6 +1783,26 @@ export const updateCaps = async (nocCode: string, id: number, cap: CapInfo): Pro
     }
 };
 
+export const deleteCap = async (id: number, nocCode: string): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'deleting cap for given id and noc',
+        id,
+        nocCode,
+    });
+
+    const deleteQuery = `
+            DELETE FROM caps
+            WHERE id = ?
+            AND noc = ?
+            AND isExpiry = 0`;
+    try {
+        await executeQuery(deleteQuery, [id, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not delete cap from the caps table. ${error.stack}`);
+    }
+};
+
 export const insertProducts = async (
     nocCode: string,
     matchingJsonLink: string,

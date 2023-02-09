@@ -1,14 +1,15 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
 import { CapInfo, ErrorInfo, NextPageContextWithSession } from '../interfaces';
-import { getAndValidateNoc, sentenceCaseString } from '../utils';
+import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import { getCapExpiry, getCaps, getFareDayEnd } from '../data/auroradb';
 import { CapExpiry, FromDb } from '../interfaces/matchingJsonTypes';
 import { updateSessionAttribute } from '../utils/sessions';
 import { CAP_EXPIRY_ATTRIBUTE, CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
 import { expiryHintText } from './selectCapExpiry';
+import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 
 const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
@@ -18,11 +19,13 @@ interface CapProps {
     capExpiry: string;
     fareDayEnd: string;
     viewCapErrors: ErrorInfo[];
+    csrfToken: string;
 }
 
 interface CapCardProps {
     capInfo: FromDb<CapInfo>;
     index: Number;
+    deleteActionHandler: (id: number, name: string) => void;
 }
 
 interface CapExpiryCardProps {
@@ -30,7 +33,28 @@ interface CapExpiryCardProps {
     fareDayEnd: string;
 }
 
-const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [] }: CapProps): ReactElement => {
+const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [], csrfToken }: CapProps): ReactElement => {
+    const [popUpState, setPopUpState] = useState<{
+        capName: string;
+        capId: number;
+    }>();
+
+    const deleteActionHandler = (id: number, name: string): void => {
+        setPopUpState({
+            ...popUpState,
+            capName: name,
+            capId: id,
+        });
+    };
+
+    const cancelActionHandler = (): void => {
+        setPopUpState(undefined);
+    };
+
+    const buildDeleteUrl = (idToDelete: number, csrfToken: string): string => {
+        return `/api/deleteCap?id=${idToDelete}&_csrf=${csrfToken}`;
+    };
+
     return (
         <BaseLayout title={title} description={description} showNavigation>
             <div>
@@ -74,7 +98,12 @@ const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [] }: CapProps)
                                 ) : (
                                     <div className="card-row">
                                         {caps.map((capInfo, index) => (
-                                            <CapCard capInfo={capInfo} index={index} key={capInfo.id.toString()} />
+                                            <CapCard
+                                                capInfo={capInfo}
+                                                index={index}
+                                                key={capInfo.id.toString()}
+                                                deleteActionHandler={deleteActionHandler}
+                                            />
                                         ))}
                                     </div>
                                 )}
@@ -89,6 +118,14 @@ const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [] }: CapProps)
                     </div>
                 </div>
             </div>
+
+            {popUpState ? (
+                <DeleteConfirmationPopup
+                    entityName={popUpState.capName}
+                    deleteUrl={buildDeleteUrl(popUpState.capId, csrfToken)}
+                    cancelActionHandler={cancelActionHandler}
+                />
+            ) : null}
         </BaseLayout>
     );
 };
@@ -105,7 +142,7 @@ const NoCapsCard = (): ReactElement => {
     );
 };
 
-const CapCard = ({ capInfo, index }: CapCardProps): ReactElement => {
+const CapCard = ({ capInfo, index, deleteActionHandler }: CapCardProps): ReactElement => {
     return (
         <>
             <div className="card" id={`cap-${index}`}>
@@ -119,6 +156,14 @@ const CapCard = ({ capInfo, index }: CapCardProps): ReactElement => {
                                 >
                                     Edit
                                 </a>
+                            </li>
+                            <li className="actions__item">
+                                <button
+                                    className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
+                                    onClick={() => deleteActionHandler(capInfo.id, capInfo.cap.name)}
+                                >
+                                    Delete
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -195,6 +240,7 @@ const CapExpiryCard = ({ capExpiry: capExpiry, fareDayEnd }: CapExpiryCardProps)
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: CapProps }> => {
+    const csrfToken = getCsrfToken(ctx);
     const noc = getAndValidateNoc(ctx);
     const dbCapExpiry = await getCapExpiry(noc);
     const capExpiry = dbCapExpiry ? (JSON.parse(dbCapExpiry) as CapExpiry).productValidity : '';
@@ -210,6 +256,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             capExpiry,
             fareDayEnd,
             viewCapErrors: [],
+            csrfToken,
         },
     };
 };
