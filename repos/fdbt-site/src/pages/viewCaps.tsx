@@ -21,7 +21,7 @@ interface CapProps {
 }
 
 interface CapCardProps {
-    capInfo: CapInfo;
+    capInfo: FromDb<CapInfo>;
     index: Number;
 }
 
@@ -115,7 +115,7 @@ const CapCard = ({ capInfo, index }: CapCardProps): ReactElement => {
                             <li className="actions__item">
                                 <a
                                     className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                    href="/selectCapExpiry"
+                                    href={`/createCaps?id=${capInfo.id}`}
                                 >
                                     Edit
                                 </a>

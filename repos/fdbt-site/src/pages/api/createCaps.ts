@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { insertCaps } from '../../data/auroradb';
+import { insertCaps, updateCaps } from '../../data/auroradb';
 import { CREATE_CAPS_ATTRIBUTE } from '../../constants/attributes';
 import { CapInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces/index';
 import { CapStart, DayOfTheWeek, ExpiryUnit } from '../../interfaces/matchingJsonTypes';
@@ -108,7 +108,7 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const noc = getAndValidateNoc(req, res);
-        const { capName, capPrice, capDuration, capDurationUnits, capStart, startDay } = req.body;
+        const { capName, capPrice, capDuration, capDurationUnits, capStart, startDay, id } = req.body;
 
         const inputtedCap: InputtedCap = {
             name: capName,
@@ -129,7 +129,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         updateSessionAttribute(req, CREATE_CAPS_ATTRIBUTE, undefined);
 
-        await insertCaps(noc, createCaps);
+        if (id) {
+            await updateCaps(noc, id, createCaps);
+        } else {
+            await insertCaps(noc, createCaps);
+        }
 
         redirectTo(res, '/viewCaps');
         return;

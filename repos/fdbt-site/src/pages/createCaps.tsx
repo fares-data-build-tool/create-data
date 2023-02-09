@@ -7,9 +7,10 @@ import { CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
 import { CapInfo, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { isWithErrors } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
-import { getCsrfToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { upperFirst } from 'lodash';
+import { getCapByNocAndId } from '../data/auroradb';
 
 const title = 'Create Caps - Create Fares Data Service';
 const description = 'Create caps page of the Create Fares Data Service';
@@ -20,11 +21,12 @@ interface CreateCapsProps {
     errors: ErrorInfo[];
     userInput?: CapInfo;
     csrfToken: string;
+    editId?: number;
 }
 export const isADayDuration = (duration: string | undefined, durationUnit: string | undefined): boolean =>
     !!durationUnit && !!duration && !(durationUnit === 'hour' && Number(duration) <= 24);
 
-const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): ReactElement => {
+const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsProps): ReactElement => {
     let optionList: string[] = [];
     Object.values(ExpiryUnit).map((unit) => {
         optionList.push(unit);
@@ -235,6 +237,11 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
                                                     value="fixedWeekdays"
                                                     data-aria-controls="conditional-fixed-weekdays"
                                                     onChange={(): void => showStartOfDay(true)}
+                                                    defaultChecked={
+                                                        userInput &&
+                                                        userInput.capStart &&
+                                                        userInput.capStart.type === 'fixedWeekdays'
+                                                    }
                                                 />
                                                 <label
                                                     className="govuk-label govuk-radios__label"
@@ -256,7 +263,17 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
                                                     </label>
                                                     <select className="govuk-select" id="start-day" name="startDay">
                                                         {daysOfWeek.map((day) => (
-                                                            <option defaultValue={day[0]} key={day} value={day}>
+                                                            <option
+                                                                defaultValue={day[0]}
+                                                                key={day}
+                                                                value={day}
+                                                                selected={
+                                                                    userInput &&
+                                                                    userInput.capStart &&
+                                                                    userInput.capStart.startDay &&
+                                                                    userInput.capStart.startDay === day
+                                                                }
+                                                            >
                                                                 {upperFirst(day)}
                                                             </option>
                                                         ))}
@@ -273,6 +290,11 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
                                                     value="rollingDays"
                                                     aria-describedby="rolling-days-hint"
                                                     onChange={(): void => showStartOfDay(false)}
+                                                    defaultChecked={
+                                                        userInput &&
+                                                        userInput.capStart &&
+                                                        userInput.capStart.type === 'rollingDays'
+                                                    }
                                                 />
                                                 <label
                                                     className="govuk-label govuk-radios__label"
@@ -289,6 +311,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
                                 </>
                             ) : null}
                         </fieldset>
+                        <input type="hidden" name="id" value={editId} />
                         <input
                             type="submit"
                             value="Continue"
@@ -302,17 +325,30 @@ const CreateCaps = ({ errors = [], userInput, csrfToken }: CreateCapsProps): Rea
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: CreateCapsProps } => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: CreateCapsProps }> => {
     const csrfToken = getCsrfToken(ctx);
 
     const capsAttribute = getSessionAttribute(ctx.req, CREATE_CAPS_ATTRIBUTE);
-    const userInput = capsAttribute ? capsAttribute : undefined;
+    let userInput = capsAttribute ? capsAttribute : undefined;
+
+    const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
+    const nocCode = getAndValidateNoc(ctx);
+
+    //console.log(userInput);
+    if (editId && !userInput) {
+        userInput = await getCapByNocAndId(nocCode, editId);
+        if (!userInput) {
+            throw new Error('No entity for this NOC matches the passed id');
+        }
+    }
+    //console.log(userInput);
 
     return {
         props: {
             errors: isWithErrors(capsAttribute) ? capsAttribute.errors : [],
             csrfToken,
             ...(userInput && { userInput }),
+            ...(editId && { editId }),
         },
     };
 };

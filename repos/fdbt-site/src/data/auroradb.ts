@@ -1710,6 +1710,32 @@ export const getCaps = async (nocCode: string): Promise<FromDb<CapInfo>[]> => {
     }
 };
 
+export const getCapByNocAndId = async (nocCode: string, id: number): Promise<CapInfo | undefined> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving cap for given nocCode and id',
+        nocCode,
+        id,
+    });
+
+    try {
+        const queryInput = `
+            SELECT  contents
+            FROM caps
+            WHERE noc = ?
+            AND id = ?
+            AND isExpiry = 0
+        `;
+
+        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode, id]);
+        // contents will be like {"cap":{"name":"cap2","price":"2","durationAmount":"23","durationUnits":"day"},"capStart":{"type":"rollingDays"}}
+
+        return queryResults.length !== 0 ? (JSON.parse(queryResults[0].contents) as CapInfo) : undefined;
+    } catch (error) {
+        throw new Error(`Could not retrieve cap expiry by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const insertCaps = async (nocCode: string, cap: CapInfo): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1727,6 +1753,33 @@ export const insertCaps = async (nocCode: string, cap: CapInfo): Promise<void> =
         await executeQuery(insertQuery, [nocCode, contents]);
     } catch (error) {
         throw new Error(`Could not insert caps into the caps table. ${error.stack}`);
+    }
+};
+
+export const updateCaps = async (nocCode: string, id: number, cap: CapInfo): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'upserting cap for given noc, id and cap',
+        noc: nocCode,
+        id,
+        cap,
+    });
+
+    const contents = JSON.stringify(cap);
+    const updateQuery = `UPDATE caps
+    SET contents = ?
+    WHERE id = ?
+    AND noc = ?
+    AND isExpiry = 0`;
+
+    try {
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [contents, id, nocCode]);
+
+        if (meta.affectedRows > 1) {
+            throw new Error(`Updated too many rows when updating product dates ${meta}`);
+        }
+    } catch (error) {
+        throw new Error(`Could not update product dates in the product table. ${error}`);
     }
 };
 
