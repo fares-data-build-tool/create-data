@@ -671,8 +671,8 @@ describe('myfares pages', () => {
                             editLink: '/csvZoneUpload',
                         },
                         {
-                            id: 'exempted-services',
-                            name: 'Exempted Services',
+                            id: 'exempt-services',
+                            name: 'Exempt services',
                             content: ['N/A'],
                             editLink: '/csvZoneUpload',
                         },
@@ -754,8 +754,8 @@ describe('myfares pages', () => {
                             editLink: '/csvZoneUpload',
                         },
                         {
-                            id: 'exempted-services',
-                            name: 'Exempted Services',
+                            id: 'exempt-services',
+                            name: 'Exempt services',
                             content: ['N/A'],
                             editLink: '/csvZoneUpload',
                         },
@@ -917,8 +917,8 @@ describe('myfares pages', () => {
                             editLink: '/csvZoneUpload',
                         },
                         {
-                            id: 'exempted-services',
-                            name: 'Exempted Services',
+                            id: 'exempt-services',
+                            name: 'Exempt services',
                             content: ['N/A'],
                             editLink: '/csvZoneUpload',
                         },
@@ -1074,8 +1074,8 @@ describe('myfares pages', () => {
                             editLink: '/csvZoneUpload',
                         },
                         {
-                            id: 'exempted-services',
-                            name: 'Exempted Services',
+                            id: 'exempt-services',
+                            name: 'Exempt services',
                             content: ['100, 101, 102'],
                             editLink: '/csvZoneUpload',
                         },

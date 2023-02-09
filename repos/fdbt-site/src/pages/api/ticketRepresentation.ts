@@ -33,7 +33,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
                 case 'multipleServices':
                 case 'multipleServicesFlatFareMultiOperator':
                 case 'multipleServicesPricedByDistance':
-                    redirectTo(res, isScheme ? '/reuseOperatorGroup' : '/serviceList?selectAll=false');
+                    redirectTo(res, isScheme ? '/reuseOperatorGroup' : '/serviceList');
                     return;
                 case 'pointToPointPeriod':
                     redirectTo(res, '/service');

@@ -24,7 +24,7 @@ import {
 } from '../../../src/constants/attributes';
 import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
-import { TicketWithIds } from '../../interfaces/matchingJsonTypes';
+import { Stop, TicketWithIds } from '../../interfaces/matchingJsonTypes';
 import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
 
 const title = 'Product Details - Create Fares Data Service';
@@ -232,20 +232,31 @@ const createProductDetails = async (
     });
 
     if ('selectedServices' in ticket) {
-        productDetailsElements.push({
-            id: 'selected-services',
-            name: 'additionalNocs' in ticket || 'additionalOperators' in ticket ? `${noc} Services` : 'Services',
-            content: [
-                (
-                    await Promise.all(
-                        ticket.selectedServices.map((service) => {
+        productDetailsElements.push(
+            {
+                id: 'selected-services',
+                name: 'additionalNocs' in ticket || 'additionalOperators' in ticket ? `${noc} Services` : 'Services',
+                content: [
+                    ticket.selectedServices
+                        .map((service) => {
                             return service.lineName;
-                        }),
-                    )
-                ).join(', '),
-            ],
-            editLink: '/serviceList',
-        });
+                        })
+
+                        .join(', '),
+                ],
+                editLink: '/serviceList',
+            },
+            {
+                id: 'exempt-stops',
+                name: 'Exempt stops',
+                content: [
+                    'exemptStops' in ticket
+                        ? (ticket.exemptStops as Stop[]).map((stop) => `${stop.atcoCode} - ${stop.stopName}`).join(', ')
+                        : 'N/A',
+                ],
+                editLink: '/serviceList',
+            },
+        );
     }
 
     let requiresAttention = false;
@@ -319,8 +330,8 @@ const createProductDetails = async (
             editLink: '/csvZoneUpload',
         });
         productDetailsElements.push({
-            id: 'exempted-services',
-            name: 'Exempted Services',
+            id: 'exempt-services',
+            name: 'Exempt services',
             content:
                 ticket.exemptedServices && ticket.exemptedServices.length > 0
                     ? [ticket.exemptedServices.map((service) => service.lineName).join(', ')]
@@ -411,20 +422,12 @@ const createProductDetails = async (
     }
 
     if ('additionalNocs' in ticket) {
-        if ('schemeOperatorName' in ticket) {
-            productDetailsElements.push({
-                id: 'multi-operator-group',
-                name: `Multi Operator Group`,
-                content: [ticket.additionalNocs.join(', ')],
-            });
-        } else {
-            productDetailsElements.push({
-                id: 'multi-operator-group',
-                name: `Multi Operator Group`,
-                content: [ticket.additionalNocs.join(', ')],
-                editLink: '/reuseOperatorGroup',
-            });
-        }
+        productDetailsElements.push({
+            id: 'multi-operator-group',
+            name: `Multi Operator Group`,
+            content: [ticket.additionalNocs.join(', ')],
+            ...(!('schemeOperatorName' in ticket) && { editLink: '/reuseOperatorGroup' }),
+        });
     }
 
     if ('additionalOperators' in ticket) {

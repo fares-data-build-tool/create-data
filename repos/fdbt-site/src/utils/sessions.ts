@@ -78,6 +78,7 @@ import {
     EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    STOPS_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -116,7 +117,6 @@ import {
     SelectSalesOfferPackageWithError,
     Service,
     ServiceListAttribute,
-    ServiceListAttributeWithErrors,
     ServiceWithErrors,
     TermTimeAttribute,
     TicketPeriodWithErrors,
@@ -142,6 +142,7 @@ import {
     AdditionalPricing,
     CapDetails,
     EditFareStageMatchingWithErrors,
+    ExemptedStopsAttribute,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -185,7 +186,7 @@ export interface SessionAttributeTypes {
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_ZONE_ATTRIBUTE]: string | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
-    [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
+    [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
     [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;
     [MULTIPLE_PRODUCT_ATTRIBUTE]: MultipleProductAttribute | MultipleProductAttributeWithErrors;
     [NUMBER_OF_PRODUCTS_ATTRIBUTE]: number;
@@ -246,7 +247,8 @@ export interface SessionAttributeTypes {
         | AdditionalPricing
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
     [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
-    [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
+    [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
+    [STOPS_EXEMPTION_ATTRIBUTE]: ExemptedStopsAttribute | { errors: ErrorInfo[] };
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
