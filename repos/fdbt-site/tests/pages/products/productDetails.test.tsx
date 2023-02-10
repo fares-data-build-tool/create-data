@@ -671,7 +671,7 @@ describe('myfares pages', () => {
                             editLink: '/csvZoneUpload',
                         },
                         {
-                            id: 'exempt-services',
+                            id: 'exempted-services',
                             name: 'Exempt services',
                             content: ['N/A'],
                             editLink: '/csvZoneUpload',
@@ -754,7 +754,7 @@ describe('myfares pages', () => {
                             editLink: '/csvZoneUpload',
                         },
                         {
-                            id: 'exempt-services',
+                            id: 'exempted-services',
                             name: 'Exempt services',
                             content: ['N/A'],
                             editLink: '/csvZoneUpload',
@@ -917,7 +917,7 @@ describe('myfares pages', () => {
                             editLink: '/csvZoneUpload',
                         },
                         {
-                            id: 'exempt-services',
+                            id: 'exempted-services',
                             name: 'Exempt services',
                             content: ['N/A'],
                             editLink: '/csvZoneUpload',
@@ -1074,7 +1074,7 @@ describe('myfares pages', () => {
                             editLink: '/csvZoneUpload',
                         },
                         {
-                            id: 'exempt-services',
+                            id: 'exempted-services',
                             name: 'Exempt services',
                             content: ['100, 101, 102'],
                             editLink: '/csvZoneUpload',

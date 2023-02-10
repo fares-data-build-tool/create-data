@@ -330,7 +330,7 @@ const createProductDetails = async (
             editLink: '/csvZoneUpload',
         });
         productDetailsElements.push({
-            id: 'exempt-services',
+            id: 'exempted-services',
             name: 'Exempt services',
             content:
                 ticket.exemptedServices && ticket.exemptedServices.length > 0
