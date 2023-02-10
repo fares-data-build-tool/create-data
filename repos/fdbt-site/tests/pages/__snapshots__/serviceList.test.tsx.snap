@@ -134,7 +134,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
                 <input
                   className="govuk-radios__input"
                   data-aria-controls="conditional-yes"
-                  defaultChecked={true}
+                  defaultChecked={false}
                   id="yes"
                   name="exempt"
                   type="radio"
@@ -230,7 +230,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
               >
                 <input
                   className="govuk-radios__input"
-                  defaultChecked={false}
+                  defaultChecked={true}
                   id="no"
                   name="exempt"
                   type="radio"
@@ -409,7 +409,7 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
                 <input
                   className="govuk-radios__input"
                   data-aria-controls="conditional-yes"
-                  defaultChecked={true}
+                  defaultChecked={false}
                   id="yes"
                   name="exempt"
                   type="radio"
@@ -505,7 +505,7 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
               >
                 <input
                   className="govuk-radios__input"
-                  defaultChecked={false}
+                  defaultChecked={true}
                   id="no"
                   name="exempt"
                   type="radio"
@@ -1018,7 +1018,7 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
                 <input
                   className="govuk-radios__input"
                   data-aria-controls="conditional-yes"
-                  defaultChecked={true}
+                  defaultChecked={false}
                   id="yes"
                   name="exempt"
                   type="radio"
@@ -1114,7 +1114,7 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
               >
                 <input
                   className="govuk-radios__input"
-                  defaultChecked={false}
+                  defaultChecked={true}
                   id="no"
                   name="exempt"
                   type="radio"

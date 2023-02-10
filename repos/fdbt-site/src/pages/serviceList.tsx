@@ -91,7 +91,7 @@ const ServiceList = ({
 
     const multiOperatorText = multiOperator ? 'of your ' : '';
 
-    const defaultCheckedYes = !userWantsToEditExemptStops || selectedYesToExempt || !!exemptStops;
+    const defaultCheckedYes = (!userWantsToEditExemptStops && isEditMode) || selectedYesToExempt || !!exemptStops;
     const defaultCheckedNo = !defaultCheckedYes;
 
     return (
