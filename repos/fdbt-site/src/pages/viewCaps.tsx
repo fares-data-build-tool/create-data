@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { FunctionComponent, ReactElement, useState } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
@@ -10,12 +10,14 @@ import { updateSessionAttribute } from '../utils/sessions';
 import { CAP_EXPIRY_ATTRIBUTE, CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
 import { expiryHintText } from './selectCapExpiry';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
+import { extractGlobalSettingsReferer } from 'src/utils/globalSettings';
 
 const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
 
 interface CapProps {
     caps: FromDb<CapInfo>[];
+    referer: string | null;
     capExpiry: string;
     fareDayEnd: string;
     viewCapErrors: ErrorInfo[];
@@ -33,7 +35,7 @@ interface CapExpiryCardProps {
     fareDayEnd: string;
 }
 
-const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [], csrfToken }: CapProps): ReactElement => {
+const ViewCaps = ({ caps, referer, capExpiry, fareDayEnd, viewCapErrors = [], csrfToken }: CapProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         capName: string;
         capId: number;
@@ -56,7 +58,7 @@ const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [], csrfToken }
     };
 
     return (
-        <BaseLayout title={title} description={description} showNavigation>
+        <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div>
                 <ErrorSummary errors={viewCapErrors} />
             </div>
@@ -199,6 +201,36 @@ const CapCard = ({ capInfo, index, deleteActionHandler }: CapCardProps): ReactEl
     );
 };
 
+export const CapCardBody: FunctionComponent<{ entity: CapInfo }> = ({ entity }: { entity: CapInfo }) => (
+    <>
+        <h4 className="govuk-heading-m govuk-!-padding-bottom-4">{entity.cap.name}</h4>
+
+        <p className="govuk-body-s govuk-!-margin-bottom-2">
+            <span className="govuk-!-font-weight-bold">Price:</span> {sentenceCaseString(entity.cap.price)}
+        </p>
+
+        <p className="govuk-body-s govuk-!-margin-bottom-2">
+            <span className="govuk-!-font-weight-bold">Duration:</span> {entity.cap.durationAmount}{' '}
+            {entity.cap.durationUnits}
+        </p>
+
+        {entity.capStart ? (
+            <>
+                <p className="govuk-body-s govuk-!-margin-bottom-2">
+                    <span className="govuk-!-font-weight-bold">Cap start:</span>{' '}
+                    {sentenceCaseString(entity.capStart.type)}
+                </p>
+                {entity.capStart.startDay ? (
+                    <p className="govuk-body-s govuk-!-margin-bottom-2">
+                        <span className="govuk-!-font-weight-bold">Day:</span>{' '}
+                        {sentenceCaseString(entity.capStart.startDay)}
+                    </p>
+                ) : null}
+            </>
+        ) : null}
+    </>
+);
+
 const CapExpiryCard = ({ capExpiry: capExpiry, fareDayEnd }: CapExpiryCardProps): ReactElement => {
     return (
         <>
@@ -250,9 +282,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const caps = await getCaps(noc);
     updateSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, CREATE_CAPS_ATTRIBUTE, undefined);
+
     return {
         props: {
             caps,
+            referer: extractGlobalSettingsReferer(ctx),
             capExpiry,
             fareDayEnd,
             viewCapErrors: [],

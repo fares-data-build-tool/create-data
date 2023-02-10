@@ -277,6 +277,11 @@ export interface PremadeTimeRestriction {
     contents: DbTimeRestriction[];
 }
 
+export interface PremadeCap {
+    id: number;
+    contents: CapInfo;
+}
+
 export interface DbTimeInput {
     timeInput: string | { fareDayEnd: boolean };
     day: string;
@@ -411,6 +416,12 @@ export interface FullTimeRestrictionAttribute {
     id?: number;
 }
 
+export interface FullCapAttribute {
+    fullCaps: CapInfo[];
+    errors: ErrorInfo[];
+    id?: number;
+}
+
 export interface TimeInput {
     timeInput: string;
     day: string;
@@ -457,7 +468,15 @@ export interface TimeRestrictionsDefinition extends TimeRestriction {
     timeRestrictionChoice?: string;
 }
 
+export interface CapsDefinition extends CapSelection {
+    capChoice?: string;
+}
+
 export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDefinition {
+    errors: ErrorInfo[];
+}
+
+export interface CapsDefinitionWithErrors extends CapsDefinition {
     errors: ErrorInfo[];
 }
 
@@ -735,8 +754,13 @@ export interface CapDetails {
 }
 
 export interface CapInfo {
+    id: number;
     cap: Cap;
     capStart?: CapStartInfo;
+}
+
+export interface CapSelection {
+    id: number | null;
 }
 export interface GroupOfProducts {
     id: number;

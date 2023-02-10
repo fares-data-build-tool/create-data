@@ -1,13 +1,27 @@
 import React, { ReactElement } from 'react';
 import { isArray, upperFirst } from 'lodash';
 import moment from 'moment';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
-import { NextPageContextWithSession, ProductWithSalesOfferPackages, ConfirmationElement } from '../interfaces';
+import {
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    PRODUCT_DATE_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    FULL_CAPS_ATTRIBUTE,
+} from '../constants/attributes';
+import {
+    NextPageContextWithSession,
+    ProductWithSalesOfferPackages,
+    ConfirmationElement,
+    FullCapAttribute,
+} from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
-import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
+import {
+    isFareType,
+    isProductWithSalesOfferPackages,
+    isTicketPeriodAttributeWithErrors,
+} from '../interfaces/typeGuards';
 import { formatSOPArray, getCsrfToken } from '../utils';
 import { ticketFormatsList } from './managePurchaseMethod';
 import { GetServerSidePropsResult } from 'next';
@@ -21,6 +35,8 @@ export interface SalesConfirmationProps {
     csrfToken: string;
     startDate: string;
     endDate: string | null;
+    fareType: string;
+    fullCaps: FullCapAttribute;
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -37,6 +53,8 @@ export const buildSalesConfirmationElements = (
     salesOfferPackages: SalesOfferPackage[] | ProductWithSalesOfferPackages[],
     startDateIn: string,
     endDateIn: string | null,
+    fareType: string,
+    fullCaps: FullCapAttribute,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -69,6 +87,7 @@ export const buildSalesConfirmationElements = (
             });
         });
     }
+
     const startDate = moment(startDateIn).format('DD-MM-YYYY');
     const endDate = endDateIn && moment(endDateIn).format('DD-MM-YYYY');
 
@@ -84,6 +103,15 @@ export const buildSalesConfirmationElements = (
             href: 'productDateInformation',
         },
     );
+
+    if (fareType === 'single' || fareType === 'return' || fareType === 'flatFare') {
+        confirmationElements.push({
+            name: 'Cap',
+            content: fullCaps?.fullCaps[0]?.cap.name || 'N/A',
+            href: '/selectCaps',
+        });
+    }
+
     return confirmationElements;
 };
 
@@ -92,6 +120,8 @@ const SalesConfirmation = ({
     salesOfferPackages,
     startDate,
     endDate,
+    fareType,
+    fullCaps,
 }: SalesConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/salesConfirmation" method="post" csrfToken={csrfToken}>
@@ -99,7 +129,13 @@ const SalesConfirmation = ({
                 <h1 className="govuk-heading-l">Check your sales information answers before submitting</h1>
                 <ConfirmationTable
                     header="Sales Information"
-                    confirmationElements={buildSalesConfirmationElements(salesOfferPackages, startDate, endDate)}
+                    confirmationElements={buildSalesConfirmationElements(
+                        salesOfferPackages,
+                        startDate,
+                        endDate,
+                        fareType,
+                        fullCaps,
+                    )}
                 />
                 <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
 
@@ -123,11 +159,13 @@ export const getServerSideProps = (
     const csrfToken = getCsrfToken(ctx);
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const ticketDatingInfo = getRequiredSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
+    const fullCaps = (getSessionAttribute(ctx.req, FULL_CAPS_ATTRIBUTE) as FullCapAttribute) || null;
 
     if (
         !salesOfferPackageInfo ||
         !isArray(salesOfferPackageInfo) ||
-        isTicketPeriodAttributeWithErrors(ticketDatingInfo)
+        isTicketPeriodAttributeWithErrors(ticketDatingInfo) ||
+        !isFareType(fareTypeAttribute)
     ) {
         throw new Error('User has reached confirmation page with incorrect sales info.');
     }
@@ -138,6 +176,8 @@ export const getServerSideProps = (
             startDate: ticketDatingInfo.startDate,
             endDate: ticketDatingInfo.endDate ?? null,
             csrfToken,
+            fareType: fareTypeAttribute.fareType,
+            fullCaps,
         },
     };
 };

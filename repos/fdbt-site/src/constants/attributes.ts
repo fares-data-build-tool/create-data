@@ -159,3 +159,7 @@ export const ADDITIONAL_PRICING_ATTRIBUTE = 'fdbt-additional-pricing';
 export const MULTI_MODAL_ATTRIBUTE = 'fdbt-multi-modal';
 
 export const SERVICE_LIST_EXEMPTION_ATTRIBUTE = 'fdbt-exemption-services';
+
+export const FULL_CAPS_ATTRIBUTE = 'fdbt-full-caps-attribute';
+
+export const CAPS_DEFINITION_ATTRIBUTE = 'fdbt-caps-definition-attribute';

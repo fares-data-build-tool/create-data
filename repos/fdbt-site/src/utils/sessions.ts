@@ -79,6 +79,8 @@ import {
     MULTI_MODAL_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     CREATE_CAPS_ATTRIBUTE,
+    CAPS_DEFINITION_ATTRIBUTE,
+    FULL_CAPS_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -144,6 +146,9 @@ import {
     CapDetails,
     EditFareStageMatchingWithErrors,
     CapInfo,
+    CapSelection,
+    CapsDefinitionWithErrors,
+    FullCapAttribute,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -250,6 +255,8 @@ export interface SessionAttributeTypes {
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
     [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
     [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
+    [CAPS_DEFINITION_ATTRIBUTE]: CapSelection | CapsDefinitionWithErrors;
+    [FULL_CAPS_ATTRIBUTE]: FullCapAttribute;
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

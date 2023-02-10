@@ -1720,17 +1720,19 @@ export const getCapByNocAndId = async (nocCode: string, id: number): Promise<Cap
 
     try {
         const queryInput = `
-            SELECT  contents
+            SELECT  id, contents
             FROM caps
             WHERE noc = ?
             AND id = ?
             AND isExpiry = 0
         `;
 
-        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode, id]);
+        const queryResults = await executeQuery<{ id: number; contents: string }[]>(queryInput, [nocCode, id]);
         // contents will be like {"cap":{"name":"cap2","price":"2","durationAmount":"23","durationUnits":"day"},"capStart":{"type":"rollingDays"}}
 
-        return queryResults.length !== 0 ? (JSON.parse(queryResults[0].contents) as CapInfo) : undefined;
+        return queryResults.length !== 0
+            ? ({ ...JSON.parse(queryResults[0].contents), id: queryResults[0].id } as CapInfo)
+            : undefined;
     } catch (error) {
         throw new Error(`Could not retrieve cap expiry by nocCode from AuroraDB: ${error.stack}`);
     }
