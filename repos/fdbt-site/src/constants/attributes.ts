@@ -157,3 +157,5 @@ export const ADDITIONAL_PRICING_ATTRIBUTE = 'fdbt-additional-pricing';
 export const MULTI_MODAL_ATTRIBUTE = 'fdbt-multi-modal';
 
 export const SERVICE_LIST_EXEMPTION_ATTRIBUTE = 'fdbt-exemption-services';
+
+export const STOPS_EXEMPTION_ATTRIBUTE = 'fdbt-exemption-stops';

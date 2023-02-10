@@ -7,7 +7,7 @@ import * as virusCheck from '../../../src/utils/apiUtils/virusScan';
 import * as csvData from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
 import * as sessions from '../../../src/utils/sessions';
-import * as dynamo from '../../../src/data/auroradb';
+import * as auroradb from '../../../src/data/auroradb';
 import {
     FARE_ZONE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -69,7 +69,7 @@ describe('csvZoneUpload', () => {
 
             jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
-            jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
+            jest.spyOn(auroradb, 'getAtcoCodesByNaptanCodes')
                 .mockImplementation()
                 .mockResolvedValue([{ atcoCode: 'TestATCO-TC5', naptanCode: 'TestNaptan-TC5' }]);
 
@@ -266,7 +266,7 @@ describe('csvZoneUpload', () => {
                 },
             });
 
-        jest.spyOn(dynamo, 'batchGetStopsByAtcoCode').mockImplementation().mockResolvedValue(stops);
+        jest.spyOn(auroradb, 'batchGetStopsByAtcoCode').mockImplementation().mockResolvedValue(stops);
 
         jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
@@ -333,7 +333,7 @@ describe('csvZoneUpload', () => {
                 },
             },
         };
-        const dynamoError = 'Could not fetch data from dynamo in test';
+        const auroradbError = 'Could not fetch data from auroradb in test';
 
         jest.spyOn(fileUpload, 'getFormData').mockImplementation().mockResolvedValue({
             name: 'file',
@@ -343,8 +343,8 @@ describe('csvZoneUpload', () => {
 
         jest.spyOn(virusCheck, 'containsViruses').mockImplementation().mockResolvedValue(false);
 
-        jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes').mockImplementation(() => {
-            throw new Error(dynamoError);
+        jest.spyOn(auroradb, 'getAtcoCodesByNaptanCodes').mockImplementation(() => {
+            throw new Error(auroradbError);
         });
 
         await csvZoneUpload.default(req, res);
@@ -558,7 +558,7 @@ describe('csvZoneUpload', () => {
             [csvData.testCsvWithEmptyLines, csvData.processedTestCsvWithEmptyLines.Body],
             [csvData.testCsvWithEmptyLinesAndEmptyCells, csvData.processedTestCsvWithEmptyLinesAndEmptyCells.Body],
         ])('should skip empty lines in the csv', async (fileContent, expectedProcessed) => {
-            jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
+            jest.spyOn(auroradb, 'getAtcoCodesByNaptanCodes')
                 .mockImplementation()
                 .mockResolvedValue([{ atcoCode: 'TestATCO-TC4', naptanCode: 'TestNaptan-TC4' }]);
 
@@ -569,7 +569,7 @@ describe('csvZoneUpload', () => {
 
         it('returns null when a csv upload contains no stops info', async () => {
             const fileContent = csvData.testCsvWithNoStopsInfo;
-            jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes').mockImplementation().mockResolvedValue([]);
+            jest.spyOn(auroradb, 'getAtcoCodesByNaptanCodes').mockImplementation().mockResolvedValue([]);
 
             const result = await csvZoneUpload.processCsv(fileContent, req, res);
 
@@ -583,7 +583,7 @@ describe('csvZoneUpload', () => {
             const mockNaptanCodesToQuery: string[] = ['TestNaptan-TC5'];
             const expectedUserFareZones = csvData.processedTestCsvWithEmptyCells.Body;
 
-            jest.spyOn(dynamo, 'getAtcoCodesByNaptanCodes')
+            jest.spyOn(auroradb, 'getAtcoCodesByNaptanCodes')
                 .mockImplementation()
                 .mockResolvedValue([{ atcoCode: 'TestATCO-TC5', naptanCode: 'TestNaptan-TC5' }]);
 

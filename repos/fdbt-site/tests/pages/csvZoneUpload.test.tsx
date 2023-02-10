@@ -55,7 +55,6 @@ describe('pages', () => {
                     serviceList={mockServiceList}
                     clickedYes={false}
                     dataSourceAttribute={{ source: 'bods', hasBods: true, hasTnds: false }}
-                    buttonText="Select All Services"
                 />,
             );
             expect(tree).toMatchSnapshot();

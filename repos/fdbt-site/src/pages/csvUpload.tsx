@@ -68,6 +68,7 @@ const CsvUpload = ({
                             </>
                         }
                     />
+                    <input type="submit" value="Upload and continue" id="submit-button" className="govuk-button" />
                 </CsrfForm>
             </div>
 

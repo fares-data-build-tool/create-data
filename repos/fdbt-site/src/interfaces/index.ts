@@ -16,6 +16,7 @@ import {
     TicketType,
     ExpiryUnit,
     AdditionalOperator,
+    Stop,
 } from './matchingJsonTypes';
 
 // Session Attributes and Cookies
@@ -198,8 +199,8 @@ export interface ServiceListAttribute {
     selectedServices: SelectedService[];
 }
 
-export interface ServiceListAttributeWithErrors {
-    errors: ErrorInfo[];
+export interface ExemptedStopsAttribute {
+    exemptStops: Stop[];
 }
 
 export interface GlobalSettingsAttribute<T> {

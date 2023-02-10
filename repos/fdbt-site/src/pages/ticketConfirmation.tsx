@@ -25,6 +25,7 @@ import {
     DIRECTION_ATTRIBUTE,
     PRICING_PER_DISTANCE_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    STOPS_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     ConfirmationElement,
@@ -39,7 +40,7 @@ import {
     TxcSourceAttribute,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingFareZones, MatchingInfo } from '../interfaces/matchingInterface';
-import { isFareType, isPeriodExpiry, isWithErrors } from '../interfaces/typeGuards';
+import { isExemptStopsAttributeWithErrors, isFareType, isPeriodExpiry, isWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
 import { getCsrfToken, sentenceCaseString, isSchemeOperator } from '../utils';
 import { getSessionAttribute, updateSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
@@ -249,15 +250,25 @@ export const buildFlatFarePriceByDistanceConfirmationElements = (
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
     const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
+    const exemptStopsAttribute = getSessionAttribute(ctx.req, STOPS_EXEMPTION_ATTRIBUTE);
+
     confirmationElements.push(
         {
             name: `${opName}${opName ? 's' : 'S'}ervices`,
-            content: `${services.map((service) => service.lineName).join(', ')}`,
+            content: services.map((service) => service.lineName).join(', '),
             href: 'serviceList',
         },
         {
             name: 'TransXChange source',
             content: dataSource.toUpperCase(),
+            href: 'serviceList',
+        },
+        {
+            name: 'Exempt stops',
+            content:
+                exemptStopsAttribute && !isExemptStopsAttributeWithErrors(exemptStopsAttribute)
+                    ? exemptStopsAttribute.exemptStops.map((stop) => `${stop.atcoCode} - ${stop.stopName}`).join(', ')
+                    : 'N/A',
             href: 'serviceList',
         },
     );
@@ -353,26 +364,29 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     const pointToPointPeriod = ticketRepresentation === 'pointToPointPeriod';
 
     if (zone || hybrid) {
-        confirmationElements.push({
-            name: 'Zone',
-            content: `You uploaded a fare zone CSV file${!!fileName ? ` named: ${fileName}` : '.'}`,
-            href: 'csvZoneUpload',
-        });
-
-        confirmationElements.push({
-            name: `Exempted services`,
-            content:
-                exemptedServiceAttribute && exemptedServiceAttribute.selectedServices.length > 0
-                    ? `${exemptedServiceAttribute.selectedServices.map((service) => service.lineName).join(', ')}`
-                    : 'N/A',
-            href: 'csvZoneUpload',
-        });
+        confirmationElements.push(
+            {
+                name: 'Zone',
+                content: `You uploaded a fare zone CSV file${!!fileName ? ` named: ${fileName}` : '.'}`,
+                href: 'csvZoneUpload',
+            },
+            {
+                name: `Exempt services`,
+                content:
+                    exemptedServiceAttribute && exemptedServiceAttribute.selectedServices.length > 0
+                        ? `${exemptedServiceAttribute.selectedServices.map((service) => service.lineName).join(', ')}`
+                        : 'N/A',
+                href: 'csvZoneUpload',
+            },
+        );
     }
 
     if (!pointToPointPeriod && (!zone || hybrid) && !isSchemeOperator(ctx)) {
         const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
         const opName = operatorAttribute?.name ? `${operatorAttribute.name} ` : '';
         const dataSource = (getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute).source;
+        const exemptStopsAttribute = getSessionAttribute(ctx.req, STOPS_EXEMPTION_ATTRIBUTE);
+
         confirmationElements.push(
             {
                 name: `${opName}${opName ? 's' : 'S'}ervices`,
@@ -382,6 +396,16 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
             {
                 name: 'TransXChange source',
                 content: dataSource.toUpperCase(),
+                href: 'serviceList',
+            },
+            {
+                name: 'Exempt stops',
+                content:
+                    exemptStopsAttribute && !isExemptStopsAttributeWithErrors(exemptStopsAttribute)
+                        ? exemptStopsAttribute.exemptStops
+                              .map((stop) => `${stop.atcoCode} - ${stop.stopName}`)
+                              .join(', ')
+                        : 'N/A',
                 href: 'serviceList',
             },
         );
