@@ -1,4 +1,3 @@
-import { CapInfo } from '.';
 import { CompanionInfo, DbTimeBand, TimeRestrictionDay } from './matchingJsonTypes';
 
 export interface FullGroupPassengerType {

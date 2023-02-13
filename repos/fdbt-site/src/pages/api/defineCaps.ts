@@ -3,7 +3,7 @@ import { FULL_CAPS_ATTRIBUTE, CAPS_DEFINITION_ATTRIBUTE } from '../../constants/
 import { getCapByNocAndId } from '../../data/auroradb';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
 import { CapInfo, CapSelection, CapsDefinitionWithErrors, NextApiRequestWithSession, PremadeCap } from 'src/interfaces';
-import { updateSessionAttribute } from 'src/utils/sessions';
+import { updateSessionAttribute } from '../../../src/utils/sessions';
 
 const getCapContent = async (
     cap: number | undefined,
@@ -25,7 +25,7 @@ const getCapContent = async (
         throw new Error('No premade caps saved under the provided name');
     }
 
-    const dbCap = { id: result.id, contents: result };
+    const dbCap = { id: result.id, contents: result } as PremadeCap;
     const caps = result;
 
     return {

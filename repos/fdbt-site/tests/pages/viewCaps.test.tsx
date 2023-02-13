@@ -2,25 +2,36 @@ import { shallow } from 'enzyme';
 import * as React from 'react';
 import { CapInfo } from 'src/interfaces';
 import { ExpiryUnit, FromDb } from '../../src/interfaces/matchingJsonTypes';
-import ViewCaps from '../../src/pages/viewCaps';
+import ViewCaps, { CapCardBody } from '../../src/pages/viewCaps';
 
 describe('pages', () => {
     describe('view caps', () => {
         it('should render correctly on no cap expiry', () => {
-            const tree = shallow(<ViewCaps caps={[]} capExpiry="" fareDayEnd="" viewCapErrors={[]} csrfToken="" />);
+            const tree = shallow(
+                <ViewCaps caps={[]} capExpiry="" fareDayEnd="" viewCapErrors={[]} csrfToken="" referer={null} />,
+            );
 
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly when cap validity is 24 hr', () => {
-            const tree = shallow(<ViewCaps caps={[]} capExpiry="24hr" fareDayEnd="" viewCapErrors={[]} csrfToken="" />);
+            const tree = shallow(
+                <ViewCaps caps={[]} capExpiry="24hr" fareDayEnd="" viewCapErrors={[]} csrfToken="" referer={null} />,
+            );
 
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly when cap validity is fare day end', () => {
             const tree = shallow(
-                <ViewCaps caps={[]} capExpiry="fareDayEnd" fareDayEnd="2323" viewCapErrors={[]} csrfToken="" />,
+                <ViewCaps
+                    caps={[]}
+                    capExpiry="fareDayEnd"
+                    fareDayEnd="2323"
+                    viewCapErrors={[]}
+                    csrfToken=""
+                    referer={null}
+                />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -37,7 +48,14 @@ describe('pages', () => {
                 id: 1,
             };
             const tree = shallow(
-                <ViewCaps caps={[cap]} capExpiry="fareDayEnd" fareDayEnd="2323" viewCapErrors={[]} csrfToken="" />,
+                <ViewCaps
+                    caps={[cap]}
+                    capExpiry="fareDayEnd"
+                    fareDayEnd="2323"
+                    viewCapErrors={[]}
+                    csrfToken=""
+                    referer={null}
+                />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -58,7 +76,14 @@ describe('pages', () => {
                 },
             };
             const tree = shallow(
-                <ViewCaps caps={[cap]} capExpiry="fareDayEnd" fareDayEnd="2323" viewCapErrors={[]} csrfToken="" />,
+                <ViewCaps
+                    caps={[cap]}
+                    capExpiry="fareDayEnd"
+                    fareDayEnd="2323"
+                    viewCapErrors={[]}
+                    csrfToken=""
+                    referer={null}
+                />,
             );
 
             expect(tree).toMatchSnapshot();
@@ -78,9 +103,35 @@ describe('pages', () => {
                 },
             };
             const tree = shallow(
-                <ViewCaps caps={[cap]} capExpiry="fareDayEnd" fareDayEnd="2323" viewCapErrors={[]} csrfToken="" />,
+                <ViewCaps
+                    caps={[cap]}
+                    capExpiry="fareDayEnd"
+                    fareDayEnd="2323"
+                    viewCapErrors={[]}
+                    csrfToken=""
+                    referer={null}
+                />,
             );
 
+            expect(tree).toMatchSnapshot();
+        });
+    });
+
+    describe('cap inner component', () => {
+        it('renders normally when caps are present', () => {
+            const tree = shallow(
+                <CapCardBody
+                    entity={{
+                        id: 2,
+                        cap: {
+                            name: 'cappy cap',
+                            price: '2',
+                            durationAmount: '24hr',
+                            durationUnits: ExpiryUnit.HOUR,
+                        },
+                    }}
+                />,
+            );
             expect(tree).toMatchSnapshot();
         });
     });
