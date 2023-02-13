@@ -167,10 +167,20 @@ generate-flat-fare-geo-zone:
 
 generate-validate-flat-fare-geo-zone: generate-flat-fare-geo-zone validate-latest-file
 
-generate-geo-zone-with-exceptions:
-	./scripts/trigger_netex_convertor.sh flatFareWithExemptions
+generate-flat-fare-geo-zone-with-exempt-services:
+	./scripts/trigger_netex_convertor.sh flatFareWithExemptServices
 
-generate-validate-geo-zone-with-exceptions: generate-geo-zone-with-exceptions validate-latest-file
+generate-validate-flat-fare-geo-zone-with-exempt-services: generate-flat-fare-geo-zone-with-exempt-services validate-latest-file
+
+generate-flat-fare-multi-service-with-exempt-stops:
+	./scripts/trigger_netex_convertor.sh flatFareWithExemptStops
+
+generate-validate-flat-fare-multi-service-with-exempt-stops: generate-flat-fare-multi-service-with-exempt-stops validate-latest-file
+
+generate-hybrid-with-exemptions:
+	./scripts/trigger_netex_convertor.sh flatFareWithExemptStops
+
+generate-validate-hybrid-with-exemptions: generate-hybrid-with-exemptions validate-latest-file
 
 generate-scheme-multiple-services:
 	./scripts/trigger_netex_convertor.sh schemeOperatorMultiServices

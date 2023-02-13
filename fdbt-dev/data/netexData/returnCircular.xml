@@ -3028,13 +3028,13 @@
             <FromDate>2004-01-01T00:00:00</FromDate>
           </ValidBetween>
           <Name>Static code values for UK NPTG data</Name>
-          <Description>This frame contains code  valuesused to validate the NPTG</Description>
+          <Description>This frame contains code  values used to validate the NPTG</Description>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA:FXCP"/>
           <codespaces>
             <Codespace id="nptg_metadata">
               <Xmlns>nptg</Xmlns>
               <XmlnsUrl>http://www.nptg.org.uk/nptg</XmlnsUrl>
-              <Description>UK National Public Transport gazetteer     fixed codes.   .</Description>
+              <Description>UK National Public Transport gazetteer fixed codes</Description>
             </Codespace>
             <Codespace id="nptgLocality_data">
               <Xmlns>nptgLocality</Xmlns>
@@ -3433,7 +3433,7 @@
               </values>
             </ValueSet>
             <ValueSet version="nptg:v2.1" id="nptg:UK_NPTG_profile@Place_types" classOfValues="TypeOfPlace">
-              <Name>NPTG Place Types   s</Name>
+              <Name>NPTG Place Types</Name>
               <values>
                 <TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@Lo">
                   <Name>NPTG Source Loc  = Lo</Name>
