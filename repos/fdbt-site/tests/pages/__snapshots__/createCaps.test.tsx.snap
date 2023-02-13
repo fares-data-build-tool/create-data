@@ -50,7 +50,6 @@ exports[`pages create caps should render correctly 1`] = `
                 ]
               }
               errors={Array []}
-              hideErrorBar={true}
             >
               <label
                 className="govuk-label"
@@ -102,7 +101,6 @@ exports[`pages create caps should render correctly 1`] = `
                 ]
               }
               errors={Array []}
-              hideErrorBar={true}
             >
               <label
                 className="govuk-label"
@@ -324,7 +322,6 @@ exports[`pages create caps should render correctly on edit mode 1`] = `
                 ]
               }
               errors={Array []}
-              hideErrorBar={true}
             >
               <label
                 className="govuk-label"
@@ -376,7 +373,6 @@ exports[`pages create caps should render correctly on edit mode 1`] = `
                 ]
               }
               errors={Array []}
-              hideErrorBar={true}
             >
               <label
                 className="govuk-label"
@@ -599,7 +595,6 @@ exports[`pages create caps should render correctly on edit mode with cap start 1
                 ]
               }
               errors={Array []}
-              hideErrorBar={true}
             >
               <label
                 className="govuk-label"
@@ -651,7 +646,6 @@ exports[`pages create caps should render correctly on edit mode with cap start 1
                 ]
               }
               errors={Array []}
-              hideErrorBar={true}
             >
               <label
                 className="govuk-label"
@@ -895,7 +889,6 @@ exports[`pages create caps should render correctly on input errors 1`] = `
                   },
                 ]
               }
-              hideErrorBar={true}
             >
               <label
                 className="govuk-label"
@@ -961,7 +954,6 @@ exports[`pages create caps should render correctly on input errors 1`] = `
                   },
                 ]
               }
-              hideErrorBar={true}
             >
               <label
                 className="govuk-label"
