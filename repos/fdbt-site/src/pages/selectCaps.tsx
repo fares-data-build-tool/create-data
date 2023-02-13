@@ -8,7 +8,7 @@ import { CapCardBody } from './viewCaps';
 import BackButton from '../components/BackButton';
 import { getCaps } from 'src/data/auroradb';
 import { getSessionAttribute } from 'src/utils/sessions';
-import { CAPS_DEFINITION_ATTRIBUTE } from 'src/constants/attributes';
+import { CAPS_DEFINITION_ATTRIBUTE, FULL_CAPS_ATTRIBUTE } from 'src/constants/attributes';
 
 const title = 'Select Caps - Create Fares Data Service';
 const description = 'Select Caps page of the Create Fares Data Service';
@@ -18,9 +18,11 @@ interface SelectCapsProps {
     errors: ErrorInfo[];
     caps: CapInfo[];
     backHref: string;
+    selectedId: number | null;
 }
 
-const SelectCaps = ({ csrfToken, errors, caps, backHref }: SelectCapsProps): ReactElement => {
+const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCapsProps): ReactElement => {
+    console.log(selectedId);
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
@@ -59,7 +61,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref }: SelectCapsProps): Rea
                                         type="radio"
                                         value="Premade"
                                         data-aria-controls="conditional-caps"
-                                        defaultChecked={errors.some((error) => error.id === 'caps')}
+                                        defaultChecked={errors.some((error) => error.id === 'caps') || !!selectedId}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
                                         Yes
@@ -72,7 +74,9 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref }: SelectCapsProps): Rea
                                 >
                                     <div className="govuk-form-group card-row">
                                         {caps.length ? (
-                                            caps.map((item) => <CapsCard key={item.cap.name} caps={item} />)
+                                            caps.map((item) => (
+                                                <CapsCard key={item.cap.name} caps={item} selectedId={selectedId} />
+                                            ))
                                         ) : (
                                             <p className="govuk-body govuk-error-message">
                                                 <a href="/viewCaps">Create a cap in operator settings.</a>
@@ -89,6 +93,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref }: SelectCapsProps): Rea
                                         type="radio"
                                         value="no"
                                         data-aria-controls="conditional-caps-2"
+                                        defaultChecked={!selectedId}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
                                         No
@@ -114,7 +119,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref }: SelectCapsProps): Rea
     );
 };
 
-const CapsCard = ({ caps }: { caps: CapInfo }): ReactElement => {
+const CapsCard = ({ caps, selectedId }: { caps: CapInfo; selectedId: number | null }): ReactElement => {
     return (
         <div className="card">
             <div className="card__body caps">
@@ -127,6 +132,7 @@ const CapsCard = ({ caps }: { caps: CapInfo }): ReactElement => {
                             type="radio"
                             value={caps.id}
                             aria-label={caps.cap.name}
+                            defaultChecked={selectedId === caps.id}
                         />
                         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                         <label className="govuk-label govuk-radios__label" />
@@ -148,13 +154,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         errors = capsDefinition.errors;
     }
 
+    const selectedId = getSessionAttribute(ctx.req, FULL_CAPS_ATTRIBUTE)?.id || null;
+
     const backHref = '';
 
     const nationalOperatorCode = getAndValidateNoc(ctx);
 
     const caps: CapInfo[] = await getCaps(nationalOperatorCode);
 
-    return { props: { csrfToken, errors, caps, backHref } };
+    return { props: { csrfToken, errors, caps, backHref, selectedId } };
 };
 
 export default SelectCaps;
