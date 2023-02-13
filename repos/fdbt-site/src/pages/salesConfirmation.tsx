@@ -36,7 +36,7 @@ export interface SalesConfirmationProps {
     startDate: string;
     endDate: string | null;
     fareType: string;
-    fullCaps: FullCapAttribute;
+    fullCaps?: FullCapAttribute;
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -54,7 +54,7 @@ export const buildSalesConfirmationElements = (
     startDateIn: string,
     endDateIn: string | null,
     fareType: string,
-    fullCaps: FullCapAttribute,
+    fullCaps?: FullCapAttribute,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -108,7 +108,7 @@ export const buildSalesConfirmationElements = (
         confirmationElements.push({
             name: 'Cap',
             content: fullCaps?.fullCaps[0]?.cap.name || 'N/A',
-            href: '/selectCaps',
+            href: 'selectCaps',
         });
     }
 

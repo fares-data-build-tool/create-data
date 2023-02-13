@@ -9,6 +9,7 @@ import SalesConfirmation, {
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
+import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
 
 describe('pages', () => {
     describe('confirmation', () => {
@@ -29,6 +30,7 @@ describe('pages', () => {
                     startDate="2017-03-13T18:00:00+00:00"
                     endDate="2057-03-13T18:00:00+00:00"
                     csrfToken=""
+                    fareType="single"
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -62,6 +64,8 @@ describe('pages', () => {
                 ...baseExpectedProps,
                 startDate: mockStartDate,
                 endDate: mockEndDate,
+                fareType: 'single',
+                fullCaps: null,
             };
             const actualProps = getServerSideProps(ctx);
             expect((actualProps as { props: SalesConfirmationProps }).props).toEqual(expectedProps);
@@ -93,6 +97,22 @@ describe('pages', () => {
                 ],
                 moment().toISOString(),
                 moment().add(100, 'years').toISOString(),
+                'single',
+                {
+                    fullCaps: [
+                        {
+                            id: 2,
+                            cap: {
+                                name: 'cappy cap',
+                                price: '2',
+                                durationAmount: '24hr',
+                                durationUnits: ExpiryUnit.HOUR,
+                            },
+                        },
+                    ],
+                    errors: [],
+                    id: 2,
+                },
             );
             expect(result).toStrictEqual([
                 {
@@ -114,6 +134,11 @@ describe('pages', () => {
                     content: moment().add(100, 'years').format('DD-MM-YYYY'),
                     href: 'productDateInformation',
                     name: 'Ticket end date',
+                },
+                {
+                    content: 'cappy cap',
+                    href: 'selectCaps',
+                    name: 'Cap',
                 },
             ]);
         });
@@ -164,6 +189,7 @@ describe('pages', () => {
                 ],
                 now.toISOString(),
                 now.add(100, 'years').toISOString(),
+                'single',
             );
             expect(result).toStrictEqual([
                 {
@@ -217,6 +243,11 @@ describe('pages', () => {
                     content: '20-06-2121',
                     href: 'productDateInformation',
                     name: 'Ticket end date',
+                },
+                {
+                    content: 'N/A',
+                    href: 'selectCaps',
+                    name: 'Cap',
                 },
             ]);
         });

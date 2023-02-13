@@ -10,7 +10,7 @@ import { updateSessionAttribute } from '../utils/sessions';
 import { CAP_EXPIRY_ATTRIBUTE, CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
 import { expiryHintText } from './selectCapExpiry';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
-import { extractGlobalSettingsReferer } from 'src/utils/globalSettings';
+import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 
 const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
