@@ -12,7 +12,7 @@ import {
 } from '../../src/utils';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
-import { dateIsOverThirtyMinutesAgo } from '../../src/utils/apiUtils';
+import { dateIsOverThirtyMinutesAgo, isADayOfTheWeek } from '../../src/utils/apiUtils';
 import { Stop } from '../../src/interfaces/matchingJsonTypes';
 
 describe('index', () => {
@@ -234,6 +234,19 @@ describe('index', () => {
             const result = dateIsOverThirtyMinutesAgo(date);
 
             expect(result).toBeFalsy();
+        });
+    });
+
+    describe('isADayOfTheWeek', () => {
+        it('returns false if day is undefined', () => {
+            const result = isADayOfTheWeek(undefined);
+
+            expect(result).toBeFalsy();
+        });
+
+        it('returns true if the day is valid', () => {
+            const result = isADayOfTheWeek('monday');
+            expect(result).toBeTruthy();
         });
     });
 });

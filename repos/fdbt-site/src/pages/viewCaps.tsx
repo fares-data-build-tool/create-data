@@ -111,7 +111,7 @@ const ViewCaps = ({ caps, referer, capExpiry, fareDayEnd, viewCapErrors = [], cs
                                 )}
 
                                 <a className="govuk-button" data-module="govuk-button" href="/createCaps">
-                                    Add caps
+                                    Add a cap
                                 </a>
                             </>
                         ) : (

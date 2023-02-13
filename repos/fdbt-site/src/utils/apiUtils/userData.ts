@@ -30,6 +30,7 @@ import {
     PRICING_PER_DISTANCE_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     FULL_CAPS_ATTRIBUTE,
+    STOPS_EXEMPTION_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
     batchGetStopsByAtcoCode,
@@ -60,6 +61,7 @@ import {
     isSalesOfferPackageWithErrors,
     isWithErrors,
     isTicketRepresentation,
+    isExemptStopsAttributeWithErrors,
 } from '../../interfaces/typeGuards';
 import logger from '../logger';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../sessions';
@@ -497,11 +499,18 @@ export const getMultipleServicesByDistanceTicketJson = (
         },
     ];
 
+    let exemptStops: Stop[] = [];
+    const exemptStopsAttribute = getSessionAttribute(req, STOPS_EXEMPTION_ATTRIBUTE);
+    if (!!exemptStopsAttribute && !isExemptStopsAttributeWithErrors(exemptStopsAttribute)) {
+        exemptStops = exemptStopsAttribute.exemptStops;
+    }
+
     return {
         operatorName: name,
         ...baseTicketAttributes,
         products: data,
         selectedServices,
+        ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
     } as WithIds<FlatFareMultipleServices>;
 };
@@ -512,6 +521,11 @@ export const getMultipleServicesTicketJson = (
 ): WithIds<PeriodMultipleServicesTicket> | WithIds<MultiOperatorMultipleServicesTicket> => {
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const { selectedServices } = serviceListAttribute;
+    let exemptStops: Stop[] = [];
+    const exemptStopsAttribute = getSessionAttribute(req, STOPS_EXEMPTION_ATTRIBUTE);
+    if (!!exemptStopsAttribute && !isExemptStopsAttributeWithErrors(exemptStopsAttribute)) {
+        exemptStops = exemptStopsAttribute.exemptStops;
+    }
     const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
     if (basePeriodTicketAttributes.type === 'multiOperator') {
         const additionalOperators = getSessionAttribute(
@@ -530,12 +544,14 @@ export const getMultipleServicesTicketJson = (
             termTime: isTermTime(req),
             ...(operatorGroupId && { operatorGroupId }),
             ...(caps?.id && { cap: { id: caps.id } }),
+            ...(exemptStops.length > 0 && { exemptStops }),
         };
     }
 
     return {
         ...basePeriodTicketAttributes,
         selectedServices,
+        ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
     };
 };

@@ -1,9 +1,9 @@
 import { NextApiResponse } from 'next';
-import { insertCaps, updateCaps } from '../../data/auroradb';
+import { getCaps, insertCaps, updateCaps } from '../../data/auroradb';
 import { CREATE_CAPS_ATTRIBUTE } from '../../constants/attributes';
 import { CapInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces/index';
-import { CapStart, DayOfTheWeek, ExpiryUnit } from '../../interfaces/matchingJsonTypes';
-import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { CapStart, DayOfTheWeek, ExpiryUnit, FromDb } from '../../interfaces/matchingJsonTypes';
+import { getAndValidateNoc, isADayOfTheWeek, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {
     checkDurationIsValid,
     checkPriceIsValid,
@@ -12,7 +12,7 @@ import {
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { isADayDuration } from '../createCaps';
+import { isADayOrLonger } from '../createCaps';
 
 export interface InputtedCap {
     name: string | undefined;
@@ -23,12 +23,7 @@ export interface InputtedCap {
     startDay: string | undefined;
 }
 
-export const isADayOfTheWeek = (input: string | undefined): boolean => {
-    const daysOfWeek: string[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    return !!input && daysOfWeek.includes(input);
-};
-
-export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createCaps: CapInfo } => {
+export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createdCaps: CapInfo } => {
     const errors: ErrorInfo[] = [];
 
     const trimmedCapName = removeExcessWhiteSpace(inputtedCap.name);
@@ -62,7 +57,7 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
 
     let capStart = undefined;
 
-    if (isADayDuration(inputtedCap.durationAmount, inputtedCap.durationUnits)) {
+    if (isADayOrLonger(inputtedCap.durationAmount, inputtedCap.durationUnits)) {
         const capType = inputtedCap.type;
 
         if (!(capType === 'fixedWeekdays' || capType === 'rollingDays')) {
@@ -81,10 +76,12 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
             }
         }
 
-        capStart = {
-            type: capType ? (capType as CapStart) : 'fixedWeekdays',
-            startDay: capType === 'rollingDays' ? undefined : (inputtedCap.startDay as DayOfTheWeek),
-        };
+        if (capType === 'fixedWeekdays' || capType === 'rollingDays') {
+            capStart = {
+                type: capType as CapStart,
+                startDay: capType === 'rollingDays' ? undefined : (inputtedCap.startDay as DayOfTheWeek),
+            };
+        }
     }
 
     const cap = {
@@ -94,21 +91,22 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
         durationUnits: (inputtedCap.durationUnits as ExpiryUnit) || '',
     };
 
-    const createCaps: CapInfo = {
+    const createdCaps: CapInfo = {
         cap,
         capStart,
     };
 
     return {
         errors,
-        createCaps,
+        createdCaps,
     };
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const noc = getAndValidateNoc(req, res);
-        const { capName, capPrice, capDuration, capDurationUnits, capStart, startDay, id } = req.body;
+        const { capName, capPrice, capDuration, capDurationUnits, capStart, startDay } = req.body;
+        const id = req.body.id && Number(req.body.id);
 
         const inputtedCap: InputtedCap = {
             name: capName,
@@ -119,20 +117,39 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             startDay: startDay,
         };
 
-        const { createCaps, errors } = validateAndFormatCapInputs(inputtedCap);
+        const { createdCaps, errors } = validateAndFormatCapInputs(inputtedCap);
+
+        if (id && !Number.isInteger(id)) {
+            throw Error(`Received invalid id for create caps ${req.body.id}`);
+        }
+
+        if (errors.length === 0) {
+            const results: FromDb<CapInfo>[] = await getCaps(noc);
+
+            if (
+                results.some(
+                    (cap) => cap.id !== id && cap.cap.name.toLowerCase() === createdCaps.cap.name.toLowerCase(),
+                )
+            ) {
+                errors.push({
+                    errorMessage: `You already have a cap named ${capName}. Choose another name.`,
+                    id: 'cap-name',
+                });
+            }
+        }
 
         if (errors.length > 0) {
-            updateSessionAttribute(req, CREATE_CAPS_ATTRIBUTE, { errors, ...createCaps });
-            redirectTo(res, '/createCaps');
+            updateSessionAttribute(req, CREATE_CAPS_ATTRIBUTE, { errors, ...createdCaps });
+            redirectTo(res, `/createCaps${!!id ? `?id=${id}` : ''}`);
             return;
         }
 
         updateSessionAttribute(req, CREATE_CAPS_ATTRIBUTE, undefined);
 
         if (id) {
-            await updateCaps(noc, id, createCaps);
+            await updateCaps(noc, id, createdCaps);
         } else {
-            await insertCaps(noc, createCaps);
+            await insertCaps(noc, createdCaps);
         }
 
         redirectTo(res, '/viewCaps');

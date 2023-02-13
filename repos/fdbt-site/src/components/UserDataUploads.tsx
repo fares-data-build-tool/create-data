@@ -100,8 +100,6 @@ const UserDataUploadComponent = ({
                     <div className="govuk-details__text">{detailBody}</div>
                 </details>
             )}
-
-            <input type="submit" value="Upload and continue" id="submit-button" className="govuk-button" />
         </>
     );
 };
