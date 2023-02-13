@@ -38,6 +38,7 @@ export type AdditionalService = Omit<SelectedService, 'serviceCode' | 'startDate
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
     termTime: boolean;
+    exemptStops?: Stop[];
 }
 
 export interface FlatFareProduct extends BaseProduct {
@@ -56,6 +57,7 @@ export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
     termTime: boolean;
     selectedServices: SelectedService[];
     operatorName: string;
+    exemptStops?: Stop[];
 }
 
 export type FlatFareTicket = FlatFareGeoZoneTicket | FlatFareMultipleServices;

@@ -176,6 +176,12 @@ exports[`pages csvzoneupload should render correctly 1`] = `
             </fieldset>
           </div>
         </div>
+        <input
+          className="govuk-button"
+          id="submit-button"
+          type="submit"
+          value="Upload and continue"
+        />
       </CsrfForm>
     </div>
     <div

@@ -1,5 +1,6 @@
 import {
     ErrorInfo,
+    ExemptedStopsAttribute,
     FareStagesAttribute,
     FareStagesAttributeWithErrors,
     FareType,
@@ -19,6 +20,7 @@ import {
     ProductWithSalesOfferPackages,
     SelectSalesOfferPackageWithError,
     Service,
+    ServiceListAttribute,
     ServiceWithErrors,
     TicketPeriodWithErrors,
     TicketPeriodWithInput,
@@ -178,3 +180,13 @@ export const isMultiOperatorMultipleServicesTicket = (
     (ticket as MultiOperatorMultipleServicesTicket).additionalOperators &&
     (ticket as MultiOperatorMultipleServicesTicket).additionalOperators.length > 0 &&
     'selectedServices' in ticket;
+
+export const isServiceListAttributeWithErrors = (
+    serviceListAttribute: ServiceListAttribute | { errors: ErrorInfo[] },
+): serviceListAttribute is { errors: ErrorInfo[] } =>
+    (serviceListAttribute as { errors: ErrorInfo[] }).errors !== undefined;
+
+export const isExemptStopsAttributeWithErrors = (
+    exemptStopsAttribute: ExemptedStopsAttribute | { errors: ErrorInfo[] },
+): exemptStopsAttribute is { errors: ErrorInfo[] } =>
+    (exemptStopsAttribute as { errors: ErrorInfo[] }).errors !== undefined;
