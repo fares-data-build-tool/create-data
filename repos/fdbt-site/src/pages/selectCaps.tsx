@@ -31,7 +31,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
                     <div className="govuk-form-group">
                         <fieldset className="govuk-fieldset" aria-describedby="contact-hint">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h1 className="govuk-fieldset__heading">Are there caps on your ticket?</h1>
+                                <h1 className="govuk-fieldset__heading">Does a cap apply to these product(s)?</h1>
                             </legend>
 
                             <div id="contact-hint" className="govuk-hint">
@@ -145,13 +145,8 @@ const CapsCard = ({ caps, selectedId }: { caps: CapInfo; selectedId: number | nu
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SelectCapsProps }> => {
     const csrfToken = getCsrfToken(ctx);
-
-    let errors: ErrorInfo[] = [];
     const capsDefinition = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
-
-    if (capsDefinition && 'errors' in capsDefinition) {
-        errors = capsDefinition.errors;
-    }
+    const errors = !!capsDefinition && 'errors' in capsDefinition ? capsDefinition.errors : [];
 
     const selectedId = getSessionAttribute(ctx.req, FULL_CAPS_ATTRIBUTE)?.id || null;
 

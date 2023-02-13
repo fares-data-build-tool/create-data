@@ -104,7 +104,7 @@ export const buildSalesConfirmationElements = (
         },
     );
 
-    if (fareType === 'single' || fareType === 'return' || fareType === 'flatFare') {
+    if (['single', 'return', 'flatFare'].includes(fareType)) {
         confirmationElements.push({
             name: 'Cap',
             content: fullCaps?.fullCaps[0]?.cap.name || 'N/A',
