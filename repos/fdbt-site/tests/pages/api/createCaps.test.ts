@@ -92,7 +92,7 @@ describe('createCaps', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
             cap: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '0' },
-            capStart: { startDay: undefined, type: 'fixedWeekdays' },
+            capStart: undefined,
             errors: [
                 { errorMessage: 'Cap prices cannot be zero', id: 'cap-price' },
                 { errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' },
@@ -119,7 +119,7 @@ describe('createCaps', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
             cap: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '000' },
-            capStart: { startDay: undefined, type: 'fixedWeekdays' },
+            capStart: undefined,
             errors: [
                 { errorMessage: 'Cap prices cannot be zero', id: 'cap-price' },
                 { errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' },
@@ -146,7 +146,7 @@ describe('createCaps', () => {
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
             cap: { durationAmount: '25', durationUnits: 'hour', name: 'Name', price: '2' },
-            capStart: { startDay: undefined, type: 'fixedWeekdays' },
+            capStart: undefined,
             errors: [{ errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' }],
         });
     });

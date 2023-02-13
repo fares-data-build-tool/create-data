@@ -182,7 +182,6 @@ exports[`pages create caps should render correctly 1`] = `
                 className="govuk-input__wrapper expiry-selector-wrapper"
               >
                 <FormElementWrapper
-                  addFormGroupError={true}
                   errorClass="govuk-input--error"
                   errorId="cap-period-duration-quantity"
                   errors={Array []}
@@ -281,6 +280,9 @@ exports[`pages create caps should render correctly on edit mode 1`] = `
     csrfToken=""
     method="post"
   >
+    <BackButton
+      href="/viewCaps"
+    />
     <ErrorSummary
       errors={Array []}
     />
@@ -452,7 +454,6 @@ exports[`pages create caps should render correctly on edit mode 1`] = `
                 className="govuk-input__wrapper expiry-selector-wrapper"
               >
                 <FormElementWrapper
-                  addFormGroupError={true}
                   errorClass="govuk-input--error"
                   errorId="cap-period-duration-quantity"
                   errors={Array []}
@@ -552,6 +553,9 @@ exports[`pages create caps should render correctly on edit mode with cap start 1
     csrfToken=""
     method="post"
   >
+    <BackButton
+      href="/viewCaps"
+    />
     <ErrorSummary
       errors={Array []}
     />
@@ -723,7 +727,6 @@ exports[`pages create caps should render correctly on edit mode with cap start 1
                 className="govuk-input__wrapper expiry-selector-wrapper"
               >
                 <FormElementWrapper
-                  addFormGroupError={true}
                   errorClass="govuk-input--error"
                   errorId="cap-period-duration-quantity"
                   errors={Array []}
@@ -1043,7 +1046,6 @@ exports[`pages create caps should render correctly on input errors 1`] = `
                 className="govuk-input__wrapper expiry-selector-wrapper"
               >
                 <FormElementWrapper
-                  addFormGroupError={true}
                   errorClass="govuk-input--error"
                   errorId="cap-period-duration-quantity"
                   errors={

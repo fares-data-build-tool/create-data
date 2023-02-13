@@ -12,6 +12,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { upperFirst } from 'lodash';
 import { getCapByNocAndId } from '../data/auroradb';
 import { daysOfWeek } from '../constants';
+import BackButton from '../components/BackButton';
 
 const title = 'Create Caps - Create Fares Data Service';
 const description = 'Create caps page of the Create Fares Data Service';
@@ -52,6 +53,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
         <FullColumnLayout title={title} description={description} errors={errors}>
             <CsrfForm action="/api/createCaps" method="post" csrfToken={csrfToken}>
                 <>
+                    {!!editId && errors.length === 0 ? <BackButton href="/viewCaps" /> : null}
                     <ErrorSummary errors={errors} />
                     <h1 className="govuk-heading-l" id="create-caps-page-heading">
                         Create your fare caps
@@ -150,7 +152,6 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                                     errorId="cap-period-duration-quantity"
                                                     errorClass="govuk-input--error"
                                                     hideText
-                                                    addFormGroupError
                                                 >
                                                     <input
                                                         className="govuk-input govuk-input--width-3"
@@ -194,89 +195,98 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                             </div>
 
                             {showCapStartInfo ? (
-                                <div className="govuk-!-margin-left-4">
-                                    <h2 className="govuk-heading-l govuk-!-margin-top-6">
-                                        Define when cap is calculated from
-                                    </h2>
-                                    <h2 className="govuk-heading-m govuk-!-margin-top-6">Business week</h2>
-                                    <span id="fixed-weekdays-hint" className="govuk-hint">
-                                        Which day does your cap start on?
-                                    </span>
-                                    <div className="govuk-radios" data-module="govuk-radios">
-                                        <div className="govuk-radios__item">
-                                            <input
-                                                className="govuk-radios__input"
-                                                id="fixed-weekdays"
-                                                name="capStart"
-                                                type="radio"
-                                                value="fixedWeekdays"
-                                                data-aria-controls="conditional-fixed-weekdays"
-                                                onChange={(): void => setStartDay(true)}
-                                                defaultChecked={
-                                                    userInput &&
-                                                    userInput.capStart &&
-                                                    userInput.capStart.type === 'fixedWeekdays'
-                                                }
-                                            />
-                                            <label className="govuk-label govuk-radios__label" htmlFor="fixed-weekdays">
-                                                Fixed weekdays
-                                            </label>
-                                        </div>
+                                <FormGroupWrapper errors={errors} errorIds={['fixed-weekdays', 'rolling-days']}>
+                                    <div className="govuk-!-margin-left-4">
+                                        <h2 className="govuk-heading-l govuk-!-margin-top-6">
+                                            Define when cap is calculated from
+                                        </h2>
+                                        <h2 className="govuk-heading-m govuk-!-margin-top-6">Business week</h2>
+                                        <span id="fixed-weekdays-hint" className="govuk-hint">
+                                            Which day does your cap start on?
+                                        </span>
+                                        <div className="govuk-radios" data-module="govuk-radios">
+                                            <div className="govuk-radios__item">
+                                                <input
+                                                    className="govuk-radios__input"
+                                                    id="fixed-weekdays"
+                                                    name="capStart"
+                                                    type="radio"
+                                                    value="fixedWeekdays"
+                                                    data-aria-controls="conditional-fixed-weekdays"
+                                                    onChange={(): void => setStartDay(true)}
+                                                    defaultChecked={
+                                                        userInput &&
+                                                        userInput.capStart &&
+                                                        userInput.capStart.type === 'fixedWeekdays'
+                                                    }
+                                                />
 
-                                        <div
-                                            className={`govuk-radios__conditional ${
-                                                !startDay && 'govuk-visually-hidden'
-                                            }`}
-                                            id="conditional-fixed-weekdays"
-                                        >
-                                            <div className="govuk-form-group">
-                                                <label className="govuk-label" htmlFor="start-day">
-                                                    Start
+                                                <label
+                                                    className="govuk-label govuk-radios__label"
+                                                    htmlFor="fixed-weekdays"
+                                                >
+                                                    Fixed weekdays
                                                 </label>
-                                                <select className="govuk-select" id="start-day" name="startDay">
-                                                    {daysOfWeek.map((day) => (
-                                                        <option
-                                                            defaultValue={day[0]}
-                                                            key={day}
-                                                            value={day}
-                                                            selected={
-                                                                userInput &&
-                                                                userInput.capStart &&
-                                                                userInput.capStart.startDay &&
-                                                                userInput.capStart.startDay === day
-                                                            }
-                                                        >
-                                                            {upperFirst(day)}
-                                                        </option>
-                                                    ))}
-                                                </select>
                                             </div>
-                                        </div>
 
-                                        <div className="govuk-radios__item">
-                                            <input
-                                                className="govuk-radios__input"
-                                                id="rolling-days"
-                                                name="capStart"
-                                                type="radio"
-                                                value="rollingDays"
-                                                aria-describedby="rolling-days-hint"
-                                                onChange={(): void => setStartDay(false)}
-                                                defaultChecked={
-                                                    userInput &&
-                                                    userInput.capStart &&
-                                                    userInput.capStart.type === 'rollingDays'
-                                                }
-                                            />
-                                            <label className="govuk-label govuk-radios__label" htmlFor="rolling-days">
-                                                Rolling days
-                                            </label>
-                                            <div id="rolling-days-hint" className="govuk-hint govuk-radios__hint">
-                                                Rolling seven days from first journey
+                                            <div
+                                                className={`govuk-radios__conditional ${
+                                                    !startDay && 'govuk-visually-hidden'
+                                                }`}
+                                                id="conditional-fixed-weekdays"
+                                            >
+                                                <div className="govuk-form-group">
+                                                    <label className="govuk-label" htmlFor="start-day">
+                                                        Start
+                                                    </label>
+                                                    <select className="govuk-select" id="start-day" name="startDay">
+                                                        {daysOfWeek.map((day) => (
+                                                            <option
+                                                                defaultValue={day[0]}
+                                                                key={day}
+                                                                value={day}
+                                                                selected={
+                                                                    userInput &&
+                                                                    userInput.capStart &&
+                                                                    userInput.capStart.startDay &&
+                                                                    userInput.capStart.startDay === day
+                                                                }
+                                                            >
+                                                                {upperFirst(day)}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div className="govuk-radios__item">
+                                                <input
+                                                    className="govuk-radios__input"
+                                                    id="rolling-days"
+                                                    name="capStart"
+                                                    type="radio"
+                                                    value="rollingDays"
+                                                    aria-describedby="rolling-days-hint"
+                                                    onChange={(): void => setStartDay(false)}
+                                                    defaultChecked={
+                                                        userInput &&
+                                                        userInput.capStart &&
+                                                        userInput.capStart.type === 'rollingDays'
+                                                    }
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-radios__label"
+                                                    htmlFor="rolling-days"
+                                                >
+                                                    Rolling days
+                                                </label>
+                                                <div id="rolling-days-hint" className="govuk-hint govuk-radios__hint">
+                                                    Rolling seven days from first journey
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </FormGroupWrapper>
                             ) : null}
                         </fieldset>
                         <input type="hidden" name="id" value={editId} />

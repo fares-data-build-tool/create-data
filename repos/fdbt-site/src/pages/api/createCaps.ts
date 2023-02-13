@@ -76,10 +76,12 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
             }
         }
 
-        capStart = {
-            type: capType ? (capType as CapStart) : 'fixedWeekdays',
-            startDay: capType === 'rollingDays' ? undefined : (inputtedCap.startDay as DayOfTheWeek),
-        };
+        if (capType === 'fixedWeekdays' || capType === 'rollingDays') {
+            capStart = {
+                type: capType as CapStart,
+                startDay: capType === 'rollingDays' ? undefined : (inputtedCap.startDay as DayOfTheWeek),
+            };
+        }
     }
 
     const cap = {
