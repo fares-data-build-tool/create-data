@@ -22,7 +22,6 @@ interface SelectCapsProps {
 }
 
 const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCapsProps): ReactElement => {
-    console.log(selectedId);
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
