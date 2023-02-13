@@ -1072,7 +1072,7 @@ describe('periodTicketNetexHelpers', () => {
             expect(exemptionElement).toStrictEqual([
                 {
                     version: '1.0',
-                    id: 'abc@groupOfLines@1',
+                    id: 'abc@exemptGroupOfLines@1',
                     Name: {
                         $t: `A group of exempt services.`,
                     },
@@ -1087,9 +1087,11 @@ describe('periodTicketNetexHelpers', () => {
         });
     });
 
-    describe('getExemptionsElement', () => {
+    describe('getExemptServicesElement', () => {
         it('returns a NeTEx object containing reference to exempt group of lines', () => {
-            const exemptionElement = netexHelpers.getExemptionsElement('abc', {}, false);
+            const exemptionElement = netexHelpers.getExemptServicesElement('abc', {
+                GroupOfLinesRef: { version: '1.0', ref: 'abc@exemptGroupOfLines@1' },
+            });
 
             expect(exemptionElement).toStrictEqual({
                 version: '1.0',
@@ -1099,7 +1101,6 @@ describe('periodTicketNetexHelpers', () => {
                     version: 'fxc:v1.0',
                     ref: 'fxc:access',
                 },
-                qualityStructureFactors: null,
                 GenericParameterAssignment: {
                     id: 'abc',
                     version: '1.0',
@@ -1109,7 +1110,46 @@ describe('periodTicketNetexHelpers', () => {
                         ref: 'fxc:cannot_access',
                     },
                     ValidityParameterGroupingType: { $t: 'NOT' },
-                    validityParameters: {},
+                    validityParameters: {
+                        GroupOfLinesRef: { version: '1.0', ref: 'abc@exemptGroupOfLines@1' },
+                    },
+                },
+            });
+        });
+    });
+
+    describe('getExemptStopsElement', () => {
+        it('returns a NeTEx object containing reference to exempt group of stops', () => {
+            const exemptionElement = netexHelpers.getExemptStopsElement('abc', {
+                FareZoneRef: {
+                    version: '1.0',
+                    ref: 'abc@$exempt_stops_zone',
+                },
+            });
+
+            expect(exemptionElement).toStrictEqual({
+                version: '1.0',
+                id: 'op:abc',
+                Name: { $t: 'Exempted Stops' },
+                TypeOfFareStructureElementRef: {
+                    version: 'fxc:v1.0',
+                    ref: 'fxc:access',
+                },
+                GenericParameterAssignment: {
+                    id: 'abc',
+                    version: '1.0',
+                    order: '1',
+                    TypeOfAccessRightAssignmentRef: {
+                        version: 'fxc:v1.0',
+                        ref: 'fxc:cannot_access',
+                    },
+                    ValidityParameterGroupingType: { $t: 'NOT' },
+                    validityParameters: {
+                        FareZoneRef: {
+                            version: '1.0',
+                            ref: 'abc@$exempt_stops_zone',
+                        },
+                    },
                 },
             });
         });

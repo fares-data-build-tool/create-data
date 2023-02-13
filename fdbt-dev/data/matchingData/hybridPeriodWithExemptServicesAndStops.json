@@ -1,0 +1,488 @@
+{
+  "nocCode": "WBTR",
+  "type": "period",
+  "passengerType": "anyone",
+  "email": "test@example.com",
+  "uuid": "WBTRe4680ac7",
+  "timeRestriction": [],
+  "ticketPeriod": {
+    "startDate": "2010-03-04T00:00:00.000Z",
+    "endDate": "2121-06-30T23:59:59.999Z"
+  },
+  "operatorName": "Test Operator",
+  "products": [
+    {
+      "productName": "Best product one",
+      "productPrice": "22",
+      "productDuration": "3 months",
+      "productValidity": "fareDayEnd",
+      "productEndTime": "2300",
+      "salesOfferPackages": [
+        {
+          "name": "Onboard (cash)",
+          "description": "",
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["cash"],
+          "ticketFormats": ["paperTicket"],
+          "price": "22"
+        },
+        {
+          "name": "Onboard (contactless)",
+          "description": "",
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["contactlessPaymentCard"],
+          "ticketFormats": ["paperTicket"],
+          "price": "22"
+        }
+      ]
+    }
+  ],
+  "zoneName": "Test Town Centre",
+  "stops": [
+    {
+      "stopName": "The Towers",
+      "naptanCode": "CHEPJWM",
+      "atcoCode": "0600MA6001",
+      "localityCode": "N0076467",
+      "localityName": "Macclesfield",
+      "parentLocalityName": "",
+      "indicator": "opp",
+      "street": "Park Street"
+    },
+    {
+      "stopName": "Dog & Partridge",
+      "naptanCode": "wrgdpma",
+      "atcoCode": "069000012480",
+      "localityCode": "E0043040",
+      "localityName": "Paddington",
+      "parentLocalityName": "Warrington",
+      "indicator": "o/s",
+      "street": "New Manchester Road"
+    },
+    {
+      "stopName": "Manchester Road",
+      "naptanCode": "MANATDWT",
+      "atcoCode": "1800ED24711",
+      "localityCode": "E0028839",
+      "localityName": "Hollinwood",
+      "parentLocalityName": "",
+      "indicator": "Stop A",
+      "street": "MANCHESTER Road"
+    },
+    {
+      "stopName": "Bower Fold",
+      "naptanCode": "MANDGADW",
+      "atcoCode": "1800EH37241",
+      "localityCode": "E0028586",
+      "localityName": "Bower Fold",
+      "parentLocalityName": "Stalybridge",
+      "indicator": "",
+      "street": "Mottram Road"
+    },
+    {
+      "stopName": "Oak Road",
+      "naptanCode": "MANJTPJW",
+      "atcoCode": "1800SJ47971",
+      "localityCode": "N0075113",
+      "localityName": "Partington",
+      "parentLocalityName": "",
+      "indicator": "nr",
+      "street": "WARBURTON LANE"
+    },
+    {
+      "stopName": "Meadow Close",
+      "naptanCode": "MANPATDT",
+      "atcoCode": "1800WA15551",
+      "localityCode": "E0028979",
+      "localityName": "Little Lever",
+      "parentLocalityName": "",
+      "indicator": "opp",
+      "street": "BOOTH ROAD"
+    },
+    {
+      "stopName": "Church Road",
+      "naptanCode": "lanatgjp",
+      "atcoCode": "25001814",
+      "localityCode": "E0015836",
+      "localityName": "Great Plumpton",
+      "parentLocalityName": "",
+      "indicator": "by",
+      "street": "Church Road"
+    },
+    {
+      "stopName": "Hare and Hounds",
+      "naptanCode": "lanawtwg",
+      "atcoCode": "2500759",
+      "localityCode": "E0015881",
+      "localityName": "Clayton-le-Moors",
+      "parentLocalityName": "",
+      "indicator": "Stop 2",
+      "street": "Whalley Road"
+    },
+    {
+      "stopName": "Skippool Avenue",
+      "naptanCode": "langjpaw",
+      "atcoCode": "2500IMG456",
+      "localityCode": "E0016583",
+      "localityName": "Poulton-le-Fylde",
+      "parentLocalityName": "",
+      "indicator": "opp",
+      "street": "Breck Road"
+    },
+    {
+      "stopName": "Lytham St Annes HTC",
+      "naptanCode": "lanpamtw",
+      "atcoCode": "2500LAA16548",
+      "localityCode": "E0015826",
+      "localityName": "Ansdell",
+      "parentLocalityName": "",
+      "indicator": "by",
+      "street": "Church Road"
+    },
+    {
+      "stopName": "Torsway Avenue",
+      "naptanCode": "blpadadw",
+      "atcoCode": "2590B0008",
+      "localityCode": "E0035280",
+      "localityName": "Kingscote",
+      "parentLocalityName": "Blackpool",
+      "indicator": "by",
+      "street": "Newton Drive"
+    },
+    {
+      "stopName": "Spencer Court",
+      "naptanCode": "blpadwgm",
+      "atcoCode": "2590B0316",
+      "localityCode": "N0079370",
+      "localityName": "Central",
+      "parentLocalityName": "Blackpool",
+      "indicator": "by",
+      "street": "Talbot Road"
+    },
+    {
+      "stopName": "Mesnes Park",
+      "naptanCode": "mergjpjd",
+      "atcoCode": "2800S10110A",
+      "localityCode": "E0029817",
+      "localityName": "Newton le Willows",
+      "parentLocalityName": "",
+      "indicator": "Opposite",
+      "street": "Park Road North"
+    },
+    {
+      "stopName": "Grosvenor Road",
+      "naptanCode": "merdwgmt",
+      "atcoCode": "2800S51045B",
+      "localityCode": "E0052682",
+      "localityName": "Prescot",
+      "parentLocalityName": "",
+      "indicator": "Adjacent",
+      "street": "St Helens Road"
+    },
+    {
+      "stopName": "Campbell Avenue",
+      "naptanCode": "32900357",
+      "atcoCode": "3290YYA00357",
+      "localityCode": "E0043596",
+      "localityName": "Holgate",
+      "parentLocalityName": "York",
+      "indicator": "opp",
+      "street": "Hamilton Drive"
+    },
+    {
+      "stopName": "Main Street St Johns Close",
+      "naptanCode": "45010202",
+      "atcoCode": "450010202",
+      "localityCode": "E0032162",
+      "localityName": "Aberford",
+      "parentLocalityName": "Leeds",
+      "indicator": "at",
+      "street": "Main Street"
+    },
+    {
+      "stopName": "Midgley Road Spring Villas",
+      "naptanCode": "45019529",
+      "atcoCode": "450019529",
+      "localityCode": "E0033244",
+      "localityName": "Mytholmroyd",
+      "parentLocalityName": "Hebden Bridge",
+      "indicator": "at",
+      "street": "Midgley Road"
+    }
+  ],
+  "selectedServices": [
+    {
+      "lineName": "1",
+      "lineId": "SL1",
+      "serviceCode": "NW_07_NW_1_1",
+      "startDate": "19/04/2021",
+      "serviceDescription": "Warrington - Latchford/Westy (Circ)"
+    },
+    {
+      "lineName": "2",
+      "lineId": "SL1",
+      "serviceCode": "NW_07_NW_2_1",
+      "startDate": "08/03/2021",
+      "serviceDescription": "Warrington - Westy/Latchford (Circ) via Manchester Rd, Knutsford Rd"
+    },
+    {
+      "lineName": "8A",
+      "lineId": "SL1",
+      "serviceCode": "NW_07_NW_8A_1",
+      "startDate": "19/04/2021",
+      "serviceDescription": "Warrington - Hatton via Lyons Lane, Stretton"
+    },
+    {
+      "lineName": "9A",
+      "lineId": "SL1",
+      "serviceCode": "NW_07_NW_9A_1",
+      "startDate": "08/03/2021",
+      "serviceDescription": "Warrington - Northwich via Antrobus, Barnton"
+    },
+    {
+      "lineName": "11",
+      "lineId": "SL1",
+      "serviceCode": "NW_07_NW_11_1",
+      "startDate": "19/04/2021",
+      "serviceDescription": "Warrington - Gains/Latchford (Circ) via Knutsford Rd, Latchford Shopping Centre, Wilderspool Causeway"
+    },
+    {
+      "lineName": "12",
+      "lineId": "SL1",
+      "serviceCode": "NW_07_NW_12_1",
+      "startDate": "08/03/2021",
+      "serviceDescription": "Gains/Latchford (Circ) - Warrington via Chester Rd, Latchford Shopping Centre, Knutsford Rd"
+    },
+    {
+      "lineName": "17C",
+      "lineId": "SL1",
+      "serviceCode": "NW_07_NW_17C_1",
+      "startDate": "08/03/2021",
+      "serviceDescription": "Birchwood - Callands via Hilden Island, Westbrook, Gemini"
+    },
+    {
+      "lineName": "18",
+      "lineId": "SL1",
+      "serviceCode": "NW_07_NW_18_1",
+      "startDate": "08/03/2021",
+      "serviceDescription": "Warrington - Callands via Old Hall, Westbrook"
+    },
+    {
+      "lineName": "20",
+      "lineId": "SL1",
+      "serviceCode": "NW_07_NW_20_1",
+      "startDate": "08/03/2021",
+      "serviceDescription": "Warrington - Longford/Orford (Circ) via Orford Park Centre"
+    },
+    {
+      "lineName": "28E",
+      "lineId": "SL1",
+      "serviceCode": "NW_04_WOB_28E_1",
+      "startDate": "22/03/2021",
+      "serviceDescription": "Warrington - Leigh via Padgate, Birchwood, Gorse Covert, Culcheth"
+    },
+    {
+      "lineName": "X43",
+      "lineId": "SL1",
+      "serviceCode": "NW_07_NW_X43_1",
+      "startDate": "19/04/2021",
+      "serviceDescription": "Stockton Heath - Cronton Lane via Sandymoor, Windmill Hill, Castlefields"
+    }
+  ],
+  "termTime": false,
+  "exemptStops": [
+    {
+      "stopName": "The Towers",
+      "naptanCode": "CHEPJWM",
+      "atcoCode": "0600MA6001",
+      "localityCode": "N0076467",
+      "localityName": "Macclesfield",
+      "parentLocalityName": "",
+      "indicator": "opp",
+      "street": "Park Street"
+    },
+    {
+      "stopName": "Dog & Partridge",
+      "naptanCode": "wrgdpma",
+      "atcoCode": "069000012480",
+      "localityCode": "E0043040",
+      "localityName": "Paddington",
+      "parentLocalityName": "Warrington",
+      "indicator": "o/s",
+      "street": "New Manchester Road"
+    },
+    {
+      "stopName": "Manchester Rd",
+      "naptanCode": "MANATDWT",
+      "atcoCode": "1800ED24711",
+      "localityCode": "E0028839",
+      "localityName": "Hollinwood",
+      "parentLocalityName": "",
+      "indicator": "Stop A",
+      "street": "MANCHESTER RD"
+    },
+    {
+      "stopName": "Bower Fold",
+      "naptanCode": "MANDGADW",
+      "atcoCode": "1800EH37241",
+      "localityCode": "E0028586",
+      "localityName": "Bower Fold",
+      "parentLocalityName": "Stalybridge",
+      "indicator": null,
+      "street": "Mottram Rd"
+    },
+    {
+      "stopName": "Oak Road",
+      "naptanCode": "MANJTPJW",
+      "atcoCode": "1800SJ47971",
+      "localityCode": "N0075113",
+      "localityName": "Partington",
+      "parentLocalityName": "",
+      "indicator": "nr",
+      "street": "WARBURTON LANE"
+    },
+    {
+      "stopName": "Meadow Close",
+      "naptanCode": "MANPATDT",
+      "atcoCode": "1800WA15551",
+      "localityCode": "E0028979",
+      "localityName": "Little Lever",
+      "parentLocalityName": "",
+      "indicator": "opp",
+      "street": "BOOTH ROAD"
+    },
+    {
+      "stopName": "Church Road",
+      "naptanCode": "lanatgjp",
+      "atcoCode": "25001814",
+      "localityCode": "E0015836",
+      "localityName": "Great Plumpton",
+      "parentLocalityName": "",
+      "indicator": "by",
+      "street": "Church Road"
+    },
+    {
+      "stopName": "Hare and Hounds",
+      "naptanCode": "lanawtwg",
+      "atcoCode": "2500759",
+      "localityCode": "E0015881",
+      "localityName": "Clayton-le-Moors",
+      "parentLocalityName": "",
+      "indicator": "Stop 2",
+      "street": "Whalley Road"
+    },
+    {
+      "stopName": "Skippool Avenue",
+      "naptanCode": "langjpaw",
+      "atcoCode": "2500IMG456",
+      "localityCode": "E0016583",
+      "localityName": "Poulton-le-Fylde",
+      "parentLocalityName": "",
+      "indicator": "opp",
+      "street": "Breck Road"
+    },
+    {
+      "stopName": "Lytham St Annes HTC",
+      "naptanCode": "lanpamtw",
+      "atcoCode": "2500LAA16548",
+      "localityCode": "E0015826",
+      "localityName": "Ansdell",
+      "parentLocalityName": "",
+      "indicator": "by",
+      "street": "Church Road"
+    },
+    {
+      "stopName": "Torsway Avenue",
+      "naptanCode": "blpadadw",
+      "atcoCode": "2590B0008",
+      "localityCode": "E0035280",
+      "localityName": "Kingscote",
+      "parentLocalityName": "Blackpool",
+      "indicator": "by",
+      "street": "Newton Drive"
+    },
+    {
+      "stopName": "Spencer Court",
+      "naptanCode": "blpadwgm",
+      "atcoCode": "2590B0316",
+      "localityCode": "N0079370",
+      "localityName": "Central",
+      "parentLocalityName": "Blackpool",
+      "indicator": "by",
+      "street": "Talbot Road"
+    },
+    {
+      "stopName": "Mesnes Park",
+      "naptanCode": "mergjpjd",
+      "atcoCode": "2800S10110A",
+      "localityCode": "E0029817",
+      "localityName": "Newton le Willows",
+      "parentLocalityName": "",
+      "indicator": "Opposite",
+      "street": "Park Road North"
+    },
+    {
+      "stopName": "Grosvenor Road",
+      "naptanCode": "merdwgmt",
+      "atcoCode": "2800S51045B",
+      "localityCode": "E0052682",
+      "localityName": "Prescot",
+      "parentLocalityName": "",
+      "indicator": "Adjacent",
+      "street": "St Helens Road"
+    },
+    {
+      "stopName": "Campbell Avenue",
+      "naptanCode": "32900357",
+      "atcoCode": "3290YYA00357",
+      "localityCode": "E0043596",
+      "localityName": "Holgate",
+      "parentLocalityName": "York",
+      "indicator": "opp",
+      "street": "Hamilton Drive"
+    },
+    {
+      "stopName": "Main Street St Johns Close",
+      "naptanCode": "45010202",
+      "atcoCode": "450010202",
+      "localityCode": "E0032162",
+      "localityName": "Aberford",
+      "parentLocalityName": "Leeds",
+      "indicator": "at",
+      "street": "Main Street"
+    },
+    {
+      "stopName": "Midgley Road Spring Villas",
+      "naptanCode": "45019529",
+      "atcoCode": "450019529",
+      "localityCode": "E0033244",
+      "localityName": "Mytholmroyd",
+      "parentLocalityName": "Hebden Bridge",
+      "indicator": "at",
+      "street": "Midgley Road"
+    }
+  ],
+  "exemptedServices": [
+    {
+      "lineName": "1",
+      "lineId": "4YyoI0",
+      "serviceCode": "NW_05_BLAC_1_1",
+      "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade",
+      "startDate": "06/05/2020"
+    },
+    {
+      "lineName": "2",
+      "lineId": "YpQjUw",
+      "serviceCode": "NW_05_BLAC_2_1",
+      "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients",
+      "startDate": "08/05/2020"
+    },
+    {
+      "lineName": "2C",
+      "lineId": "vySmfewe0",
+      "serviceCode": "NW_05_BLAC_2C_1",
+      "serviceDescription": "KNOTT END - POULTON - BLACKPOOL",
+      "startDate": "09/05/2020"
+    }
+  ]
+}

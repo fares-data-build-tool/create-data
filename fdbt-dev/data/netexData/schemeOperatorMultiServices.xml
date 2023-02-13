@@ -547,18 +547,18 @@
           </responsibilitySets>
           <typesOfValue>
             <ValueSet version="fxc:1.0" id="fxc:Types_of_Specific_Frame_Basic" classOfValues="TypeOfFrame">
-              <Name>Types of FXC Specific  Frame Basic</Name>
+              <Name>Types of FXC Specific Frame Basic</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_COMMON:FXCP">
-                  <Name>UK FXCP  common Local resources</Name>
+                  <Name>UK FXCP common Local resources</Name>
                   <FrameClassRef nameOfClass="ResourceFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_CALENDAR:FXCP">
-                  <Name>UK FXCP  Service calendar</Name>
+                  <Name>UK FXCP Service calendar</Name>
                   <FrameClassRef nameOfClass="ServiceCalendarFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP:FXCP">
-                  <Name>UK FXCP Stops: NapTAN Stop Place  and NPTG Locations Frame</Name>
+                  <Name>UK FXCP Stops: NapTAN Stop Place and NPTG Locations Frame</Name>
                   <FrameClassRef nameOfClass="SiteFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP">
@@ -566,7 +566,7 @@
                   <FrameClassRef nameOfClass="ServiceFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_TIMETABLE:FXCP">
-                  <Name>UK FXCP Tietable: N</Name>
+                  <Name>UK FXCP Timetable: N</Name>
                   <FrameClassRef nameOfClass="TimetableFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA:FXCP">
@@ -579,15 +579,15 @@
               <Name>Types of UK Offer Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP_OFFER:FXCP">
-                  <Name>UK FXCP   composite container STOP OFFER</Name>
+                  <Name>UK FXCP composite container STOP OFFER</Name>
                   <FrameClassRef nameOfClass="CompositeFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_OFFER:FXCP">
-                  <Name>UK FXCP   composite container LINE OFFER</Name>
+                  <Name>UK FXCP composite container LINE OFFER</Name>
                   <FrameClassRef nameOfClass="CompositeFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_OFFER:FXCP">
-                  <Name>UK FXCP   composite container NETWORK OFFER</Name>
+                  <Name>UK FXCP composite container NETWORK OFFER</Name>
                   <FrameClassRef nameOfClass="CompositeFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc">
@@ -597,7 +597,7 @@
               </values>
             </ValueSet>
             <ValueSet version="fxc:1.0" id="fxc:Types_of_Specific_Frame_for_Fares" classOfValues="TypeOfFrame">
-              <Name>Types of FXC Specific  Frame</Name>
+              <Name>Types of FXC Specific Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_COMMON:FXCP">
                   <Name>UK Bus Profile Fare Common Parameters</Name>
@@ -621,15 +621,15 @@
               <Name>Types of UK Offer Frame</Name>
               <values>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_STOP_FARE_OFFER:FXCP">
-                  <Name>UK FXCP   composite container STOP OFFER</Name>
+                  <Name>UK FXCP composite container STOP OFFER</Name>
                   <FrameClassRef nameOfClass="CompositeFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP">
-                  <Name>UK FXCP   composite container LINE OFFER</Name>
+                  <Name>UK FXCP composite container LINE OFFER</Name>
                   <FrameClassRef nameOfClass="CompositeFrame"/>
                 </TypeOfFrame>
                 <TypeOfFrame version="fxc:v1.0" id="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK_FARE_OFFER:FXCP">
-                  <Name>UK FXCP   composite container NETWORK OFFER</Name>
+                  <Name>UK FXCP composite container NETWORK OFFER</Name>
                   <FrameClassRef nameOfClass="CompositeFrame"/>
                 </TypeOfFrame>
               </values>
@@ -646,7 +646,7 @@
           </typesOfValue>
         </ResourceFrame>
         <ResourceFrame id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA:FareXChange:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">
-          <Name>FXCP - Fare profile  metadata</Name>
+          <Name>FXCP - Fare profile metadata</Name>
           <FrameDefaults>
             <DefaultCodespaceRef ref="fxc_metadata"/>
             <DefaultDataSourceRef ref="fxc:dft" version="fxc:v1.0"/>
@@ -945,7 +945,7 @@
               </values>
             </ValueSet>
             <ValueSet version="fxc:v1.0" id="fxc:Types_of_FareStructureElement" classOfValues="TypeOfFareStructureElement">
-              <Name>FXCP: Types of FARE STRUCTURE ELEMENT.</Name>
+              <Name>FXCP: Types of FARE STRUCTURE ELEMENT</Name>
               <values>
                 <TypeOfFareStructureElement version="fxc:v1.0" id="fxc:access">
                   <Name>Access rights</Name>
@@ -1110,7 +1110,7 @@
             <FromDate>2004-01-01T00:00:00</FromDate>
           </ValidBetween>
           <Name>Static code values for UK NPTG data</Name>
-          <Description>This frame contains code  valuesused to validate the NPTG</Description>
+          <Description>This frame contains code values used to validate the NPTG</Description>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA:FXCP"/>
           <codespaces>
             <Codespace id="nptg_metadata">
@@ -1179,7 +1179,7 @@
               <Name>Types of frame for UK NKTG profile</Name>
               <values>
                 <TypeOfFrame version="nptg:v2.1" id="nptg:UK_NPTG_profile_payload">
-                  <Name>NPTG Locations and  Tariff Zones Frame</Name>
+                  <Name>NPTG Locations and Tariff Zones Frame</Name>
                   <FrameClassRef nameOfClass="SiteeFrame"/>
                   <classes>
                     <ClassInFrame nameOfClass="TopographicPlace">
@@ -1515,36 +1515,36 @@
               </values>
             </ValueSet>
             <ValueSet version="nptg:v2.1" id="nptg:UK_NPTG_profile@Place_types" classOfValues="TypeOfPlace">
-              <Name>NPTG Place Types   s</Name>
+              <Name>NPTG Place Types s</Name>
               <values>
                 <TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@Lo">
-                  <Name>NPTG Source Loc  = Lo</Name>
+                  <Name>NPTG Source Loc = Lo</Name>
                 </TypeOfPlace>
                 <TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@Co">
-                  <Name>NPTG Source Loc  = Co</Name>
+                  <Name>NPTG Source Loc = Co</Name>
                 </TypeOfPlace>
                 <TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@Pa">
-                  <Name>NPTG Source Loc  = Pa</Name>
+                  <Name>NPTG Source Loc = Pa</Name>
                 </TypeOfPlace>
                 <TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@ar">
-                  <Name>NPTG Source Loc  = ar</Name>
+                  <Name>NPTG Source Loc = ar</Name>
                 </TypeOfPlace>
                 <TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@Add">
-                  <Name>NPTG Source Loc  = Add</Name>
+                  <Name>NPTG Source Loc = Add</Name>
                 </TypeOfPlace>
                 <TypeOfPlace version="nptg:v2.1" id="nptg:SourceLocalityType@U">
-                  <Name>NPTG Source Loc  = U</Name>
+                  <Name>NPTG Source Loc = U</Name>
                 </TypeOfPlace>
               </values>
             </ValueSet>
             <ValueSet version="nptg:v2.1" id="nptg:UK_NPTG_profile@Organisation_part_types" classOfValues="TypeOfZone">
-              <Name>NPTG Organisation Part Types   s</Name>
+              <Name>NPTG Organisation Part Types</Name>
               <values>
                 <TypeOfZone version="nptg:v2.1" id="nptg:UkRegion">
                   <Name>An NPTG Region</Name>
                 </TypeOfZone>
                 <TypeOfZone version="nptg:v2.1" id="nptg:AdministrativeArea@National">
-                  <Name>An NPTG Administrative Area with National scope (e.g. 910, 920 etc)</Name>
+                  <Name>An NPTG Administrative Area with National scope (e.g. 910,920 etc)</Name>
                 </TypeOfZone>
                 <TypeOfZone version="nptg:v2.1" id="nptg:AdministrativeArea@Local">
                   <Name>An NPTG Administrative Area with Local scope</Name>
@@ -1567,10 +1567,10 @@
                   <Name>NPTG Stop prefix</Name>
                 </TypeOfCodespaceAssignment>
                 <TypeOfCodespaceAssignment version="nptg:v2.1" id="nptg:naptan_sms">
-                  <Name>NPTG  Stop SMS prefix</Name>
+                  <Name>NPTG Stop SMS prefix</Name>
                 </TypeOfCodespaceAssignment>
                 <TypeOfCodespaceAssignment version="nptg:v2.1" id="nptg:naptan_cleardown">
-                  <Name>NPTG  stop cleardown range</Name>
+                  <Name>NPTG stop cleardown range</Name>
                 </TypeOfCodespaceAssignment>
               </values>
             </ValueSet>
@@ -1634,7 +1634,9 @@
             </UserProfile>
             <UserProfile version="fxc:v1.0" id="fxc:infant">
               <Name>Infant</Name>
-              <Description>Up to three children under 5 years of age, accompanied by a fare paying adult or child passenger, and not occupying a seat, may travel free of charge on the Companys services.</Description>
+              <Description>Up to three children under 5 years of age, accompanied by a
+                                fare paying adult or child passenger, and not occupying a seat, may
+                                travel free of charge on the Companys services.</Description>
               <prices>
                 <UsageParameterPrice version="fxc:v1.0" id="fxc:infant">
                   <Amount>0</Amount>

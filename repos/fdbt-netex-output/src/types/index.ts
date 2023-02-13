@@ -152,6 +152,7 @@ export type PeriodTicket = GeoZoneTicket | MultipleServicesTicket | HybridPeriod
 export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     zoneName: string;
     stops: Stop[];
+    exemptedServices?: SelectedService[];
 }
 
 export interface MultiOperatorMultipleServicesTicket extends PeriodMultipleServicesTicket {
