@@ -70,7 +70,7 @@ describe('ticketRepresentation', () => {
         });
     });
 
-    it('should return 302 redirect to /serviceList (with selectAll=false) when the user selects the service selection option', () => {
+    it('should return 302 redirect to /serviceList when the user selects the service selection option', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: { ticketType: 'multipleServices' },
@@ -81,11 +81,11 @@ describe('ticketRepresentation', () => {
         ticketRepresentation(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/serviceList?selectAll=false',
+            Location: '/serviceList',
         });
     });
 
-    it('should return 302 redirect to /serviceList (with selectAll=false) when the user selects the service selection multipleServicesPricedByDistance  option', () => {
+    it('should return 302 redirect to /serviceList when the user selects the service selection multipleServicesPricedByDistance  option', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: { ticketType: 'multipleServicesPricedByDistance' },
@@ -96,7 +96,7 @@ describe('ticketRepresentation', () => {
         ticketRepresentation(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/serviceList?selectAll=false',
+            Location: '/serviceList',
         });
     });
 
@@ -130,7 +130,7 @@ describe('ticketRepresentation', () => {
         });
     });
 
-    it('should return 302 redirect to /serviceList (with selectAll=false) when user selects a multipleServicesFlatFareMultiOperator option', () => {
+    it('should return 302 redirect to /serviceList when user selects a multipleServicesFlatFareMultiOperator option', () => {
         const { req, res } = getMockRequestAndResponse({
             cookieValues: {},
             body: { ticketType: 'multipleServicesFlatFareMultiOperator' },
@@ -141,7 +141,7 @@ describe('ticketRepresentation', () => {
         ticketRepresentation(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/serviceList?selectAll=false',
+            Location: '/serviceList',
         });
     });
 });

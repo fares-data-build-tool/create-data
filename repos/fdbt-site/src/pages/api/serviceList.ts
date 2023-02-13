@@ -1,48 +1,123 @@
 import { NextApiResponse } from 'next';
 import isArray from 'lodash/isArray';
-import { NextApiRequestWithSession, TicketRepresentationAttribute } from '../../interfaces/index';
+import {
+    ErrorInfo,
+    NextApiRequestWithSession,
+    TicketRepresentationAttribute,
+    UserFareZone,
+} from '../../interfaces/index';
 import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
 import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
+    STOPS_EXEMPTION_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
-import { SelectedService } from '../../interfaces/matchingJsonTypes';
+import { SelectedService, Stop } from '../../interfaces/matchingJsonTypes';
+import { FileData, getServiceListFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
+import uniq from 'lodash/uniq';
+import { batchGetStopsByAtcoCode } from '../../data/auroradb';
+import { csvParser, getAtcoCodesForStops } from './csvZoneUpload';
+import logger from '../../utils/logger';
 
-const errorId = 'checkbox-0';
+// The below 'config' needs to be exported for the formidable library to work.
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
-export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
-    const redirectUrl = '/serviceList';
-    const selectAllText = 'Select All Services';
+export const processCsv = async (fileContent: string): Promise<UserFareZone[]> => {
+    let parsedFileContent: UserFareZone[];
 
     try {
-        const refererUrl = req?.headers?.referer;
-        const queryString = refererUrl?.substring(refererUrl?.indexOf('?') + 1);
-        const { selectAll } = req.body;
+        parsedFileContent = csvParser(fileContent);
+    } catch (error) {
+        logger.warn(error, {
+            context: 'api.serviceList',
+            message: 'failed to parse exempted stops CSV',
+        });
 
-        const isSelected = selectAll === selectAllText;
+        return [];
+    }
 
-        if (selectAll && queryString) {
-            redirectTo(res, `${redirectUrl}?selectAll=${isSelected}`);
-            return;
-        }
+    try {
+        let csvValid = true;
+        const rawUserFareZones = parsedFileContent
+            .map((parsedItem) => {
+                const item = {
+                    FareZoneName: parsedFileContent?.[0]?.FareZoneName,
+                    NaptanCodes: parsedItem.NaptanCodes,
+                    AtcoCodes: parsedItem.AtcoCodes,
+                };
 
-        if ((!req.body || Object.keys(req.body).length === 0) && !selectAll) {
-            updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, {
-                errors: [{ id: errorId, errorMessage: 'Choose at least one service from the options' }],
+                if (!item.FareZoneName || item.NaptanCodes === undefined || item.AtcoCodes === undefined) {
+                    logger.warn('', {
+                        context: 'api.serviceList',
+                        message:
+                            'the uploaded exempt stops was not of the correct format, one of the required columns of information is missing or misnamed',
+                    });
+                    csvValid = false;
+                }
+
+                return item;
+            })
+            .filter((parsedItem) => parsedItem.NaptanCodes !== '' || parsedItem.AtcoCodes !== '');
+
+        if (rawUserFareZones.length === 0) {
+            logger.warn('', {
+                context: 'api.serviceList',
+                message: 'the uploaded exempted stops contained no Naptan Codes or Atco Codes',
             });
-            redirectTo(res, `${redirectUrl}?selectAll=false`);
-            return;
+            csvValid = false;
         }
 
-        const selectedServices: SelectedService[] = [];
+        if (!csvValid) {
+            return [];
+        }
 
-        const requestBody: { [key: string]: string | string[] } = req.body;
+        let userFareZones = rawUserFareZones;
+        const naptanCodesToQuery = rawUserFareZones
+            .filter((rawUserFareZone) => rawUserFareZone.AtcoCodes === '')
+            .map((rawUserFareZone) => rawUserFareZone.NaptanCodes);
 
-        Object.entries(requestBody).forEach((entry) => {
+        if (naptanCodesToQuery.length !== 0) {
+            userFareZones = await getAtcoCodesForStops(rawUserFareZones, naptanCodesToQuery);
+        }
+
+        return userFareZones;
+    } catch (error) {
+        throw new Error(error.stack);
+    }
+};
+
+export const processServices = (
+    formData: FileData,
+): {
+    serviceErrors: ErrorInfo[];
+    selectedServices: SelectedService[];
+    clickedYes: boolean;
+    wantsToEditExemptStops: boolean;
+} => {
+    const fields = formData.fields;
+
+    if (!fields) {
+        throw new Error('Unable to fetch the form data');
+    }
+    const clickedYes = 'exempt' in fields && fields['exempt'] === 'yes';
+    const wantsToEditExemptStops = 'edit-exempt' in fields && fields['edit-exempt'] === 'yes';
+
+    const dataFields: { [key: string]: string | string[] } = fields;
+    delete dataFields['exempt'];
+    delete dataFields['edit-exempt'];
+
+    const selectedServices: SelectedService[] = [];
+
+    Object.entries(dataFields).forEach((entry) => {
+        if (entry[0] !== 'csv-upload') {
             const lineNameLineIdServiceCodeStartDate = entry[0];
             const description = entry[1];
             let serviceDescription: string;
@@ -59,21 +134,106 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 startDate: splitData[3],
                 serviceDescription,
             });
-        });
+        }
+    });
 
+    if (selectedServices.length !== 0) {
+        return { selectedServices, clickedYes, wantsToEditExemptStops, serviceErrors: [] };
+    }
+
+    return {
+        selectedServices,
+        clickedYes,
+        wantsToEditExemptStops,
+        serviceErrors: [{ id: 'checkbox-0', errorMessage: 'Choose at least one service from the options' }],
+    };
+};
+
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
+    try {
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+        const inEditMode = !!ticket && !!matchingJsonMetaData;
+        const formData = await getServiceListFormData(req);
+        const { serviceErrors, selectedServices, clickedYes, wantsToEditExemptStops } = processServices(formData);
 
-        // edit mode
-        if (ticket && matchingJsonMetaData && 'selectedServices' in ticket) {
-            const updatedTicket = {
+        const errors: ErrorInfo[] = serviceErrors;
+        let exemptStops: Stop[] = [];
+
+        if (inEditMode && !wantsToEditExemptStops && clickedYes) {
+            // do nothing
+        } else if (clickedYes) {
+            const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
+
+            if (fileError) {
+                errors.push({
+                    id: 'csv-upload',
+                    errorMessage: fileError,
+                });
+
+                updateSessionAttribute(req, STOPS_EXEMPTION_ATTRIBUTE, {
+                    errors,
+                });
+
+                if (selectedServices.length > 0) {
+                    updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });
+                } else {
+                    updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, undefined);
+                }
+
+                redirectTo(res, '/serviceList');
+                return;
+            }
+
+            const processedStops = await processCsv(fileContents);
+
+            if (processedStops.length === 0) {
+                errors.push({ id: 'csv-upload', errorMessage: 'The selected file must use the template' });
+            } else {
+                const atcoCodes: string[] = processedStops.map((fareZone) => fareZone.AtcoCodes);
+                const deduplicatedAtcoCodes = uniq(atcoCodes);
+
+                let stops: Stop[] = [];
+                try {
+                    stops = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
+                } catch (error) {
+                    errors.push({
+                        id: 'csv-upload',
+                        errorMessage: 'Incorrect ATCO/NaPTAN codes detected in file. All codes must be correct.',
+                    });
+                }
+                exemptStops = stops;
+            }
+        }
+
+        if (errors.length > 0) {
+            updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, {
+                errors,
+            });
+            updateSessionAttribute(req, STOPS_EXEMPTION_ATTRIBUTE, undefined);
+            redirectTo(res, '/serviceList');
+            return;
+        }
+
+        if (inEditMode && 'selectedServices' in ticket) {
+            let updatedTicket = {
                 ...ticket,
                 selectedServices,
+                ...(exemptStops.length > 0 && { exemptStops }),
             };
+
+            if (!clickedYes) {
+                updatedTicket = {
+                    ...updatedTicket,
+                    exemptStops: undefined,
+                };
+            }
 
             // put the now updated matching json into s3
             await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
             updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, undefined);
+            updateSessionAttribute(req, STOPS_EXEMPTION_ATTRIBUTE, undefined);
+
             redirectTo(
                 res,
                 `/products/productDetails?productId=${matchingJsonMetaData.productId}${
@@ -83,9 +243,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        const fareType = getFareTypeFromFromAttributes(req);
-
         updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, { selectedServices });
+        updateSessionAttribute(req, STOPS_EXEMPTION_ATTRIBUTE, exemptStops.length > 0 ? { exemptStops } : undefined);
+
+        const fareType = getFareTypeFromFromAttributes(req);
 
         const ticketType = (getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE) as TicketRepresentationAttribute)
             .name;

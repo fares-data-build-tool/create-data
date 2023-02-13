@@ -63,6 +63,35 @@ export const getFormData = async (req: NextApiRequest): Promise<FileData> => {
     };
 };
 
+export const getServiceListFormData = async (req: NextApiRequest): Promise<FileData> => {
+    const { files, fields } = await formParse(req);
+    if (!files) {
+        return {
+            files,
+            fileContents: '',
+            fields,
+            name: '',
+        };
+    }
+    const { type, name } = files['csv-upload'];
+    let fileContents = '';
+
+    if (ALLOWED_CSV_FILE_TYPES.includes(type)) {
+        fileContents = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
+    } else if (ALLOWED_XLSX_FILE_TYPES.includes(type)) {
+        const workBook = XLSX.readFile(files['csv-upload'].path);
+        const sheetName = workBook.SheetNames[0];
+        fileContents = XLSX.utils.sheet_to_csv(workBook.Sheets[sheetName]);
+    }
+
+    return {
+        files,
+        fileContents,
+        fields,
+        name,
+    };
+};
+
 export const validateFile = (fileData: formidable.File, fileContents: string): string => {
     const { size, type, name } = fileData;
 
