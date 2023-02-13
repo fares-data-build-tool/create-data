@@ -16,6 +16,7 @@ import {
     TicketType,
     ExpiryUnit,
     AdditionalOperator,
+    CapStartInfo,
     Stop,
 } from './matchingJsonTypes';
 
@@ -734,6 +735,10 @@ export interface CapDetails {
     productName: string;
 }
 
+export interface CapInfo {
+    cap: Cap;
+    capStart?: CapStartInfo;
+}
 export interface GroupOfProducts {
     id: number;
     productIds: string[];

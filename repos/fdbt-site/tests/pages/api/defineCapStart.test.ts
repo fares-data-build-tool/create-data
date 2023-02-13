@@ -1,9 +1,10 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import defineCapStart, { isADayOfTheWeek } from '../../../src/pages/api/defineCapStart';
+import defineCapStart from '../../../src/pages/api/defineCapStart';
 import { ErrorInfo } from '../../../src/interfaces';
 import { CAP_START_ATTRIBUTE } from '../../../src/constants/attributes';
 import { CapStartInfo } from '../../../src/interfaces/matchingJsonTypes';
+import { isADayOfTheWeek } from '../../../src/utils/apiUtils';
 
 describe('defineCapStart', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');

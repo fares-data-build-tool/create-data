@@ -88,3 +88,5 @@ export const purchaseMethodsValuesMap: { [key: string]: string } = {
     agency: 'Travel Shop',
     contactlessTravelCard: 'Contactless SmartCard (e.g Oyster)',
 };
+
+export const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];

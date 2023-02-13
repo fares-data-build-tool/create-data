@@ -78,6 +78,7 @@ import {
     EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    CREATE_CAPS_ATTRIBUTE,
     STOPS_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
@@ -142,6 +143,7 @@ import {
     AdditionalPricing,
     CapDetails,
     EditFareStageMatchingWithErrors,
+    CapInfo,
     ExemptedStopsAttribute,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -237,6 +239,7 @@ export interface SessionAttributeTypes {
     [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
     [CAPS_ATTRIBUTE]: CapDetails | WithErrors<CapDetails>;
+    [CREATE_CAPS_ATTRIBUTE]: CapInfo | WithErrors<CapInfo>;
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];

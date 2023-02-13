@@ -1,21 +1,28 @@
 import * as session from '../../../src/utils/sessions';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as index from '../../../src/utils/apiUtils';
-import { CAPS_ATTRIBUTE } from '../../../src/constants/attributes';
+import { CREATE_CAPS_ATTRIBUTE } from '../../../src/constants/attributes';
 import createCaps from '../../../src/pages/api/createCaps';
+import * as db from '../../../src/data/auroradb';
+import { ExpiryUnit, FromDb } from 'src/interfaces/matchingJsonTypes';
+import { CapInfo } from 'src/interfaces';
 
 describe('createCaps', () => {
     const writeHeadMock = jest.fn();
+    jest.mock('../../../src/data/auroradb');
+    const insertSpy = jest.spyOn(db, 'insertCaps');
+    const updateSpy = jest.spyOn(db, 'updateCaps');
+    const getCapsSpy = jest.spyOn(db, 'getCaps');
+
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
     jest.spyOn(index, 'getAndValidateNoc').mockReturnValue('BLAC');
 
     beforeEach(jest.resetAllMocks);
 
-    it('redirects back to /createCaps if there is no user entry', () => {
+    it('redirects back to /createCaps if there is no user entry', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                cappedProductName: '',
-                capNameInput0: '',
+                capName: '',
                 capPriceInput0: '',
                 capDurationInput0: '',
                 capDurationUnitsInput0: '',
@@ -23,178 +30,224 @@ describe('createCaps', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
-            caps: [{ durationAmount: '', durationUnits: '', name: '', price: '' }],
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
+            cap: { durationAmount: '', durationUnits: '', name: '', price: '' },
             errors: [
-                { errorMessage: 'Product name cannot have less than 2 characters', id: 'capped-product-name' },
-                { errorMessage: 'Cap name cannot have less than 2 characters', id: 'cap-name-0' },
-                { errorMessage: 'Cap price cannot be empty', id: 'cap-price-0' },
-                { errorMessage: 'Cap duration cannot be empty', id: 'cap-period-duration-quantity-0' },
-                { errorMessage: 'Choose an option from the dropdown', id: 'cap-duration-unit-0' },
+                { errorMessage: 'Cap name cannot have less than 2 characters', id: 'cap-name' },
+                { errorMessage: 'Cap price cannot be empty', id: 'cap-price' },
+                { errorMessage: 'Cap duration cannot be empty', id: 'cap-period-duration-quantity' },
+                { errorMessage: 'Choose an option from the dropdown', id: 'cap-duration-unit' },
             ],
-            productName: '',
         });
     });
 
-    it('redirects back to /createCaps if the user entry contains mistakes', () => {
+    it('redirects back to /createCaps if the user entry contains mistakes', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                cappedProductName: 'Product',
-                capNameInput0: 'hello',
-                capPriceInput0: '',
-                capDurationInput0: '2',
-                capDurationUnitsInput0: 'fortnights',
-                capNameInput1: 's',
-                capPriceInput1: '2',
-                capDurationInput1: '1',
-                capDurationUnitsInput1: 'week',
-                capNameInput2: 'wfewfwfewfwefxewxdx edxex   1e  qd  qwdqcwddafwfwrfwefwefwefew',
-                capPriceInput2: '2',
-                capDurationInput2: '3',
-                capDurationUnitsInput2: 'month',
+                capName: 'hello',
+                capPrice: '',
+                capDuration: '2',
+                capDurationUnits: '',
             },
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
-            caps: [
-                { durationAmount: '2', durationUnits: 'fortnights', name: 'hello', price: '' },
-                { durationAmount: '1', durationUnits: 'week', name: 's', price: '2' },
-                {
-                    durationAmount: '3',
-                    durationUnits: 'month',
-                    name: 'wfewfwfewfwefxewxdx edxex 1e qd qwdqcwddafwfwrfwefwefwefew',
-                    price: '2',
-                },
-            ],
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
+            cap: { durationAmount: '2', durationUnits: '', name: 'hello', price: '' },
             errors: [
-                { errorMessage: 'Cap price cannot be empty', id: 'cap-price-0' },
-                { errorMessage: 'Choose an option from the dropdown', id: 'cap-duration-unit-0' },
-                { errorMessage: 'Cap name cannot have less than 2 characters', id: 'cap-name-1' },
-                { errorMessage: 'Cap name cannot have more than 50 characters', id: 'cap-name-2' },
+                { errorMessage: 'Cap price cannot be empty', id: 'cap-price' },
+                { errorMessage: 'Choose an option from the dropdown', id: 'cap-duration-unit' },
             ],
-            productName: 'Product',
         });
     });
 
-    it('redirects to /createCaps if two caps have the same name', () => {
+    it('redirects back to /createCaps if the user enters 0 as an input', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                cappedProductName: 'Product',
-                capNameInput0: 'hello',
-                capPriceInput0: '22',
-                capDurationInput0: '2',
-                capDurationUnitsInput0: 'day',
-                capNameInput1: 'hello',
-                capPriceInput1: '2',
-                capDurationInput1: '1',
-                capDurationUnitsInput1: 'week',
+                capName: 'Name',
+                capPrice: '0',
+                capDuration: '2',
+                capDurationUnits: 'week',
             },
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
-            caps: [
-                { durationAmount: '2', durationUnits: 'day', name: 'hello', price: '22' },
-                { durationAmount: '1', durationUnits: 'week', name: 'hello', price: '2' },
-            ],
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
+            cap: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '0' },
+            capStart: undefined,
             errors: [
-                { errorMessage: 'Cap names must be unique', id: 'cap-name-0' },
-                { errorMessage: 'Cap names must be unique', id: 'cap-name-1' },
+                { errorMessage: 'Cap prices cannot be zero', id: 'cap-price' },
+                { errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' },
             ],
-            productName: 'Product',
         });
     });
 
-    it('redirects back to /createCaps if the user enters 0 as an input', () => {
+    it('redirects back to /createCaps if the user enters 000 as an input', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                cappedProductName: 'Product',
-                capNameInput0: 'Name',
-                capPriceInput0: '0',
-                capDurationInput0: '2',
-                capDurationUnitsInput0: 'week',
+                capName: 'Name',
+                capPrice: '000',
+                capDuration: '2',
+                capDurationUnits: 'week',
             },
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
-            caps: [{ durationAmount: '2', durationUnits: 'week', name: 'Name', price: '0' }],
-            errors: [{ errorMessage: 'Cap prices cannot be zero', id: 'cap-price-0' }],
-            productName: 'Product',
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
+            cap: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '000' },
+            capStart: undefined,
+            errors: [
+                { errorMessage: 'Cap prices cannot be zero', id: 'cap-price' },
+                { errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' },
+            ],
         });
     });
 
-    it('redirects back to /createCaps if the user enters 000 as an input', () => {
+    it('redirects back to /createCaps if the user enters more than 24 hour duration but not selected cap start', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                cappedProductName: 'Product',
-                capNameInput0: 'Name',
-                capPriceInput0: '000',
-                capDurationInput0: '2',
-                capDurationUnitsInput0: 'week',
+                capName: 'Name',
+                capPrice: '2',
+                capDuration: '25',
+                capDurationUnits: 'hour',
             },
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
-            caps: [{ durationAmount: '2', durationUnits: 'week', name: 'Name', price: '000' }],
-            errors: [{ errorMessage: 'Cap prices cannot be zero', id: 'cap-price-0' }],
-            productName: 'Product',
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
+            cap: { durationAmount: '25', durationUnits: 'hour', name: 'Name', price: '2' },
+            capStart: undefined,
+            errors: [{ errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' }],
         });
     });
 
-    it('redirects back to /createCaps if the user doesnt provide a product name', () => {
+    it('redirects back to /createCaps if the cap name already exists', async () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
-                capNameInput0: 'Name',
-                capPriceInput0: '2',
-                capDurationInput0: '2',
-                capDurationUnitsInput0: 'week',
+                capName: 'Cap 1',
+                capPrice: '2',
+                capDuration: '2',
+                capDurationUnits: 'hour',
             },
             mockWriteHeadFn: writeHeadMock,
         });
 
-        createCaps(req, res);
+        const cap: FromDb<CapInfo> = {
+            cap: {
+                name: 'Cap 1',
+                price: '4',
+                durationAmount: '2',
+                durationUnits: 'hour' as ExpiryUnit,
+            },
+            id: 2,
+        };
+
+        getCapsSpy.mockResolvedValueOnce([cap]);
+
+        await createCaps(req, res);
 
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/createCaps',
         });
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CAPS_ATTRIBUTE, {
-            caps: [{ durationAmount: '2', durationUnits: 'week', name: 'Name', price: '2' }],
-            errors: [{ errorMessage: 'Product name cannot have less than 2 characters', id: 'capped-product-name' }],
-            productName: undefined,
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
+            cap: { durationAmount: '2', durationUnits: 'hour', name: 'Cap 1', price: '2' },
+            errors: [{ errorMessage: 'You already have a cap named Cap 1. Choose another name.', id: 'cap-name' }],
         });
+    });
+
+    it('redirects back to /viewCaps on user input', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                capName: 'Cap 1',
+                capPrice: '2',
+                capDuration: '2',
+                capDurationUnits: 'hour',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        const expected = {
+            cap: {
+                name: 'Cap 1',
+                price: '2',
+                durationAmount: '2',
+                durationUnits: 'hour',
+            },
+        };
+        getCapsSpy.mockResolvedValueOnce([]);
+
+        await createCaps(req, res);
+        expect(updateSpy).not.toBeCalled();
+        expect(insertSpy).toBeCalledWith(undefined, expected);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/viewCaps',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, undefined);
+    });
+
+    it('redirects back to /viewCaps on edit mode', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                capName: 'Cap 1',
+                capPrice: '2',
+                capDuration: '2',
+                capDurationUnits: 'hour',
+                id: '1',
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        const expected = {
+            cap: {
+                name: 'Cap 1',
+                price: '2',
+                durationAmount: '2',
+                durationUnits: 'hour',
+            },
+        };
+        getCapsSpy.mockResolvedValueOnce([]);
+
+        await createCaps(req, res);
+        expect(insertSpy).not.toBeCalled();
+        expect(updateSpy).toBeCalledWith(undefined, 1, expected);
+
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/viewCaps',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, undefined);
     });
 });

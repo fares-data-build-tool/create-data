@@ -1,0 +1,1148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages create caps should render correctly 1`] = `
+<FullColumnLayout
+  description="Create caps page of the Create Fares Data Service"
+  errors={Array []}
+  title="Create Caps - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/createCaps"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="create-caps-page-heading"
+    >
+      Create your fare caps
+    </h1>
+    <span
+      className="govuk-hint"
+      id="create-cap-hint"
+    >
+      If cap duration is more than a day, provide input for the cap start.
+    </span>
+    <div
+      className="govuk-grid-row"
+    >
+      <fieldset
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-visually-hidden"
+        >
+          Enter details for cap
+        </legend>
+        <div
+          className="flex-container"
+        >
+          <div
+            className="govuk-!-margin-left-4 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-name",
+                ]
+              }
+              errors={Array []}
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-name"
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Cap Name
+                </span>
+                <span
+                  aria-hidden={true}
+                >
+                  Cap name
+                </span>
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-name-hint"
+              >
+                50 characters max
+              </span>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="cap-name"
+                errors={Array []}
+                hideText={true}
+              >
+                <input
+                  aria-describedby="cap-name-hint"
+                  className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
+                  defaultValue=""
+                  id="cap-name"
+                  maxLength={50}
+                  name="capName"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </FormGroupWrapper>
+          </div>
+          <div
+            className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-price",
+                ]
+              }
+              errors={Array []}
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-price"
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Cap Price, in pounds
+                </span>
+                <span
+                  aria-hidden={true}
+                >
+                  Price
+                </span>
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-price-hint"
+              >
+                e.g. 2.99
+              </span>
+              <div
+                className="govuk-currency-input"
+              >
+                <div
+                  className="govuk-currency-input__inner"
+                >
+                  <span
+                    className="govuk-currency-input__inner__unit"
+                  >
+                    £
+                  </span>
+                  <FormElementWrapper
+                    addFormGroupError={false}
+                    errorClass="govuk-input--error"
+                    errorId="cap-price"
+                    errors={Array []}
+                    hideText={true}
+                  >
+                    <input
+                      aria-describedby="cap-price-hint"
+                      className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
+                      data-non-numeric={true}
+                      defaultValue=""
+                      id="cap-price"
+                      name="capPrice"
+                      type="text"
+                    />
+                  </FormElementWrapper>
+                </div>
+              </div>
+            </FormGroupWrapper>
+          </div>
+          <div
+            className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-period-duration-quantity",
+                  "cap-period-duration-unit",
+                ]
+              }
+              errors={Array []}
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-period-duration"
+              >
+                Cap duration
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-duration-hint"
+              >
+                For example, 3 days
+              </span>
+              <div
+                className="govuk-input__wrapper expiry-selector-wrapper"
+              >
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="cap-period-duration-quantity"
+                  errors={Array []}
+                  hideText={true}
+                >
+                  <input
+                    aria-describedby="cap-duration-hint"
+                    className="govuk-input govuk-input--width-3"
+                    defaultValue=""
+                    id="cap-period-duration-quantity"
+                    name="capDuration"
+                    onChange={[Function]}
+                    type="text"
+                  />
+                </FormElementWrapper>
+                <FormElementWrapper
+                  errorClass="govuk-select--error"
+                  errorId="cap-duration-unit"
+                  errors={Array []}
+                  hideText={true}
+                >
+                  <select
+                    className="govuk-select govuk-select--width-3 expiry-selector-units"
+                    defaultValue=""
+                    id="cap-duration-unit"
+                    name="capDurationUnits"
+                    onChange={[Function]}
+                  >
+                    <option
+                      disabled={true}
+                      key="select-one"
+                      value=""
+                    >
+                      Select One
+                    </option>
+                    <option
+                      key="hour"
+                      value="hour"
+                    >
+                      Hours
+                    </option>
+                    <option
+                      key="day"
+                      value="day"
+                    >
+                      Days
+                    </option>
+                    <option
+                      key="week"
+                      value="week"
+                    >
+                      Weeks
+                    </option>
+                    <option
+                      key="month"
+                      value="month"
+                    >
+                      Months
+                    </option>
+                    <option
+                      key="year"
+                      value="year"
+                    >
+                      Years
+                    </option>
+                  </select>
+                </FormElementWrapper>
+              </div>
+            </FormGroupWrapper>
+          </div>
+        </div>
+      </fieldset>
+      <input
+        name="id"
+        type="hidden"
+      />
+      <input
+        className="govuk-button govuk-!-margin-left-3"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</FullColumnLayout>
+`;
+
+exports[`pages create caps should render correctly on edit mode 1`] = `
+<FullColumnLayout
+  description="Create caps page of the Create Fares Data Service"
+  errors={Array []}
+  title="Create Caps - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/createCaps"
+    csrfToken=""
+    method="post"
+  >
+    <BackButton
+      href="/viewCaps"
+    />
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="create-caps-page-heading"
+    >
+      Create your fare caps
+    </h1>
+    <span
+      className="govuk-hint"
+      id="create-cap-hint"
+    >
+      If cap duration is more than a day, provide input for the cap start.
+    </span>
+    <div
+      className="govuk-grid-row"
+    >
+      <fieldset
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-visually-hidden"
+        >
+          Enter details for cap
+        </legend>
+        <div
+          className="flex-container"
+        >
+          <div
+            className="govuk-!-margin-left-4 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-name",
+                ]
+              }
+              errors={Array []}
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-name"
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Cap Name
+                </span>
+                <span
+                  aria-hidden={true}
+                >
+                  Cap name
+                </span>
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-name-hint"
+              >
+                50 characters max
+              </span>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="cap-name"
+                errors={Array []}
+                hideText={true}
+              >
+                <input
+                  aria-describedby="cap-name-hint"
+                  className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
+                  defaultValue="Cap 1"
+                  id="cap-name"
+                  maxLength={50}
+                  name="capName"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </FormGroupWrapper>
+          </div>
+          <div
+            className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-price",
+                ]
+              }
+              errors={Array []}
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-price"
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Cap Price, in pounds
+                </span>
+                <span
+                  aria-hidden={true}
+                >
+                  Price
+                </span>
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-price-hint"
+              >
+                e.g. 2.99
+              </span>
+              <div
+                className="govuk-currency-input"
+              >
+                <div
+                  className="govuk-currency-input__inner"
+                >
+                  <span
+                    className="govuk-currency-input__inner__unit"
+                  >
+                    £
+                  </span>
+                  <FormElementWrapper
+                    addFormGroupError={false}
+                    errorClass="govuk-input--error"
+                    errorId="cap-price"
+                    errors={Array []}
+                    hideText={true}
+                  >
+                    <input
+                      aria-describedby="cap-price-hint"
+                      className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
+                      data-non-numeric={true}
+                      defaultValue="2"
+                      id="cap-price"
+                      name="capPrice"
+                      type="text"
+                    />
+                  </FormElementWrapper>
+                </div>
+              </div>
+            </FormGroupWrapper>
+          </div>
+          <div
+            className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-period-duration-quantity",
+                  "cap-period-duration-unit",
+                ]
+              }
+              errors={Array []}
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-period-duration"
+              >
+                Cap duration
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-duration-hint"
+              >
+                For example, 3 days
+              </span>
+              <div
+                className="govuk-input__wrapper expiry-selector-wrapper"
+              >
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="cap-period-duration-quantity"
+                  errors={Array []}
+                  hideText={true}
+                >
+                  <input
+                    aria-describedby="cap-duration-hint"
+                    className="govuk-input govuk-input--width-3"
+                    defaultValue="2"
+                    id="cap-period-duration-quantity"
+                    name="capDuration"
+                    onChange={[Function]}
+                    type="text"
+                  />
+                </FormElementWrapper>
+                <FormElementWrapper
+                  errorClass="govuk-select--error"
+                  errorId="cap-duration-unit"
+                  errors={Array []}
+                  hideText={true}
+                >
+                  <select
+                    className="govuk-select govuk-select--width-3 expiry-selector-units"
+                    defaultValue="hour"
+                    id="cap-duration-unit"
+                    name="capDurationUnits"
+                    onChange={[Function]}
+                  >
+                    <option
+                      disabled={true}
+                      key="select-one"
+                      value=""
+                    >
+                      Select One
+                    </option>
+                    <option
+                      key="hour"
+                      value="hour"
+                    >
+                      Hours
+                    </option>
+                    <option
+                      key="day"
+                      value="day"
+                    >
+                      Days
+                    </option>
+                    <option
+                      key="week"
+                      value="week"
+                    >
+                      Weeks
+                    </option>
+                    <option
+                      key="month"
+                      value="month"
+                    >
+                      Months
+                    </option>
+                    <option
+                      key="year"
+                      value="year"
+                    >
+                      Years
+                    </option>
+                  </select>
+                </FormElementWrapper>
+              </div>
+            </FormGroupWrapper>
+          </div>
+        </div>
+      </fieldset>
+      <input
+        name="id"
+        type="hidden"
+        value={1}
+      />
+      <input
+        className="govuk-button govuk-!-margin-left-3"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</FullColumnLayout>
+`;
+
+exports[`pages create caps should render correctly on edit mode with cap start 1`] = `
+<FullColumnLayout
+  description="Create caps page of the Create Fares Data Service"
+  errors={Array []}
+  title="Create Caps - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/createCaps"
+    csrfToken=""
+    method="post"
+  >
+    <BackButton
+      href="/viewCaps"
+    />
+    <ErrorSummary
+      errors={Array []}
+    />
+    <h1
+      className="govuk-heading-l"
+      id="create-caps-page-heading"
+    >
+      Create your fare caps
+    </h1>
+    <span
+      className="govuk-hint"
+      id="create-cap-hint"
+    >
+      If cap duration is more than a day, provide input for the cap start.
+    </span>
+    <div
+      className="govuk-grid-row"
+    >
+      <fieldset
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-visually-hidden"
+        >
+          Enter details for cap
+        </legend>
+        <div
+          className="flex-container"
+        >
+          <div
+            className="govuk-!-margin-left-4 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-name",
+                ]
+              }
+              errors={Array []}
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-name"
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Cap Name
+                </span>
+                <span
+                  aria-hidden={true}
+                >
+                  Cap name
+                </span>
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-name-hint"
+              >
+                50 characters max
+              </span>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="cap-name"
+                errors={Array []}
+                hideText={true}
+              >
+                <input
+                  aria-describedby="cap-name-hint"
+                  className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
+                  defaultValue="Cap 1"
+                  id="cap-name"
+                  maxLength={50}
+                  name="capName"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </FormGroupWrapper>
+          </div>
+          <div
+            className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-price",
+                ]
+              }
+              errors={Array []}
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-price"
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Cap Price, in pounds
+                </span>
+                <span
+                  aria-hidden={true}
+                >
+                  Price
+                </span>
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-price-hint"
+              >
+                e.g. 2.99
+              </span>
+              <div
+                className="govuk-currency-input"
+              >
+                <div
+                  className="govuk-currency-input__inner"
+                >
+                  <span
+                    className="govuk-currency-input__inner__unit"
+                  >
+                    £
+                  </span>
+                  <FormElementWrapper
+                    addFormGroupError={false}
+                    errorClass="govuk-input--error"
+                    errorId="cap-price"
+                    errors={Array []}
+                    hideText={true}
+                  >
+                    <input
+                      aria-describedby="cap-price-hint"
+                      className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
+                      data-non-numeric={true}
+                      defaultValue="2"
+                      id="cap-price"
+                      name="capPrice"
+                      type="text"
+                    />
+                  </FormElementWrapper>
+                </div>
+              </div>
+            </FormGroupWrapper>
+          </div>
+          <div
+            className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-period-duration-quantity",
+                  "cap-period-duration-unit",
+                ]
+              }
+              errors={Array []}
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-period-duration"
+              >
+                Cap duration
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-duration-hint"
+              >
+                For example, 3 days
+              </span>
+              <div
+                className="govuk-input__wrapper expiry-selector-wrapper"
+              >
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="cap-period-duration-quantity"
+                  errors={Array []}
+                  hideText={true}
+                >
+                  <input
+                    aria-describedby="cap-duration-hint"
+                    className="govuk-input govuk-input--width-3"
+                    defaultValue="2"
+                    id="cap-period-duration-quantity"
+                    name="capDuration"
+                    onChange={[Function]}
+                    type="text"
+                  />
+                </FormElementWrapper>
+                <FormElementWrapper
+                  errorClass="govuk-select--error"
+                  errorId="cap-duration-unit"
+                  errors={Array []}
+                  hideText={true}
+                >
+                  <select
+                    className="govuk-select govuk-select--width-3 expiry-selector-units"
+                    defaultValue="hour"
+                    id="cap-duration-unit"
+                    name="capDurationUnits"
+                    onChange={[Function]}
+                  >
+                    <option
+                      disabled={true}
+                      key="select-one"
+                      value=""
+                    >
+                      Select One
+                    </option>
+                    <option
+                      key="hour"
+                      value="hour"
+                    >
+                      Hours
+                    </option>
+                    <option
+                      key="day"
+                      value="day"
+                    >
+                      Days
+                    </option>
+                    <option
+                      key="week"
+                      value="week"
+                    >
+                      Weeks
+                    </option>
+                    <option
+                      key="month"
+                      value="month"
+                    >
+                      Months
+                    </option>
+                    <option
+                      key="year"
+                      value="year"
+                    >
+                      Years
+                    </option>
+                  </select>
+                </FormElementWrapper>
+              </div>
+            </FormGroupWrapper>
+          </div>
+        </div>
+      </fieldset>
+      <input
+        name="id"
+        type="hidden"
+        value={1}
+      />
+      <input
+        className="govuk-button govuk-!-margin-left-3"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</FullColumnLayout>
+`;
+
+exports[`pages create caps should render correctly on input errors 1`] = `
+<FullColumnLayout
+  description="Create caps page of the Create Fares Data Service"
+  errors={
+    Array [
+      Object {
+        "errorMessage": "C name cannot have less than 2 characters",
+        "id": "cap-name",
+      },
+    ]
+  }
+  title="Create Caps - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/createCaps"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "C name cannot have less than 2 characters",
+            "id": "cap-name",
+          },
+        ]
+      }
+    />
+    <h1
+      className="govuk-heading-l"
+      id="create-caps-page-heading"
+    >
+      Create your fare caps
+    </h1>
+    <span
+      className="govuk-hint"
+      id="create-cap-hint"
+    >
+      If cap duration is more than a day, provide input for the cap start.
+    </span>
+    <div
+      className="govuk-grid-row"
+    >
+      <fieldset
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-visually-hidden"
+        >
+          Enter details for cap
+        </legend>
+        <div
+          className="flex-container"
+        >
+          <div
+            className="govuk-!-margin-left-4 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-name",
+                ]
+              }
+              errors={
+                Array [
+                  Object {
+                    "errorMessage": "C name cannot have less than 2 characters",
+                    "id": "cap-name",
+                  },
+                ]
+              }
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-name"
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Cap Name
+                </span>
+                <span
+                  aria-hidden={true}
+                >
+                  Cap name
+                </span>
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-name-hint"
+              >
+                50 characters max
+              </span>
+              <FormElementWrapper
+                errorClass="govuk-input--error"
+                errorId="cap-name"
+                errors={
+                  Array [
+                    Object {
+                      "errorMessage": "C name cannot have less than 2 characters",
+                      "id": "cap-name",
+                    },
+                  ]
+                }
+                hideText={true}
+              >
+                <input
+                  aria-describedby="cap-name-hint"
+                  className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
+                  defaultValue=""
+                  id="cap-name"
+                  maxLength={50}
+                  name="capName"
+                  type="text"
+                />
+              </FormElementWrapper>
+            </FormGroupWrapper>
+          </div>
+          <div
+            className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-price",
+                ]
+              }
+              errors={
+                Array [
+                  Object {
+                    "errorMessage": "C name cannot have less than 2 characters",
+                    "id": "cap-name",
+                  },
+                ]
+              }
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-price"
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Cap Price, in pounds
+                </span>
+                <span
+                  aria-hidden={true}
+                >
+                  Price
+                </span>
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-price-hint"
+              >
+                e.g. 2.99
+              </span>
+              <div
+                className="govuk-currency-input"
+              >
+                <div
+                  className="govuk-currency-input__inner"
+                >
+                  <span
+                    className="govuk-currency-input__inner__unit"
+                  >
+                    £
+                  </span>
+                  <FormElementWrapper
+                    addFormGroupError={false}
+                    errorClass="govuk-input--error"
+                    errorId="cap-price"
+                    errors={
+                      Array [
+                        Object {
+                          "errorMessage": "C name cannot have less than 2 characters",
+                          "id": "cap-name",
+                        },
+                      ]
+                    }
+                    hideText={true}
+                  >
+                    <input
+                      aria-describedby="cap-price-hint"
+                      className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
+                      data-non-numeric={true}
+                      defaultValue=""
+                      id="cap-price"
+                      name="capPrice"
+                      type="text"
+                    />
+                  </FormElementWrapper>
+                </div>
+              </div>
+            </FormGroupWrapper>
+          </div>
+          <div
+            className="govuk-!-margin-left-2 govuk-!-margin-right-2"
+          >
+            <FormGroupWrapper
+              errorIds={
+                Array [
+                  "cap-period-duration-quantity",
+                  "cap-period-duration-unit",
+                ]
+              }
+              errors={
+                Array [
+                  Object {
+                    "errorMessage": "C name cannot have less than 2 characters",
+                    "id": "cap-name",
+                  },
+                ]
+              }
+            >
+              <label
+                className="govuk-label"
+                htmlFor="cap-period-duration"
+              >
+                Cap duration
+              </label>
+              <span
+                className="govuk-hint"
+                id="cap-duration-hint"
+              >
+                For example, 3 days
+              </span>
+              <div
+                className="govuk-input__wrapper expiry-selector-wrapper"
+              >
+                <FormElementWrapper
+                  errorClass="govuk-input--error"
+                  errorId="cap-period-duration-quantity"
+                  errors={
+                    Array [
+                      Object {
+                        "errorMessage": "C name cannot have less than 2 characters",
+                        "id": "cap-name",
+                      },
+                    ]
+                  }
+                  hideText={true}
+                >
+                  <input
+                    aria-describedby="cap-duration-hint"
+                    className="govuk-input govuk-input--width-3"
+                    defaultValue=""
+                    id="cap-period-duration-quantity"
+                    name="capDuration"
+                    onChange={[Function]}
+                    type="text"
+                  />
+                </FormElementWrapper>
+                <FormElementWrapper
+                  errorClass="govuk-select--error"
+                  errorId="cap-duration-unit"
+                  errors={
+                    Array [
+                      Object {
+                        "errorMessage": "C name cannot have less than 2 characters",
+                        "id": "cap-name",
+                      },
+                    ]
+                  }
+                  hideText={true}
+                >
+                  <select
+                    className="govuk-select govuk-select--width-3 expiry-selector-units"
+                    defaultValue=""
+                    id="cap-duration-unit"
+                    name="capDurationUnits"
+                    onChange={[Function]}
+                  >
+                    <option
+                      disabled={true}
+                      key="select-one"
+                      value=""
+                    >
+                      Select One
+                    </option>
+                    <option
+                      key="hour"
+                      value="hour"
+                    >
+                      Hours
+                    </option>
+                    <option
+                      key="day"
+                      value="day"
+                    >
+                      Days
+                    </option>
+                    <option
+                      key="week"
+                      value="week"
+                    >
+                      Weeks
+                    </option>
+                    <option
+                      key="month"
+                      value="month"
+                    >
+                      Months
+                    </option>
+                    <option
+                      key="year"
+                      value="year"
+                    >
+                      Years
+                    </option>
+                  </select>
+                </FormElementWrapper>
+              </div>
+            </FormGroupWrapper>
+          </div>
+        </div>
+      </fieldset>
+      <input
+        name="id"
+        type="hidden"
+      />
+      <input
+        className="govuk-button govuk-!-margin-left-3"
+        id="continue-button"
+        type="submit"
+        value="Continue"
+      />
+    </div>
+  </CsrfForm>
+</FullColumnLayout>
+`;
