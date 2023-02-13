@@ -15,6 +15,7 @@ import { globalSignOut } from '../../data/cognito';
 import logger from '../logger';
 import { destroySession, getSessionAttribute, updateSessionAttribute } from '../sessions';
 import { isFareType } from '../../interfaces/typeGuards';
+import { daysOfWeek } from '../../../src/constants';
 
 export const setCookieOnResponseObject = (
     cookieName: string,
@@ -264,4 +265,8 @@ export const dateIsOverThirtyMinutesAgo = (inputDate: Date): boolean => {
     const date = new Date(inputDate).getTime();
     const thirtyMinutesAgo = Date.now() - thirtyMinutesInMilliseconds;
     return date < thirtyMinutesAgo;
+};
+
+export const isADayOfTheWeek = (input: string | undefined): boolean => {
+    return !!input && daysOfWeek.includes(input);
 };

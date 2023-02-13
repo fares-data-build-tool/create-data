@@ -1,10 +1,9 @@
 import { NextApiResponse } from 'next';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { CAP_START_ATTRIBUTE } from '../../constants/attributes';
-import { redirectToError, redirectTo } from '../../utils/apiUtils';
+import { redirectToError, redirectTo, isADayOfTheWeek } from '../../utils/apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { CapStartInfo } from '../../../src/interfaces/matchingJsonTypes';
-import { isADayOfTheWeek } from './createCaps';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {

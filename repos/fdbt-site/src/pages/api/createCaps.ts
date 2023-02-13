@@ -3,7 +3,7 @@ import { getCaps, insertCaps, updateCaps } from '../../data/auroradb';
 import { CREATE_CAPS_ATTRIBUTE } from '../../constants/attributes';
 import { CapInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces/index';
 import { CapStart, DayOfTheWeek, ExpiryUnit, FromDb } from '../../interfaces/matchingJsonTypes';
-import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { getAndValidateNoc, isADayOfTheWeek, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {
     checkDurationIsValid,
     checkPriceIsValid,
@@ -13,7 +13,6 @@ import {
 } from '../../utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { isADayOrLonger } from '../createCaps';
-import { daysOfWeek } from '../../../src/constants';
 
 export interface InputtedCap {
     name: string | undefined;
@@ -23,10 +22,6 @@ export interface InputtedCap {
     type: string | undefined;
     startDay: string | undefined;
 }
-
-export const isADayOfTheWeek = (input: string | undefined): boolean => {
-    return !!input && daysOfWeek.includes(input);
-};
 
 export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createdCaps: CapInfo } => {
     const errors: ErrorInfo[] = [];
@@ -123,7 +118,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { createdCaps, errors } = validateAndFormatCapInputs(inputtedCap);
 
         if (id && !Number.isInteger(id)) {
-            throw Error(`Received invalid id for create caps [${req.body.id}]`);
+            throw Error(`Received invalid id for create caps ${req.body.id}`);
         }
 
         if (errors.length === 0) {

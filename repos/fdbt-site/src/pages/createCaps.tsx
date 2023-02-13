@@ -56,7 +56,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                     <h1 className="govuk-heading-l" id="create-caps-page-heading">
                         Create your fare caps
                     </h1>
-                    <span id="purchase-method-option-hint" className="govuk-hint">
+                    <span id="create-cap-hint" className="govuk-hint">
                         If cap duration is more than a day, provide input for the cap start.
                     </span>
 
@@ -81,7 +81,6 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                                 errorId="cap-name"
                                                 errorClass="govuk-input--error"
                                                 hideText
-                                                addFormGroupError={false}
                                             >
                                                 <input
                                                     className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
@@ -201,7 +200,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                     </h2>
                                     <h2 className="govuk-heading-m govuk-!-margin-top-6">Business week</h2>
                                     <span id="fixed-weekdays-hint" className="govuk-hint">
-                                        Which day does your cap&apos;s calculation start on?
+                                        Which day does your cap start on?
                                     </span>
                                     <div className="govuk-radios" data-module="govuk-radios">
                                         <div className="govuk-radios__item">

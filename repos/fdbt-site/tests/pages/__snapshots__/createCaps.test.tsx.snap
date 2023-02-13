@@ -22,7 +22,7 @@ exports[`pages create caps should render correctly 1`] = `
     </h1>
     <span
       className="govuk-hint"
-      id="purchase-method-option-hint"
+      id="create-cap-hint"
     >
       If cap duration is more than a day, provide input for the cap start.
     </span>
@@ -73,7 +73,6 @@ exports[`pages create caps should render correctly 1`] = `
                 50 characters max
               </span>
               <FormElementWrapper
-                addFormGroupError={false}
                 errorClass="govuk-input--error"
                 errorId="cap-name"
                 errors={Array []}
@@ -293,7 +292,7 @@ exports[`pages create caps should render correctly on edit mode 1`] = `
     </h1>
     <span
       className="govuk-hint"
-      id="purchase-method-option-hint"
+      id="create-cap-hint"
     >
       If cap duration is more than a day, provide input for the cap start.
     </span>
@@ -344,7 +343,6 @@ exports[`pages create caps should render correctly on edit mode 1`] = `
                 50 characters max
               </span>
               <FormElementWrapper
-                addFormGroupError={false}
                 errorClass="govuk-input--error"
                 errorId="cap-name"
                 errors={Array []}
@@ -565,7 +563,7 @@ exports[`pages create caps should render correctly on edit mode with cap start 1
     </h1>
     <span
       className="govuk-hint"
-      id="purchase-method-option-hint"
+      id="create-cap-hint"
     >
       If cap duration is more than a day, provide input for the cap start.
     </span>
@@ -616,7 +614,6 @@ exports[`pages create caps should render correctly on edit mode with cap start 1
                 50 characters max
               </span>
               <FormElementWrapper
-                addFormGroupError={false}
                 errorClass="govuk-input--error"
                 errorId="cap-name"
                 errors={Array []}
@@ -851,7 +848,7 @@ exports[`pages create caps should render correctly on input errors 1`] = `
     </h1>
     <span
       className="govuk-hint"
-      id="purchase-method-option-hint"
+      id="create-cap-hint"
     >
       If cap duration is more than a day, provide input for the cap start.
     </span>
@@ -909,7 +906,6 @@ exports[`pages create caps should render correctly on input errors 1`] = `
                 50 characters max
               </span>
               <FormElementWrapper
-                addFormGroupError={false}
                 errorClass="govuk-input--error"
                 errorId="cap-name"
                 errors={
