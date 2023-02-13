@@ -109,7 +109,7 @@ const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [], csrfToken }
                                 )}
 
                                 <a className="govuk-button" data-module="govuk-button" href="/createCaps">
-                                    Add caps
+                                    Add a cap
                                 </a>
                             </>
                         ) : (

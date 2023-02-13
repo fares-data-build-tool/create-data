@@ -4,11 +4,7 @@ import { CAP_START_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from '../../utils/apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { CapStartInfo } from '../../../src/interfaces/matchingJsonTypes';
-
-export const isADayOfTheWeek = (input: string | undefined): boolean => {
-    const daysOfWeek: string[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    return !!input && daysOfWeek.includes(input);
-};
+import { isADayOrLonger } from './createCaps';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -16,7 +12,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const { capStart, startDay } = req.body;
         if (capStart === 'fixedWeekdays' || capStart === 'rollingDays') {
             if (capStart === 'fixedWeekdays') {
-                if (!isADayOfTheWeek(startDay)) {
+                if (!isADayOrLonger(startDay)) {
                     errors.push({
                         id: 'start',
                         errorMessage: 'Select a start day',

@@ -18,6 +18,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         await deleteCap(id, noc);
 
         redirectTo(res, '/viewCaps');
+        return;
     } catch (error) {
         const message = 'There was a problem deleting the cap';
         redirectToError(res, message, 'api.deleteCap', error);

@@ -140,7 +140,7 @@ exports[`pages view caps should render correctly when cap validity and cap with 
           data-module="govuk-button"
           href="/createCaps"
         >
-          Add caps
+          Add a cap
         </a>
       </div>
     </div>
@@ -226,7 +226,7 @@ exports[`pages view caps should render correctly when cap validity and cap with 
           data-module="govuk-button"
           href="/createCaps"
         >
-          Add caps
+          Add a cap
         </a>
       </div>
     </div>
@@ -311,7 +311,7 @@ exports[`pages view caps should render correctly when cap validity and rollingDa
           data-module="govuk-button"
           href="/createCaps"
         >
-          Add caps
+          Add a cap
         </a>
       </div>
     </div>
@@ -380,7 +380,7 @@ exports[`pages view caps should render correctly when cap validity is 24 hr 1`] 
           data-module="govuk-button"
           href="/createCaps"
         >
-          Add caps
+          Add a cap
         </a>
       </div>
     </div>
@@ -449,7 +449,7 @@ exports[`pages view caps should render correctly when cap validity is fare day e
           data-module="govuk-button"
           href="/createCaps"
         >
-          Add caps
+          Add a cap
         </a>
       </div>
     </div>
