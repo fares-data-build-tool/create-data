@@ -12,7 +12,7 @@ import {
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { isADayDuration } from '../createCaps';
+import { isADayOrLonger } from '../createCaps';
 import { daysOfWeek } from '../../../src/constants';
 
 export interface InputtedCap {
@@ -24,7 +24,7 @@ export interface InputtedCap {
     startDay: string | undefined;
 }
 
-export const isADayOrLonger = (input: string | undefined): boolean => {
+export const isADayOfTheWeek = (input: string | undefined): boolean => {
     return !!input && daysOfWeek.includes(input);
 };
 
@@ -62,7 +62,7 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
 
     let capStart = undefined;
 
-    if (isADayDuration(inputtedCap.durationAmount, inputtedCap.durationUnits)) {
+    if (isADayOrLonger(inputtedCap.durationAmount, inputtedCap.durationUnits)) {
         const capType = inputtedCap.type;
 
         if (!(capType === 'fixedWeekdays' || capType === 'rollingDays')) {
@@ -73,7 +73,7 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
         }
 
         if (capType === 'fixedWeekdays') {
-            if (!isADayOrLonger(inputtedCap.startDay)) {
+            if (!isADayOfTheWeek(inputtedCap.startDay)) {
                 errors.push({
                     id: 'start',
                     errorMessage: 'Select a start day',

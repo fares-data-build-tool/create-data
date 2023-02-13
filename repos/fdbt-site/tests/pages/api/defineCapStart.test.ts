@@ -1,10 +1,10 @@
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import defineCapStart from '../../../src/pages/api/defineCapStart';
-import { isADayOrLonger } from '../../../src/pages/api/createCaps';
 import { ErrorInfo } from '../../../src/interfaces';
 import { CAP_START_ATTRIBUTE } from '../../../src/constants/attributes';
 import { CapStartInfo } from '../../../src/interfaces/matchingJsonTypes';
+import { isADayOfTheWeek } from '../../../src/pages/api/createCaps';
 
 describe('defineCapStart', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -91,7 +91,7 @@ describe('defineCapStart', () => {
         [undefined, false],
         ['notMonday', false],
     ])('correctly tests days of the week', (day: string | undefined, result: boolean) => {
-        const isDayOfTheWeek = isADayOrLonger(day);
+        const isDayOfTheWeek = isADayOfTheWeek(day);
 
         expect(isDayOfTheWeek).toEqual(result);
     });

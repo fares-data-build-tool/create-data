@@ -4,7 +4,7 @@ import { CAP_START_ATTRIBUTE } from '../../constants/attributes';
 import { redirectToError, redirectTo } from '../../utils/apiUtils';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { CapStartInfo } from '../../../src/interfaces/matchingJsonTypes';
-import { isADayOrLonger } from './createCaps';
+import { isADayOfTheWeek } from './createCaps';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -12,7 +12,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         const { capStart, startDay } = req.body;
         if (capStart === 'fixedWeekdays' || capStart === 'rollingDays') {
             if (capStart === 'fixedWeekdays') {
-                if (!isADayOrLonger(startDay)) {
+                if (!isADayOfTheWeek(startDay)) {
                     errors.push({
                         id: 'start',
                         errorMessage: 'Select a start day',

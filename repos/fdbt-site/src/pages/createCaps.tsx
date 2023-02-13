@@ -22,7 +22,7 @@ interface CreateCapsProps {
     csrfToken: string;
     editId?: number;
 }
-export const isADayDuration = (duration: string | undefined, durationUnit: string | undefined): boolean =>
+export const isADayOrLonger = (duration: string | undefined, durationUnit: string | undefined): boolean =>
     !!durationUnit && !!duration && !(durationUnit === 'hour' && Number(duration) <= 24);
 
 const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsProps): ReactElement => {
@@ -32,7 +32,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
     const capDurationUnit = userInput?.cap.durationUnits as string;
 
     const [showCapStartInfo, setShowCapStartInfo] = useState<boolean>(
-        isADayDuration(capDurationAmount, capDurationUnit),
+        isADayOrLonger(capDurationAmount, capDurationUnit),
     );
     const [durationAmount, setDurationAmount] = useState(capDurationAmount);
     const [durationUnit, setDurationUnit] = useState(capDurationUnit);
@@ -40,12 +40,12 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
 
     const updateDurationUnit = (durationUnit: string): void => {
         setDurationUnit(durationUnit);
-        setShowCapStartInfo(isADayDuration(durationAmount, durationUnit));
+        setShowCapStartInfo(isADayOrLonger(durationAmount, durationUnit));
     };
 
     const updateDurationAmount = (durationAmount: string): void => {
         setDurationAmount(durationAmount);
-        setShowCapStartInfo(isADayDuration(durationAmount, durationUnit));
+        setShowCapStartInfo(isADayOrLonger(durationAmount, durationUnit));
     };
 
     return (
@@ -67,7 +67,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                             </legend>
                             <div className="flex-container">
                                 <div className="govuk-!-margin-left-4 govuk-!-margin-right-2">
-                                    <FormGroupWrapper errors={errors} errorIds={[`cap-name`]}>
+                                    <FormGroupWrapper errors={errors} errorIds={['cap-name']}>
                                         <>
                                             <label className="govuk-label" htmlFor="cap-name">
                                                 <span className="govuk-visually-hidden">Cap Name</span>
@@ -136,7 +136,6 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                     <FormGroupWrapper
                                         errors={errors}
                                         errorIds={['cap-period-duration-quantity', 'cap-period-duration-unit']}
-                                        hideErrorBar
                                     >
                                         <>
                                             <label className="govuk-label" htmlFor="cap-period-duration">
