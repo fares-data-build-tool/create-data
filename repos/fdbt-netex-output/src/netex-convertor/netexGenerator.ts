@@ -242,7 +242,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
     const updateServiceFrame = (serviceFrame: NetexObject): NetexObject | null => {
         const serviceFrameToUpdate = { ...serviceFrame };
 
-        if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket) || isHybridTicket(ticket)) {
+        if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket)) {
             serviceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ServiceFrame_UK_PI_NETWORK:${coreData.placeholderGroupOfProductsName}:op`;
 
             const lines = getLinesList(ticket, coreData.url, operatorData);
@@ -251,9 +251,33 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
             serviceFrameToUpdate.groupsOfLines.GroupOfLines = getGroupOfLinesList(
                 coreData.operatorIdentifier,
-                isHybridTicket(ticket),
+                false,
                 lines,
             );
+
+            return serviceFrameToUpdate;
+        }
+
+        if (isHybridTicket(ticket)) {
+            serviceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ServiceFrame_UK_PI_NETWORK:${coreData.placeholderGroupOfProductsName}:op`;
+
+            const allowedLines = getLinesList(ticket, coreData.url, operatorData);
+            let exemptLines;
+            let exemptGroupOfLines;
+
+            if ('exemptedServices' in ticket && ticket.exemptedServices) {
+                exemptLines = getExemptedLinesList(ticket.exemptedServices, ticket.nocCode, coreData.url);
+                exemptGroupOfLines = getExemptedGroupOfLinesList(coreData.operatorIdentifier, exemptLines);
+            }
+
+            serviceFrameToUpdate.lines.Line = [...allowedLines, ...(!!exemptLines ? exemptLines : [])];
+
+            const allowedGroupOfLines = getGroupOfLinesList(coreData.operatorIdentifier, true, allowedLines);
+
+            serviceFrameToUpdate.groupsOfLines.GroupOfLines = [
+                ...allowedGroupOfLines,
+                ...(!!exemptGroupOfLines ? exemptGroupOfLines : []),
+            ];
 
             return serviceFrameToUpdate;
         }
@@ -320,29 +344,74 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
     // this method is called for all period-type tickets instead of 'updateZoneFareFrame'.
     // only GeoZoneTickets need a NetworkFareFrame. MultiServiceTickets do not need a NetworkFareFrame.
+    // UNLESS the multi service ticket has exempt stops, in which case it needs to create this group of
+    // stops as a zone
     const updateNetworkFareFrame = (networkFareFrame: NetexObject): NetexObject | null => {
-        if (isGeoZoneTicket(ticket) || isHybridTicket(ticket)) {
-            const networkFareFrameToUpdate = { ...networkFareFrame };
+        const networkFareFrameToUpdate = { ...networkFareFrame };
 
+        const fareZones = [];
+
+        if ('exemptStops' in ticket && ticket.exemptStops) {
+            const exemptFareZone = {
+                version: '1.0',
+                id: `op:${coreData.placeholderGroupOfProductsName}@$exempt_stops_zone`,
+                Name: { $t: 'Zone of exempt stops' },
+                Description: { $t: 'A zone made up of stops which are exempt from the product' },
+                members: { ScheduledStopPointRef: getScheduledStopPointsList(ticket.exemptStops) },
+                types: {
+                    TypeOfZoneRef: {
+                        ref: isMultiOperatorGeoZoneTicket(ticket)
+                            ? 'fxc:fare_zone@multi_operator'
+                            : 'fxc:fare_zone@operator',
+                        version: 'fxc:v1.0',
+                    },
+                },
+                projections: { TopographicProjectionRef: getTopographicProjectionRefList(ticket.exemptStops) },
+                ZoneTopology: { $t: 'nested' },
+                ScopingMethod: { $t: 'explicitStops' },
+            };
+
+            fareZones.push(exemptFareZone);
+        }
+
+        if (isGeoZoneTicket(ticket) || isHybridTicket(ticket)) {
             networkFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_NETWORK:${coreData.placeholderGroupOfProductsName}@pass:op`;
             networkFareFrameToUpdate.Name.$t = `${coreData.placeholderGroupOfProductsName} Network`;
             networkFareFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${coreData.operatorIdentifier}:ResourceFrame_UK_PI_COMMON:${coreData.operatorIdentifier}:op`;
 
-            networkFareFrameToUpdate.fareZones.FareZone.id = `op:${coreData.placeholderGroupOfProductsName}@${ticket.zoneName}`;
-            networkFareFrameToUpdate.fareZones.FareZone.Name.$t = `${ticket.zoneName}`;
-            networkFareFrameToUpdate.fareZones.FareZone.Description.$t = `${ticket.zoneName} ${coreData.placeholderGroupOfProductsName} Zone`;
-            networkFareFrameToUpdate.fareZones.FareZone.members.ScheduledStopPointRef = getScheduledStopPointsList(
-                ticket.stops,
-            );
-            networkFareFrameToUpdate.fareZones.FareZone.projections.TopographicProjectionRef = getTopographicProjectionRefList(
-                ticket.stops,
-            );
-            if (isMultiOperatorGeoZoneTicket(ticket)) {
-                networkFareFrameToUpdate.fareZones.FareZone.types.TypeOfZoneRef = {
-                    ref: 'fxc:fare_zone@multi_operator',
-                    version: 'fxc:v1.0',
-                };
-            }
+            const fareZone = {
+                version: '1.0',
+                id: `op:${coreData.placeholderGroupOfProductsName}@${ticket.zoneName}`,
+                Name: { $t: `${ticket.zoneName}` },
+                Description: { $t: `${ticket.zoneName} ${coreData.placeholderGroupOfProductsName} Zone` },
+                members: { ScheduledStopPointRef: getScheduledStopPointsList(ticket.stops) },
+                types: {
+                    TypeOfZoneRef: {
+                        ref: isMultiOperatorGeoZoneTicket(ticket)
+                            ? 'fxc:fare_zone@multi_operator'
+                            : 'fxc:fare_zone@operator',
+                        version: 'fxc:v1.0',
+                    },
+                },
+                projections: { TopographicProjectionRef: getTopographicProjectionRefList(ticket.stops) },
+                ZoneTopology: { $t: 'nested' },
+                ScopingMethod: { $t: 'explicitStops' },
+            };
+
+            fareZones.push(fareZone);
+
+            // reversed so if there is an exemptFareZone, it comes 2nd
+            networkFareFrameToUpdate.fareZones.FareZone = fareZones.reverse();
+
+            return networkFareFrameToUpdate;
+        }
+
+        if (fareZones.length > 0) {
+            networkFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_NETWORK:${coreData.placeholderGroupOfProductsName}@pass:op`;
+            networkFareFrameToUpdate.Name.$t = `${coreData.placeholderGroupOfProductsName} Network - exempt stops`;
+            networkFareFrameToUpdate.prerequisites.ResourceFrameRef.ref = `epd:UK:${coreData.operatorIdentifier}:ResourceFrame_UK_PI_COMMON:${coreData.operatorIdentifier}:op`;
+
+            networkFareFrameToUpdate.fareZones.FareZone = fareZones;
 
             return networkFareFrameToUpdate;
         }
@@ -391,12 +460,9 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
         const fareStructuresElements = getFareStructuresElements(
             ticket,
-            coreData.isCarnet,
-            coreData.lineIdName,
-            coreData.lineName,
-            coreData.placeholderGroupOfProductsName,
-            `${coreData.operatorIdentifier}@groupOfLines@1`,
+            coreData,
             'exemptedServices' in ticket,
+            'exemptStops' in ticket,
         );
         tariff.fareStructureElements.FareStructureElement = fareStructuresElements;
 

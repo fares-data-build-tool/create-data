@@ -224,7 +224,7 @@ export const getExemptedGroupOfLinesList = (operatorIdentifier: string, lines: L
     return [
         {
             version: '1.0',
-            id: `${operatorIdentifier}@groupOfLines@1`,
+            id: `${operatorIdentifier}@exemptGroupOfLines@1`,
             Name: {
                 $t: `A group of exempt services.`,
             },
@@ -943,26 +943,35 @@ export const getTimeRestrictionsElement = (id: string): NetexObject => ({
     },
 });
 
-export const getExemptionsElement = (
-    id: string,
-    validityParametersObject: {},
-    hasTimeRestriction: boolean,
-): NetexObject => ({
+export const getExemptServicesElement = (id: string, validityParametersObject: {}): NetexObject => ({
     version: '1.0',
     id: `op:${id}`,
     Name: { $t: 'Exempted Services' },
     TypeOfFareStructureElementRef: {
         version: 'fxc:v1.0',
-        ref: hasTimeRestriction ? 'fxc:access_when' : 'fxc:access',
+        ref: 'fxc:access',
     },
-    qualityStructureFactors: hasTimeRestriction
-        ? {
-              FareDemandFactorRef: {
-                  ref: 'op@Tariff@Demand',
-                  version: '1.0',
-              },
-          }
-        : null,
+    GenericParameterAssignment: {
+        id,
+        version: '1.0',
+        order: '1',
+        TypeOfAccessRightAssignmentRef: {
+            version: 'fxc:v1.0',
+            ref: 'fxc:cannot_access',
+        },
+        ValidityParameterGroupingType: { $t: 'NOT' },
+        validityParameters: validityParametersObject,
+    },
+});
+
+export const getExemptStopsElement = (id: string, validityParametersObject: {}): NetexObject => ({
+    version: '1.0',
+    id: `op:${id}`,
+    Name: { $t: 'Exempted Stops' },
+    TypeOfFareStructureElementRef: {
+        version: 'fxc:v1.0',
+        ref: 'fxc:access',
+    },
     GenericParameterAssignment: {
         id,
         version: '1.0',

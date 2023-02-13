@@ -34,6 +34,7 @@ export interface AdditionalService extends SelectedService {
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
     termTime: boolean;
+    exemptStops?: Stop[];
 }
 
 export interface FlatFareProduct extends BaseProduct {
@@ -47,10 +48,11 @@ export interface PriceByDistanceProduct extends BaseProduct {
 }
 
 export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
-    products: FlatFareProduct[] | PriceByDistanceProduct[];
+    products: (PriceByDistanceProduct | FlatFareProduct)[];
     termTime: boolean;
     selectedServices: SelectedService[];
     operatorName: string;
+    exemptStops?: Stop[];
 }
 
 export type FlatFareTicket = FlatFareGeoZoneTicket | FlatFareMultipleServices;
