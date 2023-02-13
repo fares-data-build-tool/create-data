@@ -309,7 +309,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const capsAttribute = getSessionAttribute(ctx.req, CREATE_CAPS_ATTRIBUTE);
     let userInput = capsAttribute ? capsAttribute : undefined;
 
-    const editId = Number.isInteger(Number(ctx.query.id)) ? Number(ctx.query.id) : undefined;
+    const id = Number(ctx.query.id);
+    const editId = Number.isInteger(id) ? id : undefined;
     const nocCode = getAndValidateNoc(ctx);
 
     if (editId && !userInput) {
