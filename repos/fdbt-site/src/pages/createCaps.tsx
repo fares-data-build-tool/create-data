@@ -36,7 +36,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
     );
     const [durationAmount, setDurationAmount] = useState(capDurationAmount);
     const [durationUnit, setDurationUnit] = useState(capDurationUnit);
-    const [isStartOfDay, setIsStartOfDay] = useState(!!userInput?.capStart?.startDay);
+    const [startDay, setStartDay] = useState(!!userInput?.capStart?.startDay);
 
     const updateDurationUnit = (durationUnit: string): void => {
         setDurationUnit(durationUnit);
@@ -211,7 +211,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                                 type="radio"
                                                 value="fixedWeekdays"
                                                 data-aria-controls="conditional-fixed-weekdays"
-                                                onChange={(): void => setIsStartOfDay(true)}
+                                                onChange={(): void => setStartDay(true)}
                                                 defaultChecked={
                                                     userInput &&
                                                     userInput.capStart &&
@@ -225,7 +225,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
 
                                         <div
                                             className={`govuk-radios__conditional ${
-                                                !isStartOfDay && 'govuk-visually-hidden'
+                                                !startDay && 'govuk-visually-hidden'
                                             }`}
                                             id="conditional-fixed-weekdays"
                                         >
@@ -261,7 +261,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                                 type="radio"
                                                 value="rollingDays"
                                                 aria-describedby="rolling-days-hint"
-                                                onChange={(): void => setIsStartOfDay(false)}
+                                                onChange={(): void => setStartDay(false)}
                                                 defaultChecked={
                                                     userInput &&
                                                     userInput.capStart &&
