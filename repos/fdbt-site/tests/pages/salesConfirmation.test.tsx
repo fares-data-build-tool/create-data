@@ -32,6 +32,7 @@ describe('pages', () => {
                     endDate="2057-03-13T18:00:00+00:00"
                     csrfToken=""
                     fareType="single"
+                    caps={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -109,6 +110,17 @@ describe('pages', () => {
                 moment().toISOString(),
                 moment().add(100, 'years').toISOString(),
                 'single',
+                [
+                    {
+                        id: 2,
+                        cap: {
+                            name: 'cappy cap',
+                            price: '2',
+                            durationAmount: '24hr',
+                            durationUnits: ExpiryUnit.HOUR,
+                        },
+                    },
+                ],
                 {
                     fullCaps: [
                         {
@@ -124,17 +136,6 @@ describe('pages', () => {
                     errors: [],
                     id: 2,
                 },
-                [
-                    {
-                        id: 2,
-                        cap: {
-                            name: 'cappy cap',
-                            price: '2',
-                            durationAmount: '24hr',
-                            durationUnits: ExpiryUnit.HOUR,
-                        },
-                    },
-                ],
             );
             expect(result).toStrictEqual([
                 {
@@ -213,7 +214,6 @@ describe('pages', () => {
                 now.toISOString(),
                 now.add(100, 'years').toISOString(),
                 'single',
-                undefined,
                 [
                     {
                         id: 2,
@@ -225,6 +225,7 @@ describe('pages', () => {
                         },
                     },
                 ],
+                undefined,
             );
             expect(result).toStrictEqual([
                 {

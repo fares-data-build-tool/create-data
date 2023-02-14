@@ -5,7 +5,7 @@ import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiU
 import { CapInfo, CapsDefinitionWithErrors, NextApiRequestWithSession } from 'src/interfaces';
 import { updateSessionAttribute } from '../../../src/utils/sessions';
 
-const getCapContent = async (cap: number | undefined, noc: string): Promise<CapInfo | undefined> => {
+const getCapContent = async (cap: number, noc: string): Promise<CapInfo | undefined> => {
     if (!cap) {
         return undefined;
     }

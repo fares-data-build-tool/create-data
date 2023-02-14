@@ -31,7 +31,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="contact-hint">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h1 className="govuk-fieldset__heading">Does a cap apply to these product(s)?</h1>
+                                <h1 className="govuk-fieldset__heading">Does a cap apply to this product?</h1>
                             </legend>
 
                             <div id="contact-hint" className="govuk-hint">

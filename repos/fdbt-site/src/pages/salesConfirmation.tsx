@@ -39,8 +39,8 @@ export interface SalesConfirmationProps {
     startDate: string;
     endDate: string | null;
     fareType: string;
+    caps: CapInfo[];
     fullCaps?: CapsDefinition | CapsDefinitionWithErrors;
-    caps?: CapInfo[];
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -58,8 +58,8 @@ export const buildSalesConfirmationElements = (
     startDateIn: string,
     endDateIn: string | null,
     fareType: string,
+    caps: CapInfo[],
     fullCaps?: CapsDefinition | CapsDefinitionWithErrors,
-    caps?: CapInfo[],
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -109,7 +109,7 @@ export const buildSalesConfirmationElements = (
         },
     );
 
-    if (['single', 'return', 'flatFare'].includes(fareType) && caps && caps.length > 0) {
+    if (['single', 'return', 'flatFare'].includes(fareType) && caps.length > 0) {
         confirmationElements.push({
             name: 'Cap',
             content: fullCaps?.fullCaps[0]?.cap.name || 'N/A',
@@ -140,8 +140,8 @@ const SalesConfirmation = ({
                         startDate,
                         endDate,
                         fareType,
-                        fullCaps,
                         caps,
+                        fullCaps,
                     )}
                 />
                 <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
@@ -186,8 +186,8 @@ export const getServerSideProps = async (
             endDate: ticketDatingInfo.endDate ?? null,
             csrfToken,
             fareType: fareTypeAttribute.fareType,
-            fullCaps,
             caps,
+            fullCaps,
         },
     };
 };
