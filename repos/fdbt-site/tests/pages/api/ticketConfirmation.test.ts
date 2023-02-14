@@ -7,6 +7,7 @@ import { CapInfo } from '../../../src/interfaces';
 
 describe('ticketConfirmation', () => {
     const writeHeadMock = jest.fn();
+    const { req, res } = getMockRequestAndResponse({ body: {}, mockWriteHeadFn: writeHeadMock });
     const getFareTypeSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
     jest.spyOn(index, 'getAndValidateNoc').mockReturnValue('BLAC');
     jest.mock('../../../src/utils/apiUtils');
@@ -28,7 +29,6 @@ describe('ticketConfirmation', () => {
     };
 
     it('should return 302 redirect to /selectCaps when the fareType is single and caps exist', async () => {
-        const { req, res } = getMockRequestAndResponse({ body: {}, mockWriteHeadFn: writeHeadMock });
         getFareTypeSpy.mockReturnValue('single');
 
         getCapsSpy.mockResolvedValueOnce([cap]);
@@ -40,7 +40,6 @@ describe('ticketConfirmation', () => {
     });
 
     it('should return 302 redirect to /selectPurchaseMethods when the fareType is single and no cap exists', async () => {
-        const { req, res } = getMockRequestAndResponse({ body: null, mockWriteHeadFn: writeHeadMock });
         getFareTypeSpy.mockReturnValue('single');
         getCapsSpy.mockResolvedValueOnce([]);
         await ticketConfirmation(req, res);
@@ -50,7 +49,6 @@ describe('ticketConfirmation', () => {
     });
 
     it('should return 302 redirect to /selectPurchaseMethods when the fareType is period and no cap exists', async () => {
-        const { req, res } = getMockRequestAndResponse({ body: null, mockWriteHeadFn: writeHeadMock });
         getFareTypeSpy.mockReturnValue('period');
         getCapsSpy.mockResolvedValueOnce([]);
         await ticketConfirmation(req, res);
@@ -60,7 +58,6 @@ describe('ticketConfirmation', () => {
     });
 
     it('should return 302 redirect to /selectPurchaseMethods when the fareType is period and caps exists', async () => {
-        const { req, res } = getMockRequestAndResponse({ body: null, mockWriteHeadFn: writeHeadMock });
         getFareTypeSpy.mockReturnValue('period');
         getCapsSpy.mockResolvedValueOnce([cap]);
         await ticketConfirmation(req, res);
