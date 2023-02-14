@@ -755,7 +755,7 @@ export interface CapInfo {
 }
 
 export interface CapSelection {
-    id: number | undefined;
+    id?: number;
 }
 export interface GroupOfProducts {
     id: number;

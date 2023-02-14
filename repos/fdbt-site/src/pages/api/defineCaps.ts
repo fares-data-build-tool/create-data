@@ -40,7 +40,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (capChoice === 'yes' && !cap) {
             const capDefinitionWithErrors: CapsDefinitionWithErrors = {
-                id: undefined,
                 fullCaps: [],
                 capChoice,
                 errors: [{ errorMessage: 'Choose one of the premade caps', id: 'caps' }],

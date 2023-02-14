@@ -147,7 +147,6 @@ import {
     CapInfo,
     CapSelection,
     CapsDefinitionWithErrors,
-    FullCapAttribute,
     ExemptedStopsAttribute,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
