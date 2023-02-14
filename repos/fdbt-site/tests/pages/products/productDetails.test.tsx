@@ -81,6 +81,7 @@ describe('myfares pages', () => {
                             content: ['18/10/2121'],
                             editLink: '/productDateInformation',
                         },
+                        { id: 'cap', name: 'cap', content: ['Cap 1 - £2'] },
                     ]}
                     productId="2"
                     copiedProduct={false}
