@@ -32,6 +32,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
+        if (capChoice === 'no') {
+            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, undefined);
+            redirectTo(res, '/selectPurchaseMethods');
+            return;
+        }
+
+        if (!Number.isInteger(cap)) {
+            throw Error(`Received invalid cap id ${req.body.id}`);
+        }
+
         const noc = getAndValidateNoc(req, res);
 
         if (capChoice === 'yes' && !cap) {
@@ -57,10 +67,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/selectPurchaseMethods');
             return;
         }
-
-        updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, undefined);
-        redirectTo(res, '/selectPurchaseMethods');
-        return;
     } catch (error) {
         const message = 'There was a problem in the defineCaps API.';
         redirectToError(res, message, 'api.defineCaps', error);
