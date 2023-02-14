@@ -35,9 +35,8 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
                             </legend>
 
                             <div id="contact-hint" className="govuk-hint">
-                                We need to know if your ticket(s) will have any caps, for example select yes if your
-                                ticket(s) can only be used on a certain day or during a certain time period. If you have
-                                a premade cap, you can select it here.
+                                We need to know if your product will have any caps; select yes if your
+                                product has a price cap. You can create these in operator settings.
                             </div>
 
                             <div className="govuk-warning-text">
