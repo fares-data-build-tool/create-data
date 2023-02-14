@@ -27,7 +27,7 @@ describe('ticketConfirmation', () => {
         id: 2,
     };
 
-    it('should return 302 redirect to /selectCaps when the fareType if single and caps exist', async () => {
+    it('should return 302 redirect to /selectCaps when the fareType is single and caps exist', async () => {
         const { req, res } = getMockRequestAndResponse({ body: {}, mockWriteHeadFn: writeHeadMock });
         getFareTypeSpy.mockReturnValue('single');
 
