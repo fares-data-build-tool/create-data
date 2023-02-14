@@ -18,24 +18,61 @@ describe('ticketConfirmation', () => {
         jest.resetAllMocks();
     });
 
-    it('should return 302 redirect to /selectCaps when the fareType if single and caps exist', async () => {
+    const cap: FromDb<CapInfo> = {
+        cap: {
+            name: 'Cap 1',
+            price: '4',
+            durationAmount: '2',
+            durationUnits: 'hour' as ExpiryUnit,
+        },
+        id: 2,
+    };
+
+    it('should return 302 redirect to /selectCaps when the fareType is single and caps exist', async () => {
         const { req, res } = getMockRequestAndResponse({ body: null, mockWriteHeadFn: writeHeadMock });
         getFareTypeSpy.mockReturnValue('single');
-        const cap: FromDb<CapInfo> = {
-            cap: {
-                name: 'Cap 1',
-                price: '4',
-                durationAmount: '2',
-                durationUnits: 'hour' as ExpiryUnit,
-            },
-            id: 2,
-        };
 
         getCapsSpy.mockImplementation(() => Promise.resolve([cap]));
         await ticketConfirmation(req, res);
 
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectCaps',
+        });
+    });
+
+    it('should return 302 redirect to /selectPurchaseMethods when the fareType is single and no cap exists', async () => {
+        const { req, res } = getMockRequestAndResponse({ body: null, mockWriteHeadFn: writeHeadMock });
+        getFareTypeSpy.mockReturnValue('single');
+
+        getCapsSpy.mockImplementation(() => Promise.resolve([]));
+        await ticketConfirmation(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/selectPurchaseMethods',
+        });
+    });
+
+    it('should return 302 redirect to /selectPurchaseMethods when the fareType is period and no cap exists', async () => {
+        const { req, res } = getMockRequestAndResponse({ body: null, mockWriteHeadFn: writeHeadMock });
+        getFareTypeSpy.mockReturnValue('period');
+
+        getCapsSpy.mockImplementation(() => Promise.resolve([]));
+        await ticketConfirmation(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/selectPurchaseMethods',
+        });
+    });
+
+    it('should return 302 redirect to /selectPurchaseMethods when the fareType is period and caps exists', async () => {
+        const { req, res } = getMockRequestAndResponse({ body: null, mockWriteHeadFn: writeHeadMock });
+        getFareTypeSpy.mockReturnValue('period');
+
+        getCapsSpy.mockImplementation(() => Promise.resolve([cap]));
+        await ticketConfirmation(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/selectPurchaseMethods',
         });
     });
 });
