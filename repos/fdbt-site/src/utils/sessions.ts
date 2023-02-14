@@ -80,6 +80,7 @@ import {
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     CREATE_CAPS_ATTRIBUTE,
     STOPS_EXEMPTION_ATTRIBUTE,
+    VIEW_CAP,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -236,6 +237,7 @@ export interface SessionAttributeTypes {
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
     [VIEW_PRODUCT_GROUP]: ErrorInfo[];
+    [VIEW_CAP]: ErrorInfo[];
     [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
     [CAPS_ATTRIBUTE]: CapDetails | WithErrors<CapDetails>;

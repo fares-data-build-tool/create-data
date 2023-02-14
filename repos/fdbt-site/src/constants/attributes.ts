@@ -132,6 +132,8 @@ export const VIEW_OPERATOR_GROUP = 'fdbt-products-using-operator-group';
 
 export const VIEW_PRODUCT_GROUP = 'fdbt-products-using-product-group';
 
+export const VIEW_CAP = 'fdbt-products-using-passenger-type';
+
 export const TYPE_OF_CAP_ATTRIBUTE = 'fdbt-type-of-cap';
 
 export const CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE = 'fdbt-capped-product-group-id';
