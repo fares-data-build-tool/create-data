@@ -8,8 +8,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const fareTypeAttribute = getFareTypeFromFromAttributes(req);
         const nocCode = getAndValidateNoc(req, res);
         const caps = await getCaps(nocCode);
-
+        console.log("called");
         if (['single', 'return', 'flatFare'].includes(fareTypeAttribute) && caps.length > 0) {
+            console.log("in the redirect");
             redirectTo(res, '/selectCaps');
             return;
         }
