@@ -1701,12 +1701,14 @@ export const getCaps = async (nocCode: string): Promise<FromDb<CapInfo>[]> => {
 
         const queryResults = await executeQuery<{ id: string; contents: string }[]>(queryInput, [nocCode]);
         // contents will be like {"cap":{"name":"cap2","price":"2","durationAmount":"23","durationUnits":"day"},"capStart":{"type":"rollingDays"}}
-        return queryResults.map((row) => ({
-            ...(JSON.parse(row.contents) as CapInfo),
-            id: Number(row.id),
-        }));
+        return queryResults.length !== 0
+            ? queryResults.map((row) => ({
+                  ...(JSON.parse(row.contents) as CapInfo),
+                  id: Number(row.id),
+              }))
+            : [];
     } catch (error) {
-        throw new Error(`Could not retrieve cap expiry by nocCode from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve caps by nocCode from AuroraDB: ${error.stack}`);
     }
 };
 
@@ -1734,7 +1736,7 @@ export const getCapByNocAndId = async (nocCode: string, id: number): Promise<Cap
             ? ({ ...JSON.parse(queryResults[0].contents), id: queryResults[0].id } as CapInfo)
             : undefined;
     } catch (error) {
-        throw new Error(`Could not retrieve cap expiry by nocCode from AuroraDB: ${error.stack}`);
+        throw new Error(`Could not retrieve cap by nocCode from AuroraDB: ${error.stack}`);
     }
 };
 
