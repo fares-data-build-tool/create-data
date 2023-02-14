@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { CapInfo } from 'src/interfaces';
+import { Cap } from 'src/interfaces';
 import { ExpiryUnit, FromDb } from '../../src/interfaces/matchingJsonTypes';
 import ViewCaps, { CapCardBody } from '../../src/pages/viewCaps';
 
@@ -62,7 +62,7 @@ describe('pages', () => {
         });
 
         it('should render correctly when cap validity and cap with more than one day duration is present', () => {
-            const cap: FromDb<CapInfo> = {
+            const cap: FromDb<Cap> = {
                 capDetails: {
                     name: 'Cap 1',
                     price: '2',
@@ -90,7 +90,7 @@ describe('pages', () => {
         });
 
         it('should render correctly when cap validity and rollingDays cap start is present', () => {
-            const cap: FromDb<CapInfo> = {
+            const cap: FromDb<Cap> = {
                 capDetails: {
                     name: 'Cap 1',
                     price: '2',

@@ -4,7 +4,7 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
-import { CapInfo, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { isWithErrors } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
@@ -19,7 +19,7 @@ const description = 'Create caps page of the Create Fares Data Service';
 
 interface CreateCapsProps {
     errors: ErrorInfo[];
-    userInput?: CapInfo;
+    userInput?: Cap;
     csrfToken: string;
     editId?: number;
 }

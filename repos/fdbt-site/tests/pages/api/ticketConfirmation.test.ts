@@ -3,7 +3,7 @@ import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as index from '../../../src/utils/apiUtils';
 import * as db from '../../../src/data/auroradb';
 import { ExpiryUnit, FromDb } from '../../../src/interfaces/matchingJsonTypes';
-import { CapInfo } from '../../../src/interfaces';
+import { Cap } from '../../../src/interfaces';
 
 describe('ticketConfirmation', () => {
     const writeHeadMock = jest.fn();
@@ -18,7 +18,7 @@ describe('ticketConfirmation', () => {
         jest.resetAllMocks();
     });
 
-    const cap: FromDb<CapInfo> = {
+    const cap: FromDb<Cap> = {
         capDetails: {
             name: 'Cap 1',
             price: '4',

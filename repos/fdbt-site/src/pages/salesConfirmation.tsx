@@ -7,7 +7,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     CAPS_DEFINITION_ATTRIBUTE,
 } from '../constants/attributes';
-import { NextPageContextWithSession, ProductWithSalesOfferPackages, ConfirmationElement, CapInfo } from '../interfaces';
+import { NextPageContextWithSession, ProductWithSalesOfferPackages, ConfirmationElement, Cap } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
@@ -33,7 +33,7 @@ export interface SalesConfirmationProps {
     endDate: string | null;
     fareType: string;
     hasCaps: boolean;
-    selectedCap: (CapInfo & { id: number }) | null;
+    selectedCap: (Cap & { id: number }) | null;
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -52,7 +52,7 @@ export const buildSalesConfirmationElements = (
     endDateIn: string | null,
     fareType: string,
     hasCaps: boolean,
-    selectedCap?: (CapInfo & { id: number }) | null,
+    selectedCap?: (Cap & { id: number }) | null,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -182,7 +182,7 @@ export const getServerSideProps = async (
             hasCaps: caps.length > 0,
             selectedCap:
                 !!capAttribute && !('errors' in capAttribute)
-                    ? ((await getCapByNocAndId(nocCode, capAttribute.id)) as CapInfo & { id: number })
+                    ? ((await getCapByNocAndId(nocCode, capAttribute.id)) as Cap & { id: number })
                     : null,
         },
     };

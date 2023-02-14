@@ -5,7 +5,7 @@ import { CREATE_CAPS_ATTRIBUTE } from '../../../src/constants/attributes';
 import createCaps from '../../../src/pages/api/createCaps';
 import * as db from '../../../src/data/auroradb';
 import { ExpiryUnit, FromDb } from 'src/interfaces/matchingJsonTypes';
-import { CapInfo } from 'src/interfaces';
+import { Cap } from 'src/interfaces';
 
 describe('createCaps', () => {
     const writeHeadMock = jest.fn();
@@ -162,7 +162,7 @@ describe('createCaps', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        const cap: FromDb<CapInfo> = {
+        const cap: FromDb<Cap> = {
             capDetails: {
                 name: 'Cap 1',
                 price: '4',
