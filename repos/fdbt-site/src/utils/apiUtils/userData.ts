@@ -359,7 +359,7 @@ export const getSingleTicketJson = async (
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
         journeyDirection: (directionAttribute as Direction).direction,
-        ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue, id: undefined } }),
+        ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue.capDetails } }),
     };
 };
 
@@ -428,7 +428,7 @@ export const getReturnTicketJson = async (
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
-        ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue, id: undefined } }),
+        ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue.capDetails } }),
     };
 };
 
@@ -479,7 +479,7 @@ export const getGeoZoneTicketJson = async (
         ...(additionalNocs && { additionalNocs }),
         ...(operatorGroupId && { operatorGroupId }),
         ...(exemptions && { exemptedServices: exemptions.selectedServices }),
-        ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue, id: undefined } }),
+        ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue.capDetails } }),
     };
 };
 
@@ -523,7 +523,7 @@ export const getMultipleServicesByDistanceTicketJson = async (
             salesOfferPackages,
             pricingByDistance,
             productName: pricingByDistance.productName,
-            ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue, id: undefined } }),
+            ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue.capDetails } }),
         },
     ];
 
@@ -577,7 +577,7 @@ export const getMultipleServicesTicketJson = async (
             additionalOperators,
             termTime: isTermTime(req),
             ...(operatorGroupId && { operatorGroupId }),
-            ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue, id: undefined } }),
+            ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue.capDetails } }),
             ...(exemptStops.length > 0 && { exemptStops }),
         };
     }

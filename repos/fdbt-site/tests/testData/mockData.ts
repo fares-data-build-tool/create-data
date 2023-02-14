@@ -1711,6 +1711,16 @@ export const expectedNonCircularReturnTicket: WithIds<ReturnTicket> = {
     },
 };
 
+export const expectedNonCircularReturnTicketWithCap: WithIds<ReturnTicket> = {
+    ...expectedNonCircularReturnTicket,
+    cap: {
+        name: 'Cap 1',
+        price: '4',
+        durationAmount: '2',
+        durationUnits: 'hour' as ExpiryUnit,
+    },
+};
+
 export const expectedReturnTicketWithAdditionalService: WithIds<ReturnTicket> = {
     type: 'return',
     passengerType: { id: 9 },

@@ -3,6 +3,7 @@ import {
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    CAPS_DEFINITION_ATTRIBUTE,
 } from './../../../../src/constants/attributes';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
@@ -69,8 +70,11 @@ import {
     expectedSchemeOperatorAfterFlatFareAdjustmentTicketWithNocInServices,
     expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
     expectedFlatFareGeoZoneTicketWithExemptions,
+    expectedNonCircularReturnTicketWithCap,
 } from '../../../testData/mockData';
 import { CarnetExpiryUnit, ExpiryUnit, PeriodExpiry, TicketType } from '../../../../src/interfaces/matchingJsonTypes';
+
+jest.mock('../../../../src/data/auroradb');
 
 describe('userData', () => {
     describe('isTermTime', () => {
@@ -410,6 +414,62 @@ describe('userData', () => {
             });
             const result = await getReturnTicketJson(req, res);
             expect(result).toEqual(expectedCarnetReturnTicket);
+        });
+
+        it('should correctly add caps', async () => {
+            const getCapByNocAndIdSpy = jest.spyOn(auroradb, 'getCapByNocAndId');
+            getCapByNocAndIdSpy.mockResolvedValueOnce({
+                capDetails: {
+                    name: 'Cap 1',
+                    price: '4',
+                    durationAmount: '2',
+                    durationUnits: 'hour' as ExpiryUnit,
+                },
+                id: 4,
+            });
+
+            const { req, res } = getMockRequestAndResponse({
+                session: {
+                    [MATCHING_ATTRIBUTE]: {
+                        service,
+                        userFareStages,
+                        matchingFareZones: mockOutboundMatchingFaresZones,
+                    },
+                    [INBOUND_MATCHING_ATTRIBUTE]: {
+                        inboundUserFareStages: userFareStages,
+                        inboundMatchingFareZones: mockMatchingFaresZones,
+                    },
+                    [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
+                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'return' },
+                    [PRODUCT_DATE_ATTRIBUTE]: {
+                        startDate: '2020-12-17T09:30:46.0Z',
+                        endDate: '2020-12-18T09:30:46.0Z',
+                        dateInput: {
+                            startDateDay: '17',
+                            startDateMonth: '12',
+                            startDateYear: '2020',
+                            endDateDay: '18',
+                            endDateMonth: '12',
+                            endDateYear: '2020',
+                        },
+                    },
+                    [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
+                    [CARNET_PRODUCT_DETAILS_ATTRIBUTE]: undefined,
+                    [UNASSIGNED_STOPS_ATTRIBUTE]: [
+                        {
+                            atcoCode: 'GHI',
+                        },
+                    ],
+                    [UNASSIGNED_INBOUND_STOPS_ATTRIBUTE]: [
+                        {
+                            atcoCode: 'GHI',
+                        },
+                    ],
+                    [CAPS_DEFINITION_ATTRIBUTE]: { id: 4 },
+                },
+            });
+            const result = await getReturnTicketJson(req, res);
+            expect(result).toEqual(expectedNonCircularReturnTicketWithCap);
         });
     });
 
