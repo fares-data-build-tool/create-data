@@ -15,6 +15,9 @@ import {
 import salesConfirmation from '../../../src/pages/api/salesConfirmation';
 import * as userData from '../../../src/utils/apiUtils/userData';
 import * as index from '../../../src/utils/apiUtils/index';
+import * as db from '../../../src/data/auroradb';
+
+jest.mock('../../../src/data/auroradb');
 
 describe('salesConfirmation', () => {
     const getSchemeOperatorTicketJsonSpy = jest.spyOn(userData, 'getSchemeOperatorTicketJson');
@@ -22,6 +25,9 @@ describe('salesConfirmation', () => {
     const getReturnTicketJsonSpy = jest.spyOn(userData, 'getReturnTicketJson');
     const getGeoZoneTicketJsonSpy = jest.spyOn(userData, 'getGeoZoneTicketJson');
     const getMultipleServicesTicketJsonSpy = jest.spyOn(userData, 'getMultipleServicesTicketJson');
+    const getCapByNocAndIdSpy = jest.spyOn(db, 'getCapByNocAndId');
+
+    getCapByNocAndIdSpy.mockResolvedValueOnce(undefined);
 
     beforeEach(() => {
         process.env.STAGE = 'dev';

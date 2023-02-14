@@ -34,6 +34,7 @@ import {
 } from '../../constants/attributes';
 import {
     batchGetStopsByAtcoCode,
+    getCapByNocAndId,
     getPointToPointProductsByLineId,
     getProductById,
     insertProducts,
@@ -314,7 +315,10 @@ const getPointToPointProducts = (req: NextApiRequestWithSession): WithIds<PointT
     ];
 };
 
-export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): WithIds<SingleTicket> => {
+export const getSingleTicketJson = async (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): Promise<WithIds<SingleTicket>> => {
     const isMatchingInfo = (
         matchingAttributeInfo: MatchingInfo | MatchingWithErrors,
     ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
@@ -325,6 +329,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const singleUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
     const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const nocCode = getAndValidateNoc(req, res);
 
     if (
         !matchingAttributeInfo ||
@@ -337,7 +342,10 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     }
 
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
-
+    let capValue = null;
+    if (cap && !('errors' in cap)) {
+        capValue = await getCapByNocAndId(nocCode, cap.id);
+    }
     return {
         ...baseTicketAttributes,
         ...service,
@@ -351,11 +359,14 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
         journeyDirection: (directionAttribute as Direction).direction,
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue, id: undefined } }),
     };
 };
 
-export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): WithIds<ReturnTicket> => {
+export const getReturnTicketJson = async (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): Promise<WithIds<ReturnTicket>> => {
     const isMatchingInfo = (
         matchingAttributeInfo: MatchingInfo | MatchingWithErrors,
     ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
@@ -373,6 +384,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const inboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE);
     const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const nocCode = getAndValidateNoc(req, res);
 
     if (
         !matchingAttributeInfo ||
@@ -391,6 +403,10 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     }
 
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
+    let capValue = null;
+    if (cap && !('errors' in cap)) {
+        capValue = await getCapByNocAndId(nocCode, cap.id);
+    }
 
     return {
         ...baseTicketAttributes,
@@ -412,7 +428,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue, id: undefined } }),
     };
 };
 
@@ -426,6 +442,7 @@ export const getGeoZoneTicketJson = async (
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
     const exemptions = getSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE) as ServiceListAttribute;
     const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const nocCode = getAndValidateNoc(req, res);
 
     if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName)) {
         throw new Error('Could not create geo zone ticket json. Necessary cookies and session objects not found.');
@@ -450,6 +467,11 @@ export const getGeoZoneTicketJson = async (
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
     }
 
+    let capValue = null;
+    if (cap && !('errors' in cap)) {
+        capValue = await Promise.resolve(getCapByNocAndId(nocCode, cap.id));
+    }
+
     return {
         ...basePeriodTicketAttributes,
         zoneName: fareZoneName,
@@ -457,14 +479,14 @@ export const getGeoZoneTicketJson = async (
         ...(additionalNocs && { additionalNocs }),
         ...(operatorGroupId && { operatorGroupId }),
         ...(exemptions && { exemptedServices: exemptions.selectedServices }),
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue, id: undefined } }),
     };
 };
 
-export const getMultipleServicesByDistanceTicketJson = (
+export const getMultipleServicesByDistanceTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): WithIds<FlatFareMultipleServices> => {
+): Promise<WithIds<FlatFareMultipleServices>> => {
     const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const { selectedServices } = serviceListAttribute;
@@ -472,6 +494,7 @@ export const getMultipleServicesByDistanceTicketJson = (
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE) as SalesOfferPackage[];
     const baseTicketAttributes = getBaseTicketAttributes(req, res, 'flatFare');
     const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const nocCode = getAndValidateNoc(req, res);
 
     if (
         !operatorAttribute ||
@@ -490,12 +513,17 @@ export const getMultipleServicesByDistanceTicketJson = (
 
     const { name } = operatorAttribute;
 
+    let capValue = null;
+    if (cap && !('errors' in cap)) {
+        capValue = await Promise.resolve(getCapByNocAndId(nocCode, cap.id));
+    }
+
     const data = [
         {
             salesOfferPackages,
             pricingByDistance,
             productName: pricingByDistance.productName,
-            ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+            ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue, id: undefined } }),
         },
     ];
 
@@ -515,10 +543,10 @@ export const getMultipleServicesByDistanceTicketJson = (
     } as WithIds<FlatFareMultipleServices>;
 };
 
-export const getMultipleServicesTicketJson = (
+export const getMultipleServicesTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): WithIds<PeriodMultipleServicesTicket> | WithIds<MultiOperatorMultipleServicesTicket> => {
+): Promise<WithIds<PeriodMultipleServicesTicket> | WithIds<MultiOperatorMultipleServicesTicket>> => {
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const { selectedServices } = serviceListAttribute;
     let exemptStops: Stop[] = [];
@@ -536,6 +564,12 @@ export const getMultipleServicesTicketJson = (
         const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
         const operatorGroupId = multiOpAttribute && multiOpAttribute.id ? multiOpAttribute.id : undefined;
         const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+        const nocCode = getAndValidateNoc(req, res);
+
+        let capValue = null;
+        if (cap && !('errors' in cap)) {
+            capValue = await getCapByNocAndId(nocCode, cap.id);
+        }
 
         return {
             ...basePeriodTicketAttributes,
@@ -543,7 +577,7 @@ export const getMultipleServicesTicketJson = (
             additionalOperators,
             termTime: isTermTime(req),
             ...(operatorGroupId && { operatorGroupId }),
-            ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+            ...(!!cap && !('errors' in cap) && capValue && { cap: { ...capValue, id: undefined } }),
             ...(exemptStops.length > 0 && { exemptStops }),
         };
     }
@@ -561,15 +595,15 @@ export const getHybridTicketJson = async (
     res: NextApiResponse,
 ): Promise<WithIds<PeriodHybridTicket>> => {
     const geoZone = await getGeoZoneTicketJson(req, res);
-    const multipleServices = getMultipleServicesTicketJson(req, res);
+    const multipleServices = await getMultipleServicesTicketJson(req, res);
     return { ...geoZone, ...multipleServices };
 };
 
-export const getPointToPointPeriodJson = (
+export const getPointToPointPeriodJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): WithIds<PointToPointPeriodTicket> => {
-    const userDataJson = getReturnTicketJson(req, res);
+): Promise<WithIds<PointToPointPeriodTicket>> => {
+    const userDataJson = await getReturnTicketJson(req, res);
     const pointToPointProduct = getSessionAttribute(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
     if (!pointToPointProduct || isWithErrors(pointToPointProduct)) {
         throw new Error('Point to point period product could not be retrieved from session');
