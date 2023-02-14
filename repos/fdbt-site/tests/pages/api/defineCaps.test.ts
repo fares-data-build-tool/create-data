@@ -83,4 +83,21 @@ describe('defineCaps', () => {
             Location: '/selectCaps',
         });
     });
+    it('redirect back to defineCaps with errors if user does not select any radio button', async () => {
+        const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
+        const { req, res } = getMockRequestAndResponse({
+            body: {},
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await defineCaps(req, res);
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAPS_DEFINITION_ATTRIBUTE, {
+            id: undefined,
+            capChoice: undefined,
+            errors: [{ errorMessage: 'Choose one of the options below', id: 'no-caps' }],
+        });
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/selectCaps',
+        });
+    });
 });

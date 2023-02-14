@@ -87,7 +87,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
                                 <div className="govuk-radios__item">
                                     <input
                                         className="govuk-radios__input"
-                                        id="is-cap"
+                                        id="no-caps"
                                         name="capChoice"
                                         type="radio"
                                         value="no"

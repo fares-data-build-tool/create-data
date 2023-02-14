@@ -42,7 +42,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const capDefinitionWithErrors: CapsDefinitionWithErrors = {
                 id: cap,
                 capChoice,
-                errors: [{ errorMessage: 'Choose one of the options below', id: 'is-cap' }],
+                errors: [{ errorMessage: 'Choose one of the options below', id: 'no-caps' }],
             };
 
             updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, capDefinitionWithErrors);
