@@ -105,7 +105,7 @@ export const buildSalesConfirmationElements = (
     if (['single', 'return', 'flatFare'].includes(fareType) && hasCaps) {
         confirmationElements.push({
             name: 'Cap',
-            content: selectedCap?.cap.name || 'N/A',
+            content: selectedCap?.capDetails.name || 'N/A',
             href: 'selectCaps',
         });
     }

@@ -19,7 +19,7 @@ describe('ticketConfirmation', () => {
     });
 
     const cap: FromDb<CapInfo> = {
-        cap: {
+        capDetails: {
             name: 'Cap 1',
             price: '4',
             durationAmount: '2',

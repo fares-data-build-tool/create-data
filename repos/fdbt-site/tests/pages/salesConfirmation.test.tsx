@@ -59,7 +59,7 @@ describe('pages', () => {
         getCapsSpy.mockResolvedValueOnce([
             {
                 id: 2,
-                cap: {
+                capDetails: {
                     name: 'Best cap',
                     price: '2',
                     durationAmount: '2',
@@ -68,7 +68,7 @@ describe('pages', () => {
             },
             {
                 id: 3,
-                cap: {
+                capDetails: {
                     name: 'Other cap',
                     price: '3',
                     durationAmount: '3',
@@ -80,7 +80,7 @@ describe('pages', () => {
         const getCapByNocAndIdSpy = jest.spyOn(db, 'getCapByNocAndId');
         getCapByNocAndIdSpy.mockResolvedValueOnce({
             id: 2,
-            cap: {
+            capDetails: {
                 name: 'Best cap',
                 price: '2',
                 durationAmount: '2',
@@ -109,7 +109,7 @@ describe('pages', () => {
                 hasCaps: true,
                 selectedCap: {
                     id: 2,
-                    cap: {
+                    capDetails: {
                         name: 'Best cap',
                         price: '2',
                         durationAmount: '2',
@@ -151,7 +151,7 @@ describe('pages', () => {
                 true,
                 {
                     id: 2,
-                    cap: {
+                    capDetails: {
                         name: 'cappy cap',
                         price: '2',
                         durationAmount: '24hr',

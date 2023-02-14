@@ -39,7 +39,7 @@ describe('pages', () => {
 
         it('should render correctly when cap validity and cap with duration less than 24 hour is  present', () => {
             const cap = {
-                cap: {
+                capDetails: {
                     name: 'Cap 1',
                     price: '2',
                     durationAmount: '1',
@@ -63,7 +63,7 @@ describe('pages', () => {
 
         it('should render correctly when cap validity and cap with more than one day duration is present', () => {
             const cap: FromDb<CapInfo> = {
-                cap: {
+                capDetails: {
                     name: 'Cap 1',
                     price: '2',
                     durationAmount: '1',
@@ -91,7 +91,7 @@ describe('pages', () => {
 
         it('should render correctly when cap validity and rollingDays cap start is present', () => {
             const cap: FromDb<CapInfo> = {
-                cap: {
+                capDetails: {
                     name: 'Cap 1',
                     price: '2',
                     durationAmount: '1',
@@ -121,9 +121,9 @@ describe('pages', () => {
         it('renders normally when caps are present', () => {
             const tree = shallow(
                 <CapCardBody
-                    entity={{
+                    cap={{
                         id: 2,
-                        cap: {
+                        capDetails: {
                             name: 'cappy cap',
                             price: '2',
                             durationAmount: '24hr',

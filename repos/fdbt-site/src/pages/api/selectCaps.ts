@@ -47,11 +47,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        if (!Number.isInteger(cap)) {
+        if (!Number.isInteger(Number(cap))) {
             throw Error(`Received invalid cap id ${req.body.id}`);
         }
 
-        const selectedCap = await getCapContent(cap, noc);
+        const selectedCap = await getCapContent(Number(cap), noc);
 
         if (capChoice === 'yes' && !!selectedCap) {
             updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, {
@@ -61,7 +61,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
     } catch (error) {
-        const message = 'There was a problem in the defineCaps API.';
-        redirectToError(res, message, 'api.defineCaps', error);
+        const message = 'There was a problem in the selectCaps API.';
+        redirectToError(res, message, 'api.selectCaps', error);
     }
 };

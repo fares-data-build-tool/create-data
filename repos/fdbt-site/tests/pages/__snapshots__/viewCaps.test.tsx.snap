@@ -155,9 +155,9 @@ exports[`pages view caps should render correctly when cap validity and cap with 
           className="card-row"
         >
           <CapCard
-            capInfo={
+            cap={
               Object {
-                "cap": Object {
+                "capDetails": Object {
                   "durationAmount": "1",
                   "durationUnits": "hour",
                   "name": "Cap 1",
@@ -238,9 +238,9 @@ exports[`pages view caps should render correctly when cap validity and cap with 
           className="card-row"
         >
           <CapCard
-            capInfo={
+            cap={
               Object {
-                "cap": Object {
+                "capDetails": Object {
                   "durationAmount": "1",
                   "durationUnits": "hour",
                   "name": "Cap 1",
@@ -325,9 +325,9 @@ exports[`pages view caps should render correctly when cap validity and rollingDa
           className="card-row"
         >
           <CapCard
-            capInfo={
+            cap={
               Object {
-                "cap": Object {
+                "capDetails": Object {
                   "durationAmount": "1",
                   "durationUnits": "hour",
                   "name": "Cap 1",

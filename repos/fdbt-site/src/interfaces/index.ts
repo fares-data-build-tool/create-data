@@ -737,7 +737,7 @@ export interface CapDetails {
 
 export interface CapInfo {
     id?: number;
-    cap: Cap;
+    capDetails: Cap;
     capStart?: CapStartInfo;
 }
 

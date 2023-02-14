@@ -92,7 +92,7 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
     };
 
     const createdCap: CapInfo = {
-        cap,
+        capDetails: cap,
         capStart,
     };
 
@@ -120,16 +120,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { createdCap, errors } = validateAndFormatCapInputs(inputtedCap);
 
         if (id && !Number.isInteger(id)) {
-            throw Error(`Received invalid id for create caps ${req.body.id}`);
+            throw Error(`Received invalid id for create caps ${id}`);
         }
 
         if (errors.length === 0) {
-            const results: FromDb<CapInfo>[] = await getCaps(noc);
+            const caps: FromDb<CapInfo>[] = await getCaps(noc);
 
             if (
-                results.some(
-                    (capInfo) =>
-                        capInfo.id !== id && capInfo.cap.name.toLowerCase() === createdCap.cap.name.toLowerCase(),
+                caps.some(
+                    (cap) =>
+                        cap.id !== id && cap.capDetails.name.toLowerCase() === createdCap.capDetails.name.toLowerCase(),
                 )
             ) {
                 errors.push({

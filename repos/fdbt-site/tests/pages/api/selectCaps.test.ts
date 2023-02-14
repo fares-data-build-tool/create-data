@@ -20,7 +20,7 @@ describe('selectCaps', () => {
         const getCapByNocAndIdSpy = jest.spyOn(auroradb, 'getCapByNocAndId');
         getCapByNocAndIdSpy.mockImplementation().mockResolvedValue({
             id: 2,
-            cap: {
+            capDetails: {
                 name: 'cappy cap',
                 price: '2',
                 durationAmount: '24hr',

@@ -16,17 +16,17 @@ const description = 'Select Caps page of the Create Fares Data Service';
 interface SelectCapsProps {
     csrfToken: string;
     errors: ErrorInfo[];
-    caps: CapInfo[];
+    capsFromDb: CapInfo[];
     backHref: string;
     selectedId: number | null;
 }
 
-const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCapsProps): ReactElement => {
+const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: SelectCapsProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
             <ErrorSummary errors={errors} />
-            <CsrfForm action="/api/defineCaps" method="post" csrfToken={csrfToken}>
+            <CsrfForm action="/api/selectCaps" method="post" csrfToken={csrfToken}>
                 <>
                     <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="contact-hint">
@@ -71,9 +71,13 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
                                     id="conditional-caps"
                                 >
                                     <div className="govuk-form-group card-row">
-                                        {caps.length ? (
-                                            caps.map((item) => (
-                                                <CapsCard key={item.cap.name} caps={item} selectedId={selectedId} />
+                                        {capsFromDb.length > 0 ? (
+                                            capsFromDb.map((capFromDb) => (
+                                                <CapsCard
+                                                    key={capFromDb.capDetails.name}
+                                                    cap={capFromDb}
+                                                    selectedId={selectedId}
+                                                />
                                             ))
                                         ) : (
                                             <p className="govuk-body govuk-error-message">
@@ -91,7 +95,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
                                         type="radio"
                                         value="no"
                                         data-aria-controls="conditional-caps-2"
-                                        defaultChecked={!selectedId}
+                                        defaultChecked={!selectedId && !errors.some((error) => error.id === 'caps')}
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
                                         No
@@ -117,7 +121,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
     );
 };
 
-const CapsCard = ({ caps, selectedId }: { caps: CapInfo; selectedId: number | null }): ReactElement => {
+const CapsCard = ({ cap, selectedId }: { cap: CapInfo; selectedId: number | null }): ReactElement => {
     return (
         <div className="card">
             <div className="card__body caps">
@@ -125,18 +129,18 @@ const CapsCard = ({ caps, selectedId }: { caps: CapInfo; selectedId: number | nu
                     <div className="govuk-radios__item card__selector">
                         <input
                             className="govuk-radios__input"
-                            id={`${caps.cap.name}-radio`}
+                            id={`${cap.capDetails.name}-radio`}
                             name="cap"
                             type="radio"
-                            value={caps.id}
-                            aria-label={caps.cap.name}
-                            defaultChecked={selectedId === caps.id}
+                            value={cap.id}
+                            aria-label={cap.capDetails.name}
+                            defaultChecked={selectedId === cap.id}
                         />
                         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                         <label className="govuk-label govuk-radios__label" />
                     </div>
                 </div>
-                <CapCardBody entity={caps} />
+                <CapCardBody cap={cap} />
             </div>
         </div>
     );
@@ -153,13 +157,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const nationalOperatorCode = getAndValidateNoc(ctx);
 
-    const caps: CapInfo[] = await getCaps(nationalOperatorCode);
+    const capsFromDb: CapInfo[] = await getCaps(nationalOperatorCode);
 
     return {
         props: {
             csrfToken,
             errors,
-            caps,
+            capsFromDb,
             backHref,
             selectedId: !!capAttribute && !('errors' in capAttribute) ? capAttribute.id : null,
         },
