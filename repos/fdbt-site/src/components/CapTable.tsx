@@ -1,15 +1,15 @@
 import React, { ReactElement } from 'react';
-import { Cap, ErrorInfo } from '../interfaces';
+import { CapDetails, ErrorInfo } from '../interfaces';
 import ExpirySelector from './ExpirySelector';
 import FormElementWrapper, { FormGroupWrapper } from './FormElementWrapper';
 
 interface CapTableProps {
     numberOfEntitesByDistancesToDisplay: number;
     errors: ErrorInfo[];
-    userInputtedCaps: Cap[];
+    userInputtedCaps: CapDetails[];
 }
 
-export const renderTable = (index: number, errors: ErrorInfo[], userInputtedCaps: Cap[] = []): ReactElement => (
+export const renderTable = (index: number, errors: ErrorInfo[], userInputtedCaps: CapDetails[] = []): ReactElement => (
     <fieldset key={index} className="govuk-fieldset">
         <legend className="govuk-fieldset__legend govuk-visually-hidden">{`Enter details for cap ${index + 1}`}</legend>
         <div className="flex-container">
@@ -135,7 +135,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInputtedCaps
 export const renderRows = (
     numberOfEntitesByDistancesToDisplay: number,
     errors: ErrorInfo[],
-    userInputtedCaps: Cap[] = [],
+    userInputtedCaps: CapDetails[] = [],
 ): ReactElement[] => {
     const elements: ReactElement[] = [];
     for (let i = 0; i < numberOfEntitesByDistancesToDisplay; i += 1) {

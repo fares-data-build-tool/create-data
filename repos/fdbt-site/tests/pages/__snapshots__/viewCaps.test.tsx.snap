@@ -1,8 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages cap inner component renders normally when caps are present 1`] = `
+<Fragment>
+  <h4
+    className="govuk-heading-m govuk-!-padding-bottom-4"
+  >
+    cappy cap
+  </h4>
+  <p
+    className="govuk-body-s govuk-!-margin-bottom-2"
+  >
+    <span
+      className="govuk-!-font-weight-bold"
+    >
+      Price:
+    </span>
+     
+    2
+  </p>
+  <p
+    className="govuk-body-s govuk-!-margin-bottom-2"
+  >
+    <span
+      className="govuk-!-font-weight-bold"
+    >
+      Duration:
+    </span>
+     
+    24hr
+     
+    hour
+  </p>
+</Fragment>
+`;
+
 exports[`pages view caps should render correctly on no cap expiry 1`] = `
 <BaseLayout
   description="View and edit your caps."
+  referer={null}
   showNavigation={true}
   title="Caps - Create Fares Data Service"
 >
@@ -69,6 +104,7 @@ exports[`pages view caps should render correctly on no cap expiry 1`] = `
 exports[`pages view caps should render correctly when cap validity and cap with duration less than 24 hour is  present 1`] = `
 <BaseLayout
   description="View and edit your caps."
+  referer={null}
   showNavigation={true}
   title="Caps - Create Fares Data Service"
 >
@@ -119,9 +155,9 @@ exports[`pages view caps should render correctly when cap validity and cap with 
           className="card-row"
         >
           <CapCard
-            capInfo={
+            cap={
               Object {
-                "cap": Object {
+                "capDetails": Object {
                   "durationAmount": "1",
                   "durationUnits": "hour",
                   "name": "Cap 1",
@@ -151,6 +187,7 @@ exports[`pages view caps should render correctly when cap validity and cap with 
 exports[`pages view caps should render correctly when cap validity and cap with more than one day duration is present 1`] = `
 <BaseLayout
   description="View and edit your caps."
+  referer={null}
   showNavigation={true}
   title="Caps - Create Fares Data Service"
 >
@@ -201,9 +238,9 @@ exports[`pages view caps should render correctly when cap validity and cap with 
           className="card-row"
         >
           <CapCard
-            capInfo={
+            cap={
               Object {
-                "cap": Object {
+                "capDetails": Object {
                   "durationAmount": "1",
                   "durationUnits": "hour",
                   "name": "Cap 1",
@@ -237,6 +274,7 @@ exports[`pages view caps should render correctly when cap validity and cap with 
 exports[`pages view caps should render correctly when cap validity and rollingDays cap start is present 1`] = `
 <BaseLayout
   description="View and edit your caps."
+  referer={null}
   showNavigation={true}
   title="Caps - Create Fares Data Service"
 >
@@ -287,9 +325,9 @@ exports[`pages view caps should render correctly when cap validity and rollingDa
           className="card-row"
         >
           <CapCard
-            capInfo={
+            cap={
               Object {
-                "cap": Object {
+                "capDetails": Object {
                   "durationAmount": "1",
                   "durationUnits": "hour",
                   "name": "Cap 1",
@@ -322,6 +360,7 @@ exports[`pages view caps should render correctly when cap validity and rollingDa
 exports[`pages view caps should render correctly when cap validity is 24 hr 1`] = `
 <BaseLayout
   description="View and edit your caps."
+  referer={null}
   showNavigation={true}
   title="Caps - Create Fares Data Service"
 >
@@ -391,6 +430,7 @@ exports[`pages view caps should render correctly when cap validity is 24 hr 1`] 
 exports[`pages view caps should render correctly when cap validity is fare day end 1`] = `
 <BaseLayout
   description="View and edit your caps."
+  referer={null}
   showNavigation={true}
   title="Caps - Create Fares Data Service"
 >
