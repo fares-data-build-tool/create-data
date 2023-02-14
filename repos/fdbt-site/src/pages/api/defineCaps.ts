@@ -6,10 +6,6 @@ import { CapInfo, CapsDefinitionWithErrors, NextApiRequestWithSession } from 'sr
 import { updateSessionAttribute } from '../../../src/utils/sessions';
 
 const getCapContent = async (cap: number, noc: string): Promise<CapInfo | undefined> => {
-    if (!cap) {
-        return undefined;
-    }
-
     const result = await getCapByNocAndId(noc, cap);
 
     if (!result) {
