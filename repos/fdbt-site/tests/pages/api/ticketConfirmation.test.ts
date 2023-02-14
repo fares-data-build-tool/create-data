@@ -14,7 +14,7 @@ describe('ticketConfirmation', () => {
     jest.spyOn(index, 'getAndValidateNoc').mockReturnValue('BLAC');
     const getCapsSpy = jest.spyOn(db, 'getCaps');
 
-    afterEach(() => {
+    beforeEach(() => {
         jest.resetAllMocks();
     });
 
