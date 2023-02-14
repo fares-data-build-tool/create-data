@@ -34,11 +34,6 @@ exports[`pages confirmation should render correctly 1`] = `
             "href": "productDateInformation",
             "name": "Ticket end date",
           },
-          Object {
-            "content": "N/A",
-            "href": "selectCaps",
-            "name": "Cap",
-          },
         ]
       }
       header="Sales Information"

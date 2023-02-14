@@ -28,7 +28,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
             <ErrorSummary errors={errors} />
             <CsrfForm action="/api/defineCaps" method="post" csrfToken={csrfToken}>
                 <>
-                    <div className="govuk-form-group">
+                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
                         <fieldset className="govuk-fieldset" aria-describedby="contact-hint">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 className="govuk-fieldset__heading">Does a cap apply to these product(s)?</h1>
@@ -55,7 +55,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
                                 <div className="govuk-radios__item">
                                     <input
                                         className="govuk-radios__input"
-                                        id="is-cap"
+                                        id="caps"
                                         name="capChoice"
                                         type="radio"
                                         value="Premade"
@@ -87,7 +87,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
                                 <div className="govuk-radios__item">
                                     <input
                                         className="govuk-radios__input"
-                                        id="valid-days-not-required"
+                                        id="is-cap"
                                         name="capChoice"
                                         type="radio"
                                         value="no"

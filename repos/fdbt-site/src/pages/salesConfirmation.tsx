@@ -12,6 +12,7 @@ import {
     ProductWithSalesOfferPackages,
     ConfirmationElement,
     FullCapAttribute,
+    CapInfo,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -22,10 +23,11 @@ import {
     isProductWithSalesOfferPackages,
     isTicketPeriodAttributeWithErrors,
 } from '../interfaces/typeGuards';
-import { formatSOPArray, getCsrfToken } from '../utils';
+import { formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
 import { ticketFormatsList } from './managePurchaseMethod';
 import { GetServerSidePropsResult } from 'next';
 import { SalesOfferPackage } from '../interfaces/matchingJsonTypes';
+import { getCaps } from '../../src/data/auroradb';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
@@ -37,6 +39,7 @@ export interface SalesConfirmationProps {
     endDate: string | null;
     fareType: string;
     fullCaps?: FullCapAttribute;
+    caps?: CapInfo[];
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -55,6 +58,7 @@ export const buildSalesConfirmationElements = (
     endDateIn: string | null,
     fareType: string,
     fullCaps?: FullCapAttribute,
+    caps?: CapInfo[],
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -104,7 +108,7 @@ export const buildSalesConfirmationElements = (
         },
     );
 
-    if (['single', 'return', 'flatFare'].includes(fareType)) {
+    if (['single', 'return', 'flatFare'].includes(fareType) && caps && caps.length > 0) {
         confirmationElements.push({
             name: 'Cap',
             content: fullCaps?.fullCaps[0]?.cap.name || 'N/A',
@@ -122,6 +126,7 @@ const SalesConfirmation = ({
     endDate,
     fareType,
     fullCaps,
+    caps,
 }: SalesConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/salesConfirmation" method="post" csrfToken={csrfToken}>
@@ -135,6 +140,7 @@ const SalesConfirmation = ({
                         endDate,
                         fareType,
                         fullCaps,
+                        caps,
                     )}
                 />
                 <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
@@ -149,9 +155,9 @@ const SalesConfirmation = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (
+export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
-): GetServerSidePropsResult<SalesConfirmationProps> => {
+): Promise<GetServerSidePropsResult<SalesConfirmationProps>> => {
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     if (!fareTypeAttribute) {
         return { redirect: { destination: '/home', permanent: false } };
@@ -160,6 +166,8 @@ export const getServerSideProps = (
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const ticketDatingInfo = getRequiredSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
     const fullCaps = (getSessionAttribute(ctx.req, FULL_CAPS_ATTRIBUTE) as FullCapAttribute) || null;
+    const nocCode = getAndValidateNoc(ctx);
+    const caps = await getCaps(nocCode);
 
     if (
         !salesOfferPackageInfo ||
@@ -178,6 +186,7 @@ export const getServerSideProps = (
             csrfToken,
             fareType: fareTypeAttribute.fareType,
             fullCaps,
+            caps,
         },
     };
 };

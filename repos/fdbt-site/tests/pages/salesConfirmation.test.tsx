@@ -50,7 +50,7 @@ describe('pages', () => {
             endDateYear: '2020',
         };
 
-        it('should extract the start date and end date from the PRODUCT_DATE_ATTRIBUTE when the user has entered both', () => {
+        it('should extract the start date and end date from the PRODUCT_DATE_ATTRIBUTE when the user has entered both', async () => {
             const ctx = getMockContext({
                 session: {
                     [PRODUCT_DATE_ATTRIBUTE]: {
@@ -66,8 +66,9 @@ describe('pages', () => {
                 endDate: mockEndDate,
                 fareType: 'single',
                 fullCaps: null,
+                caps: [],
             };
-            const actualProps = getServerSideProps(ctx);
+            const actualProps = await getServerSideProps(ctx);
             expect((actualProps as { props: SalesConfirmationProps }).props).toEqual(expectedProps);
         });
     });
@@ -113,6 +114,17 @@ describe('pages', () => {
                     errors: [],
                     id: 2,
                 },
+                [
+                    {
+                        id: 2,
+                        cap: {
+                            name: 'cappy cap',
+                            price: '2',
+                            durationAmount: '24hr',
+                            durationUnits: ExpiryUnit.HOUR,
+                        },
+                    },
+                ],
             );
             expect(result).toStrictEqual([
                 {
@@ -145,6 +157,7 @@ describe('pages', () => {
 
         it('builds confirmation elements for multi product fares', () => {
             const now = moment('2021-06-20');
+
             const result = buildSalesConfirmationElements(
                 [
                     {
@@ -190,6 +203,18 @@ describe('pages', () => {
                 now.toISOString(),
                 now.add(100, 'years').toISOString(),
                 'single',
+                undefined,
+                [
+                    {
+                        id: 2,
+                        cap: {
+                            name: 'cappy cap',
+                            price: '2',
+                            durationAmount: '24hr',
+                            durationUnits: ExpiryUnit.HOUR,
+                        },
+                    },
+                ],
             );
             expect(result).toStrictEqual([
                 {
