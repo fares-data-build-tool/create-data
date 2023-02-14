@@ -462,16 +462,7 @@ export interface TimeRestrictionsDefinition extends TimeRestriction {
     timeRestrictionChoice?: string;
 }
 
-export interface CapsDefinition extends CapSelection {
-    capChoice?: string;
-    fullCaps: CapInfo[];
-}
-
 export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDefinition {
-    errors: ErrorInfo[];
-}
-
-export interface CapsDefinitionWithErrors extends CapsDefinition {
     errors: ErrorInfo[];
 }
 
@@ -739,10 +730,6 @@ export interface ServiceToDisplay {
     lineName: string;
 }
 
-export interface TypeOfCap {
-    typeOfCap: 'byDistance' | 'byTaps' | 'byProducts';
-}
-
 export interface CapDetails {
     caps: Cap[];
     productName: string;
@@ -755,7 +742,7 @@ export interface CapInfo {
 }
 
 export interface CapSelection {
-    id?: number;
+    id: number;
 }
 export interface GroupOfProducts {
     id: number;

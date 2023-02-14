@@ -23,7 +23,7 @@ export interface InputtedCap {
     startDay: string | undefined;
 }
 
-export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createdCaps: CapInfo } => {
+export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createdCap: CapInfo } => {
     const errors: ErrorInfo[] = [];
 
     const trimmedCapName = removeExcessWhiteSpace(inputtedCap.name);
@@ -91,14 +91,14 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
         durationUnits: (inputtedCap.durationUnits as ExpiryUnit) || '',
     };
 
-    const createdCaps: CapInfo = {
+    const createdCap: CapInfo = {
         cap,
         capStart,
     };
 
     return {
         errors,
-        createdCaps,
+        createdCap,
     };
 };
 
@@ -117,7 +117,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             startDay: startDay,
         };
 
-        const { createdCaps, errors } = validateAndFormatCapInputs(inputtedCap);
+        const { createdCap, errors } = validateAndFormatCapInputs(inputtedCap);
 
         if (id && !Number.isInteger(id)) {
             throw Error(`Received invalid id for create caps ${req.body.id}`);
@@ -128,7 +128,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             if (
                 results.some(
-                    (cap) => cap.id !== id && cap.cap.name.toLowerCase() === createdCaps.cap.name.toLowerCase(),
+                    (capInfo) =>
+                        capInfo.id !== id && capInfo.cap.name.toLowerCase() === createdCap.cap.name.toLowerCase(),
                 )
             ) {
                 errors.push({
@@ -139,7 +140,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (errors.length > 0) {
-            updateSessionAttribute(req, CREATE_CAPS_ATTRIBUTE, { errors, ...createdCaps });
+            updateSessionAttribute(req, CREATE_CAPS_ATTRIBUTE, { errors, ...createdCap });
             redirectTo(res, `/createCaps${!!id ? `?id=${id}` : ''}`);
             return;
         }
@@ -147,9 +148,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         updateSessionAttribute(req, CREATE_CAPS_ATTRIBUTE, undefined);
 
         if (id) {
-            await updateCaps(noc, id, createdCaps);
+            await updateCaps(noc, id, createdCap);
         } else {
-            await insertCaps(noc, createdCaps);
+            await insertCaps(noc, createdCap);
         }
 
         redirectTo(res, '/viewCaps');

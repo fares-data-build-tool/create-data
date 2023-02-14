@@ -351,7 +351,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
         journeyDirection: (directionAttribute as Direction).direction,
-        ...(cap?.id && { cap: { id: cap.id } }),
+        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
     };
 };
 
@@ -412,7 +412,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
-        ...(cap?.id && { cap: { id: cap.id } }),
+        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
     };
 };
 
@@ -457,7 +457,7 @@ export const getGeoZoneTicketJson = async (
         ...(additionalNocs && { additionalNocs }),
         ...(operatorGroupId && { operatorGroupId }),
         ...(exemptions && { exemptedServices: exemptions.selectedServices }),
-        ...(cap?.id && { cap: { id: cap.id } }),
+        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
     };
 };
 
@@ -495,7 +495,7 @@ export const getMultipleServicesByDistanceTicketJson = (
             salesOfferPackages,
             pricingByDistance,
             productName: pricingByDistance.productName,
-            ...(cap?.id && { cap: { id: cap.id } }),
+            ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
         },
     ];
 
@@ -543,7 +543,7 @@ export const getMultipleServicesTicketJson = (
             additionalOperators,
             termTime: isTermTime(req),
             ...(operatorGroupId && { operatorGroupId }),
-            ...(cap?.id && { cap: { id: cap.id } }),
+            ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
             ...(exemptStops.length > 0 && { exemptStops }),
         };
     }

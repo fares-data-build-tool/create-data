@@ -2,10 +2,10 @@ import { NextApiResponse } from 'next';
 import { CAPS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
 import { getCapByNocAndId } from '../../data/auroradb';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
-import { CapInfo, CapsDefinitionWithErrors, NextApiRequestWithSession } from 'src/interfaces';
-import { updateSessionAttribute } from '../../../src/utils/sessions';
+import { CapInfo, NextApiRequestWithSession } from 'src/interfaces';
+import { updateSessionAttribute } from '../../utils/sessions';
 
-const getCapContent = async (cap: number, noc: string): Promise<CapInfo | undefined> => {
+const getCapContent = async (cap: number, noc: string): Promise<CapInfo & { id: number }> => {
     const result = await getCapByNocAndId(noc, cap);
 
     if (!result) {
@@ -20,14 +20,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { capChoice, cap } = req.body;
 
         if (!capChoice) {
-            const capDefinitionWithErrors: CapsDefinitionWithErrors = {
-                id: cap,
-                capChoice,
-                fullCaps: [],
+            const errors = {
                 errors: [{ errorMessage: 'Choose one of the options below', id: 'no-caps' }],
             };
 
-            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, capDefinitionWithErrors);
+            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, errors);
             redirectTo(res, '/selectCaps');
             return;
         }
@@ -41,13 +38,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const noc = getAndValidateNoc(req, res);
 
         if (capChoice === 'yes' && !cap) {
-            const capDefinitionWithErrors: CapsDefinitionWithErrors = {
-                fullCaps: [],
-                capChoice,
+            const errors = {
                 errors: [{ errorMessage: 'Choose one of the premade caps', id: 'caps' }],
             };
 
-            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, capDefinitionWithErrors);
+            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, errors);
             redirectTo(res, '/selectCaps');
             return;
         }
@@ -58,10 +53,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const selectedCap = await getCapContent(cap, noc);
 
-        if (capChoice === 'yes' && selectedCap) {
+        if (capChoice === 'yes' && !!selectedCap) {
             updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, {
-                fullCaps: [selectedCap],
-                errors: [],
                 id: selectedCap.id,
             });
             redirectTo(res, '/selectPurchaseMethods');

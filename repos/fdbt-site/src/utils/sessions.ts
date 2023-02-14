@@ -59,7 +59,6 @@ import {
     VIEW_TIME_RESTRICTION,
     VIEW_OPERATOR_GROUP,
     CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
-    TYPE_OF_CAP_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
     GS_FARE_DAY_END_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
@@ -137,7 +136,6 @@ import {
     Errors,
     BasicService,
     ManageOperatorGroupWithErrors,
-    TypeOfCap,
     ManageProductGroupWithErrors,
     DistancePricingData,
     MultiTapPricing,
@@ -146,7 +144,6 @@ import {
     EditFareStageMatchingWithErrors,
     CapInfo,
     CapSelection,
-    CapsDefinitionWithErrors,
     ExemptedStopsAttribute,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
@@ -239,7 +236,6 @@ export interface SessionAttributeTypes {
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
     [VIEW_PRODUCT_GROUP]: ErrorInfo[];
-    [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
     [CAPS_ATTRIBUTE]: CapDetails | WithErrors<CapDetails>;
     [CREATE_CAPS_ATTRIBUTE]: CapInfo | WithErrors<CapInfo>;
@@ -253,7 +249,7 @@ export interface SessionAttributeTypes {
         | AdditionalPricing
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
     [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
-    [CAPS_DEFINITION_ATTRIBUTE]: CapSelection | CapsDefinitionWithErrors;
+    [CAPS_DEFINITION_ATTRIBUTE]: CapSelection | { errors: ErrorInfo[] };
     [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
     [STOPS_EXEMPTION_ATTRIBUTE]: ExemptedStopsAttribute | { errors: ErrorInfo[] };
 }

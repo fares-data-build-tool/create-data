@@ -7,14 +7,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     CAPS_DEFINITION_ATTRIBUTE,
 } from '../constants/attributes';
-import {
-    NextPageContextWithSession,
-    ProductWithSalesOfferPackages,
-    ConfirmationElement,
-    CapInfo,
-    CapsDefinition,
-    CapsDefinitionWithErrors,
-} from '../interfaces';
+import { NextPageContextWithSession, ProductWithSalesOfferPackages, ConfirmationElement, CapInfo } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
@@ -28,7 +21,7 @@ import { formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
 import { ticketFormatsList } from './managePurchaseMethod';
 import { GetServerSidePropsResult } from 'next';
 import { SalesOfferPackage } from '../interfaces/matchingJsonTypes';
-import { getCaps } from '../../src/data/auroradb';
+import { getCapByNocAndId, getCaps } from '../../src/data/auroradb';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
@@ -39,8 +32,8 @@ export interface SalesConfirmationProps {
     startDate: string;
     endDate: string | null;
     fareType: string;
-    caps: CapInfo[];
-    fullCaps?: CapsDefinition | CapsDefinitionWithErrors;
+    hasCaps: boolean;
+    selectedCap: (CapInfo & { id: number }) | null;
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -58,8 +51,8 @@ export const buildSalesConfirmationElements = (
     startDateIn: string,
     endDateIn: string | null,
     fareType: string,
-    caps: CapInfo[],
-    fullCaps?: CapsDefinition | CapsDefinitionWithErrors,
+    hasCaps: boolean,
+    selectedCap?: (CapInfo & { id: number }) | null,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -109,10 +102,10 @@ export const buildSalesConfirmationElements = (
         },
     );
 
-    if (['single', 'return', 'flatFare'].includes(fareType) && caps.length > 0) {
+    if (['single', 'return', 'flatFare'].includes(fareType) && hasCaps) {
         confirmationElements.push({
             name: 'Cap',
-            content: fullCaps?.fullCaps[0]?.cap.name || 'N/A',
+            content: selectedCap?.cap.name || 'N/A',
             href: 'selectCaps',
         });
     }
@@ -126,8 +119,8 @@ const SalesConfirmation = ({
     startDate,
     endDate,
     fareType,
-    fullCaps,
-    caps,
+    hasCaps,
+    selectedCap,
 }: SalesConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/salesConfirmation" method="post" csrfToken={csrfToken}>
@@ -140,8 +133,8 @@ const SalesConfirmation = ({
                         startDate,
                         endDate,
                         fareType,
-                        caps,
-                        fullCaps,
+                        hasCaps,
+                        selectedCap,
                     )}
                 />
                 <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
@@ -166,7 +159,7 @@ export const getServerSideProps = async (
     const csrfToken = getCsrfToken(ctx);
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const ticketDatingInfo = getRequiredSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
-    const fullCaps = (getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE) as CapsDefinition) || null;
+    const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
     const caps = await getCaps(nocCode);
 
@@ -186,8 +179,11 @@ export const getServerSideProps = async (
             endDate: ticketDatingInfo.endDate ?? null,
             csrfToken,
             fareType: fareTypeAttribute.fareType,
-            caps,
-            fullCaps,
+            hasCaps: caps.length > 0,
+            selectedCap:
+                !!capAttribute && !('errors' in capAttribute)
+                    ? ((await getCapByNocAndId(nocCode, capAttribute.id)) as CapInfo & { id: number })
+                    : null,
         },
     };
 };

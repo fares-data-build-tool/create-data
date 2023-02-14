@@ -8,7 +8,7 @@ import SalesConfirmation, {
     sopTicketFormatConverter,
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
-import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
+import { CAPS_DEFINITION_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
 import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
 import * as db from '../../src/data/auroradb';
 
@@ -32,7 +32,8 @@ describe('pages', () => {
                     endDate="2057-03-13T18:00:00+00:00"
                     csrfToken=""
                     fareType="single"
-                    caps={[]}
+                    hasCaps={false}
+                    selectedCap={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -55,10 +56,36 @@ describe('pages', () => {
         jest.mock('../../src/data/auroradb');
 
         const getCapsSpy = jest.spyOn(db, 'getCaps');
-        getCapsSpy.mockResolvedValueOnce([]);
+        getCapsSpy.mockResolvedValueOnce([
+            {
+                id: 2,
+                cap: {
+                    name: 'Best cap',
+                    price: '2',
+                    durationAmount: '2',
+                    durationUnits: ExpiryUnit.HOUR,
+                },
+            },
+            {
+                id: 3,
+                cap: {
+                    name: 'Other cap',
+                    price: '3',
+                    durationAmount: '3',
+                    durationUnits: ExpiryUnit.HOUR,
+                },
+            },
+        ]);
 
-        beforeEach(() => {
-            jest.resetAllMocks();
+        const getCapByNocAndIdSpy = jest.spyOn(db, 'getCapByNocAndId');
+        getCapByNocAndIdSpy.mockResolvedValueOnce({
+            id: 2,
+            cap: {
+                name: 'Best cap',
+                price: '2',
+                durationAmount: '2',
+                durationUnits: ExpiryUnit.HOUR,
+            },
         });
 
         it('should extract the start date and end date from the PRODUCT_DATE_ATTRIBUTE when the user has entered both', async () => {
@@ -69,6 +96,9 @@ describe('pages', () => {
                         endDate: mockEndDate,
                         dateInput: mockDateInput,
                     },
+                    [CAPS_DEFINITION_ATTRIBUTE]: {
+                        id: 2,
+                    },
                 },
             });
             const expectedProps = {
@@ -76,8 +106,16 @@ describe('pages', () => {
                 startDate: mockStartDate,
                 endDate: mockEndDate,
                 fareType: 'single',
-                fullCaps: null,
-                caps: undefined,
+                hasCaps: true,
+                selectedCap: {
+                    id: 2,
+                    cap: {
+                        name: 'Best cap',
+                        price: '2',
+                        durationAmount: '2',
+                        durationUnits: ExpiryUnit.HOUR,
+                    },
+                },
             };
             const actualProps = await getServerSideProps(ctx);
             expect((actualProps as { props: SalesConfirmationProps }).props).toEqual(expectedProps);
@@ -110,31 +148,15 @@ describe('pages', () => {
                 moment().toISOString(),
                 moment().add(100, 'years').toISOString(),
                 'single',
-                [
-                    {
-                        id: 2,
-                        cap: {
-                            name: 'cappy cap',
-                            price: '2',
-                            durationAmount: '24hr',
-                            durationUnits: ExpiryUnit.HOUR,
-                        },
-                    },
-                ],
+                true,
                 {
-                    fullCaps: [
-                        {
-                            id: 2,
-                            cap: {
-                                name: 'cappy cap',
-                                price: '2',
-                                durationAmount: '24hr',
-                                durationUnits: ExpiryUnit.HOUR,
-                            },
-                        },
-                    ],
-                    errors: [],
                     id: 2,
+                    cap: {
+                        name: 'cappy cap',
+                        price: '2',
+                        durationAmount: '24hr',
+                        durationUnits: ExpiryUnit.HOUR,
+                    },
                 },
             );
             expect(result).toStrictEqual([
@@ -214,18 +236,8 @@ describe('pages', () => {
                 now.toISOString(),
                 now.add(100, 'years').toISOString(),
                 'single',
-                [
-                    {
-                        id: 2,
-                        cap: {
-                            name: 'cappy cap',
-                            price: '2',
-                            durationAmount: '24hr',
-                            durationUnits: ExpiryUnit.HOUR,
-                        },
-                    },
-                ],
-                undefined,
+                true,
+                null,
             );
             expect(result).toStrictEqual([
                 {

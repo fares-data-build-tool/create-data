@@ -147,7 +147,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const capsDefinition = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
     const errors = !!capsDefinition && 'errors' in capsDefinition ? capsDefinition.errors : [];
 
-    const selectedId = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE)?.id || null;
+    const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
 
     const backHref = '';
 
@@ -155,7 +155,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const caps: CapInfo[] = await getCaps(nationalOperatorCode);
 
-    return { props: { csrfToken, errors, caps, backHref, selectedId } };
+    return {
+        props: {
+            csrfToken,
+            errors,
+            caps,
+            backHref,
+            selectedId: !!capAttribute && !('errors' in capAttribute) ? capAttribute.id : null,
+        },
+    };
 };
 
 export default SelectCaps;

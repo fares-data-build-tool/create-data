@@ -1712,7 +1712,10 @@ export const getCaps = async (nocCode: string): Promise<FromDb<CapInfo>[]> => {
     }
 };
 
-export const getCapByNocAndId = async (nocCode: string, id: number): Promise<CapInfo | undefined> => {
+export const getCapByNocAndId = async (
+    nocCode: string,
+    id: number,
+): Promise<(CapInfo & { id: number }) | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving cap for given nocCode and id',
@@ -1722,7 +1725,7 @@ export const getCapByNocAndId = async (nocCode: string, id: number): Promise<Cap
 
     try {
         const queryInput = `
-            SELECT  id, contents
+            SELECT id, contents
             FROM caps
             WHERE noc = ?
             AND id = ?
@@ -1733,7 +1736,7 @@ export const getCapByNocAndId = async (nocCode: string, id: number): Promise<Cap
         // contents will be like {"cap":{"name":"cap2","price":"2","durationAmount":"23","durationUnits":"day"},"capStart":{"type":"rollingDays"}}
 
         return queryResults.length !== 0
-            ? ({ ...JSON.parse(queryResults[0].contents), id: queryResults[0].id } as CapInfo)
+            ? ({ ...JSON.parse(queryResults[0].contents), id: queryResults[0].id } as CapInfo & { id: number })
             : undefined;
     } catch (error) {
         throw new Error(`Could not retrieve cap by nocCode from AuroraDB: ${error.stack}`);
