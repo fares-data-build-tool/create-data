@@ -10,6 +10,7 @@ import SalesConfirmation, {
 import { getMockContext } from '../testData/mockData';
 import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
 import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
+import * as db from '../../src/data/auroradb';
 
 describe('pages', () => {
     describe('confirmation', () => {
@@ -50,6 +51,15 @@ describe('pages', () => {
             endDateYear: '2020',
         };
 
+        jest.mock('../../src/data/auroradb');
+
+        const getCapsSpy = jest.spyOn(db, 'getCaps');
+        getCapsSpy.mockResolvedValueOnce([]);
+
+        beforeEach(() => {
+            jest.resetAllMocks();
+        });
+
         it('should extract the start date and end date from the PRODUCT_DATE_ATTRIBUTE when the user has entered both', async () => {
             const ctx = getMockContext({
                 session: {
@@ -66,7 +76,7 @@ describe('pages', () => {
                 endDate: mockEndDate,
                 fareType: 'single',
                 fullCaps: null,
-                caps: [],
+                caps: undefined,
             };
             const actualProps = await getServerSideProps(ctx);
             expect((actualProps as { props: SalesConfirmationProps }).props).toEqual(expectedProps);
