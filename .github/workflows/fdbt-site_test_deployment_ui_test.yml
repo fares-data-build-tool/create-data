@@ -12,8 +12,10 @@ jobs:
   fdbt-site_test_ui_tests:
     name: 'fdbt-site_test_ui_tests'
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: test
+    
     env:
       ECS_SERVICE: ${{ secrets.ECS_SERVICE }}                 # set this to your Amazon ECS service name
       ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
@@ -24,6 +26,7 @@ jobs:
 
 
     steps:
+
 
     - name: Sleep for 10 mins
       run: sleep 10m
@@ -38,3 +41,10 @@ jobs:
         cd ..
         bash run_tests_in_browserstack.sh
 
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: | 
+          echo "The triggering workflow failed"
+          exit 1    
