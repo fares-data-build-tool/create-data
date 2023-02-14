@@ -2,19 +2,10 @@ import { NextApiResponse } from 'next';
 import { CAPS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
 import { getCapByNocAndId } from '../../data/auroradb';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
-import { CapInfo, CapSelection, CapsDefinitionWithErrors, NextApiRequestWithSession, PremadeCap } from 'src/interfaces';
+import { CapInfo, CapsDefinitionWithErrors, NextApiRequestWithSession } from 'src/interfaces';
 import { updateSessionAttribute } from '../../../src/utils/sessions';
 
-const getCapContent = async (
-    cap: number | undefined,
-    noc: string,
-): Promise<
-    | {
-          dbCap: PremadeCap;
-          caps: CapInfo;
-      }
-    | undefined
-> => {
+const getCapContent = async (cap: number | undefined, noc: string): Promise<CapInfo | undefined> => {
     if (!cap) {
         return undefined;
     }
@@ -25,13 +16,7 @@ const getCapContent = async (
         throw new Error('No premade caps saved under the provided name');
     }
 
-    const dbCap = { id: result.id, contents: result } as PremadeCap;
-    const caps = result;
-
-    return {
-        dbCap,
-        caps,
-    };
+    return result;
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -42,6 +27,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const capDefinitionWithErrors: CapsDefinitionWithErrors = {
                 id: cap,
                 capChoice,
+                fullCaps: [],
                 errors: [{ errorMessage: 'Choose one of the options below', id: 'no-caps' }],
             };
 
@@ -54,7 +40,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (capChoice === 'yes' && !cap) {
             const capDefinitionWithErrors: CapsDefinitionWithErrors = {
-                id: null,
+                id: undefined,
                 fullCaps: [],
                 capChoice,
                 errors: [{ errorMessage: 'Choose one of the premade caps', id: 'caps' }],
@@ -68,10 +54,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const selectedCap = await getCapContent(cap, noc);
 
         if (capChoice === 'yes' && selectedCap) {
-            updateSessionAttribute(req,  CAPS_DEFINITION_ATTRIBUTE, {
-                fullCaps: [selectedCap.caps],
+            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, {
+                fullCaps: [selectedCap],
                 errors: [],
-                id: selectedCap.dbCap.id,
+                id: selectedCap.id,
             });
             redirectTo(res, '/selectPurchaseMethods');
             return;

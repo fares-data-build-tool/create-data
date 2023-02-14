@@ -75,7 +75,7 @@ describe('defineCaps', () => {
         });
         await defineCaps(req, res);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAPS_DEFINITION_ATTRIBUTE, {
-            id: null,
+            id: undefined,
             capChoice: 'yes',
             fullCaps: [],
             errors: [{ errorMessage: 'Choose one of the premade caps', id: 'caps' }],
@@ -95,6 +95,7 @@ describe('defineCaps', () => {
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAPS_DEFINITION_ATTRIBUTE, {
             id: undefined,
             capChoice: undefined,
+            fullCaps: [],
             errors: [{ errorMessage: 'Choose one of the options below', id: 'no-caps' }],
         });
         expect(writeHeadMock).toBeCalledWith(302, {
