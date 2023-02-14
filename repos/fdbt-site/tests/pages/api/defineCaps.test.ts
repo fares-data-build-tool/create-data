@@ -102,4 +102,17 @@ describe('defineCaps', () => {
             Location: '/selectCaps',
         });
     });
+    it('redirects to selectPurchaseMethods when the user choses the no radio button', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {
+                capChoice: 'no',
+            },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+        await defineCaps(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/selectPurchaseMethods',
+        });
+    });
 });
