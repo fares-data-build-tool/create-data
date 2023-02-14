@@ -6,6 +6,7 @@ import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
@@ -21,11 +22,7 @@ import {
 } from '../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
-import {
-    getAllServicesByNocCode,
-    getServicesByNocCodeAndDataSource,
-    getTndsServicesByNocAndModes,
-} from '../data/auroradb';
+import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import { redirectTo } from '../utils/apiUtils';
 import FormElementWrapper from '../components/FormElementWrapper';
 import BackButton from '../components/BackButton';
@@ -290,12 +287,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
     const backHref =
         ticket && matchingJsonMetaData ? `/products/productDetails?productId=${matchingJsonMetaData.productId}` : '';
 
     const nocCode = getAndValidateNoc(ctx);
-    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
+    const exemptedServicesAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
 
     const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
@@ -320,19 +318,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }
 
-    const selectedServices =
-        serviceListAttribute &&
-        !isServiceListAttributeWithErrors(serviceListAttribute) &&
-        'selectedServices' in serviceListAttribute
-            ? serviceListAttribute.selectedServices
+    const selectedExemptedServices =
+        exemptedServicesAttribute && !isServiceListAttributeWithErrors(exemptedServicesAttribute)
+            ? exemptedServicesAttribute.selectedServices
             : [];
-    let chosenDataSourceServices;
-    if (modesAttribute) {
-        chosenDataSourceServices = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
-    }
-    chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    let chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
-    const selectedLineIds = selectedServices.map((service) => service.lineId);
+    if (serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)) {
+        const { selectedServices } = serviceListAttribute;
+
+        chosenDataSourceServices = chosenDataSourceServices.filter(
+            (exemptService) => !selectedServices.find((service) => exemptService.lineId === service.lineId),
+        );
+    }
+
+    const selectedLineIds = selectedExemptedServices.map((service) => service.lineId);
     const serviceList: ServicesInfo[] = chosenDataSourceServices.map((service) => {
         return {
             ...service,
@@ -369,12 +369,22 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             });
         }
 
-        const serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
+        let serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
             return {
                 ...service,
                 checked: services.includes(service.lineId),
             };
         });
+
+        // ensuring that they cannot exempt a service which has already been selected for the ticket
+        if ('selectedServices' in ticket) {
+            const { selectedServices } = ticket;
+
+            serviceListEdit = serviceListEdit.filter(
+                (exemptService) => !selectedServices.find((service) => exemptService.lineId === service.lineId),
+            );
+        }
+
         return {
             props: {
                 ...commonProps,

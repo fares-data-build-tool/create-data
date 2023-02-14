@@ -8,9 +8,8 @@ import {
     SERVICE_ATTRIBUTE,
     PASSENGER_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
-    MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
-import { getServicesByNocCodeAndDataSource, getTndsServicesByNocAndModes } from '../data/auroradb';
+import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -87,13 +86,6 @@ const Service = ({
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
             </>
         </CsrfForm>
-        {/* removed as TNDS is being disabled until further notice */}
-        {/* <SwitchDataSource
-            dataSourceAttribute={dataSourceAttribute}
-            pageUrl="/service"
-            attributeVersion="baseOperator"
-            csrfToken={csrfToken}
-        /> */}
     </TwoThirdsLayout>
 );
 
@@ -115,14 +107,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const dataSourceAttribute = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
-    const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
 
-    let services;
-    if (modesAttribute && modesAttribute.modes.length > 0) {
-        services = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
-    }
-
-    services = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    const services = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
     if (services.length === 0) {
         if (ctx.res) {
