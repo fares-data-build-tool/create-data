@@ -280,7 +280,7 @@ export interface PremadeTimeRestriction {
 
 export interface PremadeCap {
     id: number;
-    contents: CapInfo;
+    contents: Cap;
 }
 
 export interface DbTimeInput {
@@ -730,14 +730,9 @@ export interface ServiceToDisplay {
     lineName: string;
 }
 
-export interface CapDetails {
-    caps: Cap[];
-    productName: string;
-}
-
-export interface CapInfo {
+export interface Cap {
     id?: number;
-    capDetails: Cap;
+    capDetails: CapDetails;
     capStart?: CapStartInfo;
 }
 
@@ -750,7 +745,7 @@ export interface GroupOfProducts {
     name: string;
 }
 
-export interface Cap {
+export interface CapDetails {
     name: string;
     price: string;
     durationAmount: string;

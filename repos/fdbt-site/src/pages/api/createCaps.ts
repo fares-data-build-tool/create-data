@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { getCaps, insertCaps, updateCaps } from '../../data/auroradb';
 import { CREATE_CAPS_ATTRIBUTE } from '../../constants/attributes';
-import { CapInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces/index';
+import { Cap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces/index';
 import { CapStart, DayOfTheWeek, ExpiryUnit, FromDb } from '../../interfaces/matchingJsonTypes';
 import { getAndValidateNoc, isADayOfTheWeek, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {
@@ -23,7 +23,7 @@ export interface InputtedCap {
     startDay: string | undefined;
 }
 
-export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createdCap: CapInfo } => {
+export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createdCap: Cap } => {
     const errors: ErrorInfo[] = [];
 
     const trimmedCapName = removeExcessWhiteSpace(inputtedCap.name);
@@ -91,7 +91,7 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
         durationUnits: (inputtedCap.durationUnits as ExpiryUnit) || '',
     };
 
-    const createdCap: CapInfo = {
+    const createdCap: Cap = {
         capDetails: cap,
         capStart,
     };
@@ -124,7 +124,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (errors.length === 0) {
-            const caps: FromDb<CapInfo>[] = await getCaps(noc);
+            const caps: FromDb<Cap>[] = await getCaps(noc);
 
             if (
                 caps.some(

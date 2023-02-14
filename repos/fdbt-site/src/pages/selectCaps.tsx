@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { FullColumnLayout } from '../layout/Layout';
 import ErrorSummary from '../components/ErrorSummary';
-import { ErrorInfo, NextPageContextWithSession, CapInfo } from '../interfaces';
+import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { CapCardBody } from './viewCaps';
@@ -16,7 +16,7 @@ const description = 'Select Caps page of the Create Fares Data Service';
 interface SelectCapsProps {
     csrfToken: string;
     errors: ErrorInfo[];
-    capsFromDb: CapInfo[];
+    capsFromDb: Cap[];
     backHref: string;
     selectedId: number | null;
 }
@@ -121,7 +121,7 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: Sel
     );
 };
 
-const CapsCard = ({ cap, selectedId }: { cap: CapInfo; selectedId: number | null }): ReactElement => {
+const CapsCard = ({ cap, selectedId }: { cap: Cap; selectedId: number | null }): ReactElement => {
     return (
         <div className="card">
             <div className="card__body caps">
@@ -157,7 +157,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const nationalOperatorCode = getAndValidateNoc(ctx);
 
-    const capsFromDb: CapInfo[] = await getCaps(nationalOperatorCode);
+    const capsFromDb: Cap[] = await getCaps(nationalOperatorCode);
 
     return {
         props: {

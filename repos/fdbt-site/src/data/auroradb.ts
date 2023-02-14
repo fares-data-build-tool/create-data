@@ -10,7 +10,7 @@ import {
     ServiceCount,
     MyFaresService,
     ServiceWithOriginAndDestination,
-    CapInfo,
+    Cap,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
@@ -1684,7 +1684,7 @@ export const upsertCapExpiry = async (nocCode: string, capExpiry: CapExpiry): Pr
     }
 };
 
-export const getCaps = async (nocCode: string): Promise<FromDb<CapInfo>[]> => {
+export const getCaps = async (nocCode: string): Promise<FromDb<Cap>[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving caps for given nocCode',
@@ -1703,7 +1703,7 @@ export const getCaps = async (nocCode: string): Promise<FromDb<CapInfo>[]> => {
         // contents will be like {"cap":{"name":"cap2","price":"2","durationAmount":"23","durationUnits":"day"},"capStart":{"type":"rollingDays"}}
         return queryResults.length !== 0
             ? queryResults.map((row) => ({
-                  ...(JSON.parse(row.contents) as CapInfo),
+                  ...(JSON.parse(row.contents) as Cap),
                   id: Number(row.id),
               }))
             : [];
@@ -1712,10 +1712,7 @@ export const getCaps = async (nocCode: string): Promise<FromDb<CapInfo>[]> => {
     }
 };
 
-export const getCapByNocAndId = async (
-    nocCode: string,
-    id: number,
-): Promise<(CapInfo & { id: number }) | undefined> => {
+export const getCapByNocAndId = async (nocCode: string, id: number): Promise<(Cap & { id: number }) | undefined> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving cap for given nocCode and id',
@@ -1736,14 +1733,14 @@ export const getCapByNocAndId = async (
         // contents will be like {"cap":{"name":"cap2","price":"2","durationAmount":"23","durationUnits":"day"},"capStart":{"type":"rollingDays"}}
 
         return queryResults.length !== 0
-            ? ({ ...JSON.parse(queryResults[0].contents), id: queryResults[0].id } as CapInfo & { id: number })
+            ? ({ ...JSON.parse(queryResults[0].contents), id: queryResults[0].id } as Cap & { id: number })
             : undefined;
     } catch (error) {
         throw new Error(`Could not retrieve cap by nocCode from AuroraDB: ${error.stack}`);
     }
 };
 
-export const insertCaps = async (nocCode: string, cap: CapInfo): Promise<void> => {
+export const insertCaps = async (nocCode: string, cap: Cap): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'inserting caps for given noc and cap',
@@ -1763,7 +1760,7 @@ export const insertCaps = async (nocCode: string, cap: CapInfo): Promise<void> =
     }
 };
 
-export const updateCaps = async (nocCode: string, id: number, cap: CapInfo): Promise<void> => {
+export const updateCaps = async (nocCode: string, id: number, cap: Cap): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'upserting cap for given noc, id and cap',

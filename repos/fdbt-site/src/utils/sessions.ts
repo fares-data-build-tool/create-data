@@ -64,7 +64,6 @@ import {
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     CSV_ZONE_FILE_NAME,
     DIRECTION_ATTRIBUTE,
-    CAPS_ATTRIBUTE,
     EDIT_PERIOD_DURATION_ERROR,
     MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE,
     VIEW_PRODUCT_GROUP,
@@ -140,11 +139,10 @@ import {
     DistancePricingData,
     MultiTapPricing,
     AdditionalPricing,
-    CapDetails,
     EditFareStageMatchingWithErrors,
-    CapInfo,
     CapSelection,
     ExemptedStopsAttribute,
+    Cap,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -237,8 +235,7 @@ export interface SessionAttributeTypes {
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
     [VIEW_PRODUCT_GROUP]: ErrorInfo[];
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
-    [CAPS_ATTRIBUTE]: CapDetails | WithErrors<CapDetails>;
-    [CREATE_CAPS_ATTRIBUTE]: CapInfo | WithErrors<CapInfo>;
+    [CREATE_CAPS_ATTRIBUTE]: Cap | WithErrors<Cap>;
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];

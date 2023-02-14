@@ -2,7 +2,7 @@ import React, { FunctionComponent, ReactElement, useState } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
-import { CapInfo, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import { getCapExpiry, getCaps, getFareDayEnd } from '../data/auroradb';
 import { CapExpiry, FromDb } from '../interfaces/matchingJsonTypes';
@@ -16,7 +16,7 @@ const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
 
 interface CapProps {
-    caps: FromDb<CapInfo>[];
+    caps: FromDb<Cap>[];
     referer: string | null;
     capExpiry: string;
     fareDayEnd: string;
@@ -25,7 +25,7 @@ interface CapProps {
 }
 
 interface CapCardProps {
-    cap: FromDb<CapInfo>;
+    cap: FromDb<Cap>;
     index: Number;
     deleteActionHandler: (id: number, name: string) => void;
 }
@@ -202,7 +202,7 @@ const CapCard = ({ cap, index, deleteActionHandler }: CapCardProps): ReactElemen
     );
 };
 
-export const CapCardBody: FunctionComponent<{ cap: CapInfo }> = ({ cap }: { cap: CapInfo }) => (
+export const CapCardBody: FunctionComponent<{ cap: Cap }> = ({ cap }: { cap: Cap }) => (
     <>
         <h4 className="govuk-heading-m govuk-!-padding-bottom-4">{cap.capDetails.name}</h4>
 

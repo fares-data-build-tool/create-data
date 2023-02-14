@@ -2,10 +2,10 @@ import { NextApiResponse } from 'next';
 import { CAPS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
 import { getCapByNocAndId } from '../../data/auroradb';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
-import { CapInfo, NextApiRequestWithSession } from 'src/interfaces';
+import { Cap, NextApiRequestWithSession } from 'src/interfaces';
 import { updateSessionAttribute } from '../../utils/sessions';
 
-const getCapContent = async (cap: number, noc: string): Promise<CapInfo & { id: number }> => {
+const getCapContent = async (cap: number, noc: string): Promise<Cap & { id: number }> => {
     const result = await getCapByNocAndId(noc, cap);
 
     if (!result) {
@@ -48,7 +48,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (!Number.isInteger(Number(cap))) {
-            throw Error(`Received invalid cap id ${req.body.id}`);
+            throw Error(`Received invalid cap id: ${cap}`);
         }
 
         const selectedCap = await getCapContent(Number(cap), noc);
