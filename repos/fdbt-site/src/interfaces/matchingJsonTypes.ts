@@ -237,6 +237,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     serviceDescription: string;
     products: (BaseProduct | PointToPointCarnetProductDetails)[];
     unassignedStops: UnassignedStops;
+    cap?: CapSelection;
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
@@ -246,7 +247,6 @@ export interface SingleTicket extends BasePointToPointTicket {
     fareZones: FareZone[];
     termTime: boolean;
     journeyDirection: string;
-    cap?: CapSelection;
 }
 
 export interface MatchingJsonMetaData {
