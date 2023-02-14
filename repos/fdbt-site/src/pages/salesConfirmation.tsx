@@ -13,6 +13,7 @@ import {
     ConfirmationElement,
     CapInfo,
     CapsDefinition,
+    CapsDefinitionWithErrors,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -38,7 +39,7 @@ export interface SalesConfirmationProps {
     startDate: string;
     endDate: string | null;
     fareType: string;
-    fullCaps?: CapsDefinition;
+    fullCaps?: CapsDefinition | CapsDefinitionWithErrors;
     caps?: CapInfo[];
 }
 
@@ -57,7 +58,7 @@ export const buildSalesConfirmationElements = (
     startDateIn: string,
     endDateIn: string | null,
     fareType: string,
-    fullCaps?: FullCapAttribute,
+    fullCaps?: CapsDefinition | CapsDefinitionWithErrors,
     caps?: CapInfo[],
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
