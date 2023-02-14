@@ -35,8 +35,8 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
                             </legend>
 
                             <div id="contact-hint" className="govuk-hint">
-                                We need to know if your product will have any caps; select yes if your
-                                product has a price cap. You can create these in operator settings.
+                                We need to know if your product will have any caps; select yes if your product has a
+                                price cap. You can create these in operator settings.
                             </div>
 
                             <div className="govuk-warning-text">
