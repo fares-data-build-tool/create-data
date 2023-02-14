@@ -1,4 +1,4 @@
-import { CAPS_DEFINITION_ATTRIBUTE, FULL_CAPS_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
+import { CAPS_DEFINITION_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
 import * as auroradb from '../../../src/data/auroradb';
 import defineCaps from '../../../src/pages/api/defineCaps';
 import * as sessions from '../../../src/utils/sessions';
@@ -29,7 +29,7 @@ describe('defineCaps', () => {
         });
         const { req, res } = getMockRequestAndResponse({
             body: {
-                capChoice: 'Premade',
+                capChoice: 'yes',
                 cap: 2,
             },
             uuid: {},
@@ -42,7 +42,7 @@ describe('defineCaps', () => {
             },
         });
         await defineCaps(req, res);
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, FULL_CAPS_ATTRIBUTE, {
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAPS_DEFINITION_ATTRIBUTE, {
             fullCaps: [
                 {
                     id: 2,
@@ -64,19 +64,20 @@ describe('defineCaps', () => {
         expect(getCapByNocAndIdSpy).toBeCalledWith('HELLO', 2);
     });
 
-    it('redirect back to defineCaps with errors if user does not select a premade cap but chose premade radio button', async () => {
+    it('redirect back to defineCaps with errors if user does not select a premade cap but chose yes radio button', async () => {
         const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
         const { req, res } = getMockRequestAndResponse({
             body: {
-                capChoice: 'Premade',
+                capChoice: 'yes',
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
         });
         await defineCaps(req, res);
         expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAPS_DEFINITION_ATTRIBUTE, {
-            id: undefined,
-            capChoice: 'Premade',
+            id: null,
+            capChoice: 'yes',
+            fullCaps: [],
             errors: [{ errorMessage: 'Choose one of the premade caps', id: 'caps' }],
         });
         expect(writeHeadMock).toBeCalledWith(302, {

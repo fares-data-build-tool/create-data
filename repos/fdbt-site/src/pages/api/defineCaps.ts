@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { FULL_CAPS_ATTRIBUTE, CAPS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
+import { CAPS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
 import { getCapByNocAndId } from '../../data/auroradb';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
 import { CapInfo, CapSelection, CapsDefinitionWithErrors, NextApiRequestWithSession, PremadeCap } from 'src/interfaces';
@@ -52,9 +52,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const noc = getAndValidateNoc(req, res);
 
-        if (capChoice === 'Premade' && !cap) {
+        if (capChoice === 'yes' && !cap) {
             const capDefinitionWithErrors: CapsDefinitionWithErrors = {
-                id: cap,
+                id: null,
+                fullCaps: [],
                 capChoice,
                 errors: [{ errorMessage: 'Choose one of the premade caps', id: 'caps' }],
             };
@@ -66,24 +67,17 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const selectedCap = await getCapContent(cap, noc);
 
-        if (capChoice === 'Premade' && selectedCap) {
-            updateSessionAttribute(req, FULL_CAPS_ATTRIBUTE, {
+        if (capChoice === 'yes' && selectedCap) {
+            updateSessionAttribute(req,  CAPS_DEFINITION_ATTRIBUTE, {
                 fullCaps: [selectedCap.caps],
                 errors: [],
                 id: selectedCap.dbCap.id,
             });
-
-            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, undefined);
             redirectTo(res, '/selectPurchaseMethods');
             return;
         }
 
-        const capsDefinition: CapSelection = {
-            id: null,
-        };
-
-        updateSessionAttribute(req, FULL_CAPS_ATTRIBUTE, { fullCaps: [], errors: [] });
-        updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, capsDefinition);
+        updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, undefined);
         redirectTo(res, '/selectPurchaseMethods');
         return;
     } catch (error) {

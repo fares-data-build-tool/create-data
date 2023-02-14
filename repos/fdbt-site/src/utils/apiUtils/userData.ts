@@ -29,8 +29,8 @@ import {
     DIRECTION_ATTRIBUTE,
     PRICING_PER_DISTANCE_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
-    FULL_CAPS_ATTRIBUTE,
     STOPS_EXEMPTION_ATTRIBUTE,
+    CAPS_DEFINITION_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
     batchGetStopsByAtcoCode,
@@ -324,7 +324,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const products = getPointToPointProducts(req);
     const singleUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
-    const caps = getSessionAttribute(req, FULL_CAPS_ATTRIBUTE);
+    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
 
     if (
         !matchingAttributeInfo ||
@@ -351,7 +351,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
         journeyDirection: (directionAttribute as Direction).direction,
-        ...(caps?.id && { cap: { id: caps.id } }),
+        ...(cap?.id && { cap: { id: cap.id } }),
     };
 };
 
@@ -372,7 +372,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const products = getPointToPointProducts(req);
     const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const inboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE);
-    const caps = getSessionAttribute(req, FULL_CAPS_ATTRIBUTE);
+    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
 
     if (
         !matchingAttributeInfo ||
@@ -412,7 +412,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
-        ...(caps?.id && { cap: { id: caps.id } }),
+        ...(cap?.id && { cap: { id: cap.id } }),
     };
 };
 
@@ -425,7 +425,7 @@ export const getGeoZoneTicketJson = async (
     const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
     const exemptions = getSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE) as ServiceListAttribute;
-    const caps = getSessionAttribute(req, FULL_CAPS_ATTRIBUTE);
+    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
 
     if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName)) {
         throw new Error('Could not create geo zone ticket json. Necessary cookies and session objects not found.');
@@ -457,7 +457,7 @@ export const getGeoZoneTicketJson = async (
         ...(additionalNocs && { additionalNocs }),
         ...(operatorGroupId && { operatorGroupId }),
         ...(exemptions && { exemptedServices: exemptions.selectedServices }),
-        ...(caps?.id && { cap: { id: caps.id } }),
+        ...(cap?.id && { cap: { id: cap.id } }),
     };
 };
 
@@ -471,7 +471,7 @@ export const getMultipleServicesByDistanceTicketJson = (
     const pricingByDistance = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE) as SalesOfferPackage[];
     const baseTicketAttributes = getBaseTicketAttributes(req, res, 'flatFare');
-    const caps = getSessionAttribute(req, FULL_CAPS_ATTRIBUTE);
+    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
 
     if (
         !operatorAttribute ||
@@ -495,7 +495,7 @@ export const getMultipleServicesByDistanceTicketJson = (
             salesOfferPackages,
             pricingByDistance,
             productName: pricingByDistance.productName,
-            ...(caps?.id && { cap: { id: caps.id } }),
+            ...(cap?.id && { cap: { id: cap.id } }),
         },
     ];
 
@@ -535,7 +535,7 @@ export const getMultipleServicesTicketJson = (
 
         const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
         const operatorGroupId = multiOpAttribute && multiOpAttribute.id ? multiOpAttribute.id : undefined;
-        const caps = getSessionAttribute(req, FULL_CAPS_ATTRIBUTE);
+        const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
 
         return {
             ...basePeriodTicketAttributes,
@@ -543,7 +543,7 @@ export const getMultipleServicesTicketJson = (
             additionalOperators,
             termTime: isTermTime(req),
             ...(operatorGroupId && { operatorGroupId }),
-            ...(caps?.id && { cap: { id: caps.id } }),
+            ...(cap?.id && { cap: { id: cap.id } }),
             ...(exemptStops.length > 0 && { exemptStops }),
         };
     }

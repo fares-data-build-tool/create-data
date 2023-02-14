@@ -9,7 +9,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const nocCode = getAndValidateNoc(req, res);
         const caps = await getCaps(nocCode);
 
-        if (['single', 'return', 'flatFare'].includes(fareTypeAttribute) && caps && caps.length > 0) {
+        if (['single', 'return', 'flatFare'].includes(fareTypeAttribute) && caps.length > 0) {
             redirectTo(res, '/selectCaps');
             return;
         }
@@ -20,3 +20,4 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         redirectToError(res, message, 'api.ticketConfirmation', error);
     }
 };
+// write a test 1 in the array, one for period , one for error

@@ -416,13 +416,6 @@ export interface FullTimeRestrictionAttribute {
     errors: ErrorInfo[];
     id?: number;
 }
-
-export interface FullCapAttribute {
-    fullCaps: CapInfo[];
-    errors: ErrorInfo[];
-    id?: number;
-}
-
 export interface TimeInput {
     timeInput: string;
     day: string;
@@ -471,6 +464,7 @@ export interface TimeRestrictionsDefinition extends TimeRestriction {
 
 export interface CapsDefinition extends CapSelection {
     capChoice?: string;
+    fullCaps: CapInfo[];
 }
 
 export interface TimeRestrictionsDefinitionWithErrors extends TimeRestrictionsDefinition {

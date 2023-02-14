@@ -8,7 +8,7 @@ import { CapCardBody } from './viewCaps';
 import BackButton from '../components/BackButton';
 import { getCaps } from 'src/data/auroradb';
 import { getSessionAttribute } from 'src/utils/sessions';
-import { CAPS_DEFINITION_ATTRIBUTE, FULL_CAPS_ATTRIBUTE } from 'src/constants/attributes';
+import { CAPS_DEFINITION_ATTRIBUTE } from 'src/constants/attributes';
 
 const title = 'Select Caps - Create Fares Data Service';
 const description = 'Select Caps page of the Create Fares Data Service';
@@ -58,7 +58,7 @@ const SelectCaps = ({ csrfToken, errors, caps, backHref, selectedId }: SelectCap
                                         id="caps"
                                         name="capChoice"
                                         type="radio"
-                                        value="Premade"
+                                        value="yes"
                                         data-aria-controls="conditional-caps"
                                         defaultChecked={errors.some((error) => error.id === 'caps') || !!selectedId}
                                     />
@@ -148,7 +148,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const capsDefinition = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
     const errors = !!capsDefinition && 'errors' in capsDefinition ? capsDefinition.errors : [];
 
-    const selectedId = getSessionAttribute(ctx.req, FULL_CAPS_ATTRIBUTE)?.id || null;
+    const selectedId = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE)?.id || null;
 
     const backHref = '';
 

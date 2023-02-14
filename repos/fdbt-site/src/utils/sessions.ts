@@ -80,7 +80,6 @@ import {
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     CREATE_CAPS_ATTRIBUTE,
     CAPS_DEFINITION_ATTRIBUTE,
-    FULL_CAPS_ATTRIBUTE,
     STOPS_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
@@ -256,7 +255,6 @@ export interface SessionAttributeTypes {
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
     [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
     [CAPS_DEFINITION_ATTRIBUTE]: CapSelection | CapsDefinitionWithErrors;
-    [FULL_CAPS_ATTRIBUTE]: FullCapAttribute;
     [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
     [STOPS_EXEMPTION_ATTRIBUTE]: ExemptedStopsAttribute | { errors: ErrorInfo[] };
 }

@@ -5,14 +5,14 @@ import {
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     PRODUCT_DATE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
-    FULL_CAPS_ATTRIBUTE,
+    CAPS_DEFINITION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     NextPageContextWithSession,
     ProductWithSalesOfferPackages,
     ConfirmationElement,
-    FullCapAttribute,
     CapInfo,
+    CapsDefinition,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -38,7 +38,7 @@ export interface SalesConfirmationProps {
     startDate: string;
     endDate: string | null;
     fareType: string;
-    fullCaps?: FullCapAttribute;
+    fullCaps?: CapsDefinition;
     caps?: CapInfo[];
 }
 
@@ -165,7 +165,7 @@ export const getServerSideProps = async (
     const csrfToken = getCsrfToken(ctx);
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const ticketDatingInfo = getRequiredSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
-    const fullCaps = (getSessionAttribute(ctx.req, FULL_CAPS_ATTRIBUTE) as FullCapAttribute) || null;
+    const fullCaps = (getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE) as CapsDefinition) || null;
     const nocCode = getAndValidateNoc(ctx);
     const caps = await getCaps(nocCode);
 
