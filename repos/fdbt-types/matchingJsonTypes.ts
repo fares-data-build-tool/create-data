@@ -6,6 +6,7 @@ export type FlatFareGeoZoneTicket = Omit<PeriodGeoZoneTicket, 'products' | 'type
     type: 'flatFare';
     products: FlatFareProduct[];
     exemptedServices?: SelectedService[];
+    cap?: CapSelection;
 };
 
 export interface PeriodGeoZoneTicket extends BasePeriodTicket {
@@ -53,6 +54,7 @@ export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
     selectedServices: SelectedService[];
     operatorName: string;
     exemptStops?: Stop[];
+    cap?: CapSelection;
 }
 
 export type FlatFareTicket = FlatFareGeoZoneTicket | FlatFareMultipleServices;
@@ -82,7 +84,7 @@ export interface DistancePricingData {
 
 export type FromDb<T> = T & { id: number };
 
-export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return' ;
+export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
 
 export type Ticket =
     | PointToPointTicket
@@ -95,7 +97,6 @@ export type Ticket =
     | MultiOperatorGeoZoneTicket
     | PointToPointPeriodTicket
     | PeriodHybridTicket;
-
 
 export type TicketWithIds =
     | WithIds<SingleTicket>
@@ -114,7 +115,7 @@ export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
 
-export interface  SchemeOperatorGeoZoneTicket extends BaseSchemeOperatorTicket {
+export interface SchemeOperatorGeoZoneTicket extends BaseSchemeOperatorTicket {
     zoneName: string;
     stops: Stop[];
     products: ProductDetails[];
@@ -237,6 +238,7 @@ export interface SingleTicket extends BasePointToPointTicket {
     fareZones: FareZone[];
     termTime: boolean;
     journeyDirection: string;
+    cap?: CapSelection;
 }
 
 export interface MatchingJsonMetaData {
@@ -251,6 +253,7 @@ export interface ReturnTicket extends BasePointToPointTicket {
     outboundFareZones: FareZone[];
     returnPeriodValidity?: ReturnPeriodValidity;
     additionalServices?: AdditionalService[];
+    cap?: CapSelection;
 }
 
 export interface Product {
@@ -382,4 +385,8 @@ export interface OperatorDetails {
     town: string;
     county: string;
     postcode: string;
+}
+
+export interface CapSelection {
+    id: number;
 }
