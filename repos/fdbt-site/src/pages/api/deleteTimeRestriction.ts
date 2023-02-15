@@ -34,7 +34,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingTimeRestrictions.length} product(s).`;
             const errors: ErrorInfo[] = [{ id: `${id}`, errorMessage }];
             updateSessionAttribute(req, VIEW_TIME_RESTRICTION, errors);
-            redirectTo(res, `/viewTimeRestrictions?cannotDelete=${name}`);
+            redirectTo(res, `/viewTimeRestrictions`);
             return;
         }
 

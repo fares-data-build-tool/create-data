@@ -54,7 +54,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const errors: ErrorInfo[] = [{ id: '/viewOperatorGroups', errorMessage }];
 
             updateSessionAttribute(req, VIEW_OPERATOR_GROUP, errors);
-            redirectTo(res, `/viewOperatorGroups?cannotDelete=${name}`);
+            redirectTo(res, `/viewOperatorGroups`);
             return;
         }
 

@@ -50,7 +50,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingPassengerType.length} product(s).`;
             const errors: ErrorInfo[] = [{ id: 'passenger-card-0', errorMessage }];
             updateSessionAttribute(req, VIEW_PASSENGER_TYPE, errors);
-            redirectTo(res, `/viewPassengerTypes?cannotDelete=${name}`);
+            redirectTo(res, `/viewPassengerTypes`);
             return;
         }
 
