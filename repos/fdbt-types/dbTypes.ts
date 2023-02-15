@@ -1,4 +1,4 @@
-import { CompanionInfo, DbTimeBand, TimeRestrictionDay } from './matchingJsonTypes';
+import { CompanionInfo, DbTimeBand, TimeRestrictionDay, ExpiryUnit } from './matchingJsonTypes';
 
 export interface FullGroupPassengerType {
     id: number;
@@ -122,6 +122,23 @@ export interface GroupPassengerTypeReference {
 export interface DbTimeRestriction {
     day: TimeRestrictionDay;
     timeBands: DbTimeBand[];
+}
+
+export type DayOfTheWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+export interface CapStartInfo {
+    type: CapStart;
+    startDay?: DayOfTheWeek;
+}
+
+export type CapStart = 'rollingDays' | 'fixedWeekdays';
+
+export interface DbCap {
+    name: string;
+    price: string;
+    durationAmount: string;
+    durationUnits: ExpiryUnit;
+    capStart?: CapStartInfo;
 }
 
 export interface ServiceDetails {

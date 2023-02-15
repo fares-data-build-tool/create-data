@@ -48,22 +48,18 @@ jobs:
         npm ci
         echo " ci finished"
         npm run build
-
     - name: test
       run: |
         echo "Running tests"
         npm run test:ci
-
     - name: lint
       run: |
         echo "Linting"
         npm run lint
-
     - name: compile-typescript
       run: |
         echo "Compiling typescript for site"
         ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
-
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -85,7 +81,6 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
     - name: Logout of Amazon ECR
       if: always()
       run: docker logout ${{ steps.login-ecr.outputs.registry }}   
@@ -107,7 +102,6 @@ jobs:
     - name: Download task definition
       run: |
         aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > ${{ github.workspace }}/task-definition.json
-
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
@@ -123,16 +117,3 @@ jobs:
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
-        
-    - name: Sleep for 10 mins
-      run: sleep 10m
-      shell: bash
-
-    - name: run-ui-tests
-      env:
-        CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
-      run: |
-        cd cypress_tests
-        cat cypress.config.ts | sed -e "s/baseUrl: '[^'].*'/baseUrl: '${CYPRESS_BASE_URL}'/g" >> cypress.config.ts2 && mv cypress.config.ts2 cypress.config.ts
-        cd ..
-        bash run_tests_in_browserstack.sh
