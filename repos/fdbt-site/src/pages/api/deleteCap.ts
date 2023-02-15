@@ -33,7 +33,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const cap = (await getCapByNocAndId(noc, id)) as Cap;
             const { name } = cap.capDetails;
             const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingCap.length} ticket(s).`;
-            const errors: ErrorInfo[] = [{ id: 'cap-card-0', errorMessage }];
+            const errors: ErrorInfo[] = [{ id: 'cap-0', errorMessage }];
             updateSessionAttribute(req, VIEW_CAP, errors);
             redirectTo(res, `/viewCaps?cannotDelete=${name}`);
             return;
