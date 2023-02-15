@@ -9,6 +9,7 @@ import {
     getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource,
     getServiceByIdAndDataSource,
     getCapByNocAndId,
+    getCaps,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation, Cap } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
@@ -27,6 +28,7 @@ import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { Stop, TicketWithIds } from '../../interfaces/matchingJsonTypes';
 import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
+import { isCapTicket } from '../../utils/apiUtils';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -367,13 +369,19 @@ const createProductDetails = async (
         productDetailsElements.push({ id: 'time-restriction', name: 'Only valid during term time', content: ['Yes'] });
     }
 
-    if ('cap' in ticket && ticket.cap) {
-        const cap = (await getCapByNocAndId(noc, ticket.cap.id)) as Cap;
+    const hasCaps = (await getCaps(noc)).length > 0;
+    if (isCapTicket(ticket.type) && hasCaps) {
+        let capContent = 'N/A';
+
+        if ('cap' in ticket && ticket.cap) {
+            const cap = (await getCapByNocAndId(noc, ticket.cap.id)) as Cap;
+            capContent = `${sentenceCaseString(cap.capDetails.name)} - £${cap.capDetails.price}`;
+        }
 
         productDetailsElements.push({
             id: 'cap',
             name: 'Cap',
-            content: [`${sentenceCaseString(cap.capDetails.name)} - £${cap.capDetails.price}`],
+            content: [capContent],
             editLink: '/selectCaps',
         });
     }

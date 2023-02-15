@@ -23,6 +23,8 @@ const getCapContent = async (cap: number, noc: string): Promise<Cap & { id: numb
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const { capChoice, cap } = req.body;
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
         if (!capChoice) {
             const errors = {
@@ -31,6 +33,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, errors);
             redirectTo(res, '/selectCaps');
+            return;
+        }
+
+        if (capChoice === 'no' && !(ticket && matchingJsonMetaData)) {
+            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, undefined);
+            redirectTo(res, '/selectPurchaseMethods');
             return;
         }
 
@@ -46,13 +54,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        if (capChoice === 'yes' && !Number.isInteger(Number(cap))) {
+        if (!Number.isInteger(Number(cap))) {
             throw Error(`Received invalid cap id: ${cap}`);
         }
 
-        const selectedCap = capChoice === 'yes' ? await getCapContent(Number(cap), noc) : undefined;
-        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
-        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+        const selectedCap = await getCapContent(Number(cap), noc);
 
         // if in edit mode
         if (ticket && matchingJsonMetaData) {
@@ -74,14 +80,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
         // end of edit mode
 
-        updateSessionAttribute(
-            req,
-            CAPS_DEFINITION_ATTRIBUTE,
-            capChoice === 'yes' && !!selectedCap ? { id: selectedCap.id } : undefined,
-        );
-
-        redirectTo(res, '/selectPurchaseMethods');
-        return;
+        if (capChoice === 'yes' && !!selectedCap) {
+            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, {
+                id: selectedCap.id,
+            });
+            redirectTo(res, '/selectPurchaseMethods');
+            return;
+        }
     } catch (error) {
         const message = 'There was a problem in the selectCaps API.';
         redirectToError(res, message, 'api.selectCaps', error);

@@ -8,6 +8,7 @@ import {
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
     getServiceByIdAndDataSource,
+    getCaps,
 } from '../../../src/data/auroradb';
 import { getProductsMatchingJson } from '../../../src/data/s3';
 import ProductDetails, { getServerSideProps } from '../../../src/pages/products/productDetails';
@@ -312,6 +313,7 @@ describe('myfares pages', () => {
             });
 
             (getServiceByIdAndDataSource as jest.Mock).mockResolvedValue(mockRawService);
+            (getCaps as jest.Mock).mockResolvedValue([]);
         });
 
         it('correctly returns the elements which should be displayed on the page for a school single ticket', async () => {

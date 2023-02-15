@@ -1,6 +1,12 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession } from '../../interfaces/index';
-import { getAndValidateNoc, getFareTypeFromFromAttributes, redirectTo, redirectToError } from '../../utils/apiUtils';
+import {
+    getAndValidateNoc,
+    getFareTypeFromFromAttributes,
+    isCapTicket,
+    redirectTo,
+    redirectToError,
+} from '../../utils/apiUtils';
 import { getCaps } from '../../../src/data/auroradb';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -9,7 +15,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const nocCode = getAndValidateNoc(req, res);
         const caps = await getCaps(nocCode);
 
-        if (['single', 'return', 'flatFare'].includes(fareTypeAttribute) && caps.length > 0) {
+        if (isCapTicket(fareTypeAttribute) && caps.length > 0) {
             redirectTo(res, '/selectCaps');
             return;
         }
