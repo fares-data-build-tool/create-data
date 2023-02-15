@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { deleteCap, getAllProductsByNoc, getCapByNocAndId } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils/index';
-import { Cap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getProductsMatchingJson } from '../../data/s3';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { VIEW_CAP } from '../../constants/attributes';
@@ -18,6 +18,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const noc = getAndValidateNoc(req, res);
+        const cap = await getCapByNocAndId(noc, id);
+
+        if (!cap) {
+            throw new Error('unable to find cap with provided id');
+        }
 
         const products = await getAllProductsByNoc(noc);
         const matchingJsonLinks = products.map((product) => product.matchingJsonLink);
@@ -27,10 +32,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }),
         );
 
-        const productsUsingCap = tickets.filter((t) => 'cap' in t && t.cap && t.cap.id === id);
+        const productsUsingCap = tickets.filter((ticket) => 'cap' in ticket && ticket.cap && ticket.cap.id === id);
 
         if (productsUsingCap.length > 0) {
-            const cap = (await getCapByNocAndId(noc, id)) as Cap;
             const { name } = cap.capDetails;
             const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingCap.length} ticket(s).`;
             const errors: ErrorInfo[] = [{ id: 'cap-0', errorMessage }];
