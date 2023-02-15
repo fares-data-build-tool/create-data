@@ -8,6 +8,7 @@ import {
     getFareDayEnd,
     getOperatorDetails,
     getOperatorGroupsByNoc,
+    getCaps,
 } from '../data/auroradb';
 import { GlobalSettingsCounts, NextPageContextWithSession } from '../interfaces';
 import { BaseLayout } from '../layout/Layout';
@@ -99,7 +100,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const referer = extractGlobalSettingsReferer(ctx);
 
-    const savedCaps = [];
+    const savedCaps = await getCaps(noc);
     const savedPassengerTypes = await getPassengerTypesByNocCode(noc, 'single');
     const savedGroupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(noc);
     const savedTimeRestrictions = await getTimeRestrictionByNocCode(noc);

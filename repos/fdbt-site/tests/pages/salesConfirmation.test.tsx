@@ -8,7 +8,9 @@ import SalesConfirmation, {
     sopTicketFormatConverter,
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
-import { PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
+import { CAPS_DEFINITION_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
+import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
+import * as db from '../../src/data/auroradb';
 
 describe('pages', () => {
     describe('confirmation', () => {
@@ -29,6 +31,9 @@ describe('pages', () => {
                     startDate="2017-03-13T18:00:00+00:00"
                     endDate="2057-03-13T18:00:00+00:00"
                     csrfToken=""
+                    fareType="single"
+                    hasCaps={false}
+                    selectedCap={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -48,7 +53,42 @@ describe('pages', () => {
             endDateYear: '2020',
         };
 
-        it('should extract the start date and end date from the PRODUCT_DATE_ATTRIBUTE when the user has entered both', () => {
+        jest.mock('../../src/data/auroradb');
+
+        const getCapsSpy = jest.spyOn(db, 'getCaps');
+        getCapsSpy.mockResolvedValueOnce([
+            {
+                id: 2,
+                capDetails: {
+                    name: 'Best cap',
+                    price: '2',
+                    durationAmount: '2',
+                    durationUnits: ExpiryUnit.HOUR,
+                },
+            },
+            {
+                id: 3,
+                capDetails: {
+                    name: 'Other cap',
+                    price: '3',
+                    durationAmount: '3',
+                    durationUnits: ExpiryUnit.HOUR,
+                },
+            },
+        ]);
+
+        const getCapByNocAndIdSpy = jest.spyOn(db, 'getCapByNocAndId');
+        getCapByNocAndIdSpy.mockResolvedValueOnce({
+            id: 2,
+            capDetails: {
+                name: 'Best cap',
+                price: '2',
+                durationAmount: '2',
+                durationUnits: ExpiryUnit.HOUR,
+            },
+        });
+
+        it('should extract the start date and end date from the PRODUCT_DATE_ATTRIBUTE when the user has entered both', async () => {
             const ctx = getMockContext({
                 session: {
                     [PRODUCT_DATE_ATTRIBUTE]: {
@@ -56,14 +96,28 @@ describe('pages', () => {
                         endDate: mockEndDate,
                         dateInput: mockDateInput,
                     },
+                    [CAPS_DEFINITION_ATTRIBUTE]: {
+                        id: 2,
+                    },
                 },
             });
             const expectedProps = {
                 ...baseExpectedProps,
                 startDate: mockStartDate,
                 endDate: mockEndDate,
+                fareType: 'single',
+                hasCaps: true,
+                selectedCap: {
+                    id: 2,
+                    capDetails: {
+                        name: 'Best cap',
+                        price: '2',
+                        durationAmount: '2',
+                        durationUnits: ExpiryUnit.HOUR,
+                    },
+                },
             };
-            const actualProps = getServerSideProps(ctx);
+            const actualProps = await getServerSideProps(ctx);
             expect((actualProps as { props: SalesConfirmationProps }).props).toEqual(expectedProps);
         });
     });
@@ -93,6 +147,17 @@ describe('pages', () => {
                 ],
                 moment().toISOString(),
                 moment().add(100, 'years').toISOString(),
+                'single',
+                true,
+                {
+                    id: 2,
+                    capDetails: {
+                        name: 'cappy cap',
+                        price: '2',
+                        durationAmount: '24hr',
+                        durationUnits: ExpiryUnit.HOUR,
+                    },
+                },
             );
             expect(result).toStrictEqual([
                 {
@@ -115,11 +180,17 @@ describe('pages', () => {
                     href: 'productDateInformation',
                     name: 'Ticket end date',
                 },
+                {
+                    content: 'cappy cap',
+                    href: 'selectCaps',
+                    name: 'Cap',
+                },
             ]);
         });
 
         it('builds confirmation elements for multi product fares', () => {
             const now = moment('2021-06-20');
+
             const result = buildSalesConfirmationElements(
                 [
                     {
@@ -164,6 +235,9 @@ describe('pages', () => {
                 ],
                 now.toISOString(),
                 now.add(100, 'years').toISOString(),
+                'single',
+                true,
+                null,
             );
             expect(result).toStrictEqual([
                 {
@@ -217,6 +291,11 @@ describe('pages', () => {
                     content: '20-06-2121',
                     href: 'productDateInformation',
                     name: 'Ticket end date',
+                },
+                {
+                    content: 'N/A',
+                    href: 'selectCaps',
+                    name: 'Cap',
                 },
             ]);
         });

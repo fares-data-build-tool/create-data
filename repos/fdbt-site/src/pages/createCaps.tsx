@@ -4,7 +4,7 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
-import { CapInfo, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { isWithErrors } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
@@ -19,7 +19,7 @@ const description = 'Create caps page of the Create Fares Data Service';
 
 interface CreateCapsProps {
     errors: ErrorInfo[];
-    userInput?: CapInfo;
+    userInput?: Cap;
     csrfToken: string;
     editId?: number;
 }
@@ -29,8 +29,8 @@ export const isADayOrLonger = (duration: string | undefined, durationUnit: strin
 const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsProps): ReactElement => {
     const optionList: string[] = Object.values(ExpiryUnit).filter((option) => option !== 'term');
 
-    const capDurationAmount = userInput?.cap.durationAmount;
-    const capDurationUnit = userInput?.cap.durationUnits as string;
+    const capDurationAmount = userInput?.capDetails.durationAmount;
+    const capDurationUnit = userInput?.capDetails.durationUnits as string;
 
     const [showCapStartInfo, setShowCapStartInfo] = useState<boolean>(
         isADayOrLonger(capDurationAmount, capDurationUnit),
@@ -91,7 +91,11 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                                     type="text"
                                                     aria-describedby="cap-name-hint"
                                                     maxLength={50}
-                                                    defaultValue={userInput && userInput.cap ? userInput.cap.name : ''}
+                                                    defaultValue={
+                                                        userInput && userInput.capDetails
+                                                            ? userInput.capDetails.name
+                                                            : ''
+                                                    }
                                                 />
                                             </FormElementWrapper>
                                         </>
@@ -125,7 +129,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                                             type="text"
                                                             aria-describedby="cap-price-hint"
                                                             id="cap-price"
-                                                            defaultValue={userInput?.cap.price || ''}
+                                                            defaultValue={userInput?.capDetails.price || ''}
                                                         />
                                                     </FormElementWrapper>
                                                 </div>
@@ -159,7 +163,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                                         type="text"
                                                         id="cap-period-duration-quantity"
                                                         aria-describedby="cap-duration-hint"
-                                                        defaultValue={userInput?.cap.durationAmount || ''}
+                                                        defaultValue={userInput?.capDetails.durationAmount || ''}
                                                         onChange={(e): void => updateDurationAmount(e.target.value)}
                                                     />
                                                 </FormElementWrapper>
@@ -174,7 +178,7 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                                         className="govuk-select govuk-select--width-3 expiry-selector-units"
                                                         name="capDurationUnits"
                                                         id="cap-duration-unit"
-                                                        defaultValue={userInput?.cap.durationUnits || ''}
+                                                        defaultValue={userInput?.capDetails.durationUnits || ''}
                                                         onChange={(e): void => updateDurationUnit(e.target.value)}
                                                     >
                                                         <option value="" disabled key="select-one">

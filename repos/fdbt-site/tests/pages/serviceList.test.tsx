@@ -94,26 +94,7 @@ describe('pages', () => {
             (getAllServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
             (getTndsServicesByNocAndModes as jest.Mock).mockImplementation(() => []);
         });
-        /*
-        it('should render correctly with tnds data source', () => {
-            const tree = shallow(
-                <ServiceList
-                    serviceList={mockServiceList}
-                    buttonText="Select All"
-                    errors={[]}
-                    csrfToken=""
-                    multiOperator={false}
-                    dataSourceAttribute={{
-                        source: 'tnds',
-                        hasTnds: true,
-                        hasBods: false,
-                    }}
-                    additional
-                />,
-            );
-            expect(tree).toMatchSnapshot();
-        });
-*/
+
         it('should render correctly with bods data source', () => {
             const tree = shallow(
                 <ServiceList
