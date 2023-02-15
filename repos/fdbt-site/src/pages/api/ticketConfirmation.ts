@@ -9,7 +9,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const nocCode = getAndValidateNoc(req, res);
         const caps = await getCaps(nocCode);
 
-        if (['single', 'return', 'flatFare'].includes(fareTypeAttribute) && caps.length > 0) {
+        const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
+
+        if (isDevOrTest && ['single', 'return', 'flatFare'].includes(fareTypeAttribute) && caps.length > 0) {
             redirectTo(res, '/selectCaps');
             return;
         }
