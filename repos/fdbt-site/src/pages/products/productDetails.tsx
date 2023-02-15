@@ -8,8 +8,9 @@ import {
     getTimeRestrictionByIdAndNoc,
     getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource,
     getServiceByIdAndDataSource,
+    getCapByNocAndId,
 } from '../../data/auroradb';
-import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation } from '../../interfaces';
+import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation, Cap } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
@@ -364,6 +365,17 @@ const createProductDetails = async (
         });
     } else {
         productDetailsElements.push({ id: 'time-restriction', name: 'Only valid during term time', content: ['Yes'] });
+    }
+
+    if ('cap' in ticket && ticket.cap) {
+        const cap = (await getCapByNocAndId(noc, ticket.cap.id)) as Cap;
+
+        productDetailsElements.push({
+            id: 'cap',
+            name: 'Cap',
+            content: [`${sentenceCaseString(cap.capDetails.name)} - £${cap.capDetails.price}`],
+            editLink: '/selectCaps',
+        });
     }
 
     // check to see if we have a point to point product
