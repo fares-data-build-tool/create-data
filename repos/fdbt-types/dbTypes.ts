@@ -124,14 +124,21 @@ export interface DbTimeRestriction {
     timeBands: DbTimeBand[];
 }
 
-export type CapStart = { type: 'rollingDays' | 'fixedWeekdays' };
+export type DayOfTheWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+export interface CapStartInfo {
+    type: CapStart;
+    startDay?: DayOfTheWeek;
+}
+
+export type CapStart = 'rollingDays' | 'fixedWeekdays';
 
 export interface DbCap {
     name: string;
     price: string;
     durationAmount: string;
     durationUnits: ExpiryUnit;
-    capStart?: CapStart;
+    capStart?: CapStartInfo;
 }
 
 export interface ServiceDetails {
