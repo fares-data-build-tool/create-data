@@ -1,3 +1,5 @@
+import { DbCap } from "./dbTypes";
+
 export interface PointToPointCarnetProductDetails extends BaseProduct {
     carnetDetails: CarnetDetails;
 }
@@ -157,7 +159,7 @@ export interface BaseTicket<T extends TicketType = TicketType> {
     ticketPeriod: TicketPeriod;
     groupDefinition?: GroupDefinition;
     carnet?: boolean;
-    caps?: { id: number };
+    caps?: DbCap;
 }
 
 export type WithIds<T extends { products: BaseProduct[] }> = WithBaseIds<
@@ -178,7 +180,7 @@ export type WithBaseIds<T> = Omit<
     | 'proofDocuments'
     | 'timeRestriction'
     | 'fareDayEnd'
-> & { passengerType: { id: number }; timeRestriction?: { id: number } };
+> & { passengerType: { id: number }; timeRestriction?: { id: number }; cap?: { id: number } };
 
 export interface GroupDefinition {
     maxPeople: string;
