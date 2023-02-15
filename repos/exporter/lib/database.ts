@@ -7,6 +7,7 @@ import {
     SinglePassengerType,
     RawSalesOfferPackage,
     ServiceDetails,
+    DbCap,
 } from 'fdbt-types/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
 import { getSsmValue } from './ssm';
@@ -134,6 +135,20 @@ export const getGroupDefinition = async (
     maxPeople: passengerType.maxGroupSize,
     companions: await getCompanions(passengerType, noc),
 });
+
+export const getCapByNocAndId = async (nocCode: string, id: number): Promise<DbCap> => {
+    const queryInput = `
+            SELECT contents
+            FROM caps
+            WHERE noc = ?
+            AND id = ?
+            AND isExpiry = 0
+        `;
+
+    const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode, id]);
+
+    return JSON.parse(queryResults[0].contents) as DbCap;
+};
 
 export const getTimeRestrictionsByIdAndNoc = async (
     timeRestrictionId: number,
