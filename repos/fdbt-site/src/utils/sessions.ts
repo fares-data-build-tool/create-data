@@ -59,13 +59,11 @@ import {
     VIEW_TIME_RESTRICTION,
     VIEW_OPERATOR_GROUP,
     CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
-    TYPE_OF_CAP_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
     GS_FARE_DAY_END_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     CSV_ZONE_FILE_NAME,
     DIRECTION_ATTRIBUTE,
-    CAPS_ATTRIBUTE,
     EDIT_PERIOD_DURATION_ERROR,
     MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE,
     VIEW_PRODUCT_GROUP,
@@ -79,6 +77,7 @@ import {
     MULTI_MODAL_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     CREATE_CAPS_ATTRIBUTE,
+    CAPS_DEFINITION_ATTRIBUTE,
     STOPS_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
 import {
@@ -136,15 +135,14 @@ import {
     Errors,
     BasicService,
     ManageOperatorGroupWithErrors,
-    TypeOfCap,
     ManageProductGroupWithErrors,
     DistancePricingData,
     MultiTapPricing,
     AdditionalPricing,
-    CapDetails,
     EditFareStageMatchingWithErrors,
-    CapInfo,
+    CapSelection,
     ExemptedStopsAttribute,
+    Cap,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -236,10 +234,8 @@ export interface SessionAttributeTypes {
     [VIEW_TIME_RESTRICTION]: ErrorInfo[];
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
     [VIEW_PRODUCT_GROUP]: ErrorInfo[];
-    [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
-    [CAPS_ATTRIBUTE]: CapDetails | WithErrors<CapDetails>;
-    [CREATE_CAPS_ATTRIBUTE]: CapInfo | WithErrors<CapInfo>;
+    [CREATE_CAPS_ATTRIBUTE]: Cap | WithErrors<Cap>;
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
@@ -250,6 +246,7 @@ export interface SessionAttributeTypes {
         | AdditionalPricing
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
     [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
+    [CAPS_DEFINITION_ATTRIBUTE]: CapSelection | { errors: ErrorInfo[] };
     [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
     [STOPS_EXEMPTION_ATTRIBUTE]: ExemptedStopsAttribute | { errors: ErrorInfo[] };
 }

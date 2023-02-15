@@ -13,6 +13,7 @@ import {
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
     STOPS_EXEMPTION_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
 import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, ServicesInfo, FareType, TxcSourceAttribute } from '../interfaces';
@@ -382,6 +383,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const exemptStopsAttribute = getSessionAttribute(ctx.req, STOPS_EXEMPTION_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
     const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
+    const exemptServicesAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
 
     if (!dataSourceAttribute) {
         const services = await getAllServicesByNocCode(nocCode);
@@ -403,7 +405,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }
 
-    const chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    let chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+
+    if (!!exemptServicesAttribute && !isServiceListAttributeWithErrors(exemptServicesAttribute)) {
+        const exemptServices = exemptServicesAttribute.selectedServices;
+        // removing the services which the user has selected as exempted
+        chosenDataSourceServices = chosenDataSourceServices.filter(
+            (service) => !exemptServices.find((exemptService) => exemptService.lineId === service.lineId),
+        );
+    }
 
     const ticketJson = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
@@ -427,12 +437,20 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             });
         }
 
-        const serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
+        let serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
             return {
                 ...service,
                 checked: services.includes(service.lineName),
             };
         });
+
+        if ('exemptedServices' in ticketJson && !!ticketJson.exemptedServices) {
+            const { exemptedServices } = ticketJson;
+            // removing the services which the user has selected as exempted
+            serviceListEdit = serviceListEdit.filter(
+                (service) => !exemptedServices.find((exemptService) => exemptService.lineId === service.lineId),
+            );
+        }
 
         const exemptStops: string =
             'exemptStops' in ticketJson && !!ticketJson.exemptStops

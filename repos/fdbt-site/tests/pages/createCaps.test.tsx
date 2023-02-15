@@ -29,14 +29,16 @@ describe('pages', () => {
                 durationAmount: '2',
                 durationUnits: 'hour' as ExpiryUnit,
             };
-            const tree = shallow(<CreateCaps errors={[]} userInput={{ cap: capInfo }} editId={1} csrfToken="" />);
+            const tree = shallow(
+                <CreateCaps errors={[]} userInput={{ capDetails: capInfo }} editId={1} csrfToken="" />,
+            );
 
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly on edit mode with cap start', () => {
-            const capInfo = {
-                cap: {
+            const cap = {
+                capDetails: {
                     name: 'Cap 1',
                     price: '2',
                     durationAmount: '2',
@@ -46,7 +48,7 @@ describe('pages', () => {
                     type: 'rollingDays' as CapStart,
                 },
             };
-            const tree = shallow(<CreateCaps errors={[]} userInput={capInfo} editId={1} csrfToken="" />);
+            const tree = shallow(<CreateCaps errors={[]} userInput={cap} editId={1} csrfToken="" />);
 
             expect(tree).toMatchSnapshot();
         });

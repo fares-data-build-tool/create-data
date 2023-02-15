@@ -1,4 +1,4 @@
-import { DistancePricingData } from './index';
+import { CapSelection, DistancePricingData } from './index';
 
 export interface PointToPointCarnetProductDetails extends BaseProduct {
     productName: string;
@@ -9,6 +9,7 @@ export type FlatFareGeoZoneTicket = Omit<PeriodGeoZoneTicket, 'products' | 'type
     type: 'flatFare';
     products: FlatFareProduct[];
     exemptedServices?: SelectedService[];
+    cap?: CapSelection;
 };
 
 export interface PeriodGeoZoneTicket extends BasePeriodTicket {
@@ -57,6 +58,7 @@ export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
     termTime: boolean;
     selectedServices: SelectedService[];
     operatorName: string;
+    cap?: CapSelection;
     exemptStops?: Stop[];
 }
 
@@ -235,6 +237,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     serviceDescription: string;
     products: (BaseProduct | PointToPointCarnetProductDetails)[];
     unassignedStops: UnassignedStops;
+    cap?: CapSelection;
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
