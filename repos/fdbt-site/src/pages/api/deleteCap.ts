@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { deleteCap, getAllProductsByNoc, getCapByNocAndId } from '../../data/auroradb';
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils/index';
-import { CapInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
+import { Cap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getProductsMatchingJson } from '../../data/s3';
 import { updateSessionAttribute } from '../../utils/sessions';
 import { VIEW_CAP } from '../../constants/attributes';
@@ -27,12 +27,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }),
         );
 
-        const productsUsingCap = tickets.filter((t) => t.cap && t.cap.id === id);
+        const productsUsingCap = tickets.filter((t) => 'cap' in t && t.cap && t.cap.id === id);
 
         if (productsUsingCap.length > 0) {
-            const capInfo = (await getCapByNocAndId(noc, id)) as CapInfo;
-            const { name } = capInfo.cap;
-            const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingCap.length} cap(s).`;
+            const cap = (await getCapByNocAndId(noc, id)) as Cap;
+            const { name } = cap.capDetails;
+            const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingCap.length} ticket(s).`;
             const errors: ErrorInfo[] = [{ id: 'cap-card-0', errorMessage }];
             updateSessionAttribute(req, VIEW_CAP, errors);
             redirectTo(res, `/viewCaps?cannotDelete=${name}`);

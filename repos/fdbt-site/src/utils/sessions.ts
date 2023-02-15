@@ -236,7 +236,6 @@ export interface SessionAttributeTypes {
     [VIEW_OPERATOR_GROUP]: ErrorInfo[];
     [VIEW_PRODUCT_GROUP]: ErrorInfo[];
     [VIEW_CAP]: ErrorInfo[];
-    [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
     [CREATE_CAPS_ATTRIBUTE]: Cap | WithErrors<Cap>;
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
