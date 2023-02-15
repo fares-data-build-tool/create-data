@@ -16,6 +16,7 @@ import {
     getTimeRestrictionsByIdAndNoc,
     getGroupDefinition,
     getSalesOfferPackagesByNoc,
+    getCapByNocAndId,
 } from './database';
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
@@ -89,6 +90,8 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ? await getTimeRestrictionsByIdAndNoc(ticketWithIds.timeRestriction.id, noc)
                 : [];
 
+            const cap = !!ticketWithIds.cap ? await getCapByNocAndId(noc, ticketWithIds.cap.id) : undefined;
+
             const fareDayEnd = await getFareDayEnd(noc);
 
             const timeRestrictionWithUpdatedFareDayEnds: FullTimeRestriction[] = timeRestriction.map(
@@ -123,7 +126,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ...passengerType,
                 groupDefinition,
                 timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
-                
+                ...(!!cap && cap),
             };
             /* eslint-enable */
 
