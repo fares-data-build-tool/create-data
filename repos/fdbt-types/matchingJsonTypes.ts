@@ -6,7 +6,6 @@ export type FlatFareGeoZoneTicket = Omit<PeriodGeoZoneTicket, 'products' | 'type
     type: 'flatFare';
     products: FlatFareProduct[];
     exemptedServices?: SelectedService[];
-    cap?: CapSelection;
 };
 
 export interface PeriodGeoZoneTicket extends BasePeriodTicket {
@@ -54,7 +53,6 @@ export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
     selectedServices: SelectedService[];
     operatorName: string;
     exemptStops?: Stop[];
-    cap?: CapSelection;
 }
 
 export type FlatFareTicket = FlatFareGeoZoneTicket | FlatFareMultipleServices;
@@ -159,6 +157,7 @@ export interface BaseTicket<T extends TicketType = TicketType> {
     ticketPeriod: TicketPeriod;
     groupDefinition?: GroupDefinition;
     carnet?: boolean;
+    caps?: { id: number };
 }
 
 export type WithIds<T extends { products: BaseProduct[] }> = WithBaseIds<
@@ -238,7 +237,6 @@ export interface SingleTicket extends BasePointToPointTicket {
     fareZones: FareZone[];
     termTime: boolean;
     journeyDirection: string;
-    cap?: CapSelection;
 }
 
 export interface MatchingJsonMetaData {
@@ -253,7 +251,6 @@ export interface ReturnTicket extends BasePointToPointTicket {
     outboundFareZones: FareZone[];
     returnPeriodValidity?: ReturnPeriodValidity;
     additionalServices?: AdditionalService[];
-    cap?: CapSelection;
 }
 
 export interface Product {
