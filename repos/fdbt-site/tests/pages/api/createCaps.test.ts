@@ -5,7 +5,7 @@ import { CREATE_CAPS_ATTRIBUTE } from '../../../src/constants/attributes';
 import createCaps from '../../../src/pages/api/createCaps';
 import * as db from '../../../src/data/auroradb';
 import { ExpiryUnit, FromDb } from 'src/interfaces/matchingJsonTypes';
-import { CapInfo } from 'src/interfaces';
+import { Cap } from 'src/interfaces';
 
 describe('createCaps', () => {
     const writeHeadMock = jest.fn();
@@ -37,7 +37,7 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            cap: { durationAmount: '', durationUnits: '', name: '', price: '' },
+            capDetails: { durationAmount: '', durationUnits: '', name: '', price: '' },
             errors: [
                 { errorMessage: 'Cap name cannot have less than 2 characters', id: 'cap-name' },
                 { errorMessage: 'Cap price cannot be empty', id: 'cap-price' },
@@ -65,7 +65,7 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            cap: { durationAmount: '2', durationUnits: '', name: 'hello', price: '' },
+            capDetails: { durationAmount: '2', durationUnits: '', name: 'hello', price: '' },
             errors: [
                 { errorMessage: 'Cap price cannot be empty', id: 'cap-price' },
                 { errorMessage: 'Choose an option from the dropdown', id: 'cap-duration-unit' },
@@ -91,7 +91,7 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            cap: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '0' },
+            capDetails: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '0' },
             capStart: undefined,
             errors: [
                 { errorMessage: 'Cap prices cannot be zero', id: 'cap-price' },
@@ -118,7 +118,7 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            cap: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '000' },
+            capDetails: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '000' },
             capStart: undefined,
             errors: [
                 { errorMessage: 'Cap prices cannot be zero', id: 'cap-price' },
@@ -145,7 +145,7 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            cap: { durationAmount: '25', durationUnits: 'hour', name: 'Name', price: '2' },
+            capDetails: { durationAmount: '25', durationUnits: 'hour', name: 'Name', price: '2' },
             capStart: undefined,
             errors: [{ errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' }],
         });
@@ -162,8 +162,8 @@ describe('createCaps', () => {
             mockWriteHeadFn: writeHeadMock,
         });
 
-        const cap: FromDb<CapInfo> = {
-            cap: {
+        const cap: FromDb<Cap> = {
+            capDetails: {
                 name: 'Cap 1',
                 price: '4',
                 durationAmount: '2',
@@ -181,7 +181,7 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            cap: { durationAmount: '2', durationUnits: 'hour', name: 'Cap 1', price: '2' },
+            capDetails: { durationAmount: '2', durationUnits: 'hour', name: 'Cap 1', price: '2' },
             errors: [{ errorMessage: 'You already have a cap named Cap 1. Choose another name.', id: 'cap-name' }],
         });
     });
@@ -198,7 +198,7 @@ describe('createCaps', () => {
         });
 
         const expected = {
-            cap: {
+            capDetails: {
                 name: 'Cap 1',
                 price: '2',
                 durationAmount: '2',
@@ -231,7 +231,7 @@ describe('createCaps', () => {
         });
 
         const expected = {
-            cap: {
+            capDetails: {
                 name: 'Cap 1',
                 price: '2',
                 durationAmount: '2',

@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { getCaps, insertCaps, updateCaps } from '../../data/auroradb';
 import { CREATE_CAPS_ATTRIBUTE } from '../../constants/attributes';
-import { CapInfo, ErrorInfo, NextApiRequestWithSession } from '../../interfaces/index';
+import { Cap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces/index';
 import { CapStart, DayOfTheWeek, ExpiryUnit, FromDb } from '../../interfaces/matchingJsonTypes';
 import { getAndValidateNoc, isADayOfTheWeek, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {
@@ -23,7 +23,7 @@ export interface InputtedCap {
     startDay: string | undefined;
 }
 
-export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createdCaps: CapInfo } => {
+export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createdCap: Cap } => {
     const errors: ErrorInfo[] = [];
 
     const trimmedCapName = removeExcessWhiteSpace(inputtedCap.name);
@@ -91,14 +91,14 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
         durationUnits: (inputtedCap.durationUnits as ExpiryUnit) || '',
     };
 
-    const createdCaps: CapInfo = {
-        cap,
+    const createdCap: Cap = {
+        capDetails: cap,
         capStart,
     };
 
     return {
         errors,
-        createdCaps,
+        createdCap,
     };
 };
 
@@ -117,18 +117,19 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             startDay: startDay,
         };
 
-        const { createdCaps, errors } = validateAndFormatCapInputs(inputtedCap);
+        const { createdCap, errors } = validateAndFormatCapInputs(inputtedCap);
 
         if (id && !Number.isInteger(id)) {
-            throw Error(`Received invalid id for create caps ${req.body.id}`);
+            throw Error(`Received invalid id for create caps ${id}`);
         }
 
         if (errors.length === 0) {
-            const results: FromDb<CapInfo>[] = await getCaps(noc);
+            const caps: FromDb<Cap>[] = await getCaps(noc);
 
             if (
-                results.some(
-                    (cap) => cap.id !== id && cap.cap.name.toLowerCase() === createdCaps.cap.name.toLowerCase(),
+                caps.some(
+                    (cap) =>
+                        cap.id !== id && cap.capDetails.name.toLowerCase() === createdCap.capDetails.name.toLowerCase(),
                 )
             ) {
                 errors.push({
@@ -139,7 +140,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (errors.length > 0) {
-            updateSessionAttribute(req, CREATE_CAPS_ATTRIBUTE, { errors, ...createdCaps });
+            updateSessionAttribute(req, CREATE_CAPS_ATTRIBUTE, { errors, ...createdCap });
             redirectTo(res, `/createCaps${!!id ? `?id=${id}` : ''}`);
             return;
         }
@@ -147,9 +148,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         updateSessionAttribute(req, CREATE_CAPS_ATTRIBUTE, undefined);
 
         if (id) {
-            await updateCaps(noc, id, createdCaps);
+            await updateCaps(noc, id, createdCap);
         } else {
-            await insertCaps(noc, createdCaps);
+            await insertCaps(noc, createdCap);
         }
 
         redirectTo(res, '/viewCaps');

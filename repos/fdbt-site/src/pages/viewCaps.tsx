@@ -1,8 +1,8 @@
-import React, { ReactElement, useState } from 'react';
+import React, { FunctionComponent, ReactElement, useState } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
 import { BaseLayout } from '../layout/Layout';
 import SubNavigation from '../layout/SubNavigation';
-import { CapInfo, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import { getCapExpiry, getCaps, getFareDayEnd } from '../data/auroradb';
 import { CapExpiry, FromDb } from '../interfaces/matchingJsonTypes';
@@ -10,12 +10,14 @@ import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { CAP_EXPIRY_ATTRIBUTE, CREATE_CAPS_ATTRIBUTE, VIEW_CAP } from '../constants/attributes';
 import { expiryHintText } from './selectCapExpiry';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
+import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 
 const title = 'Caps - Create Fares Data Service';
 const description = 'View and edit your caps.';
 
 interface CapProps {
-    caps: FromDb<CapInfo>[];
+    caps: FromDb<Cap>[];
+    referer: string | null;
     capExpiry: string;
     fareDayEnd: string;
     viewCapErrors: ErrorInfo[];
@@ -23,7 +25,7 @@ interface CapProps {
 }
 
 interface CapCardProps {
-    capInfo: FromDb<CapInfo>;
+    cap: FromDb<Cap>;
     index: Number;
     deleteActionHandler: (id: number, name: string) => void;
 }
@@ -33,7 +35,7 @@ interface CapExpiryCardProps {
     fareDayEnd: string;
 }
 
-const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [], csrfToken }: CapProps): ReactElement => {
+const ViewCaps = ({ caps, referer, capExpiry, fareDayEnd, viewCapErrors = [], csrfToken }: CapProps): ReactElement => {
     const [popUpState, setPopUpState] = useState<{
         capName: string;
         capId: number;
@@ -56,7 +58,7 @@ const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [], csrfToken }
     };
 
     return (
-        <BaseLayout title={title} description={description} showNavigation>
+        <BaseLayout title={title} description={description} showNavigation referer={referer}>
             <div>
                 <ErrorSummary errors={viewCapErrors} />
             </div>
@@ -97,11 +99,11 @@ const ViewCaps = ({ caps, capExpiry, fareDayEnd, viewCapErrors = [], csrfToken }
                                     </p>
                                 ) : (
                                     <div className="card-row">
-                                        {caps.map((capInfo, index) => (
+                                        {caps.map((cap, index) => (
                                             <CapCard
-                                                capInfo={capInfo}
+                                                cap={cap}
                                                 index={index}
-                                                key={capInfo.id.toString()}
+                                                key={cap.id.toString()}
                                                 deleteActionHandler={deleteActionHandler}
                                             />
                                         ))}
@@ -142,7 +144,7 @@ const NoCapsCard = (): ReactElement => {
     );
 };
 
-const CapCard = ({ capInfo, index, deleteActionHandler }: CapCardProps): ReactElement => {
+const CapCard = ({ cap, index, deleteActionHandler }: CapCardProps): ReactElement => {
     return (
         <>
             <div className="card" id={`cap-${index}`}>
@@ -152,7 +154,7 @@ const CapCard = ({ capInfo, index, deleteActionHandler }: CapCardProps): ReactEl
                             <li className="actions__item">
                                 <a
                                     className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular"
-                                    href={`/createCaps?id=${capInfo.id}`}
+                                    href={`/createCaps?id=${cap.id}`}
                                 >
                                     Edit
                                 </a>
@@ -160,7 +162,7 @@ const CapCard = ({ capInfo, index, deleteActionHandler }: CapCardProps): ReactEl
                             <li className="actions__item">
                                 <button
                                     className="govuk-link govuk-!-font-size-16 govuk-!-font-weight-regular actions__delete"
-                                    onClick={() => deleteActionHandler(capInfo.id, capInfo.cap.name)}
+                                    onClick={() => deleteActionHandler(cap.id, cap.capDetails.name)}
                                 >
                                     Delete
                                 </button>
@@ -168,27 +170,28 @@ const CapCard = ({ capInfo, index, deleteActionHandler }: CapCardProps): ReactEl
                         </ul>
                     </div>
 
-                    <h4 className="govuk-heading-m govuk-!-padding-bottom-4">{capInfo.cap.name}</h4>
+                    <h4 className="govuk-heading-m govuk-!-padding-bottom-4">{cap.capDetails.name}</h4>
 
                     <p className="govuk-body-s govuk-!-margin-bottom-2">
-                        <span className="govuk-!-font-weight-bold">Price:</span> {sentenceCaseString(capInfo.cap.price)}
+                        <span className="govuk-!-font-weight-bold">Price:</span>{' '}
+                        {sentenceCaseString(cap.capDetails.price)}
                     </p>
 
                     <p className="govuk-body-s govuk-!-margin-bottom-2">
-                        <span className="govuk-!-font-weight-bold">Duration:</span> {capInfo.cap.durationAmount}{' '}
-                        {capInfo.cap.durationUnits}
+                        <span className="govuk-!-font-weight-bold">Duration:</span> {cap.capDetails.durationAmount}{' '}
+                        {cap.capDetails.durationUnits}
                     </p>
 
-                    {capInfo.capStart ? (
+                    {cap.capStart ? (
                         <>
                             <p className="govuk-body-s govuk-!-margin-bottom-2">
                                 <span className="govuk-!-font-weight-bold">Cap start:</span>{' '}
-                                {sentenceCaseString(capInfo.capStart.type)}
+                                {sentenceCaseString(cap.capStart.type)}
                             </p>
-                            {capInfo.capStart.startDay ? (
+                            {cap.capStart.startDay ? (
                                 <p className="govuk-body-s govuk-!-margin-bottom-2">
                                     <span className="govuk-!-font-weight-bold">Day:</span>{' '}
-                                    {sentenceCaseString(capInfo.capStart.startDay)}
+                                    {sentenceCaseString(cap.capStart.startDay)}
                                 </p>
                             ) : null}
                         </>
@@ -198,6 +201,35 @@ const CapCard = ({ capInfo, index, deleteActionHandler }: CapCardProps): ReactEl
         </>
     );
 };
+
+export const CapCardBody: FunctionComponent<{ cap: Cap }> = ({ cap }: { cap: Cap }) => (
+    <>
+        <h4 className="govuk-heading-m govuk-!-padding-bottom-4">{cap.capDetails.name}</h4>
+
+        <p className="govuk-body-s govuk-!-margin-bottom-2">
+            <span className="govuk-!-font-weight-bold">Price:</span> {sentenceCaseString(cap.capDetails.price)}
+        </p>
+
+        <p className="govuk-body-s govuk-!-margin-bottom-2">
+            <span className="govuk-!-font-weight-bold">Duration:</span> {cap.capDetails.durationAmount}{' '}
+            {cap.capDetails.durationUnits}
+        </p>
+
+        {cap.capStart ? (
+            <>
+                <p className="govuk-body-s govuk-!-margin-bottom-2">
+                    <span className="govuk-!-font-weight-bold">Cap start:</span> {sentenceCaseString(cap.capStart.type)}
+                </p>
+                {cap.capStart.startDay ? (
+                    <p className="govuk-body-s govuk-!-margin-bottom-2">
+                        <span className="govuk-!-font-weight-bold">Day:</span>{' '}
+                        {sentenceCaseString(cap.capStart.startDay)}
+                    </p>
+                ) : null}
+            </>
+        ) : null}
+    </>
+);
 
 const CapExpiryCard = ({ capExpiry: capExpiry, fareDayEnd }: CapExpiryCardProps): ReactElement => {
     return (
@@ -256,6 +288,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     return {
         props: {
             caps,
+            referer: extractGlobalSettingsReferer(ctx),
             capExpiry,
             fareDayEnd,
             viewCapErrors: viewCapErrors || [],
