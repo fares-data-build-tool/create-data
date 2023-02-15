@@ -386,7 +386,3 @@ export interface OperatorDetails {
     county: string;
     postcode: string;
 }
-
-export interface CapSelection {
-    id: number;
-}

@@ -9,10 +9,6 @@ import {
     BasePeriodTicket,
     ProductDetails,
     BaseSchemeOperatorTicket,
-    SingleTicket,
-    ReturnTicket,
-    FlatFareTicket,
-    CapSelection,
 } from 'fdbt-types/matchingJsonTypes';
 import {
     getFareDayEnd,
@@ -24,7 +20,7 @@ import {
 } from './database';
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
-import { DbCap, DbTimeRestriction } from 'fdbt-types/dbTypes';
+import { DbTimeRestriction } from 'fdbt-types/dbTypes';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -94,12 +90,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ? await getTimeRestrictionsByIdAndNoc(ticketWithIds.timeRestriction.id, noc)
                 : [];
 
-            const cap =
-                ['single', 'return', 'flatFare'].includes(ticketWithIds.type) &&
-                'cap' in ticketWithIds &&
-                ticketWithIds.cap
-                    ? await getCapByNocAndId(noc, ticketWithIds.cap.id)
-                    : undefined;
+            const cap = !!ticketWithIds.cap ? await getCapByNocAndId(noc, ticketWithIds.cap.id) : undefined;
 
             const fareDayEnd = await getFareDayEnd(noc);
 
