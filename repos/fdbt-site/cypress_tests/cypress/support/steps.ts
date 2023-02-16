@@ -653,7 +653,7 @@ export const editExemptedServices = (): void => {
     const randomSelector = getRandomNumber(1, 2);
     if (randomSelector === 1) {
         clickElementById('yes');
-        randomlyChooseAndSelectServices(true);
+        randomlyChooseAndSelectServices();
     } else {
         clickElementById('no');
         cy.wrap('N/A').as('input');
