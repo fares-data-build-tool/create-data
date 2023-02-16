@@ -4,7 +4,7 @@ import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { sopTicketFormatConverter } from './salesConfirmation';
-import { GS_PURCHASE_METHOD_ATTRIBUTE, VIEW_PURCHASE_METHOD } from '../constants/attributes';
+import { GS_PURCHASE_METHOD_ATTRIBUTE, VIEW_PURCHASE_METHOD_ERRORS } from '../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { FromDb, SalesOfferPackage } from '../interfaces/matchingJsonTypes';
 import PurchaseMethodCard from '../components/PurchaseMethodCard';
@@ -186,9 +186,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const purchaseMethods = await getSalesOfferPackagesByNocCode(nationalOperatorCode);
-    const viewPurchaseMethod = getSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD);
+    const viewPurchaseMethod = getSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD_ERRORS);
 
-    updateSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD, undefined);
+    updateSessionAttribute(ctx.req, VIEW_PURCHASE_METHOD_ERRORS, undefined);
     updateSessionAttribute(ctx.req, GS_PURCHASE_METHOD_ATTRIBUTE, undefined);
     return {
         props: {
