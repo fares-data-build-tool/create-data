@@ -1,5 +1,12 @@
 import React, { ReactElement, useState } from 'react';
-import { convertDateFormat, getAndValidateNoc, getCsrfToken, isReturnTicket, sentenceCaseString } from '../../utils';
+import {
+    convertDateFormat,
+    fareTypeIsAllowedToAddACap,
+    getAndValidateNoc,
+    getCsrfToken,
+    isReturnTicket,
+    sentenceCaseString,
+} from '../../utils';
 import {
     getServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
@@ -28,7 +35,6 @@ import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { Stop, TicketWithIds } from '../../interfaces/matchingJsonTypes';
 import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
-import { fareTypeIsAllowedToAddACap } from '../../utils/apiUtils';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -219,6 +225,7 @@ const createProductDetails = async (
     ctx: NextPageContextWithSession,
     fareTriangleModified: string | undefined,
     dataSource: string,
+    isDevOrTest: boolean,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
     productName: string;
@@ -370,7 +377,6 @@ const createProductDetails = async (
     }
 
     const hasCaps = (await getCaps(noc)).length > 0;
-    const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
 
     if (isDevOrTest && fareTypeIsAllowedToAddACap(ticket.type) && hasCaps) {
         let capContent = 'N/A';
@@ -628,7 +634,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const productId = ctx.query?.productId;
     const copiedProduct = ctx.query?.copied === 'true';
     const cannotGenerateReturn = ctx.query?.generateReturn === 'false';
-
+    const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
     if (typeof productId !== 'string') {
         throw new Error(`Expected string type for productID, received: ${productId}`);
     }
@@ -657,6 +663,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         ctx,
         fareTriangleModified,
         dataSource,
+        isDevOrTest,
     );
 
     const backHref = serviceId

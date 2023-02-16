@@ -270,7 +270,3 @@ export const dateIsOverThirtyMinutesAgo = (inputDate: Date): boolean => {
 export const isADayOfTheWeek = (input: string | undefined): boolean => {
     return !!input && daysOfWeek.includes(input);
 };
-
-export const fareTypeIsAllowedToAddACap = (fareType: string): boolean => {
-    return ['single', 'return', 'flatFare'].includes(fareType);
-};

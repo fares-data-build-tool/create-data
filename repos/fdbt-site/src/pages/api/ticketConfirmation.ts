@@ -1,13 +1,8 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession } from '../../interfaces/index';
-import {
-    getAndValidateNoc,
-    getFareTypeFromFromAttributes,
-    fareTypeIsAllowedToAddACap,
-    redirectTo,
-    redirectToError,
-} from '../../utils/apiUtils';
+import { getAndValidateNoc, getFareTypeFromFromAttributes, redirectTo, redirectToError } from '../../utils/apiUtils';
 import { getCaps } from '../../../src/data/auroradb';
+import { fareTypeIsAllowedToAddACap } from '../../../src/utils';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {

@@ -257,3 +257,7 @@ export const objectKeyMatchesExportNameExactly = (objectKey: string, exportName:
     const exportNamePart = parts[2];
     return exportNamePart === exportName;
 };
+
+export const fareTypeIsAllowedToAddACap = (fareType: string): boolean => {
+    return !!fareType && ['single', 'return', 'flatFare'].includes(fareType);
+};
