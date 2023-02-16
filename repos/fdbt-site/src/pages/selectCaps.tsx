@@ -6,13 +6,14 @@ import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { CapCardBody } from './viewCaps';
 import BackButton from '../components/BackButton';
-import { getCaps } from '../data/auroradb';
-import { getSessionAttribute } from '../utils/sessions';
+import { getCaps } from 'src/data/auroradb';
+import { getSessionAttribute } from '../../src/utils/sessions';
 import {
     CAPS_DEFINITION_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
-} from '../constants/attributes';
+} from '../../src/constants/attributes';
+import { redirectTo } from '../../src/utils/apiUtils';
 
 const title = 'Select Caps - Create Fares Data Service';
 const description = 'Select Caps page of the Create Fares Data Service';
@@ -151,6 +152,10 @@ const CapsCard = ({ cap, selectedId }: { cap: Cap; selectedId: number | null }):
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SelectCapsProps }> => {
+    if (!(process.env.NODE_ENV === 'development' || process.env.STAGE === 'test') && ctx.res) {
+        redirectTo(ctx.res, '/selectPurchaseMethods');
+    }
+
     const csrfToken = getCsrfToken(ctx);
     const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
 
