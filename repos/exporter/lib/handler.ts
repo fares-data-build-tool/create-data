@@ -118,7 +118,9 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             );
 
             const setFareDayEnd =
-                isBasePeriodTicket(ticketWithIds) && ticketWithIds.products[0].productValidity === 'fareDayEnd';
+                isBasePeriodTicket(ticketWithIds) &&
+                'productValidity' in ticketWithIds.products[0] &&
+                ticketWithIds.products[0].productValidity === 'fareDayEnd';
 
             /* eslint-disable */
             const baseTicket: BaseTicket | BaseSchemeOperatorTicket = {
