@@ -8,7 +8,7 @@ import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiU
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getProductsMatchingJson } from '../../data/s3';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { VIEW_TIME_RESTRICTION } from '../../constants/attributes';
+import { VIEW_TIME_RESTRICTION_ERRORS } from '../../constants/attributes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -33,7 +33,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const { name } = timeRestrictionDetails;
             const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingTimeRestrictions.length} product(s).`;
             const errors: ErrorInfo[] = [{ id: `${id}`, errorMessage }];
-            updateSessionAttribute(req, VIEW_TIME_RESTRICTION, errors);
+            updateSessionAttribute(req, VIEW_TIME_RESTRICTION_ERRORS, errors);
             redirectTo(res, `/viewTimeRestrictions`);
             return;
         }

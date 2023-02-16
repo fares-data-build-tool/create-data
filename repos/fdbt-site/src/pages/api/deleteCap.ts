@@ -4,7 +4,7 @@ import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiU
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getProductsMatchingJson } from '../../data/s3';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { VIEW_CAP } from '../../constants/attributes';
+import { VIEW_CAP_ERRORS } from '../../constants/attributes';
 import { TicketWithIds } from 'src/interfaces/matchingJsonTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -14,14 +14,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const id = Number(query?.id);
 
         if (!Number.isInteger(id)) {
-            throw new Error('insufficient data provided for delete query');
+            throw new Error('Insufficient data provided for delete query');
         }
 
         const noc = getAndValidateNoc(req, res);
         const cap = await getCapByNocAndId(noc, id);
 
         if (!cap) {
-            throw new Error('unable to find cap with provided id');
+            throw new Error('Unable to find cap with provided id');
         }
 
         const products = await getAllProductsByNoc(noc);
@@ -38,7 +38,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const { name } = cap.capDetails;
             const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingCap.length} ticket(s).`;
             const errors: ErrorInfo[] = [{ id: 'cap-0', errorMessage }];
-            updateSessionAttribute(req, VIEW_CAP, errors);
+            updateSessionAttribute(req, VIEW_CAP_ERRORS, errors);
             redirectTo(res, `/viewCaps`);
             return;
         }

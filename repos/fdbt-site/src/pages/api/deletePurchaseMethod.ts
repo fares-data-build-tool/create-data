@@ -8,7 +8,7 @@ import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiU
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getProductsMatchingJson } from '../../data/s3';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { VIEW_PURCHASE_METHOD } from '../../constants/attributes';
+import { VIEW_PURCHASE_METHOD_ERRORS } from '../../constants/attributes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -42,7 +42,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const { name } = purchaseDetails;
             const errorMessage = `You cannot delete ${name} because it is being used in ${productsUsingPurchaseMethod.length} product(s).`;
             const errors: ErrorInfo[] = [{ id: `${id}`, errorMessage }];
-            updateSessionAttribute(req, VIEW_PURCHASE_METHOD, errors);
+            updateSessionAttribute(req, VIEW_PURCHASE_METHOD_ERRORS, errors);
             redirectTo(res, `/viewPurchaseMethods`);
             return;
         }

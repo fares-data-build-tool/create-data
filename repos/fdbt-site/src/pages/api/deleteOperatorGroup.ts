@@ -8,7 +8,7 @@ import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiU
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getProductsMatchingJson } from '../../data/s3';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { VIEW_OPERATOR_GROUP } from '../../constants/attributes';
+import { VIEW_OPERATOR_GROUP_ERRORS } from '../../constants/attributes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -53,7 +53,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             } `;
             const errors: ErrorInfo[] = [{ id: '/viewOperatorGroups', errorMessage }];
 
-            updateSessionAttribute(req, VIEW_OPERATOR_GROUP, errors);
+            updateSessionAttribute(req, VIEW_OPERATOR_GROUP_ERRORS, errors);
             redirectTo(res, `/viewOperatorGroups`);
             return;
         }
