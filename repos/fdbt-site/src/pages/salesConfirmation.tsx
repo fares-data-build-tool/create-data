@@ -22,7 +22,7 @@ import { ticketFormatsList } from './managePurchaseMethod';
 import { GetServerSidePropsResult } from 'next';
 import { SalesOfferPackage } from '../interfaces/matchingJsonTypes';
 import { getCapByNocAndId, getCaps } from '../../src/data/auroradb';
-import { isCapTicket } from '../utils/apiUtils';
+import { fareTypeIsAllowedToAddACap } from '../utils/apiUtils';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
@@ -103,7 +103,7 @@ export const buildSalesConfirmationElements = (
         },
     );
 
-    if (isCapTicket(fareType) && hasCaps) {
+    if (fareTypeIsAllowedToAddACap(fareType) && hasCaps) {
         confirmationElements.push({
             name: 'Cap',
             content: selectedCap?.capDetails.name || 'N/A',

@@ -3,7 +3,7 @@ import { NextApiRequestWithSession } from '../../interfaces/index';
 import {
     getAndValidateNoc,
     getFareTypeFromFromAttributes,
-    isCapTicket,
+    fareTypeIsAllowedToAddACap,
     redirectTo,
     redirectToError,
 } from '../../utils/apiUtils';
@@ -17,7 +17,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
 
-        if (isDevOrTest && isCapTicket(fareTypeAttribute) && caps.length > 0) {
+        if (isDevOrTest && fareTypeIsAllowedToAddACap(fareTypeAttribute) && caps.length > 0) {
             redirectTo(res, '/selectCaps');
             return;
         }

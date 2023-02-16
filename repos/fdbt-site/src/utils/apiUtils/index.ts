@@ -271,6 +271,6 @@ export const isADayOfTheWeek = (input: string | undefined): boolean => {
     return !!input && daysOfWeek.includes(input);
 };
 
-export const isCapTicket = (fareType: string): boolean => {
+export const fareTypeIsAllowedToAddACap = (fareType: string): boolean => {
     return ['single', 'return', 'flatFare'].includes(fareType);
 };

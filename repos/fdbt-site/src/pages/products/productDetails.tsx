@@ -28,7 +28,7 @@ import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { Stop, TicketWithIds } from '../../interfaces/matchingJsonTypes';
 import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
-import { isCapTicket } from '../../utils/apiUtils';
+import { fareTypeIsAllowedToAddACap } from '../../utils/apiUtils';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -370,7 +370,9 @@ const createProductDetails = async (
     }
 
     const hasCaps = (await getCaps(noc)).length > 0;
-    if (isCapTicket(ticket.type) && hasCaps) {
+    const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
+
+    if (isDevOrTest && fareTypeIsAllowedToAddACap(ticket.type) && hasCaps) {
         let capContent = 'N/A';
 
         if ('cap' in ticket && ticket.cap) {

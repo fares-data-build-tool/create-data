@@ -6,14 +6,14 @@ import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { CapCardBody } from './viewCaps';
 import BackButton from '../components/BackButton';
-import { getCaps } from 'src/data/auroradb';
+import { getCaps } from '../data/auroradb';
 import { getSessionAttribute } from '../../src/utils/sessions';
 import {
     CAPS_DEFINITION_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
 } from '../../src/constants/attributes';
-import { redirectTo } from '../../src/utils/apiUtils';
+import { redirectTo } from '../utils/apiUtils';
 
 const title = 'Select Caps - Create Fares Data Service';
 const description = 'Select Caps page of the Create Fares Data Service';
