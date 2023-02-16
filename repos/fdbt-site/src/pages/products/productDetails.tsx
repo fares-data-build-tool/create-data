@@ -1,5 +1,12 @@
 import React, { ReactElement, useState } from 'react';
-import { convertDateFormat, getAndValidateNoc, getCsrfToken, isReturnTicket, sentenceCaseString } from '../../utils';
+import {
+    convertDateFormat,
+    fareTypeIsAllowedToAddACap,
+    getAndValidateNoc,
+    getCsrfToken,
+    isReturnTicket,
+    sentenceCaseString,
+} from '../../utils';
 import {
     getServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
@@ -8,8 +15,10 @@ import {
     getTimeRestrictionByIdAndNoc,
     getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource,
     getServiceByIdAndDataSource,
+    getCapByNocAndId,
+    getCaps,
 } from '../../data/auroradb';
-import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation } from '../../interfaces';
+import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation, Cap } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
@@ -216,6 +225,7 @@ const createProductDetails = async (
     ctx: NextPageContextWithSession,
     fareTriangleModified: string | undefined,
     dataSource: string,
+    isDevOrTest: boolean,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
     productName: string;
@@ -364,6 +374,24 @@ const createProductDetails = async (
         });
     } else {
         productDetailsElements.push({ id: 'time-restriction', name: 'Only valid during term time', content: ['Yes'] });
+    }
+
+    const hasCaps = (await getCaps(noc)).length > 0;
+
+    if (isDevOrTest && fareTypeIsAllowedToAddACap(ticket.type) && hasCaps) {
+        let capContent = 'N/A';
+
+        if ('cap' in ticket && ticket.cap) {
+            const cap = (await getCapByNocAndId(noc, ticket.cap.id)) as Cap;
+            capContent = `${sentenceCaseString(cap.capDetails.name)} - £${cap.capDetails.price}`;
+        }
+
+        productDetailsElements.push({
+            id: 'cap',
+            name: 'Cap',
+            content: [capContent],
+            editLink: '/selectCaps',
+        });
     }
 
     // check to see if we have a point to point product
@@ -606,7 +634,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const productId = ctx.query?.productId;
     const copiedProduct = ctx.query?.copied === 'true';
     const cannotGenerateReturn = ctx.query?.generateReturn === 'false';
-
+    const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
     if (typeof productId !== 'string') {
         throw new Error(`Expected string type for productID, received: ${productId}`);
     }
@@ -635,6 +663,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         ctx,
         fareTriangleModified,
         dataSource,
+        isDevOrTest,
     );
 
     const backHref = serviceId

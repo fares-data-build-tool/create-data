@@ -6,9 +6,13 @@ import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { CapCardBody } from './viewCaps';
 import BackButton from '../components/BackButton';
-import { getCaps } from 'src/data/auroradb';
-import { getSessionAttribute } from 'src/utils/sessions';
-import { CAPS_DEFINITION_ATTRIBUTE } from 'src/constants/attributes';
+import { getCaps } from '../data/auroradb';
+import { getSessionAttribute } from '../../src/utils/sessions';
+import {
+    CAPS_DEFINITION_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+} from '../../src/constants/attributes';
 import { redirectTo } from '../utils/apiUtils';
 
 const title = 'Select Caps - Create Fares Data Service';
@@ -153,16 +157,30 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const csrfToken = getCsrfToken(ctx);
-    const capsDefinition = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
-    const errors = !!capsDefinition && 'errors' in capsDefinition ? capsDefinition.errors : [];
-
     const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
 
-    const backHref = '';
+    // edit mode
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+
+    const errors = !!capAttribute && 'errors' in capAttribute ? capAttribute.errors : [];
+
+    let selectedId = !!capAttribute && !('errors' in capAttribute) ? capAttribute.id : null;
+
+    const backHref =
+        ticket && matchingJsonMetaData
+            ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                  matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+              }`
+            : '';
 
     const nationalOperatorCode = getAndValidateNoc(ctx);
 
     const capsFromDb: Cap[] = await getCaps(nationalOperatorCode);
+
+    if (ticket && matchingJsonMetaData) {
+        selectedId = 'cap' in ticket && ticket.cap ? ticket.cap.id : null;
+    }
 
     return {
         props: {
@@ -170,7 +188,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             errors,
             capsFromDb,
             backHref,
-            selectedId: !!capAttribute && !('errors' in capAttribute) ? capAttribute.id : null,
+            selectedId,
         },
     };
 };

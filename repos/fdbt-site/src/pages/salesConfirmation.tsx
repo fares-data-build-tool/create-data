@@ -17,7 +17,7 @@ import {
     isProductWithSalesOfferPackages,
     isTicketPeriodAttributeWithErrors,
 } from '../interfaces/typeGuards';
-import { formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
+import { fareTypeIsAllowedToAddACap, formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
 import { ticketFormatsList } from './managePurchaseMethod';
 import { GetServerSidePropsResult } from 'next';
 import { SalesOfferPackage } from '../interfaces/matchingJsonTypes';
@@ -102,7 +102,7 @@ export const buildSalesConfirmationElements = (
         },
     );
 
-    if (['single', 'return', 'flatFare'].includes(fareType) && hasCaps) {
+    if (fareTypeIsAllowedToAddACap(fareType) && hasCaps) {
         confirmationElements.push({
             name: 'Cap',
             content: selectedCap?.capDetails.name || 'N/A',

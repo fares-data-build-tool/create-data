@@ -1,9 +1,14 @@
 import { NextApiResponse } from 'next';
-import { CAPS_DEFINITION_ATTRIBUTE } from '../../constants/attributes';
+import {
+    CAPS_DEFINITION_ATTRIBUTE,
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+} from '../../constants/attributes';
 import { getCapByNocAndId } from '../../data/auroradb';
 import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils/index';
 import { Cap, NextApiRequestWithSession } from 'src/interfaces';
-import { updateSessionAttribute } from '../../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 
 const getCapContent = async (cap: number, noc: string): Promise<Cap & { id: number }> => {
     const result = await getCapByNocAndId(noc, cap);
@@ -18,6 +23,8 @@ const getCapContent = async (cap: number, noc: string): Promise<Cap & { id: numb
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const { capChoice, cap } = req.body;
+        const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
+        const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
         if (!capChoice) {
             const errors = {
@@ -29,7 +36,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        if (capChoice === 'no') {
+        if (capChoice === 'no' && !(ticket && matchingJsonMetaData)) {
             updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, undefined);
             redirectTo(res, '/selectPurchaseMethods');
             return;
@@ -52,6 +59,26 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         const selectedCap = await getCapContent(Number(cap), noc);
+
+        // if in edit mode
+        if (ticket && matchingJsonMetaData) {
+            const updatedTicket = {
+                ...ticket,
+                cap: capChoice === 'yes' && !!selectedCap ? { id: selectedCap.id } : undefined,
+            };
+
+            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, undefined);
+
+            redirectTo(
+                res,
+                `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
+                    matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
+                }`,
+            );
+            return;
+        }
+        // end of edit mode
 
         if (capChoice === 'yes' && !!selectedCap) {
             updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, {

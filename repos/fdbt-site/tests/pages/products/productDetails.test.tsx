@@ -8,6 +8,7 @@ import {
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
     getServiceByIdAndDataSource,
+    getCaps,
 } from '../../../src/data/auroradb';
 import { getProductsMatchingJson } from '../../../src/data/s3';
 import ProductDetails, { getServerSideProps } from '../../../src/pages/products/productDetails';
@@ -81,6 +82,7 @@ describe('myfares pages', () => {
                             content: ['18/10/2121'],
                             editLink: '/productDateInformation',
                         },
+                        { id: 'cap', name: 'cap', content: ['Cap 1 - £2'] },
                     ]}
                     productId="2"
                     copiedProduct={false}
@@ -311,6 +313,7 @@ describe('myfares pages', () => {
             });
 
             (getServiceByIdAndDataSource as jest.Mock).mockResolvedValue(mockRawService);
+            (getCaps as jest.Mock).mockResolvedValue([]);
         });
 
         it('correctly returns the elements which should be displayed on the page for a school single ticket', async () => {
