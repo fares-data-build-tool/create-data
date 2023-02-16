@@ -16,6 +16,8 @@ import {
     TicketType,
     ExpiryUnit,
     AdditionalOperator,
+    CapStartInfo,
+    Stop,
 } from './matchingJsonTypes';
 
 // Session Attributes and Cookies
@@ -198,8 +200,8 @@ export interface ServiceListAttribute {
     selectedServices: SelectedService[];
 }
 
-export interface ServiceListAttributeWithErrors {
-    errors: ErrorInfo[];
+export interface ExemptedStopsAttribute {
+    exemptStops: Stop[];
 }
 
 export interface GlobalSettingsAttribute<T> {
@@ -217,6 +219,7 @@ export interface SettingsOverview {
 }
 
 export interface GlobalSettingsCounts {
+    capCount: number;
     passengerTypesCount: number;
     purchaseMethodsCount: number;
     timeRestrictionsCount: number;
@@ -273,6 +276,11 @@ export interface PremadeTimeRestriction {
     id: number;
     name: string;
     contents: DbTimeRestriction[];
+}
+
+export interface PremadeCap {
+    id: number;
+    contents: Cap;
 }
 
 export interface DbTimeInput {
@@ -408,7 +416,6 @@ export interface FullTimeRestrictionAttribute {
     errors: ErrorInfo[];
     id?: number;
 }
-
 export interface TimeInput {
     timeInput: string;
     day: string;
@@ -710,7 +717,7 @@ export interface ProductToDisplay {
     productName: string;
     startDate: string;
     endDate?: string;
-    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator' | 'capped';
+    fareType: 'single' | 'return' | 'period' | 'flatFare' | 'multiOperator';
     schoolTicket: boolean;
     serviceLineId: string | null;
     direction: string | null;
@@ -723,22 +730,22 @@ export interface ServiceToDisplay {
     lineName: string;
 }
 
-export interface TypeOfCap {
-    typeOfCap: 'byDistance' | 'byTaps' | 'byProducts';
+export interface Cap {
+    id?: number;
+    capDetails: CapDetails;
+    capStart?: CapStartInfo;
 }
 
-export interface CapDetails {
-    caps: Cap[];
-    productName: string;
+export interface CapSelection {
+    id: number;
 }
-
 export interface GroupOfProducts {
     id: number;
     productIds: string[];
     name: string;
 }
 
-export interface Cap {
+export interface CapDetails {
     name: string;
     price: string;
     durationAmount: string;

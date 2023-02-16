@@ -6,7 +6,7 @@ import UnableToDeletePopup from '../components/UnableToDeletePopup';
 import {
     GS_PASSENGER_GROUP_ATTRIBUTE,
     MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
-    VIEW_PASSENGER_TYPE,
+    VIEW_PASSENGER_TYPE_ERRORS,
 } from '../constants/attributes';
 import { getGroupPassengerTypesFromGlobalSettings, getPassengerTypesByNocCode } from '../data/auroradb';
 import { BaseLayout } from '../layout/Layout';
@@ -77,7 +77,7 @@ const ViewPassengerTypes = ({
                 <div className="govuk-grid-column-three-quarters">
                     <h1 className="govuk-heading-xl">Passenger types</h1>
                     <p className="govuk-body govuk-!-margin-bottom-8">
-                        Define age range and required proof documents of your passengers as well as passenger groups
+                        Define age range and required proof documents of your passengers as well as passenger groups.
                     </p>
 
                     <div>
@@ -219,11 +219,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const singlePassengerTypes = await getPassengerTypesByNocCode(nationalOperatorCode, 'single');
     const groupPassengerTypes = await getGroupPassengerTypesFromGlobalSettings(nationalOperatorCode);
-    const viewPassengerType = getSessionAttribute(ctx.req, VIEW_PASSENGER_TYPE);
+    const viewPassengerType = getSessionAttribute(ctx.req, VIEW_PASSENGER_TYPE_ERRORS);
 
     updateSessionAttribute(ctx.req, GS_PASSENGER_GROUP_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE, undefined);
-    updateSessionAttribute(ctx.req, VIEW_PASSENGER_TYPE, undefined);
+    updateSessionAttribute(ctx.req, VIEW_PASSENGER_TYPE_ERRORS, undefined);
 
     return {
         props: {

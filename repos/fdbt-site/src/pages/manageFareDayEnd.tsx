@@ -48,7 +48,7 @@ const ManageFareDayEnd = ({ errors, csrfToken, fareDayEnd, referer, saved }: Man
                         <h1 className="govuk-heading-xl">Fare day end</h1>
                         <p className="govuk-body govuk-!-margin-bottom-4" id={'fare-day-text'}>
                             If your fare day extends past midnight, enter the time on the following morning when your
-                            tickets expire
+                            tickets expire.
                         </p>
 
                         <div className="govuk-inset-text">

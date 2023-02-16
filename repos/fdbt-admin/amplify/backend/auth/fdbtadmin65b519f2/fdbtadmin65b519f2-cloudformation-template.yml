@@ -422,6 +422,7 @@ Resources:
                 Resource:
                   - !Sub "arn:aws:s3:::fdbt-netex-data-${env}"
                   - !Sub "arn:aws:s3:::fdbt-matching-data-${env}"
+                  - !Sub "arn:aws:s3:::fdbt-products-data-${env}"
 
   IdentityPoolRoleMap:
     # Created to map Auth and Unauth roles to the identity pool

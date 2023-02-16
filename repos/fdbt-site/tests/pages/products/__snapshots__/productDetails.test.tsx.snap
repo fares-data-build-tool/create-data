@@ -308,6 +308,31 @@ exports[`myfares pages productDetails should render correctly 1`] = `
       </dd>
     </div>
   </dl>
+  <dl
+    className="govuk-summary-list"
+    key="cap"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="cap"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        cap
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="cap"
+          key="Cap 1 - £2"
+        >
+          Cap 1 - £2
+        </span>
+      </dd>
+    </div>
+  </dl>
 </TwoThirdsLayout>
 `;
 

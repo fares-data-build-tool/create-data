@@ -94,31 +94,11 @@ describe('pages', () => {
             (getAllServicesByNocCode as jest.Mock).mockImplementation(() => mockServices);
             (getTndsServicesByNocAndModes as jest.Mock).mockImplementation(() => []);
         });
-        /*
-        it('should render correctly with tnds data source', () => {
-            const tree = shallow(
-                <ServiceList
-                    serviceList={mockServiceList}
-                    buttonText="Select All"
-                    errors={[]}
-                    csrfToken=""
-                    multiOperator={false}
-                    dataSourceAttribute={{
-                        source: 'tnds',
-                        hasTnds: true,
-                        hasBods: false,
-                    }}
-                    additional
-                />,
-            );
-            expect(tree).toMatchSnapshot();
-        });
-*/
+
         it('should render correctly with bods data source', () => {
             const tree = shallow(
                 <ServiceList
                     serviceList={mockServiceList}
-                    buttonText="Select All"
                     errors={[]}
                     csrfToken=""
                     multiOperator={false}
@@ -129,6 +109,9 @@ describe('pages', () => {
                     }}
                     additional={false}
                     backHref=""
+                    selectedYesToExempt={false}
+                    exemptStops=""
+                    isEditMode={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -138,7 +121,6 @@ describe('pages', () => {
             const tree = shallow(
                 <ServiceList
                     serviceList={mockServiceList}
-                    buttonText="Select All"
                     errors={[]}
                     csrfToken=""
                     multiOperator
@@ -149,6 +131,9 @@ describe('pages', () => {
                     }}
                     additional={false}
                     backHref=""
+                    selectedYesToExempt={false}
+                    exemptStops=""
+                    isEditMode={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -159,7 +144,6 @@ describe('pages', () => {
                 <ServiceList
                     serviceList={[]}
                     errors={mockError}
-                    buttonText="Select All"
                     csrfToken=""
                     multiOperator={false}
                     dataSourceAttribute={{
@@ -169,6 +153,9 @@ describe('pages', () => {
                     }}
                     additional={false}
                     backHref=""
+                    selectedYesToExempt={false}
+                    exemptStops=""
+                    isEditMode={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -178,7 +165,6 @@ describe('pages', () => {
             const tree = shallow(
                 <ServiceList
                     serviceList={mockServiceList}
-                    buttonText="Select All"
                     errors={[]}
                     csrfToken=""
                     multiOperator={false}
@@ -189,6 +175,9 @@ describe('pages', () => {
                     }}
                     additional={false}
                     backHref="/product/productDetails?id=99"
+                    selectedYesToExempt={false}
+                    exemptStops=""
+                    isEditMode
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -198,13 +187,9 @@ describe('pages', () => {
             it('should return expected props to the page when the page is first visited by the user', async () => {
                 const ctx = getMockContext({ session: { [SERVICE_LIST_ATTRIBUTE]: null } });
                 const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
-                    ...mockService,
-                    checked: false,
-                }));
+
                 expect(result.props.errors.length).toBe(0);
-                expect(result.props.serviceList).toEqual(expectedCheckedServiceList);
-                expect(result.props.buttonText).toEqual('Select All Services');
+                expect(result.props.serviceList).toEqual(mockServices);
             });
 
             it('should return expected props to the page when the page when multi modal attribute is present', async () => {
@@ -213,6 +198,7 @@ describe('pages', () => {
                         [MULTI_MODAL_ATTRIBUTE]: {
                             modes: ['ferry', 'tram', 'coach'],
                         },
+                        [SERVICE_LIST_ATTRIBUTE]: undefined,
                     },
                 });
                 (getAllServicesByNocCode as jest.Mock).mockImplementation(() => []);
@@ -221,11 +207,9 @@ describe('pages', () => {
                 const result = await getServerSideProps(ctx);
                 const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
                     ...mockService,
-                    checked: false,
                 }));
 
                 expect(result.props.serviceList).toEqual(expectedCheckedServiceList);
-                expect(result.props.buttonText).toEqual('Select All Services');
             });
 
             it('should return props containing errors when the user has previously selected no checkboxes', async () => {
@@ -237,13 +221,9 @@ describe('pages', () => {
                     },
                 });
                 const result = await getServerSideProps(ctx);
-                const expectedCheckedServiceList: ServicesInfo[] = mockServices.map((mockService) => ({
-                    ...mockService,
-                    checked: false,
-                }));
+
                 expect(result.props.errors).toEqual(mockError);
-                expect(result.props.serviceList).toEqual(expectedCheckedServiceList);
-                expect(result.props.buttonText).toEqual('Select All Services');
+                expect(result.props.serviceList).toEqual(mockServices);
             });
 
             it('should throw an error if noc invalid', async () => {

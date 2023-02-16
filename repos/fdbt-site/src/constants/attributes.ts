@@ -120,23 +120,27 @@ export const MATCHING_JSON_META_DATA_ATTRIBUTE = 'fdbt-matching-json-meta-data';
 
 export const RETURN_SERVICE_ATTRIBUTE = 'fdbt-return-service';
 
-export const VIEW_PASSENGER_TYPE = 'fdbt-products-using-passenger-type';
+export const VIEW_PASSENGER_TYPE_ERRORS = 'fdbt-products-using-passenger-type';
 
-export const VIEW_PURCHASE_METHOD = 'fdbt-products-using-purchase-method';
+export const VIEW_PURCHASE_METHOD_ERRORS = 'fdbt-products-using-purchase-method';
 
 export const MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE = 'fdbt-manage-operator-group-errors';
 
-export const VIEW_TIME_RESTRICTION = 'fdbt-products-using-time-restriction';
+export const VIEW_TIME_RESTRICTION_ERRORS = 'fdbt-products-using-time-restriction';
 
-export const VIEW_OPERATOR_GROUP = 'fdbt-products-using-operator-group';
+export const VIEW_OPERATOR_GROUP_ERRORS = 'fdbt-products-using-operator-group';
 
-export const VIEW_PRODUCT_GROUP = 'fdbt-products-using-product-group';
+export const VIEW_PRODUCT_GROUP_ERRORS = 'fdbt-products-using-product-group';
+
+export const VIEW_CAP_ERRORS = 'fdbt-products-using-cap';
 
 export const TYPE_OF_CAP_ATTRIBUTE = 'fdbt-type-of-cap';
 
 export const CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE = 'fdbt-capped-product-group-id';
 
 export const CAPS_ATTRIBUTE = 'fdbt-caps';
+
+export const CREATE_CAPS_ATTRIBUTE = 'fdbt-create-caps';
 
 export const EDIT_PERIOD_DURATION_ERROR = 'fdbt-period-duration-error';
 
@@ -157,3 +161,7 @@ export const ADDITIONAL_PRICING_ATTRIBUTE = 'fdbt-additional-pricing';
 export const MULTI_MODAL_ATTRIBUTE = 'fdbt-multi-modal';
 
 export const SERVICE_LIST_EXEMPTION_ATTRIBUTE = 'fdbt-exemption-services';
+
+export const CAPS_DEFINITION_ATTRIBUTE = 'fdbt-caps-definition-attribute';
+
+export const STOPS_EXEMPTION_ATTRIBUTE = 'fdbt-exemption-stops';

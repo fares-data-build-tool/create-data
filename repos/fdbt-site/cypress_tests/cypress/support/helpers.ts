@@ -523,18 +523,14 @@ export const completeSalesOfferPackagesForMultipleProducts = (
     }
 };
 
-export const randomlyChooseAndSelectServices = (isExempted?: boolean): void => {
+export const randomlyChooseAndSelectServices = (): void => {
     // to unselect all boxes when editing
-    if (isExempted) {
-        cy.get('.govuk-checkboxes__input').each((checkbox) => {
-            if (checkbox.prop('checked')) {
-                cy.wrap(checkbox).uncheck();
-            }
-        });
-    } else {
-        clickElementById('select-all-button');
-        clickElementById('select-all-button');
-    }
+    cy.get('.govuk-checkboxes__input').each((checkbox) => {
+        if (checkbox.prop('checked')) {
+            cy.wrap(checkbox).uncheck();
+        }
+    });
+
     const randomSelector = getRandomNumber(1, 4);
     switch (randomSelector) {
         case 1: {

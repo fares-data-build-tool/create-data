@@ -6,6 +6,7 @@ import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
@@ -21,12 +22,7 @@ import {
 } from '../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
-import { isServiceListAttributeWithErrors } from './serviceList';
-import {
-    getAllServicesByNocCode,
-    getServicesByNocCodeAndDataSource,
-    getTndsServicesByNocAndModes,
-} from '../data/auroradb';
+import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import { redirectTo } from '../utils/apiUtils';
 import FormElementWrapper from '../components/FormElementWrapper';
 import BackButton from '../components/BackButton';
@@ -35,13 +31,13 @@ import FileAttachment from '../components/FileAttachment';
 import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
 import csvImage from '../assets/images/csv.png';
 import CsrfForm from '../components/CsrfForm';
+import { isServiceListAttributeWithErrors } from '../interfaces/typeGuards';
 
 const title = 'CSV Zone Upload - Create Fares Data Service';
 const description = 'CSV Zone Upload page of the Create Fares Data Service';
 
 interface CSVZoneUploadProps extends UserDataUploadsProps {
     serviceList: ServicesInfo[];
-    buttonText: string;
     dataSourceAttribute: TxcSourceAttribute;
     clickedYes: boolean;
     backHref: string;
@@ -59,7 +55,6 @@ const CsvZoneUpload = ({
     serviceList,
     clickedYes,
     dataSourceAttribute,
-    buttonText,
     backHref,
     guidanceDocDisplayName,
     guidanceDocAttachmentUrl,
@@ -71,29 +66,31 @@ const CsvZoneUpload = ({
     ...uploadProps
 }: CSVZoneUploadProps): ReactElement => {
     const seen: string[] = [];
-    const uniqueServiceLists =
+    const uniqueServiceList =
         serviceList.filter((item) => (seen.includes(item.lineId) ? false : seen.push(item.lineId))) ?? [];
 
-    const [getButtonText, updateButtonText] = useState(buttonText);
-    const [checkedServices, updateChecked] = useState(uniqueServiceLists.filter((service) => service.checked));
+    const [buttonText, setButtonText] = useState(
+        serviceList.every((service) => service.checked) ? 'Unselect All Services' : 'Select All Services',
+    );
+    const [checkedServices, setCheckedServices] = useState(uniqueServiceList.filter((service) => service.checked));
 
     const toggleAllServices = (): void => {
-        if (checkedServices.length !== uniqueServiceLists.length && getButtonText === 'Select All Services') {
-            updateButtonText('Unselect All Services');
-            updateChecked(uniqueServiceLists);
+        if (checkedServices.length !== uniqueServiceList.length && buttonText === 'Select All Services') {
+            setButtonText('Unselect All Services');
+            setCheckedServices(uniqueServiceList);
         } else {
-            updateButtonText('Select All Services');
-            updateChecked([]);
+            setButtonText('Select All Services');
+            setCheckedServices([]);
         }
     };
 
     const updateCheckedServiceList = (e: React.ChangeEvent<HTMLInputElement>, lineId: string) => {
         if (!e.target.checked) {
-            updateChecked(checkedServices.filter((service) => service.lineId !== lineId));
+            setCheckedServices(checkedServices.filter((service) => service.lineId !== lineId));
         } else {
-            const serviceToAdd = uniqueServiceLists.find((service) => service.lineId === lineId);
+            const serviceToAdd = uniqueServiceList.find((service) => service.lineId === lineId);
             if (serviceToAdd) {
-                updateChecked([...checkedServices, serviceToAdd]);
+                setCheckedServices([...checkedServices, serviceToAdd]);
             }
         }
     };
@@ -175,13 +172,13 @@ const CsvZoneUpload = ({
                                                         <input
                                                             type="button"
                                                             name="selectAll"
-                                                            value={getButtonText}
+                                                            value={buttonText}
                                                             id="select-all-button"
                                                             className="govuk-button govuk-button--secondary"
                                                             onClick={toggleAllServices}
                                                         />
                                                         <div className="govuk-checkboxes">
-                                                            {uniqueServiceLists.map((service, index) => {
+                                                            {uniqueServiceList.map((service, index) => {
                                                                 const {
                                                                     lineName,
                                                                     lineId,
@@ -255,6 +252,7 @@ const CsvZoneUpload = ({
                                 </fieldset>
                             </div>
                         </div>
+                        <input type="submit" value="Upload and continue" id="submit-button" className="govuk-button" />
                     </CsrfForm>
                 </div>
 
@@ -289,12 +287,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
 
     const backHref =
-        ticket && matchingJsonMetaData ? `/products/productDetails?productId=${matchingJsonMetaData?.productId}` : '';
+        ticket && matchingJsonMetaData ? `/products/productDetails?productId=${matchingJsonMetaData.productId}` : '';
 
     const nocCode = getAndValidateNoc(ctx);
-    const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
+    const exemptedServicesAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
 
     const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
@@ -310,8 +309,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 throw new Error(`No services found for NOC Code: ${nocCode}`);
             }
         }
-        // removed as TNDS is being disabled until further notice
-        // const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
+
         updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
             source: hasBodsServices ? 'bods' : 'tnds',
             hasBods: true,
@@ -320,19 +318,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }
 
-    const selectedServices =
-        serviceListAttribute &&
-        !isServiceListAttributeWithErrors(serviceListAttribute) &&
-        'selectedServices' in serviceListAttribute
-            ? serviceListAttribute.selectedServices
+    const selectedExemptedServices =
+        exemptedServicesAttribute && !isServiceListAttributeWithErrors(exemptedServicesAttribute)
+            ? exemptedServicesAttribute.selectedServices
             : [];
-    let chosenDataSourceServices;
-    if (modesAttribute) {
-        chosenDataSourceServices = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
-    }
-    chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    let chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
-    const selectedLineIds = selectedServices.map((service) => service.lineId);
+    if (serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)) {
+        const { selectedServices } = serviceListAttribute;
+
+        chosenDataSourceServices = chosenDataSourceServices.filter(
+            (exemptService) => !selectedServices.find((service) => exemptService.lineId === service.lineId),
+        );
+    }
+
+    const selectedLineIds = selectedExemptedServices.map((service) => service.lineId);
     const serviceList: ServicesInfo[] = chosenDataSourceServices.map((service) => {
         return {
             ...service,
@@ -357,10 +357,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         dataSourceAttribute,
     };
 
-    const getButtonText = (serviceList: ServicesInfo[]) => {
-        return serviceList.every((service) => service.checked) ? 'Unselect All Services' : 'Select All Services';
-    };
-
     const hasClickedYes = (serviceList: ServicesInfo[]) => {
         return serviceList.some((service) => service.checked);
     };
@@ -373,17 +369,26 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             });
         }
 
-        const serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
+        let serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
             return {
                 ...service,
                 checked: services.includes(service.lineId),
             };
         });
+
+        // ensuring that they cannot exempt a service which has already been selected for the ticket
+        if ('selectedServices' in ticket) {
+            const { selectedServices } = ticket;
+
+            serviceListEdit = serviceListEdit.filter(
+                (exemptService) => !selectedServices.find((service) => exemptService.lineId === service.lineId),
+            );
+        }
+
         return {
             props: {
                 ...commonProps,
                 serviceList: serviceListEdit,
-                buttonText: getButtonText(serviceListEdit),
                 clickedYes: hasClickedYes(serviceListEdit),
             },
         };
@@ -392,7 +397,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             ...commonProps,
             serviceList,
-            buttonText: getButtonText(serviceList),
             clickedYes: hasClickedYes(serviceList),
         },
     };

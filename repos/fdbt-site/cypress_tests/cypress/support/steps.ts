@@ -26,7 +26,6 @@ import {
     randomlyDeterminePurchaseType,
     completeMultiServicePages,
     getElementByClass,
-    throwInvalidRandomSelectorError,
     completePricingPerDistancePage,
 } from './helpers';
 
@@ -46,8 +45,7 @@ export type FareType =
     | 'schoolService'
     | 'carnet'
     | 'carnetFlatFare'
-    | 'carnetPeriod'
-    | 'cappedProduct';
+    | 'carnetPeriod';
 
 export const defineSchoolUserAndTimeRestrictions = (): void => {
     randomlyDetermineUserType();
@@ -274,44 +272,6 @@ export const completePeriodGeoZonePages = (numberOfProducts: number, multiProduc
     uploadFile('csv-upload', 'fareZone.csv');
     submitButtonClick();
     completeMultipleProducts(numberOfProducts, multiProductNamePrefix);
-};
-
-export const completeCappedDistanceJourney = (): void => {
-    clickElementById('radio-option-byDistance');
-    continueButtonClick();
-    const randomName = getRandomNumber(1, 200);
-    clickElementById('product-name').type(`Capped distance product ${randomName}`);
-    clickElementById('minimum-price').type('2');
-    clickElementById('maximum-price').type('3');
-    clickElementById('add-another-button');
-    clickElementById('distance-to-0').type('2');
-    clickElementById('price-per-km-0').type('2.22');
-    clickElementById('distance-from-1').type('2');
-    clickElementById('price-per-km-1').type('2.22');
-    continueButtonClick();
-    const randomSelector = getRandomNumber(1, 2);
-    switch (randomSelector) {
-        case 1: {
-            cy.log('Click yes');
-            clickElementById('additional-discounts');
-            clickElementById('pricing-structure-start').type('2');
-            clickElementById('structure-discount').type('2.22');
-            break;
-        }
-        case 2: {
-            cy.log('Click no');
-            clickElementById('no-additional-discounts');
-            break;
-        }
-        default: {
-            throwInvalidRandomSelectorError();
-        }
-    }
-    continueButtonClick();
-    continueButtonClick();
-    randomlyDeterminePurchaseType();
-    completeProductDateInformationPage();
-    continueButtonClick();
 };
 
 export const completePeriodMultiServicePages = (
@@ -693,7 +653,7 @@ export const editExemptedServices = (): void => {
     const randomSelector = getRandomNumber(1, 2);
     if (randomSelector === 1) {
         clickElementById('yes');
-        randomlyChooseAndSelectServices(true);
+        randomlyChooseAndSelectServices();
     } else {
         clickElementById('no');
         cy.wrap('N/A').as('input');

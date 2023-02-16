@@ -1,9 +1,21 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequestWithSession } from '../../interfaces/index';
-import { redirectTo, redirectToError } from '../../utils/apiUtils';
+import { getAndValidateNoc, getFareTypeFromFromAttributes, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { getCaps } from '../../../src/data/auroradb';
+import { fareTypeIsAllowedToAddACap } from '../../../src/utils';
 
-export default (_req: NextApiRequestWithSession, res: NextApiResponse): void => {
+export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
+        const fareTypeAttribute = getFareTypeFromFromAttributes(req);
+        const nocCode = getAndValidateNoc(req, res);
+        const caps = await getCaps(nocCode);
+
+        const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
+
+        if (isDevOrTest && fareTypeIsAllowedToAddACap(fareTypeAttribute) && caps.length > 0) {
+            redirectTo(res, '/selectCaps');
+            return;
+        }
         redirectTo(res, '/selectPurchaseMethods');
         return;
     } catch (error) {

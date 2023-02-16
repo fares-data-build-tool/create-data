@@ -1,5 +1,6 @@
 import { upperFirst } from 'lodash';
 import React, { ReactElement } from 'react';
+import { daysOfWeek } from '../constants';
 import { CAP_START_ATTRIBUTE } from '../../src/constants/attributes';
 import { isCapStartInfo } from '../../src/interfaces/typeGuards';
 import { getSessionAttribute } from '../../src/utils/sessions';
@@ -16,8 +17,6 @@ interface SelectCappedProductGroupProps {
     errors: ErrorInfo[];
     csrfToken: string;
 }
-
-const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 const DefineCapStart = ({ errors = [], csrfToken }: SelectCappedProductGroupProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={errors}>

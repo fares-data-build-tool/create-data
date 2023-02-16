@@ -32,7 +32,7 @@ exports[`pages view passenger types should render correctly when groups and indi
       <p
         className="govuk-body govuk-!-margin-bottom-8"
       >
-        Define age range and required proof documents of your passengers as well as passenger groups
+        Define age range and required proof documents of your passengers as well as passenger groups.
       </p>
       <div>
         <IndividualPassengerTypes
@@ -143,7 +143,7 @@ exports[`pages view passenger types should render correctly when no individual o
       <p
         className="govuk-body govuk-!-margin-bottom-8"
       >
-        Define age range and required proof documents of your passengers as well as passenger groups
+        Define age range and required proof documents of your passengers as well as passenger groups.
       </p>
       <div>
         <NoIndividualPassengerTypes />
@@ -197,7 +197,7 @@ exports[`pages view passenger types should render correctly when only individual
       <p
         className="govuk-body govuk-!-margin-bottom-8"
       >
-        Define age range and required proof documents of your passengers as well as passenger groups
+        Define age range and required proof documents of your passengers as well as passenger groups.
       </p>
       <div>
         <IndividualPassengerTypes
@@ -284,7 +284,7 @@ exports[`pages view passenger types should render correctly when only individual
       <p
         className="govuk-body govuk-!-margin-bottom-8"
       >
-        Define age range and required proof documents of your passengers as well as passenger groups
+        Define age range and required proof documents of your passengers as well as passenger groups.
       </p>
       <div>
         <IndividualPassengerTypes
@@ -364,7 +364,7 @@ exports[`pages view passenger types should render correctly when only passenger 
       <p
         className="govuk-body govuk-!-margin-bottom-8"
       >
-        Define age range and required proof documents of your passengers as well as passenger groups
+        Define age range and required proof documents of your passengers as well as passenger groups.
       </p>
       <div>
         <NoIndividualPassengerTypes />

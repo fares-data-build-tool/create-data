@@ -160,7 +160,6 @@ export const processServices = (
     const clickedYes = 'exempt' in fields && fields['exempt'] === 'yes';
 
     const dataFields: { [key: string]: string | string[] } = fields;
-    delete dataFields['poundsOrPence'];
     delete dataFields['exempt'];
 
     const selectedServices: SelectedService[] = [];
@@ -274,14 +273,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
 
                 if (ticketType.name === 'hybrid') {
-                    redirectTo(res, '/serviceList?selectAll=false');
+                    redirectTo(res, '/serviceList');
                     return;
                 }
-            }
-
-            if (fareType === 'capped') {
-                redirectTo(res, '/typeOfCap');
-                return;
             }
 
             redirectTo(res, '/multipleProducts');

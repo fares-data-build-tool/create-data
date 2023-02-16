@@ -8,6 +8,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
   <CsrfForm
     action="/api/serviceList"
     csrfToken=""
+    encType="multipart/form-data"
     method="post"
   >
     <ErrorSummary
@@ -21,7 +22,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
       }
     />
     <div
-      className="govuk-form-group govuk-form-group--error"
+      className="govuk-form-group "
     >
       <legend
         className="govuk-fieldset__legend govuk-fieldset__legend--s"
@@ -47,8 +48,9 @@ exports[`pages serviceList should render an error when the error flag is set to 
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
           name="selectAll"
-          type="submit"
-          value="Select All"
+          onClick={[Function]}
+          type="button"
+          value="Unselect All Services"
         />
         <span
           className="govuk-hint"
@@ -71,20 +73,180 @@ exports[`pages serviceList should render an error when the error flag is set to 
           addFormGroupError={false}
           errorClass=""
           errorId="checkbox-0"
-          errors={
-            Array [
-              Object {
-                "errorMessage": "Choose at least one service from the list",
-                "id": "service-list-error",
-              },
-            ]
-          }
+          errors={Array []}
         >
           <div
             className="govuk-checkboxes"
           />
         </FormElementWrapper>
       </fieldset>
+    </div>
+    <div
+      className=""
+    >
+      <div
+        className="govuk-warning-text"
+      >
+        <span
+          aria-hidden="true"
+          className="govuk-warning-text__icon"
+        >
+          !
+        </span>
+        <strong
+          className="govuk-warning-text__text"
+        >
+          <span
+            className="govuk-warning-text__assistive"
+          >
+            Warning
+          </span>
+          If there are stops exempt, you can omit them by selecting yes below and uploading the stops you want to omit.
+        </strong>
+      </div>
+      <div
+        className="govuk-form-group"
+      >
+        <fieldset
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          >
+            <h2
+              className="govuk-fieldset__heading"
+            >
+              Are there stops which are not included?
+            </h2>
+          </legend>
+          <FormElementWrapper
+            errorClass="govuk-form-group--error"
+            errorId="csv-upload"
+            errors={Array []}
+          >
+            <div
+              className="govuk-radios"
+              data-module="govuk-radios"
+            >
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  data-aria-controls="conditional-yes"
+                  defaultChecked={false}
+                  id="yes"
+                  name="exempt"
+                  type="radio"
+                  value="yes"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="yes"
+                >
+                  Yes
+                </label>
+              </div>
+              <div
+                className="govuk-radios__conditional govuk-radios__conditional--hidden"
+                id="conditional-yes"
+              >
+                <div
+                  className="govuk-form-group "
+                >
+                  <label
+                    htmlFor="csv-upload"
+                  >
+                    <h1
+                      className="govuk-heading-m"
+                    >
+                      Upload exempt stops
+                    </h1>
+                  </label>
+                  <span
+                    className="govuk-hint govuk-!-margin-bottom-5"
+                    id="csv-upload-hint"
+                  >
+                    Upload exempt stops as a .csv or MS Excel file. Exempt stops are all of the relevant NaPTAN or ATCO codes that the service(s) you selected do not stop at.
+                  </span>
+                  <FormGroupWrapper
+                    errorIds={
+                      Array [
+                        "csv-upload",
+                      ]
+                    }
+                    errors={Array []}
+                  >
+                    <fieldset
+                      className="govuk-fieldset"
+                    >
+                      <FormElementWrapper
+                        errorClass="govuk-file-upload--error"
+                        errorId="csv-upload"
+                        errors={Array []}
+                      >
+                        <input
+                          accept=".csv,.xlsx,.xls"
+                          aria-describedby="csv-upload-hint"
+                          className="govuk-file-upload"
+                          id="csv-upload"
+                          name="csv-upload"
+                          type="file"
+                        />
+                      </FormElementWrapper>
+                    </fieldset>
+                  </FormGroupWrapper>
+                </div>
+                <details
+                  className="govuk-details govuk-!-margin-top-2"
+                  data-module="govuk-details"
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      My exempt stops won't upload
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-details__text"
+                  >
+                    <p>
+                      Use the below template to upload your exempt stops. This is the same template as used for fare zones, but just include ATCO/NaPTAN codes of the stops that you wish to exempt.
+                    </p>
+                    <FileAttachment
+                      attachmentUrl="[object Object]"
+                      displayName="Download fare zone CSV template - File Type CSV - File Size 673B"
+                      imageUrl={Object {}}
+                      size="673B"
+                    />
+                  </div>
+                </details>
+              </div>
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  defaultChecked={true}
+                  id="no"
+                  name="exempt"
+                  type="radio"
+                  value="no"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="no"
+                >
+                  No
+                </label>
+              </div>
+            </div>
+          </FormElementWrapper>
+        </fieldset>
+      </div>
     </div>
     <input
       className="govuk-button"
@@ -104,6 +266,7 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
   <CsrfForm
     action="/api/serviceList"
     csrfToken=""
+    encType="multipart/form-data"
     method="post"
   >
     <ErrorSummary
@@ -138,8 +301,9 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
           name="selectAll"
-          type="submit"
-          value="Select All"
+          onClick={[Function]}
+          type="button"
+          value="Select All Services"
         />
         <span
           className="govuk-hint"
@@ -172,10 +336,12 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
               key="checkbox-item-123"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
                 name="123#3h3vb32ik#NW_05_BLAC_123_1"
+                onChange={[Function]}
                 type="checkbox"
                 value="IW Bus Service 123"
               />
@@ -189,6 +355,173 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           </div>
         </FormElementWrapper>
       </fieldset>
+    </div>
+    <div
+      className=""
+    >
+      <div
+        className="govuk-warning-text"
+      >
+        <span
+          aria-hidden="true"
+          className="govuk-warning-text__icon"
+        >
+          !
+        </span>
+        <strong
+          className="govuk-warning-text__text"
+        >
+          <span
+            className="govuk-warning-text__assistive"
+          >
+            Warning
+          </span>
+          If there are stops exempt, you can omit them by selecting yes below and uploading the stops you want to omit.
+        </strong>
+      </div>
+      <div
+        className="govuk-form-group"
+      >
+        <fieldset
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          >
+            <h2
+              className="govuk-fieldset__heading"
+            >
+              Are there stops which are not included?
+            </h2>
+          </legend>
+          <FormElementWrapper
+            errorClass="govuk-form-group--error"
+            errorId="csv-upload"
+            errors={Array []}
+          >
+            <div
+              className="govuk-radios"
+              data-module="govuk-radios"
+            >
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  data-aria-controls="conditional-yes"
+                  defaultChecked={false}
+                  id="yes"
+                  name="exempt"
+                  type="radio"
+                  value="yes"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="yes"
+                >
+                  Yes
+                </label>
+              </div>
+              <div
+                className="govuk-radios__conditional govuk-radios__conditional--hidden"
+                id="conditional-yes"
+              >
+                <div
+                  className="govuk-form-group "
+                >
+                  <label
+                    htmlFor="csv-upload"
+                  >
+                    <h1
+                      className="govuk-heading-m"
+                    >
+                      Upload exempt stops
+                    </h1>
+                  </label>
+                  <span
+                    className="govuk-hint govuk-!-margin-bottom-5"
+                    id="csv-upload-hint"
+                  >
+                    Upload exempt stops as a .csv or MS Excel file. Exempt stops are all of the relevant NaPTAN or ATCO codes that the service(s) you selected do not stop at.
+                  </span>
+                  <FormGroupWrapper
+                    errorIds={
+                      Array [
+                        "csv-upload",
+                      ]
+                    }
+                    errors={Array []}
+                  >
+                    <fieldset
+                      className="govuk-fieldset"
+                    >
+                      <FormElementWrapper
+                        errorClass="govuk-file-upload--error"
+                        errorId="csv-upload"
+                        errors={Array []}
+                      >
+                        <input
+                          accept=".csv,.xlsx,.xls"
+                          aria-describedby="csv-upload-hint"
+                          className="govuk-file-upload"
+                          id="csv-upload"
+                          name="csv-upload"
+                          type="file"
+                        />
+                      </FormElementWrapper>
+                    </fieldset>
+                  </FormGroupWrapper>
+                </div>
+                <details
+                  className="govuk-details govuk-!-margin-top-2"
+                  data-module="govuk-details"
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      My exempt stops won't upload
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-details__text"
+                  >
+                    <p>
+                      Use the below template to upload your exempt stops. This is the same template as used for fare zones, but just include ATCO/NaPTAN codes of the stops that you wish to exempt.
+                    </p>
+                    <FileAttachment
+                      attachmentUrl="[object Object]"
+                      displayName="Download fare zone CSV template - File Type CSV - File Size 673B"
+                      imageUrl={Object {}}
+                      size="673B"
+                    />
+                  </div>
+                </details>
+              </div>
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  defaultChecked={true}
+                  id="no"
+                  name="exempt"
+                  type="radio"
+                  value="no"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="no"
+                >
+                  No
+                </label>
+              </div>
+            </div>
+          </FormElementWrapper>
+        </fieldset>
+      </div>
     </div>
     <input
       className="govuk-button"
@@ -211,6 +544,7 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
   <CsrfForm
     action="/api/serviceList"
     csrfToken=""
+    encType="multipart/form-data"
     method="post"
   >
     <ErrorSummary
@@ -243,8 +577,9 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
           name="selectAll"
-          type="submit"
-          value="Select All"
+          onClick={[Function]}
+          type="button"
+          value="Select All Services"
         />
         <span
           className="govuk-hint"
@@ -277,10 +612,12 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
               key="checkbox-item-123"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
                 name="123#3h3vb32ik#NW_05_BLAC_123_1"
+                onChange={[Function]}
                 type="checkbox"
                 value="IW Bus Service 123"
               />
@@ -294,6 +631,233 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
           </div>
         </FormElementWrapper>
       </fieldset>
+    </div>
+    <div
+      className="govuk-!-margin-bottom-6"
+    >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--m"
+      >
+        <h2
+          className="govuk-fieldset__heading"
+        >
+          You previously uploaded
+           
+          no exempt stops
+          . Do you want to edit them?
+           
+        </h2>
+      </legend>
+      <div
+        className="govuk-radios"
+        data-module="govuk-radios"
+      >
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            data-aria-controls="conditional-yes"
+            id="exempt-yes"
+            name="edit-exempt"
+            onChange={[Function]}
+            type="radio"
+            value="yes"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="exempt-yes"
+          >
+            Yes
+          </label>
+        </div>
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            defaultChecked={true}
+            id="exempt-no"
+            name="edit-exempt"
+            onChange={[Function]}
+            type="radio"
+            value="no"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="exempt-no"
+          >
+            No
+          </label>
+        </div>
+      </div>
+    </div>
+    <div
+      className="govuk-visually-hidden"
+    >
+      <div
+        className="govuk-warning-text"
+      >
+        <span
+          aria-hidden="true"
+          className="govuk-warning-text__icon"
+        >
+          !
+        </span>
+        <strong
+          className="govuk-warning-text__text"
+        >
+          <span
+            className="govuk-warning-text__assistive"
+          >
+            Warning
+          </span>
+          If there are stops exempt, you can omit them by selecting yes below and uploading the stops you want to omit.
+        </strong>
+      </div>
+      <div
+        className="govuk-form-group"
+      >
+        <fieldset
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          >
+            <h2
+              className="govuk-fieldset__heading"
+            >
+              Are there stops which are not included?
+            </h2>
+          </legend>
+          <FormElementWrapper
+            errorClass="govuk-form-group--error"
+            errorId="csv-upload"
+            errors={Array []}
+          >
+            <div
+              className="govuk-radios"
+              data-module="govuk-radios"
+            >
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  data-aria-controls="conditional-yes"
+                  defaultChecked={true}
+                  id="yes"
+                  name="exempt"
+                  type="radio"
+                  value="yes"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="yes"
+                >
+                  Yes
+                </label>
+              </div>
+              <div
+                className="govuk-radios__conditional govuk-radios__conditional--hidden"
+                id="conditional-yes"
+              >
+                <div
+                  className="govuk-form-group "
+                >
+                  <label
+                    htmlFor="csv-upload"
+                  >
+                    <h1
+                      className="govuk-heading-m"
+                    >
+                      Upload exempt stops
+                    </h1>
+                  </label>
+                  <span
+                    className="govuk-hint govuk-!-margin-bottom-5"
+                    id="csv-upload-hint"
+                  >
+                    Upload exempt stops as a .csv or MS Excel file. Exempt stops are all of the relevant NaPTAN or ATCO codes that the service(s) you selected do not stop at.
+                  </span>
+                  <FormGroupWrapper
+                    errorIds={
+                      Array [
+                        "csv-upload",
+                      ]
+                    }
+                    errors={Array []}
+                  >
+                    <fieldset
+                      className="govuk-fieldset"
+                    >
+                      <FormElementWrapper
+                        errorClass="govuk-file-upload--error"
+                        errorId="csv-upload"
+                        errors={Array []}
+                      >
+                        <input
+                          accept=".csv,.xlsx,.xls"
+                          aria-describedby="csv-upload-hint"
+                          className="govuk-file-upload"
+                          id="csv-upload"
+                          name="csv-upload"
+                          type="file"
+                        />
+                      </FormElementWrapper>
+                    </fieldset>
+                  </FormGroupWrapper>
+                </div>
+                <details
+                  className="govuk-details govuk-!-margin-top-2"
+                  data-module="govuk-details"
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      My exempt stops won't upload
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-details__text"
+                  >
+                    <p>
+                      Use the below template to upload your exempt stops. This is the same template as used for fare zones, but just include ATCO/NaPTAN codes of the stops that you wish to exempt.
+                    </p>
+                    <FileAttachment
+                      attachmentUrl="[object Object]"
+                      displayName="Download fare zone CSV template - File Type CSV - File Size 673B"
+                      imageUrl={Object {}}
+                      size="673B"
+                    />
+                  </div>
+                </details>
+              </div>
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  defaultChecked={false}
+                  id="no"
+                  name="exempt"
+                  type="radio"
+                  value="no"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="no"
+                >
+                  No
+                </label>
+              </div>
+            </div>
+          </FormElementWrapper>
+        </fieldset>
+      </div>
     </div>
     <input
       className="govuk-button"
@@ -313,6 +877,7 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
   <CsrfForm
     action="/api/serviceList"
     csrfToken=""
+    encType="multipart/form-data"
     method="post"
   >
     <ErrorSummary
@@ -345,8 +910,9 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
           name="selectAll"
-          type="submit"
-          value="Select All"
+          onClick={[Function]}
+          type="button"
+          value="Select All Services"
         />
         <span
           className="govuk-hint"
@@ -379,10 +945,12 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
               key="checkbox-item-123"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
                 name="123#3h3vb32ik#NW_05_BLAC_123_1"
+                onChange={[Function]}
                 type="checkbox"
                 value="IW Bus Service 123"
               />
@@ -396,6 +964,173 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
           </div>
         </FormElementWrapper>
       </fieldset>
+    </div>
+    <div
+      className=""
+    >
+      <div
+        className="govuk-warning-text"
+      >
+        <span
+          aria-hidden="true"
+          className="govuk-warning-text__icon"
+        >
+          !
+        </span>
+        <strong
+          className="govuk-warning-text__text"
+        >
+          <span
+            className="govuk-warning-text__assistive"
+          >
+            Warning
+          </span>
+          If there are stops exempt, you can omit them by selecting yes below and uploading the stops you want to omit.
+        </strong>
+      </div>
+      <div
+        className="govuk-form-group"
+      >
+        <fieldset
+          className="govuk-fieldset"
+        >
+          <legend
+            className="govuk-fieldset__legend govuk-fieldset__legend--m"
+          >
+            <h2
+              className="govuk-fieldset__heading"
+            >
+              Are there stops which are not included?
+            </h2>
+          </legend>
+          <FormElementWrapper
+            errorClass="govuk-form-group--error"
+            errorId="csv-upload"
+            errors={Array []}
+          >
+            <div
+              className="govuk-radios"
+              data-module="govuk-radios"
+            >
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  data-aria-controls="conditional-yes"
+                  defaultChecked={false}
+                  id="yes"
+                  name="exempt"
+                  type="radio"
+                  value="yes"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="yes"
+                >
+                  Yes
+                </label>
+              </div>
+              <div
+                className="govuk-radios__conditional govuk-radios__conditional--hidden"
+                id="conditional-yes"
+              >
+                <div
+                  className="govuk-form-group "
+                >
+                  <label
+                    htmlFor="csv-upload"
+                  >
+                    <h1
+                      className="govuk-heading-m"
+                    >
+                      Upload exempt stops
+                    </h1>
+                  </label>
+                  <span
+                    className="govuk-hint govuk-!-margin-bottom-5"
+                    id="csv-upload-hint"
+                  >
+                    Upload exempt stops as a .csv or MS Excel file. Exempt stops are all of the relevant NaPTAN or ATCO codes that the service(s) you selected do not stop at.
+                  </span>
+                  <FormGroupWrapper
+                    errorIds={
+                      Array [
+                        "csv-upload",
+                      ]
+                    }
+                    errors={Array []}
+                  >
+                    <fieldset
+                      className="govuk-fieldset"
+                    >
+                      <FormElementWrapper
+                        errorClass="govuk-file-upload--error"
+                        errorId="csv-upload"
+                        errors={Array []}
+                      >
+                        <input
+                          accept=".csv,.xlsx,.xls"
+                          aria-describedby="csv-upload-hint"
+                          className="govuk-file-upload"
+                          id="csv-upload"
+                          name="csv-upload"
+                          type="file"
+                        />
+                      </FormElementWrapper>
+                    </fieldset>
+                  </FormGroupWrapper>
+                </div>
+                <details
+                  className="govuk-details govuk-!-margin-top-2"
+                  data-module="govuk-details"
+                >
+                  <summary
+                    className="govuk-details__summary"
+                  >
+                    <span
+                      className="govuk-details__summary-text"
+                    >
+                      My exempt stops won't upload
+                    </span>
+                  </summary>
+                  <div
+                    className="govuk-details__text"
+                  >
+                    <p>
+                      Use the below template to upload your exempt stops. This is the same template as used for fare zones, but just include ATCO/NaPTAN codes of the stops that you wish to exempt.
+                    </p>
+                    <FileAttachment
+                      attachmentUrl="[object Object]"
+                      displayName="Download fare zone CSV template - File Type CSV - File Size 673B"
+                      imageUrl={Object {}}
+                      size="673B"
+                    />
+                  </div>
+                </details>
+              </div>
+              <div
+                className="govuk-radios__item"
+              >
+                <input
+                  className="govuk-radios__input"
+                  defaultChecked={true}
+                  id="no"
+                  name="exempt"
+                  type="radio"
+                  value="no"
+                />
+                <label
+                  className="govuk-label govuk-radios__label"
+                  htmlFor="no"
+                >
+                  No
+                </label>
+              </div>
+            </div>
+          </FormElementWrapper>
+        </fieldset>
+      </div>
     </div>
     <input
       className="govuk-button"

@@ -82,9 +82,11 @@ export const INTERNAL_NOC = 'IWBusCo';
 
 export const CREATED_FILES_NUM_PER_PAGE = 10;
 
-export const validFareTypes = ['single', 'period', 'return', 'flatFare', 'multiOperator', 'schoolService', 'capped'];
+export const validFareTypes = ['single', 'period', 'return', 'flatFare', 'multiOperator', 'schoolService'];
 
 export const purchaseMethodsValuesMap: { [key: string]: string } = {
     agency: 'Travel Shop',
     contactlessTravelCard: 'Contactless SmartCard (e.g Oyster)',
 };
+
+export const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];

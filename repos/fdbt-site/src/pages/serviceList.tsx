@@ -1,7 +1,9 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import ErrorSummary from '../components/ErrorSummary';
-import FormElementWrapper from '../components/FormElementWrapper';
+import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { FullColumnLayout } from '../layout/Layout';
+import FareZoneExampleCsv from '../assets/files/Fare-Zone-Example.csv';
+import csvImage from '../assets/images/csv.png';
 import {
     SERVICE_LIST_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -10,72 +12,100 @@ import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
+    STOPS_EXEMPTION_ATTRIBUTE,
+    SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
-import {
-    getAllServicesByNocCode,
-    getServicesByNocCodeAndDataSource,
-    getTndsServicesByNocAndModes,
-} from '../data/auroradb';
-import {
-    ErrorInfo,
-    NextPageContextWithSession,
-    ServicesInfo,
-    FareType,
-    ServiceListAttribute,
-    ServiceListAttributeWithErrors,
-    TxcSourceAttribute,
-} from '../interfaces';
+import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import { ErrorInfo, NextPageContextWithSession, ServicesInfo, FareType, TxcSourceAttribute } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { redirectTo } from '../utils/apiUtils';
 import BackButton from '../components/BackButton';
+import FileAttachment from '../components/FileAttachment';
+import { isExemptStopsAttributeWithErrors, isServiceListAttributeWithErrors } from '../interfaces/typeGuards';
 
 const pageTitle = 'Service List - Create Fares Data Service';
 const pageDescription = 'Service List selection page of the Create Fares Data Service';
 
 interface ServiceListProps {
     serviceList: ServicesInfo[];
-    buttonText: string;
     errors: ErrorInfo[];
     multiOperator: boolean;
     dataSourceAttribute: TxcSourceAttribute;
     csrfToken: string;
     additional: boolean;
     backHref: string;
+    selectedYesToExempt: boolean;
+    exemptStops: string;
+    isEditMode: boolean;
 }
+
+const containsErrorForServices = (errors: ErrorInfo[]): boolean => !!errors.find((error) => error.id === 'checkbox-0');
+
+const containsErrorForExempt = (errors: ErrorInfo[]): boolean => !!errors.find((error) => error.id === 'csv-upload');
 
 const ServiceList = ({
     serviceList,
-    buttonText,
     csrfToken,
     errors,
     multiOperator,
     dataSourceAttribute,
     additional,
     backHref,
+    selectedYesToExempt,
+    exemptStops,
+    isEditMode,
 }: ServiceListProps): ReactElement => {
-    const multiOperatorText = multiOperator ? 'of your ' : '';
     const seen: string[] = [];
-    const uniqueServiceLists =
-        serviceList?.filter((item) => (seen.includes(item.lineId) ? false : seen.push(item.lineId))) ?? [];
+    const uniqueServiceList =
+        serviceList.filter((item) => (seen.includes(item.lineId) ? false : seen.push(item.lineId))) ?? [];
+
+    const [buttonText, setButtonText] = useState(
+        serviceList.every((service) => service.checked) ? 'Unselect All Services' : 'Select All Services',
+    );
+
+    const [checkedServices, setCheckedServices] = useState(uniqueServiceList.filter((service) => service.checked));
+
+    const [userWantsToEditExemptStops, setUserWantsToEditExemptStops] = useState(false);
+
+    const toggleAllServices = (): void => {
+        if (checkedServices.length !== uniqueServiceList.length && buttonText === 'Select All Services') {
+            setButtonText('Unselect All Services');
+            setCheckedServices(uniqueServiceList);
+        } else {
+            setButtonText('Select All Services');
+            setCheckedServices([]);
+        }
+    };
+
+    const updateCheckedServiceList = (e: React.ChangeEvent<HTMLInputElement>, lineId: string) => {
+        if (!e.target.checked) {
+            setCheckedServices(checkedServices.filter((service) => service.lineId !== lineId));
+        } else {
+            const serviceToAdd = uniqueServiceList.find((service) => service.lineId === lineId);
+            if (serviceToAdd) {
+                setCheckedServices([...checkedServices, serviceToAdd]);
+            }
+        }
+    };
+
+    const multiOperatorText = multiOperator ? 'of your ' : '';
+
+    const defaultCheckedYes = (!userWantsToEditExemptStops && isEditMode) || selectedYesToExempt || !!exemptStops;
+    const defaultCheckedNo = !defaultCheckedYes;
 
     return (
         <FullColumnLayout title={pageTitle} description={pageDescription}>
-            {/* removed as TNDS is being disabled until further notice */}
-            {/* {!editMode && (
-                <SwitchDataSource
-                    dataSourceAttribute={dataSourceAttribute}
-                    pageUrl="/serviceList"
-                    attributeVersion="baseOperator"
-                    csrfToken={csrfToken}
-                />
-            )} */}
             {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
-            <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken}>
+            <CsrfForm action="/api/serviceList" method="post" csrfToken={csrfToken} encType="multipart/form-data">
                 <>
                     <ErrorSummary errors={errors} />
-                    <div className={`govuk-form-group ${errors.length > 0 ? 'govuk-form-group--error' : ''}`}>
+                    <div
+                        className={`govuk-form-group ${
+                            containsErrorForServices(errors) ? 'govuk-form-group--error' : ''
+                        }`}
+                    >
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
                             <h1 className="govuk-heading-l" id="service-list-page-heading">
                                 Which {additional ? 'additional ' : multiOperatorText}services is the ticket valid for?
@@ -85,11 +115,12 @@ const ServiceList = ({
                         <span className="govuk-heading-s">Select all {multiOperatorText}services that apply</span>
                         <fieldset className="govuk-fieldset">
                             <input
-                                type="submit"
+                                type="button"
                                 name="selectAll"
                                 value={buttonText}
                                 id="select-all-button"
                                 className="govuk-button govuk-button--secondary"
+                                onClick={toggleAllServices}
                             />
                             <span className="govuk-hint" id="txc-hint">
                                 This data is taken from the{' '}
@@ -102,13 +133,13 @@ const ServiceList = ({
                                 advice <a href="/contact">here</a>.
                             </span>
                             <FormElementWrapper
-                                errors={errors}
+                                errors={containsErrorForServices(errors) ? errors : []}
                                 errorId="checkbox-0"
                                 errorClass=""
                                 addFormGroupError={false}
                             >
                                 <div className="govuk-checkboxes">
-                                    {uniqueServiceLists.map((service, index) => {
+                                    {uniqueServiceList.map((service, index) => {
                                         const {
                                             lineName,
                                             lineId,
@@ -135,6 +166,10 @@ const ServiceList = ({
                                                     type="checkbox"
                                                     value={checkBoxValues}
                                                     defaultChecked={checked}
+                                                    checked={
+                                                        !!checkedServices.find((service) => service.lineId === lineId)
+                                                    }
+                                                    onChange={(e) => updateCheckedServiceList(e, lineId)}
                                                 />
                                                 <label
                                                     className="govuk-label govuk-checkboxes__label"
@@ -149,6 +184,191 @@ const ServiceList = ({
                             </FormElementWrapper>
                         </fieldset>
                     </div>
+
+                    {isEditMode ? (
+                        <div className="govuk-!-margin-bottom-6">
+                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                <h2 className="govuk-fieldset__heading">
+                                    You previously uploaded{' '}
+                                    {!!exemptStops
+                                        ? `${exemptStops.split(', ').length} exempt stops`
+                                        : 'no exempt stops'}
+                                    . Do you want to edit them?{' '}
+                                </h2>
+                            </legend>
+                            <div className="govuk-radios" data-module="govuk-radios">
+                                <div className="govuk-radios__item">
+                                    <input
+                                        className="govuk-radios__input"
+                                        id="exempt-yes"
+                                        name="edit-exempt"
+                                        value="yes"
+                                        type="radio"
+                                        data-aria-controls="conditional-yes"
+                                        onChange={() => {
+                                            setUserWantsToEditExemptStops(true);
+                                        }}
+                                    />
+                                    <label className="govuk-label govuk-radios__label" htmlFor="exempt-yes">
+                                        Yes
+                                    </label>
+                                </div>
+                                <div className="govuk-radios__item">
+                                    <input
+                                        className="govuk-radios__input"
+                                        id="exempt-no"
+                                        name="edit-exempt"
+                                        value="no"
+                                        type="radio"
+                                        defaultChecked
+                                        onChange={() => {
+                                            setUserWantsToEditExemptStops(false);
+                                        }}
+                                    />
+                                    <label className="govuk-label govuk-radios__label" htmlFor="exempt-no">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    ) : null}
+
+                    <div className={isEditMode && !userWantsToEditExemptStops ? `govuk-visually-hidden` : ''}>
+                        <div className="govuk-warning-text">
+                            <span className="govuk-warning-text__icon" aria-hidden="true">
+                                !
+                            </span>
+                            <strong className="govuk-warning-text__text">
+                                <span className="govuk-warning-text__assistive">Warning</span>
+                                If there are stops exempt, you can omit them by selecting yes below and uploading the
+                                stops you want to omit.
+                            </strong>
+                        </div>
+                        <div className="govuk-form-group">
+                            <fieldset className="govuk-fieldset">
+                                <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    <h2 className="govuk-fieldset__heading">Are there stops which are not included?</h2>
+                                </legend>
+                                <FormElementWrapper
+                                    errorId="csv-upload"
+                                    errorClass="govuk-form-group--error"
+                                    errors={containsErrorForExempt(errors) ? errors : []}
+                                >
+                                    <div className="govuk-radios" data-module="govuk-radios">
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id="yes"
+                                                name="exempt"
+                                                type="radio"
+                                                value="yes"
+                                                data-aria-controls="conditional-yes"
+                                                defaultChecked={defaultCheckedYes}
+                                            />
+                                            <label className="govuk-label govuk-radios__label" htmlFor="yes">
+                                                Yes
+                                            </label>
+                                        </div>
+                                        <div
+                                            className="govuk-radios__conditional govuk-radios__conditional--hidden"
+                                            id="conditional-yes"
+                                        >
+                                            <>
+                                                <div
+                                                    className={`govuk-form-group ${
+                                                        containsErrorForExempt(errors) ? 'govuk-form-group--error' : ''
+                                                    }`}
+                                                >
+                                                    <label htmlFor="csv-upload">
+                                                        <h1 className="govuk-heading-m">Upload exempt stops</h1>
+                                                    </label>
+
+                                                    <span
+                                                        className="govuk-hint govuk-!-margin-bottom-5"
+                                                        id="csv-upload-hint"
+                                                    >
+                                                        Upload exempt stops as a .csv or MS Excel file. Exempt stops are
+                                                        all of the relevant NaPTAN or ATCO codes that the service(s) you
+                                                        selected do not stop at.
+                                                    </span>
+
+                                                    {exemptStops && (
+                                                        <span
+                                                            className="govuk-hint govuk-!-margin-bottom-5"
+                                                            id="previously-uploaded-stops"
+                                                        >
+                                                            You previously uploaded: {exemptStops}
+                                                        </span>
+                                                    )}
+
+                                                    <FormGroupWrapper
+                                                        errors={containsErrorForExempt(errors) ? errors : []}
+                                                        errorIds={['csv-upload']}
+                                                    >
+                                                        <fieldset className="govuk-fieldset">
+                                                            <FormElementWrapper
+                                                                errorId="csv-upload"
+                                                                errorClass="govuk-file-upload--error"
+                                                                errors={containsErrorForExempt(errors) ? errors : []}
+                                                            >
+                                                                <input
+                                                                    className="govuk-file-upload"
+                                                                    id="csv-upload"
+                                                                    name="csv-upload"
+                                                                    type="file"
+                                                                    accept=".csv,.xlsx,.xls"
+                                                                    aria-describedby="csv-upload-hint"
+                                                                />
+                                                            </FormElementWrapper>
+                                                        </fieldset>
+                                                    </FormGroupWrapper>
+                                                </div>
+
+                                                <details
+                                                    className="govuk-details govuk-!-margin-top-2"
+                                                    data-module="govuk-details"
+                                                >
+                                                    <summary className="govuk-details__summary">
+                                                        <span className="govuk-details__summary-text">
+                                                            My exempt stops won&apos;t upload
+                                                        </span>
+                                                    </summary>
+                                                    <div className="govuk-details__text">
+                                                        <p>
+                                                            Use the below template to upload your exempt stops. This is
+                                                            the same template as used for fare zones, but just include
+                                                            ATCO/NaPTAN codes of the stops that you wish to exempt.
+                                                        </p>
+                                                        <FileAttachment
+                                                            displayName={
+                                                                'Download fare zone CSV template - File Type CSV - File Size 673B'
+                                                            }
+                                                            attachmentUrl={`${FareZoneExampleCsv}`}
+                                                            imageUrl={csvImage}
+                                                            size={'673B'}
+                                                        />
+                                                    </div>
+                                                </details>
+                                            </>
+                                        </div>
+                                        <div className="govuk-radios__item">
+                                            <input
+                                                className="govuk-radios__input"
+                                                id="no"
+                                                name="exempt"
+                                                type="radio"
+                                                value="no"
+                                                defaultChecked={defaultCheckedNo}
+                                            />
+                                            <label className="govuk-label govuk-radios__label" htmlFor="no">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+                                </FormElementWrapper>
+                            </fieldset>
+                        </div>
+                    </div>
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
             </CsrfForm>
@@ -156,17 +376,14 @@ const ServiceList = ({
     );
 };
 
-export const isServiceListAttributeWithErrors = (
-    serviceListAttribute: ServiceListAttribute | ServiceListAttributeWithErrors,
-): serviceListAttribute is ServiceListAttributeWithErrors =>
-    (serviceListAttribute as ServiceListAttributeWithErrors).errors !== undefined;
-
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServiceListProps }> => {
     const csrfToken = getCsrfToken(ctx);
     const nocCode = getAndValidateNoc(ctx);
     const serviceListAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE);
+    const exemptStopsAttribute = getSessionAttribute(ctx.req, STOPS_EXEMPTION_ATTRIBUTE);
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
     const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
+    const exemptServicesAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
 
     if (!dataSourceAttribute) {
         const services = await getAllServicesByNocCode(nocCode);
@@ -179,8 +396,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 throw new Error(`No services found for NOC Code: ${nocCode}`);
             }
         }
-        // removed as TNDS is being disabled until further notice
-        // const hasTndsServices = services.some((service) => service.dataSource && service.dataSource === 'tnds');
+
         updateSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE, {
             source: hasBodsServices ? 'bods' : 'tnds',
             hasBods: true,
@@ -189,28 +405,30 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }
 
-    const { selectAll } = ctx.query;
+    let chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
 
-    let chosenDataSourceServices;
-    if (modesAttribute) {
-        chosenDataSourceServices = await getTndsServicesByNocAndModes(nocCode, modesAttribute.modes);
+    if (!!exemptServicesAttribute && !isServiceListAttributeWithErrors(exemptServicesAttribute)) {
+        const exemptServices = exemptServicesAttribute.selectedServices;
+        // removing the services which the user has selected as exempted
+        chosenDataSourceServices = chosenDataSourceServices.filter(
+            (service) => !exemptServices.find((exemptService) => exemptService.lineId === service.lineId),
+        );
     }
-    chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
-
-    const serviceList: ServicesInfo[] = chosenDataSourceServices.map((service) => {
-        return {
-            ...service,
-            checked: !selectAll || (selectAll !== 'true' && selectAll !== 'false') ? false : selectAll !== 'false',
-        };
-    });
 
     const ticketJson = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
+    const errors = [
+        ...(!!serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
+            ? serviceListAttribute.errors
+            : []),
+        ...(!!exemptStopsAttribute && isExemptStopsAttributeWithErrors(exemptStopsAttribute)
+            ? exemptStopsAttribute.errors
+            : []),
+    ];
+
     if (ticketJson && matchingJsonMetaData) {
-        const backHref = `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
-            matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
-        }`;
+        const backHref = `/products/productDetails?productId=${matchingJsonMetaData?.productId}`;
 
         let services: string[] = [];
         if ('selectedServices' in ticketJson) {
@@ -219,29 +437,43 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             });
         }
 
-        const serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
+        let serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
             return {
                 ...service,
-                checked:
-                    !selectAll || (selectAll !== 'true' && selectAll !== 'false')
-                        ? services.includes(service.lineName)
-                        : selectAll !== 'false',
+                checked: services.includes(service.lineName),
             };
         });
+
+        if ('exemptedServices' in ticketJson && !!ticketJson.exemptedServices) {
+            const { exemptedServices } = ticketJson;
+            // removing the services which the user has selected as exempted
+            serviceListEdit = serviceListEdit.filter(
+                (service) => !exemptedServices.find((exemptService) => exemptService.lineId === service.lineId),
+            );
+        }
+
+        const exemptStops: string =
+            'exemptStops' in ticketJson && !!ticketJson.exemptStops
+                ? ticketJson.exemptStops.map((stop) => `${stop.atcoCode} - ${stop.stopName}`).join(', ')
+                : '';
 
         return {
             props: {
                 serviceList: serviceListEdit,
-                buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
-                errors:
-                    serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
-                        ? serviceListAttribute.errors
-                        : [],
+                errors,
                 multiOperator: false,
                 dataSourceAttribute,
                 csrfToken,
                 additional: false,
                 backHref,
+                selectedYesToExempt:
+                    serviceListAttribute &&
+                    isServiceListAttributeWithErrors(serviceListAttribute) &&
+                    containsErrorForExempt(serviceListAttribute.errors)
+                        ? true
+                        : false,
+                exemptStops,
+                isEditMode: true,
             },
         };
     }
@@ -251,19 +483,33 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const ticket = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
     const additional = !!ticket && 'name' in ticket && ticket.name === 'hybrid';
+
+    const checkForSelectedServices =
+        serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)
+            ? chosenDataSourceServices.map((service) => {
+                  const checked = !!serviceListAttribute.selectedServices.find(
+                      (selService) => selService.lineId === service.lineId,
+                  );
+                  return {
+                      ...service,
+                      checked,
+                  };
+              })
+            : chosenDataSourceServices;
+
     return {
         props: {
-            serviceList,
-            buttonText: selectAll === 'true' ? 'Unselect All Services' : 'Select All Services',
-            errors:
-                serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
-                    ? serviceListAttribute.errors
-                    : [],
+            serviceList: checkForSelectedServices,
+            errors,
             multiOperator,
             dataSourceAttribute,
             csrfToken,
             additional,
             backHref: '',
+            selectedYesToExempt:
+                exemptStopsAttribute && isExemptStopsAttributeWithErrors(exemptStopsAttribute) ? true : false,
+            exemptStops: '',
+            isEditMode: false,
         },
     };
 };

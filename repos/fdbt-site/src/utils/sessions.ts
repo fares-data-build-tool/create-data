@@ -53,22 +53,20 @@ import {
     GS_REFERER,
     GS_PURCHASE_METHOD_ATTRIBUTE,
     GS_OPERATOR_DETAILS_ATTRIBUTE,
-    VIEW_PASSENGER_TYPE,
-    VIEW_PURCHASE_METHOD,
+    VIEW_PASSENGER_TYPE_ERRORS,
+    VIEW_PURCHASE_METHOD_ERRORS,
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
-    VIEW_TIME_RESTRICTION,
-    VIEW_OPERATOR_GROUP,
+    VIEW_TIME_RESTRICTION_ERRORS,
+    VIEW_OPERATOR_GROUP_ERRORS,
     CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE,
-    TYPE_OF_CAP_ATTRIBUTE,
     UNASSIGNED_STOPS_ATTRIBUTE,
     GS_FARE_DAY_END_ATTRIBUTE,
     UNASSIGNED_INBOUND_STOPS_ATTRIBUTE,
     CSV_ZONE_FILE_NAME,
     DIRECTION_ATTRIBUTE,
-    CAPS_ATTRIBUTE,
     EDIT_PERIOD_DURATION_ERROR,
     MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE,
-    VIEW_PRODUCT_GROUP,
+    VIEW_PRODUCT_GROUP_ERRORS,
     EDIT_CARNET_PROPERTIES_ERROR,
     CAP_EXPIRY_ATTRIBUTE,
     CAP_START_ATTRIBUTE,
@@ -78,6 +76,10 @@ import {
     EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    CREATE_CAPS_ATTRIBUTE,
+    CAPS_DEFINITION_ATTRIBUTE,
+    STOPS_EXEMPTION_ATTRIBUTE,
+    VIEW_CAP_ERRORS,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -116,7 +118,6 @@ import {
     SelectSalesOfferPackageWithError,
     Service,
     ServiceListAttribute,
-    ServiceListAttributeWithErrors,
     ServiceWithErrors,
     TermTimeAttribute,
     TicketPeriodWithErrors,
@@ -135,13 +136,14 @@ import {
     Errors,
     BasicService,
     ManageOperatorGroupWithErrors,
-    TypeOfCap,
     ManageProductGroupWithErrors,
     DistancePricingData,
     MultiTapPricing,
     AdditionalPricing,
-    CapDetails,
     EditFareStageMatchingWithErrors,
+    CapSelection,
+    ExemptedStopsAttribute,
+    Cap,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -185,7 +187,7 @@ export interface SessionAttributeTypes {
     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: TimeRestriction | TimeRestrictionsDefinitionWithErrors;
     [FARE_ZONE_ATTRIBUTE]: string | FareZoneWithErrors;
     [CSV_UPLOAD_ATTRIBUTE]: CsvUploadAttributeWithErrors;
-    [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
+    [SERVICE_LIST_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
     [NUMBER_OF_STAGES_ATTRIBUTE]: NumberOfStagesAttributeWithError;
     [MULTIPLE_PRODUCT_ATTRIBUTE]: MultipleProductAttribute | MultipleProductAttributeWithErrors;
     [NUMBER_OF_PRODUCTS_ATTRIBUTE]: number;
@@ -228,14 +230,14 @@ export interface SessionAttributeTypes {
     [UNASSIGNED_INBOUND_STOPS_ATTRIBUTE]: UnassignedStop[];
     [GS_REFERER]: string;
     [CSV_ZONE_FILE_NAME]: string;
-    [VIEW_PASSENGER_TYPE]: ErrorInfo[];
-    [VIEW_PURCHASE_METHOD]: ErrorInfo[];
-    [VIEW_TIME_RESTRICTION]: ErrorInfo[];
-    [VIEW_OPERATOR_GROUP]: ErrorInfo[];
-    [VIEW_PRODUCT_GROUP]: ErrorInfo[];
-    [TYPE_OF_CAP_ATTRIBUTE]: TypeOfCap | ErrorInfo;
+    [VIEW_PASSENGER_TYPE_ERRORS]: ErrorInfo[];
+    [VIEW_PURCHASE_METHOD_ERRORS]: ErrorInfo[];
+    [VIEW_TIME_RESTRICTION_ERRORS]: ErrorInfo[];
+    [VIEW_OPERATOR_GROUP_ERRORS]: ErrorInfo[];
+    [VIEW_PRODUCT_GROUP_ERRORS]: ErrorInfo[];
+    [VIEW_CAP_ERRORS]: ErrorInfo[];
     [CAPPED_PRODUCT_GROUP_ID_ATTRIBUTE]: string | ErrorInfo;
-    [CAPS_ATTRIBUTE]: CapDetails | WithErrors<CapDetails>;
+    [CREATE_CAPS_ATTRIBUTE]: Cap | WithErrors<Cap>;
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
     [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
@@ -246,7 +248,9 @@ export interface SessionAttributeTypes {
         | AdditionalPricing
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
     [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
-    [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | ServiceListAttributeWithErrors;
+    [CAPS_DEFINITION_ATTRIBUTE]: CapSelection | { errors: ErrorInfo[] };
+    [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
+    [STOPS_EXEMPTION_ATTRIBUTE]: ExemptedStopsAttribute | { errors: ErrorInfo[] };
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

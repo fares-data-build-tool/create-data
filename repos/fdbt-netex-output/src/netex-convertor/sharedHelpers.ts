@@ -34,7 +34,8 @@ import {
 import {
     getBaseSchemeOperatorInfo,
     getDurationElement,
-    getExemptionsElement,
+    getExemptServicesElement,
+    getExemptStopsElement,
     getLineRefList,
     getPeriodAvailabilityElement,
     getPeriodConditionsElement,
@@ -381,16 +382,13 @@ export const getCarnetElement = (ticket: Ticket): NetexObject => {
 
 export const getFareStructuresElements = (
     ticket: Ticket,
-    isCarnet: boolean,
-    lineIdName: string,
-    lineName: string,
-    placeholderGroupOfProductsName: string,
-    groupOfLinesRef: string,
-    hasExceptions: boolean,
+    coreData: CoreData,
+    hasExemptServices: boolean,
+    hasExemptStops: boolean,
 ): NetexObject[] => {
     const fareStructureElements: NetexObject[] = [];
 
-    if (isCarnet) {
+    if (coreData.isCarnet) {
         fareStructureElements.push(getCarnetElement(ticket));
     }
 
@@ -399,7 +397,7 @@ export const getFareStructuresElements = (
     }
 
     if ('lineName' in ticket) {
-        fareStructureElements.push(getLinesElement(ticket, lineIdName, lineName));
+        fareStructureElements.push(getLinesElement(ticket, coreData.lineIdName, coreData.lineName));
         fareStructureElements.push(getEligibilityElement(ticket));
 
         // P2P Periods have one product with duration details attached
@@ -430,15 +428,15 @@ export const getFareStructuresElements = (
             validityParametersObject = {
                 FareZoneRef: {
                     version: '1.0',
-                    ref: `op:${placeholderGroupOfProductsName}@${ticket.zoneName}`,
+                    ref: `op:${coreData.placeholderGroupOfProductsName}@${ticket.zoneName}`,
                 },
             };
         } else if (isMultiServiceTicket(ticket) || isSchemeOperatorFlatFareTicket(ticket)) {
             availabilityElementId = `Tariff@${product.productName}@access_lines`;
             const lines = getLineRefList(ticket);
             validityParametersObject =
-                groupOfLinesRef && lines.length > 1
-                    ? { GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef } }
+                lines.length > 1
+                    ? { GroupOfLinesRef: { version: '1.0', ref: `${coreData.operatorIdentifier}@groupOfLines@1` } }
                     : { LineRef: lines };
         }
 
@@ -447,7 +445,7 @@ export const getFareStructuresElements = (
             const zonalValidityParametersObject = {
                 FareZoneRef: {
                     version: '1.0',
-                    ref: `op:${placeholderGroupOfProductsName}@${ticket.zoneName}`,
+                    ref: `op:${coreData.placeholderGroupOfProductsName}@${ticket.zoneName}`,
                 },
             };
 
@@ -459,7 +457,7 @@ export const getFareStructuresElements = (
 
             availabilityElementId = `Tariff@${product.productName}@access_lines`;
             validityParametersObject = {
-                GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
+                GroupOfLinesRef: { version: '1.0', ref: `${coreData.operatorIdentifier}@groupOfLines@1` },
             };
             result = [
                 ...result,
@@ -478,12 +476,23 @@ export const getFareStructuresElements = (
                 getPeriodConditionsElement(ticket, product),
             ];
         }
-        if (hasExceptions) {
+        if (hasExemptServices) {
             availabilityElementId = `Tariff@${product.productName}@exempt_lines`;
             validityParametersObject = {
-                GroupOfLinesRef: { version: '1.0', ref: groupOfLinesRef },
+                GroupOfLinesRef: { version: '1.0', ref: `${coreData.operatorIdentifier}@exemptGroupOfLines@1` },
             };
-            result.push(getExemptionsElement(availabilityElementId, validityParametersObject, hasTimeRestriction));
+            result.push(getExemptServicesElement(availabilityElementId, validityParametersObject));
+        }
+
+        if (hasExemptStops) {
+            availabilityElementId = `Tariff@${product.productName}@exempt_stops`;
+            validityParametersObject = {
+                FareZoneRef: {
+                    version: '1.0',
+                    ref: `op:${coreData.placeholderGroupOfProductsName}@$exempt_stops_zone`,
+                },
+            };
+            result.push(getExemptStopsElement(availabilityElementId, validityParametersObject));
         }
 
         if (hasTimeRestriction) {

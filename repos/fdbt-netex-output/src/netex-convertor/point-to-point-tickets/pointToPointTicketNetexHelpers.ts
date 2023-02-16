@@ -126,7 +126,9 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
 };
 
 export const getPriceGroups = (matchingData: PointToPointTicket | PointToPointPeriodTicket): {}[] => {
-    const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
+    const fareZones = isReturnTicket(matchingData)
+        ? [...matchingData.outboundFareZones, ...matchingData.inboundFareZones]
+        : matchingData.fareZones;
 
     const priceGroups = getUniquePriceGroups(fareZones).map(price => ({
         version: '1.0',
@@ -483,7 +485,7 @@ export const combineFareZones = (outbound: FareZone[], inbound: FareZone[]): Far
     const combinedFareZones = [...outbound];
 
     inbound.forEach(zone => {
-        const outboundZone = combinedFareZones.find(x => x.name == zone.name);
+        const outboundZone = combinedFareZones.find(x => x.name === zone.name);
         if (!outboundZone) {
             combinedFareZones.push(zone);
         } else {

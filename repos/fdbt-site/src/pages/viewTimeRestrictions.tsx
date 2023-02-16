@@ -5,7 +5,7 @@ import { ErrorInfo, NextPageContextWithSession, PremadeTimeRestriction } from '.
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { VIEW_TIME_RESTRICTION } from '../constants/attributes';
+import { VIEW_TIME_RESTRICTION_ERRORS } from '../constants/attributes';
 import { DbTimeBand } from '../interfaces/matchingJsonTypes';
 
 const title = 'Time restrictions';
@@ -98,9 +98,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const timeRestrictions = await getTimeRestrictionByNocCode(nationalOperatorCode);
-    const viewTimeRestriction = getSessionAttribute(ctx.req, VIEW_TIME_RESTRICTION);
+    const viewTimeRestriction = getSessionAttribute(ctx.req, VIEW_TIME_RESTRICTION_ERRORS);
 
-    updateSessionAttribute(ctx.req, VIEW_TIME_RESTRICTION, undefined);
+    updateSessionAttribute(ctx.req, VIEW_TIME_RESTRICTION_ERRORS, undefined);
 
     return {
         props: {

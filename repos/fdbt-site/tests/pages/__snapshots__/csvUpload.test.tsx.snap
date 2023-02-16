@@ -47,6 +47,12 @@ exports[`pages csvUpload should render correctly 1`] = `
           errors={Array []}
           showPriceOption={true}
         />
+        <input
+          className="govuk-button"
+          id="submit-button"
+          type="submit"
+          value="Upload and continue"
+        />
       </CsrfForm>
     </div>
     <div

@@ -1,4 +1,4 @@
-import { FullTimeRestriction, GeoZoneTicket } from '../types';
+import { CoreData, FullTimeRestriction, GeoZoneTicket } from '../types';
 import * as sharedHelpers from './sharedHelpers';
 import { getTimeRestrictions, getEarliestTime, getProductType, replaceAll } from './sharedHelpers';
 import {
@@ -283,15 +283,14 @@ describe('Shared Helpers', () => {
 
         it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Eligibility and Conditions of Travel', () => {
             const expectedLength = flatFareTicket.products.length * 3;
-            const result = sharedHelpers.getFareStructuresElements(
-                flatFareTicket,
-                false,
-                '',
-                '',
-                placeHolderText,
-                'groupOfLinesRef',
-                false,
-            );
+            const coreData = {
+                isCarnet: false,
+                lineIdName: '',
+                placeholderGroupOfProductsName: placeHolderText,
+                operatorIdentifier: '',
+            } as CoreData;
+
+            const result = sharedHelpers.getFareStructuresElements(flatFareTicket, coreData, false, false);
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
             });
@@ -311,13 +310,17 @@ describe('Shared Helpers', () => {
 
         it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
             const expectedLength = periodMultipleServicesTicket.products.length * 3 + 2;
+            const coreData = {
+                isCarnet: false,
+                lineIdName: '',
+                placeholderGroupOfProductsName: placeHolderText,
+                operatorIdentifier: '',
+            } as CoreData;
+
             const result = sharedHelpers.getFareStructuresElements(
                 periodMultipleServicesTicket,
+                coreData,
                 false,
-                '',
-                '',
-                placeHolderText,
-                'groupOfLinesRef',
                 false,
             );
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
@@ -339,15 +342,15 @@ describe('Shared Helpers', () => {
 
         it('returns 3 fareStructureElements for each product in the products array for geoZone; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
             const expectedLength = geoUserPeriodTicket.products.length * 3 + 1;
-            const result = sharedHelpers.getFareStructuresElements(
-                geoUserPeriodTicket,
-                false,
-                '',
-                '',
-                placeHolderText,
-                'groupOfLinesRef',
-                false,
-            );
+
+            const coreData = {
+                isCarnet: false,
+                lineIdName: '',
+                placeholderGroupOfProductsName: placeHolderText,
+                operatorIdentifier: '',
+            } as CoreData;
+
+            const result = sharedHelpers.getFareStructuresElements(geoUserPeriodTicket, coreData, false, false);
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
             });
@@ -366,15 +369,14 @@ describe('Shared Helpers', () => {
         });
 
         it('returns the fareStructureElements in the format we expect', () => {
-            const geoResult = sharedHelpers.getFareStructuresElements(
-                geoUserPeriodTicket,
-                false,
-                '',
-                '',
-                placeHolderText,
-                'groupOfLinesRef',
-                false,
-            );
+            const coreData = {
+                isCarnet: false,
+                lineIdName: '',
+                placeholderGroupOfProductsName: placeHolderText,
+                operatorIdentifier: '',
+            } as CoreData;
+
+            const geoResult = sharedHelpers.getFareStructuresElements(geoUserPeriodTicket, coreData, false, false);
 
             const expectedAccessZonesFareStructureElement = {
                 version: '1.0',

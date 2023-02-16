@@ -8,6 +8,7 @@ import {
     PRICING_PER_DISTANCE_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import * as userData from '../../../src/utils/apiUtils/userData';
+import { TicketWithIds } from '../../../src/interfaces/matchingJsonTypes';
 
 describe('pricingPerDistance', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
@@ -70,7 +71,7 @@ describe('pricingPerDistance', () => {
                 productName: 'Product',
             },
             session: {
-                [MATCHING_JSON_ATTRIBUTE]: expectedFlatFareTicket,
+                [MATCHING_JSON_ATTRIBUTE]: expectedFlatFareTicket as TicketWithIds,
                 [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
                     productId: '2',
                     matchingJsonLink: 'test/path',

@@ -1,3 +1,5 @@
+import { DbCap } from "./dbTypes";
+
 export interface PointToPointCarnetProductDetails extends BaseProduct {
     carnetDetails: CarnetDetails;
 }
@@ -34,6 +36,7 @@ export interface AdditionalService extends SelectedService {
 export interface PeriodMultipleServicesTicket extends BasePeriodTicket {
     selectedServices: SelectedService[];
     termTime: boolean;
+    exemptStops?: Stop[];
 }
 
 export interface FlatFareProduct extends BaseProduct {
@@ -47,10 +50,11 @@ export interface PriceByDistanceProduct extends BaseProduct {
 }
 
 export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
-    products: FlatFareProduct[] | PriceByDistanceProduct[];
+    products: (PriceByDistanceProduct | FlatFareProduct)[];
     termTime: boolean;
     selectedServices: SelectedService[];
     operatorName: string;
+    exemptStops?: Stop[];
 }
 
 export type FlatFareTicket = FlatFareGeoZoneTicket | FlatFareMultipleServices;
@@ -80,7 +84,7 @@ export interface DistancePricingData {
 
 export type FromDb<T> = T & { id: number };
 
-export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return' ;
+export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
 
 export type Ticket =
     | PointToPointTicket
@@ -93,7 +97,6 @@ export type Ticket =
     | MultiOperatorGeoZoneTicket
     | PointToPointPeriodTicket
     | PeriodHybridTicket;
-
 
 export type TicketWithIds =
     | WithIds<SingleTicket>
@@ -112,7 +115,7 @@ export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
 
-export interface  SchemeOperatorGeoZoneTicket extends BaseSchemeOperatorTicket {
+export interface SchemeOperatorGeoZoneTicket extends BaseSchemeOperatorTicket {
     zoneName: string;
     stops: Stop[];
     products: ProductDetails[];
@@ -156,6 +159,7 @@ export interface BaseTicket<T extends TicketType = TicketType> {
     ticketPeriod: TicketPeriod;
     groupDefinition?: GroupDefinition;
     carnet?: boolean;
+    caps?: DbCap;
 }
 
 export type WithIds<T extends { products: BaseProduct[] }> = WithBaseIds<
@@ -176,7 +180,7 @@ export type WithBaseIds<T> = Omit<
     | 'proofDocuments'
     | 'timeRestriction'
     | 'fareDayEnd'
-> & { passengerType: { id: number }; timeRestriction?: { id: number } };
+> & { passengerType: { id: number }; timeRestriction?: { id: number }; cap?: { id: number } };
 
 export interface GroupDefinition {
     maxPeople: string;

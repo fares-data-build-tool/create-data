@@ -305,7 +305,7 @@ describe('pages', () => {
                 });
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
-                expect(confirmationElements).toHaveLength(6);
+                expect(confirmationElements).toHaveLength(7);
             });
 
             it('should build confirmation elements for a period hybrid ticket with a single product', () => {
@@ -326,7 +326,7 @@ describe('pages', () => {
                 });
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
-                expect(confirmationElements).toHaveLength(8);
+                expect(confirmationElements).toHaveLength(9);
             });
 
             it('should build confirmation elements for a multi operator multiService ticket with multiple products', () => {
@@ -351,7 +351,7 @@ describe('pages', () => {
                 const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length;
                 const numberOfElementsDueToAdditionalOperators = mockAdditionalOperators.length;
                 const totalExpectedLength =
-                    4 + numberOfElementsDueToProducts + numberOfElementsDueToAdditionalOperators;
+                    5 + numberOfElementsDueToProducts + numberOfElementsDueToAdditionalOperators;
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);
@@ -378,7 +378,7 @@ describe('pages', () => {
                         },
                     },
                 });
-                const totalExpectedLength = 3;
+                const totalExpectedLength = 4;
                 const confirmationElements = buildFlatFareTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
                 expect(confirmationElements).toHaveLength(totalExpectedLength);

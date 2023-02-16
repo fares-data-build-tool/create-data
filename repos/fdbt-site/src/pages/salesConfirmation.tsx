@@ -1,17 +1,27 @@
 import React, { ReactElement } from 'react';
 import { isArray, upperFirst } from 'lodash';
 import moment from 'moment';
-import { SALES_OFFER_PACKAGES_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE, FARE_TYPE_ATTRIBUTE } from '../constants/attributes';
-import { NextPageContextWithSession, ProductWithSalesOfferPackages, ConfirmationElement } from '../interfaces';
+import {
+    SALES_OFFER_PACKAGES_ATTRIBUTE,
+    PRODUCT_DATE_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    CAPS_DEFINITION_ATTRIBUTE,
+} from '../constants/attributes';
+import { NextPageContextWithSession, ProductWithSalesOfferPackages, ConfirmationElement, Cap } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
 import ConfirmationTable from '../components/ConfirmationTable';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
-import { isProductWithSalesOfferPackages, isTicketPeriodAttributeWithErrors } from '../interfaces/typeGuards';
-import { formatSOPArray, getCsrfToken } from '../utils';
+import {
+    isFareType,
+    isProductWithSalesOfferPackages,
+    isTicketPeriodAttributeWithErrors,
+} from '../interfaces/typeGuards';
+import { fareTypeIsAllowedToAddACap, formatSOPArray, getAndValidateNoc, getCsrfToken } from '../utils';
 import { ticketFormatsList } from './managePurchaseMethod';
 import { GetServerSidePropsResult } from 'next';
 import { SalesOfferPackage } from '../interfaces/matchingJsonTypes';
+import { getCapByNocAndId, getCaps } from '../../src/data/auroradb';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
@@ -21,6 +31,9 @@ export interface SalesConfirmationProps {
     csrfToken: string;
     startDate: string;
     endDate: string | null;
+    fareType: string;
+    hasCaps: boolean;
+    selectedCap: (Cap & { id: number }) | null;
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -37,6 +50,9 @@ export const buildSalesConfirmationElements = (
     salesOfferPackages: SalesOfferPackage[] | ProductWithSalesOfferPackages[],
     startDateIn: string,
     endDateIn: string | null,
+    fareType: string,
+    hasCaps: boolean,
+    selectedCap?: (Cap & { id: number }) | null,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -69,6 +85,7 @@ export const buildSalesConfirmationElements = (
             });
         });
     }
+
     const startDate = moment(startDateIn).format('DD-MM-YYYY');
     const endDate = endDateIn && moment(endDateIn).format('DD-MM-YYYY');
 
@@ -84,6 +101,15 @@ export const buildSalesConfirmationElements = (
             href: 'productDateInformation',
         },
     );
+
+    if (fareTypeIsAllowedToAddACap(fareType) && hasCaps) {
+        confirmationElements.push({
+            name: 'Cap',
+            content: selectedCap?.capDetails.name || 'N/A',
+            href: 'selectCaps',
+        });
+    }
+
     return confirmationElements;
 };
 
@@ -92,6 +118,9 @@ const SalesConfirmation = ({
     salesOfferPackages,
     startDate,
     endDate,
+    fareType,
+    hasCaps,
+    selectedCap,
 }: SalesConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
         <CsrfForm action="/api/salesConfirmation" method="post" csrfToken={csrfToken}>
@@ -99,7 +128,14 @@ const SalesConfirmation = ({
                 <h1 className="govuk-heading-l">Check your sales information answers before submitting</h1>
                 <ConfirmationTable
                     header="Sales Information"
-                    confirmationElements={buildSalesConfirmationElements(salesOfferPackages, startDate, endDate)}
+                    confirmationElements={buildSalesConfirmationElements(
+                        salesOfferPackages,
+                        startDate,
+                        endDate,
+                        fareType,
+                        hasCaps,
+                        selectedCap,
+                    )}
                 />
                 <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
 
@@ -113,9 +149,9 @@ const SalesConfirmation = ({
     </TwoThirdsLayout>
 );
 
-export const getServerSideProps = (
+export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
-): GetServerSidePropsResult<SalesConfirmationProps> => {
+): Promise<GetServerSidePropsResult<SalesConfirmationProps>> => {
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
     if (!fareTypeAttribute) {
         return { redirect: { destination: '/home', permanent: false } };
@@ -123,11 +159,15 @@ export const getServerSideProps = (
     const csrfToken = getCsrfToken(ctx);
     const salesOfferPackageInfo = getSessionAttribute(ctx.req, SALES_OFFER_PACKAGES_ATTRIBUTE);
     const ticketDatingInfo = getRequiredSessionAttribute(ctx.req, PRODUCT_DATE_ATTRIBUTE);
+    const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
+    const nocCode = getAndValidateNoc(ctx);
+    const caps = await getCaps(nocCode);
 
     if (
         !salesOfferPackageInfo ||
         !isArray(salesOfferPackageInfo) ||
-        isTicketPeriodAttributeWithErrors(ticketDatingInfo)
+        isTicketPeriodAttributeWithErrors(ticketDatingInfo) ||
+        !isFareType(fareTypeAttribute)
     ) {
         throw new Error('User has reached confirmation page with incorrect sales info.');
     }
@@ -138,6 +178,12 @@ export const getServerSideProps = (
             startDate: ticketDatingInfo.startDate,
             endDate: ticketDatingInfo.endDate ?? null,
             csrfToken,
+            fareType: fareTypeAttribute.fareType,
+            hasCaps: caps.length > 0,
+            selectedCap:
+                !!capAttribute && !('errors' in capAttribute)
+                    ? ((await getCapByNocAndId(nocCode, capAttribute.id)) as Cap & { id: number })
+                    : null,
         },
     };
 };
