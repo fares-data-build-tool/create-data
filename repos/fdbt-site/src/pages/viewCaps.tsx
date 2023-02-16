@@ -6,8 +6,8 @@ import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import { getCapExpiry, getCaps, getFareDayEnd } from '../data/auroradb';
 import { CapExpiry, FromDb } from '../interfaces/matchingJsonTypes';
-import { updateSessionAttribute } from '../utils/sessions';
-import { CAP_EXPIRY_ATTRIBUTE, CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
+import { CAP_EXPIRY_ATTRIBUTE, CREATE_CAPS_ATTRIBUTE, VIEW_CAP_ERRORS } from '../constants/attributes';
 import { expiryHintText } from './selectCapExpiry';
 import DeleteConfirmationPopup from '../components/DeleteConfirmationPopup';
 import { extractGlobalSettingsReferer } from '../utils/globalSettings';
@@ -278,10 +278,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const capExpiry = dbCapExpiry ? (JSON.parse(dbCapExpiry) as CapExpiry).productValidity : '';
     const dbFareDayEnd = await getFareDayEnd(noc);
     const fareDayEnd = dbFareDayEnd ? dbFareDayEnd : '';
+    const viewCapErrors = getSessionAttribute(ctx.req, VIEW_CAP_ERRORS);
 
     const caps = await getCaps(noc);
     updateSessionAttribute(ctx.req, CAP_EXPIRY_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, CREATE_CAPS_ATTRIBUTE, undefined);
+    updateSessionAttribute(ctx.req, VIEW_CAP_ERRORS, undefined);
 
     return {
         props: {
@@ -289,7 +291,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             referer: extractGlobalSettingsReferer(ctx),
             capExpiry,
             fareDayEnd,
-            viewCapErrors: [],
+            viewCapErrors: viewCapErrors || [],
             csrfToken,
         },
     };

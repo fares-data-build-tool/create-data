@@ -11,7 +11,7 @@ import {
     GS_OPERATOR_GROUP_ATTRIBUTE,
     MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
-    VIEW_OPERATOR_GROUP,
+    VIEW_OPERATOR_GROUP_ERRORS,
 } from '../constants/attributes';
 import OperatorGroupCard from '../components/OperatorGroupCard';
 import ErrorSummary from '../components/ErrorSummary';
@@ -138,12 +138,12 @@ export const getServerSideProps = async (
     const csrfToken = getCsrfToken(ctx);
     const nationalOperatorCode = getAndValidateNoc(ctx);
     const operatorGroups = await getOperatorGroupsByNoc(nationalOperatorCode);
-    const viewOperatorGroup = getSessionAttribute(ctx.req, VIEW_OPERATOR_GROUP);
+    const viewOperatorGroup = getSessionAttribute(ctx.req, VIEW_OPERATOR_GROUP_ERRORS);
 
     updateSessionAttribute(ctx.req, GS_OPERATOR_GROUP_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE, undefined);
     updateSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE, undefined);
-    updateSessionAttribute(ctx.req, VIEW_OPERATOR_GROUP, undefined);
+    updateSessionAttribute(ctx.req, VIEW_OPERATOR_GROUP_ERRORS, undefined);
 
     return {
         props: {
