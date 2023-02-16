@@ -495,7 +495,6 @@ export const getMultipleServicesByDistanceTicketJson = (
             salesOfferPackages,
             pricingByDistance,
             productName: pricingByDistance.productName,
-            ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
         },
     ];
 
@@ -512,6 +511,7 @@ export const getMultipleServicesByDistanceTicketJson = (
         selectedServices,
         ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
+        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
     } as WithIds<FlatFareMultipleServices>;
 };
 
@@ -523,6 +523,8 @@ export const getMultipleServicesTicketJson = (
     const { selectedServices } = serviceListAttribute;
     let exemptStops: Stop[] = [];
     const exemptStopsAttribute = getSessionAttribute(req, STOPS_EXEMPTION_ATTRIBUTE);
+    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+
     if (!!exemptStopsAttribute && !isExemptStopsAttributeWithErrors(exemptStopsAttribute)) {
         exemptStops = exemptStopsAttribute.exemptStops;
     }
@@ -535,7 +537,6 @@ export const getMultipleServicesTicketJson = (
 
         const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
         const operatorGroupId = multiOpAttribute && multiOpAttribute.id ? multiOpAttribute.id : undefined;
-        const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
 
         return {
             ...basePeriodTicketAttributes,
@@ -553,6 +554,7 @@ export const getMultipleServicesTicketJson = (
         selectedServices,
         ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
+        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
     };
 };
 
