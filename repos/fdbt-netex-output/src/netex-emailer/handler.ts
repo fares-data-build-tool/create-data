@@ -133,7 +133,7 @@ export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
         await fs.writeFile(pathToSavedNetex, netexFile);
 
         mailOptions = setMailOptions(s3ObjectParams, pathToSavedNetex, matchingData);
-        if (process.env.NODE_ENV !== 'development' && process.env.EMAIL_SENDING_ENABLED == 'true') {
+        if (process.env.NODE_ENV !== 'development' && process.env.EMAIL_SENDING_ENABLED === 'true') {
             const mailTransporter = createMailTransporter();
             await mailTransporter.sendMail(mailOptions);
             console.info({
