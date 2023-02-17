@@ -108,7 +108,18 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const dataSourceAttribute = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
 
-    const services = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    const allServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+
+    const uniqueServiceList: string[] = [];
+    const services: ServiceType[] = [];
+
+    allServices.forEach((service) => {
+        const service_name = `${service.lineId}#${service.startDate}#${service.description}`;
+        if (!uniqueServiceList.includes(service_name)) {
+            services.push(service);
+            uniqueServiceList.push(service_name);
+        }
+    });
 
     if (services.length === 0) {
         if (ctx.res) {

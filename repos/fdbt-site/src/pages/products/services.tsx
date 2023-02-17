@@ -187,7 +187,18 @@ export const matchProductsToServices = (
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
     const noc = getAndValidateNoc(ctx);
     const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
-    const services: MyFaresService[] = await getBodsOrTndsServicesByNoc(noc, dataSource);
+    const allServices: MyFaresService[] = await getBodsOrTndsServicesByNoc(noc, dataSource);
+    const uniqueServiceList: string[] = [];
+    const services: MyFaresService[] = [];
+
+    allServices.forEach((service) => {
+        const service_name = `${service.lineId}#${service.startDate}#${service.endDate}`;
+        if (!uniqueServiceList.includes(service_name)) {
+            services.push(service);
+            uniqueServiceList.push(service_name);
+        }
+    });
+
     const products = await getPointToPointProducts(noc);
     const servicesAndProducts = matchProductsToServices(services, products);
 
