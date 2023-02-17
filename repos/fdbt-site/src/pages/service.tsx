@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
-import { ErrorInfo, NextPageContextWithSession, ServiceType, TxcSourceAttribute } from '../interfaces';
+import { ErrorInfo, MyFaresService, NextPageContextWithSession, TxcSourceAttribute } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import {
@@ -9,9 +9,9 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import { getFaresServicesByNocCodeAndDataSource } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken, getUniqueServices } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
@@ -24,7 +24,7 @@ const errorId = 'service';
 interface ServiceProps {
     operator: string;
     passengerType: string;
-    services: ServiceType[];
+    services: MyFaresService[];
     error: ErrorInfo[];
     dataSourceAttribute: TxcSourceAttribute;
     csrfToken: string;
@@ -108,18 +108,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const dataSourceAttribute = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
 
-    const allServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
-
-    const uniqueServiceList: string[] = [];
-    const services: ServiceType[] = [];
-
-    allServices.forEach((service) => {
-        const service_name = `${service.lineId}#${service.startDate}#${service.description}`;
-        if (!uniqueServiceList.includes(service_name)) {
-            services.push(service);
-            uniqueServiceList.push(service_name);
-        }
-    });
+    const services = getUniqueServices(
+        await getFaresServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source),
+    );
 
     if (services.length === 0) {
         if (ctx.res) {

@@ -23,6 +23,7 @@ import {
     NextPageContextWithSession,
     DocumentContextWithSession,
     ResponseWithLocals,
+    MyFaresService,
 } from '../interfaces';
 import dateFormat from 'dateformat';
 import { Stop, Ticket, TicketWithIds, ReturnTicket } from '../interfaces/matchingJsonTypes';
@@ -258,6 +259,25 @@ export const objectKeyMatchesExportNameExactly = (objectKey: string, exportName:
     return exportNamePart === exportName;
 };
 
-export const fareTypeIsAllowedToAddACap = (fareType: string): boolean => {
+export const fareTypeIsAllowedToAddACap = (fareType: string | undefined): boolean => {
     return !!fareType && ['single', 'return', 'flatFare'].includes(fareType);
+};
+
+export const getUniqueServices = (services: MyFaresService[]): MyFaresService[] => {
+    const uniqueServiceList: string[] = [];
+    const uniqueServices: MyFaresService[] = [];
+
+    if (!!services && services.length > 0) {
+        services.forEach((service) => {
+            const serviceName = `${service.lineId}#${service.startDate}#${service.endDate}`;
+            if (!uniqueServiceList.includes(serviceName)) {
+                uniqueServices.push(service);
+                uniqueServiceList.push(serviceName);
+            }
+        });
+
+        return uniqueServices;
+    }
+
+    return services;
 };
