@@ -264,6 +264,23 @@ export const fareTypeIsAllowedToAddACap = (fareType: string): boolean => {
     return !!fareType && ['single', 'return', 'flatFare'].includes(fareType);
 };
 
+export const getMyUniqueServices = (
+    services: { id?: string | number; lineId: string; startDate: string; endDate?: string }[],
+): string[] => {
+    const uniqueServiceList: string[] = [];
+    const uniqueServices: string[] = [];
+
+    services.forEach((service) => {
+        const serviceName = `${service.lineId}#${service.startDate}#${service.endDate ? service.endDate : ''}`;
+        if (!uniqueServiceList.includes(serviceName)) {
+            uniqueServices.push(String(service.id));
+            uniqueServiceList.push(serviceName);
+        }
+    });
+
+    return uniqueServices;
+};
+
 export const getUniqueServices = (services: ServiceType[]): ServiceType[] => {
     const uniqueServiceList: string[] = [];
     const uniqueServices: ServiceType[] = [];
