@@ -279,7 +279,7 @@ export const getUniqueServices = (services: ServiceType[]): ServiceType[] => {
     return uniqueServices;
 };
 
-export const getUniqueFaresServices = (services: MyFaresService[]): MyFaresService[] => {
+export const getUniqueMyFaresServices = (services: MyFaresService[]): MyFaresService[] => {
     const uniqueServiceList: string[] = [];
     const uniqueServices: MyFaresService[] = [];
 

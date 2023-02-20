@@ -10,6 +10,8 @@ import {
     objectKeyMatchesExportNameExactly,
     formatFailedFileNames,
     fareTypeIsAllowedToAddACap,
+    getUniqueServices,
+    getUniqueMyFaresServices,
 } from '../../src/utils';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
@@ -263,6 +265,122 @@ describe('index', () => {
         it.each(unCapFareTypes)('returns false if the fare type is other than %s', (fareType: string) => {
             const result = fareTypeIsAllowedToAddACap(fareType);
             expect(result).toBeFalsy();
+        });
+    });
+
+    describe('getUniqueServices', () => {
+        const mockServices = [
+            {
+                id: 11,
+                lineName: '123',
+                lineId: '3h3vb32ik',
+                startDate: '05/02/2020',
+                description: 'this bus service is 123',
+                origin: 'Manchester',
+                destination: 'Leeds',
+                serviceCode: 'NW_05_BLAC_123_1',
+            },
+            {
+                id: 12,
+                lineName: 'X1',
+                lineId: '3h3vb32ik',
+                startDate: '06/02/2020',
+                description: 'this bus service is X1',
+                origin: 'Edinburgh',
+                serviceCode: 'NW_05_BLAC_X1_1',
+            },
+            {
+                id: 13,
+                lineName: 'X1',
+                lineId: '3h3vb32ik',
+                startDate: '06/02/2020',
+                description: 'this bus service is of X1',
+                origin: 'Edinburgh',
+                serviceCode: 'NW_05_BLAC_X1_1',
+            },
+        ];
+
+        it('returns the unique services by lineid, startDate and endDate', () => {
+            const result = getUniqueServices(mockServices);
+            expect(result.length).toBe(2);
+            expect(result).toEqual([
+                {
+                    id: 11,
+                    lineName: '123',
+                    lineId: '3h3vb32ik',
+                    startDate: '05/02/2020',
+                    description: 'this bus service is 123',
+                    origin: 'Manchester',
+                    destination: 'Leeds',
+                    serviceCode: 'NW_05_BLAC_123_1',
+                },
+                {
+                    id: 12,
+                    lineName: 'X1',
+                    lineId: '3h3vb32ik',
+                    startDate: '06/02/2020',
+                    description: 'this bus service is X1',
+                    origin: 'Edinburgh',
+                    serviceCode: 'NW_05_BLAC_X1_1',
+                },
+            ]);
+        });
+    });
+
+    describe('getUniqueMyFaresServices', () => {
+        const mockServices = [
+            {
+                id: '1',
+                origin: 'Leeds',
+                destination: 'Manchester',
+                lineId: 'wefawefa',
+                lineName: '1',
+                startDate: '1/1/2021',
+                endDate: '16/9/2021',
+            },
+            {
+                id: '2',
+                origin: 'Leeds',
+                destination: 'Manchester',
+                lineId: 'wefawefa',
+                lineName: '1',
+                startDate: '1/1/2021',
+                endDate: '16/9/2021',
+            },
+            {
+                id: '3',
+                origin: 'Edinburgh',
+                destination: 'Manchester',
+                lineId: '3h3vb32ik',
+                lineName: 'X1',
+                startDate: '1/1/2021',
+                endDate: '16/9/2021',
+            },
+        ];
+
+        it('returns the unique my fares services by lineid, startDate and endDate', () => {
+            const result = getUniqueMyFaresServices(mockServices);
+            expect(result.length).toBe(2);
+            expect(result).toEqual([
+                {
+                    id: '1',
+                    origin: 'Leeds',
+                    destination: 'Manchester',
+                    lineId: 'wefawefa',
+                    lineName: '1',
+                    startDate: '1/1/2021',
+                    endDate: '16/9/2021',
+                },
+                {
+                    id: '3',
+                    origin: 'Edinburgh',
+                    destination: 'Manchester',
+                    lineId: '3h3vb32ik',
+                    lineName: 'X1',
+                    startDate: '1/1/2021',
+                    endDate: '16/9/2021',
+                },
+            ]);
         });
     });
 });
