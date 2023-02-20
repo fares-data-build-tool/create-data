@@ -215,6 +215,13 @@ export const getMatchingProps = async (
     // find journey patterns for direction (inbound or outbound)
     const journeyPatterns = service.journeyPatterns.filter((it) => it.direction === direction);
 
+    logger.info('', {
+        context: 'matching.ts',
+        message: 'journey patterns',
+        data: JSON.stringify(journeyPatterns),
+        length: journeyPatterns.length,
+    });
+
     // get an unordered list of stop points from journey patterns, then removing any duplicates on stopPointRef and sequence number
     const stops = journeyPatterns
         .flatMap((it) => it.orderedStopPoints)
@@ -225,12 +232,39 @@ export const getMatchingProps = async (
                 ) === index,
         );
 
+    logger.info('', {
+        context: 'matching.ts',
+        message: 'stops',
+        data: JSON.stringify(stops),
+        length: stops.length,
+    });
+
     // building a sorted master stop list according to sequence numbers if they're there and valid
     const sortedStopList = validateSequenceNumbers(stops)
         ? stops.sort((stop, other) => stop.sequenceNumber - other.sequenceNumber).map((it) => it.stopPointRef)
         : sortingWithoutSequenceNumbers(journeyPatterns);
 
+    logger.info('', {
+        context: 'matching.ts',
+        message: 'validateSequenceNumbers',
+        data: JSON.stringify(validateSequenceNumbers(stops)),
+    });
+
+    logger.info('', {
+        context: 'matching.ts',
+        message: 'sortedStopList',
+        data: JSON.stringify(sortedStopList),
+        length: sortedStopList.length,
+    });
+
     const masterStopList = removeDuplicateAdjacentStops(sortedStopList);
+
+    logger.info('', {
+        context: 'matching.ts',
+        message: 'masterStopList',
+        data: JSON.stringify(masterStopList),
+        length: masterStopList.length,
+    });
 
     if (masterStopList.length === 0) {
         throw new Error(
@@ -243,10 +277,24 @@ export const getMatchingProps = async (
         masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
     );
 
+    logger.info('', {
+        context: 'matching.ts',
+        message: 'naptanInfo',
+        data: JSON.stringify(naptanInfo),
+        length: naptanInfo.length,
+    });
+
     // removing any stops that aren't fully fleshed out
     const orderedStops = masterStopList
         .map((atco) => naptanInfo.find((s) => s.atcoCode === atco))
         .filter((stop: Stop | undefined): stop is Stop => stop !== undefined);
+
+    logger.info('', {
+        context: 'matching.ts',
+        message: 'orderedStops',
+        data: JSON.stringify(orderedStops),
+        length: orderedStops.length,
+    });
 
     return {
         props: {
