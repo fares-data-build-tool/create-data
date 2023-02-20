@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
-import { ErrorInfo, MyFaresService, NextPageContextWithSession, TxcSourceAttribute } from '../interfaces';
+import { ErrorInfo, ServiceType, NextPageContextWithSession, TxcSourceAttribute } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import {
@@ -9,7 +9,7 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { getFaresServicesByNocCodeAndDataSource } from '../data/auroradb';
+import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken, getUniqueServices } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -24,7 +24,7 @@ const errorId = 'service';
 interface ServiceProps {
     operator: string;
     passengerType: string;
-    services: MyFaresService[];
+    services: ServiceType[];
     error: ErrorInfo[];
     dataSourceAttribute: TxcSourceAttribute;
     csrfToken: string;
@@ -108,11 +108,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const dataSourceAttribute = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
 
-    const services = getUniqueServices(
-        await getFaresServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source),
-    );
+    const services: ServiceType[] = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    const servicesWithNoDuplicates = getUniqueServices(services);
 
-    if (services.length === 0) {
+    if (servicesWithNoDuplicates.length === 0) {
         if (ctx.res) {
             redirectTo(ctx.res, '/noServices');
         } else {
@@ -124,7 +123,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             operator: operatorAttribute.name,
             passengerType: passengerTypeAttribute.passengerType,
-            services,
+            services: servicesWithNoDuplicates,
             error,
             dataSourceAttribute,
             csrfToken,

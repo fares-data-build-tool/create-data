@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import Service, { getServerSideProps } from '../../src/pages/service';
-import { getFaresServicesByNocCodeAndDataSource } from '../../src/data/auroradb';
+import { getServicesByNocCodeAndDataSource } from '../../src/data/auroradb';
 import { getMockContext } from '../testData/mockData';
 import {
     MULTI_MODAL_ATTRIBUTE,
@@ -9,44 +9,45 @@ import {
     PASSENGER_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../../src/constants/attributes';
-import { MyFaresService } from '../../src/interfaces';
+import { ServiceType } from '../../src/interfaces';
 
 jest.mock('../../src/data/auroradb');
 
-const mockServices: MyFaresService[] = [
+const mockServices: ServiceType[] = [
     {
-        id: '11',
+        id: 11,
         lineName: '123',
         lineId: '3h3vb32ik',
         startDate: '05/02/2020',
+        description: 'this bus service is 123',
         origin: 'Manchester',
         destination: 'Leeds',
-        endDate: '25/02/2021',
+        serviceCode: 'NW_05_BLAC_123_1',
     },
     {
-        id: '12',
+        id: 12,
         lineName: 'X1',
         lineId: '3h3vb32ik',
         startDate: '06/02/2020',
+        description: 'this bus service is X1',
         origin: 'Edinburgh',
-        destination: 'Leeds',
-        endDate: '25/02/2021',
+        serviceCode: 'NW_05_BLAC_X1_1',
     },
     {
-        id: '13',
+        id: 13,
         lineName: 'Infinity Line',
         lineId: '3h3vb32ik',
         startDate: '07/02/2020',
-        origin: 'Walsall',
+        description: 'this bus service is Infinity Line',
         destination: 'London',
-        endDate: '25/02/2021',
+        serviceCode: 'WY_13_IWBT_07_1',
     },
 ];
 
 describe('pages', () => {
     describe('service', () => {
         beforeEach(() => {
-            (getFaresServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => mockServices);
+            (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => mockServices);
         });
         /*
          it('should render correctly when data source is tnds', () => {
@@ -148,8 +149,8 @@ describe('pages', () => {
 
             expect(operatorServices).toHaveLength(3);
             expect(operatorServices.first().text()).toBe('123 Manchester - Leeds (Start date 05/02/2020)');
-            expect(operatorServices.at(1).text()).toBe('X1 Edinburgh - Leeds (Start date 06/02/2020)');
-            expect(operatorServices.at(2).text()).toBe('Infinity Line Walsall - London (Start date 07/02/2020)');
+            expect(operatorServices.at(1).text()).toBe('X1 Edinburgh - N/A (Start date 06/02/2020)');
+            expect(operatorServices.at(2).text()).toBe('Infinity Line N/A - London (Start date 07/02/2020)');
         });
 
         it('returns operator value and list of services for the multi modal operator if multi modal attribute is present in session', async () => {
@@ -174,32 +175,32 @@ describe('pages', () => {
                     passengerType: 'Adult',
                     services: [
                         {
-                            id: '11',
+                            id: 11,
                             lineName: '123',
                             lineId: '3h3vb32ik',
                             startDate: '05/02/2020',
+                            description: 'this bus service is 123',
                             origin: 'Manchester',
                             destination: 'Leeds',
-                            endDate: '25/02/2021',
+                            serviceCode: 'NW_05_BLAC_123_1',
                         },
                         {
-                            id: '12',
+                            id: 12,
                             lineName: 'X1',
                             lineId: '3h3vb32ik',
                             startDate: '06/02/2020',
-                            destination: 'Leeds',
+                            description: 'this bus service is X1',
                             origin: 'Edinburgh',
-                            endDate: '25/02/2021',
+                            serviceCode: 'NW_05_BLAC_X1_1',
                         },
                         {
-                            id: '13',
+                            id: 13,
                             lineName: 'Infinity Line',
                             lineId: '3h3vb32ik',
                             startDate: '07/02/2020',
+                            description: 'this bus service is Infinity Line',
                             destination: 'London',
-                            origin: 'Walsall',
-
-                            endDate: '25/02/2021',
+                            serviceCode: 'WY_13_IWBT_07_1',
                         },
                     ],
                     dataSourceAttribute: {
@@ -230,31 +231,32 @@ describe('pages', () => {
                     passengerType: 'Adult',
                     services: [
                         {
-                            id: '11',
+                            id: 11,
                             lineName: '123',
                             lineId: '3h3vb32ik',
                             startDate: '05/02/2020',
+                            description: 'this bus service is 123',
                             origin: 'Manchester',
                             destination: 'Leeds',
-                            endDate: '25/02/2021',
+                            serviceCode: 'NW_05_BLAC_123_1',
                         },
                         {
-                            id: '12',
+                            id: 12,
                             lineName: 'X1',
                             lineId: '3h3vb32ik',
                             startDate: '06/02/2020',
+                            description: 'this bus service is X1',
                             origin: 'Edinburgh',
-                            destination: 'Leeds',
-                            endDate: '25/02/2021',
+                            serviceCode: 'NW_05_BLAC_X1_1',
                         },
                         {
-                            id: '13',
+                            id: 13,
                             lineName: 'Infinity Line',
                             lineId: '3h3vb32ik',
                             startDate: '07/02/2020',
-                            origin: 'Walsall',
+                            description: 'this bus service is Infinity Line',
                             destination: 'London',
-                            endDate: '25/02/2021',
+                            serviceCode: 'WY_13_IWBT_07_1',
                         },
                     ],
                     dataSourceAttribute: {
@@ -268,7 +270,8 @@ describe('pages', () => {
         });
 
         it('throws error if no services can be found', async () => {
-            (getFaresServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => []);
+            (getServicesByNocCodeAndDataSource as jest.Mock).mockImplementation(() => []);
+
             const mockWriteHeadFn = jest.fn();
             const mockEndFn = jest.fn();
 

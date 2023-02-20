@@ -63,14 +63,14 @@ exports[`pages service should render correctly when data source is bods 1`] = `
             key="12"
             value="12"
           >
-            X1 Edinburgh - Leeds (Start date 06/02/2020)
+            X1 Edinburgh - N/A (Start date 06/02/2020)
           </option>
           <option
             className="service-option"
             key="13"
             value="13"
           >
-            Infinity Line Walsall - London (Start date 07/02/2020)
+            Infinity Line N/A - London (Start date 07/02/2020)
           </option>
         </select>
       </FormElementWrapper>

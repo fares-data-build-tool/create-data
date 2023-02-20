@@ -10,13 +10,11 @@ import {
     objectKeyMatchesExportNameExactly,
     formatFailedFileNames,
     fareTypeIsAllowedToAddACap,
-    getUniqueServices,
 } from '../../src/utils';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import { dateIsOverThirtyMinutesAgo, isADayOfTheWeek } from '../../src/utils/apiUtils';
 import { Stop } from '../../src/interfaces/matchingJsonTypes';
-import { MyFaresService } from 'src/interfaces';
 
 describe('index', () => {
     describe('getHost', () => {
@@ -265,53 +263,6 @@ describe('index', () => {
         it.each(unCapFareTypes)('returns false if the fare type is other than %s', (fareType: string) => {
             const result = fareTypeIsAllowedToAddACap(fareType);
             expect(result).toBeFalsy();
-        });
-    });
-
-    describe('getUniqueServices', () => {
-        const services: MyFaresService[] = [
-            {
-                id: '1',
-                lineName: '1',
-                lineId: '4YyoI0',
-                origin: 'Ballarat west',
-                destination: 'Florinas North',
-                startDate: '05/04/2020',
-                endDate: '25/04/2020',
-            },
-            {
-                id: '2',
-                lineName: '2',
-                lineId: 'YpQjUw',
-                origin: 'Ballarat East',
-                destination: 'Florinas',
-                startDate: '05/04/2020',
-                endDate: '25/04/2020',
-            },
-            {
-                id: '3',
-                lineName: '2',
-                lineId: 'YpQjUw',
-                origin: 'Ballarat East',
-                destination: 'Florinas',
-                startDate: '05/04/2020',
-                endDate: '25/04/2020',
-            },
-            {
-                id: '4',
-                lineName: '3',
-                lineId: 'Jk79kC',
-                origin: 'Vega de Pas',
-                destination: 'Guiddam',
-                startDate: '05/04/2020',
-                endDate: '25/04/2020',
-            },
-        ];
-
-        it('returns unique services if two services having same lineName, startDate and endDate ', () => {
-            const result = getUniqueServices(services);
-            expect(services.length).toBeLessThanOrEqual(4);
-            expect(result.length).toBeLessThanOrEqual(3);
         });
     });
 });

@@ -7,7 +7,7 @@ import {
 } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
 import { getPointToPointProducts, getBodsOrTndsServicesByNoc } from '../../data/auroradb';
-import { getAndValidateNoc, getUniqueServices } from '../../utils';
+import { getAndValidateNoc, getUniqueFaresServices } from '../../utils';
 import moment from 'moment';
 import { MyFaresProduct } from '../../interfaces/dbTypes';
 import { getSessionAttribute } from '../../utils/sessions';
@@ -187,10 +187,11 @@ export const matchProductsToServices = (
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ServicesProps }> => {
     const noc = getAndValidateNoc(ctx);
     const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
-    const services: MyFaresService[] = getUniqueServices(await getBodsOrTndsServicesByNoc(noc, dataSource));
+    const services: MyFaresService[] = await getBodsOrTndsServicesByNoc(noc, dataSource);
+    const servicesWithNoDuplicates = getUniqueFaresServices(services);
 
     const products = await getPointToPointProducts(noc);
-    const servicesAndProducts = matchProductsToServices(services, products);
+    const servicesAndProducts = matchProductsToServices(servicesWithNoDuplicates, products);
 
     return { props: { servicesAndProducts } };
 };

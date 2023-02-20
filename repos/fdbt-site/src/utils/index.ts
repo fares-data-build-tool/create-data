@@ -24,6 +24,7 @@ import {
     DocumentContextWithSession,
     ResponseWithLocals,
     MyFaresService,
+    ServiceType,
 } from '../interfaces';
 import dateFormat from 'dateformat';
 import { Stop, Ticket, TicketWithIds, ReturnTicket } from '../interfaces/matchingJsonTypes';
@@ -259,25 +260,36 @@ export const objectKeyMatchesExportNameExactly = (objectKey: string, exportName:
     return exportNamePart === exportName;
 };
 
-export const fareTypeIsAllowedToAddACap = (fareType: string | undefined): boolean => {
+export const fareTypeIsAllowedToAddACap = (fareType: string): boolean => {
     return !!fareType && ['single', 'return', 'flatFare'].includes(fareType);
 };
 
-export const getUniqueServices = (services: MyFaresService[]): MyFaresService[] => {
+export const getUniqueServices = (services: ServiceType[]): ServiceType[] => {
+    const uniqueServiceList: string[] = [];
+    const uniqueServices: ServiceType[] = [];
+
+    services.forEach((service) => {
+        const serviceName = `${service.lineId}#${service.startDate}#${service.endDate ? service.endDate : ''}`;
+        if (!uniqueServiceList.includes(serviceName)) {
+            uniqueServices.push(service);
+            uniqueServiceList.push(serviceName);
+        }
+    });
+
+    return uniqueServices;
+};
+
+export const getUniqueFaresServices = (services: MyFaresService[]): MyFaresService[] => {
     const uniqueServiceList: string[] = [];
     const uniqueServices: MyFaresService[] = [];
 
-    if (!!services && services.length > 0) {
-        services.forEach((service) => {
-            const serviceName = `${service.lineId}#${service.startDate}#${service.endDate}`;
-            if (!uniqueServiceList.includes(serviceName)) {
-                uniqueServices.push(service);
-                uniqueServiceList.push(serviceName);
-            }
-        });
+    services.forEach((service) => {
+        const serviceName = `${service.lineId}#${service.startDate}#${service.endDate ? service.endDate : ''}`;
+        if (!uniqueServiceList.includes(serviceName)) {
+            uniqueServices.push(service);
+            uniqueServiceList.push(serviceName);
+        }
+    });
 
-        return uniqueServices;
-    }
-
-    return services;
+    return uniqueServices;
 };
