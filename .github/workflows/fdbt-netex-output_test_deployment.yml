@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'develop'
+    - 'fix/ubuntu-image-update'
     paths:
     - repos/fdbt-netex-output/**
   workflow_dispatch:
@@ -81,6 +81,13 @@ jobs:
       run: |
         ldd --version
         echo "Deploying..."
+        wget -c https://ftp.gnu.org/gnu/glibc/glibc-2.29.tar.gz
+        tar -zxvf glibc-2.29.tar.gz
+        cd glibc-2.29
+        ./configure --prefix=/opt/glibc
+        make 
+        make install
+        cd ..
         sudo apt-get install -y nodejs
         sudo npm i -g serverless@3.22.0
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
