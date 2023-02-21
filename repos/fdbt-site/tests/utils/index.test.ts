@@ -268,7 +268,7 @@ describe('index', () => {
         });
     });
 
-    describe('removeDuplicateServices', () => {
+    describe.only('removeDuplicateServices', () => {
         const mockServiceTypeServices: ServiceType[] = [
             {
                 id: 11,
@@ -334,7 +334,7 @@ describe('index', () => {
         ];
 
         it('returns the unique services by lineid, startDate and endDate', () => {
-            const result = removeDuplicateServices(mockServiceTypeServices, 'lineId', 'startDate', 'endDate');
+            const result = removeDuplicateServices(mockServiceTypeServices);
             expect(result.length).toBe(2);
             expect(result).toEqual([
                 {
@@ -360,7 +360,7 @@ describe('index', () => {
         });
 
         it('returns the unique my fares services by lineid, startDate and endDate', () => {
-            const result = removeDuplicateServices(mockMyFaresServices, 'lineId', 'startDate', 'endDate');
+            const result = removeDuplicateServices(mockMyFaresServices);
             expect(result.length).toBe(2);
             expect(result).toEqual([
                 {

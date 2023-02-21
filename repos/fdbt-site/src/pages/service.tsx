@@ -109,7 +109,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const dataSourceAttribute = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
 
     const services: ServiceType[] = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
-    const servicesWithNoDuplicates = removeDuplicateServices<ServiceType>(services, 'lineId', 'startDate', 'endDate');
+    const servicesWithNoDuplicates = removeDuplicateServices<ServiceType>(services);
 
     if (servicesWithNoDuplicates.length === 0) {
         if (ctx.res) {

@@ -188,12 +188,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
     const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
     const services: MyFaresService[] = await getBodsOrTndsServicesByNoc(noc, dataSource);
-    const servicesWithNoDuplicates = removeDuplicateServices<MyFaresService>(
-        services,
-        'lineId',
-        'startDate',
-        'endDate',
-    );
+    const servicesWithNoDuplicates = removeDuplicateServices<MyFaresService>(services);
 
     const products = await getPointToPointProducts(noc);
     const servicesAndProducts = matchProductsToServices(servicesWithNoDuplicates, products);
