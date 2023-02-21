@@ -16,9 +16,10 @@ import {
     getMatchingProps,
     removeDuplicateAdjacentStops,
     sortingWithoutSequenceNumbers,
+    validateSequenceNumbers,
 } from '../../../src/utils/apiUtils/matching';
 import * as s3 from '../../../src/data/s3';
-import { RawJourneyPattern } from '../../../src/interfaces/dbTypes';
+import { RawJourneyPattern, StopPoint } from '../../../src/interfaces/dbTypes';
 
 describe('matching', () => {
     describe('getMatchingProps', () => {
@@ -997,5 +998,82 @@ describe('matching', () => {
                 expect(result).toEqual(['stop1', 'stop2', 'stop3', 'stop4', 'stop5', 'stop6', 'stop7', 'stop8']);
             });
         });
+    });
+});
+
+describe('validateSequenceNumbers', () => {
+    const stopPoints: StopPoint[] = [
+        {
+            stopPointRef: '390040774',
+            commonName: 'The Ford',
+            sequenceNumber: 0,
+        },
+        {
+            stopPointRef: '390040606',
+            commonName: 'Station Road West',
+            sequenceNumber: 1,
+        },
+        {
+            stopPointRef: '390040564',
+            commonName: 'Railway Station',
+            sequenceNumber: 2,
+        },
+        {
+            stopPointRef: '390040587',
+            commonName: 'The Little Wellington',
+            sequenceNumber: 3,
+        },
+        {
+            stopPointRef: '390040567',
+            commonName: 'Laburnham Cottage',
+            sequenceNumber: 4,
+        },
+        {
+            stopPointRef: '390040568',
+            commonName: 'Devon Road',
+            sequenceNumber: 5,
+        },
+        {
+            stopPointRef: '390040580',
+            commonName: 'Birch Close',
+            sequenceNumber: 6,
+        },
+        {
+            stopPointRef: '390040578',
+            commonName: 'Reeds Way',
+            sequenceNumber: 7,
+        },
+        {
+            stopPointRef: '390040576',
+            commonName: 'Trinity Walk',
+            sequenceNumber: 8,
+        },
+        {
+            stopPointRef: '390040491',
+            commonName: 'The Street',
+            sequenceNumber: 9,
+        },
+        {
+            stopPointRef: '390041133',
+            commonName: 'Post Box',
+            sequenceNumber: 10,
+        },
+    ];
+
+    it('doesnt return false if there is a sequence number of zero', () => {
+        expect(validateSequenceNumbers(stopPoints)).toBeTruthy();
+    });
+
+    it('returns false if two stops share the same sequence number', () => {
+        const input = [
+            ...stopPoints,
+            {
+                stopPointRef: '39004133133',
+                commonName: 'Post Office',
+                sequenceNumber: 10,
+            },
+        ];
+
+        expect(validateSequenceNumbers(input)).toBeFalsy();
     });
 });
