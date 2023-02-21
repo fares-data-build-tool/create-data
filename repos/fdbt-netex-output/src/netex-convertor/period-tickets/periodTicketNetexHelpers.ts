@@ -36,7 +36,6 @@ import {
     BaseSchemeOperatorTicket,
     Stop,
     Ticket,
-    TopographicProjectionRef,
     User,
     OperatorWithExpandedAddress,
     SchemeOperatorWithExpandedAddress,
@@ -88,15 +87,8 @@ export const getBaseSchemeOperatorInfo = async (
 export const getScheduledStopPointsList = (stops: Stop[]): ScheduledStopPoint[] =>
     stops.map((stop: Stop) => ({
         versionRef: 'EXTERNAL',
-        ref: `naptStop:${stop.naptanCode}`,
+        ref: `atco:${stop.atcoCode}`,
         $t: `${stop.stopName}, ${stop.street}, ${stop.localityName}`,
-    }));
-
-export const getTopographicProjectionRefList = (stops: Stop[]): TopographicProjectionRef[] =>
-    stops.map((stop: Stop) => ({
-        versionRef: 'nptg:EXTERNAL',
-        ref: `nptgLocality:${stop.localityCode}`,
-        $t: `${stop.street}, ${stop.localityName}, ${stop.parentLocalityName}`,
     }));
 
 const getFullServicesList = (

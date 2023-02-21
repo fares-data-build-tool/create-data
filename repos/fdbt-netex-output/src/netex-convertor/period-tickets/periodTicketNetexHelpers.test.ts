@@ -238,24 +238,6 @@ describe('periodTicketNetexHelpers', () => {
         });
     });
 
-    describe('getTopographicProjectionRefList', () => {
-        it('returns a list of NeTEx topographic projections given a list of stops', () => {
-            const topographicProjectionsList = netexHelpers.getTopographicProjectionRefList(stops);
-            const expectedLength = stops.length;
-
-            expect(topographicProjectionsList).toHaveLength(expectedLength);
-            topographicProjectionsList.forEach(topographicProjection => {
-                expect(topographicProjection).toEqual(
-                    expect.objectContaining({
-                        versionRef: 'nptg:EXTERNAL',
-                        ref: expect.any(String),
-                        $t: expect.any(String),
-                    }),
-                );
-            });
-        });
-    });
-
     describe('getLinesList', () => {
         it('returns a list of NeTEx lines given periodMultipleServicesTicket matching data', () => {
             const expectedLineSchema = {
