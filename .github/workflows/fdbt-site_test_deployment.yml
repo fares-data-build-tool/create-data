@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'fix/testing_stops'
+    - 'develop'
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:

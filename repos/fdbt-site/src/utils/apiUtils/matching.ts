@@ -232,19 +232,6 @@ export const getMatchingProps = async (
         ? stops.sort((stop, other) => stop.sequenceNumber - other.sequenceNumber).map((it) => it.stopPointRef)
         : sortingWithoutSequenceNumbers(journeyPatterns);
 
-    logger.info('', {
-        context: 'matching.ts',
-        message: 'validateSequenceNumbers',
-        data: JSON.stringify(validateSequenceNumbers(stops)),
-    });
-
-    logger.info('', {
-        context: 'matching.ts',
-        message: 'sortedStopList',
-        data: JSON.stringify(sortedStopList),
-        length: sortedStopList.length,
-    });
-
     const masterStopList = removeDuplicateAdjacentStops(sortedStopList);
 
     if (masterStopList.length === 0) {
