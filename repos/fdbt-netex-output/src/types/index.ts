@@ -278,12 +278,6 @@ export interface ScheduledStopPoint {
     $t: string;
 }
 
-export interface TopographicProjectionRef {
-    versionRef: string;
-    ref: string;
-    $t: string;
-}
-
 export interface Line {
     version: string;
     id: string;
