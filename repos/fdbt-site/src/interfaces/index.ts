@@ -597,6 +597,7 @@ export interface ServiceType {
     serviceCode: string;
     dataSource?: string;
     mode?: string;
+    endDate?: string;
 }
 export interface ServiceCount {
     serviceCount: number;
