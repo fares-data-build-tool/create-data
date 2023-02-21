@@ -10,8 +10,7 @@ import {
     objectKeyMatchesExportNameExactly,
     formatFailedFileNames,
     fareTypeIsAllowedToAddACap,
-    getUniqueServices,
-    getUniqueMyFaresServices,
+    removeDuplicateServices,
 } from '../../src/utils';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
@@ -268,7 +267,7 @@ describe('index', () => {
         });
     });
 
-    describe('getUniqueServices', () => {
+    describe('removeDuplicateServices', () => {
         const mockServices = [
             {
                 id: 11,
@@ -279,6 +278,7 @@ describe('index', () => {
                 origin: 'Manchester',
                 destination: 'Leeds',
                 serviceCode: 'NW_05_BLAC_123_1',
+                endDate: undefined,
             },
             {
                 id: 12,
@@ -288,6 +288,7 @@ describe('index', () => {
                 description: 'this bus service is X1',
                 origin: 'Edinburgh',
                 serviceCode: 'NW_05_BLAC_X1_1',
+                endDate: undefined,
             },
             {
                 id: 13,
@@ -297,11 +298,12 @@ describe('index', () => {
                 description: 'this bus service is of X1',
                 origin: 'Edinburgh',
                 serviceCode: 'NW_05_BLAC_X1_1',
+                endDate: undefined,
             },
         ];
 
         it('returns the unique services by lineid, startDate and endDate', () => {
-            const result = getUniqueServices(mockServices);
+            const result = removeDuplicateServices(mockServices, 'lineId', 'startDate', 'endDate');
             expect(result.length).toBe(2);
             expect(result).toEqual([
                 {
@@ -325,10 +327,8 @@ describe('index', () => {
                 },
             ]);
         });
-    });
 
-    describe('getUniqueMyFaresServices', () => {
-        const mockServices = [
+        const mockFaresServices = [
             {
                 id: '1',
                 origin: 'Leeds',
@@ -359,7 +359,7 @@ describe('index', () => {
         ];
 
         it('returns the unique my fares services by lineid, startDate and endDate', () => {
-            const result = getUniqueMyFaresServices(mockServices);
+            const result = removeDuplicateServices(mockFaresServices, 'lineId', 'startDate', 'endDate');
             expect(result.length).toBe(2);
             expect(result).toEqual([
                 {

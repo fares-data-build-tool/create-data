@@ -23,8 +23,6 @@ import {
     NextPageContextWithSession,
     DocumentContextWithSession,
     ResponseWithLocals,
-    MyFaresService,
-    ServiceType,
 } from '../interfaces';
 import dateFormat from 'dateformat';
 import { Stop, Ticket, TicketWithIds, ReturnTicket } from '../interfaces/matchingJsonTypes';
@@ -280,33 +278,15 @@ export const getMyUniqueServices = (
 
     return uniqueServices;
 };
-
-export const getUniqueServices = (services: ServiceType[]): ServiceType[] => {
-    const uniqueServiceList: string[] = [];
-    const uniqueServices: ServiceType[] = [];
-
-    services.forEach((service) => {
-        const serviceName = `${service.lineId}#${service.startDate}#${service.endDate ? service.endDate : ''}`;
-        if (!uniqueServiceList.includes(serviceName)) {
-            uniqueServices.push(service);
-            uniqueServiceList.push(serviceName);
-        }
-    });
-
-    return uniqueServices;
-};
-
-export const getUniqueMyFaresServices = (services: MyFaresService[]): MyFaresService[] => {
-    const uniqueServiceList: string[] = [];
-    const uniqueServices: MyFaresService[] = [];
-
-    services.forEach((service) => {
-        const serviceName = `${service.lineId}#${service.startDate}#${service.endDate ? service.endDate : ''}`;
-        if (!uniqueServiceList.includes(serviceName)) {
-            uniqueServices.push(service);
-            uniqueServiceList.push(serviceName);
-        }
-    });
-
-    return uniqueServices;
-};
+export const removeDuplicateServices = <T>(array: T[], lineId: keyof T, startDate: keyof T, endDate?: keyof T): T[] =>
+    array.filter(
+        (value, index, self) =>
+            index ===
+            self.findIndex(
+                (service) =>
+                    service[lineId] === value[lineId] &&
+                    service[startDate] === value[startDate] &&
+                    !!endDate &&
+                    service[endDate] === value[endDate],
+            ),
+    );

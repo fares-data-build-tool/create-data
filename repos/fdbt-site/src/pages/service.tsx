@@ -11,7 +11,7 @@ import {
 } from '../constants/attributes';
 import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
-import { getAndValidateNoc, getCsrfToken, getMyUniqueServices } from '../utils';
+import { getAndValidateNoc, getCsrfToken, removeDuplicateServices } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
@@ -109,10 +109,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const dataSourceAttribute = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
 
     const services: ServiceType[] = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
-    const unqiueServiceIds = getMyUniqueServices(services);
-    const servicesWithNoDuplicates = services.filter(
-        (service) => service.id && unqiueServiceIds.includes(service.id.toString()),
-    );
+    const servicesWithNoDuplicates = removeDuplicateServices<ServiceType>(services, 'lineId', 'startDate', 'endDate');
 
     if (servicesWithNoDuplicates.length === 0) {
         if (ctx.res) {
