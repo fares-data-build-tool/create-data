@@ -268,7 +268,7 @@ describe('index', () => {
         });
     });
 
-    describe.only('removeDuplicateServices', () => {
+    describe('removeDuplicateServices', () => {
         const mockServiceTypeServices: ServiceType[] = [
             {
                 id: 11,
