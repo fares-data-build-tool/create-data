@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
-import { ErrorInfo, NextPageContextWithSession, ServiceType, TxcSourceAttribute } from '../interfaces';
+import { ErrorInfo, ServiceType, NextPageContextWithSession, TxcSourceAttribute } from '../interfaces';
 import FormElementWrapper from '../components/FormElementWrapper';
 import TwoThirdsLayout from '../layout/Layout';
 import {
@@ -11,7 +11,7 @@ import {
 } from '../constants/attributes';
 import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken, removeDuplicateServices } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
@@ -108,9 +108,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const dataSourceAttribute = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
 
-    const services = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    const services: ServiceType[] = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    const servicesWithNoDuplicates = removeDuplicateServices<ServiceType>(services);
 
-    if (services.length === 0) {
+    if (servicesWithNoDuplicates.length === 0) {
         if (ctx.res) {
             redirectTo(ctx.res, '/noServices');
         } else {
@@ -122,7 +123,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             operator: operatorAttribute.name,
             passengerType: passengerTypeAttribute.passengerType,
-            services,
+            services: servicesWithNoDuplicates,
             error,
             dataSourceAttribute,
             csrfToken,

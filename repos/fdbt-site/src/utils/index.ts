@@ -261,3 +261,20 @@ export const objectKeyMatchesExportNameExactly = (objectKey: string, exportName:
 export const fareTypeIsAllowedToAddACap = (fareType: string): boolean => {
     return !!fareType && ['single', 'return', 'flatFare'].includes(fareType);
 };
+
+export const removeDuplicateServices = <T>(services: T[]): T[] => {
+    const lineId = 'lineId' as keyof T;
+    const startDate = 'startDate' as keyof T;
+    const endDate = 'endDate' as keyof T;
+
+    return services.filter(
+        (value, index, self) =>
+            index ===
+            self.findIndex(
+                (service) =>
+                    service[lineId] === value[lineId] &&
+                    service[startDate] === value[startDate] &&
+                    service[endDate] === value[endDate],
+            ),
+    );
+};
