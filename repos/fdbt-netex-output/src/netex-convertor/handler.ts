@@ -180,7 +180,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
 
             const carnet = ticket.carnet ? 'carnet:' : '';
 
-            console.info(`NeTEx generation complete for type: ${scheme}${carnet}${type}`);
+            console.info(`NeTEx generation complete for type ${scheme}${carnet}${type}`);
         }
     } catch (error) {
         console.error(error);
