@@ -48,6 +48,8 @@ jobs:
       run: |
         echo "Deploying..."
         curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+        sudo apt update
+        sudo apt install glibc-source -y
         sudo apt-get install -y nodejs
         sudo npm i -g serverless@3.22.0
         cd src/netex-validator
@@ -81,13 +83,7 @@ jobs:
       run: |
         ldd --version
         echo "Deploying..."
-        wget -c https://ftp.gnu.org/gnu/glibc/glibc-2.29.tar.gz
-        tar -zxvf glibc-2.29.tar.gz
-        cd glibc-2.29
-        ./configure --prefix=/opt/glibc
-        make 
-        make install
-        cd ..
+        docker run --rm -v "$PWD":/var/task lambci/lambda:build-nodejs12.x npm install libxmljs
         sudo apt-get install -y nodejs
         sudo npm i -g serverless@3.22.0
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
