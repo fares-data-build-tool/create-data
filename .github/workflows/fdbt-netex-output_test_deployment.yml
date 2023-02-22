@@ -67,7 +67,7 @@ jobs:
         echo "Starting build"
         npm ci
         echo "Installing libxmljs"
-        docker run --rm -v "$PWD":/var/task lambci/lambda:build-nodejs12.x npm install libxmljs
+        docker run --rm -v "$PWD/..":/var/task lambci/lambda:build-nodejs12.x npm install --prefix fdbt-netex-output libxmljs
         echo " ci finished"
         npm run build
 
