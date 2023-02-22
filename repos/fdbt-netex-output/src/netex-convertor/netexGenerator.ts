@@ -35,7 +35,6 @@ import {
     getSalesOfferPackageList,
     getScheduledStopPointsList,
     getTimeIntervals,
-    getTopographicProjectionRefList,
 } from './period-tickets/periodTicketNetexHelpers';
 import {
     buildSalesOfferPackages,
@@ -366,7 +365,6 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                         version: 'fxc:v1.0',
                     },
                 },
-                projections: { TopographicProjectionRef: getTopographicProjectionRefList(ticket.exemptStops) },
                 ZoneTopology: { $t: 'nested' },
                 ScopingMethod: { $t: 'explicitStops' },
             };
@@ -393,7 +391,6 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                         version: 'fxc:v1.0',
                     },
                 },
-                projections: { TopographicProjectionRef: getTopographicProjectionRefList(ticket.stops) },
                 ZoneTopology: { $t: 'nested' },
                 ScopingMethod: { $t: 'explicitStops' },
             };

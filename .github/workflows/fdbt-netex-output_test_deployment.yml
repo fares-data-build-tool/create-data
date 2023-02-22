@@ -48,6 +48,8 @@ jobs:
       run: |
         echo "Deploying..."
         curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+        sudo apt update
+        sudo apt install glibc-source -y
         sudo apt-get install -y nodejs
         sudo npm i -g serverless@3.22.0
         cd src/netex-validator
@@ -81,6 +83,8 @@ jobs:
       run: |
         ldd --version
         echo "Deploying..."
+        sudo apt update
+        sudo apt install glibc-source -y
         sudo apt-get install -y nodejs
         sudo npm i -g serverless@3.22.0
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
