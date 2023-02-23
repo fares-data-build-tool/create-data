@@ -12,6 +12,8 @@ import {
 import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 import logger from '../../utils/logger';
 import { difference } from 'lodash';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { SELECT_EXPORTS_ATTRIBUTE } from '../../constants/attributes';
 
 export interface Export {
     name: string;
@@ -27,6 +29,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const noc = getAndValidateNoc(req, res);
 
         const exportNames = await getS3Exports(noc);
+        const selectExportAttribute = getSessionAttribute(req, SELECT_EXPORTS_ATTRIBUTE);
+        const currTime = new Date().getTime() / 1000;
+
+        if (!!selectExportAttribute && currTime - Number(selectExportAttribute.exportStarted) > 5) {
+            updateSessionAttribute(req, SELECT_EXPORTS_ATTRIBUTE, undefined);
+        }
 
         const exports: Export[] = await Promise.all(
             exportNames.map(async (name) => {

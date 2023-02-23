@@ -80,6 +80,7 @@ import {
     CAPS_DEFINITION_ATTRIBUTE,
     STOPS_EXEMPTION_ATTRIBUTE,
     VIEW_CAP_ERRORS,
+    SELECT_EXPORTS_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -251,6 +252,7 @@ export interface SessionAttributeTypes {
     [CAPS_DEFINITION_ATTRIBUTE]: CapSelection | { errors: ErrorInfo[] };
     [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
     [STOPS_EXEMPTION_ATTRIBUTE]: ExemptedStopsAttribute | { errors: ErrorInfo[] };
+    [SELECT_EXPORTS_ATTRIBUTE]: { exportStarted: string };
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
