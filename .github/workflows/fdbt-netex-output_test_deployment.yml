@@ -16,7 +16,7 @@ jobs:
 
   fdbt-netex-output_deploy_to_test:
     name: 'fdbt-netex-output_test'
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     env:
       WORKSPACE: test
     environment:
@@ -30,6 +30,15 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
+
+    - name: Install glibc 2.29
+      run: |
+        wget -c https://ftp.gnu.org/gnu/glibc/glibc-2.29.tar.gz
+        tar -zxvf glibc-2.29.tar.gz
+        cd glibc-2.29
+        ./configure --prefix=/opt/glibc
+        make 
+        make install
       
     - name: audit-netex-validator
       run: |
@@ -48,8 +57,6 @@ jobs:
       run: |
         echo "Deploying..."
         curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-        sudo apt update
-        sudo apt install glibc-source -y
         sudo apt-get install -y nodejs
         sudo npm i -g serverless@3.22.0
         cd src/netex-validator
@@ -83,8 +90,6 @@ jobs:
       run: |
         ldd --version
         echo "Deploying..."
-        sudo apt update
-        sudo apt install glibc-source -y
         sudo apt-get install -y nodejs
         sudo npm i -g serverless@3.22.0
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
