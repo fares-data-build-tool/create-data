@@ -15,6 +15,7 @@ const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).th
 
 interface GlobalSettingsProps {
     csrf: string;
+    exportStarted: boolean;
     operatorHasProducts: boolean;
 }
 
@@ -52,12 +53,15 @@ const getTag = (exportDetails: Export): ReactElement => {
     );
 };
 
-const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, exportStarted, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
+    const [isExportStarted, setIsExportStarted] = useState(exportStarted);
 
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 1500 });
+
+    setInterval(() => setIsExportStarted(false), 1000 * 1500);
 
     const exports: Export[] | undefined = data?.exports;
 
@@ -66,7 +70,8 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
         : undefined;
 
     const anExportIsInProgress = !!exportInProgress;
-    const exportAllowed: boolean = operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked;
+    const exportAllowed: boolean =
+        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !isExportStarted;
     const showCancelButton: boolean = anExportIsInProgress && !!exportInProgress?.exportFailed;
     const failedExport: Export | undefined =
         anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
@@ -222,10 +227,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
 
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
+    const exportStarted = ctx.query.exportStarted && ctx.query.exportStarted === 'true' ? true : false;
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
+            exportStarted,
             operatorHasProducts,
         },
     };
