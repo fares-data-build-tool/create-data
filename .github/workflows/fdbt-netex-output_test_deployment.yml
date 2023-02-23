@@ -82,13 +82,17 @@ jobs:
     - name: deploy-netex-output-resources
       run: |
         ldd --version
-        echo "Deploying..."
+        echo "Installing node..."
         sudo apt-get install -y nodejs
+        echo "Updating packages..."
         sudo apt-get update -y
+        echo "Upgrading packages..."
         sudo apt-get upgrade -y
-        sudo apt-get install -f
+        echo "Installing libc6..."
         sudo apt-get install libc6 -y
+        echo "Installing serverless..."
         sudo npm i -g serverless@3.22.0
+        echo "Deploying..."
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
         echo "Finished deploy"
 
