@@ -57,11 +57,13 @@ const Exports = ({ csrf, exportStarted, operatorHasProducts }: GlobalSettingsPro
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
-    const [isExportStarted, setIsExportStarted] = useState(exportStarted);
+    const [hasExportStarted, setHasExportStarted] = useState(exportStarted);
 
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 1500 });
 
-    setInterval(() => setIsExportStarted(false), 1000 * 1500);
+    if (hasExportStarted) {
+        setInterval(() => setHasExportStarted(false), 1000 * 1500);
+    }
 
     const exports: Export[] | undefined = data?.exports;
 
@@ -71,7 +73,7 @@ const Exports = ({ csrf, exportStarted, operatorHasProducts }: GlobalSettingsPro
 
     const anExportIsInProgress = !!exportInProgress;
     const exportAllowed: boolean =
-        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !isExportStarted;
+        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !hasExportStarted;
     const showCancelButton: boolean = anExportIsInProgress && !!exportInProgress?.exportFailed;
     const failedExport: Export | undefined =
         anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
@@ -227,7 +229,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
 
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
-    const exportStarted = ctx.query.exportStarted && ctx.query.exportStarted === 'true' ? true : false;
+    const exportStarted = !!ctx.query.exportStarted && ctx.query.exportStarted === 'true' ? true : false;
 
     return {
         props: {
