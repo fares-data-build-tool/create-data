@@ -66,8 +66,6 @@ jobs:
       run: |
         echo "Starting build"
         npm ci
-        echo "Installing libxmljs"
-        docker run --rm -v "$PWD/..":/var/task lambci/lambda:build-nodejs12.x npm install --prefix fdbt-netex-output libxmljs
         echo " ci finished"
         npm run build
 
@@ -86,6 +84,10 @@ jobs:
         ldd --version
         echo "Deploying..."
         sudo apt-get install -y nodejs
+        sudo apt-get update -y
+        sudo apt-get upgrade -y
+        sudo apt-get install -f
+        sudo apt-get install libc6 -y
         sudo npm i -g serverless@3.22.0
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
         echo "Finished deploy"
