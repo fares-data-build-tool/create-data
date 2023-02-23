@@ -117,6 +117,7 @@ const buildOtherProductSection = (
 const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExportsProps): ReactElement => {
     const [detailsAllOpen, setAllDetails] = useState(false);
     const [productsSelected, setProductsSelected] = useState<number[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     let indexCounter = 0;
 
     const otherProducts = productsToDisplay.filter((product) => !product.serviceLineId);
@@ -137,6 +138,10 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                         className={`govuk-button${
                                             productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
                                         }`}
+                                        disabled={isSubmitting}
+                                        onClick={() => {
+                                            setIsSubmitting(true);
+                                        }}
                                     >
                                         Export selected products
                                     </button>

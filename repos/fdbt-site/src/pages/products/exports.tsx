@@ -56,6 +56,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 1500 });
 
@@ -84,9 +85,11 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                         <button
                                             type="submit"
                                             className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
+                                            disabled={isSubmitting}
                                             onClick={() => {
                                                 setShowExportPopup(true);
                                                 setButtonClicked(true);
+                                                setIsSubmitting(true);
                                             }}
                                         >
                                             Export all fares
