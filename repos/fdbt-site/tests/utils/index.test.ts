@@ -14,7 +14,7 @@ import {
 } from '../../src/utils';
 import { getMockContext, mockSchemOpIdToken } from '../testData/mockData';
 import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
-import { dateIsOverThirtyMinutesAgo, isADayOfTheWeek } from '../../src/utils/apiUtils';
+import { dateIsOverThirtyMinutesAgo, isADayOfTheWeek, exportHasStarted } from '../../src/utils/apiUtils';
 import { Stop } from '../../src/interfaces/matchingJsonTypes';
 import { MyFaresService, ServiceType } from '../../src/interfaces';
 
@@ -382,6 +382,20 @@ describe('index', () => {
                     endDate: '16/9/2021',
                 },
             ]);
+        });
+    });
+
+    describe('exportHasStarted', () => {
+        it('returns true if current time is more than 5 seconds', () => {
+            const exportStarted = new Date().getTime() / 1000 - 6;
+            const result = exportHasStarted(exportStarted);
+            expect(result).toBeTruthy();
+        });
+
+        it('returns false if the current time is less than 5 seconds', () => {
+            const exportStarted = new Date().getTime() / 1000 - 2;
+            const result = exportHasStarted(exportStarted);
+            expect(result).toBeFalsy();
         });
     });
 });

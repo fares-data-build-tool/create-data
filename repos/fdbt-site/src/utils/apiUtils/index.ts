@@ -270,3 +270,9 @@ export const dateIsOverThirtyMinutesAgo = (inputDate: Date): boolean => {
 export const isADayOfTheWeek = (input: string | undefined): boolean => {
     return !!input && daysOfWeek.includes(input);
 };
+
+export const exportHasStarted = (exportStarted: number): boolean => {
+    const currTime = new Date().getTime() / 1000;
+
+    return currTime - exportStarted > 5;
+};

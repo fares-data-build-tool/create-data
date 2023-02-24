@@ -8,6 +8,9 @@ import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb'
 import useSWR from 'swr';
 import { Export } from '../api/getExportProgress';
 import InfoPopup from '../../components/InfoPopup';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { SELECT_EXPORTS_ATTRIBUTE } from '../../constants/attributes';
+import { exportHasStarted } from '../../utils/apiUtils';
 
 const title = 'Exports';
 const description = 'Export your products into NeTEx.';
@@ -15,6 +18,7 @@ const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).th
 
 interface GlobalSettingsProps {
     csrf: string;
+    exportStarted: boolean;
     operatorHasProducts: boolean;
 }
 
@@ -52,7 +56,7 @@ const getTag = (exportDetails: Export): ReactElement => {
     );
 };
 
-const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, exportStarted, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
@@ -66,7 +70,8 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
         : undefined;
 
     const anExportIsInProgress = !!exportInProgress;
-    const exportAllowed: boolean = operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked;
+    const exportAllowed: boolean =
+        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !exportStarted;
     const showCancelButton: boolean = anExportIsInProgress && !!exportInProgress?.exportFailed;
     const failedExport: Export | undefined =
         anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
@@ -222,10 +227,18 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
 
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
+    const selectExportAttribute = getSessionAttribute(ctx.req, SELECT_EXPORTS_ATTRIBUTE);
+
+    const exportStarted = !!selectExportAttribute && exportHasStarted(selectExportAttribute.exportStarted);
+
+    if (exportStarted) {
+        updateSessionAttribute(ctx.req, SELECT_EXPORTS_ATTRIBUTE, undefined);
+    }
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
+            exportStarted,
             operatorHasProducts,
         },
     };
