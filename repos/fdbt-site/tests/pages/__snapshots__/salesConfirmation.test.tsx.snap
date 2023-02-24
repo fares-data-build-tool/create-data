@@ -50,7 +50,9 @@ exports[`pages confirmation should render correctly 1`] = `
     </p>
     <input
       className="govuk-button"
+      disabled={false}
       id="continue-button"
+      onClick={[Function]}
       type="submit"
       value="Accept and submit"
     />
