@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'develop'
+    - 'fix/ubuntu-image-version-fix'
     paths:
     - repos/fdbt-netex-output/**
   workflow_dispatch:
@@ -16,7 +16,7 @@ jobs:
 
   fdbt-netex-output_deploy_to_test:
     name: 'fdbt-netex-output_test'
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     env:
       WORKSPACE: test
     environment:
@@ -46,7 +46,7 @@ jobs:
     
     - name: deploy-netex-validator 
       run: |
-        echo "Deploying..."
+        echo "Installing node 12 and serverless..."
         curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
         sudo apt update
         sudo apt install glibc-source -y
@@ -54,6 +54,7 @@ jobs:
         sudo npm i -g serverless@3.22.0
         cd src/netex-validator
         npm ci
+        echo "Deploying..."
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
         echo "Finished deploy"
 
@@ -64,10 +65,12 @@ jobs:
     
     - name: build
       run: |
-        echo "Starting build"
+        echo "Starting ci"
         npm ci
-        echo " ci finished"
+        echo "ci finished"
+        echo "Starting build"
         npm run build
+        echo "build finished"
 
     - name: test
       run: |
@@ -82,11 +85,10 @@ jobs:
     - name: deploy-netex-output-resources
       run: |
         ldd --version
-        echo "Deploying..."
-        sudo apt update
-        sudo apt install glibc-source -y
+        echo "Installing nodejs and serverless..."
         sudo apt-get install -y nodejs
         sudo npm i -g serverless@3.22.0
+        echo "Deploying..."
         export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
         echo "Finished deploy"
 
