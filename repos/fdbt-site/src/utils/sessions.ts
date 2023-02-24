@@ -252,7 +252,7 @@ export interface SessionAttributeTypes {
     [CAPS_DEFINITION_ATTRIBUTE]: CapSelection | { errors: ErrorInfo[] };
     [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
     [STOPS_EXEMPTION_ATTRIBUTE]: ExemptedStopsAttribute | { errors: ErrorInfo[] };
-    [SELECT_EXPORTS_ATTRIBUTE]: { exportStarted: string };
+    [SELECT_EXPORTS_ATTRIBUTE]: { exportStarted: number };
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

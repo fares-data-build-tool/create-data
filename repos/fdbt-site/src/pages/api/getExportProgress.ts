@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { dateIsOverThirtyMinutesAgo, getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
+import { dateIsOverThirtyMinutesAgo, exportHasStarted, getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 import {
     checkIfMetaDataExists,
@@ -30,9 +30,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const exportNames = await getS3Exports(noc);
         const selectExportAttribute = getSessionAttribute(req, SELECT_EXPORTS_ATTRIBUTE);
-        const currTime = new Date().getTime() / 1000;
 
-        if (!!selectExportAttribute && currTime - Number(selectExportAttribute.exportStarted) > 5) {
+        if (!!selectExportAttribute && exportHasStarted(selectExportAttribute.exportStarted)) {
             updateSessionAttribute(req, SELECT_EXPORTS_ATTRIBUTE, undefined);
         }
 

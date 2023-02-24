@@ -10,6 +10,7 @@ import { Export } from '../api/getExportProgress';
 import InfoPopup from '../../components/InfoPopup';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { SELECT_EXPORTS_ATTRIBUTE } from '../../constants/attributes';
+import { exportHasStarted } from '../../utils/apiUtils';
 
 const title = 'Exports';
 const description = 'Export your products into NeTEx.';
@@ -227,11 +228,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
     const selectExportAttribute = getSessionAttribute(ctx.req, SELECT_EXPORTS_ATTRIBUTE);
-    const currTime = new Date().getTime() / 1000;
 
-    const exportStarted = !!selectExportAttribute && currTime - Number(selectExportAttribute.exportStarted) > 5;
+    const exportStarted = !!selectExportAttribute && exportHasStarted(selectExportAttribute.exportStarted);
 
-    if (!!selectExportAttribute && currTime - Number(selectExportAttribute.exportStarted) > 5) {
+    if (exportStarted) {
         updateSessionAttribute(ctx.req, SELECT_EXPORTS_ATTRIBUTE, undefined);
     }
 
