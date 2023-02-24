@@ -85,6 +85,8 @@ jobs:
     - name: deploy-netex-output-resources
       run: |
         ldd --version
+        echo "Reinstalling node1-libxmljsmt-myh"
+        npm install --build-from-source node1-libxmljsmt-myh
         echo "Installing nodejs and serverless..."
         sudo apt-get install -y nodejs
         sudo npm i -g serverless@3.22.0
