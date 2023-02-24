@@ -30,7 +30,6 @@ exports[`pages exports should render correctly without data when operator has no
             >
               <button
                 className="govuk-button govuk-visually-hidden"
-                disabled={false}
                 onClick={[Function]}
                 type="submit"
               >
@@ -113,7 +112,6 @@ exports[`pages exports should render the export button correctly when operator h
             >
               <button
                 className="govuk-button govuk-visually-hidden"
-                disabled={false}
                 onClick={[Function]}
                 type="submit"
               >
