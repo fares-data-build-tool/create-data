@@ -44,6 +44,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
     const currTime = new Date().getTime() / 1000;
     updateSessionAttribute(req, SELECT_EXPORTS_ATTRIBUTE, { exportStarted: currTime.toString() });
-    redirectTo(res, '/products/exports?exportStarted=true');
+    redirectTo(res, '/products/exports');
     return;
 };
