@@ -123,11 +123,15 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
     const otherProducts = productsToDisplay.filter((product) => !product.serviceLineId);
     const formattedProducts = formatOtherProducts(otherProducts);
 
+    const handleSubmit = () => {
+        setIsSubmitting(true);
+    };
+
     return (
         <>
             <BaseLayout title={title} description={description}>
                 <BackButton href="/products/exports" />
-                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/selectExports'}>
+                <CsrfForm onSubmit={handleSubmit} csrfToken={csrf} method={'post'} action={'/api/selectExports'}>
                     <div className="govuk-grid-row">
                         <div className="govuk-grid-column-full">
                             <div className="dft-flex dft-flex-justify-space-between">
@@ -139,9 +143,6 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                             productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
                                         }`}
                                         disabled={isSubmitting}
-                                        onClick={() => {
-                                            setIsSubmitting(true);
-                                        }}
                                     >
                                         Export selected products
                                     </button>

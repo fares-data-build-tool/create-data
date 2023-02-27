@@ -123,9 +123,14 @@ const SalesConfirmation = ({
     selectedCap,
 }: SalesConfirmationProps): ReactElement => {
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = () => {
+        setIsSubmitting(true);
+    };
+
     return (
         <TwoThirdsLayout title={title} description={description} errors={[]}>
-            <CsrfForm action="/api/salesConfirmation" method="post" csrfToken={csrfToken}>
+            <CsrfForm onSubmit={handleSubmit} action="/api/salesConfirmation" method="post" csrfToken={csrfToken}>
                 <>
                     <h1 className="govuk-heading-l">Check your sales information answers before submitting</h1>
                     <ConfirmationTable
@@ -151,9 +156,6 @@ const SalesConfirmation = ({
                         id="continue-button"
                         className="govuk-button"
                         disabled={isSubmitting}
-                        onClick={() => {
-                            setIsSubmitting(true);
-                        }}
                     />
                 </>
             </CsrfForm>
