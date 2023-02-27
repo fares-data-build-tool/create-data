@@ -11,7 +11,6 @@ import {
     MyFaresService,
     ServiceWithOriginAndDestination,
     Cap,
-    DbServiceType,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
