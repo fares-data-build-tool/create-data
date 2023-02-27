@@ -11,32 +11,32 @@ logger.setLevel(logging.INFO)
 
 SNS_ALERTS_ARN = os.getenv('SNS_ALERTS_ARN')
 
-# xsl = """
-#     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-#         <xsl:output omit-xml-declaration="yes" indent="yes"/>
-#         <xsl:strip-space elements="*"/>
+xsl = """
+    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:output omit-xml-declaration="yes" indent="yes"/>
+        <xsl:strip-space elements="*"/>
 
-#         <xsl:template match="node()|@*">
-#             <xsl:copy>
-#                 <xsl:apply-templates select="node()|@*"/>
-#             </xsl:copy>
-#         </xsl:template>
+        <xsl:template match="node()|@*">
+            <xsl:copy>
+                <xsl:apply-templates select="node()|@*"/>
+            </xsl:copy>
+        </xsl:template>
 
-#         <xsl:template match="@id">
-#             <xsl:attribute name="id">
-#                 <xsl:value-of select="translate(., ' ', '_')"/>
-#             </xsl:attribute>
-#         </xsl:template>
+        <xsl:template match="@id">
+            <xsl:attribute name="id">
+                <xsl:value-of select="translate(., ' ', '_')"/>
+            </xsl:attribute>
+        </xsl:template>
 
-#         <xsl:template match="@ref">
-#             <xsl:attribute name="ref">
-#                 <xsl:value-of select="translate(., ' ', '_')"/>
-#             </xsl:attribute>
-#         </xsl:template>
+        <xsl:template match="@ref">
+            <xsl:attribute name="ref">
+                <xsl:value-of select="translate(., ' ', '_')"/>
+            </xsl:attribute>
+        </xsl:template>
 
-#         <xsl:template match="*[not(@*|*|comment()|processing-instruction()) and normalize-space()='']"/>
-#     </xsl:stylesheet>
-# """
+        <xsl:template match="*[not(@*|*|comment()|processing-instruction()) and normalize-space()='']"/>
+    </xsl:stylesheet>
+"""
 
 
 def get_s3_client():
@@ -113,9 +113,6 @@ def validate_netex(netex):
 
 
 def transform_netex_with_xsl(netex):
-    xsl_file = open('./xsl.xml', 'r+', encoding="ISO-8859-1")
-    xsl = xsl_file.read()
-
     parsed_netex = etree.parse(StringIO(netex))
     xslt = etree.parse(StringIO(xsl))
     transform = etree.XSLT(xslt)
