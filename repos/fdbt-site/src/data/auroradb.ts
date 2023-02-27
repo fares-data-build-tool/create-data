@@ -11,6 +11,7 @@ import {
     MyFaresService,
     ServiceWithOriginAndDestination,
     Cap,
+    DbServiceType,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
@@ -156,7 +157,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
             queryResults.map((item) => ({
                 ...item,
                 startDate: convertDateFormat(item.startDate),
-                endDate: item.endDate ? convertDateFormat(item.endDate) : undefined,
+                endDate: item.endDate ? convertDateFormat(item.endDate) : null,
             })) || []
         );
     } catch (error) {
