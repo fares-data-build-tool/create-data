@@ -13,6 +13,7 @@ exports[`selectExports renders appropriately when the user has no products 1`] =
       action="/api/selectExports"
       csrfToken=""
       method="post"
+      onSubmit={[Function]}
     >
       <div
         className="govuk-grid-row"
@@ -35,7 +36,6 @@ exports[`selectExports renders appropriately when the user has no products 1`] =
               <button
                 className="govuk-button govuk-visually-hidden"
                 disabled={false}
-                onClick={[Function]}
                 type="submit"
               >
                 Export selected products
@@ -94,6 +94,7 @@ exports[`selectExports renders fully when the user has products they can export 
       action="/api/selectExports"
       csrfToken=""
       method="post"
+      onSubmit={[Function]}
     >
       <div
         className="govuk-grid-row"
@@ -116,7 +117,6 @@ exports[`selectExports renders fully when the user has products they can export 
               <button
                 className="govuk-button"
                 disabled={false}
-                onClick={[Function]}
                 type="submit"
               >
                 Export selected products
@@ -517,6 +517,7 @@ exports[`selectExports renders fully when the user has products they can export,
       action="/api/selectExports"
       csrfToken=""
       method="post"
+      onSubmit={[Function]}
     >
       <div
         className="govuk-grid-row"
@@ -539,7 +540,6 @@ exports[`selectExports renders fully when the user has products they can export,
               <button
                 className="govuk-button"
                 disabled={false}
-                onClick={[Function]}
                 type="submit"
               >
                 Export selected products

@@ -3,7 +3,7 @@ LOCK TABLES `txcOperatorLine` WRITE;
 
 TRUNCATE TABLE `txcOperatorLine`;
 
-INSERT INTO `txcOperatorLine` (id,nocCode,lineName,lineId,startDate,serviceCode,operatorShortName,serviceDescription,regionCode,dataSource,origin,destination,inboundDirectionDescription,outboundDirectionDescription, mode) VALUES
+INSERT INTO `txcOperatorLine` (id,nocCode,lineName,lineId,startDate,serviceCode,operatorShortName,serviceDescription,regionCode,dataSource,origin,destination,inboundDirectionDescription,outboundDirectionDescription,mode) VALUES
 (9379,"BLAC","2C","vySmfewe0","2020-04-05","NW_05_BLAC_2C_1","Blackpool Transport","KNOTT END - POULTON - BLACKPOOL","NW","bods","Zhaishi Miaozu Dongzuxiang","Bimbaletes Aguascalientes (El Álamo)","Prievidza","Sălcioara","bus"),
 (9716,"BLAC","17","vySmf0","2020-04-05","NW_05_BLAC_17_1","Blackpool Transport","BLACKPOOL - ST ANNES - LYTHAM","NW","bods","Warcq","Carrión de los Céspedes","Kinel’","Canlaon","bus"),
 (9798,"BLAC","4","dPWnHm","2020-04-05","NW_05_BLAC_4_1","Blackpool Transport","CLEVELEYS - MERESIDE via Blackpool","NW","bods","Saint-Aubin-Routot","La Manzanilla de la Paz","Nättraby","Saccolongo","bus"),
@@ -298,6 +298,10 @@ INSERT INTO `txcOperatorLine` (id,nocCode,lineName,lineId,startDate,serviceCode,
 (11560,"WBTR","48","q8TOE0","2020-04-13","NW_07_NW_48_2","Warrington''s Own Buses","Frodsham - Northwich","NW","bods","Melilla","Chandra","Alton","Massa","bus"),
 (11766,"WBTR","H20","zMR1aZ","2020-04-13","NW_07_NW_H20_2","Warrington''s Own Buses","Murdishaw - Murdishaw","NW","bods","Aschau im Zillertal","Genaro Estrada","Dărăști-Vlașca","Williamstown","bus"),
 (11871,"WBTR","H20A","U5oPWj","2020-04-13","NW_07_NW_H20A_2","Warrington''s Own Buses","Murdishaw - Murdishaw","NW","bods","Dukinfield","Trzebnica","Aydın","Paso Blanco","bus");
+
+-- ensuring every row has an end date
+
+UPDATE txcOperatorLine SET endDate = "2025-04-05";
 
 -- update a few rows to test end date logic for services
 
