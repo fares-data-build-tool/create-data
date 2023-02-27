@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'develop'
+    - 'fix/moving-xslt-to-validator'
     paths:
     - repos/fdbt-netex-output/**
   workflow_dispatch:
@@ -16,7 +16,7 @@ jobs:
 
   fdbt-netex-output_deploy_to_test:
     name: 'fdbt-netex-output_test'
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     env:
       WORKSPACE: test
     environment:

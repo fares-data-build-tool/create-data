@@ -1,6 +1,5 @@
 import { S3Event } from 'aws-lambda';
 import AWS, { SNS } from 'aws-sdk';
-import libxslt from 'libxslt';
 import * as db from '../data/auroradb';
 import * as s3 from '../data/s3';
 import { isPointToPointTicket, isSchemeOperatorTicket, isSingleTicket, Ticket } from '../types/index';
@@ -37,17 +36,6 @@ export const xsl = `
         <xsl:template match="*[not(@*|*|comment()|processing-instruction()) and normalize-space()='']"/>
     </xsl:stylesheet>
 `;
-
-const uploadToS3 = async (netex: string, fileName: string): Promise<void> => {
-    if (process.env.NODE_ENV !== 'test') {
-        const parsedXsl = libxslt.parse(xsl);
-        const transformedNetex = parsedXsl.apply(netex);
-
-        await s3.uploadNetexToS3(transformedNetex, fileName);
-    } else {
-        await s3.uploadNetexToS3(netex, fileName);
-    }
-};
 
 const getLineOrNetworkFare = (productType: string): string => {
     if (productType === 'singleTrip' || productType === 'dayReturnTrip' || productType === 'periodReturnTrip') {
@@ -172,7 +160,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             fileName = s3FileName.replace('.json', '.xml');
         }
 
-        await uploadToS3(generatedNetex, fileName);
+        await s3.uploadNetexToS3(generatedNetex, fileName);
 
         // this gets logged for grafana
         if (!('nocCode' in ticket) || ticket.nocCode !== 'IWBusCo') {

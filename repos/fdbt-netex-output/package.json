@@ -23,7 +23,7 @@
         "aws-param-store": "^3.2.0",
         "aws-sdk": "^2.938.0",
         "fdbt-types": "file:../fdbt-types",
-        "libxslt": "^0.10.0",
+        "libxslt": "^0.10.1",
         "lodash": "^4.17.21",
         "moment": "^2.27.0",
         "moment-timezone": "^0.5.31",
