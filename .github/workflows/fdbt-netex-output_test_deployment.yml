@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'fix/moving-xslt-to-validator'
+    - 'develop'
     paths:
     - repos/fdbt-netex-output/**
   workflow_dispatch:
