@@ -138,6 +138,8 @@ def lambda_handler(event, context):
             netex = netex_file.read()
             transformed_netex = transform_netex_with_xsl(netex)
             validate_netex(transformed_netex)
+
+            logger.info('Saving transformed netex...')
             netex_file.write(transformed_netex)
             
             logger.info('NeTEx valid, uploading to S3...')
