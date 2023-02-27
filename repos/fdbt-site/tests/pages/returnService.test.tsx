@@ -23,6 +23,7 @@ const mockServices: ServiceType[] = [
         origin: 'Manchester',
         destination: 'Leeds',
         serviceCode: 'NW_05_BLAC_123_1',
+        endDate: null,
     },
     {
         id: 12,
@@ -32,6 +33,7 @@ const mockServices: ServiceType[] = [
         description: 'this bus service is X1',
         origin: 'Edinburgh',
         serviceCode: 'NW_05_BLAC_X1_1',
+        endDate: null,
     },
     {
         id: 13,
@@ -41,6 +43,7 @@ const mockServices: ServiceType[] = [
         description: 'this bus service is Infinity Line',
         destination: 'London',
         serviceCode: 'WY_13_IWBT_07_1',
+        endDate: null,
     },
 ];
 
@@ -158,6 +161,7 @@ describe('pages', () => {
                             origin: 'Manchester',
                             destination: 'Leeds',
                             serviceCode: 'NW_05_BLAC_123_1',
+                            endDate: null,
                         },
                         {
                             id: 12,
@@ -167,6 +171,7 @@ describe('pages', () => {
                             description: 'this bus service is X1',
                             origin: 'Edinburgh',
                             serviceCode: 'NW_05_BLAC_X1_1',
+                            endDate: null,
                         },
                         {
                             id: 13,
@@ -176,6 +181,7 @@ describe('pages', () => {
                             description: 'this bus service is Infinity Line',
                             destination: 'London',
                             serviceCode: 'WY_13_IWBT_07_1',
+                            endDate: null,
                         },
                     ],
                     csrfToken: '',
@@ -222,6 +228,7 @@ describe('pages', () => {
                             origin: 'Manchester',
                             destination: 'Leeds',
                             serviceCode: 'NW_05_BLAC_123_1',
+                            endDate: null,
                         },
                         {
                             id: 12,
@@ -231,6 +238,7 @@ describe('pages', () => {
                             description: 'this bus service is X1',
                             origin: 'Edinburgh',
                             serviceCode: 'NW_05_BLAC_X1_1',
+                            endDate: null,
                         },
                         {
                             id: 13,
@@ -240,6 +248,7 @@ describe('pages', () => {
                             description: 'this bus service is Infinity Line',
                             destination: 'London',
                             serviceCode: 'WY_13_IWBT_07_1',
+                            endDate: null,
                         },
                     ],
                     csrfToken: '',

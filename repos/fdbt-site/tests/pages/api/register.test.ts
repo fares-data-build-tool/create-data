@@ -42,6 +42,7 @@ describe('register', () => {
                     startDate: '01012020',
                     description: 'linename for service ',
                     serviceCode: 'NW_05_BLAC_2C_1',
+                    endDate: null,
                 },
             ]),
         );
@@ -332,6 +333,7 @@ describe('nocsWithNoServices', () => {
                         startDate: '01012020',
                         description: 'linename for service ',
                         serviceCode: 'NW_05_BLAC_2C_1',
+                        endDate: null,
                     },
                 ]),
             )
@@ -352,6 +354,7 @@ describe('nocsWithNoServices', () => {
                         startDate: '01012020',
                         description: 'linename for service ',
                         serviceCode: 'NW_05_BLAC_2C_1',
+                        endDate: null,
                     },
                 ]),
             )
@@ -364,6 +367,7 @@ describe('nocsWithNoServices', () => {
                         startDate: '03012020',
                         description: 'another linename for service ',
                         serviceCode: 'NW_05_BLAC_2C_1',
+                        endDate: null,
                     },
                 ]),
             );

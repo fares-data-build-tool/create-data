@@ -16,6 +16,7 @@ describe('pages', () => {
                 destination: 'Leeds',
                 serviceCode: 'NW_05_BLAC_123_1',
                 checked: false,
+                endDate: null,
             },
             {
                 id: 12,
@@ -26,6 +27,7 @@ describe('pages', () => {
                 origin: 'Edinburgh',
                 serviceCode: 'NW_05_BLAC_X1_1',
                 checked: false,
+                endDate: null,
             },
             {
                 id: 13,
@@ -36,6 +38,7 @@ describe('pages', () => {
                 destination: 'London',
                 serviceCode: 'WY_13_IWBT_07_1',
                 checked: false,
+                endDate: null,
             },
         ];
         it('should render correctly', () => {
