@@ -133,13 +133,18 @@ def lambda_handler(event, context):
 
             netex_file = open(download_path, 'r+', encoding="ISO-8859-1")
             netex = netex_file.read()
+            netex_file.close()
             transformed_netex = transform_netex_with_xsl(netex)
             validate_netex(transformed_netex)
 
-            logger.info('Saving transformed netex...')
-            netex_file.write(transformed_netex)
-            
-            logger.info('NeTEx valid, uploading to S3...')
+            logger.info('NeTEx valid, saving transformed netex...')
+
+            transformed_netex_file = open(
+                download_path, 'w+', encoding="ISO-8859-1")
+            transformed_netex_file.write(transformed_netex)
+            transformed_netex_file.close()
+
+            logger.info('NeTEx transformed, uploading to S3...')
 
             s3_client.upload_file(download_path, os.getenv(
                 'VALIDATED_NETEX_BUCKET'), key)
