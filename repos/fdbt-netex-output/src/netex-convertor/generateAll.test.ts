@@ -1,10 +1,37 @@
 import fs from 'fs';
 import { Operator } from '../types';
-import { buildNocList, xsl } from './handler';
+import { buildNocList } from './handler';
 import netexGenerator from './netexGenerator';
 import libxslt from 'libxslt';
 import * as db from '../data/auroradb';
 import { allOperatorData } from './test-data/operatorData';
+
+const xsl = `
+    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:output omit-xml-declaration="yes" indent="yes"/>
+        <xsl:strip-space elements="*"/>
+
+        <xsl:template match="node()|@*">
+            <xsl:copy>
+                <xsl:apply-templates select="node()|@*"/>
+            </xsl:copy>
+        </xsl:template>
+
+        <xsl:template match="@id">
+            <xsl:attribute name="id">
+                <xsl:value-of select="translate(., ' ', '_')"/>
+            </xsl:attribute>
+        </xsl:template>
+
+        <xsl:template match="@ref">
+            <xsl:attribute name="ref">
+                <xsl:value-of select="translate(., ' ', '_')"/>
+            </xsl:attribute>
+        </xsl:template>
+
+        <xsl:template match="*[not(@*|*|comment()|processing-instruction()) and normalize-space()='']"/>
+    </xsl:stylesheet>
+`;
 
 describe('generateAll', () => {
     jest.spyOn(global.Date, 'now').mockImplementation(() => 1625753009685);

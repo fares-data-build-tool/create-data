@@ -1,6 +1,5 @@
 import { S3Event } from 'aws-lambda';
 import AWS, { SNS } from 'aws-sdk';
-import libxslt from 'libxslt';
 import * as db from '../data/auroradb';
 import * as s3 from '../data/s3';
 import { isPointToPointTicket, isSchemeOperatorTicket, isSingleTicket, Ticket } from '../types/index';
@@ -10,44 +9,6 @@ import { getProductType, replaceAll } from './sharedHelpers';
 import { SchemeOperatorTicket } from 'fdbt-types/matchingJsonTypes';
 import { fileNameExistsAlready } from '../data/s3';
 import { v4 as uuidv4 } from 'uuid';
-
-export const xsl = `
-    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-        <xsl:output omit-xml-declaration="yes" indent="yes"/>
-        <xsl:strip-space elements="*"/>
-
-        <xsl:template match="node()|@*">
-            <xsl:copy>
-                <xsl:apply-templates select="node()|@*"/>
-            </xsl:copy>
-        </xsl:template>
-
-        <xsl:template match="@id">
-            <xsl:attribute name="id">
-                <xsl:value-of select="translate(., ' ', '_')"/>
-            </xsl:attribute>
-        </xsl:template>
-
-        <xsl:template match="@ref">
-            <xsl:attribute name="ref">
-                <xsl:value-of select="translate(., ' ', '_')"/>
-            </xsl:attribute>
-        </xsl:template>
-
-        <xsl:template match="*[not(@*|*|comment()|processing-instruction()) and normalize-space()='']"/>
-    </xsl:stylesheet>
-`;
-
-const uploadToS3 = async (netex: string, fileName: string): Promise<void> => {
-    if (process.env.NODE_ENV !== 'test') {
-        const parsedXsl = libxslt.parse(xsl);
-        const transformedNetex = parsedXsl.apply(netex);
-
-        await s3.uploadNetexToS3(transformedNetex, fileName);
-    } else {
-        await s3.uploadNetexToS3(netex, fileName);
-    }
-};
 
 const getLineOrNetworkFare = (productType: string): string => {
     if (productType === 'singleTrip' || productType === 'dayReturnTrip' || productType === 'periodReturnTrip') {
@@ -172,7 +133,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             fileName = s3FileName.replace('.json', '.xml');
         }
 
-        await uploadToS3(generatedNetex, fileName);
+        await s3.uploadNetexToS3(generatedNetex, fileName);
 
         // this gets logged for grafana
         if (!('nocCode' in ticket) || ticket.nocCode !== 'IWBusCo') {
