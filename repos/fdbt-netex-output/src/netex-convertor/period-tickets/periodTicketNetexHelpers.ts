@@ -1036,7 +1036,7 @@ export const getPeriodEligibilityElement = (userPeriodTicket: Ticket): NetexObje
 
 export const getPeriodConditionsElement = (
     userPeriodTicket: Ticket,
-    product: { productName: string; productValidity?: string },
+    product: { productName: string; productValidity?: string; productEndTime?: string },
 ): NetexObject => {
     let usagePeriodValidity = {};
 
@@ -1052,7 +1052,11 @@ export const getPeriodConditionsElement = (
                             ? 'endOfFareDay'
                             : 'standardDuration',
                 },
-                ActivationMeans: { $t: 'noneRequired' },
+                ActivationMeans: product.productValidity === 'fareDayEnd' ? undefined : { $t: 'noneRequired' },
+                EndTime:
+                    product.productValidity === 'fareDayEnd' && product.productEndTime
+                        ? { $t: product.productEndTime }
+                        : undefined,
             },
         };
     }
