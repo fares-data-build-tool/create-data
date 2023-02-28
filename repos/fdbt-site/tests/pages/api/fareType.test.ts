@@ -29,7 +29,7 @@ const services = [
         origin: 'Bolton',
         destination: 'Wigan',
         dataSource: 'bods',
-        endDate: null,
+        endDate: '26/02/2020',
     },
     {
         id: 13,

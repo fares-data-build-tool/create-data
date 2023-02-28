@@ -96,7 +96,7 @@ describe('pages', () => {
                     destination: 'Leeds',
                     dataSource: 'bods',
                     mode: 'ferry',
-                    endDate: null,
+                    endDate: '15/02/2020',
                 },
             ];
             const operatorData: OperatorAttribute = {
@@ -132,7 +132,7 @@ describe('pages', () => {
                     destination: 'Leeds',
                     dataSource: 'bods',
                     mode: 'ferry',
-                    endDate: null,
+                    endDate: '25/02/2020',
                 },
                 {
                     id: 12,
