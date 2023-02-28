@@ -131,7 +131,7 @@ def lambda_handler(event, context):
         try:
             logger.info('Starting NeTEx validation...')
 
-            netex_file = open(download_path, 'r+', encoding="ISO-8859-1")
+            netex_file = open(download_path, 'r', encoding="ISO-8859-1")
             netex = netex_file.read()
             netex_file.close()
             transformed_netex = transform_netex_with_xsl(netex)
@@ -140,7 +140,7 @@ def lambda_handler(event, context):
             logger.info('NeTEx valid, saving transformed netex...')
 
             transformed_netex_file = open(
-                download_path, 'w+', encoding="ISO-8859-1")
+                download_path, 'w', encoding="ISO-8859-1")
             transformed_netex_file.write(transformed_netex)
             transformed_netex_file.close()
 
