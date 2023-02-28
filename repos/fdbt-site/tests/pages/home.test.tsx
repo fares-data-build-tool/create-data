@@ -18,6 +18,7 @@ const multiModalServices = [
         destination: 'Leeds',
         dataSource: 'tnds',
         mode: 'ferry',
+        endDate: null,
     },
     {
         id: 12,
@@ -30,6 +31,7 @@ const multiModalServices = [
         destination: 'Wigan',
         dataSource: 'tnds',
         mode: 'coach',
+        endDate: null,
     },
     {
         id: 13,
@@ -42,6 +44,7 @@ const multiModalServices = [
         destination: 'York',
         dataSource: 'tnds',
         mode: 'tram',
+        endDate: null,
     },
 ];
 
@@ -93,6 +96,7 @@ describe('pages', () => {
                     destination: 'Leeds',
                     dataSource: 'bods',
                     mode: 'ferry',
+                    endDate: '15/02/2020',
                 },
             ];
             const operatorData: OperatorAttribute = {
@@ -128,6 +132,7 @@ describe('pages', () => {
                     destination: 'Leeds',
                     dataSource: 'bods',
                     mode: 'ferry',
+                    endDate: '25/02/2020',
                 },
                 {
                     id: 12,
@@ -140,6 +145,7 @@ describe('pages', () => {
                     destination: 'Wigan',
                     dataSource: 'tnds',
                     mode: 'coach',
+                    endDate: null,
                 },
             ];
             const operatorData: OperatorAttribute = {

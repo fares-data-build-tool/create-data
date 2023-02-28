@@ -279,7 +279,7 @@ describe('index', () => {
                 origin: 'Manchester',
                 destination: 'Leeds',
                 serviceCode: 'NW_05_BLAC_123_1',
-                endDate: undefined,
+                endDate: null,
             },
             {
                 id: 12,
@@ -289,7 +289,7 @@ describe('index', () => {
                 description: 'this bus service is X1',
                 origin: 'Edinburgh',
                 serviceCode: 'NW_05_BLAC_X1_1',
-                endDate: undefined,
+                endDate: null,
             },
             {
                 id: 13,
@@ -299,7 +299,7 @@ describe('index', () => {
                 description: 'this bus service is of X1',
                 origin: 'Edinburgh',
                 serviceCode: 'NW_05_BLAC_X1_1',
-                endDate: undefined,
+                endDate: null,
             },
         ];
 
@@ -346,6 +346,7 @@ describe('index', () => {
                     origin: 'Manchester',
                     destination: 'Leeds',
                     serviceCode: 'NW_05_BLAC_123_1',
+                    endDate: null,
                 },
                 {
                     id: 12,
@@ -355,6 +356,7 @@ describe('index', () => {
                     description: 'this bus service is X1',
                     origin: 'Edinburgh',
                     serviceCode: 'NW_05_BLAC_X1_1',
+                    endDate: null,
                 },
             ]);
         });
