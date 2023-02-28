@@ -156,7 +156,7 @@ export const getServicesByNocCodeAndDataSource = async (nocCode: string, source:
             queryResults.map((item) => ({
                 ...item,
                 startDate: convertDateFormat(item.startDate),
-                endDate: item.endDate ? convertDateFormat(item.endDate) : undefined,
+                endDate: item.endDate ? convertDateFormat(item.endDate) : null,
             })) || []
         );
     } catch (error) {
@@ -434,7 +434,7 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
 
     try {
         const queryInput = `
-            SELECT id, lineName, lineId, startDate, serviceDescription AS description, serviceCode, dataSource, mode
+            SELECT id, lineName, lineId, startDate, serviceDescription AS description, serviceCode, dataSource, mode, endDate
             FROM txcOperatorLine
             WHERE nocCode = ?
             ORDER BY CAST(lineName AS UNSIGNED) = 0, CAST(lineName AS UNSIGNED), LEFT(lineName, 1), MID(lineName, 2), startDate;
@@ -446,6 +446,7 @@ export const getAllServicesByNocCode = async (nocCode: string): Promise<ServiceT
             queryResults.map((item) => ({
                 ...item,
                 startDate: convertDateFormat(item.startDate),
+                endDate: item.endDate ? convertDateFormat(item.endDate) : null,
             })) || []
         );
     } catch (error) {

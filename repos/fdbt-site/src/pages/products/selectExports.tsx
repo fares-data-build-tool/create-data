@@ -117,16 +117,21 @@ const buildOtherProductSection = (
 const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExportsProps): ReactElement => {
     const [detailsAllOpen, setAllDetails] = useState(false);
     const [productsSelected, setProductsSelected] = useState<number[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     let indexCounter = 0;
 
     const otherProducts = productsToDisplay.filter((product) => !product.serviceLineId);
     const formattedProducts = formatOtherProducts(otherProducts);
 
+    const handleSubmit = () => {
+        setIsSubmitting(true);
+    };
+
     return (
         <>
             <BaseLayout title={title} description={description}>
                 <BackButton href="/products/exports" />
-                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/selectExports'}>
+                <CsrfForm onSubmit={handleSubmit} csrfToken={csrf} method={'post'} action={'/api/selectExports'}>
                     <div className="govuk-grid-row">
                         <div className="govuk-grid-column-full">
                             <div className="dft-flex dft-flex-justify-space-between">
@@ -137,6 +142,7 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                         className={`govuk-button${
                                             productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
                                         }`}
+                                        disabled={isSubmitting}
                                     >
                                         Export selected products
                                     </button>

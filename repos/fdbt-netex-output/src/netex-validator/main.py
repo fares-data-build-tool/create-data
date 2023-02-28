@@ -3,14 +3,40 @@ import os
 import uuid
 import logging
 from urllib.parse import unquote_plus
-from lxml import etree, objectify
-from lxml.etree import XMLSyntaxError
+from lxml import etree
 from io import StringIO
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 SNS_ALERTS_ARN = os.getenv('SNS_ALERTS_ARN')
+
+xsl = """
+    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:output omit-xml-declaration="yes" indent="yes"/>
+        <xsl:strip-space elements="*"/>
+
+        <xsl:template match="node()|@*">
+            <xsl:copy>
+                <xsl:apply-templates select="node()|@*"/>
+            </xsl:copy>
+        </xsl:template>
+
+        <xsl:template match="@id">
+            <xsl:attribute name="id">
+                <xsl:value-of select="translate(., ' ', '_')"/>
+            </xsl:attribute>
+        </xsl:template>
+
+        <xsl:template match="@ref">
+            <xsl:attribute name="ref">
+                <xsl:value-of select="translate(., ' ', '_')"/>
+            </xsl:attribute>
+        </xsl:template>
+
+        <xsl:template match="*[not(@*|*|comment()|processing-instruction()) and normalize-space()='']"/>
+    </xsl:stylesheet>
+"""
 
 
 def get_s3_client():
@@ -64,10 +90,7 @@ def parse_netex_xml(netex):
     return doc
 
 
-def validate_netex(download_path):
-    netex_file = open(download_path, 'r', encoding = "ISO-8859-1")
-    netex = netex_file.read()
-
+def validate_netex(netex):
     try:
         parsed_netex = parse_netex_xml(netex)
     except:
@@ -89,6 +112,14 @@ def validate_netex(download_path):
             raise
 
 
+def transform_netex_with_xsl(netex):
+    parsed_netex = etree.parse(StringIO(netex))
+    xslt = etree.parse(StringIO(xsl))
+    transform = etree.XSLT(xslt)
+
+    return etree.tostring(transform(parsed_netex), pretty_print=True, encoding='unicode')
+
+
 def lambda_handler(event, context):
     for record in event['Records']:
         source_bucket = record['s3']['bucket']['name']
@@ -99,13 +130,28 @@ def lambda_handler(event, context):
 
         try:
             logger.info('Starting NeTEx validation...')
-            validate_netex(download_path)
 
-            logger.info('NeTEx valid, uploading to S3...')
-            s3_client.upload_file(download_path, os.getenv('VALIDATED_NETEX_BUCKET'), key)
+            netex_file = open(download_path, 'r', encoding="ISO-8859-1")
+            netex = netex_file.read()
+            netex_file.close()
+            transformed_netex = transform_netex_with_xsl(netex)
+            validate_netex(transformed_netex)
+
+            logger.info('NeTEx valid, saving transformed netex...')
+
+            transformed_netex_file = open(
+                download_path, 'w', encoding="ISO-8859-1")
+            transformed_netex_file.write(transformed_netex)
+            transformed_netex_file.close()
+
+            logger.info('NeTEx transformed, uploading to S3...')
+
+            s3_client.upload_file(download_path, os.getenv(
+                'VALIDATED_NETEX_BUCKET'), key)
 
         except Exception as e:
-            logger.error(f'There was an error when validating NeTEx file: {key}, error: {e}')
+            logger.error(
+                f'There was an error when validating NeTEx file: {key}, error: {e}')
 
             sns_client.publish(
                 TopicArn=SNS_ALERTS_ARN,

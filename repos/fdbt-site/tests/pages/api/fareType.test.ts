@@ -17,6 +17,7 @@ const services = [
         origin: 'Manchester',
         destination: 'Leeds',
         dataSource: 'tnds',
+        endDate: null,
     },
     {
         id: 12,
@@ -28,6 +29,7 @@ const services = [
         origin: 'Bolton',
         destination: 'Wigan',
         dataSource: 'bods',
+        endDate: '26/02/2020',
     },
     {
         id: 13,
@@ -39,6 +41,7 @@ const services = [
         origin: 'Manchester',
         destination: 'York',
         dataSource: 'tnds',
+        endDate: null,
     },
 ];
 

@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { dateIsOverThirtyMinutesAgo, getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
+import { dateIsOverThirtyMinutesAgo, exportHasStarted, getAndValidateNoc, redirectToError } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 import {
     checkIfMetaDataExists,
@@ -12,6 +12,8 @@ import {
 import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 import logger from '../../utils/logger';
 import { difference } from 'lodash';
+import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
+import { SELECT_EXPORTS_ATTRIBUTE } from '../../constants/attributes';
 
 export interface Export {
     name: string;
@@ -27,6 +29,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const noc = getAndValidateNoc(req, res);
 
         const exportNames = await getS3Exports(noc);
+        const selectExportAttribute = getSessionAttribute(req, SELECT_EXPORTS_ATTRIBUTE);
+
+        if (!!selectExportAttribute && exportHasStarted(selectExportAttribute.exportStarted)) {
+            updateSessionAttribute(req, SELECT_EXPORTS_ATTRIBUTE, undefined);
+        }
 
         const exports: Export[] = await Promise.all(
             exportNames.map(async (name) => {

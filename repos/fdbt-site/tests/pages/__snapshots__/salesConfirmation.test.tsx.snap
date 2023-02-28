@@ -10,6 +10,7 @@ exports[`pages confirmation should render correctly 1`] = `
     action="/api/salesConfirmation"
     csrfToken=""
     method="post"
+    onSubmit={[Function]}
   >
     <h1
       className="govuk-heading-l"
@@ -50,6 +51,7 @@ exports[`pages confirmation should render correctly 1`] = `
     </p>
     <input
       className="govuk-button"
+      disabled={false}
       id="continue-button"
       type="submit"
       value="Accept and submit"

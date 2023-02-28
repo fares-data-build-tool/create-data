@@ -16,7 +16,7 @@ jobs:
 
   fdbt-netex-output_deploy_to__preprod:
     name: 'fdbt-netex-output_preprod'
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     env:
       WORKSPACE: preprod
     environment:

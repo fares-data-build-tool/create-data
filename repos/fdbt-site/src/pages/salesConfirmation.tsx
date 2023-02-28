@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { isArray, upperFirst } from 'lodash';
 import moment from 'moment';
 import {
@@ -121,33 +121,47 @@ const SalesConfirmation = ({
     fareType,
     hasCaps,
     selectedCap,
-}: SalesConfirmationProps): ReactElement => (
-    <TwoThirdsLayout title={title} description={description} errors={[]}>
-        <CsrfForm action="/api/salesConfirmation" method="post" csrfToken={csrfToken}>
-            <>
-                <h1 className="govuk-heading-l">Check your sales information answers before submitting</h1>
-                <ConfirmationTable
-                    header="Sales Information"
-                    confirmationElements={buildSalesConfirmationElements(
-                        salesOfferPackages,
-                        startDate,
-                        endDate,
-                        fareType,
-                        hasCaps,
-                        selectedCap,
-                    )}
-                />
-                <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
+}: SalesConfirmationProps): ReactElement => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-                <p className="govuk-body">
-                    By submitting this data you are confirming that, to the best of your knowledge, the details you are
-                    providing are correct.
-                </p>
-                <input type="submit" value="Accept and submit" id="continue-button" className="govuk-button" />
-            </>
-        </CsrfForm>
-    </TwoThirdsLayout>
-);
+    const handleSubmit = () => {
+        setIsSubmitting(true);
+    };
+
+    return (
+        <TwoThirdsLayout title={title} description={description} errors={[]}>
+            <CsrfForm onSubmit={handleSubmit} action="/api/salesConfirmation" method="post" csrfToken={csrfToken}>
+                <>
+                    <h1 className="govuk-heading-l">Check your sales information answers before submitting</h1>
+                    <ConfirmationTable
+                        header="Sales Information"
+                        confirmationElements={buildSalesConfirmationElements(
+                            salesOfferPackages,
+                            startDate,
+                            endDate,
+                            fareType,
+                            hasCaps,
+                            selectedCap,
+                        )}
+                    />
+                    <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
+
+                    <p className="govuk-body">
+                        By submitting this data you are confirming that, to the best of your knowledge, the details you
+                        are providing are correct.
+                    </p>
+                    <input
+                        type="submit"
+                        value="Accept and submit"
+                        id="continue-button"
+                        className="govuk-button"
+                        disabled={isSubmitting}
+                    />
+                </>
+            </CsrfForm>
+        </TwoThirdsLayout>
+    );
+};
 
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
