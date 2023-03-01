@@ -62,7 +62,6 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             const ticketWithIds = JSON.parse(object.Body.toString('utf-8')) as TicketWithIds;
             const singleOrGroupPassengerType = await getPassengerTypeById(ticketWithIds.passengerType.id, noc);
             const passengerTypeValue = singleOrGroupPassengerType.name;
-            const fareDayEnd = await getFareDayEnd(noc);
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let passengerType: any, groupDefinition;
@@ -92,6 +91,8 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 : [];
 
             const cap = !!ticketWithIds.cap ? await getCapByNocAndId(noc, ticketWithIds.cap.id) : undefined;
+
+            const fareDayEnd = await getFareDayEnd(noc);
 
             const timeRestrictionWithUpdatedFareDayEnds: FullTimeRestriction[] = timeRestriction.map(
                 (timeRestriction: DbTimeRestriction) => ({

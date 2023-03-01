@@ -269,7 +269,6 @@ export interface ProductDetails extends BaseProduct {
     productPrice: string;
     productDuration: string;
     productValidity: string;
-    productEndTime?: string;
     carnetDetails?: CarnetDetails;
 }
 
