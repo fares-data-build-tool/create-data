@@ -78,7 +78,6 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             const fullProducts = ticketWithIds.products.map((product) => ({
                 ...product,
                 productName: product.productName ? product.productName : `${passengerTypeValue} ${ticketWithIds.type}`,
-                productEndTime: 'productValidity' in product && product.productValidity === 'fareDayEnd' ? fareDayEnd: undefined,
                 salesOfferPackages: product.salesOfferPackages.map((sopWithIds) => {
                     const sop = allSops.find((it) => it.id === sopWithIds.id);
                     if (!sop) {
@@ -92,7 +91,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ? await getTimeRestrictionsByIdAndNoc(ticketWithIds.timeRestriction.id, noc)
                 : [];
 
-            const cap = !!ticketWithIds.cap ? await getCapByNocAndId(noc, ticketWithIds.cap.id) : undefined;            
+            const cap = !!ticketWithIds.cap ? await getCapByNocAndId(noc, ticketWithIds.cap.id) : undefined;
 
             const timeRestrictionWithUpdatedFareDayEnds: FullTimeRestriction[] = timeRestriction.map(
                 (timeRestriction: DbTimeRestriction) => ({
