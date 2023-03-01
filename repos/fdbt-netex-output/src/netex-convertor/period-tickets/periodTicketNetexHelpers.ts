@@ -53,6 +53,7 @@ import {
     getNetexMode,
     getProductType,
     getProfileRef,
+    getTime,
     getUserProfile,
     isFlatFareType,
     isMultiOpFlatFareType,
@@ -1053,8 +1054,12 @@ export const getPeriodConditionsElement = (
                             : 'standardDuration',
                 },
                 EndTime:
-                    product.productValidity === 'fareDayEnd' && 'fareDayEnd' in userPeriodTicket
-                        ? { $t: userPeriodTicket.fareDayEnd }
+                    product.productValidity === 'fareDayEnd' &&
+                    'fareDayEnd' in userPeriodTicket &&
+                    userPeriodTicket.fareDayEnd
+                        ? { $t: getTime(userPeriodTicket.fareDayEnd) }
+                        : product.productValidity === 'endOfCalendarDay'
+                        ? { $t: '23:59:00' }
                         : undefined,
             },
         };

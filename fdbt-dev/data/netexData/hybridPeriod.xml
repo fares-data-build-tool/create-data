@@ -228,7 +228,7 @@
                       <UsageValidityPeriod version="1.0" id="op:Trip@Best_product_one@back@frequency">
                         <UsageTrigger>purchase</UsageTrigger>
                         <UsageEnd>endOfFareDay</UsageEnd>
-                        <EndTime>2300</EndTime>
+                        <EndTime>23:00:00</EndTime>
                       </UsageValidityPeriod>
                     </limitations>
                   </GenericParameterAssignment>
