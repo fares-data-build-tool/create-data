@@ -125,5 +125,6 @@
       ]
     }
   ],
-  "carnet": false
+  "carnet": false,
+  "fareDayEnd": "2300"
 }

@@ -261,6 +261,7 @@
                       <UsageValidityPeriod version="1.0" id="op:Trip@Week_Rider@back@frequency">
                         <UsageTrigger>purchase</UsageTrigger>
                         <UsageEnd>endOfFareDay</UsageEnd>
+                        <EndTime>2300</EndTime>
                       </UsageValidityPeriod>
                     </limitations>
                   </GenericParameterAssignment>

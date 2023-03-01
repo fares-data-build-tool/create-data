@@ -218,7 +218,6 @@
                       <UsageValidityPeriod version="1.0" id="op:Trip@test@back@frequency">
                         <UsageTrigger>purchase</UsageTrigger>
                         <UsageEnd>endOfFareDay</UsageEnd>
-                        <ActivationMeans>noneRequired</ActivationMeans>
                       </UsageValidityPeriod>
                     </limitations>
                   </GenericParameterAssignment>

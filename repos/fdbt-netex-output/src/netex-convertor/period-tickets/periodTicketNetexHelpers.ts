@@ -1052,7 +1052,6 @@ export const getPeriodConditionsElement = (
                             ? 'endOfFareDay'
                             : 'standardDuration',
                 },
-                ActivationMeans: product.productValidity === 'fareDayEnd' ? undefined : { $t: 'noneRequired' },
                 EndTime:
                     product.productValidity === 'fareDayEnd' && 'fareDayEnd' in userPeriodTicket
                         ? { $t: userPeriodTicket.fareDayEnd }
