@@ -616,7 +616,6 @@
                         <UsageTrigger>startOutboundRide</UsageTrigger>
                         <UsageEnd>standardDuration</UsageEnd>
                         <StandardDuration>P0Y1M0D</StandardDuration>
-                        <ActivationMeans>noneRequired</ActivationMeans>
                       </UsageValidityPeriod>
                     </limitations>
                   </GenericParameterAssignment>

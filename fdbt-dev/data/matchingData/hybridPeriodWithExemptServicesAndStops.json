@@ -484,5 +484,6 @@
       "serviceDescription": "KNOTT END - POULTON - BLACKPOOL",
       "startDate": "09/05/2020"
     }
-  ]
+  ],
+  "fareDayEnd": "2300"
 }

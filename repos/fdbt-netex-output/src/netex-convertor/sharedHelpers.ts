@@ -170,7 +170,7 @@ export const getGroupElement = (groupDefinition: GroupDefinition): NetexObject =
     };
 };
 
-const getTime = (time: string): string => moment(time, 'HHmm').format('HH:mm:ss');
+export const getTime = (time: string): string => moment(time, 'HHmm').format('HH:mm:ss');
 
 export const getEarliestTime = (timeRestriction: FullTimeRestriction): string => {
     const startTimes: string[] = timeRestriction.timeBands
