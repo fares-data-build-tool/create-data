@@ -1048,13 +1048,9 @@ export const getPeriodConditionsElement = (
                 id: `op:Trip@${product.productName}@back@frequency`,
                 UsageTrigger: { $t: 'purchase' },
                 UsageEnd: {
-                    $t:
-                        product.productValidity === 'fareDayEnd'
-                            ? 'endOfFareDay'
-                            : product.productValidity === 'endOfCalendarDay'
-                            ? 'endOfCalendarPeriod'
-                            : 'standardDuration',
+                    $t: product.productValidity === 'fareDayEnd' ? 'endOfFareDay' : 'standardDuration',
                 },
+                StandardDuration: product.productValidity === 'endOfCalendarDay' ? { $t: 'P0Y0M1D' } : undefined,
                 EndTime:
                     product.productValidity === 'fareDayEnd' &&
                     'fareDayEnd' in userPeriodTicket &&

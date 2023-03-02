@@ -217,7 +217,8 @@
                       </FrequencyOfUse>
                       <UsageValidityPeriod version="1.0" id="op:Trip@test@back@frequency">
                         <UsageTrigger>purchase</UsageTrigger>
-                        <UsageEnd>endOfCalendarPeriod</UsageEnd>
+                        <UsageEnd>standardDuration</UsageEnd>
+                        <StandardDuration>P0Y0M1D</StandardDuration>
                         <EndTime>23:59:00</EndTime>
                       </UsageValidityPeriod>
                     </limitations>
