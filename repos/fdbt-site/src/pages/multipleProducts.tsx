@@ -136,7 +136,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             flatFare,
             carnet,
             numberOfProductsToRender,
-            school: fareType === 'schoolService' && !carnet ? true : false,
+            school: fareType === 'schoolService' && !carnet,
         },
     };
 };

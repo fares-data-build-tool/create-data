@@ -104,7 +104,10 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const fareTypeInfo = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
 
-        if (isFareType(fareTypeInfo) && fareTypeInfo.fareType === 'period') {
+        if (
+            isFareType(fareTypeInfo) &&
+            (fareTypeInfo.fareType === 'period' || fareTypeInfo.fareType === 'schoolService')
+        ) {
             redirectTo(res, '/pointToPointPeriodProduct');
             return;
         }

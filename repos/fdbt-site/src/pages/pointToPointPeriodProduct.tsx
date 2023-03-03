@@ -2,14 +2,20 @@ import React, { ReactElement } from 'react';
 import upperFirst from 'lodash/upperFirst';
 import ExpirySelector from '../components/ExpirySelector';
 import TwoThirdsLayout from '../layout/Layout';
-import { POINT_TO_POINT_PRODUCT_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
+import {
+    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
+} from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper, { FormErrorBlock, FormGroupWrapper } from '../components/FormElementWrapper';
 import ErrorSummary from '../components/ErrorSummary';
-import { getSessionAttribute } from '../utils/sessions';
+import { getRequiredSessionAttribute, getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
 import { PointToPointPeriodProduct } from '../interfaces/matchingJsonTypes';
+import { isFareType } from '../interfaces/typeGuards';
 
 const title = 'Point to Point Period Product - Create Fares Data Service';
 const description = 'Point to point period product details entry page of the Create Fares Data Service';
@@ -18,6 +24,7 @@ interface PointToPointPeriodProductProps {
     product: PointToPointPeriodProduct | null;
     operator: string;
     passengerType: string;
+    school: boolean;
     errors: ErrorInfo[];
     csrfToken: string;
 }
@@ -26,6 +33,7 @@ const ProductDetails = ({
     product,
     operator,
     passengerType,
+    school,
     csrfToken,
     errors,
 }: PointToPointPeriodProductProps): ReactElement => {
@@ -102,6 +110,7 @@ const ProductDetails = ({
                                         unitName="durationUnits"
                                         unitId="product-details-expiry-unit"
                                         errors={errors}
+                                        school={school}
                                     />
                                 </>
                             </FormGroupWrapper>
@@ -118,6 +127,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Po
     const csrfToken = getCsrfToken(ctx);
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const product = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
+    const fareTypeAttribute = getRequiredSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
+    const carnetFareTypeAttribute = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
+
+    const carnet = carnetFareTypeAttribute === undefined ? false : carnetFareTypeAttribute;
+
+    const school = isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'schoolService' && !carnet;
 
     if (!operatorAttribute?.name) {
         throw new Error('The Operator Attribute name was not set');
@@ -128,6 +143,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Po
             product: product || null,
             operator: operatorAttribute.name,
             passengerType: 'adult',
+            school,
             errors: product && 'errors' in product ? product.errors : [],
             csrfToken,
         },

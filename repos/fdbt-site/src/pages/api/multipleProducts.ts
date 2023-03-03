@@ -17,16 +17,9 @@ import {
     checkIntegerIsValid,
     checkPriceIsValid,
     checkProductOrCapNameIsValid,
+    isValidInputDuration,
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
-
-export const isValidInputDuration = (durationInput: string, carnet: boolean): boolean => {
-    const allowedUnits = ['day', 'week', 'month', 'year', 'hour', 'term'];
-    if (carnet) {
-        allowedUnits.push('no expiry');
-    }
-    return allowedUnits.includes(durationInput);
-};
 
 export const getErrorsForSession = (validationResult: MultiProductWithErrors[]): ErrorInfo[] => {
     const errors: ErrorInfo[] = [];
@@ -118,7 +111,7 @@ export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiPr
 export const checkProductDurationTypesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
     const productsWithErrors: MultiProduct[] = products.map((product) => {
         const { productDurationUnits } = product;
-        const productDurationUnitsError = !isValidInputDuration(productDurationUnits as string, false)
+        const productDurationUnitsError = !isValidInputDuration(productDurationUnits as string, false, true)
             ? 'Choose an option from the dropdown'
             : '';
         if (productDurationUnitsError) {

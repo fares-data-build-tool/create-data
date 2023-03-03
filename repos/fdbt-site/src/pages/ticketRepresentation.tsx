@@ -12,7 +12,7 @@ import {
 import { ErrorInfo, FareType, NextPageContextWithSession } from '../interfaces';
 import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
-import { getCsrfToken, isSchemeOperator } from '../utils';
+import { getCsrfToken, isSchemeOperator, sentenceCaseString } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 
 const title = 'Ticket Representation - Create Fares Data Service';
@@ -26,6 +26,7 @@ interface TicketRepresentationProps {
     showPointToPoint: boolean;
     showFlatFlare: boolean;
     showMultiOperator: boolean;
+    showGeoZone: boolean;
     isDevOrTest: boolean;
 }
 
@@ -68,6 +69,7 @@ const TicketRepresentation = ({
     showPointToPoint,
     showFlatFlare,
     showMultiOperator,
+    showGeoZone,
     isDevOrTest,
 }: TicketRepresentationProps): ReactElement => {
     const fareTypeDesc = getFareTypeDesc(fareType);
@@ -82,23 +84,29 @@ const TicketRepresentation = ({
                         <fieldset className="govuk-fieldset" aria-describedby="ticket-representation-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 className="govuk-fieldset__heading" id="ticket-representation-page-heading">
-                                    {`Select a type of ${fareTypeDesc} ticket`}
+                                    {`Select a type of ${sentenceCaseString(fareTypeDesc)} ticket`}
                                 </h1>
                             </legend>
                             <FormElementWrapper errors={errors} errorId="geo-zone" errorClass="govuk-radios--errors">
                                 <RadioButtons
                                     inputName="ticketType"
                                     options={[
-                                        {
-                                            value: 'geoZone',
-                                            label: 'A ticket within a geographical zone',
-                                            hint: fareTypeHint.geoZone,
-                                        },
+                                        ...(showGeoZone && isDevOrTest
+                                            ? [
+                                                  {
+                                                      value: 'geoZone',
+                                                      label: 'A ticket within a geographddical zone',
+                                                      hint: fareTypeHint.geoZone,
+                                                  },
+                                              ]
+                                            : []),
+
                                         {
                                             value: 'multipleServices',
                                             label: 'A ticket for a set of services',
                                             hint: fareTypeHint.multipleServices,
                                         },
+
                                         ...(showMultiOperator && isDevOrTest
                                             ? [
                                                   {
@@ -166,9 +174,10 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             errors: ticketType && isTicketRepresentationWithErrors(ticketType) ? ticketType.errors : [],
             csrfToken,
             showHybrid: fareType === 'period' && !isScheme,
-            showPointToPoint: fareType === 'period' && !isCarnet && !isScheme,
+            showPointToPoint: (fareType === 'period' && !isCarnet && !isScheme) || fareType === 'schoolService',
             showFlatFlare: fareType === 'flatFare' && !isScheme && !isCarnet,
             showMultiOperator: fareType === 'multiOperator',
+            showGeoZone: fareType !== 'schoolService',
             isDevOrTest,
         },
     };
