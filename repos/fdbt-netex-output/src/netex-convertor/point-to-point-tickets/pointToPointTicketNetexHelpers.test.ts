@@ -1999,7 +1999,6 @@ describe('Netex Helpers', () => {
                 StandardDuration: {
                     $t: 'P0Y1M0D',
                 },
-                ActivationMeans: { $t: 'noneRequired' },
             });
         });
 

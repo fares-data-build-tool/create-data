@@ -53,6 +53,7 @@ import {
     getNetexMode,
     getProductType,
     getProfileRef,
+    getTime,
     getUserProfile,
     isFlatFareType,
     isMultiOpFlatFareType,
@@ -1036,7 +1037,7 @@ export const getPeriodEligibilityElement = (userPeriodTicket: Ticket): NetexObje
 
 export const getPeriodConditionsElement = (
     userPeriodTicket: Ticket,
-    product: { productName: string; productValidity?: string },
+    product: { productName: string; productValidity?: string; productEndTime?: string },
 ): NetexObject => {
     let usagePeriodValidity = {};
 
@@ -1047,12 +1048,17 @@ export const getPeriodConditionsElement = (
                 id: `op:Trip@${product.productName}@back@frequency`,
                 UsageTrigger: { $t: 'purchase' },
                 UsageEnd: {
-                    $t:
-                        product.productValidity === 'endOfCalendarDay' || product.productValidity === 'fareDayEnd'
-                            ? 'endOfFareDay'
-                            : 'standardDuration',
+                    $t: product.productValidity === 'fareDayEnd' ? 'endOfFareDay' : 'standardDuration',
                 },
-                ActivationMeans: { $t: 'noneRequired' },
+                StandardDuration: product.productValidity === 'endOfCalendarDay' ? { $t: 'P0Y0M1D' } : undefined,
+                EndTime:
+                    product.productValidity === 'fareDayEnd' &&
+                    'fareDayEnd' in userPeriodTicket &&
+                    userPeriodTicket.fareDayEnd
+                        ? { $t: getTime(userPeriodTicket.fareDayEnd) }
+                        : product.productValidity === 'endOfCalendarDay'
+                        ? { $t: '23:59:00' }
+                        : undefined,
             },
         };
     }
