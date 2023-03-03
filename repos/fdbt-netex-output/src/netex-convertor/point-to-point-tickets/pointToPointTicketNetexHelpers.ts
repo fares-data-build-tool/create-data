@@ -645,7 +645,6 @@ export const getPointToPointConditionsElement = (ticket: PointToPointTicket): Ne
                 StandardDuration: {
                     $t: `P${years}Y${months}M${days}D`,
                 },
-                ActivationMeans: { $t: 'noneRequired' },
             },
         };
     }

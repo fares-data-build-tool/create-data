@@ -301,5 +301,6 @@
             "serviceDescription": "Stockton Heath - Cronton Lane via Sandymoor, Windmill Hill, Castlefields"
         }
     ],
-    "termTime": false
+    "termTime": false,
+    "fareDayEnd": "2300"
 }

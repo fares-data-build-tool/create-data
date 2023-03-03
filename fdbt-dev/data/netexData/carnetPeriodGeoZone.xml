@@ -319,7 +319,6 @@
                       <UsageValidityPeriod version="1.0" id="op:Trip@Product_1@back@frequency">
                         <UsageTrigger>purchase</UsageTrigger>
                         <UsageEnd>standardDuration</UsageEnd>
-                        <ActivationMeans>noneRequired</ActivationMeans>
                       </UsageValidityPeriod>
                     </limitations>
                   </GenericParameterAssignment>
