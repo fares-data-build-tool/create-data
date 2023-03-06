@@ -42,7 +42,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
               Array [
                 Object {
                   "hint": "Travel within a geographical zone",
-                  "label": "A ticket within a geographddical zone",
+                  "label": "A ticket within a geographical zone",
                   "value": "geoZone",
                 },
                 Object {
@@ -128,7 +128,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
               Array [
                 Object {
                   "hint": "Unlimited travel within a geographical zone",
-                  "label": "A ticket within a geographddical zone",
+                  "label": "A ticket within a geographical zone",
                   "value": "geoZone",
                 },
                 Object {
@@ -235,7 +235,7 @@ exports[`pages ticketRepresentation should render error messaging when errors ar
               Array [
                 Object {
                   "hint": "Unlimited travel within a geographical zone",
-                  "label": "A ticket within a geographddical zone",
+                  "label": "A ticket within a geographical zone",
                   "value": "geoZone",
                 },
                 Object {

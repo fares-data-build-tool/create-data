@@ -1,4 +1,8 @@
-import { FARE_TYPE_ATTRIBUTE, MATCHING_ATTRIBUTE } from './../../../src/constants/attributes';
+import {
+    FARE_TYPE_ATTRIBUTE,
+    MATCHING_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
+} from './../../../src/constants/attributes';
 import inboundMatching from '../../../src/pages/api/inboundMatching';
 import { getMockRequestAndResponse, service, mockMatchingUserFareStages } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
@@ -128,6 +132,7 @@ describe('Inbound Matching API', () => {
             },
             session: {
                 [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
+                [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
                 [MATCHING_ATTRIBUTE]: {
                     service: {
                         lineName: '',

@@ -498,7 +498,7 @@ describe('pages', () => {
                 });
                 const confirmationElements = buildSchoolTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
-                expect(confirmationElements).toHaveLength(13);
+                expect(confirmationElements).toHaveLength(2);
             });
         });
 

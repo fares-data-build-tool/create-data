@@ -4,21 +4,16 @@ import {
     OPERATOR_ATTRIBUTE,
 } from './../../constants/attributes';
 import { NextApiResponse } from 'next';
-import { redirectTo, redirectToError, getSelectedStages } from '../../utils/apiUtils';
+import { redirectTo, redirectToError, getSelectedStages, getFareTypeFromFromAttributes } from '../../utils/apiUtils';
 import { NextApiRequestWithSession, UserFareStages } from '../../interfaces';
 import {
     fareStageIsUnused,
     getMatchingFareZonesAndUnassignedStopsFromForm,
     isFareStageUnassigned,
 } from '../../utils/apiUtils/matching';
-import {
-    CARNET_FARE_TYPE_ATTRIBUTE,
-    INBOUND_MATCHING_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
-} from '../../constants/attributes';
+import { CARNET_FARE_TYPE_ATTRIBUTE, INBOUND_MATCHING_ATTRIBUTE } from '../../constants/attributes';
 import { getRequiredSessionAttribute, getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { MatchingWithErrors, InboundMatchingInfo } from '../../interfaces/matchingInterface';
-import { isFareType } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -102,12 +97,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             return;
         }
 
-        const fareTypeInfo = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-
-        if (
-            isFareType(fareTypeInfo) &&
-            (fareTypeInfo.fareType === 'period' || fareTypeInfo.fareType === 'schoolService')
-        ) {
+        if (getFareTypeFromFromAttributes(req) === 'period') {
             redirectTo(res, '/pointToPointPeriodProduct');
             return;
         }

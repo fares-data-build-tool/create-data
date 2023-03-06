@@ -91,11 +91,11 @@ const TicketRepresentation = ({
                                 <RadioButtons
                                     inputName="ticketType"
                                     options={[
-                                        ...(showGeoZone && isDevOrTest
+                                        ...(showGeoZone
                                             ? [
                                                   {
                                                       value: 'geoZone',
-                                                      label: 'A ticket within a geographddical zone',
+                                                      label: 'A ticket within a geographical zone',
                                                       hint: fareTypeHint.geoZone,
                                                   },
                                               ]

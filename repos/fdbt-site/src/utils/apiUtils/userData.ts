@@ -592,16 +592,11 @@ export const getPointToPointPeriodJson = (
         periodExpiryAttributeInfo,
     );
 
-    const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-
     return {
         ...userDataJson,
         type: 'period',
         products: products,
-        termTime:
-            isFareType(fareTypeAttribute) && fareTypeAttribute.fareType === 'schoolService'
-                ? isTermTime(req)
-                : undefined,
+        termTime: isTermTime(req),
     };
 };
 
