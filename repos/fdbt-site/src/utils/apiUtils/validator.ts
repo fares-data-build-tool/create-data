@@ -15,10 +15,13 @@ export const isCurrency = (periodPriceInput: string): boolean => {
     return regex.test(periodPriceInput);
 };
 
-export const isValidInputDuration = (durationInput: string, carnet: boolean): boolean => {
+export const isValidInputDuration = (durationInput: string, carnet: boolean, school = false): boolean => {
     const allowedUnits = ['day', 'week', 'month', 'year', 'hour'];
     if (carnet) {
         allowedUnits.push('no expiry');
+    }
+    if (school) {
+        allowedUnits.push('term');
     }
     return allowedUnits.includes(durationInput);
 };

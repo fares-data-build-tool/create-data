@@ -12,6 +12,21 @@ describe('pages', () => {
                     product={null}
                     operator="Test Operator"
                     passengerType="Adult"
+                    school={false}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for school ticket', () => {
+            const tree = shallow(
+                <PointToPointPeriodProduct
+                    errors={[]}
+                    csrfToken=""
+                    product={null}
+                    operator="Test Operator"
+                    passengerType="Adult"
+                    school
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -39,6 +54,7 @@ describe('pages', () => {
                     product={null}
                     operator="Test Operator"
                     passengerType="Adult"
+                    school
                 />,
             );
             expect(tree).toMatchSnapshot();

@@ -1,5 +1,132 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages pointToPointPeriodProduct should render correctly for school ticket 1`] = `
+<TwoThirdsLayout
+  description="Point to point period product details entry page of the Create Fares Data Service"
+  title="Point to Point Period Product - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/pointToPointPeriodProduct"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group"
+    >
+      <fieldset
+        aria-describedby="point-to-point-period-product-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="point-to-point-period-product-page-heading"
+          >
+            Enter your period product details
+          </h1>
+        </legend>
+        <span
+          className="govuk-hint"
+          id="service-operator-hint"
+        >
+          Test Operator
+           - 
+          Adult
+        </span>
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "point-to-point-period-product-name",
+            ]
+          }
+          errors={Array []}
+        >
+          <label
+            className="govuk-label"
+            htmlFor="point-to-point-period-product-name"
+          >
+            Product Name
+          </label>
+          <span
+            className="govuk-hint"
+            id="product-name-hint"
+          >
+            Must be between 2 and 50 characters long
+          </span>
+          <FormElementWrapper
+            errorClass="govuk-input--error"
+            errorId="point-to-point-period-product-name"
+            errors={Array []}
+          >
+            <input
+              aria-describedby="product-name-hint"
+              className="govuk-input govuk-input--width-30 govuk-product-name-input__inner__input"
+              defaultValue=""
+              id="point-to-point-period-product-name"
+              maxLength={50}
+              name="productNameInput"
+              type="text"
+            />
+          </FormElementWrapper>
+        </FormGroupWrapper>
+        <FormGroupWrapper
+          errorIds={
+            Array [
+              "product-details-expiry-quantity",
+              "product-details-expiry-unit",
+            ]
+          }
+          errors={Array []}
+        >
+          <label
+            className="govuk-label"
+            htmlFor="product-details-expiry"
+          >
+            Period duration
+          </label>
+          <span
+            className="govuk-hint"
+            id="product-expiry-hint"
+          >
+            How long does the ticket last for. For example, 2 months
+          </span>
+          <FormErrorBlock
+            errorIds={
+              Array [
+                "product-details-expiry-quantity",
+                "product-details-expiry-unit",
+              ]
+            }
+            errors={Array []}
+          />
+          <ExpirySelector
+            defaultDuration=""
+            errors={Array []}
+            hintId="product-expiry-hint"
+            quantityId="product-details-expiry-quantity"
+            quantityName="productDuration"
+            school={true}
+            unitId="product-details-expiry-unit"
+            unitName="durationUnits"
+          />
+        </FormGroupWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
 exports[`pages pointToPointPeriodProduct should render correctly on first load 1`] = `
 <TwoThirdsLayout
   description="Point to point period product details entry page of the Create Fares Data Service"
@@ -110,6 +237,7 @@ exports[`pages pointToPointPeriodProduct should render correctly on first load 1
             hintId="product-expiry-hint"
             quantityId="product-details-expiry-quantity"
             quantityName="productDuration"
+            school={false}
             unitId="product-details-expiry-unit"
             unitName="durationUnits"
           />
@@ -326,6 +454,7 @@ exports[`pages pointToPointPeriodProduct should render error messaging when erro
             hintId="product-expiry-hint"
             quantityId="product-details-expiry-quantity"
             quantityName="productDuration"
+            school={true}
             unitId="product-details-expiry-unit"
             unitName="durationUnits"
           />

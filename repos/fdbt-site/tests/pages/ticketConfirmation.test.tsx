@@ -1,5 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
+import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -17,6 +18,7 @@ import {
     TXC_SOURCE_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
 } from '../../src/constants/attributes';
 import { ConfirmationElement, MultiOperatorInfo, Operator } from '../../src/interfaces';
 import TicketConfirmation, {
@@ -423,6 +425,80 @@ describe('pages', () => {
                 expect(() => buildSchoolTicketConfirmationElements(ctx)).toThrowError(
                     'Did not receive an expected schoolFareType.',
                 );
+            });
+
+            it('should build confirmation elements for a school multiple-services ticket', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
+                        [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                            products: [
+                                {
+                                    productName: 'Some Product',
+                                    productPrice: '12',
+                                },
+                            ],
+                        },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
+
+                const confirmationElements = buildSchoolTicketConfirmationElements(ctx);
+                expect(confirmationElements).toContainEqual(confirmationElementStructure);
+                expect(confirmationElements).toHaveLength(4);
+            });
+
+            it('should build confirmation elements for a school point to point ticket', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'pointToPointPeriod' },
+                        [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
+                        [INBOUND_MATCHING_ATTRIBUTE]: {
+                            inboundUserFareStages: userFareStages,
+                            inboundMatchingFareZones: mockMatchingFaresZones,
+                        },
+                        [MATCHING_ATTRIBUTE]: {
+                            service,
+                            userFareStages,
+                            matchingFareZones: mockMatchingFaresZones,
+                        },
+                        [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: {
+                            productName: 'My product',
+                            productDuration: '7',
+                            productDurationUnits: ExpiryUnit.WEEK,
+                        },
+                        [PERIOD_EXPIRY_ATTRIBUTE]: {
+                            productValidity: '24hr',
+                            productEndTime: '',
+                        },
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                            products: [
+                                {
+                                    productName: 'Some Product',
+                                    productPrice: '12',
+                                },
+                            ],
+                        },
+                        [DIRECTION_ATTRIBUTE]: {
+                            direction: 'outbound',
+                            inboundDirection: 'inbound',
+                        },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
+                const confirmationElements = buildSchoolTicketConfirmationElements(ctx);
+                expect(confirmationElements).toContainEqual(confirmationElementStructure);
+                expect(confirmationElements).toHaveLength(2);
             });
         });
 

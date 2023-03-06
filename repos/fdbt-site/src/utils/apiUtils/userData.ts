@@ -596,6 +596,7 @@ export const getPointToPointPeriodJson = (
         ...userDataJson,
         type: 'period',
         products: products,
+        termTime: isTermTime(req),
     };
 };
 

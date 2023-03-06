@@ -1,0 +1,223 @@
+{
+  "operatorName": "Blackpool Transport",
+  "type": "period",
+  "nocCode": "BLAC",
+  "email": "test@example.com",
+  "uuid": "BLAC0a76df2d",  
+  "termTime": true,
+  "lineName": "1",
+  "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade",
+  "lineId": "4YyoI0",
+  "outboundFareZones": [
+    {
+      "name": "Shott Drive",
+      "stops": [
+        {
+          "stopName": "Market Street",
+          "naptanCode": "blpajgag",
+          "atcoCode": "2590B0901",
+          "localityCode": "E0054826",
+          "localityName": "Blackpool Town Centre",
+          "parentLocalityName": "Blackpool",
+          "indicator": "Stop MA1",
+          "street": "Market Street",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "1.00",
+          "fareZones": [
+            "The Stag pub"
+          ]
+        },
+        {
+          "price": "1.10",
+          "fareZones": [
+            "Frederick Drive"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Stag pub",
+      "stops": [
+        {
+          "stopName": "Bank Hey Street",
+          "naptanCode": "blpadjmt",
+          "atcoCode": "2590B0128",
+          "localityCode": "N0079382",
+          "localityName": "Promenade",
+          "parentLocalityName": "Blackpool",
+          "indicator": "Stop 2",
+          "street": "Bank Hey Street",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "1.10",
+          "fareZones": [
+            "Frederick Drive"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Frederick Drive",
+      "stops": [
+        {
+          "stopName": "Central Coach Station",
+          "naptanCode": "blpagwat",
+          "atcoCode": "2590B0677",
+          "localityCode": "E0054826",
+          "localityName": "Blackpool Town Centre",
+          "parentLocalityName": "Blackpool",
+          "indicator": "opp",
+          "street": "Central Drive",
+          "qualifierName": ""
+        }
+      ],
+      "prices": []
+    }
+  ],
+  "inboundFareZones": [
+    {
+      "name": "Shott Drive",
+      "stops": [
+        {
+          "stopName": "Saltcotes Road",
+          "naptanCode": "lanjgdat",
+          "atcoCode": "2500B0449",
+          "localityCode": "E0015858",
+          "localityName": "Saltcotes",
+          "parentLocalityName": "",
+          "indicator": "by",
+          "street": "Saltcotes Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "1.00",
+          "fareZones": [
+            "The Stag pub"
+          ]
+        },
+        {
+          "price": "1.10",
+          "fareZones": [
+            "Frederick Drive"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Stag pub",
+      "stops": [
+        {
+          "stopName": "Wordsworth Avenue",
+          "naptanCode": "lanjgpjp",
+          "atcoCode": "2500B0450",
+          "localityCode": "E0057506",
+          "localityName": "Lytham",
+          "parentLocalityName": "",
+          "indicator": "by",
+          "street": "Preston Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "1.10",
+          "fareZones": [
+            "Frederick Drive"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Frederick Drive",
+      "stops": [
+        {
+          "stopName": "South St",
+          "naptanCode": "lanjgpjg",
+          "atcoCode": "2500B0451",
+          "localityCode": "E0057506",
+          "localityName": "Lytham",
+          "parentLocalityName": "",
+          "indicator": "by",
+          "street": "Preston Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": []
+    }
+  ],
+  "unassignedStops": {
+    "outboundUnassignedStops": [
+      {
+        "atcoCode": "2590B0516"
+      },
+      {
+        "atcoCode": "2590B0131"
+      },
+      {
+        "atcoCode": "2590B0132"
+      },
+      {
+        "atcoCode": "2590B0133"
+      },
+      {
+        "atcoCode": "2590B0134"
+      }
+    ],
+    "inboundUnassignedStops": [
+      {
+        "atcoCode": "2500B0452"
+      },
+      {
+        "atcoCode": "2500B0453"
+      },
+      {
+        "atcoCode": "2500B0454"
+      },
+      {
+        "atcoCode": "2500B0455"
+      }
+    ]
+  },
+  "products": [
+    {
+      "productName": "prod",
+      "productDuration": "1 term",
+      "productValidity": "24hr",
+      "salesOfferPackages": [
+        {
+          "name": "Onboard (cash)",
+          "description": "Purchasable on board the bus, with cash, as a paper ticket.",
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["cash"],
+          "ticketFormats": ["paperTicket"]
+        },
+        {
+          "name": "Onboard (contactless)",
+          "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
+          "purchaseLocations": ["onBoard"],
+          "paymentMethods": ["contactlessPaymentCard"],
+          "ticketFormats": ["paperTicket"]
+        }
+      ]
+    }
+  ],
+  "passengerType": "youngPerson",
+  "ageRange": "Yes",
+  "ageRangeMin": "16",
+  "ageRangeMax": "25",
+  "proof": "Yes",
+  "proofDocuments": ["identityDocument"], 
+  "ticketPeriod": {
+    "startDate": "2001-01-01T00:00:00.000Z"
+  },
+  "carnet": false
+}

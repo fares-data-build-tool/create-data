@@ -5,6 +5,7 @@ import {
     isValid24hrTimeFormat,
     invalidCharactersArePresent,
     invalidUrlInput,
+    isValidInputDuration,
 } from '../../../../src/utils/apiUtils/validator';
 
 describe('validator', () => {
@@ -105,6 +106,26 @@ describe('validator', () => {
             [false, "valid character '", "http://www.example.com's"],
         ])('should return %s for %s', (validity, _case, value) => {
             expect(invalidUrlInput(value)).toBe(validity);
+        });
+    });
+
+    describe('isValidInputDuration', () => {
+        it.each([
+            [true, 'Valid input duration for non carnet and non school', 'day', false, false],
+            [true, 'Valid input duration for non carnet and non school', 'year', false, false],
+            [false, 'Invalid input duration for non carnet and non school', 'no expiry', false, false],
+            [false, 'Invalid input duration for non carnet and non school', 'term', false, false],
+
+            [true, 'Valid input duration for carnet and non school', 'day', true, false],
+            [true, 'Valid input duration for carnet and non school', 'no expiry', true, false],
+            [false, 'Valid input duration for carnet and non school', 'term', true, false],
+
+            [true, 'Valid input duration for non carnet and school', 'day', false, true],
+            [true, 'Valid input duration for non carnet and school', 'term', false, true],
+            [false, 'Invalid input duration for non carnet and school', 'no expiry', false, true],
+            [false, 'Invalid input duration for non carnet and school', '', false, true],
+        ])('should return %s for %s with duration as %s', (validity, _case, value, carnet, school) => {
+            expect(isValidInputDuration(value, carnet, school)).toBe(validity);
         });
     });
 });
