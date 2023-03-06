@@ -111,7 +111,7 @@ export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiPr
 export const checkProductDurationTypesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
     const productsWithErrors: MultiProduct[] = products.map((product) => {
         const { productDurationUnits } = product;
-        const productDurationUnitsError = !isValidInputDuration(productDurationUnits as string, false, true)
+        const productDurationUnitsError = !isValidInputDuration(productDurationUnits as string, false)
             ? 'Choose an option from the dropdown'
             : '';
         if (productDurationUnitsError) {

@@ -480,15 +480,6 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
 export const buildSchoolTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
     const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
 
-    const ticketRepresentationAttribute = getSessionAttribute(
-        ctx.req,
-        TICKET_REPRESENTATION_ATTRIBUTE,
-    ) as TicketRepresentationAttribute;
-
-    if (!ticketRepresentationAttribute || isWithErrors(ticketRepresentationAttribute)) {
-        throw new Error('Could not find ticket representation for period ticket');
-    }
-
     if (schoolFareTypeAttribute) {
         switch (schoolFareTypeAttribute.schoolFareType) {
             case 'single':
