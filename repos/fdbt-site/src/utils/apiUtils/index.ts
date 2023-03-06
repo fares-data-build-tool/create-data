@@ -5,11 +5,18 @@ import { ServerResponse } from 'http';
 import { decode } from 'jsonwebtoken';
 import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../../constants';
 import { OPERATOR_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
-import { CognitoIdToken, ErrorInfo, NextApiRequestWithSession, SchoolFareTypeAttribute } from '../../interfaces';
+import {
+    CognitoIdToken,
+    ErrorInfo,
+    FareType,
+    FareTypeWithErrors,
+    NextApiRequestWithSession,
+    SchoolFareTypeAttribute,
+} from '../../interfaces';
 import { globalSignOut } from '../../data/cognito';
 import logger from '../logger';
 import { destroySession, getSessionAttribute } from '../sessions';
-import { isFareType } from '../../interfaces/typeGuards';
+import { isFareType, isWithErrors } from '../../interfaces/typeGuards';
 import { daysOfWeek } from '../../../src/constants';
 
 export const setCookieOnResponseObject = (
@@ -269,4 +276,8 @@ export const exportHasStarted = (exportStarted: number): boolean => {
     const currTime = new Date().getTime() / 1000;
 
     return currTime - exportStarted > 5;
+};
+
+export const isSchoolFareType = (fareTypeAttribute: FareType | FareTypeWithErrors | undefined): boolean => {
+    return !!fareTypeAttribute && !isWithErrors(fareTypeAttribute) && fareTypeAttribute.fareType === 'schoolService';
 };

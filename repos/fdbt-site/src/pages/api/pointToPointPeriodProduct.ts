@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { redirectTo, redirectToError } from '../../utils/apiUtils';
+import { isSchoolFareType, redirectTo, redirectToError } from '../../utils/apiUtils';
 import { FARE_TYPE_ATTRIBUTE, POINT_TO_POINT_PRODUCT_ATTRIBUTE } from '../../constants/attributes';
 import {
     checkDurationIsValid,
@@ -10,7 +10,6 @@ import {
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
 import { PointToPointPeriodProduct } from '../../interfaces/matchingJsonTypes';
-import { isWithErrors } from '../../interfaces/typeGuards';
 
 export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
     try {
@@ -24,10 +23,13 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         };
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-        const school =
-            fareTypeAttribute && !isWithErrors(fareTypeAttribute) && fareTypeAttribute.fareType === 'schoolService';
+
         const nameCheckError = checkProductOrCapNameIsValid(whiteSpaceCleansedNameInput, 'product');
-        const productDurationUnitsCheckError = !isValidInputDuration(durationUnits, true, school)
+        const productDurationUnitsCheckError = !isValidInputDuration(
+            durationUnits,
+            true,
+            isSchoolFareType(fareTypeAttribute),
+        )
             ? 'Select a valid expiry unit'
             : '';
         let durationCheckError = '';

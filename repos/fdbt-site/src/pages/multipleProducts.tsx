@@ -15,6 +15,7 @@ import CsrfForm from '../components/CsrfForm';
 import { isWithErrors, isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
+import { isSchoolFareType } from '../utils/apiUtils';
 
 const title = 'Multiple Product - Create Fares Data Service';
 const description = 'Multiple Product entry page of the Create Fares Data Service';
@@ -136,7 +137,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             flatFare,
             carnet,
             numberOfProductsToRender,
-            school: fareType === 'schoolService' && !carnet,
+            school: isSchoolFareType(fareTypeAttribute) && !carnet,
         },
     };
 };
