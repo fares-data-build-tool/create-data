@@ -235,7 +235,7 @@ export const buildPointToPointPeriodConfirmationElements = (ctx: NextPageContext
     if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
         throw new Error('Period expiry is not present or contains errors');
     }
-    addProductDetails(product, confirmationElements);
+    addProductDetails(product, confirmationElements, true);
 
     return confirmationElements;
 };
@@ -315,9 +315,10 @@ export const buildFlatFarePriceByDistanceConfirmationElements = (
     return confirmationElements;
 };
 
-const addProductDetails = (
+export const addProductDetails = (
     product: Product | MultiProduct | PointToPointPeriodProduct,
     confirmationElements: ConfirmationElement[],
+    isPointToPointProduct: boolean,
 ): void => {
     const content = [];
     if ('productPrice' in product) {
@@ -338,7 +339,7 @@ const addProductDetails = (
     confirmationElements.push({
         name: `${product.productName}`,
         content,
-        href: 'multipleProducts',
+        href: isPointToPointProduct ? 'pointToPointPeriodProduct' : 'multipleProducts',
     });
 };
 
@@ -441,17 +442,17 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         }
         if (isArray(products)) {
             products.forEach((product) => {
-                addProductDetails(product, confirmationElements);
+                addProductDetails(product, confirmationElements, false);
             });
         } else if (!isArray(products)) {
-            addProductDetails(products, confirmationElements);
+            addProductDetails(products, confirmationElements, false);
         }
     } else {
         const product = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
         if (!product || isWithErrors(product)) {
             throw new Error('Product information for P2P period product could not be found.');
         }
-        addProductDetails(product, confirmationElements);
+        addProductDetails(product, confirmationElements, true);
     }
 
     if (periodExpiryAttribute && 'productValidity' in periodExpiryAttribute) {
@@ -485,7 +486,7 @@ export const buildSchoolTicketConfirmationElements = (ctx: NextPageContextWithSe
             case 'single':
                 return buildSingleTicketConfirmationElements(ctx);
             case 'period':
-                return buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+                return buildPeriodOrFlatFareConfirmationElements(ctx);
             case 'flatFare':
                 return buildFlatFareTicketConfirmationElements(ctx);
             default:

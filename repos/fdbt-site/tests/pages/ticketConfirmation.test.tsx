@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
+import { ExpiryUnit, PointToPointPeriodProduct, Product } from '../../src/interfaces/matchingJsonTypes';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -22,6 +22,7 @@ import {
 } from '../../src/constants/attributes';
 import { ConfirmationElement, MultiOperatorInfo, Operator } from '../../src/interfaces';
 import TicketConfirmation, {
+    addProductDetails,
     buildFlatFareTicketConfirmationElements,
     buildMatchedFareStages,
     buildPeriodOrMultiOpTicketConfirmationElements,
@@ -498,7 +499,7 @@ describe('pages', () => {
                 });
                 const confirmationElements = buildSchoolTicketConfirmationElements(ctx);
                 expect(confirmationElements).toContainEqual(confirmationElementStructure);
-                expect(confirmationElements).toHaveLength(2);
+                expect(confirmationElements).toHaveLength(13);
             });
         });
 
@@ -512,6 +513,55 @@ describe('pages', () => {
                 expect(() => buildTicketConfirmationElements('not a real fare type', ctx)).toThrowError(
                     'Did not receive an expected fareType.',
                 );
+            });
+        });
+
+        describe('addProductDetails', () => {
+            afterEach(() => {
+                jest.resetAllMocks();
+            });
+
+            it('should return the product details', () => {
+                const confirmationElements: ConfirmationElement[] = [];
+                const product: Product = {
+                    productName: 'Product 1',
+                    productDuration: '1',
+                    productDurationUnits: 'week',
+                };
+                addProductDetails(product, confirmationElements, false);
+                expect(confirmationElements).toHaveLength(1);
+                expect(confirmationElements[0].name).toEqual('Product 1');
+                expect(confirmationElements[0].content).toHaveLength(1);
+                expect(confirmationElements[0].href).toEqual('multipleProducts');
+            });
+
+            it('should return the product details having product price', () => {
+                const confirmationElements: ConfirmationElement[] = [];
+                const product: Product = {
+                    productName: 'Product 1',
+                    productDuration: '1',
+                    productDurationUnits: 'week',
+                    productPrice: '2',
+                };
+                addProductDetails(product, confirmationElements, false);
+                expect(confirmationElements).toHaveLength(1);
+                expect(confirmationElements[0].name).toEqual('Product 1');
+                expect(confirmationElements[0].content).toHaveLength(2);
+                expect(confirmationElements[0].href).toEqual('multipleProducts');
+            });
+
+            it('should return the product details for point to point period product', () => {
+                const confirmationElements: ConfirmationElement[] = [];
+                const product: PointToPointPeriodProduct = {
+                    productName: 'Product 1',
+                    productDuration: '1',
+                    productDurationUnits: ExpiryUnit.WEEK,
+                };
+                addProductDetails(product, confirmationElements, true);
+                expect(confirmationElements).toHaveLength(1);
+                expect(confirmationElements[0].name).toEqual('Product 1');
+                expect(confirmationElements[0].content).toHaveLength(1);
+                expect(confirmationElements[0].href).toEqual('pointToPointPeriodProduct');
             });
         });
 
