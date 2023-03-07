@@ -10,7 +10,7 @@ import {
 import { ErrorInfo, MultiProduct, MultiProductWithErrors, NextApiRequestWithSession } from '../../interfaces';
 import { isFareTypeAttributeWithErrors, isWithErrors } from '../../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { redirectTo, redirectToError } from '../../utils/apiUtils';
+import { isSchoolFareType, redirectTo, redirectToError } from '../../utils/apiUtils';
 
 import {
     checkDurationIsValid,
@@ -108,10 +108,13 @@ export const checkProductDurationsAreValid = (products: MultiProduct[]): MultiPr
     return productsWithErrors;
 };
 
-export const checkProductDurationTypesAreValid = (products: MultiProduct[]): MultiProductWithErrors[] => {
+export const checkProductDurationTypesAreValid = (
+    products: MultiProduct[],
+    isSchool: boolean,
+): MultiProductWithErrors[] => {
     const productsWithErrors: MultiProduct[] = products.map((product) => {
         const { productDurationUnits } = product;
-        const productDurationUnitsError = !isValidInputDuration(productDurationUnits as string, false)
+        const productDurationUnitsError = !isValidInputDuration(productDurationUnits as string, false, isSchool)
             ? 'Choose an option from the dropdown'
             : '';
         if (productDurationUnitsError) {
@@ -223,13 +226,14 @@ export const checkAllValidation = (
     products: MultiProduct[],
     isCarnet: boolean,
     isFlatFare: boolean,
+    isSchool: boolean,
 ): MultiProductWithErrors[] => {
     let validationResult = checkProductNamesAreValid(products);
     validationResult = checkProductPricesAreValid(validationResult);
 
     if (!isFlatFare) {
         validationResult = checkProductDurationsAreValid(validationResult);
-        validationResult = checkProductDurationTypesAreValid(validationResult);
+        validationResult = checkProductDurationTypesAreValid(validationResult, isSchool);
     }
 
     if (isCarnet) {
@@ -303,7 +307,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
         if (numberOfProducts !== 0) {
             updateSessionAttribute(req, NUMBER_OF_PRODUCTS_ATTRIBUTE, numberOfProducts);
         }
-        const fullValidationResult = checkAllValidation(multipleProducts, isCarnet, isFlatFare);
+        const isSchool = isSchoolFareType(fareTypeAttribute);
+        const fullValidationResult = checkAllValidation(multipleProducts, isCarnet, isFlatFare, isSchool);
 
         if (containsErrors(fullValidationResult)) {
             const errors: ErrorInfo[] = getErrorsForSession(fullValidationResult);
