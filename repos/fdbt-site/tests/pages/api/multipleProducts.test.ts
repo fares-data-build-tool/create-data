@@ -395,7 +395,7 @@ describe('multipleProducts', () => {
 
     describe('checkProductDurationTypesAreValid', () => {
         it('adds duration errors to a product with invalid durations', () => {
-            const result = checkProductDurationTypesAreValid(invalidDurationTypeProducts);
+            const result = checkProductDurationTypesAreValid(invalidDurationTypeProducts, false);
             expect(result[0].productDurationUnitsError).toBeUndefined();
             expect(result[1].productDurationUnitsError).toBe('Choose an option from the dropdown');
             expect(result[2].productDurationUnitsError).toBeUndefined();
