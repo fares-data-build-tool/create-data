@@ -1,22 +1,22 @@
 import { isFinished } from '../support/helpers';
 import {
-    completeAcademicPage,
+    completeAcademicMultiServicePage,
     completeAcademicPointToPointPage,
     completeSalesPages,
     selectFareType,
 } from '../support/steps';
 
 describe('The school faretype product journey', () => {
-    it('completes successfully for Academic term/year ticket', () => {
+    it('completes successfully for Academic term/year multi services ticket', () => {
         const numberOfProducts = 5;
         const multiProductNamePrefix = 'Cypress product ';
         selectFareType('schoolService', false);
-        completeAcademicPage(numberOfProducts, multiProductNamePrefix);
+        completeAcademicMultiServicePage(numberOfProducts, multiProductNamePrefix);
         completeSalesPages();
         isFinished();
     });
 
-    it('completes successfully for Academic term/year point to point ticket', () => {
+    it('completes successfully for Academic term/year point to point period ticket', () => {
         selectFareType('schoolService', false);
         completeAcademicPointToPointPage();
         completeSalesPages();

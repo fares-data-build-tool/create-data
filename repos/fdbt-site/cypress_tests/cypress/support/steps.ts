@@ -247,7 +247,7 @@ export const completeReturnPages = (csvUpload: boolean, isCarnet: boolean, isPer
     continueButtonClick();
 };
 
-export const completeAcademicPage = (numberOfProducts: number, multiProductNamePrefix: string): void => {
+export const completeAcademicMultiServicePage = (numberOfProducts: number, multiProductNamePrefix: string): void => {
     randomlyDetermineUserType();
     continueButtonClick();
     clickElementById('radio-option-multipleServices');
