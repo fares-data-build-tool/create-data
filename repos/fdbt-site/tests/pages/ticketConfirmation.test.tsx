@@ -453,7 +453,7 @@ describe('pages', () => {
                 expect(confirmationElements).toHaveLength(4);
             });
 
-            it('should build confirmation elements for a school point to point ticket', () => {
+            it('should build confirmation elements for a school point to point period ticket', () => {
                 const ctx = getMockContext({
                     session: {
                         [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
