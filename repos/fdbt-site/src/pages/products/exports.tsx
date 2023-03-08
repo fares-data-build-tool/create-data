@@ -8,9 +8,6 @@ import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb'
 import useSWR from 'swr';
 import { Export } from '../api/getExportProgress';
 import InfoPopup from '../../components/InfoPopup';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { SELECT_EXPORTS_ATTRIBUTE } from '../../constants/attributes';
-import { exportHasStarted } from '../../utils/apiUtils';
 import { checkIfMetaDataExists, getExportMetaData, getS3Exports, getS3FolderCount } from '../../data/s3';
 import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 
@@ -62,21 +59,25 @@ const Exports = ({ csrf, exportStarted, operatorHasProducts }: GlobalSettingsPro
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
+    const [exportInProgress, setExportInProgress] = useState(exportStarted);
 
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 1500 });
 
     const exports: Export[] | undefined = data?.exports;
 
-    const exportInProgress: Export | undefined = exports
+    const currentExport: Export | undefined = exports
         ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.numberOfFilesExpected)
         : undefined;
 
-    const anExportIsInProgress = !!exportInProgress;
+    const anExportIsInProgress = !!currentExport;
+    if (!!currentExport) {
+        setExportInProgress(anExportIsInProgress);
+    }
     const exportAllowed: boolean =
-        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !exportStarted;
-    const showCancelButton: boolean = anExportIsInProgress && !!exportInProgress?.exportFailed;
+        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !exportInProgress;
+    const showCancelButton: boolean = anExportIsInProgress && !!currentExport?.exportFailed;
     const failedExport: Export | undefined =
-        anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
+        anExportIsInProgress && currentExport?.exportFailed ? currentExport : undefined;
 
     return (
         <>
@@ -101,7 +102,7 @@ const Exports = ({ csrf, exportStarted, operatorHasProducts }: GlobalSettingsPro
                                     </CsrfForm>
                                 ) : showCancelButton ? (
                                     <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
-                                        <input type="hidden" name="exportName" value={exportInProgress?.name} />
+                                        <input type="hidden" name="exportName" value={currentExport?.name} />
                                         <button type="submit" className="govuk-button govuk-button--warning">
                                             Cancel export in progress
                                         </button>
@@ -229,13 +230,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
 
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
-    const selectExportAttribute = getSessionAttribute(ctx.req, SELECT_EXPORTS_ATTRIBUTE);
 
-    const exportStarted = !!selectExportAttribute && exportHasStarted(selectExportAttribute.exportStarted);
-
-    if (exportStarted) {
-        updateSessionAttribute(ctx.req, SELECT_EXPORTS_ATTRIBUTE, undefined);
-    }
     const exportNames = await getS3Exports(noc);
 
     const exports = await Promise.all(
