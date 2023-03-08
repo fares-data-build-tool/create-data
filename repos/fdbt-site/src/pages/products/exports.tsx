@@ -11,6 +11,8 @@ import InfoPopup from '../../components/InfoPopup';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
 import { SELECT_EXPORTS_ATTRIBUTE } from '../../constants/attributes';
 import { exportHasStarted } from '../../utils/apiUtils';
+import { checkIfMetaDataExists, getExportMetaData, getS3Exports, getS3FolderCount } from '../../data/s3';
+import { MATCHING_DATA_BUCKET_NAME, NETEX_BUCKET_NAME } from '../../constants';
 
 const title = 'Exports';
 const description = 'Export your products into NeTEx.';
@@ -234,11 +236,37 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if (exportStarted) {
         updateSessionAttribute(ctx.req, SELECT_EXPORTS_ATTRIBUTE, undefined);
     }
+    const exportNames = await getS3Exports(noc);
+
+    const exports = await Promise.all(
+        exportNames.map(async (name) => {
+            const prefix = `${noc}/exports/${name}/`;
+
+            const matchingDataCount = await getS3FolderCount(MATCHING_DATA_BUCKET_NAME, prefix);
+            const netexCount = await getS3FolderCount(NETEX_BUCKET_NAME, prefix);
+
+            let numberOfFilesExpected = matchingDataCount;
+
+            let metadata = undefined;
+            const metaDataExists = await checkIfMetaDataExists(`${noc}/exports/${name}.json`);
+
+            if (metaDataExists) {
+                metadata = await getExportMetaData(`${noc}/exports/${name}.json`);
+                numberOfFilesExpected = metadata.numberOfExpectedNetexFiles;
+            }
+
+            return { name, numberOfFilesExpected, netexCount };
+        }),
+    );
+
+    const exportInProgress = exports
+        ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.numberOfFilesExpected)
+        : undefined;
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
-            exportStarted,
+            exportStarted: !!exportInProgress,
             operatorHasProducts,
         },
     };
