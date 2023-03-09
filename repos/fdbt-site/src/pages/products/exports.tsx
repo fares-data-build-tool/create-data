@@ -70,11 +70,10 @@ const Exports = ({ csrf, exportStarted, operatorHasProducts }: GlobalSettingsPro
         : undefined;
 
     const anExportIsInProgress = !!currentExport;
-    if (!!currentExport) {
+    if (anExportIsInProgress !== exportInProgress) {
         setExportInProgress(anExportIsInProgress);
     }
-    const exportAllowed: boolean =
-        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !exportInProgress;
+    const exportAllowed: boolean = operatorHasProducts && !!exports && !buttonClicked && !exportInProgress;
     const showCancelButton: boolean = anExportIsInProgress && !!currentExport?.exportFailed;
     const failedExport: Export | undefined =
         anExportIsInProgress && currentExport?.exportFailed ? currentExport : undefined;
