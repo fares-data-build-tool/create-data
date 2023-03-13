@@ -33,7 +33,6 @@ import {
     MultipleProductAttribute,
     MultiProduct,
     NextPageContextWithSession,
-    SchoolFareTypeAttribute,
     Service,
     ServiceListAttribute,
     TicketRepresentationAttribute,
@@ -479,19 +478,10 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
 };
 
 export const buildSchoolTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
-    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
+    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
 
-    if (schoolFareTypeAttribute) {
-        switch (schoolFareTypeAttribute.schoolFareType) {
-            case 'single':
-                return buildSingleTicketConfirmationElements(ctx);
-            case 'period':
-                return buildPeriodOrFlatFareConfirmationElements(ctx);
-            case 'flatFare':
-                return buildFlatFareTicketConfirmationElements(ctx);
-            default:
-                throw new Error('Did not receive an expected schoolFareType.');
-        }
+    if (schoolFareTypeAttribute && schoolFareTypeAttribute.schoolFareType === 'period') {
+        return buildPeriodOrFlatFareConfirmationElements(ctx);
     } else {
         throw new Error('Could not extract schoolFareType from the schoolFareTypeAttribute.');
     }

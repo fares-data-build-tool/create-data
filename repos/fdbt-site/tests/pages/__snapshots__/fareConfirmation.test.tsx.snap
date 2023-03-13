@@ -342,7 +342,7 @@ exports[`pages fareConfirmation should render correctly for school tickets 1`] =
             "name": "Only valid during term times",
           },
           Object {
-            "content": "Single",
+            "content": "Period",
             "href": "",
             "name": "School ticket fare type",
           },

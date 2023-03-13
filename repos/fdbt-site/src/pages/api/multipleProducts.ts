@@ -4,7 +4,6 @@ import {
     FARE_TYPE_ATTRIBUTE,
     MULTIPLE_PRODUCT_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-    SCHOOL_FARE_TYPE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { ErrorInfo, MultiProduct, MultiProductWithErrors, NextApiRequestWithSession } from '../../interfaces';
@@ -258,10 +257,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             ticketRepresentationAttribute && !isWithErrors(ticketRepresentationAttribute)
                 ? ticketRepresentationAttribute.name
                 : '';
-        const schoolFareType = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
         const isFlatFare =
             fareTypeAttribute.fareType === 'flatFare' ||
-            (fareTypeAttribute.fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare') ||
             ticketRepresentation === 'multipleServicesFlatFareMultiOperator' ||
             ticketRepresentation === 'geoZoneFlatFareMultiOperator';
         const multipleProducts: MultiProduct[] = [];

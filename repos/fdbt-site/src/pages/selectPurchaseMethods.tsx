@@ -12,13 +12,7 @@ import {
     SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
-import {
-    ErrorInfo,
-    NextPageContextWithSession,
-    ProductInfo,
-    ProductWithSalesOfferPackages,
-    SchoolFareTypeAttribute,
-} from '../interfaces';
+import { ErrorInfo, NextPageContextWithSession, ProductInfo, ProductWithSalesOfferPackages } from '../interfaces';
 import { isFareType } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
@@ -263,7 +257,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const multipleProductAttribute = getSessionAttribute(ctx.req, MULTIPLE_PRODUCT_ATTRIBUTE);
     const fareTypeAttribute = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
-    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
+    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
 
     if (!isFareType(fareTypeAttribute)) {
         throw new Error(`Invalid fare type: ${fareTypeAttribute}`);

@@ -424,7 +424,7 @@ describe('pages', () => {
                     },
                 });
                 expect(() => buildSchoolTicketConfirmationElements(ctx)).toThrowError(
-                    'Did not receive an expected schoolFareType.',
+                    'Could not extract schoolFareType from the schoolFareTypeAttribute.',
                 );
             });
 
