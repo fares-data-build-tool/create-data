@@ -71,11 +71,6 @@ exports[`pages carnetFareType should render correctly 1`] = `
                   "label": "Multi-operator carnet",
                   "value": "multiOperator",
                 },
-                Object {
-                  "hint": "A ticket bundle available to pupils in full-time education",
-                  "label": "Academic term/year ticket",
-                  "value": "schoolService",
-                },
               ]
             }
           />
@@ -183,11 +178,6 @@ exports[`pages carnetFareType should render error messaging when errors are pass
                   "hint": "A ticket bundle that covers more than one operator",
                   "label": "Multi-operator carnet",
                   "value": "multiOperator",
-                },
-                Object {
-                  "hint": "A ticket bundle available to pupils in full-time education",
-                  "label": "Academic term/year ticket",
-                  "value": "schoolService",
                 },
               ]
             }

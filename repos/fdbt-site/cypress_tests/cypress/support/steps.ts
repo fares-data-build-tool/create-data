@@ -65,12 +65,6 @@ export const selectCarnetFareType = (fareType: FareType): void => {
     continueButtonClick();
 };
 
-export const selectSchoolFareType = (fareType: FareType): void => {
-    clickElementById(fareTypeToFareTypeIdMapper(fareType));
-    continueButtonClick();
-    continueButtonClick();
-};
-
 export const completeFlatFarePages = (
     productName: string,
     isScheme: boolean,

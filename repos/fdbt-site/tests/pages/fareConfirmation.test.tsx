@@ -193,7 +193,7 @@ describe('pages', () => {
                         proofDocuments: ['Student Card'],
                     }}
                     groupPassengerInfo={[]}
-                    schoolFareType="single"
+                    schoolFareType="period"
                     termTime="true"
                     fullTimeRestrictions={[]}
                     newTimeRestrictionCreated=""
@@ -353,7 +353,7 @@ describe('pages', () => {
                     'blah',
 
                     [],
-                    'single',
+                    'period',
                     'true',
                     [],
                     '',
@@ -377,7 +377,7 @@ describe('pages', () => {
                         name: 'Only valid during term times',
                     },
                     {
-                        content: 'Single',
+                        content: 'Period',
                         href: '',
                         name: 'School ticket fare type',
                     },

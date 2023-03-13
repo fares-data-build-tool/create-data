@@ -182,7 +182,7 @@ export interface MultipleProductAttributeWithErrors extends MultipleProductAttri
     errors: ErrorInfo[];
 }
 
-export type SchoolFareType = 'flatFare' | 'single' | 'period' | '';
+export type SchoolFareType = 'period' | '';
 export interface SchoolFareTypeAttribute {
     schoolFareType: SchoolFareType;
 }

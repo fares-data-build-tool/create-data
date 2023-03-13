@@ -1,5 +1,4 @@
 import Cookies from 'cookies';
-import { SchoolFareType } from '../../../../src/interfaces';
 import {
     setCookieOnResponseObject,
     getUuidFromSession,
@@ -10,7 +9,6 @@ import {
     getSelectedStages,
     getAndValidateSchemeOpRegion,
     isSchemeOperator,
-    redirectOnSchoolFareType,
     getFareTypeFromFromAttributes,
 } from '../../../../src/utils/apiUtils';
 import * as s3 from '../../../../src/data/s3';
@@ -100,11 +98,11 @@ describe('apiUtils', () => {
             const { req } = getMockRequestAndResponse({
                 session: {
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
-                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'flatFare' },
+                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
                 },
             });
             const fareType = getFareTypeFromFromAttributes(req);
-            expect(fareType).toBe('flatFare');
+            expect(fareType).toBe('period');
         });
 
         it('should throw an error when the fare type is not a valid fare type', () => {
@@ -127,39 +125,6 @@ describe('apiUtils', () => {
             expect(() => getFareTypeFromFromAttributes(req)).toThrowError(
                 'Incorrect fare type session attributes found.',
             );
-        });
-    });
-
-    describe('redirectOnSchoolFareType', () => {
-        it.each([
-            ['/service', 'single'],
-            ['/ticketRepresentation', 'period'],
-            ['/serviceList', 'flatFare'],
-        ])('should return 302 redirect to %s when the %s ticket option is selected', (redirect, schoolFareType) => {
-            const { req, res } = getMockRequestAndResponse({
-                mockWriteHeadFn: writeHeadMock,
-                session: {
-                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
-                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: schoolFareType as SchoolFareType },
-                },
-            });
-            redirectOnSchoolFareType(req, res);
-            expect(writeHeadMock).toBeCalledWith(302, {
-                Location: redirect,
-            });
-        });
-
-        it('should throw error if unexpected fare type is selected', () => {
-            const { req, res } = getMockRequestAndResponse({
-                mockWriteHeadFn: writeHeadMock,
-                session: {
-                    [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
-                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'roundandaround' as SchoolFareType },
-                },
-            });
-            expect(() => {
-                redirectOnFareType(req, res);
-            }).toThrowError(new Error('Did not receive an expected schoolFareType.'));
         });
     });
 
@@ -186,11 +151,11 @@ describe('apiUtils', () => {
                 mockWriteHeadFn: writeHeadMock,
                 session: {
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
-                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'single' },
+                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
                 },
             });
             redirectOnFareType(req, res);
-            expect(writeHeadMock).toBeCalledWith(302, { Location: '/service' });
+            expect(writeHeadMock).toBeCalledWith(302, { Location: '/ticketRepresentation' });
         });
 
         it('should call redirectOnSchoolFareType when the schoolService ticket option is selected and school type is period', () => {

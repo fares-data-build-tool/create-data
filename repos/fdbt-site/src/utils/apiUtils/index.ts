@@ -74,7 +74,7 @@ export const redirectToError = (
 
 export const getFareTypeFromFromAttributes = (req: NextApiRequestWithSession): string => {
     const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
-    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
+    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
 
     if (
         !isFareType(fareTypeAttribute) ||
@@ -84,30 +84,8 @@ export const getFareTypeFromFromAttributes = (req: NextApiRequestWithSession): s
     }
 
     return fareTypeAttribute.fareType === 'schoolService'
-        ? schoolFareTypeAttribute.schoolFareType
+        ? (schoolFareTypeAttribute as SchoolFareTypeAttribute).schoolFareType
         : fareTypeAttribute.fareType;
-};
-
-export const redirectOnSchoolFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
-    const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
-
-    if (schoolFareTypeAttribute) {
-        switch (schoolFareTypeAttribute.schoolFareType) {
-            case 'single':
-                redirectTo(res, '/service');
-                return;
-            case 'period':
-                redirectTo(res, '/ticketRepresentation');
-                return;
-            case 'flatFare':
-                redirectTo(res, '/serviceList');
-                return;
-            default:
-                throw new Error('Did not receive an expected schoolFareType.');
-        }
-    } else {
-        throw new Error('Could not extract schoolFareType from the schoolFareTypeAttribute.');
-    }
 };
 
 export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiResponse): void => {
@@ -118,14 +96,12 @@ export const redirectOnFareType = (req: NextApiRequestWithSession, res: NextApiR
             case 'period':
             case 'multiOperator':
             case 'flatFare':
+            case 'schoolService':
                 redirectTo(res, '/ticketRepresentation');
                 return;
             case 'single':
             case 'return':
                 redirectTo(res, '/service');
-                return;
-            case 'schoolService':
-                redirectOnSchoolFareType(req, res);
                 return;
             default:
                 throw new Error('Did not receive an expected fareType.');

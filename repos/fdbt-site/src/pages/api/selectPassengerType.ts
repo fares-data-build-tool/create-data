@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 import { GROUP_PASSENGER_TYPE } from '../../constants';
 import {
-    CARNET_FARE_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     GROUP_PASSENGER_INFO_ATTRIBUTE,
     GROUP_SIZE_ATTRIBUTE,
@@ -83,16 +82,15 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
-        if (fareType === 'schoolService' && !getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE)) {
+        if (fareType === 'schoolService') {
             updateSessionAttribute(req, TERM_TIME_ATTRIBUTE, { termTime: true });
             const redirectLocation = fareType === 'schoolService' ? '/fareConfirmation' : '/selectTimeRestrictions';
             redirectTo(res, redirectLocation);
+            return;
         } else {
-            const redirectLocation = fareType === 'schoolService' ? '/termTime' : '/selectTimeRestrictions';
-            redirectTo(res, redirectLocation);
+            redirectTo(res, '/selectTimeRestrictions');
+            return;
         }
-
-        return;
     } catch (error) {
         const message = 'There was a problem selecting the passenger type:';
         redirectToError(res, message, 'api.selectPassengerType', error);

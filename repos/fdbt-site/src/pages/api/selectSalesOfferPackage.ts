@@ -15,7 +15,6 @@ import {
     MultipleProductAttributeWithErrors,
     NextApiRequestWithSession,
     ProductWithSalesOfferPackages,
-    SchoolFareTypeAttribute,
     SelectSalesOfferPackageWithError,
     ProductInfo,
 } from '../../interfaces';
@@ -110,7 +109,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
         const fareTypeAttribute = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
-        const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
+        const schoolFareTypeAttribute = getSessionAttribute(req, SCHOOL_FARE_TYPE_ATTRIBUTE);
 
         const fareTypeValue: string = ticket && matchingJsonMetaData ? ticket.type : fareTypeAttribute.fareType;
         const fareType =

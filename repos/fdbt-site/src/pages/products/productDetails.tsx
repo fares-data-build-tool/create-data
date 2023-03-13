@@ -238,7 +238,11 @@ const createProductDetails = async (
     productDetailsElements.push({
         name: 'Fare type',
         id: 'fare-type',
-        content: [`${sentenceCaseString(ticket.type)}${ticket.carnet ? ' (carnet)' : ''}`],
+        content: [
+            `${sentenceCaseString(ticket.type)}${ticket.carnet ? ' (carnet)' : ''}${
+                'termTime' in ticket && !!ticket.termTime ? ' (academic)' : ''
+            }`,
+        ],
     });
 
     if ('selectedServices' in ticket) {
