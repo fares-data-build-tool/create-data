@@ -68,11 +68,7 @@ const Exports = ({ csrf, initialExportIsInProgress, operatorHasProducts }: Globa
 
     const anExportIsInProgress = !!exportInProgress;
     const exportAllowed: boolean =
-        operatorHasProducts &&
-        !anExportIsInProgress &&
-        !!exports &&
-        !buttonClicked &&
-        (!initialExportIsInProgress || !anExportIsInProgress);
+        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !initialExportIsInProgress;
     const showCancelButton: boolean = anExportIsInProgress && !!exportInProgress?.exportFailed;
     const failedExport: Export | undefined =
         anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
