@@ -327,7 +327,7 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2024',
                     productDetailsElements: [
-                        { name: 'Fare type', id: 'fare-type', content: ['Single'] },
+                        { name: 'Fare type', id: 'fare-type', content: ['Single (academic)'] },
                         {
                             id: 'services',
                             name: 'Service',
@@ -994,7 +994,7 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2024',
                     productDetailsElements: [
-                        { name: 'Fare type', id: 'fare-type', content: ['Single'] },
+                        { name: 'Fare type', id: 'fare-type', content: ['Single (academic)'] },
                         {
                             id: 'services',
                             name: 'Service',

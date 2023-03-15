@@ -4,8 +4,6 @@ import { NextApiRequestWithSession } from '../../interfaces';
 import { getS3Exports } from '../../data/s3';
 import { getProductById } from '../../data/auroradb';
 import { triggerExport } from '../../utils/apiUtils/export';
-import { updateSessionAttribute } from '../../utils/sessions';
-import { SELECT_EXPORTS_ATTRIBUTE } from '../../constants/attributes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const noc = getAndValidateNoc(req, res);
@@ -42,8 +40,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     const links = products.map((product) => product.matchingJsonLink);
 
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
-    const currTime = new Date().getTime() / 1000;
-    updateSessionAttribute(req, SELECT_EXPORTS_ATTRIBUTE, { exportStarted: currTime });
     redirectTo(res, '/products/exports');
     return;
 };

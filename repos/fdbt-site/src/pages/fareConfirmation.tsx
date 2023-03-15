@@ -10,10 +10,9 @@ import {
 } from '../constants/attributes';
 import {
     NextPageContextWithSession,
-    TermTimeAttribute,
     FullTimeRestrictionAttribute,
     ConfirmationElement,
-    SchoolFareTypeAttribute,
+    SchoolFareType,
 } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
 import CsrfForm from '../components/CsrfForm';
@@ -34,7 +33,7 @@ interface FareConfirmationProps {
     passengerType: PassengerType;
     passengerTypeName: string;
     groupPassengerInfo: CompanionInfo[];
-    schoolFareType: string;
+    schoolFareType: SchoolFareType;
     termTime: string;
     fullTimeRestrictions: FullTimeRestriction[];
     newTimeRestrictionCreated: string;
@@ -47,7 +46,7 @@ export const buildFareConfirmationElements = (
     passengerType: PassengerType,
     passengerTypeName: string,
     groupPassengerInfo: CompanionInfo[],
-    schoolFareType: string,
+    schoolFareType: SchoolFareType,
     termTime: string,
     fullTimeRestrictions: FullTimeRestriction[],
     newTimeRestrictionCreated: string,
@@ -231,8 +230,8 @@ export const getServerSideProps = async (
     const carnetAttribute = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE);
     const carnet = !!carnetAttribute;
     const passengerTypeAttribute = getSessionAttribute(ctx.req, PASSENGER_TYPE_ATTRIBUTE);
-    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
-    const termTimeAttribute = getSessionAttribute(ctx.req, TERM_TIME_ATTRIBUTE) as TermTimeAttribute;
+    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
+    const termTimeAttribute = getSessionAttribute(ctx.req, TERM_TIME_ATTRIBUTE);
     const fullTimeRestrictionsAttribute = getSessionAttribute(
         ctx.req,
         FULL_TIME_RESTRICTIONS_ATTRIBUTE,

@@ -6,11 +6,8 @@ import CsrfForm from '../../components/CsrfForm';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb';
 import useSWR from 'swr';
-import { Export } from '../api/getExportProgress';
+import { Export, getAllExports } from '../api/getExportProgress';
 import InfoPopup from '../../components/InfoPopup';
-import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { SELECT_EXPORTS_ATTRIBUTE } from '../../constants/attributes';
-import { exportHasStarted } from '../../utils/apiUtils';
 
 const title = 'Exports';
 const description = 'Export your products into NeTEx.';
@@ -18,7 +15,7 @@ const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).th
 
 interface GlobalSettingsProps {
     csrf: string;
-    exportStarted: boolean;
+    initialExportIsInProgress: boolean;
     operatorHasProducts: boolean;
 }
 
@@ -56,22 +53,22 @@ const getTag = (exportDetails: Export): ReactElement => {
     );
 };
 
-const Exports = ({ csrf, exportStarted, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, initialExportIsInProgress, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
 
-    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 1500 });
+    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000, refreshWhenHidden: true });
 
     const exports: Export[] | undefined = data?.exports;
 
-    const exportInProgress: Export | undefined = exports
+    const exportInProgress: Export | undefined = !!exports
         ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.numberOfFilesExpected)
         : undefined;
 
     const anExportIsInProgress = !!exportInProgress;
     const exportAllowed: boolean =
-        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !exportStarted;
+        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !initialExportIsInProgress;
     const showCancelButton: boolean = anExportIsInProgress && !!exportInProgress?.exportFailed;
     const failedExport: Export | undefined =
         anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
@@ -227,18 +224,17 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
 
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
-    const selectExportAttribute = getSessionAttribute(ctx.req, SELECT_EXPORTS_ATTRIBUTE);
 
-    const exportStarted = !!selectExportAttribute && exportHasStarted(selectExportAttribute.exportStarted);
+    const exports = await getAllExports(noc);
 
-    if (exportStarted) {
-        updateSessionAttribute(ctx.req, SELECT_EXPORTS_ATTRIBUTE, undefined);
-    }
+    const initialExportIsInProgress = !!exports.find(
+        (exp) => exp.exportFailed || exp.netexCount < exp.numberOfFilesExpected,
+    );
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
-            exportStarted,
+            initialExportIsInProgress,
             operatorHasProducts,
         },
     };

@@ -5,7 +5,6 @@ import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     NUMBER_OF_PRODUCTS_ATTRIBUTE,
-    SCHOOL_FARE_TYPE_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../constants/attributes';
 import ProductRow from '../components/ProductRow';
@@ -15,6 +14,7 @@ import CsrfForm from '../components/CsrfForm';
 import { isWithErrors, isFareTypeAttributeWithErrors } from '../interfaces/typeGuards';
 import { getSessionAttribute } from '../utils/sessions';
 import { getCsrfToken } from '../utils';
+import { isSchoolFareType } from '../utils/apiUtils';
 
 const title = 'Multiple Product - Create Fares Data Service';
 const description = 'Multiple Product entry page of the Create Fares Data Service';
@@ -120,10 +120,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
     }
 
     const { fareType } = fareTypeAttribute;
-    const schoolFareType = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
     const flatFare =
         fareType === 'flatFare' ||
-        (fareType === 'schoolService' && schoolFareType?.schoolFareType === 'flatFare') ||
         ticketRepresentation === 'multipleServicesFlatFareMultiOperator' ||
         ticketRepresentation === 'geoZoneFlatFareMultiOperator';
     const numberOfProductsToRender = getSessionAttribute(ctx.req, NUMBER_OF_PRODUCTS_ATTRIBUTE) || 1;
@@ -136,7 +134,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Mu
             flatFare,
             carnet,
             numberOfProductsToRender,
-            school: fareType === 'schoolService' && !carnet ? true : false,
+            school: isSchoolFareType(fareTypeAttribute) && !carnet,
         },
     };
 };

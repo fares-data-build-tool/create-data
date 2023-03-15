@@ -11,7 +11,7 @@ import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { isService } from '../interfaces/typeGuards';
+import { isFareType, isService } from '../interfaces/typeGuards';
 import { getSessionAttribute, updateSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { removeExcessWhiteSpace } from '../utils/apiUtils/validator';
@@ -108,7 +108,8 @@ export const getServerSideProps = async (
     }
 
     const fareTypeAttribute = getRequiredSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE);
-    const isReturn = 'fareType' in fareTypeAttribute && ['period', 'return'].includes(fareTypeAttribute.fareType);
+    const isReturn =
+        isFareType(fareTypeAttribute) && ['period', 'return', 'schoolService'].includes(fareTypeAttribute.fareType);
     if (isReturn) {
         updateSessionAttribute(ctx.req, DIRECTION_ATTRIBUTE, { direction, inboundDirection });
         return { redirect: { destination: '/inputMethod', permanent: false } };

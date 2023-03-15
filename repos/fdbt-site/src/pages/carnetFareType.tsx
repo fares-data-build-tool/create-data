@@ -48,11 +48,6 @@ const carnetRadioProps = [
         label: 'Multi-operator carnet',
         hint: 'A ticket bundle that covers more than one operator',
     },
-    {
-        value: 'schoolService',
-        label: 'Academic term/year ticket',
-        hint: 'A ticket bundle available to pupils in full-time education',
-    },
 ];
 
 const CarnetFareType = ({ operatorName, errors = [], csrfToken }: CarnetFareTypeProps): ReactElement => {

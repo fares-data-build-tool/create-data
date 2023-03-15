@@ -17,6 +17,7 @@ describe('pages', () => {
                     showMultiOperator
                     showFlatFlare={false}
                     isDevOrTest
+                    showGeoZone
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -33,6 +34,7 @@ describe('pages', () => {
                     showMultiOperator={true}
                     showFlatFlare
                     isDevOrTest
+                    showGeoZone
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -54,6 +56,7 @@ describe('pages', () => {
                     showFlatFlare
                     showMultiOperator
                     isDevOrTest
+                    showGeoZone
                 />,
             );
             expect(tree).toMatchSnapshot();

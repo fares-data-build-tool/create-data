@@ -174,7 +174,7 @@ describe('userData', () => {
                     },
                     [TIME_RESTRICTIONS_DEFINITION_ATTRIBUTE]: mockTimeRestriction,
                     [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
-                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'single' },
+                    [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
                     [PRODUCT_DATE_ATTRIBUTE]: {
                         startDate: '2020-12-17T09:30:46.0Z',
                         endDate: '2020-12-18T09:30:46.0Z',
@@ -183,8 +183,8 @@ describe('userData', () => {
                     [TERM_TIME_ATTRIBUTE]: { termTime: true },
                 },
             });
-            const result = getBaseTicketAttributes(req, res, 'single');
-            expect(result.type).toEqual('single');
+            const result = getBaseTicketAttributes(req, res, 'period');
+            expect(result.type).toEqual('period');
         });
     });
 

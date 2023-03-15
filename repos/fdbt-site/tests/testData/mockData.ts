@@ -2090,6 +2090,7 @@ export const expectedPointToPointPeriodTicket: WithIds<PointToPointPeriodTicket>
             },
         ],
     },
+    termTime: false,
 };
 
 export const expectedCircularReturnTicket: WithIds<ReturnTicket> = {

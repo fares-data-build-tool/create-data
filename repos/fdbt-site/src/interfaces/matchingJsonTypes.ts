@@ -289,6 +289,7 @@ export interface ProductDetails extends BaseProduct {
 export interface PointToPointPeriodTicket extends Omit<ReturnTicket, 'products' | 'type'> {
     type: 'period';
     products: (PointToPointPeriodProduct & Product & BaseProduct)[];
+    termTime: boolean;
 }
 
 export type TimeRestrictionDay =

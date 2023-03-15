@@ -1,5 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
+import { ExpiryUnit, PointToPointPeriodProduct, Product } from '../../src/interfaces/matchingJsonTypes';
 import {
     CARNET_PRODUCT_DETAILS_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
@@ -17,9 +18,11 @@ import {
     TXC_SOURCE_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
+    POINT_TO_POINT_PRODUCT_ATTRIBUTE,
 } from '../../src/constants/attributes';
 import { ConfirmationElement, MultiOperatorInfo, Operator } from '../../src/interfaces';
 import TicketConfirmation, {
+    addProductDetails,
     buildFlatFareTicketConfirmationElements,
     buildMatchedFareStages,
     buildPeriodOrMultiOpTicketConfirmationElements,
@@ -421,8 +424,82 @@ describe('pages', () => {
                     },
                 });
                 expect(() => buildSchoolTicketConfirmationElements(ctx)).toThrowError(
-                    'Did not receive an expected schoolFareType.',
+                    'Could not extract schoolFareType from the schoolFareTypeAttribute.',
                 );
+            });
+
+            it('should build confirmation elements for a school multiple-services ticket', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServices' },
+                        [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                            products: [
+                                {
+                                    productName: 'Some Product',
+                                    productPrice: '12',
+                                },
+                            ],
+                        },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
+
+                const confirmationElements = buildSchoolTicketConfirmationElements(ctx);
+                expect(confirmationElements).toContainEqual(confirmationElementStructure);
+                expect(confirmationElements).toHaveLength(4);
+            });
+
+            it('should build confirmation elements for a school point to point period ticket', () => {
+                const ctx = getMockContext({
+                    session: {
+                        [FARE_TYPE_ATTRIBUTE]: { fareType: 'schoolService' },
+                        [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'pointToPointPeriod' },
+                        [SCHOOL_FARE_TYPE_ATTRIBUTE]: { schoolFareType: 'period' },
+                        [INBOUND_MATCHING_ATTRIBUTE]: {
+                            inboundUserFareStages: userFareStages,
+                            inboundMatchingFareZones: mockMatchingFaresZones,
+                        },
+                        [MATCHING_ATTRIBUTE]: {
+                            service,
+                            userFareStages,
+                            matchingFareZones: mockMatchingFaresZones,
+                        },
+                        [POINT_TO_POINT_PRODUCT_ATTRIBUTE]: {
+                            productName: 'My product',
+                            productDuration: '7',
+                            productDurationUnits: ExpiryUnit.WEEK,
+                        },
+                        [PERIOD_EXPIRY_ATTRIBUTE]: {
+                            productValidity: '24hr',
+                            productEndTime: '',
+                        },
+                        [MULTIPLE_PRODUCT_ATTRIBUTE]: {
+                            products: [
+                                {
+                                    productName: 'Some Product',
+                                    productPrice: '12',
+                                },
+                            ],
+                        },
+                        [DIRECTION_ATTRIBUTE]: {
+                            direction: 'outbound',
+                            inboundDirection: 'inbound',
+                        },
+                        [TXC_SOURCE_ATTRIBUTE]: {
+                            source: 'bods',
+                            hasBods: true,
+                            hasTnds: true,
+                        },
+                    },
+                });
+                const confirmationElements = buildSchoolTicketConfirmationElements(ctx);
+                expect(confirmationElements).toContainEqual(confirmationElementStructure);
+                expect(confirmationElements).toHaveLength(13);
             });
         });
 
@@ -436,6 +513,55 @@ describe('pages', () => {
                 expect(() => buildTicketConfirmationElements('not a real fare type', ctx)).toThrowError(
                     'Did not receive an expected fareType.',
                 );
+            });
+        });
+
+        describe('addProductDetails', () => {
+            afterEach(() => {
+                jest.resetAllMocks();
+            });
+
+            it('should return the product details', () => {
+                const confirmationElements: ConfirmationElement[] = [];
+                const product: Product = {
+                    productName: 'Product 1',
+                    productDuration: '1',
+                    productDurationUnits: 'week',
+                };
+                addProductDetails(product, confirmationElements, false);
+                expect(confirmationElements).toHaveLength(1);
+                expect(confirmationElements[0].name).toEqual('Product 1');
+                expect(confirmationElements[0].content).toHaveLength(1);
+                expect(confirmationElements[0].href).toEqual('multipleProducts');
+            });
+
+            it('should return the product details having product price', () => {
+                const confirmationElements: ConfirmationElement[] = [];
+                const product: Product = {
+                    productName: 'Product 1',
+                    productDuration: '1',
+                    productDurationUnits: 'week',
+                    productPrice: '2',
+                };
+                addProductDetails(product, confirmationElements, false);
+                expect(confirmationElements).toHaveLength(1);
+                expect(confirmationElements[0].name).toEqual('Product 1');
+                expect(confirmationElements[0].content).toHaveLength(2);
+                expect(confirmationElements[0].href).toEqual('multipleProducts');
+            });
+
+            it('should return the product details for point to point period product', () => {
+                const confirmationElements: ConfirmationElement[] = [];
+                const product: PointToPointPeriodProduct = {
+                    productName: 'Product 1',
+                    productDuration: '1',
+                    productDurationUnits: ExpiryUnit.WEEK,
+                };
+                addProductDetails(product, confirmationElements, true);
+                expect(confirmationElements).toHaveLength(1);
+                expect(confirmationElements[0].name).toEqual('Product 1');
+                expect(confirmationElements[0].content).toHaveLength(1);
+                expect(confirmationElements[0].href).toEqual('pointToPointPeriodProduct');
             });
         });
 

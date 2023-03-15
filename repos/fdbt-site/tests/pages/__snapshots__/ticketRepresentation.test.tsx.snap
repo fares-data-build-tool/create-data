@@ -28,7 +28,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
             className="govuk-fieldset__heading"
             id="ticket-representation-page-heading"
           >
-            Select a type of multi-operator ticket
+            Select a type of Multi operator ticket
           </h1>
         </legend>
         <FormElementWrapper
@@ -114,7 +114,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
             className="govuk-fieldset__heading"
             id="ticket-representation-page-heading"
           >
-            Select a type of period ticket
+            Select a type of Period ticket
           </h1>
         </legend>
         <FormElementWrapper
@@ -214,7 +214,7 @@ exports[`pages ticketRepresentation should render error messaging when errors ar
             className="govuk-fieldset__heading"
             id="ticket-representation-page-heading"
           >
-            Select a type of period ticket
+            Select a type of Period ticket
           </h1>
         </legend>
         <FormElementWrapper

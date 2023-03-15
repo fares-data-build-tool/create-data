@@ -33,7 +33,6 @@ import {
     MultipleProductAttribute,
     MultiProduct,
     NextPageContextWithSession,
-    SchoolFareTypeAttribute,
     Service,
     ServiceListAttribute,
     TicketRepresentationAttribute,
@@ -235,7 +234,7 @@ export const buildPointToPointPeriodConfirmationElements = (ctx: NextPageContext
     if (!periodExpiryAttribute || !isPeriodExpiry(periodExpiryAttribute)) {
         throw new Error('Period expiry is not present or contains errors');
     }
-    addProductDetails(product, confirmationElements);
+    addProductDetails(product, confirmationElements, true);
 
     return confirmationElements;
 };
@@ -315,9 +314,10 @@ export const buildFlatFarePriceByDistanceConfirmationElements = (
     return confirmationElements;
 };
 
-const addProductDetails = (
+export const addProductDetails = (
     product: Product | MultiProduct | PointToPointPeriodProduct,
     confirmationElements: ConfirmationElement[],
+    isPointToPointProduct: boolean,
 ): void => {
     const content = [];
     if ('productPrice' in product) {
@@ -338,7 +338,7 @@ const addProductDetails = (
     confirmationElements.push({
         name: `${product.productName}`,
         content,
-        href: 'multipleProducts',
+        href: isPointToPointProduct ? 'pointToPointPeriodProduct' : 'multipleProducts',
     });
 };
 
@@ -441,17 +441,17 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         }
         if (isArray(products)) {
             products.forEach((product) => {
-                addProductDetails(product, confirmationElements);
+                addProductDetails(product, confirmationElements, false);
             });
         } else if (!isArray(products)) {
-            addProductDetails(products, confirmationElements);
+            addProductDetails(products, confirmationElements, false);
         }
     } else {
         const product = getSessionAttribute(ctx.req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
         if (!product || isWithErrors(product)) {
             throw new Error('Product information for P2P period product could not be found.');
         }
-        addProductDetails(product, confirmationElements);
+        addProductDetails(product, confirmationElements, true);
     }
 
     if (periodExpiryAttribute && 'productValidity' in periodExpiryAttribute) {
@@ -478,19 +478,10 @@ export const buildFlatFareTicketConfirmationElements = (ctx: NextPageContextWith
 };
 
 export const buildSchoolTicketConfirmationElements = (ctx: NextPageContextWithSession): ConfirmationElement[] => {
-    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE) as SchoolFareTypeAttribute;
+    const schoolFareTypeAttribute = getSessionAttribute(ctx.req, SCHOOL_FARE_TYPE_ATTRIBUTE);
 
-    if (schoolFareTypeAttribute) {
-        switch (schoolFareTypeAttribute.schoolFareType) {
-            case 'single':
-                return buildSingleTicketConfirmationElements(ctx);
-            case 'period':
-                return buildPeriodOrMultiOpTicketConfirmationElements(ctx);
-            case 'flatFare':
-                return buildFlatFareTicketConfirmationElements(ctx);
-            default:
-                throw new Error('Did not receive an expected schoolFareType.');
-        }
+    if (schoolFareTypeAttribute && schoolFareTypeAttribute.schoolFareType === 'period') {
+        return buildPeriodOrFlatFareConfirmationElements(ctx);
     } else {
         throw new Error('Could not extract schoolFareType from the schoolFareTypeAttribute.');
     }
