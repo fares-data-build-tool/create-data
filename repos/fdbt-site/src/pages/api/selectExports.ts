@@ -41,11 +41,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
 
-    // waiting 2 seconds before redirecting, to allow for export to start before redirecting back
-    // because if we redirect immediately, the /exports page will render with initialExportIsInProgress = false
-    // which will be incorrect.
-    await new Promise((r) => setTimeout(r, 2000));
-
     redirectTo(res, '/products/exports');
     return;
 };
