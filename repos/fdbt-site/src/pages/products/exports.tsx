@@ -63,7 +63,7 @@ const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSett
         if (!initialExportStarted) {
             setTimeOutPassed(true);
         } else if (!timeOutPassed) {
-            let timerFunc = setTimeout(() => {
+            const timerFunc = setTimeout(() => {
                 setTimeOutPassed(true);
             }, 2000);
 
