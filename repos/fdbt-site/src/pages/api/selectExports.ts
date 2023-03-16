@@ -40,6 +40,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     const links = products.map((product) => product.matchingJsonLink);
 
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
-    redirectTo(res, '/products/exports');
+
+    redirectTo(res, '/products/exports?exportStarted=true');
     return;
 };
