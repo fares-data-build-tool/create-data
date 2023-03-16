@@ -142,7 +142,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
 
                         <h2 className="govuk-heading-m govuk-!-margin-bottom-6">Previously exported fares</h2>
 
-                        {!exports ? (
+                        {!exports || !timeOutPassed ? (
                             <LoadingSpinner />
                         ) : exports.length === 0 ? (
                             <p className="govuk-body-m">
