@@ -15,6 +15,7 @@ const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).th
 
 interface GlobalSettingsProps {
     csrf: string;
+    initialExportStarted: boolean;
     operatorHasProducts: boolean;
 }
 
@@ -52,14 +53,16 @@ const getTag = (exportDetails: Export): ReactElement => {
     );
 };
 
-const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSettingsProps): ReactElement => {
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
     const [timeOutPassed, setTimeOutPassed] = useState(false);
 
     useEffect(() => {
-        if (!timeOutPassed) {
+        if (!initialExportStarted) {
+            setTimeOutPassed(true);
+        } else if (!timeOutPassed) {
             let timerFunc = setTimeout(() => {
                 setTimeOutPassed(true);
             }, 2000);
@@ -234,11 +237,13 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: GlobalSettingsProps }> => {
     const noc = getAndValidateNoc(ctx);
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
+    const exportStartedQueryString = ctx.query.exportStarted;
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
             operatorHasProducts,
+            initialExportStarted: !!exportStartedQueryString && exportStartedQueryString === 'true',
         },
     };
 };

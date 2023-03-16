@@ -72,7 +72,7 @@ describe('fareType', () => {
         });
 
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/products/exports',
+            Location: '/products/exports?exportStarted=true',
         });
     });
 
@@ -92,7 +92,7 @@ describe('fareType', () => {
         });
 
         expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/products/exports',
+            Location: '/products/exports?exportStarted=true',
         });
     });
 });
