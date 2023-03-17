@@ -36,7 +36,6 @@ interface FareConfirmationProps {
     schoolFareType: SchoolFareType;
     termTime: string;
     fullTimeRestrictions: FullTimeRestriction[];
-    newTimeRestrictionCreated: string;
     csrfToken: string;
 }
 
@@ -49,7 +48,6 @@ export const buildFareConfirmationElements = (
     schoolFareType: SchoolFareType,
     termTime: string,
     fullTimeRestrictions: FullTimeRestriction[],
-    newTimeRestrictionCreated: string,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [
         {
@@ -174,15 +172,14 @@ export const buildFareConfirmationElements = (
                 });
             }
         });
-    }
-
-    if (newTimeRestrictionCreated) {
+    } else {
         confirmationElements.push({
-            name: 'Time restriction saved for reuse',
-            content: `Name: ${newTimeRestrictionCreated}`,
-            href: '',
+            name: 'Time restrictions',
+            content: 'N/A',
+            href: 'selectTimeRestrictions',
         });
     }
+
     return confirmationElements;
 };
 
@@ -195,7 +192,6 @@ const FareConfirmation = ({
     schoolFareType,
     termTime,
     fullTimeRestrictions,
-    newTimeRestrictionCreated,
     csrfToken,
 }: FareConfirmationProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={[]}>
@@ -213,7 +209,6 @@ const FareConfirmation = ({
                         schoolFareType,
                         termTime,
                         fullTimeRestrictions,
-                        newTimeRestrictionCreated,
                     )}
                 />
                 <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
@@ -236,7 +231,7 @@ export const getServerSideProps = async (
         ctx.req,
         FULL_TIME_RESTRICTIONS_ATTRIBUTE,
     ) as FullTimeRestrictionAttribute;
-    const newTimeRestrictionCreated = (ctx.query?.createdTimeRestriction as string) || '';
+
     if (
         !passengerTypeAttribute ||
         isPassengerTypeAttributeWithErrors(passengerTypeAttribute) ||
@@ -260,7 +255,6 @@ export const getServerSideProps = async (
             groupPassengerInfo,
             termTime: termTimeAttribute?.termTime.toString() || '',
             fullTimeRestrictions: fullTimeRestrictionsAttribute?.fullTimeRestrictions || [],
-            newTimeRestrictionCreated,
             csrfToken,
         },
     };
