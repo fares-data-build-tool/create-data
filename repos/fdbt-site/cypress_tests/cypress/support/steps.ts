@@ -546,7 +546,7 @@ export const editTimeRestriction = (): void => {
     });
 
     cy.get('@isSchoolTicket').then((isSchoolTicket) => {
-        if (isSchoolTicket) {
+        if (!isSchoolTicket) {
             clickElementById('time-restriction-link');
             randomlyDecideTimeRestrictions(true);
             cy.get('@timeRestriction').then((timeRestriction) => {
