@@ -127,11 +127,6 @@ exports[`pages fareConfirmation should render correctly for a ticket with a prem
             "href": "selectTimeRestrictions",
             "name": "Time restrictions - Bank holiday",
           },
-          Object {
-            "content": "Name: Week time restrictions",
-            "href": "",
-            "name": "Time restriction saved for reuse",
-          },
         ]
       }
       header="Fare Information"
@@ -345,6 +340,11 @@ exports[`pages fareConfirmation should render correctly for school tickets 1`] =
             "content": "Period",
             "href": "",
             "name": "School ticket fare type",
+          },
+          Object {
+            "content": "N/A",
+            "href": "selectTimeRestrictions",
+            "name": "Time restrictions",
           },
         ]
       }
