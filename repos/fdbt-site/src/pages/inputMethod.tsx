@@ -2,12 +2,17 @@ import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { INPUT_METHOD_ATTRIBUTE } from '../constants/attributes';
+import FaresTriangleExampleCsv from '../assets/files/Fares-Triangle-Example.csv';
+import HowToUploadFaresTriangle from '../assets/files/How-to-Upload-a-Fares-Triangle.pdf';
+import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
+import csvImage from '../assets/images/csv.png';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper from '../components/FormElementWrapper';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { inputMethodErrorsExist } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
+import FileAttachment from '../components/FileAttachment';
 
 const title = 'Input Method - Create Fares Data Service';
 const description = 'Input Method selection page of the Create Fares Data Service';
@@ -16,10 +21,25 @@ const errorId = 'csv-upload';
 
 interface InputMethodProps {
     errors: ErrorInfo[];
+    guidanceDocDisplayName: string;
+    guidanceDocAttachmentUrl: string;
+    guidanceDocSize: string;
+    csvTemplateDisplayName: string;
+    csvTemplateAttachmentUrl: string;
+    csvTemplateSize: string;
     csrfToken: string;
 }
 
-const InputMethod = ({ errors = [], csrfToken }: InputMethodProps): ReactElement => (
+const InputMethod = ({
+    errors = [],
+    csrfToken,
+    guidanceDocDisplayName,
+    guidanceDocAttachmentUrl,
+    guidanceDocSize,
+    csvTemplateDisplayName,
+    csvTemplateAttachmentUrl,
+    csvTemplateSize,
+}: InputMethodProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={errors}>
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
@@ -33,6 +53,14 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps): ReactElement
                                         Select an input method
                                     </h1>
                                 </legend>
+
+                                <span className="govuk-hint">
+                                    A CSV file is a basic file format which can be created with most spreadsheet
+                                    software (Microsoft Excel, Google Sheets etc).
+                                </span>
+
+                                <span className="govuk-hint">Refer to the help documents for creating a CSV.</span>
+
                                 <FormElementWrapper errors={errors} errorId={errorId} errorClass="govuk-radios--error">
                                     <div className="govuk-radios" id="radio-buttons">
                                         <div className="govuk-radios__item">
@@ -72,14 +100,19 @@ const InputMethod = ({ errors = [], csrfToken }: InputMethodProps): ReactElement
                 </CsrfForm>
             </div>
             <div className="govuk-grid-column-one-third">
-                <h3 className="govuk-heading-s">What is a CSV?</h3>
-                <p className="govuk-body">
-                    CSV stands for Comma Separated Values. A CSV file is a popular format for publishing data on the
-                    web. They are plain text files which means they can contain numbers and letters only. Most
-                    spreadsheet software (Microsoft Excel, Google Sheets etc.) will have a <b>.csv</b>, <b>.xlsx</b> or{' '}
-                    <b>.xls</b> option when saving your data. This is the easiest way to turn your spreadsheet into a
-                    CSV file.
-                </p>
+                <h2 className="govuk-heading-s">Help documents</h2>
+                <FileAttachment
+                    displayName={guidanceDocDisplayName}
+                    attachmentUrl={`${guidanceDocAttachmentUrl}`}
+                    imageUrl={guidanceDocImage}
+                    size={guidanceDocSize}
+                />
+                <FileAttachment
+                    displayName={csvTemplateDisplayName}
+                    attachmentUrl={`${csvTemplateAttachmentUrl}`}
+                    imageUrl={csvImage}
+                    size={csvTemplateSize}
+                />
             </div>
         </div>
     </BaseLayout>
@@ -91,6 +124,12 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: In
     updateSessionAttribute(ctx.req, INPUT_METHOD_ATTRIBUTE, undefined);
     return {
         props: {
+            guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 592KB',
+            guidanceDocAttachmentUrl: HowToUploadFaresTriangle,
+            guidanceDocSize: '1.2MB',
+            csvTemplateDisplayName: 'Download fares triangle CSV template - File Type CSV - File Size 255B',
+            csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
+            csvTemplateSize: '255B',
             errors: inputMethodInfo && inputMethodErrorsExist(inputMethodInfo) ? [inputMethodInfo] : [],
             csrfToken,
         },

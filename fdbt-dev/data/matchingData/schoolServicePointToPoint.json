@@ -8,6 +8,7 @@
   "lineName": "1",
   "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade",
   "lineId": "4YyoI0",
+  "timeRestriction": [],
   "outboundFareZones": [
     {
       "name": "Shott Drive",

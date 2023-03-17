@@ -36,7 +36,6 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
-                    newTimeRestrictionCreated=""
                     csrfToken=""
                 />,
             );
@@ -75,7 +74,6 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
-                    newTimeRestrictionCreated=""
                     csrfToken=""
                 />,
             );
@@ -114,7 +112,6 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
-                    newTimeRestrictionCreated="Week time restrictions"
                     csrfToken=""
                 />,
             );
@@ -171,7 +168,6 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ]}
-                    newTimeRestrictionCreated=""
                     csrfToken=""
                 />,
             );
@@ -196,7 +192,6 @@ describe('pages', () => {
                     schoolFareType="period"
                     termTime="true"
                     fullTimeRestrictions={[]}
-                    newTimeRestrictionCreated=""
                     csrfToken=""
                 />,
             );
@@ -235,7 +230,6 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ],
-                    '',
                 );
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
@@ -300,7 +294,6 @@ describe('pages', () => {
                             timeBands: [{ startTime: '', endTime: '' }],
                         },
                     ],
-                    'Time restriction',
                 );
                 expect(result).toStrictEqual([
                     { content: 'Return', href: 'fareType', name: 'Fare type' },
@@ -330,11 +323,6 @@ describe('pages', () => {
                         href: 'selectTimeRestrictions',
                         name: 'Time restrictions - Friday',
                     },
-                    {
-                        name: 'Time restriction saved for reuse',
-                        content: `Name: Time restriction`,
-                        href: '',
-                    },
                 ]);
             });
 
@@ -356,7 +344,6 @@ describe('pages', () => {
                     'period',
                     'true',
                     [],
-                    '',
                 );
                 expect(result).toStrictEqual([
                     { content: 'School service', href: 'fareType', name: 'Fare type' },
@@ -380,6 +367,11 @@ describe('pages', () => {
                         content: 'Period',
                         href: '',
                         name: 'School ticket fare type',
+                    },
+                    {
+                        content: 'N/A',
+                        href: 'selectTimeRestrictions',
+                        name: 'Time restrictions',
                     },
                 ]);
             });

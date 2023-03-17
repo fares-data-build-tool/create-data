@@ -536,11 +536,25 @@ export const editEndDatePointToPointPage = (): void => {
 };
 
 export const editTimeRestriction = (): void => {
-    clickElementById('time-restriction-link');
-    randomlyDecideTimeRestrictions(true);
-    cy.get('@timeRestriction').then((timeRestriction) => {
-        getElementById('time-restriction').should('have.text', timeRestriction.toString());
+    let isSchoolTicket = false;
+    cy.wrap(isSchoolTicket).as('isSchoolTicket');
+
+    cy.get('main').then(($main) => {
+        if ($main.text().includes('Only valid during term time')) {
+            cy.wrap(true).as('isSchoolTicket');
+        }
     });
+
+    cy.get('@isSchoolTicket').then((isSchoolTicket) => {
+        if (!isSchoolTicket) {
+            clickElementById('time-restriction-link');
+            randomlyDecideTimeRestrictions(true);
+            cy.get('@timeRestriction').then((timeRestriction) => {
+                getElementById('time-restriction').should('have.text', timeRestriction.toString());
+            });
+        }
+    });
+
     clickElementByText('Back');
 };
 

@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { NextPageContextWithSession } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { formatFailedFileNames, getAndValidateNoc, getCsrfToken } from '../../utils';
@@ -6,7 +6,7 @@ import CsrfForm from '../../components/CsrfForm';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb';
 import useSWR from 'swr';
-import { Export, getAllExports } from '../api/getExportProgress';
+import { Export } from '../api/getExportProgress';
 import InfoPopup from '../../components/InfoPopup';
 
 const title = 'Exports';
@@ -15,7 +15,7 @@ const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).th
 
 interface GlobalSettingsProps {
     csrf: string;
-    initialExportIsInProgress: boolean;
+    initialExportStarted: boolean;
     operatorHasProducts: boolean;
 }
 
@@ -53,22 +53,36 @@ const getTag = (exportDetails: Export): ReactElement => {
     );
 };
 
-const Exports = ({ csrf, initialExportIsInProgress, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSettingsProps): ReactElement => {
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
+    const [timeOutPassed, setTimeOutPassed] = useState(false);
+
+    useEffect(() => {
+        if (!initialExportStarted) {
+            setTimeOutPassed(true);
+        } else if (!timeOutPassed) {
+            const timerFunc = setTimeout(() => {
+                setTimeOutPassed(true);
+            }, 2000);
+
+            return () => clearTimeout(timerFunc);
+        }
+        return;
+    }, [timeOutPassed]);
 
     const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000, refreshWhenHidden: true });
 
     const exports: Export[] | undefined = data?.exports;
 
     const exportInProgress: Export | undefined = !!exports
-        ? exports.find((exportDetails) => exportDetails.netexCount !== exportDetails.numberOfFilesExpected)
+        ? exports.find((exportDetails) => !exportDetails.signedUrl)
         : undefined;
 
     const anExportIsInProgress = !!exportInProgress;
     const exportAllowed: boolean =
-        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !initialExportIsInProgress;
+        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !!timeOutPassed;
     const showCancelButton: boolean = anExportIsInProgress && !!exportInProgress?.exportFailed;
     const failedExport: Export | undefined =
         anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
@@ -131,7 +145,7 @@ const Exports = ({ csrf, initialExportIsInProgress, operatorHasProducts }: Globa
 
                         <h2 className="govuk-heading-m govuk-!-margin-bottom-6">Previously exported fares</h2>
 
-                        {!exports ? (
+                        {!exports || !timeOutPassed ? (
                             <LoadingSpinner />
                         ) : exports.length === 0 ? (
                             <p className="govuk-body-m">
@@ -222,20 +236,14 @@ const Exports = ({ csrf, initialExportIsInProgress, operatorHasProducts }: Globa
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: GlobalSettingsProps }> => {
     const noc = getAndValidateNoc(ctx);
-
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
-
-    const exports = await getAllExports(noc);
-
-    const initialExportIsInProgress = !!exports.find(
-        (exp) => exp.exportFailed || exp.netexCount < exp.numberOfFilesExpected,
-    );
+    const exportStartedQueryString = ctx.query.exportStarted;
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
-            initialExportIsInProgress,
             operatorHasProducts,
+            initialExportStarted: !!exportStartedQueryString && exportStartedQueryString === 'true',
         },
     };
 };

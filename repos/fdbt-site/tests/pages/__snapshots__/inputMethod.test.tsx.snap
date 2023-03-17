@@ -37,6 +37,16 @@ exports[`pages inputMethod should render correctly 1`] = `
                 Select an input method
               </h1>
             </legend>
+            <span
+              className="govuk-hint"
+            >
+              A CSV file is a basic file format which can be created with most spreadsheet software (Microsoft Excel, Google Sheets etc).
+            </span>
+            <span
+              className="govuk-hint"
+            >
+              Refer to the help documents for creating a CSV.
+            </span>
             <FormElementWrapper
               errorClass="govuk-radios--error"
               errorId="csv-upload"
@@ -95,29 +105,23 @@ exports[`pages inputMethod should render correctly 1`] = `
     <div
       className="govuk-grid-column-one-third"
     >
-      <h3
+      <h2
         className="govuk-heading-s"
       >
-        What is a CSV?
-      </h3>
-      <p
-        className="govuk-body"
-      >
-        CSV stands for Comma Separated Values. A CSV file is a popular format for publishing data on the web. They are plain text files which means they can contain numbers and letters only. Most spreadsheet software (Microsoft Excel, Google Sheets etc.) will have a 
-        <b>
-          .csv
-        </b>
-        , 
-        <b>
-          .xlsx
-        </b>
-         or
-         
-        <b>
-          .xls
-        </b>
-         option when saving your data. This is the easiest way to turn your spreadsheet into a CSV file.
-      </p>
+        Help documents
+      </h2>
+      <FileAttachment
+        attachmentUrl="[object Object]"
+        displayName="Download Help File - File Type PDF - File Size 592KB"
+        imageUrl={Object {}}
+        size="1.2MB"
+      />
+      <FileAttachment
+        attachmentUrl="[object Object]"
+        displayName="Download fares triangle CSV template - File Type CSV - File Size 255B"
+        imageUrl={Object {}}
+        size="255B"
+      />
     </div>
   </div>
 </BaseLayout>
