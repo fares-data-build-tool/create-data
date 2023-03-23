@@ -54,11 +54,7 @@ export const ShowSelectedOperators = (
         }
     });
 
-    const removeOperator = (
-        event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-        nocCode: string,
-        removeAll?: boolean,
-    ) => {
+    const removeOperator = (nocCode: string, removeAll?: boolean) => {
         if (removeAll) {
             setSelectedOperators([]);
             setSearchResults(alphabetiseOperatorList(databaseSearchResults));
@@ -68,8 +64,6 @@ export const ShowSelectedOperators = (
             setSelectedOperators(newSelectedOperators);
             setSearchResults(alphabetiseOperatorList([...searchResults, operatorToRemove]));
         }
-
-        event.preventDefault();
     };
 
     return (
@@ -117,7 +111,10 @@ export const ShowSelectedOperators = (
                             <button
                                 id="removeAll"
                                 className="selectedOperators-button button-link govuk-!-margin-left-2"
-                                onClick={(event) => removeOperator(event, '', true)}
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    removeOperator('', true);
+                                }}
                                 name="removeOperator"
                             >
                                 Remove all
@@ -135,7 +132,10 @@ export const ShowSelectedOperators = (
                                 <button
                                     id={`remove-${index}`}
                                     className="govuk-link button-link"
-                                    onClick={(event) => removeOperator(event, operator.nocCode)}
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        removeOperator(operator.nocCode);
+                                    }}
                                     name="removeOperator"
                                     value={operator.name}
                                 >
