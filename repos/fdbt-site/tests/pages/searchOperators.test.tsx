@@ -7,27 +7,28 @@ import SearchOperators, {
     SearchOperatorProps,
     ShowSelectedOperators,
     ShowSearchResults,
+    alphabetiseOperatorList,
 } from '../../src/pages/searchOperators';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import { ErrorInfo, Operator, OperatorAttribute, OperatorGroup } from '../../src/interfaces';
 
+const mockOperators: Operator[] = [
+    {
+        name: "Warrington's Own Buses",
+        nocCode: 'WBTR',
+    },
+    {
+        name: 'Blackpool Transport',
+        nocCode: 'BLAC',
+    },
+    {
+        name: 'IW Bus Co',
+        nocCode: 'IWBusCo',
+    },
+];
+
 describe('pages', () => {
     describe('searchOperator', () => {
-        const mockOperators: Operator[] = [
-            {
-                name: "Warrington's Own Buses",
-                nocCode: 'WBTR',
-            },
-            {
-                name: 'Blackpool Transport',
-                nocCode: 'BLAC',
-            },
-            {
-                name: 'IW Bus Co',
-                nocCode: 'IWBusCo',
-            },
-        ];
-
         const mockOperatorGroup: OperatorGroup = {
             id: 1,
             name: 'OperatorG Group',
@@ -312,10 +313,23 @@ describe('pages', () => {
                     { nocCode: 'BLAC', name: 'Blackpool Transport' },
                     { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
                 ];
+                const mockSearchResults: Operator[] = [
+                    { nocCode: 'BLAC', name: 'Blackpool Transport' },
+                    { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
+                ];
+                const setSearchResults = jest.fn();
                 const mocErrors: ErrorInfo[] = [];
                 const operatorGroupName = '';
                 const wrapper = shallow(
-                    ShowSelectedOperators(mocSelectedOperators, setSelectedOperators, mocErrors, operatorGroupName),
+                    ShowSelectedOperators(
+                        mocSelectedOperators,
+                        setSelectedOperators,
+                        mocErrors,
+                        operatorGroupName,
+                        mockSearchResults,
+                        setSearchResults,
+                        mockSearchResults,
+                    ),
                 );
                 wrapper.find('#remove-0').simulate('click');
                 expect(setSelectedOperators).toBeCalledWith([{ nocCode: 'LNUD', name: 'The Blackburn Bus Company' }]);
@@ -326,10 +340,23 @@ describe('pages', () => {
                     { nocCode: 'BLAC', name: 'Blackpool Transport' },
                     { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
                 ];
+                const mockSearchResults: Operator[] = [
+                    { nocCode: 'BLAC', name: 'Blackpool Transport' },
+                    { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
+                ];
                 const mocErrors: ErrorInfo[] = [];
                 const operatorGroupName = '';
+                const setSearchResults = jest.fn();
                 const wrapper = shallow(
-                    ShowSelectedOperators(mocSelectedOperators, setSelectedOperators, mocErrors, operatorGroupName),
+                    ShowSelectedOperators(
+                        mocSelectedOperators,
+                        setSelectedOperators,
+                        mocErrors,
+                        operatorGroupName,
+                        mockSearchResults,
+                        setSearchResults,
+                        mockSearchResults,
+                    ),
                 );
                 wrapper.find('#removeAll').simulate('click');
                 expect(setSelectedOperators).toBeCalledWith([]);
@@ -340,9 +367,7 @@ describe('pages', () => {
                 const mockDatabaseSearchResultsCount = 2;
                 const mockSelectedOperators: Operator[] = [];
                 const setSelectedOperators = jest.fn();
-                const mockSearchResultsCount = 2;
-                const setSearchResultsCount = jest.fn();
-                const mocksearchResults: Operator[] = [
+                const mockSearchResults: Operator[] = [
                     { nocCode: 'BLAC', name: 'Blackpool Transport' },
                     { nocCode: 'LNUD', name: 'The Blackburn Bus Company' },
                 ];
@@ -355,17 +380,35 @@ describe('pages', () => {
                         mockDatabaseSearchResultsCount,
                         mockSelectedOperators,
                         setSelectedOperators,
-                        mockSearchResultsCount,
-                        setSearchResultsCount,
-                        mocksearchResults,
+                        mockSearchResults,
                         setSearchResults,
                     ),
                 );
 
                 wrapper.find('#operator-to-add-0').simulate('click');
                 expect(setSelectedOperators).toBeCalledWith([{ nocCode: 'BLAC', name: 'Blackpool Transport' }]);
-                expect(setSearchResultsCount).toBeCalledWith(1);
                 expect(setSearchResults).toBeCalledWith([{ nocCode: 'LNUD', name: 'The Blackburn Bus Company' }]);
+            });
+        });
+
+        describe('alphabetiseOperatorList', () => {
+            it('takes an array of operators and sorts them according to their name', () => {
+                const result = alphabetiseOperatorList(mockOperators);
+
+                expect(result).toStrictEqual([
+                    {
+                        name: 'Blackpool Transport',
+                        nocCode: 'BLAC',
+                    },
+                    {
+                        name: 'IW Bus Co',
+                        nocCode: 'IWBusCo',
+                    },
+                    {
+                        name: "Warrington's Own Buses",
+                        nocCode: 'WBTR',
+                    },
+                ]);
             });
         });
     });
