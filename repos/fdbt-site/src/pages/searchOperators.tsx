@@ -54,7 +54,11 @@ export const ShowSelectedOperators = (
         }
     });
 
-    const removeOperator = (nocCode: string, removeAll?: boolean) => {
+    const removeOperator = (
+        event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        nocCode: string,
+        removeAll?: boolean,
+    ) => {
         if (removeAll) {
             setSelectedOperators([]);
             setSearchResults(alphabetiseOperatorList(databaseSearchResults));
@@ -63,6 +67,9 @@ export const ShowSelectedOperators = (
             const operatorToRemove = databaseSearchResults.find((operator) => operator.nocCode === nocCode) as Operator;
             setSelectedOperators(newSelectedOperators);
             setSearchResults(alphabetiseOperatorList([...searchResults, operatorToRemove]));
+        }
+        if (event) {
+            event.preventDefault();
         }
     };
 
@@ -111,10 +118,7 @@ export const ShowSelectedOperators = (
                             <button
                                 id="removeAll"
                                 className="selectedOperators-button button-link govuk-!-margin-left-2"
-                                onClick={(event) => {
-                                    event.preventDefault();
-                                    removeOperator('', true);
-                                }}
+                                onClick={(event) => removeOperator(event, '', true)}
                                 name="removeOperator"
                             >
                                 Remove all
@@ -132,10 +136,7 @@ export const ShowSelectedOperators = (
                                 <button
                                     id={`remove-${index}`}
                                     className="govuk-link button-link"
-                                    onClick={(event) => {
-                                        event.preventDefault();
-                                        removeOperator(operator.nocCode);
-                                    }}
+                                    onClick={(event) => removeOperator(event, operator.nocCode)}
                                     name="removeOperator"
                                     value={operator.name}
                                 >
