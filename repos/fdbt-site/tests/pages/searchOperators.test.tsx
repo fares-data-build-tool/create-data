@@ -5,8 +5,8 @@ import * as aurora from '../../src/data/auroradb';
 import SearchOperators, {
     getServerSideProps,
     SearchOperatorProps,
-    ShowSelectedOperators,
-    ShowSearchResults,
+    showSelectedOperators,
+    showSearchResults,
     alphabetiseOperatorList,
 } from '../../src/pages/searchOperators';
 import { MULTIPLE_OPERATOR_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
@@ -321,7 +321,7 @@ describe('pages', () => {
                 const mocErrors: ErrorInfo[] = [];
                 const operatorGroupName = '';
                 const wrapper = shallow(
-                    ShowSelectedOperators(
+                    showSelectedOperators(
                         mocSelectedOperators,
                         setSelectedOperators,
                         mocErrors,
@@ -348,7 +348,7 @@ describe('pages', () => {
                 const operatorGroupName = '';
                 const setSearchResults = jest.fn();
                 const wrapper = shallow(
-                    ShowSelectedOperators(
+                    showSelectedOperators(
                         mocSelectedOperators,
                         setSelectedOperators,
                         mocErrors,
@@ -374,7 +374,7 @@ describe('pages', () => {
                 const setSearchResults = jest.fn();
 
                 const wrapper = shallow(
-                    ShowSearchResults(
+                    showSearchResults(
                         mocksearchText,
                         mockErrors,
                         mockDatabaseSearchResultsCount,
