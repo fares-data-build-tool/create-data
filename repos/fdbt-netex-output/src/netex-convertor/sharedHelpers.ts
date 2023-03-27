@@ -323,6 +323,9 @@ export const isMultiOpFlatFareType = (ticket: Ticket): boolean =>
 
 export const getProductType = (ticket: Ticket): string => {
     if (isFlatFareType(ticket) || isSingleTicket(ticket) || isMultiOpFlatFareType(ticket)) {
+        if ('return' in ticket && !!ticket.return) {
+            return 'dayReturnTrip';
+        }
         return 'singleTrip';
     }
 

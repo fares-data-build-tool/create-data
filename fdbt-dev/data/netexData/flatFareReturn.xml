@@ -220,7 +220,7 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@Weekly_Rider_senior@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>singleTrip</ProductType>
+              <ProductType>dayReturnTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
