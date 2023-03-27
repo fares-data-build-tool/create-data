@@ -1,9 +1,5 @@
 import { NextApiResponse } from 'next';
-import {
-    CARNET_FARE_TYPE_ATTRIBUTE,
-    TICKET_REPRESENTATION_ATTRIBUTE,
-    TXC_SOURCE_ATTRIBUTE,
-} from '../../constants/attributes';
+import { CARNET_FARE_TYPE_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../constants/attributes';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { isTicketRepresentation } from '../../interfaces/typeGuards';
 import { getSessionAttribute } from '../../utils/sessions';
@@ -77,7 +73,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         if (userDataJson) {
             const carnetAttribute = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
-            const dataFormat = getSessionAttribute(req, TXC_SOURCE_ATTRIBUTE)?.source;
 
             userDataJson.carnet = carnetAttribute;
             const noc = getAndValidateNoc(req, res);
@@ -97,16 +92,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 });
             }
 
-            if (ticketType === 'geoZone' || dataFormat !== 'tnds') {
-                redirectTo(res, '/productCreated');
-                return;
-            }
-
-            redirectTo(res, '/thankyou');
+            redirectTo(res, '/productCreated');
             return;
         }
 
-        return;
+        throw new Error(`No json was created for ${fareType} ticket with uuid: ${uuid}`);
     } catch (error) {
         const message = 'There was a problem processing the information needed for the user data to be put in s3:';
         redirectToError(res, message, 'api.salesConfirmation', error);
