@@ -241,7 +241,7 @@ const createProductDetails = async (
         content: [
             `${sentenceCaseString(ticket.type)}${ticket.carnet ? ' (carnet)' : ''}${
                 'termTime' in ticket && !!ticket.termTime ? ' (academic)' : ''
-            }`,
+            }${'return' in ticket ? ' return' : ''}`,
         ],
     });
 
@@ -271,6 +271,15 @@ const createProductDetails = async (
                 editLink: '/serviceList',
             },
         );
+
+        if ('return' in ticket) {
+            productDetailsElements.push({
+                id: 'flat-fare-return',
+                name: 'Return ticket',
+                content: ['Yes'],
+                editLink: '',
+            });
+        }
     }
 
     let requiresAttention = false;

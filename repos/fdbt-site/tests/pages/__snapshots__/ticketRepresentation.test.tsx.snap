@@ -28,7 +28,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
             className="govuk-fieldset__heading"
             id="ticket-representation-page-heading"
           >
-            Select a type of Multi operator ticket
+            Select a type of multi operator ticket
           </h1>
         </legend>
         <FormElementWrapper
@@ -62,8 +62,13 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
                 },
                 Object {
                   "hint": "Unlimited travel between two fixed points in both directions",
-                  "label": "Point to Point",
+                  "label": "Point to point",
                   "value": "pointToPointPeriod",
+                },
+                Object {
+                  "hint": "Return trip on a specific service or set of services",
+                  "label": "A return ticket for a set of services",
+                  "value": "multipleServicesReturn",
                 },
                 Object {
                   "hint": "Single trip on a specific service or set of services, priced by distance",
@@ -114,7 +119,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
             className="govuk-fieldset__heading"
             id="ticket-representation-page-heading"
           >
-            Select a type of Period ticket
+            Select a type of period ticket
           </h1>
         </legend>
         <FormElementWrapper
@@ -148,7 +153,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
                 },
                 Object {
                   "hint": "Unlimited travel between two fixed points in both directions",
-                  "label": "Point to Point",
+                  "label": "Point to point",
                   "value": "pointToPointPeriod",
                 },
                 Object {
@@ -214,7 +219,7 @@ exports[`pages ticketRepresentation should render error messaging when errors ar
             className="govuk-fieldset__heading"
             id="ticket-representation-page-heading"
           >
-            Select a type of Period ticket
+            Select a type of period ticket
           </h1>
         </legend>
         <FormElementWrapper
@@ -255,13 +260,18 @@ exports[`pages ticketRepresentation should render error messaging when errors ar
                 },
                 Object {
                   "hint": "Unlimited travel between two fixed points in both directions",
-                  "label": "Point to Point",
+                  "label": "Point to point",
                   "value": "pointToPointPeriod",
                 },
                 Object {
                   "hint": "Unlimited travel within a geographic zone and certain additional services outside that zone",
                   "label": "Hybrid period ticket",
                   "value": "hybrid",
+                },
+                Object {
+                  "hint": "Return trip on a specific service or set of services",
+                  "label": "A return ticket for a set of services",
+                  "value": "multipleServicesReturn",
                 },
                 Object {
                   "hint": "Single trip on a specific service or set of services, priced by distance",

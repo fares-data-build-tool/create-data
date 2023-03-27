@@ -84,7 +84,7 @@ const TicketRepresentation = ({
                         <fieldset className="govuk-fieldset" aria-describedby="ticket-representation-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 className="govuk-fieldset__heading" id="ticket-representation-page-heading">
-                                    {`Select a type of ${sentenceCaseString(fareTypeDesc)} ticket`}
+                                    {`Select a type of ${sentenceCaseString(fareTypeDesc).toLowerCase()} ticket`}
                                 </h1>
                             </legend>
                             <FormElementWrapper errors={errors} errorId="geo-zone" errorClass="govuk-radios--errors">
@@ -125,7 +125,7 @@ const TicketRepresentation = ({
                                             ? [
                                                   {
                                                       value: 'pointToPointPeriod',
-                                                      label: 'Point to Point',
+                                                      label: 'Point to point',
                                                       hint: 'Unlimited travel between two fixed points in both directions',
                                                   },
                                               ]
@@ -136,6 +136,15 @@ const TicketRepresentation = ({
                                                       value: 'hybrid',
                                                       label: 'Hybrid period ticket',
                                                       hint: 'Unlimited travel within a geographic zone and certain additional services outside that zone',
+                                                  },
+                                              ]
+                                            : []),
+                                        ...(showFlatFlare
+                                            ? [
+                                                  {
+                                                      value: 'multipleServicesReturn',
+                                                      label: 'A return ticket for a set of services',
+                                                      hint: 'Return trip on a specific service or set of services',
                                                   },
                                               ]
                                             : []),

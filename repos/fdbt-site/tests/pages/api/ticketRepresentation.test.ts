@@ -1,7 +1,7 @@
 import ticketRepresentation from '../../../src/pages/api/ticketRepresentation';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
-import { TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants/attributes';
+import { FLAT_FARE_RETURN_ATTRIBUTE, TICKET_REPRESENTATION_ATTRIBUTE } from '../../../src/constants/attributes';
 
 describe('ticketRepresentation', () => {
     const writeHeadMock = jest.fn();
@@ -53,6 +53,27 @@ describe('ticketRepresentation', () => {
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/csvZoneUpload',
         });
+    });
+
+    it('should return 302 redirect to /serviceList when the user selects a flat fare return', () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: { ticketType: 'multipleServicesReturn' },
+            uuid: {},
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        ticketRepresentation(req, res);
+
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/serviceList',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, TICKET_REPRESENTATION_ATTRIBUTE, {
+            name: 'multipleServices',
+        });
+
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, FLAT_FARE_RETURN_ATTRIBUTE, true);
     });
 
     it('should return 302 redirect to /csvZoneUpload when the user selects hybrid', () => {
