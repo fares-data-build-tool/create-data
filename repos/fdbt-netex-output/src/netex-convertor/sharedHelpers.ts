@@ -36,6 +36,7 @@ import {
     getDurationElement,
     getExemptServicesElement,
     getExemptStopsElement,
+    getFlatFareReturnConditionsElement,
     getLineRefList,
     getPeriodAvailabilityElement,
     getPeriodConditionsElement,
@@ -470,12 +471,18 @@ export const getFareStructuresElements = (
                 getDurationElement(ticket, product),
                 getPeriodConditionsElement(ticket, product),
             ];
+        } else if (isMultiServiceTicket(ticket) && 'return' in ticket) {
+            result = [
+                getPeriodAvailabilityElement(availabilityElementId, validityParametersObject),
+                getFlatFareReturnConditionsElement(product.productName),
+            ];
         } else {
             result = [
                 getPeriodAvailabilityElement(availabilityElementId, validityParametersObject),
                 getPeriodConditionsElement(ticket, product),
             ];
         }
+
         if (hasExemptServices) {
             availabilityElementId = `Tariff@${product.productName}@exempt_lines`;
             validityParametersObject = {

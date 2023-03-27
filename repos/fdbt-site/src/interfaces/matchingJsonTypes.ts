@@ -60,6 +60,7 @@ export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
     operatorName: string;
     cap?: CapSelection;
     exemptStops?: Stop[];
+    return?: boolean;
 }
 
 export type FlatFareTicket = FlatFareGeoZoneTicket | FlatFareMultipleServices;

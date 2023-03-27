@@ -57,7 +57,7 @@ exports[`pages fareType should render correctly 1`] = `
                   "value": "return",
                 },
                 Object {
-                  "hint": "A fixed fee ticket for a single journey",
+                  "hint": "A fixed fee ticket for a single or return journey",
                   "label": "Flat fare/short hop ticket",
                   "value": "flatFare",
                 },
@@ -257,7 +257,7 @@ exports[`pages fareType should render error messaging when errors are passed to 
                   "value": "return",
                 },
                 Object {
-                  "hint": "A fixed fee ticket for a single journey",
+                  "hint": "A fixed fee ticket for a single or return journey",
                   "label": "Flat fare/short hop ticket",
                   "value": "flatFare",
                 },

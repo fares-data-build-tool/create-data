@@ -1035,6 +1035,41 @@ export const getPeriodEligibilityElement = (userPeriodTicket: Ticket): NetexObje
     }));
 };
 
+export const getFlatFareReturnConditionsElement = (productName: string): NetexObject => ({
+    version: '1.0',
+    id: `op:Tariff@${productName}@conditions_of_travel`,
+    Name: { $t: 'Conditions of travel' },
+    TypeOfFareStructureElementRef: {
+        versionRef: 'fxc:v1.0',
+        ref: 'fxc:travel_conditions',
+    },
+    GenericParameterAssignment: {
+        version: '1.0',
+        order: '1',
+        id: 'Tariff@return@conditions_of_travel',
+        TypeOfAccessRightAssignmentRef: {
+            version: 'fxc:v1.0',
+            ref: 'fxc:condition_of_use',
+        },
+        LimitationGroupingType: { $t: 'AND' },
+        limitations: {
+            RoundTrip: {
+                version: '1.0',
+                id: 'Tariff@return@condition@direction',
+                Name: { $t: 'Return Trip' },
+                TripType: { $t: 'return' },
+            },
+            FrequencyOfUse: {
+                version: '1.0',
+                id: 'Tariff@return@oneTrip',
+                Name: { $t: 'One trip no transfers' },
+                FrequencyOfUseType: { $t: 'single' },
+                MaximalFrequency: { $t: '1' },
+            },
+        },
+    },
+});
+
 export const getPeriodConditionsElement = (
     userPeriodTicket: Ticket,
     product: { productName: string; productValidity?: string; productEndTime?: string },
