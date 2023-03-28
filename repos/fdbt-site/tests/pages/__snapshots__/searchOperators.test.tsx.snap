@@ -117,7 +117,7 @@ exports[`pages searchOperator should render a selection error when the user trie
               </p>
               <div
                 className="govuk-checkboxes__item"
-                key="checkbox-item-Blackpool"
+                key="checkbox-item-BLAC"
               >
                 <label
                   className="govuk-label govuk-checkboxes__label"
@@ -293,18 +293,21 @@ exports[`pages searchOperator should render a selection error when the user trie
             />
             <input
               id="add-operator-0"
+              key="input-WBTR"
               name="userSelectedOperators"
               type="hidden"
               value="WBTR#Warrington's Own Buses"
             />
             <input
               id="add-operator-1"
+              key="input-BLAC"
               name="userSelectedOperators"
               type="hidden"
               value="BLAC#Blackpool Transport"
             />
             <input
               id="add-operator-2"
+              key="input-IWBusCo"
               name="userSelectedOperators"
               type="hidden"
               value="IWBusCo#IW Bus Co"
@@ -933,18 +936,21 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
             />
             <input
               id="add-operator-0"
+              key="input-WBTR"
               name="userSelectedOperators"
               type="hidden"
               value="WBTR#Warrington's Own Buses"
             />
             <input
               id="add-operator-1"
+              key="input-BLAC"
               name="userSelectedOperators"
               type="hidden"
               value="BLAC#Blackpool Transport"
             />
             <input
               id="add-operator-2"
+              key="input-IWBusCo"
               name="userSelectedOperators"
               type="hidden"
               value="IWBusCo#IW Bus Co"
@@ -1011,7 +1017,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
               </p>
               <div
                 className="govuk-checkboxes__item"
-                key="checkbox-item-Warrington's Own Buses"
+                key="checkbox-item-WBTR"
               >
                 <label
                   className="govuk-label govuk-checkboxes__label"
@@ -1285,18 +1291,21 @@ exports[`pages searchOperator should render the search input and a list of selec
             />
             <input
               id="add-operator-0"
+              key="input-WBTR"
               name="userSelectedOperators"
               type="hidden"
               value="WBTR#Warrington's Own Buses"
             />
             <input
               id="add-operator-1"
+              key="input-BLAC"
               name="userSelectedOperators"
               type="hidden"
               value="BLAC#Blackpool Transport"
             />
             <input
               id="add-operator-2"
+              key="input-IWBusCo"
               name="userSelectedOperators"
               type="hidden"
               value="IWBusCo#IW Bus Co"
@@ -1626,7 +1635,7 @@ exports[`pages searchOperator should render the search input and search results 
               </p>
               <div
                 className="govuk-checkboxes__item"
-                key="checkbox-item-Blackpool"
+                key="checkbox-item-BLAC"
               >
                 <label
                   className="govuk-label govuk-checkboxes__label"
@@ -1802,18 +1811,21 @@ exports[`pages searchOperator should render the search input, search results and
             />
             <input
               id="add-operator-0"
+              key="input-WBTR"
               name="userSelectedOperators"
               type="hidden"
               value="WBTR#Warrington's Own Buses"
             />
             <input
               id="add-operator-1"
+              key="input-BLAC"
               name="userSelectedOperators"
               type="hidden"
               value="BLAC#Blackpool Transport"
             />
             <input
               id="add-operator-2"
+              key="input-IWBusCo"
               name="userSelectedOperators"
               type="hidden"
               value="IWBusCo#IW Bus Co"
@@ -1881,7 +1893,7 @@ exports[`pages searchOperator should render the search input, search results and
               </p>
               <div
                 className="govuk-checkboxes__item"
-                key="checkbox-item-Warrington's Own Buses"
+                key="checkbox-item-WBTR"
               >
                 <label
                   className="govuk-label govuk-checkboxes__label"

@@ -167,6 +167,11 @@ generate-flat-fare-geo-zone:
 
 generate-validate-flat-fare-geo-zone: generate-flat-fare-geo-zone validate-latest-file
 
+generate-flat-fare-return:
+	./scripts/trigger_netex_convertor.sh flatFareReturn
+
+generate-validate-flat-fare-return: generate-flat-fare-return validate-latest-file
+
 generate-flat-fare-geo-zone-with-exempt-services:
 	./scripts/trigger_netex_convertor.sh flatFareWithExemptServices
 

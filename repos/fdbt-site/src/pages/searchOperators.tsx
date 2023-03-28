@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { ReactElement } from 'react';
 import { BaseLayout } from '../layout/Layout';
-import uniqBy from 'lodash/uniqBy';
 import { ErrorInfo, NextPageContextWithSession, Operator, OperatorGroup } from '../interfaces';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
@@ -34,18 +33,26 @@ export interface SearchOperatorProps {
     inputs?: OperatorGroup | undefined;
 }
 
-export const ShowSelectedOperators = (
+export const alphabetiseOperatorList = (operators: Operator[]): Operator[] =>
+    operators.sort((a, b) => a.nocCode.toLowerCase().localeCompare(b.nocCode.toLowerCase()));
+
+export const showSelectedOperators = (
     selectedOperators: Operator[],
     setSelectedOperators: React.Dispatch<React.SetStateAction<Operator[]>>,
     errors: ErrorInfo[],
     operatorGroupName: string,
+    databaseSearchResults: Operator[],
+    setSearchResults: React.Dispatch<React.SetStateAction<Operator[]>>,
+    searchResults: Operator[],
 ): ReactElement => {
     const removeOperatorsErrors: ErrorInfo[] = [];
+
     errors.forEach((err) => {
         if (err.id === removeOperatorsErrorId) {
             removeOperatorsErrors.push(err);
         }
     });
+
     const removeOperator = (
         event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
         nocCode: string,
@@ -53,14 +60,18 @@ export const ShowSelectedOperators = (
     ) => {
         if (removeAll) {
             setSelectedOperators([]);
+            setSearchResults(alphabetiseOperatorList(databaseSearchResults));
         } else {
             const newSelectedOperators = selectedOperators.filter((operator) => operator.nocCode !== nocCode);
+            const operatorToRemove = databaseSearchResults.find((operator) => operator.nocCode === nocCode) as Operator;
             setSelectedOperators(newSelectedOperators);
+            setSearchResults(alphabetiseOperatorList([...searchResults, operatorToRemove]));
         }
         if (event) {
             event.preventDefault();
         }
     };
+
     return (
         <div>
             <div
@@ -203,6 +214,7 @@ export const renderSearchBox = (
                                 name="userSelectedOperators"
                                 type="hidden"
                                 value={`${nocCode}#${name}`}
+                                key={`input-${nocCode}`}
                             />
                         </>
                     );
@@ -219,14 +231,12 @@ export const renderSearchBox = (
     );
 };
 
-export const ShowSearchResults = (
+export const showSearchResults = (
     searchText: string,
     errors: ErrorInfo[],
     databaseSearchResultsCount: number,
     selectedOperators: Operator[],
     setSelectedOperators: React.Dispatch<React.SetStateAction<Operator[]>>,
-    searchResultsCount: number,
-    setSearchResultsCount: React.Dispatch<React.SetStateAction<number>>,
     searchResults: Operator[],
     setSearchResults: React.Dispatch<React.SetStateAction<Operator[]>>,
 ): ReactElement => {
@@ -239,19 +249,21 @@ export const ShowSearchResults = (
 
     const addOperator = (operatorNocCode: string, operatorName: string) => {
         const newSelectedOperators = [...selectedOperators, { nocCode: operatorNocCode, name: operatorName }];
-        const newUniqtSelectedOperators = uniqBy(newSelectedOperators, 'nocCode');
-        setSelectedOperators(newUniqtSelectedOperators);
-        if (searchResults.length > 0) {
-            setSearchResultsCount(searchResultsCount - 1);
-        }
-        setSearchResults(searchResults.filter((operator) => operator.nocCode !== operatorNocCode));
+        setSelectedOperators(newSelectedOperators);
+        const newSearchResults = alphabetiseOperatorList(
+            searchResults.filter(
+                (operator) =>
+                    !newSelectedOperators.find((selectedOperator) => selectedOperator.nocCode === operator.nocCode),
+            ),
+        );
+        setSearchResults(newSearchResults);
     };
 
     return (
         <div className={`govuk-form-group ${addOperatorsErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
             <fieldset className="govuk-fieldset" aria-describedby="operator-search-results">
                 <legend className="govuk-fieldset__legend">
-                    {searchResultsCount !== 0 && (
+                    {databaseSearchResultsCount !== 0 && (
                         <h2 className="govuk-body-l govuk-!-margin-bottom-0" id="operator-search-results">
                             Your search for &apos;<strong>{searchText}</strong>&apos; returned
                             <strong>
@@ -276,7 +288,7 @@ export const ShowSearchResults = (
                             {searchResults.map((operator, index) => {
                                 const { nocCode, name } = operator;
                                 return (
-                                    <div className="govuk-checkboxes__item" key={`checkbox-item-${name}`}>
+                                    <div className="govuk-checkboxes__item" key={`checkbox-item-${nocCode}`}>
                                         <label
                                             id={`operator-to-add-${index}`}
                                             // eslint-disable-next-line jsx-a11y/aria-role
@@ -308,12 +320,11 @@ const SearchOperators = ({
     inputs,
 }: SearchOperatorProps): ReactElement => {
     const operatorsAdded = preSelectedOperators.length > 0;
+    const initialSortedDatabaseResults = alphabetiseOperatorList(databaseSearchResults);
     const searchResultsToDisplay =
         databaseSearchResults.length > 0 || errors.find((err) => err.id === addOperatorsErrorId);
-    const databaseSearchResultsCount = databaseSearchResults ? databaseSearchResults.length : 0;
     const [selectedOperators, setSelectedOperators] = useState<Operator[]>(preSelectedOperators);
-    const [searchResultsCount, setSearchResultsCount] = useState(databaseSearchResultsCount);
-    const [searchResults, setSearchResults] = useState(databaseSearchResults);
+    const [searchResults, setSearchResults] = useState(initialSortedDatabaseResults);
     const operatorGroupName = inputs ? inputs.name : '';
     const id = inputs ? inputs.id : undefined;
 
@@ -323,7 +334,7 @@ const SearchOperators = ({
                 <div className="govuk-grid-column-two-thirds">
                     {editMode && errors.length === 0 ? (
                         <>
-                            <BackButton href="/viewOperatorGroups"></BackButton>
+                            <BackButton href="/viewOperatorGroups" />
                             <InformationSummary informationText={editingInformationText} />
                         </>
                     ) : null}
@@ -333,14 +344,12 @@ const SearchOperators = ({
                         <input name="id" type="hidden" value={id} readOnly />
                     </CsrfForm>
                     {searchResultsToDisplay
-                        ? ShowSearchResults(
+                        ? showSearchResults(
                               searchText,
                               errors,
-                              databaseSearchResultsCount,
+                              initialSortedDatabaseResults.length,
                               selectedOperators,
                               setSelectedOperators,
-                              searchResultsCount,
-                              setSearchResultsCount,
                               searchResults,
                               setSearchResults,
                           )
@@ -348,7 +357,15 @@ const SearchOperators = ({
                 </div>
                 <div className="govuk-grid-column-one-third selectedOperators">
                     <CsrfForm action="/api/searchOperators" method="post" csrfToken={csrfToken}>
-                        {ShowSelectedOperators(selectedOperators, setSelectedOperators, errors, operatorGroupName)}
+                        {showSelectedOperators(
+                            selectedOperators,
+                            setSelectedOperators,
+                            errors,
+                            operatorGroupName,
+                            initialSortedDatabaseResults,
+                            setSearchResults,
+                            searchResults,
+                        )}
                         <div>
                             {selectedOperators.map((operator, index) => {
                                 const { nocCode, name } = operator;

@@ -31,6 +31,7 @@ import {
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
     STOPS_EXEMPTION_ATTRIBUTE,
     CAPS_DEFINITION_ATTRIBUTE,
+    FLAT_FARE_RETURN_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
     batchGetStopsByAtcoCode,
@@ -549,12 +550,15 @@ export const getMultipleServicesTicketJson = (
         };
     }
 
+    const isFlatFareReturn = !!getSessionAttribute(req, FLAT_FARE_RETURN_ATTRIBUTE);
+
     return {
         ...basePeriodTicketAttributes,
         selectedServices,
         ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
         ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!isFlatFareReturn && { return: true }),
     };
 };
 
