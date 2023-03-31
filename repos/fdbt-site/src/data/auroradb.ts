@@ -11,6 +11,7 @@ import {
     MyFaresService,
     ServiceWithOriginAndDestination,
     Cap,
+    IncomingMessageWithSession,
 } from '../interfaces';
 import logger from '../utils/logger';
 import { convertDateFormat } from '../utils';
@@ -39,6 +40,8 @@ import {
     OperatorDetails,
     CapExpiry,
 } from '../interfaces/matchingJsonTypes';
+import { updateSessionAttribute } from '../utils/sessions';
+import { MISSING_STOPS_ATTRIBUTE } from '../constants/attributes';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -503,7 +506,10 @@ export const batchGetOperatorNamesByNocCode = async (nocCodes: string[]): Promis
     }
 };
 
-export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
+export const batchGetStopsByAtcoCode = async (
+    atcoCodes: string[],
+    req: IncomingMessageWithSession,
+): Promise<Stop[] | []> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving naptan info for atco codes',
@@ -521,6 +527,7 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
         if (queryResults.length !== atcoCodes.length) {
             const queryResultsAtcos = queryResults.map((qr) => qr.atcoCode);
             const missingAtcosFromDb = difference(atcoCodes, queryResultsAtcos);
+            updateSessionAttribute(req, MISSING_STOPS_ATTRIBUTE, missingAtcosFromDb);
 
             logger.info('', {
                 context: 'data.auroradb',
