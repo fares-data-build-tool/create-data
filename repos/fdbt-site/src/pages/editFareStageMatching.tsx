@@ -25,6 +25,7 @@ import { getSessionAttribute } from '../utils/sessions';
 import { isWithErrors } from '../interfaces/typeGuards';
 import WarningSummary from '../components/WarningSummary';
 import { upperFirst } from 'lodash';
+import { redirectTo } from '../utils/apiUtils';
 
 const description = 'Edit fare stages page of the Create Fares Data Service';
 const errorId = 'option-0';
@@ -379,11 +380,19 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             `No stops found for journey: nocCode ${nocCode}, lineName: ${lineName}, direction: ${direction}`,
         );
     }
-
+    let naptanInfo: Stop[];
     // filling out stop information from DB
-    const naptanInfo = await batchGetStopsByAtcoCode(
-        masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
-    );
+    try {
+        naptanInfo = await batchGetStopsByAtcoCode(
+            masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
+            ctx.req,
+        );
+    } catch (error) {
+        if (ctx.res) {
+            redirectTo(ctx.res, '/missingStops');
+        }
+        throw new Error('Could not redirect.');
+    }
 
     // removing any stops that aren't fully fleshed out
     const orderedStops = masterStopList

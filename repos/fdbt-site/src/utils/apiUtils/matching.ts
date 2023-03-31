@@ -243,6 +243,7 @@ export const getMatchingProps = async (
     // filling out stop information from DB
     const naptanInfo = await batchGetStopsByAtcoCode(
         masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
+        ctx.req,
     );
 
     // removing any stops that aren't fully fleshed out

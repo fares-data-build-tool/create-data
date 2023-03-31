@@ -66,7 +66,7 @@ describe('matching', () => {
                 '13003949C',
                 '13003635B',
                 '13003655B',
-            ]);
+            ], ctx.req);
         });
 
         it('preserves the stops order', async () => {

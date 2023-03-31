@@ -435,7 +435,7 @@ export const getGeoZoneTicketJson = async (
     const atcoCodes: string[] = await getCsvZoneUploadData(
         `fare-zone/${basePeriodTicketAttributes.nocCode}/${basePeriodTicketAttributes.uuid}.json`,
     );
-    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes, req);
 
     const additionalNocs =
         basePeriodTicketAttributes.type === 'multiOperator' && multiOpAttribute
@@ -732,7 +732,7 @@ export const adjustSchemeOperatorJson = async (
 
     const nocCode = getAndValidateNoc(req, res);
     const atcoCodes: string[] = await getCsvZoneUploadData(`fare-zone/${nocCode}/${matchingJson.uuid}.json`);
-    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes, req);
     const additionalNocs = multiOpAttribute.selectedOperators.map((operator) => operator.nocCode);
 
     if (zoneStops.length === 0) {

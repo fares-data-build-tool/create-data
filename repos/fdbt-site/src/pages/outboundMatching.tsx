@@ -5,6 +5,7 @@ import { NextPageContextWithSession } from '../interfaces';
 import { getSessionAttribute } from '../utils/sessions';
 import { MatchingProps } from './matching';
 import { getMatchingProps } from '../utils/apiUtils/matching';
+import { redirectTo } from '../utils/apiUtils';
 
 const heading = 'Outbound - Match stops to fare stages';
 const title = 'Outbound Matching - Create Fares Data Service';
@@ -43,7 +44,18 @@ const OutboundMatching = ({
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const matchingAttribute = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
 
-    return await getMatchingProps(ctx, matchingAttribute);
+    let props;
+
+    try {
+        props = (await getMatchingProps(ctx, matchingAttribute, true)).props;
+    } catch (error) {
+        if (ctx.res) {
+            redirectTo(ctx.res, '/missingStops');
+        }
+        throw new Error('Could not redirect.');
+    }
+
+    return { props };
 };
 
 export default OutboundMatching;

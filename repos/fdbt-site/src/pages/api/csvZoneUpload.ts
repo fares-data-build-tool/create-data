@@ -231,12 +231,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         let stops: Stop[] = [];
         try {
-            stops = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
+            stops = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes, req);
         } catch (error) {
             const errors: ErrorInfo[] = [
                 {
                     id: 'csv-upload',
-                    errorMessage: 'Incorrect ATCO/NaPTAN codes detected in file. All codes must be correct.',
+                    errorMessage:
+                        'The file you uploaded contains incorrect ATCO/NaPTAN codes, or codes which do not exist in the NaPTAN dataset.',
                 },
             ];
             setFareZoneAttributeAndRedirect(req, res, errors);
