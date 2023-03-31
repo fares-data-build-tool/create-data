@@ -50,23 +50,26 @@ describe('matching', () => {
             await getMatchingProps(ctx, {});
 
             expect(auroradb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
-            expect(auroradb.batchGetStopsByAtcoCode).toBeCalledWith([
-                '13003921A',
-                '13003305E',
-                '13003306B',
-                '13003618B',
-                '13003622B',
-                '13003923B',
-                '13003939H',
-                '13003625C',
-                '13003612D',
-                '13003611B',
-                '13003609E',
-                '13003661E',
-                '13003949C',
-                '13003635B',
-                '13003655B',
-            ], ctx.req);
+            expect(auroradb.batchGetStopsByAtcoCode).toBeCalledWith(
+                [
+                    '13003921A',
+                    '13003305E',
+                    '13003306B',
+                    '13003618B',
+                    '13003622B',
+                    '13003923B',
+                    '13003939H',
+                    '13003625C',
+                    '13003612D',
+                    '13003611B',
+                    '13003609E',
+                    '13003661E',
+                    '13003949C',
+                    '13003635B',
+                    '13003655B',
+                ],
+                ctx.req,
+            );
         });
 
         it('preserves the stops order', async () => {
