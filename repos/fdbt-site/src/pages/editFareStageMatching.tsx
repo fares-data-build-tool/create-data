@@ -324,7 +324,7 @@ const EditFareStageMatching = ({
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: EditStagesProps }> => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: EditStagesProps } | void> => {
     const csrfToken = getCsrfToken(ctx);
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE) as
         | WithIds<SingleTicket>
@@ -390,6 +390,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if (!dbResults.successful && ctx.res) {
         updateSessionAttribute(ctx.req, MISSING_STOPS_ATTRIBUTE, dbResults.missingStops);
         redirectTo(ctx.res, '/missingStops');
+        return;
     }
 
     const naptanInfo = dbResults.results;
