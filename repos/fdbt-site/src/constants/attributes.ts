@@ -167,5 +167,3 @@ export const CAPS_DEFINITION_ATTRIBUTE = 'fdbt-caps-definition-attribute';
 export const STOPS_EXEMPTION_ATTRIBUTE = 'fdbt-exemption-stops';
 
 export const FLAT_FARE_RETURN_ATTRIBUTE = 'fdbt-flat-fare-return-attribute';
-
-export const MISSING_STOPS_ATTRIBUTE = 'fdbt-missing-stops-attribute';

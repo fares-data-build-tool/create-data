@@ -5,7 +5,6 @@ import MatchingBase from '../components/MatchingBase';
 import { getSessionAttribute } from '../utils/sessions';
 import { getMatchingProps } from '../utils/apiUtils/matching';
 import { Stop } from '../interfaces/matchingJsonTypes';
-import { redirectTo } from '../utils/apiUtils';
 
 const title = 'Matching - Create Fares Data Service';
 const description = 'Matching page of the Create Fares Data Service';
@@ -54,18 +53,7 @@ export interface MatchingProps {
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: MatchingProps }> => {
     const matchingAttribute = getSessionAttribute(ctx.req, MATCHING_ATTRIBUTE);
 
-    let props;
-
-    try {
-        props = (await getMatchingProps(ctx, matchingAttribute, true)).props;
-    } catch (error) {
-        if (ctx.res) {
-            redirectTo(ctx.res, '/missingStops');
-        }
-        throw new Error('Could not redirect.');
-    }
-
-    return { props };
+    return await getMatchingProps(ctx, matchingAttribute);
 };
 
 export default Matching;
