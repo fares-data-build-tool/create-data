@@ -324,7 +324,9 @@ const EditFareStageMatching = ({
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: EditStagesProps } | void> => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<{ props: EditStagesProps } | void> => {
     const csrfToken = getCsrfToken(ctx);
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE) as
         | WithIds<SingleTicket>
