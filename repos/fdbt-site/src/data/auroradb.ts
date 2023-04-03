@@ -503,7 +503,7 @@ export const batchGetOperatorNamesByNocCode = async (nocCodes: string[]): Promis
     }
 };
 
-export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[] | []> => {
+export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'retrieving naptan info for atco codes',
@@ -540,6 +540,61 @@ export const batchGetStopsByAtcoCode = async (atcoCodes: string[]): Promise<Stop
             indicator: item.indicator,
             street: item.street,
         }));
+    } catch (error) {
+        throw new Error(
+            `Error performing batch get for naptan info for stop list '${JSON.stringify(atcoCodes)}': ${error.stack}`,
+        );
+    }
+};
+
+export const batchGetStopsByAtcoCodeWithErrorCheck = async (
+    atcoCodes: string[],
+): Promise<{ results: Stop[]; successful: boolean; missingStops: string[] }> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'retrieving naptan info for atco codes',
+    });
+
+    try {
+        const substitution = atcoCodes.map(() => '?').join(',');
+        const batchQuery = `
+            SELECT commonName, naptanCode, atcoCode, nptgLocalityCode, localityName, parentLocalityName, indicator, street
+            FROM naptanStop
+            WHERE atcoCode IN (${substitution})
+        `;
+
+        const queryResults = await executeQuery<NaptanInfo[]>(batchQuery, atcoCodes);
+
+        if (queryResults.length !== atcoCodes.length) {
+            const queryResultsAtcos = queryResults.map((qr) => qr.atcoCode);
+            const missingAtcosFromDb = difference(atcoCodes, queryResultsAtcos);
+
+            logger.info('', {
+                context: 'data.auroradb',
+                message: `The missing atco's are: ${missingAtcosFromDb}`,
+            });
+
+            return {
+                results: [],
+                successful: false,
+                missingStops: missingAtcosFromDb,
+            };
+        }
+
+        return {
+            results: queryResults.map((item) => ({
+                stopName: item.commonName,
+                naptanCode: item.naptanCode,
+                atcoCode: item.atcoCode,
+                localityCode: item.nptgLocalityCode,
+                localityName: item.localityName,
+                parentLocalityName: item.parentLocalityName ?? '',
+                indicator: item.indicator,
+                street: item.street,
+            })),
+            successful: true,
+            missingStops: [],
+        };
     } catch (error) {
         throw new Error(
             `Error performing batch get for naptan info for stop list '${JSON.stringify(atcoCodes)}': ${error.stack}`,

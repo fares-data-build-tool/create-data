@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import BackButton from '../components/BackButton';
 import { renderResetAndAutoPopulateButtons, StopItem } from '../components/MatchingBase';
-import { batchGetStopsByAtcoCode, getServiceByIdAndDataSource } from '../data/auroradb';
+import { batchGetStopsByAtcoCodeWithErrorCheck, getServiceByIdAndDataSource } from '../data/auroradb';
 import {
     removeDuplicateAdjacentStops,
     sortingWithoutSequenceNumbers,
@@ -15,16 +15,18 @@ import {
     EDIT_FARE_STAGE_MATCHING_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MISSING_STOPS_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
 } from '../constants/attributes';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { ReturnTicket, SingleTicket, Stop, WithIds } from '../interfaces/matchingJsonTypes';
 import { FullColumnLayout } from '../layout/Layout';
 import { formatStopName, getAndValidateNoc, getCsrfToken, isReturnTicket } from '../utils';
-import { getSessionAttribute } from '../utils/sessions';
+import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { isWithErrors } from '../interfaces/typeGuards';
 import WarningSummary from '../components/WarningSummary';
 import { upperFirst } from 'lodash';
+import { redirectTo } from '../utils/apiUtils';
 
 const description = 'Edit fare stages page of the Create Fares Data Service';
 const errorId = 'option-0';
@@ -381,9 +383,16 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     // filling out stop information from DB
-    const naptanInfo = await batchGetStopsByAtcoCode(
+    const dbResults = await batchGetStopsByAtcoCodeWithErrorCheck(
         masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
     );
+
+    if (!dbResults.successful && ctx.res) {
+        updateSessionAttribute(ctx.req, MISSING_STOPS_ATTRIBUTE, dbResults.missingStops);
+        redirectTo(ctx.res, '/missingStops');
+    }
+
+    const naptanInfo = dbResults.results;
 
     // removing any stops that aren't fully fleshed out
     const orderedStops = masterStopList
