@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import Direction, { getServerSideProps } from '../../src/pages/direction';
 import * as auroradb from '../../src/data/auroradb';
-import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../src/data/auroradb';
+import { getServiceByIdAndDataSource } from '../../src/data/auroradb';
 import { mockRawService, getMockContext } from '../testData/mockData';
 import { TXC_SOURCE_ATTRIBUTE } from '../../src/constants/attributes';
 
@@ -13,7 +13,6 @@ describe('pages', () => {
     describe('direction', () => {
         beforeEach(() => {
             (getServiceByIdAndDataSource as jest.Mock).mockImplementation(() => mockRawService);
-            (batchGetStopsByAtcoCode as jest.Mock).mockImplementation(() => [{ localityName: '' }]);
         });
 
         it('should render correctly', () => {
