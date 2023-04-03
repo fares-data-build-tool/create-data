@@ -81,7 +81,6 @@ import {
     STOPS_EXEMPTION_ATTRIBUTE,
     VIEW_CAP_ERRORS,
     FLAT_FARE_RETURN_ATTRIBUTE,
-    MISSING_STOPS_ATTRIBUTE,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -254,7 +253,6 @@ export interface SessionAttributeTypes {
     [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
     [STOPS_EXEMPTION_ATTRIBUTE]: ExemptedStopsAttribute | { errors: ErrorInfo[] };
     [FLAT_FARE_RETURN_ATTRIBUTE]: boolean;
-    [MISSING_STOPS_ATTRIBUTE]: string[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes

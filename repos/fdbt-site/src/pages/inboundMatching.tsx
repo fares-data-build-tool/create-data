@@ -5,7 +5,6 @@ import { BasicService, NextPageContextWithSession, UserFareStages } from '../int
 import { getSessionAttribute } from '../utils/sessions';
 import { getMatchingProps } from '../utils/apiUtils/matching';
 import { Stop } from '../interfaces/matchingJsonTypes';
-import { redirectTo } from '../utils/apiUtils';
 
 const heading = 'Inbound - Match stops to fare stages';
 const title = 'Inbound Matching - Create Fares Data Service';
@@ -57,18 +56,7 @@ const InboundMatching = ({
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: InboundMatchingProps }> => {
     const matchingAttribute = getSessionAttribute(ctx.req, INBOUND_MATCHING_ATTRIBUTE);
     const unusedStage = !!ctx.query.unusedStage;
-    let props;
-
-    try {
-        props = (await getMatchingProps(ctx, matchingAttribute, true)).props;
-    } catch (error) {
-        if (ctx.res) {
-            redirectTo(ctx.res, '/missingStops');
-        }
-        throw new Error('Could not redirect.');
-    }
-
-    return { props: { ...props, unusedStage } };
+    return { props: { ...(await getMatchingProps(ctx, matchingAttribute, true)).props, unusedStage } };
 };
 
 export default InboundMatching;
