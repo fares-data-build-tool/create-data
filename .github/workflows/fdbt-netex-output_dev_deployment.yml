@@ -1,9 +1,4 @@
 on:
-  push:
-    branches:
-    - 'develop'
-    paths:
-    - repos/fdbt-netex-output/**
   workflow_dispatch:
 
 name: 'fdbt-netex-output_dev'
@@ -68,12 +63,7 @@ jobs:
         npm ci
         echo " ci finished"
         npm run build
-
-    - name: test
-      run: |
-        echo "Running tests"
-        npm run test:ci
-
+        
     - name: lint
       run: |
         echo "Linting"

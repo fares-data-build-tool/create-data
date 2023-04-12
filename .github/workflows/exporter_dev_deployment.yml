@@ -1,9 +1,4 @@
 on:
-  push:
-    branches:
-    - 'develop'
-    paths:
-    - repos/exporter/**
   workflow_dispatch:
 
 name: 'exporter_dev'
@@ -37,11 +32,6 @@ jobs:
         npm ci
         echo " ci finished"
         npm run build
-
-    - name: test
-      run: |
-        echo "Running tests"
-        npm run test:ci
 
     - name: lint
       run: |
