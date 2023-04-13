@@ -10,6 +10,7 @@
     "serverless-python-requirements": "^5.1.0"
   },
   "scripts": {
+    "deploy:dev": "export SLS_DEBUG='*' && sls deploy --stage=dev",
     "deploy:test": "export SLS_DEBUG='*' && sls deploy --stage=test",
     "deploy:preprod": "export SLS_DEBUG='*' && sls deploy --stage=preprod",
     "deploy:prod": "export SLS_DEBUG='*' && sls deploy --stage=prod"
