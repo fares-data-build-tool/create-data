@@ -24,11 +24,14 @@ import { RawJourneyPattern, StopPoint } from '../../../src/interfaces/dbTypes';
 describe('matching', () => {
     describe('getMatchingProps', () => {
         const getServiceByNocCodeLineNameAndDataSourceSpy = jest.spyOn(auroradb, 'getServiceByIdAndDataSource');
-        const batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
+        const batchGetStopsByAtcoCodeWithErrorCheckSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCodeWithErrorCheck');
         const getUserFareStagesSpy = jest.spyOn(s3, 'getUserFareStages');
 
         getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockRawService));
-        batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve([]));
+
+        batchGetStopsByAtcoCodeWithErrorCheckSpy.mockImplementation(() =>
+            Promise.resolve({ results: [], successful: false, missingStops: [] }),
+        );
         getUserFareStagesSpy.mockImplementation(() => Promise.resolve(userFareStages));
 
         beforeEach(jest.clearAllMocks);
@@ -49,8 +52,8 @@ describe('matching', () => {
 
             await getMatchingProps(ctx, {});
 
-            expect(auroradb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
-            expect(auroradb.batchGetStopsByAtcoCode).toBeCalledWith([
+            expect(auroradb.batchGetStopsByAtcoCodeWithErrorCheck).toBeCalledTimes(1);
+            expect(auroradb.batchGetStopsByAtcoCodeWithErrorCheck).toBeCalledWith([
                 '13003921A',
                 '13003305E',
                 '13003306B',
@@ -71,7 +74,11 @@ describe('matching', () => {
 
         it('preserves the stops order', async () => {
             getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockRawService));
-            batchGetStopsByAtcoCodeSpy.mockImplementation(() => Promise.resolve(zoneStops));
+            batchGetStopsByAtcoCodeWithErrorCheckSpy.mockResolvedValue({
+                results: zoneStops,
+                successful: true,
+                missingStops: [],
+            });
 
             const ctx = getMockContext({
                 session: {
@@ -112,7 +119,7 @@ describe('matching', () => {
 
             await getMatchingProps(ctx, {});
 
-            expect(auroradb.batchGetStopsByAtcoCode).toBeCalledTimes(1);
+            expect(auroradb.batchGetStopsByAtcoCodeWithErrorCheck).toBeCalledTimes(1);
         });
 
         it('throws an error if no stops can be found', async () => {

@@ -3,20 +3,22 @@ import { UserFareStages, NextPageContextWithSession } from '../../interfaces';
 import { MatchingFareZones, MatchingFareZonesData, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import toposort from 'toposort';
 import { MatchingProps } from '../../pages/matching';
-import { getSessionAttribute, getRequiredSessionAttribute } from '../sessions';
+import { getSessionAttribute, getRequiredSessionAttribute, updateSessionAttribute } from '../sessions';
 import {
     SERVICE_ATTRIBUTE,
     DIRECTION_ATTRIBUTE,
     OPERATOR_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
+    MISSING_STOPS_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getAndValidateNoc, getCsrfToken } from '../index';
 import { isService } from '../../interfaces/typeGuards';
 import logger from '../logger';
-import { getServiceByIdAndDataSource, batchGetStopsByAtcoCode } from '../../data/auroradb';
+import { getServiceByIdAndDataSource, batchGetStopsByAtcoCodeWithErrorCheck } from '../../data/auroradb';
 import { getUserFareStages } from '../../data/s3';
 import { RawJourneyPattern, StopPoint } from '../../interfaces/dbTypes';
 import { FareZone, Stop, UnassignedStop } from '../../interfaces/matchingJsonTypes';
+import { redirectTo } from '.';
 
 export const getFareZones = (
     userFareStages: UserFareStages,
@@ -241,9 +243,16 @@ export const getMatchingProps = async (
     }
 
     // filling out stop information from DB
-    const naptanInfo = await batchGetStopsByAtcoCode(
+    const dbResults = await batchGetStopsByAtcoCodeWithErrorCheck(
         masterStopList.filter((stop, index, self) => self.indexOf(stop) === index),
     );
+
+    if (!dbResults.successful && ctx.res) {
+        updateSessionAttribute(ctx.req, MISSING_STOPS_ATTRIBUTE, dbResults.missingStops);
+        redirectTo(ctx.res, '/missingStops');
+    }
+
+    const naptanInfo = dbResults.results;
 
     // removing any stops that aren't fully fleshed out
     const orderedStops = masterStopList
