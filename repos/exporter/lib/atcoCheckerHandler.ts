@@ -29,7 +29,7 @@ export const handler: Handler<ExportLambdaBody> = async () => {
     console.log('triggered atco checker lambda...');
 
     if (!PRODUCTS_BUCKET) {
-        throw new Error('Need to set PRODUCTS_BUCKET env variable');
+        throw new Error('Need to set PRODUCTS_BUCKET env variable1');
     }
 
     await removeAllServicesRequiringAttentionIds();
