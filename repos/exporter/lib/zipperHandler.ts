@@ -65,7 +65,7 @@ export const zipFiles = async (allFiles: string[], zipKey: string): Promise<void
             const obj = await s3.getObject({ Bucket: NETEX_BUCKET, Key: key }).promise();
             const body = obj.Body;
             if (!body) {
-                throw new Error(`No body found for key: ${key}`);
+                throw new Error(`1No body found for key: ${key}`);
             }
 
             const parts = key.split('/');
