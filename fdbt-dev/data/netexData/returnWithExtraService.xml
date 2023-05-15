@@ -17,7 +17,7 @@
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
             <LineRef version="1.0" ref="PK1146649_RJ1_12345"/>
-            <BrandingRef version="1.0" ref="op:BLAC@brand"/>
+            <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
           </objectReferences>
         </NetworkFilterByValue>
       </NetworkFrameTopic>

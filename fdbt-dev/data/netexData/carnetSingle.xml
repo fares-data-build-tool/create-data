@@ -17,7 +17,7 @@
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
             <LineRef version="1.0" ref="PK1146649_RJ1_1234567"/>
-            <BrandingRef version="1.0" ref="op:BLAC@brand"/>
+            <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
           </objectReferences>
         </NetworkFilterByValue>
       </NetworkFrameTopic>
@@ -1941,11 +1941,11 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct id="Trip@Product_1" version="1.0">
+            <AmountOfPriceUnitProduct id="Trip@Product_1" version="1.0">
               <Name>Product 1</Name>
               <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment@bundled"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="1.0" ref="fxc:standard_product@trip@single"/>
+              <TypeOfFareProductRef version="1.0" ref="fxc:standard_product@carnet@trips"/>
               <validableElements>
                 <ValidableElement id="Trip@Product_1@travel" version="1.0">
                   <Name>single Ride</Name>
@@ -1963,8 +1963,8 @@
                   <ValidableElementRef version="1.0" ref="Trip@Product_1@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>singleTrip</ProductType>
-            </PreassignedFareProduct>
+              <ProductType>tripCarnet</ProductType>
+            </AmountOfPriceUnitProduct>
           </fareProducts>
           <salesOfferPackages>
             <SalesOfferPackage version="1.0" id="Trip@Product_1-SOP@Onboard_(cash)">
@@ -1980,7 +1980,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Onboard_(cash)@Product_1-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -1997,7 +1997,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Onboard_(contactless)@Product_1-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -2014,7 +2014,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Online_(smart_card)@Product_1-SOP@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -2031,7 +2031,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Mobile_App@Product_1-SOP@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -2058,15 +2058,15 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="All_Encompassing@Product_1-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 </SalesOfferPackageElement>
                 <SalesOfferPackageElement id="All_Encompassing@Product_1-SOP@mobileApp" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 </SalesOfferPackageElement>
                 <SalesOfferPackageElement id="All_Encompassing@Product_1-SOP@smartCard" version="1.0" order="3">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -2144,7 +2144,7 @@
               <Name>FareTable for Product 1</Name>
               <Description>adult single fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-SOP@Onboard_(cash)"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
@@ -3914,7 +3914,7 @@
               <Name>FareTable for Product 1</Name>
               <Description>adult single fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-SOP@Onboard_(contactless)"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
@@ -5684,7 +5684,7 @@
               <Name>FareTable for Product 1</Name>
               <Description>adult single fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-SOP@Online_(smart_card)"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
@@ -7454,7 +7454,7 @@
               <Name>FareTable for Product 1</Name>
               <Description>adult single fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-SOP@Mobile_App"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
@@ -9224,7 +9224,7 @@
               <Name>FareTable for Product 1</Name>
               <Description>adult single fares - Organised as a fare triangle</Description>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="Trip@Product_1"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-SOP@All_Encompassing"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
                 <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>

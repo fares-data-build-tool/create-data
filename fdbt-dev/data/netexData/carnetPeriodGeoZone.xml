@@ -16,9 +16,7 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
-            <BrandingRef version="1.0" ref="op:BLAC@brand"/>
+            <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
           </objectReferences>
         </NetworkFilterByValue>
       </NetworkFrameTopic>
@@ -350,11 +348,11 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Product_1_adult">
+            <AmountOfPriceUnitProduct version="1.0" id="op:Pass@Product_1_adult">
               <Name>Product 1</Name>
               <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment@bundled"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@carnet@days"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@Product_1_adult@travel">
@@ -365,6 +363,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@period@availability"/>
+                    <FareStructureElementRef version="1.0" ref="mb:Tariff@multitrip@units"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
@@ -373,8 +372,8 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@Product_1_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>dayPass</ProductType>
-            </PreassignedFareProduct>
+              <ProductType>passCarnet</ProductType>
+            </AmountOfPriceUnitProduct>
           </fareProducts>
           <salesOfferPackages>
             <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_1-SOP@Onboard_(cash)">
@@ -390,7 +389,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@Product_1-Product_1-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -407,7 +406,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@Product_1-Product_1-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -424,7 +423,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@Product_1-Product_1-Online_(smart_card)@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -441,7 +440,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@Product_1-Product_1-Mobile_App@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -461,7 +460,7 @@
             <FareTable version="1.0" id="op:fareTable@Product_1@Onboard_(cash)@zone">
               <Name>Product 1 - Onboard (cash) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@adult@product-0@SOP-0@zone">
@@ -496,7 +495,7 @@
             <FareTable version="1.0" id="op:fareTable@Product_1@Onboard_(contactless)@zone">
               <Name>Product 1 - Onboard (contactless) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@adult@product-0@SOP-1@zone">
@@ -531,7 +530,7 @@
             <FareTable version="1.0" id="op:fareTable@Product_1@Online_(smart_card)@zone">
               <Name>Product 1 - Online (smart card) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@adult@product-0@SOP-2@zone">
@@ -566,7 +565,7 @@
             <FareTable version="1.0" id="op:fareTable@Product_1@Mobile_App@zone">
               <Name>Product 1 - Mobile App - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:Product_1@Mobile_App@adult@product-0@SOP-3@zone">

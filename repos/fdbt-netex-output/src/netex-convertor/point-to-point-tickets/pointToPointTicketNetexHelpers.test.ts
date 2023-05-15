@@ -6,6 +6,7 @@ import {
     returnCircularTicket,
     returnNonCircularTicketWithReturnValidity,
     fareZonesWithoutStopIndicator,
+    carnetSingle,
 } from '../../test-data/matchingData';
 import { NetexObject, getUserProfile, getProductType } from '../sharedHelpers';
 import {
@@ -2017,10 +2018,16 @@ describe('Netex Helpers', () => {
             ['single ticket', singleTicket, 'single_anyone'],
             ['return non-circular ticket', returnNonCircularTicket, 'return_anyone'],
             ['return circular ticket', returnCircularTicket, 'return_student'],
+            ['carnet ticket', carnetSingle, ''],
         ])(
             'should return a fare table object array for each sales offer package for a %s',
             (_ticketType, ticket, ticketUserConcat) => {
-                const actualFareTable = netexHelpers.getFareTables(ticket, lineIdName, ticketUserConcat);
+                const actualFareTable = netexHelpers.getFareTables(
+                    ticket,
+                    lineIdName,
+                    ticketUserConcat,
+                    'carnetDetails' in ticket.products[0],
+                );
                 expect(actualFareTable.length).toEqual(ticket.products[0].salesOfferPackages.length);
             },
         );
@@ -2031,12 +2038,14 @@ describe('Netex Helpers', () => {
             ['single ticket', singleTicket],
             ['return non-circular ticket', returnNonCircularTicket],
             ['return circular ticket', returnCircularTicket],
+            ['carnet single', carnetSingle],
         ])(
             'should return a single salesOfferPackage with a distribution assignment for each purchase location and a sales offer package element for each ticket format for a %s',
             (_ticketType, ticket) => {
                 const returnedSalesOfferPackage = buildSalesOfferPackage(
                     ticket.products[0].salesOfferPackages[0],
                     `${ticket.type}_${ticket.passengerType}`,
+                    'carnetDetails' in ticket.products[0],
                 );
                 expect(returnedSalesOfferPackage.distributionAssignments.DistributionAssignment.length).toBe(
                     ticket.products[0].salesOfferPackages[0].purchaseLocations.length,

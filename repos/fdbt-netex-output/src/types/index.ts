@@ -350,9 +350,12 @@ export interface SalesOfferPackageElement {
         version: string;
         ref: string;
     };
-    PreassignedFareProductRef: {
+    PreassignedFareProductRef?: {
         ref: string;
     };
+    AmountOfPriceUnitProductRef?: {
+        ref: string;
+    }
 }
 
 export interface GeographicalInterval {

@@ -81,10 +81,6 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         publicationRequestToUpdate.Description.$t = `Request for ${
             isPointToPointTicket(ticket) ? `${ticket.nocCode} ${coreData.lineIdName}` : coreData.operatorIdentifier
         } bus pass fares`;
-        publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.BrandingRef = {
-            version: '1.0',
-            ref: coreData.brandingId,
-        };
 
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref =
             coreData.nocCodeFormat;
@@ -100,28 +96,22 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 : 'LINE';
         publicationRequestToUpdate.topics.NetworkFrameTopic.TypeOfFrameRef.ref = `fxc:UK:DFT:TypeOfFrame_UK_PI_${ticketTypeInsert}_FARE_OFFER:FXCP`;
 
-        const productRefs = ticket.products.flatMap(product =>
-            !isPointToPointTicket(ticket)
-                ? {
-                      version: '1.0',
-                      ref:
-                          'lineName' in ticket
-                              ? `Trip@${coreData.ticketUserConcat}`
-                              : `op:Pass@${product.productName}_${ticket.passengerType}`,
-                  }
-                : [],
-        );
+        const productRefs = ticket.products.map(product => ({
+            version: '1.0',
+            ref:
+                'lineName' in ticket
+                    ? `Trip@${coreData.ticketUserConcat}`
+                    : `op:Pass@${product.productName}_${ticket.passengerType}`,
+        }));
 
-        if (productRefs.length) {
+        if (coreData.isCarnet) {
+            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.AmountOfPriceUnitProductRef = productRefs;
+            delete publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences
+                .PreassignedFareProductRef;
+        } else {
             publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.PreassignedFareProductRef = productRefs;
-
-            publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.TypeOfFareProductRef = {
-                version: 'fxc:v1.0',
-                ref:
-                    isFlatFareType(ticket) || isMultiOpFlatFareType(ticket)
-                        ? 'fxc:standard_product@trip@single'
-                        : 'fxc:standard_product@pass@period',
-            };
+            delete publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences
+                .AmountOfPriceUnitProductRef;
         }
 
         // check if multiOperator and delete as required
@@ -509,13 +499,25 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         }
 
         if ('lineName' in ticket) {
-            priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProduct(
-                ticket,
-                fareStructuresElements,
-                coreData.ticketUserConcat,
-                coreData.productNameForPlainText,
-                coreData.isCarnet,
-            );
+            if (coreData.isCarnet) {
+                priceFareFrameToUpdate.fareProducts.AmountOfPriceUnitProduct = getPreassignedFareProduct(
+                    ticket,
+                    fareStructuresElements,
+                    coreData.ticketUserConcat,
+                    coreData.productNameForPlainText,
+                    true,
+                );
+                delete priceFareFrameToUpdate.fareProducts.PreassignedFareProduct;
+            } else {
+                priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProduct(
+                    ticket,
+                    fareStructuresElements,
+                    coreData.ticketUserConcat,
+                    coreData.productNameForPlainText,
+                    false,
+                );
+                delete priceFareFrameToUpdate.fareProducts.AmountOfPriceUnitProduct;
+            }
 
             priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = buildSalesOfferPackages(
                 ticket.products[0],
@@ -524,6 +526,8 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
 
             if (isPointToPointTicket(ticket)) return priceFareFrameToUpdate;
         }
+
+        // All below code in this function only happens for period tickets
 
         if (isGeoZoneTicket(ticket) || isHybridTicket(ticket)) {
             priceFareFrameToUpdate.prerequisites.FareFrameRef.ref = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_NETWORK:${coreData.placeholderGroupOfProductsName}@pass:op`;
@@ -559,13 +563,25 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             return priceFareFrameToUpdate;
         }
 
-        // Preassigned Fare Product
-        priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProducts(
-            ticket,
-            coreData.nocCodeFormat,
-            coreData.opIdNocFormat,
-            coreData.isCarnet,
-        );
+        // Preassigned Fare Product (or AmountOfPriceUnitProduct if Carnet)
+
+        if (coreData.isCarnet) {
+            priceFareFrameToUpdate.fareProducts.AmountOfPriceUnitProduct = getPreassignedFareProducts(
+                ticket,
+                coreData.nocCodeFormat,
+                coreData.opIdNocFormat,
+                true,
+            );
+            delete priceFareFrameToUpdate.fareProducts.PreassignedFareProduct;
+        } else {
+            priceFareFrameToUpdate.fareProducts.PreassignedFareProduct = getPreassignedFareProducts(
+                ticket,
+                coreData.nocCodeFormat,
+                coreData.opIdNocFormat,
+                false,
+            );
+            delete priceFareFrameToUpdate.fareProducts.AmountOfPriceUnitProduct;
+        }
 
         // Sales Offer Packages
         const salesOfferPackages = getSalesOfferPackageList(ticket, coreData.ticketUserConcat);
@@ -587,6 +603,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 ticket,
                 coreData.lineIdName,
                 coreData.ticketUserConcat,
+                coreData.isCarnet,
             );
         } else if ('zoneName' in ticket && 'selectedServices' in ticket) {
             delete fareTableFareFrameToUpdate.priceGroups;
@@ -594,6 +611,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 ticket,
                 coreData.placeholderGroupOfProductsName,
                 coreData.ticketUserConcat,
+                coreData.isCarnet,
             );
         } else if ('zoneName' in ticket) {
             delete fareTableFareFrameToUpdate.priceGroups;
@@ -601,6 +619,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 ticket,
                 coreData.placeholderGroupOfProductsName,
                 coreData.ticketUserConcat,
+                coreData.isCarnet,
             );
         } else if ('selectedServices' in ticket || 'schemeOperatorName' in ticket) {
             if ('pricingByDistance' in ticket.products[0]) {
@@ -614,6 +633,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 fareTableFareFrameToUpdate.fareTables.FareTable = getMultiServiceFareTable(
                     ticket,
                     coreData.ticketUserConcat,
+                    coreData.isCarnet,
                 );
             }
         } else {

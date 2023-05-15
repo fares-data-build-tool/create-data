@@ -17,6 +17,793 @@ import {
     SingleTicket,
 } from '../types';
 
+export const carnetSingle: SingleTicket = {
+    lineName: '4',
+    lineId: 'PK1146649_RJ1_1234567',
+    nocCode: 'BLAC',
+    operatorName: 'Blackpool Transport',
+    serviceDescription: 'CLEVELEYS - MERESIDE via Blackpool',
+    type: 'single',
+    email: 'test@example.com',
+    uuid: 'BLACc1363964',
+    termTime: true,
+    timeRestriction: [
+        {
+            day: 'bankHoliday',
+            timeBands: [
+                {
+                    startTime: '',
+                    endTime: '',
+                },
+            ],
+        },
+        {
+            day: 'tuesday',
+            timeBands: [
+                {
+                    startTime: '0900',
+                    endTime: '1700',
+                },
+                {
+                    startTime: '1800',
+                    endTime: '2200',
+                },
+            ],
+        },
+        {
+            day: 'wednesday',
+            timeBands: [
+                {
+                    startTime: '1350',
+                    endTime: '1950',
+                },
+                {
+                    startTime: '2350',
+                    endTime: '',
+                },
+            ],
+        },
+        {
+            day: 'thursday',
+            timeBands: [
+                {
+                    startTime: '0000',
+                    endTime: '2359',
+                },
+            ],
+        },
+    ],
+    products: [
+        {
+            productName: 'Product 1',
+            carnetDetails: {
+                quantity: '10',
+                expiryTime: '5',
+                expiryUnit: CarnetExpiryUnit.DAY,
+            },
+            salesOfferPackages: [
+                {
+                    id: 3,
+                    name: 'Onboard (cash)',
+                    description: 'Purchasable on board the bus, with cash, as a paper ticket.',
+                    purchaseLocations: ['onBoard'],
+                    paymentMethods: ['cash'],
+                    ticketFormats: ['paperTicket'],
+                },
+            ],
+        },
+    ],
+    fareZones: [
+        {
+            name: 'Test Stage 1',
+            stops: [
+                {
+                    stopName: 'Victoria Square',
+                    naptanCode: 'lanjdgjt',
+                    atcoCode: '2500B0204',
+                    localityCode: 'E0016545',
+                    localityName: 'Cleveleys',
+                    parentLocalityName: '',
+                    indicator: 'Stop D',
+                    street: 'Cleveleys East',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '1.00',
+                    fareZones: ['Test Stage 2'],
+                },
+                {
+                    price: '2.00',
+                    fareZones: ['Test Stage 3'],
+                },
+                {
+                    price: '3.00',
+                    fareZones: ['Test Stage 4'],
+                },
+                {
+                    price: '4.00',
+                    fareZones: ['Test Stage 5', 'Test Stage 6', 'Test Stage 7'],
+                },
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 8', 'Test Stage 9', 'Test Stage 10', 'Test Stage 11', 'Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 2',
+            stops: [
+                {
+                    stopName: 'Lauderdale Avenue',
+                    naptanCode: 'blpadpaw',
+                    atcoCode: '2590B0205',
+                    localityCode: 'E0035271',
+                    localityName: 'Anchorsholme',
+                    parentLocalityName: 'Cleveleys',
+                    indicator: 'by',
+                    street: 'Kelso Avenue',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '2.00',
+                    fareZones: ['Test Stage 3'],
+                },
+                {
+                    price: '3.00',
+                    fareZones: ['Test Stage 4'],
+                },
+                {
+                    price: '4.00',
+                    fareZones: ['Test Stage 5', 'Test Stage 6', 'Test Stage 7'],
+                },
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 8', 'Test Stage 9', 'Test Stage 10', 'Test Stage 11', 'Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 3',
+            stops: [
+                {
+                    stopName: 'Anchorsholme Lane Shops',
+                    naptanCode: 'blpadpda',
+                    atcoCode: '2590B0206',
+                    localityCode: 'E0035271',
+                    localityName: 'Anchorsholme',
+                    parentLocalityName: 'Cleveleys',
+                    indicator: 'opp',
+                    street: 'Anchorsholme Lane',
+                    qualifierName: '',
+                },
+                {
+                    stopName: 'Cresswood Avenue',
+                    naptanCode: 'blpadpdg',
+                    atcoCode: '2590B0207',
+                    localityCode: 'E0035271',
+                    localityName: 'Anchorsholme',
+                    parentLocalityName: 'Cleveleys',
+                    indicator: 'opp',
+                    street: 'Anchorsholme Lane East',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '3.00',
+                    fareZones: ['Test Stage 4'],
+                },
+                {
+                    price: '4.00',
+                    fareZones: ['Test Stage 5', 'Test Stage 6', 'Test Stage 7'],
+                },
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 8', 'Test Stage 9', 'Test Stage 10', 'Test Stage 11', 'Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 4',
+            stops: [
+                {
+                    stopName: 'North Drive',
+                    naptanCode: 'blpagjmj',
+                    atcoCode: '2590B0487',
+                    localityCode: 'E0035271',
+                    localityName: 'Anchorsholme',
+                    parentLocalityName: 'Cleveleys',
+                    indicator: 'adj',
+                    street: 'North Drive',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '4.00',
+                    fareZones: ['Test Stage 5', 'Test Stage 6', 'Test Stage 7'],
+                },
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 8', 'Test Stage 9', 'Test Stage 10', 'Test Stage 11', 'Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 5',
+            stops: [
+                {
+                    stopName: 'Luton Road',
+                    naptanCode: 'blpagjmp',
+                    atcoCode: '2590B0488',
+                    localityCode: 'E0035271',
+                    localityName: 'Anchorsholme',
+                    parentLocalityName: 'Cleveleys',
+                    indicator: 'by',
+                    street: 'North Drive',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '4.00',
+                    fareZones: ['Test Stage 6', 'Test Stage 7'],
+                },
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 8', 'Test Stage 9', 'Test Stage 10', 'Test Stage 11', 'Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 6',
+            stops: [
+                {
+                    stopName: 'All Saints Church',
+                    naptanCode: 'blpagjmt',
+                    atcoCode: '2590B0489',
+                    localityCode: 'E0035271',
+                    localityName: 'Anchorsholme',
+                    parentLocalityName: 'Cleveleys',
+                    indicator: 'o/s',
+                    street: 'North Drive',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '4.00',
+                    fareZones: ['Test Stage 7'],
+                },
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 8', 'Test Stage 9', 'Test Stage 10', 'Test Stage 11', 'Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 7',
+            stops: [
+                {
+                    stopName: 'Lyddesdale Avenue',
+                    naptanCode: 'blpagjmw',
+                    atcoCode: '2590B0490',
+                    localityCode: 'E0035271',
+                    localityName: 'Anchorsholme',
+                    parentLocalityName: 'Cleveleys',
+                    indicator: 'opp',
+                    street: 'Valeway Avenue',
+                    qualifierName: '',
+                },
+                {
+                    stopName: 'Branstree Road',
+                    naptanCode: 'blpadmad',
+                    atcoCode: '2590B0151',
+                    localityCode: 'E0035290',
+                    localityName: 'Mereside',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'by',
+                    street: 'Langdale Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 8', 'Test Stage 9', 'Test Stage 10', 'Test Stage 11', 'Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 8',
+            stops: [
+                {
+                    stopName: 'Russell Avenue',
+                    naptanCode: 'blpagjpa',
+                    atcoCode: '2590B0491',
+                    localityCode: 'E0035271',
+                    localityName: 'Anchorsholme',
+                    parentLocalityName: 'Cleveleys',
+                    indicator: 'by',
+                    street: 'Fleetwood Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 9', 'Test Stage 10', 'Test Stage 11', 'Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 9',
+            stops: [
+                {
+                    stopName: 'Norbreck School',
+                    naptanCode: 'blpajawt',
+                    atcoCode: '2590B0814',
+                    localityCode: 'E0035271',
+                    localityName: 'Anchorsholme',
+                    parentLocalityName: 'Cleveleys',
+                    indicator: 'o/s',
+                    street: 'Russell Avenue',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 10', 'Test Stage 11', 'Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 10',
+            stops: [
+                {
+                    stopName: 'Shore Road',
+                    naptanCode: 'blpajdad',
+                    atcoCode: '2590B0815',
+                    localityCode: 'E0035291',
+                    localityName: 'Norbreck',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'opp',
+                    street: 'Norbreck Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 11', 'Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 11',
+            stops: [
+                {
+                    stopName: 'Wilson Square',
+                    naptanCode: 'blpajdag',
+                    atcoCode: '2590B0816',
+                    localityCode: 'E0035291',
+                    localityName: 'Norbreck',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'by',
+                    street: 'Norbreck Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '5.00',
+                    fareZones: ['Test Stage 12'],
+                },
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 12',
+            stops: [
+                {
+                    stopName: 'Mossom Lane',
+                    naptanCode: 'blpajdaj',
+                    atcoCode: '2590B0817',
+                    localityCode: 'E0035291',
+                    localityName: 'Norbreck',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'by',
+                    street: 'Norbreck Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 13', 'Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 13',
+            stops: [
+                {
+                    stopName: 'Guildford Avenue',
+                    naptanCode: 'blpajdam',
+                    atcoCode: '2590B0818',
+                    localityCode: 'E0035291',
+                    localityName: 'Norbreck',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'by',
+                    street: 'Norbreck Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 14', 'Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 14',
+            stops: [
+                {
+                    stopName: 'Norbreck Shops',
+                    naptanCode: 'blpajdap',
+                    atcoCode: '2590B0819',
+                    localityCode: 'E0035291',
+                    localityName: 'Norbreck',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'o/s',
+                    street: 'Norbreck Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '6.00',
+                    fareZones: ['Test Stage 15'],
+                },
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 15',
+            stops: [
+                {
+                    stopName: 'Chatsworth Avenue',
+                    naptanCode: 'blpajdat',
+                    atcoCode: '2590B0820',
+                    localityCode: 'E0035291',
+                    localityName: 'Norbreck',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'opp',
+                    street: 'Norcliffe Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 16', 'Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 16',
+            stops: [
+                {
+                    stopName: 'Leyburn Avenue',
+                    naptanCode: 'blpajdaw',
+                    atcoCode: '2590B0821',
+                    localityCode: 'E0035291',
+                    localityName: 'Norbreck',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'opp',
+                    street: 'Beaufort Avenue',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 17', 'Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 17',
+            stops: [
+                {
+                    stopName: 'Madison Avenue',
+                    naptanCode: 'blpajdga',
+                    atcoCode: '2590B0822',
+                    localityCode: 'E0035272',
+                    localityName: 'Bispham',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'opp',
+                    street: 'Beaufort Avenue',
+                    qualifierName: '',
+                },
+                {
+                    stopName: 'Lowther Avenue',
+                    naptanCode: 'blpadgjp',
+                    atcoCode: '2590B0070',
+                    localityCode: 'E0035292',
+                    localityName: 'North Shore',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'opp',
+                    street: 'Warbreck Drive',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '7.00',
+                    fareZones: ['Test Stage 18'],
+                },
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 18',
+            stops: [
+                {
+                    stopName: 'Warbreck Hill',
+                    naptanCode: 'blpadgma',
+                    atcoCode: '2590B0073',
+                    localityCode: 'E0035292',
+                    localityName: 'North Shore',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'by',
+                    street: 'Warbreck Hill Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 19', 'Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 19',
+            stops: [
+                {
+                    stopName: 'Ashburton Road',
+                    naptanCode: 'blpadgam',
+                    atcoCode: '2590B0055',
+                    localityCode: 'E0035276',
+                    localityName: 'Claremont',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'by',
+                    street: 'Sherbourne Road',
+                    qualifierName: '',
+                },
+                {
+                    stopName: 'Oxford Square',
+                    naptanCode: 'blpamjmt',
+                    atcoCode: '2590BTA01280',
+                    localityCode: 'N0079372',
+                    localityName: 'Oxford Square',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'adj',
+                    street: 'Whitegate Drive',
+                    qualifierName: '',
+                },
+            ],
+            prices: [
+                {
+                    price: '8.00',
+                    fareZones: ['Test Stage 20'],
+                },
+            ],
+        },
+        {
+            name: 'Test Stage 20',
+            stops: [
+                {
+                    stopName: 'Doncaster Road',
+                    naptanCode: 'blpajdjp',
+                    atcoCode: '2590B0839',
+                    localityCode: 'E0035278',
+                    localityName: 'Marton',
+                    parentLocalityName: 'Blackpool',
+                    indicator: 'by',
+                    street: 'Worcester Road',
+                    qualifierName: '',
+                },
+            ],
+            prices: [],
+        },
+    ],
+    passengerType: 'adult',
+    ageRange: 'Yes',
+    ageRangeMin: '18',
+    proof: 'No',
+    ticketPeriod: {
+        startDate: '2010-12-17T00:00:00.000Z',
+        endDate: '2028-12-17T23:59:59.999Z',
+    },
+    journeyDirection: 'outbound',
+    unassignedStops: {
+        singleUnassignedStops: [],
+    },
+};
+
 export const singleTicket: SingleTicket = {
     products: [
         {
@@ -1748,6 +2535,604 @@ export const carnetPeriodMultipleServicesTicket: PeriodMultipleServicesTicket = 
             timeBands: [{ startTime: '0000', endTime: '2359' }],
         },
     ],
+};
+
+export const carnetFlatFareTicket: FlatFareMultipleServices = {
+    operatorName: 'Test Buses',
+    nocCode: 'WBTR',
+    type: 'flatFare',
+    email: 'test@example.com',
+    uuid: 'BLACadge12d',
+    termTime: true,
+    products: [
+        {
+            carnetDetails: {
+                quantity: '10',
+                expiryTime: '5',
+                expiryUnit: CarnetExpiryUnit.DAY,
+            },
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    name: 'sales offer package 1',
+                    description: 'the sales offer package I provide',
+                    purchaseLocations: [
+                        'at the shop',
+                        'on the bus',
+                        'on your phone',
+                        'on your smart phone',
+                        'on your watch',
+                    ],
+                    paymentMethods: ['cash', 'credit card', 'debit card', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+                {
+                    id: 2,
+                    name: 'sales offer package 2',
+                    description: 'another sales offer package I provide',
+                    purchaseLocations: ['from agent at centre', 'on the minibus', 'on your device'],
+                    paymentMethods: ['cash', 'credit card', 'cheque', 'club points'],
+                    ticketFormats: ['e ticket', 'paper ticket', 'pass'],
+                },
+            ],
+            productName: 'Weekly Rider',
+            productPrice: '100',
+        },
+    ],
+    selectedServices: [
+        {
+            lineName: '709',
+            lineId: 'SOUTHBOUND_SERVICE_TG222RG',
+            serviceCode: 'NW_05_BLAC_709_1',
+            startDate: '02/03/2020',
+            serviceDescription: 'Warrington Road / Dunbeath Avenue - Prescot Road / Regents Road',
+        },
+        {
+            lineName: '743',
+            lineId: 'SOUTHBOUND_SERVICE_TG4TWERG',
+            serviceCode: 'NW_05_BLAC_743_1',
+            startDate: '02/03/2020',
+            serviceDescription: 'Alder Hey Road / De La Salle School - News Lane / Hydes Brow',
+        },
+        {
+            lineName: '709',
+            lineId: '223TGXQWF_Inbound_SOUTH_4323DFFZDFS',
+            serviceCode: 'NW_05_BLAC_709_1',
+            startDate: '09/03/2021',
+            serviceDescription: 'Alder Hey Road / De La Salle School - Warrington Road / Lawton Road',
+        },
+        {
+            lineName: '754',
+            lineId: '2EGEAFQWF_Inbound_SOUTH_4323DFHGDRFFZDFS',
+            serviceCode: 'NW_05_BLAC_754_1',
+            startDate: '02/03/2020',
+            serviceDescription: 'Alder Hey Road / De La Salle School - Forest Road / Shakespeare Road',
+        },
+        {
+            lineName: '743',
+            lineId: '223DFAFQWF_Inbound_SOUTH_4323DFHGDRFFZDFS',
+            serviceCode: 'NW_05_BLAC_743_2',
+            startDate: '02/03/2020',
+            serviceDescription: 'Alder Hey Road / De La Salle School - St Helens Junction Rail Station/ Station Road',
+        },
+        {
+            lineName: '708',
+            lineId: '223DF324erQWF_Inbound_SOUTH_433R3QEFFZDFS',
+            serviceCode: 'NW_05_BLAC_708_1',
+            startDate: '02/03/2020',
+            serviceDescription: 'Warrington Road / Coylton Avenue - Prescot / Prescot Bus Station',
+        },
+        {
+            lineName: '787',
+            lineId: '223DFAFQWF_Inbound_SOUTH_433R3QEFFZDFS',
+            serviceCode: 'NW_05_BLAC_787_1',
+            startDate: '02/03/2020',
+            serviceDescription: 'Higher Lane / Rainford High School - City Road / Hard Lane',
+        },
+        {
+            lineName: '25',
+            lineId: '22SADDF_Inbound_SOUTH_435SDFZDFS',
+            serviceCode: 'NW_05_BLAC_25_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Gorse Covert',
+        },
+        {
+            lineName: '25',
+            lineId: '333SDF_Inbound_SPUTH_4WQE3RS',
+            serviceCode: 'NW_05_BLAC_25_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Gorse Covert',
+        },
+        {
+            lineName: '26',
+            lineId: '333DFF_Inbound_SPUTH_32R33BFS',
+            serviceCode: 'NW_05_BLAC_26_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Gorse Covert',
+        },
+        {
+            lineName: '28E',
+            lineId: '23345SDFFF_Inbound_SPUTH_45VW4E3R33SBFS',
+            serviceCode: 'NW_05_BLAC_28E_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Leigh',
+        },
+        {
+            lineName: '31',
+            lineId: '23534SDFF_Inbound_SPUTH_45VSFGSBFS',
+            serviceCode: 'NW_05_BLAC_31_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Origin - Destination',
+        },
+        {
+            lineName: '3D',
+            lineId: '2214HDHF_Inbound_SPUTH_W3345TVSXBFS',
+            serviceCode: 'NW_05_BLAC_3D_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Runcorn High Street - Halton Hospital',
+        },
+        {
+            lineName: 'CAT6',
+            lineId: '3QRSF_Inbound_SPUTH_W33RASFAFFS',
+            serviceCode: 'NW_05_BLAC_CAT6_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Grappenhall',
+        },
+        {
+            lineName: 'CAT8',
+            lineId: '323RSDFF_Inbound_North_W34RDFS',
+            serviceCode: 'NW_05_BLAC_CAT8_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Appleton Thorn',
+        },
+        {
+            lineName: 'CAT9',
+            lineId: '3332RVFF_Inbound_North_R32RSD3',
+            serviceCode: 'NW_05_BLAC_CAT9_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Northwich',
+        },
+        {
+            lineName: '13',
+            lineId: '3332RCSDF_Inbound_North_32RSDF3',
+            serviceCode: 'NW_05_BLAC_13_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Omega',
+        },
+        {
+            lineName: '14',
+            lineId: '3345YUF_Inbound_North_3RF3',
+            serviceCode: 'NW_05_BLAC_14_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Penketh/Gt Sankey (Circ)',
+        },
+        {
+            lineName: '14',
+            lineId: '3C29956URDF_Inbound_North_3R324BDRF3',
+            serviceCode: 'NW_05_BLAC_14_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Penketh/Gt Sankey (Circ)',
+        },
+        {
+            lineName: '16',
+            lineId: '3C2990MKUYR_Inbound_North_3R87FF3',
+            serviceCode: 'NW_05_BLAC_16_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Dallam',
+        },
+        {
+            lineName: '17',
+            lineId: '3C33WEFWR_Inbound_North_3RFWEZ3',
+            serviceCode: 'NW_05_BLAC_17_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Callands',
+        },
+        {
+            lineName: '19',
+            lineId: 'Q3RSDFWR_Inbound_North_83S33',
+            serviceCode: 'NW_05_BLAC_19_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Culcheth',
+        },
+        {
+            lineName: '20A',
+            lineId: 'Q232FEWR_Inbound_North_83SDV3FAZA',
+            serviceCode: 'NW_05_BLAC_20A_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Longford/Orford (Circ)',
+        },
+        {
+            lineName: '28A',
+            lineId: 'Q2442134WEFR_Inbound_North_832RFEEFAZA',
+            serviceCode: 'NW_05_BLAC_28A_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Leigh',
+        },
+        {
+            lineName: '3',
+            lineId: 'Q244VF3QR_Inbound_North_8VG',
+            serviceCode: 'NW_05_BLAC_3_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Martinscroft',
+        },
+        {
+            lineName: '3D',
+            lineId: 'QK24214VSVWEFG3_Inbound_North_83R3FWEVG',
+            serviceCode: 'NW_05_BLAC_3D_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Runcorn High Street - Halton Hospital',
+        },
+        {
+            lineName: 'CAT6',
+            lineId: 'QK2CQFG3_Inbound_North_8B3463VG',
+            serviceCode: 'NW_05_BLAC_CAT6_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Grappenhall',
+        },
+        {
+            lineName: '1',
+            lineId: 'QKQ4FWEGG3_Inbound_North_8B324WFFG',
+            serviceCode: 'NW_05_BLAC_1_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Latchford/Westy (Circ)',
+        },
+        {
+            lineName: '15',
+            lineId: 'QKQQWERRWGGRG3_Inbound_North_8BEB5FG',
+            serviceCode: 'NW_05_BLAC_15_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Gt Sankey/Penketh (Circ)',
+        },
+        {
+            lineName: '15',
+            lineId: 'QKG32434SDVSG3_Inbound_North_8WEFWFEFG',
+            serviceCode: 'NW_05_BLAC_15_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Gt Sankey/Penketh (Circ)',
+        },
+        {
+            lineName: '22',
+            lineId: 'QKGT34FFF23_Inbound_North_89WGEGFG',
+            serviceCode: 'NW_05_BLAC_22_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Ashton',
+        },
+        {
+            lineName: '22A',
+            lineId: 'QKGTRHH454424G3_Inbound_North_89GEWGWGGFG',
+            serviceCode: 'NW_05_BLAC_22A_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Wigan',
+        },
+        {
+            lineName: '27',
+            lineId: 'QKGEFG12424G3_Inbound_North_89GEWGWGGFG',
+            serviceCode: 'NW_05_BLAC_27_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Gorse Covert',
+        },
+        {
+            lineName: '27',
+            lineId: 'QKG3_Inbound_North_89GEWGWGGFG',
+            serviceCode: 'NW_05_BLAC_27_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Gorse Covert',
+        },
+        {
+            lineName: '28E',
+            lineId: 'QKGVW3243SFF3_Inbound_North_89GEGFG',
+            serviceCode: 'NW_05_BLAC_28E_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Leigh',
+        },
+        {
+            lineName: '47',
+            lineId: 'QKGVWYVFEWGDF3_Inbound_North_89G',
+            serviceCode: 'NW_05_BLAC_47_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Knutsford',
+        },
+        {
+            lineName: '11',
+            lineId: 'QKF41234GDF3_Inbound_South_89G',
+            serviceCode: 'NW_05_BLAC_11_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Gains/Latchford (Circ)',
+        },
+        {
+            lineName: '12',
+            lineId: 'QKF4_RAF234C567HWF_Inbound_South_8LOJN929G',
+            serviceCode: 'NW_05_BLAC_12_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Gains/Latchford (Circ) - Warrington',
+        },
+        {
+            lineName: '16',
+            lineId: 'QKF4_RAFWF_Inbound_South_8LOJN99G',
+            serviceCode: 'NW_05_BLAC_16_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Dallam',
+        },
+        {
+            lineName: '2',
+            lineId: 'QKF4_RA11334FWF_Inbound_South_8456799G',
+            serviceCode: 'NW_05_BLAC_2_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Westy/Latchford (Circ)',
+        },
+        {
+            lineName: '20A',
+            lineId: 'QKF4_RASFFWFWF_Inbound_South_8456799G',
+            serviceCode: 'NW_05_BLAC_20A_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Longford/Orford (Circ)',
+        },
+        {
+            lineName: '26',
+            lineId: 'QKF4_RA_Inbound_South_8907899G',
+            serviceCode: 'NW_05_BLAC_26_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Gorse Covert',
+        },
+        {
+            lineName: '3',
+            lineId: 'QK42VBBF4_RA_Inbound_South_GC828890G',
+            serviceCode: 'NW_05_BLAC_3_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Martinscroft',
+        },
+        {
+            lineName: '47',
+            lineId: 'QK4235VCC4_RA_Inbound_South_GC88890G',
+            serviceCode: 'NW_05_BLAC_47_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Knutsford',
+        },
+        {
+            lineName: '48A',
+            lineId: 'QK455C4_RAA_Inbound_South_GC88890G',
+            serviceCode: 'NW_05_BLAC_48A_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Frodsham - Northwich',
+        },
+        {
+            lineName: 'CAT5',
+            lineId: 'QK455C4_RAA_Inbound_South_GC3456G',
+            serviceCode: 'NW_05_BLAC_CAT5_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Lymm',
+        },
+        {
+            lineName: 'CAT5',
+            lineId: 'QK455C4_RAA_Inbound_South_GC444',
+            serviceCode: 'NW_05_BLAC_CAT5_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Lymm',
+        },
+        {
+            lineName: 'CAT7',
+            lineId: 'QK455C4_RAA_Inbound_PZZZX67H_South',
+            serviceCode: 'NW_05_BLAC_CAT7_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Appleton Thorn',
+        },
+        {
+            lineName: 'CAT7',
+            lineId: 'QK455C4_RAA_Inbound_PC2L9067H_South',
+            serviceCode: 'NW_05_BLAC_CAT7_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Appleton Thorn',
+        },
+        {
+            lineName: 'CAT8',
+            lineId: 'QK4FG4_RAA_Inbound_PC2L9067H_South',
+            serviceCode: 'NW_05_BLAC_CAT8_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Appleton Thorn',
+        },
+        {
+            lineName: '17',
+            lineId: 'QK4F2467FG4_RAA_Outbound_PC2L90H_South',
+            serviceCode: 'NW_05_BLAC_17_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Callands',
+        },
+        {
+            lineName: '2',
+            lineId: 'QK4F4_RAA_Outbound_PC2L90H_South',
+            serviceCode: 'NW_05_BLAC_2_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Westy/Latchford (Circ)',
+        },
+        {
+            lineName: '22',
+            lineId: 'QK4F4_RAA_Outbound_PC25857GHH_South',
+            serviceCode: 'NW_05_BLAC_22_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Ashton',
+        },
+        {
+            lineName: '22A',
+            lineId: 'QK4F4_RAA_Outbound_PC2_South',
+            serviceCode: 'NW_05_BLAC_22A_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Wigan',
+        },
+        {
+            lineName: 'CAT9',
+            lineId: 'QK4F245FG4_RAA_Inbound_PC2324577C8U_South',
+            serviceCode: 'NW_05_BLAC_CAT9_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Northwich',
+        },
+        {
+            lineName: 'H20',
+            lineId: 'QK4F4_RAA_Inbound_PC2324577C8U_South',
+            serviceCode: 'NW_05_BLAC_H20_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Murdishaw - Murdishaw',
+        },
+        {
+            lineName: '1',
+            lineId: 'QK4F4_RAA_Inbound_PC23C8U_South',
+            serviceCode: 'NW_05_BLAC_1_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Latchford/Westy (Circ)',
+        },
+        {
+            lineName: '11',
+            lineId: 'QK4F4_R_Inbound_PCC86GbVU_South',
+            serviceCode: 'NW_05_BLAC_11_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Gains/Latchford (Circ)',
+        },
+        {
+            lineName: '13',
+            lineId: 'QK4F4_R_Inbound_PC2245C8U_South',
+            serviceCode: 'NW_05_BLAC_13_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Omega',
+        },
+        {
+            lineName: '21',
+            lineId: 'QK4F4_R_Inbound_PCC8U_South',
+            serviceCode: 'NW_05_BLAC_21_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Orford/Longford (Circ)',
+        },
+        {
+            lineName: '21',
+            lineId: 'QK1192344_R_Inbound_P8U_South',
+            serviceCode: 'NW_05_BLAC_21_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Orford/Longford (Circ)',
+        },
+        {
+            lineName: '21A',
+            lineId: 'QK119_R_Inbound_P8U_South',
+            serviceCode: 'NW_05_BLAC_21A_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Orford/Longford (Circ)',
+        },
+        {
+            lineName: '32',
+            lineId: 'QK22D9_RF67F_Inbound_P8221PU_South',
+            serviceCode: 'NW_05_BLAC_32_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Widnes Market',
+        },
+        {
+            lineName: '48A',
+            lineId: 'QK119_RF67F_Inbound_P8221PU_South',
+            serviceCode: 'NW_05_BLAC_48A_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Frodsham - Northwich',
+        },
+        {
+            lineName: 'H20A',
+            lineId: 'QK119_RFf56F_Outbound_P221PU_South',
+            serviceCode: 'NW_05_BLAC_H20A_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Murdishaw - Murdishaw',
+        },
+        {
+            lineName: '20',
+            lineId: 'QK119_RFFF_Inbound_P221PU_South',
+            serviceCode: 'NW_05_BLAC_20_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Longford/Orford (Circ)',
+        },
+        {
+            lineName: '21A',
+            lineId: 'QK119_RJ2_Inbound_PPU_South',
+            serviceCode: 'NW_05_BLAC_21A_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Orford/Longford (Circ)',
+        },
+        {
+            lineName: '3D',
+            lineId: 'QKGF9_RJ2_Inbound_South',
+            serviceCode: 'NW_05_BLAC_3D_1',
+            startDate: '02/02/2020',
+            serviceDescription: 'RUNCORN HIGH STREET- STAND C - Halton Hospital',
+        },
+        {
+            lineName: '12',
+            lineId: 'QK119_RJ5GH_Inbound_South',
+            serviceCode: 'NW_05_BLAC_12_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Gains/Latchford (Circ) - Warrington',
+        },
+        {
+            lineName: '19',
+            lineId: 'QKF9_RJ52_Inbound_South',
+            serviceCode: 'NW_05_BLAC_19_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Culcheth',
+        },
+        {
+            lineName: '20',
+            lineId: 'QK1229_R4B2_Inbound_South',
+            serviceCode: 'NW_05_BLAC_20_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Longford/Orford (Circ)',
+        },
+        {
+            lineName: '28A',
+            lineId: 'QK119_RJLI_Inbound_South',
+            serviceCode: 'NW_05_BLAC_28A_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Warrington - Leigh',
+        },
+        {
+            lineName: '31',
+            lineId: 'QK119_RJHJJ22_Inbound_South',
+            serviceCode: 'NW_05_BLAC_31_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Origin - Destination',
+        },
+        {
+            lineName: '32',
+            lineId: 'QK119_R2FFGD222_Inbound_South',
+            serviceCode: 'NW_05_BLAC_32_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Warrington - Widnes Market',
+        },
+        {
+            lineName: '48',
+            lineId: 'QK119_RJ52222_Inbound_South',
+            serviceCode: 'NW_05_BLAC_48_1',
+            startDate: '06/04/2020',
+            serviceDescription: 'Frodsham - Northwich',
+        },
+        {
+            lineName: '48',
+            lineId: 'QK119_RJ522_Outbound',
+            serviceCode: 'NW_05_BLAC_48_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Frodsham - Northwich',
+        },
+        {
+            lineName: 'H20',
+            lineId: 'AK1146649_RJ45G2_Outbound',
+            serviceCode: 'NW_05_BLAC_H20_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Murdishaw - Murdishaw',
+        },
+        {
+            lineName: 'H20A',
+            lineId: 'AK1321649_RJ522_Outbound',
+            serviceCode: 'NW_05_BLAC_H20A_1',
+            startDate: '13/04/2020',
+            serviceDescription: 'Murdishaw - Murdishaw',
+        },
+    ],
+    passengerType: 'anyone',
+    ticketPeriod: {
+        startDate: '2010-12-17T09:30:46.0Z',
+        endDate: '2022-12-17T09:30:46.0Z',
+    },
+    timeRestriction: [],
 };
 
 export const flatFareTicket: FlatFareMultipleServices = {
