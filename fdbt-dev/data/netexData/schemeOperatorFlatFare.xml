@@ -15,9 +15,7 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
             <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
-            <BrandingRef version="1.0" ref="op:IW_Buses-Y@brand"/>
             <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
           </objectReferences>
         </NetworkFilterByValue>

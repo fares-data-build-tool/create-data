@@ -16,9 +16,7 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:IW_Buses-Y">noc:IW Buses-Y-opId</OperatorRef>
-            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
             <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_adult"/>
-            <BrandingRef version="1.0" ref="op:IW_Buses-Y@brand"/>
           </objectReferences>
         </NetworkFilterByValue>
       </NetworkFrameTopic>

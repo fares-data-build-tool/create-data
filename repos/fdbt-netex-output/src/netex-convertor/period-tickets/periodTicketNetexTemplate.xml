@@ -21,8 +21,8 @@
                 <NetworkFilterByValue>
                     <objectReferences>
                         <OperatorRef version="1.0" ref=""></OperatorRef>
-                        <TypeOfFareProductRef version="fxc:v1.0" ref="" />
                         <PreassignedFareProductRef version="1.0" ref="" />
+                        <AmountOfPriceUnitProductRef version="1.0" ref="" />
                     </objectReferences>
                 </NetworkFilterByValue>
             </NetworkFrameTopic>
@@ -215,6 +215,7 @@
                         <!--====
                         Other Products ==== -->
                         <PreassignedFareProduct version="1.0" id=""></PreassignedFareProduct>
+                        <AmountOfPriceUnitProduct version="1.0" id=""></AmountOfPriceUnitProduct>
                     </fareProducts>
                     <!-- === SALES OFFER PACKAGES === -->
                     <salesOfferPackages></salesOfferPackages>

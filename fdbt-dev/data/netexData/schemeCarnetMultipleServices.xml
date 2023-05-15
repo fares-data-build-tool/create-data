@@ -15,9 +15,7 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@test_child"/>
-            <BrandingRef version="1.0" ref="op:Test_Scheme_Op-SE@brand"/>
+            <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@test_child"/>
             <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
           </objectReferences>
         </NetworkFilterByValue>
@@ -243,11 +241,11 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct version="1.0" id="op:Pass@test_child">
+            <AmountOfPriceUnitProduct version="1.0" id="op:Pass@test_child">
               <Name>test</Name>
               <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment@bundled"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@carnet@days"/>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@test_child@travel">
@@ -257,6 +255,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@test@durations@child"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@test@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@child"/>
+                    <FareStructureElementRef version="1.0" ref="mb:Tariff@multitrip@units"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
@@ -265,8 +264,8 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@test_child@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
-            </PreassignedFareProduct>
+              <ProductType>passCarnet</ProductType>
+            </AmountOfPriceUnitProduct>
           </fareProducts>
           <salesOfferPackages>
             <SalesOfferPackage version="1.0" id="Trip@test-test-SOP@Purchase_method">
@@ -281,7 +280,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@test-test-Purchase_method@electronic_document" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:electronic_document"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@test_child"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@test_child"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -301,7 +300,7 @@
             <FareTable version="1.0" id="op:fareTable@test@Purchase_method@services">
               <Name>test - Purchase method - 3 services</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@test_child"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@test_child"/>
               </pricesFor>
               <includes>
                 <FareTable version="1.0" id="op:test@Purchase_method@child@product-0@SOP-0@service">
