@@ -1,9 +1,9 @@
 on:
   push:
-    branches:
-    - 'develop'
+    tags:
+    - 'v*'
     paths:
-    - repos/exporter/**
+    - repos/fdbt-netex-output/**
   workflow_dispatch:
 
 name: 'exporter_prod'

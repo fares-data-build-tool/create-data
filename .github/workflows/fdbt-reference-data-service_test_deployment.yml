@@ -1,7 +1,6 @@
 on:
   push:
     branches:
-    - 'cfds-test-env'
     - 'develop'
     paths:
     - repos/fdbt-reference-data-service/**

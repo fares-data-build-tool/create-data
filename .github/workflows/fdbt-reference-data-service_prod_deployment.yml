@@ -1,8 +1,7 @@
 on:
   push:
-    branches:
-    - 'cfds-test-env'
-    - 'develop'
+    tags:
+    - 'v*'
     paths:
     - repos/fdbt-reference-data-service/**
   workflow_dispatch:
