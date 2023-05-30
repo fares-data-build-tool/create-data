@@ -1,7 +1,7 @@
 on:
   push:
-    branches:
-    - 'develop'
+    tags:
+    - 'v*'
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:
@@ -15,7 +15,7 @@ defaults:
 
 jobs:
 
-  fdbt-site_to_test:
+  fdbt-site_to_prod:
     name: 'fdbt-site_to_prod'
     runs-on: ubuntu-latest
     environment:
@@ -25,8 +25,6 @@ jobs:
       ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
       ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
       CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
-      WAF_IPSET_ID: ${{ secrets.WAF_IPSET_ID }}
-      WAF_IPSET_NAME: ${{ secrets.WAF_IPSET_NAME }}
     
     steps:
     - name: Checkout
@@ -48,18 +46,27 @@ jobs:
         npm ci
         echo " ci finished"
         npm run build
+
     - name: test
       run: |
         echo "Running tests"
         npm run test:ci
+
     - name: lint
       run: |
         echo "Linting"
         npm run lint
-    - name: compile-typescript
-      run: |
-        echo "Compiling typescript for site"
-        ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
+
+    # - name: compile-typescript
+    #   run: |
+    #     echo "Compiling typescript for site"
+    #     ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
+    #     cd cypress_tests
+    #     npm ci
+    #     ./node_modules/.bin/tsc
+
+    # build-and-push-image (tfn-fdbt-core) 
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -81,53 +88,35 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
     - name: Logout of Amazon ECR
       if: always()
       run: docker logout ${{ steps.login-ecr.outputs.registry }}   
 
-#     # aws-ecs/deploy-service-update 
-#     - name: Configure AWS credentials
-#       uses: aws-actions/configure-aws-credentials@v1
-#       with:
-#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#         aws-region: eu-west-2
+    # aws-ecs/deploy-service-update 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
 
-#     - name: 'BrowserStack Env Setup'
-#       uses: 'browserstack/github-actions/setup-env@master'
-#       with:
-#         username:  ${{ secrets.BROWSERSTACK_USERNAME }}
-#         access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+    - name: Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > ${{ github.workspace }}/task-definition.json
 
-    # - name: Download task definition
-    #   run: |
-    #     aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > ${{ github.workspace }}/task-definition.json
-    # - name: Fill in the new image ID in the Amazon ECS task definition
-    #   id: task-def
-    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-    #   with:
-    #     task-definition: task-definition.json
-    #     container-name: ${{ env.CONTAINER_NAME }}
-    #     image: ${{ steps.build-image.outputs.image }}
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ steps.build-image.outputs.image }}
 
-    # - name: Deploy Amazon ECS task definition
-    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-    #   with:
-    #     task-definition: ${{ steps.task-def.outputs.task-definition }}
-    #     service: ${{ env.ECS_SERVICE }}
-    #     cluster: ${{ env.ECS_CLUSTER }}
-    #     wait-for-service-stability: true
-        
-#     - name: Sleep for 10 mins
-#       run: sleep 10m
-#       shell: bash
-
-#     - name: run-ui-tests
-#       env:
-#         CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
-#       run: |
-#         cd cypress_tests
-#         cat cypress.config.ts | sed -e "s/baseUrl: '[^'].*'/baseUrl: '${CYPRESS_BASE_URL}'/g" >> cypress.config.ts2 && mv cypress.config.ts2 cypress.config.ts
-#         cd ..
-#         bash run_tests_in_browserstack.sh
-
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
