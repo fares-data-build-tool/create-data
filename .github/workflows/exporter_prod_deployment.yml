@@ -45,8 +45,8 @@ jobs:
 
     - name: prod
       run: |
-        echo "Running prods"
-        npm run prod:ci
+        echo "Running tests"
+        npm run test:ci
 
 #     - name: lint
 #       run: |

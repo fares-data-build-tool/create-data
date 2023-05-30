@@ -45,8 +45,8 @@ jobs:
 
     - name: preprod
       run: |
-        echo "Running preprods"
-        npm run preprod:ci
+        echo "Running tests"
+        npm run test:ci
 
 #     - name: lint
 #       run: |
