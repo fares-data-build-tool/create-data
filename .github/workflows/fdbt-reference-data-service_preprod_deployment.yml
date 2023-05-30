@@ -6,7 +6,7 @@ on:
     - repos/fdbt-reference-data-service/**
   workflow_dispatch:
 
-name: 'fdbt-reference-data-service_to_preprod'
+name: 'fdbt-reference-data-service_preprod'
 
 defaults:
   run:

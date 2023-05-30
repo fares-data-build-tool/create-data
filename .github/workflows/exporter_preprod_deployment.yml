@@ -3,7 +3,7 @@ on:
     branches:
     - 'master'
     paths:
-    - repos/fdbt-netex-output/**
+    - repos/exporter/**
   workflow_dispatch:
 
 name: 'exporter_preprod'

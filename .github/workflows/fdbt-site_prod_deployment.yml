@@ -1,12 +1,12 @@
 on:
   push:
-    tags:
-    - 'v*'
+    branches:
+    - 'develop'
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:
 
-name: 'fdbt-site_prod'
+name: 'fdbt-site_test'
 
 defaults:
   run:
