@@ -543,12 +543,12 @@
                 </FareDemandFactor>
               </qualityStructureFactors>
               <fareStructureElements>
-                <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
+                <FareStructureElement version="1.0" id="op:Tariff@multitrip@units">
                   <Name>Carnet denominations</Name>
                   <Description>Number of single units in bundle.</Description>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:carnet_units"/>
                   <qualityStructureFactors>
-                    <QualityStructureFactor version="1.0" id="mb:Tariff@multitrip@10">
+                    <QualityStructureFactor version="1.0" id="op:Tariff@multitrip@10">
                       <Value>10</Value>
                     </QualityStructureFactor>
                   </qualityStructureFactors>
@@ -1950,7 +1950,7 @@
                 <ValidableElement id="Trip@Product_1@travel" version="1.0">
                   <Name>single Ride</Name>
                   <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="mb:Tariff@multitrip@units"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@multitrip@units"/>
                     <FareStructureElementRef version="1.0" ref="Tariff@single@lines"/>
                     <FareStructureElementRef version="1.0" ref="Tariff@single@eligibility"/>
                     <FareStructureElementRef version="1.0" ref="Tariff@single@conditions_of_travel"/>
@@ -2147,7 +2147,7 @@
                 <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-SOP@Onboard_(cash)"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@10"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@PK1146649_RJ1_1234567"/>
@@ -3917,7 +3917,7 @@
                 <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-SOP@Onboard_(contactless)"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@10"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@PK1146649_RJ1_1234567"/>
@@ -5687,7 +5687,7 @@
                 <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-SOP@Online_(smart_card)"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@10"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@PK1146649_RJ1_1234567"/>
@@ -7457,7 +7457,7 @@
                 <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-SOP@Mobile_App"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@10"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@PK1146649_RJ1_1234567"/>
@@ -9227,7 +9227,7 @@
                 <AmountOfPriceUnitProductRef version="1.0" ref="Trip@Product_1"/>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-SOP@All_Encompassing"/>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@10"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@10"/>
               </pricesFor>
               <usedIn>
                 <TariffRef version="1.0" ref="Tariff@single@PK1146649_RJ1_1234567"/>

@@ -863,7 +863,7 @@ export const getPreassignedFareProducts = (
         if (isCarnet) {
             fareStructureElementRefs.push({
                 version: '1.0',
-                ref: 'mb:Tariff@multitrip@units',
+                ref: 'op:Tariff@multitrip@units',
             });
             typeOfFareProductRef = productType.includes('trip')
                 ? 'fxc:standard_product@carnet@trips'
