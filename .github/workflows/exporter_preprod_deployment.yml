@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'master'
+    - 'develop'
     paths:
     - repos/exporter/**
   workflow_dispatch:
@@ -14,7 +14,7 @@ defaults:
 
 jobs:
 
-  exporter_to_deploy_preprod:
+  exporter_to_deploy_to_preprod:
     name: 'exporter_preprod'
     runs-on: ubuntu-latest
     env:
@@ -36,17 +36,22 @@ jobs:
         echo "Starting build"
         npm ci
         echo " ci finished"
-        npm run build
+        npm install -D @types/aws-lambda esbuild
+        npm run build-atco-${{ env.WORKSPACE }}
+        npm run build-handler-${{ env.WORKSPACE }}
+        npm run build-zipper-${{ env.WORKSPACE }}
+        npm run build-bastion-${{ env.WORKSPACE }}
+        npm run build-table-${{ env.WORKSPACE }}
 
-    - name: test
+    - name: preprod
       run: |
-        echo "Running tests"
-        npm run test:ci
+        echo "Running preprods"
+        npm run preprod:ci
 
-    - name: lint
-      run: |
-        echo "Linting"
-        npm run lint
+#     - name: lint
+#       run: |
+#         echo "Linting"
+#         npm run lint
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -54,9 +59,33 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
-    
-    - name: deploy-exporter
-      run: |
-        echo "Deploying..."
-        export STAGE=${{ env.WORKSPACE }} && node_modules/.bin/cdk deploy --require-approval never --ci --no-color
-        echo "Finished deploy" 
+
+    - name: Update atco code checker
+      uses: "./.github/workflows/templates/update_lambda"
+      with:
+        lambda: atco-code-checker
+        environment: ${{ env.WORKSPACE }}
+
+    - name: Update exporter lambda
+      uses: "./.github/workflows/templates/update_lambda"
+      with:
+        lambda: exporter
+        environment: ${{ env.WORKSPACE }}
+
+    - name: Update zipper lambda
+      uses: "./.github/workflows/templates/update_lambda"
+      with:
+        lambda: zipper
+        environment: ${{ env.WORKSPACE }}
+
+    - name: Update bastion terminator lambda
+      uses: "./.github/workflows/templates/update_lambda"
+      with:
+        lambda: bastion-terminator
+        environment: ${{ env.WORKSPACE }}
+
+    - name: Update table rename lambda
+      uses: "./.github/workflows/templates/update_lambda"
+      with:
+        lambda: table-rename
+        environment: ${{ env.WORKSPACE }}

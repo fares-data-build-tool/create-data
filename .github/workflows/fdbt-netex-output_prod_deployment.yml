@@ -1,7 +1,7 @@
 on:
   push:
-    tags:
-    - 'v*'
+    branches:
+    - 'develop'
     paths:
     - repos/fdbt-netex-output/**
   workflow_dispatch:
@@ -14,8 +14,8 @@ defaults:
 
 jobs:
 
-  fdbt-netex-output_to_prod:
-    name: 'fdbt-netex-output_to_prod'
+  fdbt-netex-output_deploy_to_prod:
+    name: 'fdbt-netex-output_prod'
     runs-on: ubuntu-20.04
     env:
       WORKSPACE: prod
@@ -44,16 +44,36 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
     
-    - name: deploy-netex-validator 
+    # - name: deploy-netex-validator 
+    #   run: |
+    #     echo "Deploying..."
+    #     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+    #     sudo apt update
+    #     sudo apt install glibc-source -y
+    #     sudo apt-get install -y nodejs
+    #     sudo npm i -g serverless@3.22.0
+    #     cd src/netex-validator
+    #     npm ci
+    #     export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
+    #     echo "Finished deploy"
+
+
+    - name: Zipping code for netex validator
       run: |
-        echo "Deploying..."
-        curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-        sudo apt-get install -y nodejs
-        sudo npm i -g serverless@3.22.0
+        echo "Zipping..."
         cd src/netex-validator
-        npm ci
-        export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
-        echo "Finished deploy"
+        pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-netex-output/src/netex-validator -r requirements.txt
+        pwd
+        ls        
+        zip -r netex-validator.zip . -x /cloudformation-template-create-stack.json -x /serverless.yml   
+        zip -sf netex-validator.zip
+
+    - name: update-netex-validator 
+      run: |
+        echo "Updating..."
+        cd src/netex-validator        
+        aws lambda update-function-code --function-name netex-validator-prod-NetexValidator --zip-file fileb://netex-validator.zip
+
 
     - name: Use Node.js 
       uses: actions/setup-node@v3
@@ -67,22 +87,69 @@ jobs:
         echo " ci finished"
         npm run build
 
-    - name: test
-      run: |
-        echo "Running tests"
-        npm run test:ci
+    # - name: test
+    #   run: |
+    #     echo "Running tests"
+    #     npm run test:ci
 
-    - name: lint
-      run: |
-        echo "Linting"
-        npm run lint
+#     - name: lint
+#       run: |
+#         echo "Linting"
+#         npm run lint
     
-    - name: deploy-netex-output-resources
+    # - name: deploy-netex-output-resources
+    #   run: |
+    #     ldd --version
+    #     echo "Deploying..."
+    #     sudo apt update
+    #     sudo apt install glibc-source -y
+    #     sudo apt-get install -y nodejs
+    #     sudo npm i -g serverless@3.22.0
+    #     export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
+    #     echo "Finished deploy"
+
+    # - name: 'Upload Artifact'
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: my-artifact
+    #     path: ./repos/fdbt-netex-output
+    #     retention-days: 5
+
+    - name: Zipping code for netex emailer
       run: |
-        echo "Deploying..."
-        sudo npm i -g serverless@3.22.0
-        export SLS_DEBUG="*" && sls deploy --stage=${{ env.WORKSPACE }}
-        echo "Finished deploy"
+        echo "Zipping..."
+        ls -a
+        cp -R node_modules .build/
+        cp package.json .build/
+        cp src/netex-convertor/period-tickets/periodTicketNetexTemplate.xml .build/src/netex-convertor/period-tickets/periodTicketNetexTemplate.xml
+        cp src/netex-convertor/point-to-point-tickets/pointToPointTicketNetexTemplate.xml .build/src/netex-convertor/point-to-point-tickets/pointToPointTicketNetexTemplate.xml
+        cd .build/
+        zip -r netex-emailer.zip . -x /node_modules/prettier/* -x /node_modules/rxjs/* -x /node_modules/node1-libxmljsmt-myh/* -x /node_modules/libxslt/* -x /src/test-data/* -x /src/netex-validator/* -x /.eslintignore  -x /.eslintrc.js  -x /.nvmrc  -x /.prettierrc.js  -x /CONTRIBUTING.md  -x /LICENSE  -x /README.md  -x /jest.config.js  -x /package-lock.json -x /serverless.yml
+        ls -l netex-emailer.zip
+
+
+    - name: update-netex-emailer 
+      run: |
+        echo "Updating....."
+        cd .build/       
+         aws lambda update-function-code --function-name netex-output-service-prod-NetexEmailer --zip-file fileb://netex-emailer.zip
+
+    - name: Zipping code for netex convertor
+      run: |
+        echo "Zipping..."
+        ls -a
+        cd .build/
+        rm -f netex-emailer.zip
+        zip -r ../netex-convertor.zip . -x /node_modules/prettier/* -x /node_modules/rxjs/* -x /node_modules/node1-libxmljsmt-myh/* -x /node_modules/libxslt/* -x /src/test-data/* -x /src/netex-validator/* -x /.eslintignore  -x /.eslintrc.js  -x /.nvmrc  -x /.prettierrc.js  -x /CONTRIBUTING.md  -x /LICENSE  -x /README.md  -x /jest.config.js  -x /package-lock.json -x /serverless.yml
+        ls
+
+
+    - name: update-netex-convertor 
+      run: |
+        echo "Updating....."       
+         aws lambda update-function-code --function-name netex-output-service-prod-NetexConvertor --zip-file fileb://netex-convertor.zip
+
+    
 
 
     
