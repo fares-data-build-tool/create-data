@@ -1,12 +1,12 @@
 on:
   push:
-    branches:
-    - 'master'
+    tags:
+    - 'v*'
     paths:
     - repos/fdbt-netex-output/**
   workflow_dispatch:
 
-name: 'fdbt-netex-output_uat'
+name: 'fdbt-netex-output_preprod'
 
 defaults:
   run:
@@ -14,13 +14,13 @@ defaults:
 
 jobs:
 
-  fdbt-netex-output_deploy_to_uat:
-    name: 'fdbt-netex-output_uat'
+  fdbt-netex-output_deploy_to_preprod:
+    name: 'fdbt-netex-output_preprod'
     runs-on: ubuntu-20.04
     env:
-      WORKSPACE: uat
+      WORKSPACE: preprod
     environment:
-      name: uat
+      name: preprod
     
     steps:
     - name: Checkout
@@ -72,7 +72,7 @@ jobs:
       run: |
         echo "Updating..."
         cd src/netex-validator        
-        aws lambda update-function-code --function-name netex-validator-uat-NetexValidator --zip-file fileb://netex-validator.zip
+        aws lambda update-function-code --function-name netex-validator-preprod-NetexValidator --zip-file fileb://netex-validator.zip
 
 
     - name: Use Node.js 
@@ -132,7 +132,7 @@ jobs:
       run: |
         echo "Updating....."
         cd .build/       
-         aws lambda update-function-code --function-name netex-output-service-uat-NetexEmailer --zip-file fileb://netex-emailer.zip
+         aws lambda update-function-code --function-name netex-output-service-preprod-NetexEmailer --zip-file fileb://netex-emailer.zip
 
     - name: Zipping code for netex convertor
       run: |
@@ -147,7 +147,7 @@ jobs:
     - name: update-netex-convertor 
       run: |
         echo "Updating....."       
-         aws lambda update-function-code --function-name netex-output-service-uat-NetexConvertor --zip-file fileb://netex-convertor.zip
+         aws lambda update-function-code --function-name netex-output-service-preprod-NetexConvertor --zip-file fileb://netex-convertor.zip
 
     
-    
+
