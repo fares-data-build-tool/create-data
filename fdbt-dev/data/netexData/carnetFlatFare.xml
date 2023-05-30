@@ -146,12 +146,12 @@
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
               <TariffBasis>flat</TariffBasis>
               <fareStructureElements>
-                <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
+                <FareStructureElement version="1.0" id="op:Tariff@multitrip@units">
                   <Name>Carnet denominations</Name>
                   <Description>Number of flatFare units in bundle.</Description>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:carnet_units"/>
                   <qualityStructureFactors>
-                    <QualityStructureFactor version="1.0" id="mb:Tariff@multitrip@20">
+                    <QualityStructureFactor version="1.0" id="op:Tariff@multitrip@20">
                       <Value>20</Value>
                     </QualityStructureFactor>
                   </qualityStructureFactors>
@@ -220,7 +220,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@access_lines"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@senior"/>
-                    <FareStructureElementRef version="1.0" ref="mb:Tariff@multitrip@units"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@multitrip@units"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
@@ -385,7 +385,7 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
                 <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
@@ -406,7 +406,7 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(contactless)"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
                 <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
@@ -427,7 +427,7 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Online_(smart_card)"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
                 <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
@@ -448,7 +448,7 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Mobile_App"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
                 <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
@@ -469,7 +469,7 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
                 <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
@@ -490,7 +490,7 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@School_Service_Payment_Methods"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
                 <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>

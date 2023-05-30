@@ -403,7 +403,7 @@ describe('Shared Helpers', () => {
 
             const expectedCarnetFareStructureElement = {
                 version: '1.0',
-                id: 'mb:Tariff@multitrip@units',
+                id: 'op:Tariff@multitrip@units',
                 Name: { $t: 'Carnet denominations' },
                 Description: { $t: `Number of period units in bundle.` },
                 TypeOfFareStructureElementRef: {
@@ -414,17 +414,17 @@ describe('Shared Helpers', () => {
                     QualityStructureFactor: [
                         {
                             version: '1.0',
-                            id: `mb:Tariff@multitrip@5`,
+                            id: `op:Tariff@multitrip@5`,
                             Value: { $t: '5' },
                         },
                         {
                             version: '1.0',
-                            id: `mb:Tariff@multitrip@5`,
+                            id: `op:Tariff@multitrip@5`,
                             Value: { $t: '10' },
                         },
                         {
                             version: '1.0',
-                            id: `mb:Tariff@multitrip@5`,
+                            id: `op:Tariff@multitrip@5`,
                             Value: { $t: '15' },
                         },
                     ],
@@ -489,7 +489,7 @@ describe('Shared Helpers', () => {
             const expectedCarnetQualityStructureFactorRef = {
                 QualityStructureFactorRef: {
                     version: '1.0',
-                    ref: `mb:Tariff@multitrip@10`,
+                    ref: `op:Tariff@multitrip@10`,
                 },
             };
 

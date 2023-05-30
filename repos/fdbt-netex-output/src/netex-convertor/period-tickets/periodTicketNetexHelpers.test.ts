@@ -280,7 +280,7 @@ describe('periodTicketNetexHelpers', () => {
                   }),
             ...(carnet && {
                 QualityStructureFactorRef: {
-                    ref: 'mb:Tariff@multitrip@10',
+                    ref: 'op:Tariff@multitrip@10',
                     version: '1.0',
                 },
             }),
