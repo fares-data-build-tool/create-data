@@ -15,7 +15,7 @@ defaults:
 
 jobs:
 
-  exporter_to_deploy_test:
+  exporter_to_deploy_to_test:
     name: 'exporter_test'
     runs-on: ubuntu-latest
     env:

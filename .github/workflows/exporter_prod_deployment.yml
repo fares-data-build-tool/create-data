@@ -15,7 +15,7 @@ defaults:
 jobs:
 
   exporter_to_deploy_to_prod:
-    name: 'exporter_prod'
+    name: 'exporter_to_deploy_to_prod'
     runs-on: ubuntu-latest
     env:
       WORKSPACE: prod
