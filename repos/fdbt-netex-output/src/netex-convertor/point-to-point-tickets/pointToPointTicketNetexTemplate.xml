@@ -19,6 +19,8 @@
 					<objectReferences>
 						<OperatorRef version="1.0" ref=""></OperatorRef>
 						<LineRef version="1.0" ref="" />
+						<PreassignedFareProductRef version="1.0" ref="" />
+						<AmountOfPriceUnitProductRef version="1.0" ref="" />
 					</objectReferences>
 				</NetworkFilterByValue>
 			</NetworkFrameTopic>
@@ -178,6 +180,7 @@
 					<!--==== Fare Product ==== -->
 					<fareProducts>
 						<PreassignedFareProduct version="1.0" id=""></PreassignedFareProduct>
+						<AmountOfPriceUnitProduct version="1.0" id=""></AmountOfPriceUnitProduct>
 						<!--==== Other Products ==== -->
 					</fareProducts>
 					<!--==== Sales Packages==== -->

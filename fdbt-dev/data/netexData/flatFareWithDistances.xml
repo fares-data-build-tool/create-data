@@ -16,9 +16,7 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
             <PreassignedFareProductRef version="1.0" ref="op:Pass@Flat_Fare_With_Distances_senior"/>
-            <BrandingRef version="1.0" ref="op:BLAC@brand"/>
           </objectReferences>
         </NetworkFilterByValue>
       </NetworkFrameTopic>

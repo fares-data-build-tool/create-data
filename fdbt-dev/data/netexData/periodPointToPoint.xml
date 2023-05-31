@@ -17,9 +17,7 @@
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
             <LineRef version="1.0" ref="YpQjUw"/>
-            <BrandingRef version="1.0" ref="op:BLAC@brand"/>
             <PreassignedFareProductRef version="1.0" ref="Trip@Period_Point_to_Point"/>
-            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
           </objectReferences>
         </NetworkFilterByValue>
       </NetworkFrameTopic>

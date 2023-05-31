@@ -290,6 +290,18 @@ export const getPreassignedFareProduct = (
         ref: element.id,
     }));
 
+    const productType = getProductType(matchingData);
+
+    let typeOfFareProductRef = '';
+
+    if (isCarnet) {
+        typeOfFareProductRef = productType.includes('trip')
+            ? 'fxc:standard_product@carnet@trips'
+            : 'fxc:standard_product@carnet@days';
+    } else {
+        typeOfFareProductRef = `fxc:standard_product@trip@${matchingData.type === 'return' ? 'day_return' : 'single'}`;
+    }
+
     return {
         id: `Trip@${ticketUserConcat}`,
         version: '1.0',
@@ -305,7 +317,7 @@ export const getPreassignedFareProduct = (
         },
         TypeOfFareProductRef: {
             version: '1.0',
-            ref: `fxc:standard_product@trip@${matchingData.type === 'return' ? 'day_return' : 'single'}`,
+            ref: typeOfFareProductRef,
         },
         validableElements: {
             ValidableElement: {
@@ -329,7 +341,7 @@ export const getPreassignedFareProduct = (
             },
         },
         ProductType: {
-            $t: getProductType(matchingData),
+            $t: productType,
         },
     };
 };
@@ -337,6 +349,7 @@ export const getPreassignedFareProduct = (
 export const buildSalesOfferPackage = (
     salesOfferPackageInfo: SalesOfferPackage,
     ticketUserConcat: string,
+    isCarnet: boolean,
 ): NetexSalesOfferPackage => {
     const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
 
@@ -359,7 +372,7 @@ export const buildSalesOfferPackage = (
         return distribAssignments;
     };
 
-    const buildSalesOfferPackageElements = (): SalesOfferPackageElement[] => {
+    const buildSalesOfferPackageElements = (isCarnet: boolean): SalesOfferPackageElement[] => {
         const salesOfferPackageElements = salesOfferPackageInfo.ticketFormats.map((ticketFormat, index) => {
             return {
                 id: `${salesOfferPackageInfo.name}@${ticketUserConcat}-SOP@${ticketFormat}`,
@@ -369,10 +382,13 @@ export const buildSalesOfferPackage = (
                     version: 'fxc:v1.0',
                     ref: `fxc:${ticketFormat}`,
                 },
-                PreassignedFareProductRef: {
-                    version: '1.0',
-                    ref: `Trip@${ticketUserConcat}`,
-                },
+                ...(isCarnet && { AmountOfPriceUnitProductRef: { version: '1.0', ref: `Trip@${ticketUserConcat}` } }),
+                ...(!isCarnet && {
+                    PreassignedFareProductRef: {
+                        version: '1.0',
+                        ref: `Trip@${ticketUserConcat}`,
+                    },
+                }),
             };
         });
         return salesOfferPackageElements;
@@ -391,14 +407,14 @@ export const buildSalesOfferPackage = (
             DistributionAssignment: buildDistributionAssignments(),
         },
         salesOfferPackageElements: {
-            SalesOfferPackageElement: buildSalesOfferPackageElements(),
+            SalesOfferPackageElement: buildSalesOfferPackageElements(isCarnet),
         },
     };
 };
 
 export const buildSalesOfferPackages = (product: BaseProduct, ticketUserConcat: string): NetexSalesOfferPackage[] => {
     return product.salesOfferPackages.map(salesOfferPackage => {
-        return buildSalesOfferPackage(salesOfferPackage, ticketUserConcat);
+        return buildSalesOfferPackage(salesOfferPackage, ticketUserConcat, 'carnetDetails' in product);
     });
 };
 
@@ -406,6 +422,7 @@ export const getFareTables = (
     matchingData: PointToPointTicket | PointToPointPeriodTicket,
     lineIdName: string,
     ticketUserConcat: string,
+    isCarnet: boolean,
 ): NetexObject[] => {
     const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
 
@@ -418,10 +435,18 @@ export const getFareTables = (
                 $t: `${matchingData.passengerType} ${matchingData.type} fares - Organised as a fare triangle`,
             },
             pricesFor: {
-                PreassignedFareProductRef: {
-                    version: '1.0',
-                    ref: `Trip@${ticketUserConcat}`,
-                },
+                ...(isCarnet && {
+                    AmountOfPriceUnitProductRef: {
+                        version: '1.0',
+                        ref: `Trip@${ticketUserConcat}`,
+                    },
+                }),
+                ...(!isCarnet && {
+                    PreassignedFareProductRef: {
+                        version: '1.0',
+                        ref: `Trip@${ticketUserConcat}`,
+                    },
+                }),
                 SalesOfferPackageRef: {
                     version: '1.0',
                     ref: `Trip@${ticketUserConcat}-SOP@${salesOfferPackage.name}`,

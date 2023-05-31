@@ -16,7 +16,9 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
+            <PreassignedFareProductRef version="1.0" ref="op:Pass@it_is_random_adult"/>
+            <BrandingRef version="1.0" ref="op:BLAC@brand"/>
           </objectReferences>
         </NetworkFilterByValue>
       </NetworkFrameTopic>
@@ -28,11 +30,10 @@
   <dataObjects>
     <CompositeFrame version="1.0" id="epd:UK:BLAC:CompositeFrame_UK_PI_NETWORK_FARE_OFFER:Pass@BLAC_products:op" dataSourceRef="op:src" responsibilitySetRef="op:tariffs">
       <ValidBetween>
-        <FromDate>2010-12-17T00:00:00.000Z</FromDate>
-        <ToDate>2028-12-17T23:59:59.999Z</ToDate>
+        <FromDate>2020-04-12T00:00:00.000Z</FromDate>
       </ValidBetween>
-      <Name>Fares for Blackpool Transport</Name>
-      <Description>Period ticket for Blackpool Transport</Description>
+      <Name>Fares for Blackpool transport</Name>
+      <Description>Flat fare ticket for Blackpool transport</Description>
       <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
       <codespaces>
         <CodespaceRef ref="epd_data"/>
@@ -79,7 +80,7 @@
                 <ResponsibilityRoleAssignment version="1.0" id="op:tariff_data@creates">
                   <DataRoleType>creates</DataRoleType>
                   <StakeholderRoleType>FareManagement</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Blackpool Transport</ResponsibleOrganisationRef>
+                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Blackpool transport</ResponsibleOrganisationRef>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -89,7 +90,7 @@
                 <ResponsibilityRoleAssignment version="1.0" id="op:network_data@creates">
                   <DataRoleType>creates</DataRoleType>
                   <StakeholderRoleType>Planning</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Blackpool Transport</ResponsibleOrganisationRef>
+                  <ResponsibleOrganisationRef ref="noc:BLAC" version="1.0">Blackpool transport</ResponsibleOrganisationRef>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -99,7 +100,7 @@
               <Name>Operator Branding</Name>
               <values>
                 <Branding version="1.0" id="op:BLAC@brand">
-                  <Name>Blackpool Transport</Name>
+                  <Name>Blackpool transport</Name>
                   <Url>http://www.blackpooltransport.com</Url>
                 </Branding>
               </values>
@@ -108,8 +109,8 @@
           <organisations>
             <Operator version="1.0" id="noc:BLAC">
               <PublicCode>BLAC</PublicCode>
-              <Name>Blackpool Transport</Name>
-              <ShortName>Blackpool Transport</ShortName>
+              <Name>Blackpool transport</Name>
+              <ShortName>Blackpool transport</ShortName>
               <TradingName>Blackpool Transport Services Ltd</TradingName>
               <ContactDetails>
                 <Phone>01253 473001</Phone>
@@ -140,28 +141,46 @@
               <Name>Test Town Centre</Name>
               <Description>Test Town Centre BLAC_products Zone</Description>
               <members>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:0600MA6001">The Towers, Park Street, Macclesfield</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:069000012480">Dog &amp; Partridge, New Manchester Road, Paddington</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:1800ED24711">Manchester Rd, MANCHESTER RD, Hollinwood</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:1800EH37241">Bower Fold, Mottram Rd, Bower Fold</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:1800SJ47971">Oak Road, WARBURTON LANE, Partington</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:1800WA15551">Meadow Close, BOOTH ROAD, Little Lever</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:25001814">Church Road, Church Road, Great Plumpton</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:2500759">Hare and Hounds, Whalley Road, Clayton-le-Moors</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:2500IMG456">Skippool Avenue, Breck Road, Poulton-le-Fylde</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:2500LAA16548">Lytham St Annes HTC, Church Road, Ansdell</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:2590B0008">Torsway Avenue, Newton Drive, Kingscote</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:2590B0316">Spencer Court, Talbot Road, Central</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:2800S10110A">Mesnes Park, Park Road North, Newton le Willows</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:2800S51045B">Grosvenor Road, St Helens Road, Prescot</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:3290YYA00357">Campbell Avenue, Hamilton Drive, Holgate</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:370055608">Bank End Farm, Bank Lane, Howbrook</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:450010202">Main Street St Johns Close, Main Street, Aberford</ScheduledStopPointRef>
-                <ScheduledStopPointRef versionRef="EXTERNAL" ref="atco:450019529">Midgley Road Spring Villas, Midgley Road, Mytholmroyd</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:CHEPJWM">The Towers, Park Street, Macclesfield</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:wrgdpma">Dog &amp; Partridge, New Manchester Road, Paddington</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:MANATDWT">Manchester Rd, MANCHESTER RD, Hollinwood</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:MANDGADW">Bower Fold, Mottram Rd, Bower Fold</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:MANJTPJW">Oak Road, WARBURTON LANE, Partington</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:MANPATDT">Meadow Close, BOOTH ROAD, Little Lever</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:lanatgjp">Church Road, Church Road, Great Plumpton</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:lanawtwg">Hare and Hounds, Whalley Road, Clayton-le-Moors</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:langjpaw">Skippool Avenue, Breck Road, Poulton-le-Fylde</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:lanpamtw">Lytham St Annes HTC, Church Road, Ansdell</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:blpadadw">Torsway Avenue, Newton Drive, Kingscote</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:blpadwgm">Spencer Court, Talbot Road, Central</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:mergjpjd">Mesnes Park, Park Road North, Newton le Willows</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:merdwgmt">Grosvenor Road, St Helens Road, Prescot</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:32900357">Campbell Avenue, Hamilton Drive, Holgate</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:45010202">Main Street St Johns Close, Main Street, Aberford</ScheduledStopPointRef>
+                <ScheduledStopPointRef versionRef="EXTERNAL" ref="naptStop:45019529">Midgley Road Spring Villas, Midgley Road, Mytholmroyd</ScheduledStopPointRef>
               </members>
               <types>
                 <TypeOfZoneRef ref="fxc:fare_zone@operator" version="fxc:v1.0"/>
               </types>
+              <projections>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0076467">Park Street, Macclesfield, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0043040">New Manchester Road, Paddington, Warrington</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0028839">MANCHESTER RD, Hollinwood, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0028586">Mottram Rd, Bower Fold, Stalybridge</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0075113">WARBURTON LANE, Partington, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0028979">BOOTH ROAD, Little Lever, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0015836">Church Road, Great Plumpton, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0015881">Whalley Road, Clayton-le-Moors, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0016583">Breck Road, Poulton-le-Fylde, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0015826">Church Road, Ansdell, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0035280">Newton Drive, Kingscote, Blackpool</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:N0079370">Talbot Road, Central, Blackpool</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0029817">Park Road North, Newton le Willows, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0052682">St Helens Road, Prescot, </TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0043596">Hamilton Drive, Holgate, York</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0032162">Main Street, Aberford, Leeds</TopographicProjectionRef>
+                <TopographicProjectionRef versionRef="nptg:EXTERNAL" ref="nptgLocality:E0033244">Midgley Road, Mytholmroyd, Hebden Bridge</TopographicProjectionRef>
+              </projections>
               <ZoneTopology>nested</ZoneTopology>
               <ScopingMethod>explicitStops</ScopingMethod>
             </FareZone>
@@ -181,20 +200,13 @@
             <Tariff version="1.0" id="op:Tariff@BLAC_products">
               <validityConditions>
                 <ValidBetween>
-                  <FromDate>2010-12-17T00:00:00.000Z</FromDate>
-                  <ToDate>2028-12-17T23:59:59.999Z</ToDate>
+                  <FromDate>2020-04-12T00:00:00.000Z</FromDate>
                 </ValidBetween>
               </validityConditions>
-              <Name>Tariff for Product 1</Name>
+              <Name>Tariff for it is random</Name>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zonal"/>
-              <TariffBasis>zone</TariffBasis>
-              <timeIntervals>
-                <TimeInterval version="1.0" id="op:Tariff@Product_1@1-month">
-                  <Name>1 month</Name>
-                  <Description>P1M</Description>
-                </TimeInterval>
-              </timeIntervals>
+              <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
+              <TariffBasis>flat</TariffBasis>
               <qualityStructureFactors>
                 <FareDemandFactor id="op@Tariff@Demand" version="1.0">
                   <validityConditions>
@@ -202,7 +214,7 @@
                       <IsAvailable>true</IsAvailable>
                       <dayTypes>
                         <FareDayType id="op@Tariff@DayType@monday" version="1.0">
-                          <EarliestTime>06:00:00</EarliestTime>
+                          <EarliestTime>09:00:00</EarliestTime>
                           <properties>
                             <PropertyOfDay>
                               <DaysOfWeek>Monday</DaysOfWeek>
@@ -210,41 +222,13 @@
                           </properties>
                           <timebands>
                             <Timeband version="1.0" id="op:timeband_for_monday@timeband_1">
-                              <StartTime>06:00:00</StartTime>
-                              <EndTime>10:00:00</EndTime>
-                            </Timeband>
-                          </timebands>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@tuesday" version="1.0">
-                          <EarliestTime>09:00:00</EarliestTime>
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Tuesday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_tuesday@timeband_1">
                               <StartTime>09:00:00</StartTime>
-                              <EndTime>17:00:00</EndTime>
-                            </Timeband>
-                          </timebands>
-                        </FareDayType>
-                        <FareDayType id="op@Tariff@DayType@wednesday" version="1.0">
-                          <EarliestTime>13:50:00</EarliestTime>
-                          <properties>
-                            <PropertyOfDay>
-                              <DaysOfWeek>Wednesday</DaysOfWeek>
-                            </PropertyOfDay>
-                          </properties>
-                          <timebands>
-                            <Timeband version="1.0" id="op:timeband_for_wednesday@timeband_1">
-                              <StartTime>13:50:00</StartTime>
-                              <EndTime>19:50:00</EndTime>
+                              <EndTime>18:00:00</EndTime>
                             </Timeband>
                           </timebands>
                         </FareDayType>
                         <FareDayType id="op@Tariff@DayType@thursday" version="1.0">
-                          <EarliestTime>00:00:00</EarliestTime>
+                          <EarliestTime>08:00:00</EarliestTime>
                           <properties>
                             <PropertyOfDay>
                               <DaysOfWeek>Thursday</DaysOfWeek>
@@ -252,8 +236,8 @@
                           </properties>
                           <timebands>
                             <Timeband version="1.0" id="op:timeband_for_thursday@timeband_1">
-                              <StartTime>00:00:00</StartTime>
-                              <EndTime>23:59:00</EndTime>
+                              <StartTime>08:00:00</StartTime>
+                              <EndTime>17:00:00</EndTime>
                             </Timeband>
                           </timebands>
                         </FareDayType>
@@ -263,35 +247,10 @@
                 </FareDemandFactor>
               </qualityStructureFactors>
               <fareStructureElements>
-                <FareStructureElement version="1.0" id="op:Tariff@group">
-                  <Name>Eligible groups</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:groups"/>
-                  <GenericParameterAssignment id="op:Tariff@group" version="1.0" order="0">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
-                    <LimitationGroupingType>OR</LimitationGroupingType>
-                    <limitations>
-                      <GroupTicket id="op:group" version="1.0">
-                        <MaximumNumberOfPersons>5</MaximumNumberOfPersons>
-                        <companionProfiles>
-                          <CompanionProfile version="1.0" id="op:companion@adult-0">
-                            <UserProfileRef version="1.0" ref="op:adult-0"/>
-                            <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-                            <MaximumNumberOfPersons>2</MaximumNumberOfPersons>
-                          </CompanionProfile>
-                          <CompanionProfile version="1.0" id="op:companion@child-1">
-                            <UserProfileRef version="1.0" ref="op:child-1"/>
-                            <MinimumNumberOfPersons>1</MinimumNumberOfPersons>
-                            <MaximumNumberOfPersons>3</MaximumNumberOfPersons>
-                          </CompanionProfile>
-                        </companionProfiles>
-                      </GroupTicket>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Product_1@access_zones">
+                <FareStructureElement version="1.0" id="op:Tariff@it_is_random@access_zones">
                   <Name>Available lines and/or zones</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
-                  <GenericParameterAssignment id="Tariff@Product_1@access_zones" version="1.0" order="1">
+                  <GenericParameterAssignment id="Tariff@it_is_random@access_zones" version="1.0" order="1">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:can_access"/>
                     <ValidityParameterGroupingType>OR</ValidityParameterGroupingType>
                     <validityParameters>
@@ -299,38 +258,44 @@
                     </validityParameters>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@Product_1@durations@group">
-                  <Name>Available duration combination - group ticket</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:durations"/>
-                  <timeIntervals>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-month"/>
-                  </timeIntervals>
-                </FareStructureElement>
-                <FareStructureElement id="op:Tariff@Product_1@conditions_of_travel" version="1.0">
+                <FareStructureElement id="op:Tariff@it_is_random@conditions_of_travel" version="1.0">
                   <Name>Conditions of travel</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:travel_conditions"/>
-                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@Product_1@conditions_of_travel">
+                  <GenericParameterAssignment version="1.0" order="1" id="op:Tariff@it_is_random@conditions_of_travel">
                     <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:condition_of_use"/>
                     <LimitationGroupingType>AND</LimitationGroupingType>
                     <limitations>
-                      <FrequencyOfUse version="1.0" id="op:Pass@Product_1@frequency">
-                        <FrequencyOfUseType>unlimited</FrequencyOfUseType>
+                      <RoundTrip version="1.0" id="Tariff@single@condition@direction">
+                        <Name>Single Trip</Name>
+                        <TripType>single</TripType>
+                      </RoundTrip>
+                      <FrequencyOfUse version="1.0" id="Tariff@single@oneTrip">
+                        <Name>One trip no transfers</Name>
+                        <FrequencyOfUseType>single</FrequencyOfUseType>
+                        <MaximalFrequency>1</MaximalFrequency>
                       </FrequencyOfUse>
-                      <UsageValidityPeriod version="1.0" id="op:Trip@Product_1@back@frequency">
-                        <UsageTrigger>purchase</UsageTrigger>
-                        <UsageEnd>standardDuration</UsageEnd>
-                      </UsageValidityPeriod>
                     </limitations>
                   </GenericParameterAssignment>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@period@availability">
+                <FareStructureElement version="1.0" id="op:Tariff@it_is_random@exempt_lines">
+                  <Name>Exempted Services</Name>
+                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access"/>
+                  <GenericParameterAssignment id="Tariff@it_is_random@exempt_lines" version="1.0" order="1">
+                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:cannot_access"/>
+                    <ValidityParameterGroupingType>NOT</ValidityParameterGroupingType>
+                    <validityParameters>
+                      <GroupOfLinesRef version="1.0" ref="BLAC@exemptGroupOfLines@1"/>
+                    </validityParameters>
+                  </GenericParameterAssignment>
+                </FareStructureElement>
+                <FareStructureElement version="1.0" id="op:Tariff@flatFare@availability">
                   <Name>Time restrictions</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:access_when"/>
                   <qualityStructureFactors>
                     <FareDemandFactorRef ref="op@Tariff@Demand" version="1.0"/>
                   </qualityStructureFactors>
                 </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult-0">
+                <FareStructureElement version="1.0" id="op:Tariff@eligibility@adult">
                   <Name>Eligible user types</Name>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
                   <GenericParameterAssignment id="op:Tariff@adult-0" version="1.0" order="0">
@@ -341,26 +306,6 @@
                         <Name>adult</Name>
                         <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:none"/>
                         <UserType>adult</UserType>
-                        <MinimumAge>18</MinimumAge>
-                        <ProofRequired>identityDocument</ProofRequired>
-                      </UserProfile>
-                    </limitations>
-                  </GenericParameterAssignment>
-                </FareStructureElement>
-                <FareStructureElement version="1.0" id="op:Tariff@eligibility@child-1">
-                  <Name>Eligible user types</Name>
-                  <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:eligibility"/>
-                  <GenericParameterAssignment id="op:Tariff@child-1" version="1.0" order="0">
-                    <TypeOfAccessRightAssignmentRef version="fxc:v1.0" ref="fxc:eligible"/>
-                    <LimitationGroupingType>XOR</LimitationGroupingType>
-                    <limitations>
-                      <UserProfile version="1.0" id="op:child-1">
-                        <Name>child</Name>
-                        <TypeOfConcessionRef version="fxc:v1.0" ref="fxc:child"/>
-                        <UserType>child</UserType>
-                        <MinimumAge>5</MinimumAge>
-                        <MaximumAge>17</MaximumAge>
-                        <ProofRequired>identityDocument</ProofRequired>
                       </UserProfile>
                     </limitations>
                   </GenericParameterAssignment>
@@ -369,105 +314,69 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Product_1_group">
-              <Name>Product 1</Name>
+            <PreassignedFareProduct version="1.0" id="op:Pass@it_is_random_adult">
+              <Name>it is random</Name>
               <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@pass@period"/>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
-                <ValidableElement version="1.0" id="op:Pass@Product_1_group@travel">
+                <ValidableElement version="1.0" id="op:Pass@it_is_random_adult@travel">
                   <Name>Rides available for specified durations</Name>
                   <fareStructureElements>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@access_zones"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@durations@group"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@Product_1@conditions_of_travel"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@group"/>
-                    <FareStructureElementRef version="1.0" ref="op:Tariff@period@availability"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@it_is_random@access_zones"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@it_is_random@conditions_of_travel"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@flatFare@availability"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@it_is_random@exempt_lines"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
               <accessRightsInProduct>
-                <AccessRightInProduct version="1.0" id="op:Pass@Product_1_group@travel" order="1">
-                  <ValidableElementRef version="1.0" ref="op:Pass@Product_1_group@travel"/>
+                <AccessRightInProduct version="1.0" id="op:Pass@it_is_random_adult@travel" order="1">
+                  <ValidableElementRef version="1.0" ref="op:Pass@it_is_random_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>periodPass</ProductType>
+              <ProductType>singleTrip</ProductType>
             </PreassignedFareProduct>
           </fareProducts>
           <salesOfferPackages>
-            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_1-SOP@Onboard_(cash)">
-              <Name>Product 1 - group - Onboard (cash)</Name>
-              <Description>Purchasable on board the bus, with cash, as a paper ticket.</Description>
+            <SalesOfferPackage version="1.0" id="Trip@it_is_random-it_is_random-SOP@Onboard_(cash)">
+              <Name>it is random - adult - Onboard (cash)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Product_1-Product_1-SOP@Onboard_(cash)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@it_is_random-it_is_random-SOP@Onboard_(cash)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>cash</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Product_1-Product_1-Onboard_(cash)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@it_is_random-it_is_random-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@it_is_random_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_1-SOP@Onboard_(contactless)">
-              <Name>Product 1 - group - Onboard (contactless)</Name>
-              <Description>Purchasable on board the bus, with a contactless card or device, as a paper ticket.</Description>
+            <SalesOfferPackage version="1.0" id="Trip@it_is_random-it_is_random-SOP@Onboard_(contactless)">
+              <Name>it is random - adult - Onboard (contactless)</Name>
               <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Product_1-Product_1-SOP@Onboard_(contactless)@onBoard" order="1">
+                <DistributionAssignment version="any" id="Trip@it_is_random-it_is_random-SOP@Onboard_(contactless)@onBoard" order="1">
                   <DistributionChannelRef ref="fxc:on_board" version="fxc:v1.0"/>
                   <DistributionChannelType>onBoard</DistributionChannelType>
                   <PaymentMethods>contactlessPaymentCard</PaymentMethods>
                 </DistributionAssignment>
               </distributionAssignments>
               <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Product_1-Product_1-Onboard_(contactless)@paperTicket" version="1.0" order="1">
+                <SalesOfferPackageElement id="Trip@it_is_random-it_is_random-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_1-SOP@Online_(smart_card)">
-              <Name>Product 1 - group - Online (smart card)</Name>
-              <Description>Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Product_1-Product_1-SOP@Online_(smart_card)@online" order="1">
-                  <DistributionChannelRef ref="fxc:online" version="fxc:v1.0"/>
-                  <DistributionChannelType>online</DistributionChannelType>
-                  <PaymentMethods>directDebit creditCard debitCard</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Product_1-Product_1-Online_(smart_card)@smartCard" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
-                </SalesOfferPackageElement>
-              </salesOfferPackageElements>
-            </SalesOfferPackage>
-            <SalesOfferPackage version="1.0" id="Trip@Product_1-Product_1-SOP@Mobile_App">
-              <Name>Product 1 - group - Mobile App</Name>
-              <Description>Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.</Description>
-              <distributionAssignments>
-                <DistributionAssignment version="any" id="Trip@Product_1-Product_1-SOP@Mobile_App@mobileDevice" order="1">
-                  <DistributionChannelRef ref="fxc:mobile_device" version="fxc:v1.0"/>
-                  <DistributionChannelType>mobileDevice</DistributionChannelType>
-                  <PaymentMethods>debitCard creditCard mobilePhone directDebit</PaymentMethods>
-                </DistributionAssignment>
-              </distributionAssignments>
-              <salesOfferPackageElements>
-                <SalesOfferPackageElement id="Trip@Product_1-Product_1-Mobile_App@mobileApp" version="1.0" order="1">
-                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                  <PreassignedFareProductRef version="1.0" ref="op:Pass@it_is_random_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
           </salesOfferPackages>
         </FareFrame>
         <FareFrame version="1.0" id="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRICE:BLAC_products@pass:op" responsibilitySetRef="op:tariffs">
-          <Name>Prices for Product 1</Name>
+          <Name>Prices for it is random</Name>
           <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_PRICE:FXCP"/>
           <FrameDefaults>
             <DefaultCodespaceRef ref="op_data"/>
@@ -477,32 +386,31 @@
             <FareFrameRef version="1.0" ref="epd:UK:BLAC:FareFrame_UK_PI_FARE_PRODUCT:BLAC_products@pass:op"/>
           </prerequisites>
           <fareTables>
-            <FareTable version="1.0" id="op:fareTable@Product_1@Onboard_(cash)@zone">
-              <Name>Product 1 - Onboard (cash) - Test Town Centre</Name>
+            <FareTable version="1.0" id="op:fareTable@it_is_random@Onboard_(cash)@zone">
+              <Name>it is random - Onboard (cash) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@it_is_random_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@group@product-0@SOP-0@zone">
-                  <Name>FareTable for Product 1</Name>
+                <FareTable version="1.0" id="op:it_is_random@Onboard_(cash)@adult@product-0@SOP-0@zone">
+                  <Name>FareTable for it is random</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@group@zone@nested">
+                    <FareTable version="1.0" id="op:it_is_random@Onboard_(cash)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_1-SOP@Onboard_(cash)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@it_is_random-it_is_random-SOP@Onboard_(cash)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_1@Onboard_(cash)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:it_is_random@Onboard_(cash)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Product_1@Onboard_(cash)@zone">
-                              <Amount>3</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-month"/>
-                            </TimeIntervalPrice>
+                            <DistanceMatrixElementPrice version="1.0" id="op:it_is_random@Onboard_(cash)@adult">
+                              <Amount>2.99</Amount>
+                            </DistanceMatrixElementPrice>
                           </prices>
                         </FareTable>
                       </includes>
@@ -511,100 +419,31 @@
                 </FareTable>
               </includes>
             </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Product_1@Onboard_(contactless)@zone">
-              <Name>Product 1 - Onboard (contactless) - Test Town Centre</Name>
+            <FareTable version="1.0" id="op:fareTable@it_is_random@Onboard_(contactless)@zone">
+              <Name>it is random - Onboard (contactless) - Test Town Centre</Name>
               <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
+                <PreassignedFareProductRef version="1.0" ref="op:Pass@it_is_random_adult"/>
               </pricesFor>
               <includes>
-                <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@group@product-0@SOP-1@zone">
-                  <Name>FareTable for Product 1</Name>
+                <FareTable version="1.0" id="op:it_is_random@Onboard_(contactless)@adult@product-0@SOP-1@zone">
+                  <Name>FareTable for it is random</Name>
                   <specifics>
                     <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
                   </specifics>
                   <includes>
-                    <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@group@zone@nested">
+                    <FareTable version="1.0" id="op:it_is_random@Onboard_(contactless)@adult@zone@nested">
                       <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_1-SOP@Onboard_(contactless)"/>
+                        <SalesOfferPackageRef version="1.0" ref="Trip@it_is_random-it_is_random-SOP@Onboard_(contactless)"/>
                       </pricesFor>
                       <includes>
-                        <FareTable version="1.0" id="op:Product_1@Onboard_(contactless)@group@zone@nested@prices">
+                        <FareTable version="1.0" id="op:it_is_random@Onboard_(contactless)@adult@zone@nested@prices">
                           <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
+                            <UserProfileRef version="1.0" ref="op:adult-0"/>
                           </limitations>
                           <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Product_1@Onboard_(contactless)@zone">
-                              <Amount>3</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-month"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Product_1@Online_(smart_card)@zone">
-              <Name>Product 1 - Online (smart card) - Test Town Centre</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@group@product-0@SOP-2@zone">
-                  <Name>FareTable for Product 1</Name>
-                  <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
-                  </specifics>
-                  <includes>
-                    <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@group@zone@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_1-SOP@Online_(smart_card)"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Product_1@Online_(smart_card)@group@zone@nested@prices">
-                          <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Product_1@Online_(smart_card)@zone">
-                              <Amount>3</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-month"/>
-                            </TimeIntervalPrice>
-                          </prices>
-                        </FareTable>
-                      </includes>
-                    </FareTable>
-                  </includes>
-                </FareTable>
-              </includes>
-            </FareTable>
-            <FareTable version="1.0" id="op:fareTable@Product_1@Mobile_App@zone">
-              <Name>Product 1 - Mobile App - Test Town Centre</Name>
-              <pricesFor>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Product_1_group"/>
-              </pricesFor>
-              <includes>
-                <FareTable version="1.0" id="op:Product_1@Mobile_App@group@product-0@SOP-3@zone">
-                  <Name>FareTable for Product 1</Name>
-                  <specifics>
-                    <TariffZoneRef version="1.0" ref="op:BLAC_products@Test_Town_Centre"/>
-                  </specifics>
-                  <includes>
-                    <FareTable version="1.0" id="op:Product_1@Mobile_App@group@zone@nested">
-                      <pricesFor>
-                        <SalesOfferPackageRef version="1.0" ref="Trip@Product_1-Product_1-SOP@Mobile_App"/>
-                      </pricesFor>
-                      <includes>
-                        <FareTable version="1.0" id="op:Product_1@Mobile_App@group@zone@nested@prices">
-                          <limitations>
-                            <GroupTicketRef version="1.0" ref="op:group"/>
-                          </limitations>
-                          <prices>
-                            <TimeIntervalPrice version="1.0" id="op:Product_1@Mobile_App@zone">
-                              <Amount>3</Amount>
-                              <TimeIntervalRef version="1.0" ref="op:Tariff@Product_1@1-month"/>
-                            </TimeIntervalPrice>
+                            <DistanceMatrixElementPrice version="1.0" id="op:it_is_random@Onboard_(contactless)@adult">
+                              <Amount>2.99</Amount>
+                            </DistanceMatrixElementPrice>
                           </prices>
                         </FareTable>
                       </includes>
@@ -615,6 +454,49 @@
             </FareTable>
           </fareTables>
         </FareFrame>
+        <ServiceFrame version="1.0" id="epd:UK:BLAC:ServiceFrame_UK_PI_NETWORK:BLAC_products:op" dataSourceRef="op:operator" responsibilitySetRef="tariffs">
+          <Description>This frame contains the stop and line definitions for the service.</Description>
+          <TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0"/>
+          <lines>
+            <Line version="1.0" id="4YyoI0">
+              <Name>Line 1</Name>
+              <Description>FLEETWOOD - BLACKPOOL via Promenade</Description>
+              <Url>http://www.blackpooltransport.com</Url>
+              <PublicCode>1</PublicCode>
+              <PrivateCode type="txc:Line@id">4YyoI0</PrivateCode>
+              <OperatorRef version="1.0" ref="noc:BLAC"/>
+              <LineType>local</LineType>
+            </Line>
+            <Line version="1.0" id="YpQjUw">
+              <Name>Line 2</Name>
+              <Description>POULTON - BLACKPOOL via Victoria Hospital Outpatients</Description>
+              <Url>http://www.blackpooltransport.com</Url>
+              <PublicCode>2</PublicCode>
+              <PrivateCode type="txc:Line@id">YpQjUw</PrivateCode>
+              <OperatorRef version="1.0" ref="noc:BLAC"/>
+              <LineType>local</LineType>
+            </Line>
+            <Line version="1.0" id="vySmfewe0">
+              <Name>Line 2C</Name>
+              <Description>KNOTT END - POULTON - BLACKPOOL</Description>
+              <Url>http://www.blackpooltransport.com</Url>
+              <PublicCode>2C</PublicCode>
+              <PrivateCode type="txc:Line@id">vySmfewe0</PrivateCode>
+              <OperatorRef version="1.0" ref="noc:BLAC"/>
+              <LineType>local</LineType>
+            </Line>
+          </lines>
+          <groupsOfLines>
+            <GroupOfLines version="1.0" id="BLAC@exemptGroupOfLines@1">
+              <Name>A group of exempt services.</Name>
+              <members>
+                <LineRef version="1.0" ref="4YyoI0"/>
+                <LineRef version="1.0" ref="YpQjUw"/>
+                <LineRef version="1.0" ref="vySmfewe0"/>
+              </members>
+            </GroupOfLines>
+          </groupsOfLines>
+        </ServiceFrame>
       </frames>
     </CompositeFrame>
     <CompositeFrame id="fxc:UK:DFT:TypeOfFrame_UK_PI_METADATA_OFFER:FXCP:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">

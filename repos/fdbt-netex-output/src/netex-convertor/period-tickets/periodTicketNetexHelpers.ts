@@ -267,6 +267,7 @@ export const getGeoZoneFareTable = (
     userPeriodTicket: GeoZoneTicket | FlatFareGeoZoneTicket | SchemeOperatorGeoZoneTicket,
     placeHolderGroupOfProductsName: string,
     ticketUserConcat: string,
+    isCarnet: boolean,
 ): NetexObject[] => {
     return userPeriodTicket.products.flatMap((product, indexProduct) => {
         return product.salesOfferPackages.map((salesOfferPackage, indexSop) => {
@@ -277,10 +278,18 @@ export const getGeoZoneFareTable = (
                     $t: `${product.productName} - ${salesOfferPackage.name} - ${userPeriodTicket.zoneName}`,
                 },
                 pricesFor: {
-                    PreassignedFareProductRef: {
-                        version: '1.0',
-                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
-                    },
+                    ...(isCarnet && {
+                        AmountOfPriceUnitProductRef: {
+                            version: '1.0',
+                            ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                        },
+                    }),
+                    ...(!isCarnet && {
+                        PreassignedFareProductRef: {
+                            version: '1.0',
+                            ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                        },
+                    }),
                 },
                 includes: {
                     FareTable: {
@@ -353,6 +362,7 @@ export const getGeoZoneFareTable = (
 export const getMultiServiceList = (
     userPeriodTicket: PeriodMultipleServicesTicket | SchemeOperatorMultiServiceTicket,
     ticketUserConcat: string,
+    isCarnet: boolean,
 ): NetexObject[] => {
     return userPeriodTicket.products.flatMap((product, indexOne) => {
         return product.salesOfferPackages.map((salesOfferPackage, indexTwo) => {
@@ -373,10 +383,18 @@ export const getMultiServiceList = (
                     $t: `${product.productName} - ${salesOfferPackage.name} - ${serviceCount} services`,
                 },
                 pricesFor: {
-                    PreassignedFareProductRef: {
-                        version: '1.0',
-                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
-                    },
+                    ...(isCarnet && {
+                        AmountOfPriceUnitProductRef: {
+                            version: '1.0',
+                            ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                        },
+                    }),
+                    ...(!isCarnet && {
+                        PreassignedFareProductRef: {
+                            version: '1.0',
+                            ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                        },
+                    }),
                 },
                 includes: {
                     FareTable: {
@@ -441,6 +459,7 @@ export const getMultiServiceList = (
 const getFlatFareList = (
     userPeriodTicket: FlatFareTicket | SchemeOperatorFlatFareTicket,
     ticketUserConcat: string,
+    isCarnet: boolean,
 ): NetexObject[] =>
     userPeriodTicket.products.flatMap(product => {
         return product.salesOfferPackages.map(salesOfferPackage => {
@@ -454,10 +473,18 @@ const getFlatFareList = (
                         ref: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
                     },
                     ...getCarnetQualityStructureFactorRef(product),
-                    PreassignedFareProductRef: {
-                        version: '1.0',
-                        ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
-                    },
+                    ...(isCarnet && {
+                        AmountOfPriceUnitProductRef: {
+                            version: '1.0',
+                            ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                        },
+                    }),
+                    ...(!isCarnet && {
+                        PreassignedFareProductRef: {
+                            version: '1.0',
+                            ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                        },
+                    }),
                 },
                 limitations: {
                     ...getProfileRef(userPeriodTicket),
@@ -588,11 +615,12 @@ export const getMultiServiceFareTable = (
         | FlatFareTicket
         | SchemeOperatorMultiServiceTicket,
     ticketUserConcat: string,
+    isCarnet: boolean,
 ): NetexObject[] => {
     if (userPeriodTicket.type === 'flatFare') {
-        return getFlatFareList(userPeriodTicket, ticketUserConcat);
+        return getFlatFareList(userPeriodTicket, ticketUserConcat, isCarnet);
     } else {
-        return getMultiServiceList(userPeriodTicket, ticketUserConcat);
+        return getMultiServiceList(userPeriodTicket, ticketUserConcat, isCarnet);
     }
 };
 
@@ -600,10 +628,11 @@ export const getHybridFareTable = (
     userPeriodTicket: HybridPeriodTicket,
     placeHolderGroupOfProductsName: string,
     ticketUserConcat: string,
+    isCarnet: boolean,
 ): NetexObject[] => {
     return [
-        ...getGeoZoneFareTable(userPeriodTicket, placeHolderGroupOfProductsName, ticketUserConcat),
-        ...getMultiServiceFareTable(userPeriodTicket, ticketUserConcat),
+        ...getGeoZoneFareTable(userPeriodTicket, placeHolderGroupOfProductsName, ticketUserConcat, isCarnet),
+        ...getMultiServiceFareTable(userPeriodTicket, ticketUserConcat, isCarnet),
     ];
 };
 
@@ -611,6 +640,8 @@ export const getSalesOfferPackageList = (
     userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorTicket,
     ticketUserConcat: string,
 ): NetexSalesOfferPackage[][] => {
+    const isCarnet = 'carnetDetails' in userPeriodTicket.products[0];
+
     return userPeriodTicket.products.map(product => {
         return product.salesOfferPackages.map(salesOfferPackage => {
             const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
@@ -643,10 +674,18 @@ export const getSalesOfferPackageList = (
                             version: 'fxc:v1.0',
                             ref: `fxc:${ticketFormat}`,
                         },
-                        PreassignedFareProductRef: {
-                            version: '1.0',
-                            ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
-                        },
+                        ...(isCarnet && {
+                            AmountOfPriceUnitProductRef: {
+                                version: '1.0',
+                                ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                            },
+                        }),
+                        ...(!isCarnet && {
+                            PreassignedFareProductRef: {
+                                version: '1.0',
+                                ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                            },
+                        }),
                     };
                 });
             };
@@ -817,6 +856,25 @@ export const getPreassignedFareProducts = (
             });
         }
 
+        const productType = getProductType(userPeriodTicket);
+
+        let typeOfFareProductRef = '';
+
+        if (isCarnet) {
+            fareStructureElementRefs.push({
+                version: '1.0',
+                ref: 'op:Tariff@multitrip@units',
+            });
+            typeOfFareProductRef = productType.includes('trip')
+                ? 'fxc:standard_product@carnet@trips'
+                : 'fxc:standard_product@carnet@days';
+        } else {
+            typeOfFareProductRef =
+                isFlatFareType(userPeriodTicket) || isMultiOpFlatFareType(userPeriodTicket)
+                    ? 'fxc:standard_product@trip@single'
+                    : 'fxc:standard_product@pass@period';
+        }
+
         return {
             version: '1.0',
             id: `op:Pass@${product.productName}_${passengerType}`,
@@ -832,10 +890,7 @@ export const getPreassignedFareProducts = (
             },
             TypeOfFareProductRef: {
                 version: 'fxc:v1.0',
-                ref:
-                    isFlatFareType(userPeriodTicket) || isMultiOpFlatFareType(userPeriodTicket)
-                        ? 'fxc:standard_product@trip@single'
-                        : 'fxc:standard_product@pass@period',
+                ref: typeOfFareProductRef,
             },
             OperatorRef: {
                 version: '1.0',
@@ -864,7 +919,7 @@ export const getPreassignedFareProducts = (
                 },
             },
             ProductType: {
-                $t: getProductType(userPeriodTicket),
+                $t: productType,
             },
         };
     });

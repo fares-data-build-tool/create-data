@@ -16,9 +16,7 @@
         <NetworkFilterByValue>
           <objectReferences>
             <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
-            <BrandingRef version="1.0" ref="op:BLAC@brand"/>
+            <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
           </objectReferences>
         </NetworkFilterByValue>
       </NetworkFrameTopic>
@@ -148,12 +146,12 @@
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
               <TariffBasis>flat</TariffBasis>
               <fareStructureElements>
-                <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
+                <FareStructureElement version="1.0" id="op:Tariff@multitrip@units">
                   <Name>Carnet denominations</Name>
                   <Description>Number of flatFare units in bundle.</Description>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:carnet_units"/>
                   <qualityStructureFactors>
-                    <QualityStructureFactor version="1.0" id="mb:Tariff@multitrip@20">
+                    <QualityStructureFactor version="1.0" id="op:Tariff@multitrip@20">
                       <Value>20</Value>
                     </QualityStructureFactor>
                   </qualityStructureFactors>
@@ -209,11 +207,11 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct version="1.0" id="op:Pass@Weekly_Rider_senior">
+            <AmountOfPriceUnitProduct version="1.0" id="op:Pass@Weekly_Rider_senior">
               <Name>Weekly Rider</Name>
               <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment@bundled"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@carnet@trips"/>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@Weekly_Rider_senior@travel">
@@ -222,6 +220,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@access_lines"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@Weekly_Rider@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@senior"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@multitrip@units"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
@@ -230,8 +229,8 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@Weekly_Rider_senior@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>singleTrip</ProductType>
-            </PreassignedFareProduct>
+              <ProductType>tripCarnet</ProductType>
+            </AmountOfPriceUnitProduct>
           </fareProducts>
           <salesOfferPackages>
             <SalesOfferPackage version="1.0" id="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)">
@@ -257,7 +256,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -274,7 +273,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Onboard_(contactless)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -291,7 +290,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Online_(smart_card)@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -308,7 +307,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-Mobile_App@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -335,15 +334,15 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-All_Encompassing@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
                 <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-All_Encompassing@mobileApp" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
                 <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-All_Encompassing@smartCard" version="1.0" order="3">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -365,7 +364,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@Weekly_Rider-Weekly_Rider-School_Service_Payment_Methods@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -386,8 +385,8 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(cash)"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
                 <UserProfileRef version="1.0" ref="op:senior-0"/>
@@ -407,8 +406,8 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Onboard_(contactless)"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
                 <UserProfileRef version="1.0" ref="op:senior-0"/>
@@ -428,8 +427,8 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Online_(smart_card)"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
                 <UserProfileRef version="1.0" ref="op:senior-0"/>
@@ -449,8 +448,8 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@Mobile_App"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
                 <UserProfileRef version="1.0" ref="op:senior-0"/>
@@ -470,8 +469,8 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@All_Encompassing"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
                 <UserProfileRef version="1.0" ref="op:senior-0"/>
@@ -491,8 +490,8 @@
               <Name>Weekly Rider</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@Weekly_Rider-Weekly_Rider-SOP@School_Service_Payment_Methods"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@20"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@20"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
               </pricesFor>
               <limitations>
                 <UserProfileRef version="1.0" ref="op:senior-0"/>

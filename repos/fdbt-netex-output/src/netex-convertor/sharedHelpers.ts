@@ -322,7 +322,12 @@ export const isMultiOpFlatFareType = (ticket: Ticket): boolean =>
     ticket.type === 'multiOperator' && ticket.products.length > 0 && !('productValidity' in ticket.products[0]);
 
 export const getProductType = (ticket: Ticket): string => {
+    const isCarnet = 'carnetDetails' in ticket.products[0];
+
     if (isFlatFareType(ticket) || isSingleTicket(ticket) || isMultiOpFlatFareType(ticket)) {
+        if (isCarnet) {
+            return 'tripCarnet';
+        }
         if ('return' in ticket && !!ticket.return) {
             return 'dayReturnTrip';
         }
@@ -334,6 +339,9 @@ export const getProductType = (ticket: Ticket): string => {
         isMultiOperatorGeoZoneTicket(ticket) ||
         isMultiOperatorMultipleServicesTicket(ticket)
     ) {
+        if (isCarnet) {
+            return 'passCarnet';
+        }
         if (isProductDetails(ticket.products[0]) && ticket.products[0].productDuration === '1 day') {
             return 'dayPass';
         }
@@ -341,6 +349,9 @@ export const getProductType = (ticket: Ticket): string => {
     }
 
     if (isReturnTicket(ticket)) {
+        if (isCarnet) {
+            return 'tripCarnet';
+        }
         if (
             ticket.returnPeriodValidity &&
             ticket.returnPeriodValidity.typeOfDuration === 'day' &&
@@ -350,6 +361,10 @@ export const getProductType = (ticket: Ticket): string => {
         }
 
         return 'periodReturnTrip';
+    }
+
+    if (isCarnet) {
+        return 'passCarnet';
     }
 
     return 'periodPass';
@@ -365,13 +380,13 @@ export const getCarnetElement = (ticket: Ticket): NetexObject => {
 
     const qualityStructureFactors = [...uniqueCarnetDenominations].map(uniqueCarnetDenomination => ({
         version: '1.0',
-        id: `mb:Tariff@multitrip@${uniqueCarnetDenomination}`,
+        id: `op:Tariff@multitrip@${uniqueCarnetDenomination}`,
         Value: { $t: uniqueCarnetDenomination },
     }));
 
     return {
         version: '1.0',
-        id: 'mb:Tariff@multitrip@units',
+        id: 'op:Tariff@multitrip@units',
         Name: { $t: 'Carnet denominations' },
         Description: { $t: `Number of ${ticket.type} units in bundle.` },
         TypeOfFareStructureElementRef: {
@@ -527,7 +542,7 @@ export const getCarnetQualityStructureFactorRef = (
         ? {
               QualityStructureFactorRef: {
                   version: '1.0',
-                  ref: `mb:Tariff@multitrip@${product.carnetDetails?.quantity}`,
+                  ref: `op:Tariff@multitrip@${product.carnetDetails?.quantity}`,
               },
           }
         : {};

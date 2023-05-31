@@ -14,6 +14,7 @@ import {
     carnetPeriodGeoZoneTicket,
     carnetPeriodMultipleServicesTicket,
     multiOperatorFlatFareMultiServicesTicket,
+    carnetFlatFareTicket,
 } from '../../test-data/matchingData';
 import { operatorData, multiOperatorList } from '../test-data/operatorData';
 import * as db from '../../data/auroradb';
@@ -35,10 +36,19 @@ describe('periodTicketNetexHelpers', () => {
             $t: expect.any(String),
         },
         pricesFor: {
-            PreassignedFareProductRef: {
-                version: '1.0',
-                ref: expect.any(String),
-            },
+            ...(carnet
+                ? {
+                      AmountOfPriceUnitProductRef: {
+                          version: '1.0',
+                          ref: expect.any(String),
+                      },
+                  }
+                : {
+                      PreassignedFareProductRef: {
+                          version: '1.0',
+                          ref: expect.any(String),
+                      },
+                  }),
         },
         includes: {
             FareTable: {
@@ -94,17 +104,26 @@ describe('periodTicketNetexHelpers', () => {
         },
     });
 
-    const multiOpFlatFareFareTableSchema = {
+    const multiOpFlatFareFareTableSchema = (carnet: boolean): {} => ({
         version: '1.0',
         id: expect.any(String),
         Name: {
             $t: expect.any(String),
         },
         pricesFor: {
-            PreassignedFareProductRef: {
-                version: '1.0',
-                ref: expect.any(String),
-            },
+            ...(carnet
+                ? {
+                      AmountOfPriceUnitProductRef: {
+                          version: '1.0',
+                          ref: expect.any(String),
+                      },
+                  }
+                : {
+                      PreassignedFareProductRef: {
+                          version: '1.0',
+                          ref: expect.any(String),
+                      },
+                  }),
         },
         includes: {
             FareTable: {
@@ -118,6 +137,12 @@ describe('periodTicketNetexHelpers', () => {
                         version: '1.0',
                         id: expect.any(String),
                         pricesFor: {
+                            ...(carnet && {
+                                QualityStructureFactorRef: {
+                                    ref: expect.any(String),
+                                    version: '1.0',
+                                },
+                            }),
                             SalesOfferPackageRef: {
                                 version: '1.0',
                                 ref: expect.any(String),
@@ -139,6 +164,12 @@ describe('periodTicketNetexHelpers', () => {
                                         id: expect.any(String),
                                         Amount: { $t: expect.any(String) },
                                     },
+                                    ...(carnet && {
+                                        TimeIntervalRef: {
+                                            ref: expect.any(String),
+                                            version: '1.0',
+                                        },
+                                    }),
                                 },
                             },
                         },
@@ -146,7 +177,7 @@ describe('periodTicketNetexHelpers', () => {
                 },
             },
         },
-    };
+    });
 
     const geoZoneFareTableSchema = (carnet: boolean): {} => ({
         version: '1.0',
@@ -155,10 +186,19 @@ describe('periodTicketNetexHelpers', () => {
             $t: expect.any(String),
         },
         pricesFor: {
-            PreassignedFareProductRef: {
-                version: '1.0',
-                ref: expect.any(String),
-            },
+            ...(carnet
+                ? {
+                      AmountOfPriceUnitProductRef: {
+                          version: '1.0',
+                          ref: expect.any(String),
+                      },
+                  }
+                : {
+                      PreassignedFareProductRef: {
+                          version: '1.0',
+                          ref: expect.any(String),
+                      },
+                  }),
         },
         includes: {
             FareTable: {
@@ -214,6 +254,57 @@ describe('periodTicketNetexHelpers', () => {
                                 },
                             },
                         },
+                    },
+                },
+            },
+        },
+    });
+
+    const flatFareFareTableSchema = (carnet: boolean): {} => ({
+        version: '1.0',
+        id: opString,
+        Name: { $t: expect.any(String) },
+        pricesFor: {
+            ...(carnet
+                ? {
+                      AmountOfPriceUnitProductRef: {
+                          version: '1.0',
+                          ref: expect.any(String),
+                      },
+                  }
+                : {
+                      PreassignedFareProductRef: {
+                          version: '1.0',
+                          ref: expect.any(String),
+                      },
+                  }),
+            ...(carnet && {
+                QualityStructureFactorRef: {
+                    ref: 'op:Tariff@multitrip@10',
+                    version: '1.0',
+                },
+            }),
+            SalesOfferPackageRef: {
+                version: '1.0',
+                ref: expect.any(String),
+            },
+        },
+        limitations: {
+            UserProfileRef: {
+                version: '1.0',
+                ref: expect.any(String),
+            },
+        },
+        includes: {
+            FareTable: {
+                version: '1.0',
+                id: opString,
+                Name: { $t: expect.any(String) },
+                prices: {
+                    DistanceMatrixElementPrice: {
+                        version: '1.0',
+                        id: opString,
+                        Amount: { $t: expect.any(String) },
                     },
                 },
             },
@@ -291,7 +382,12 @@ describe('periodTicketNetexHelpers', () => {
                 const expectedLength = matchingData.products
                     .map(product => product.salesOfferPackages.length)
                     .reduce((a, b) => a + b);
-                const geoZoneFareTables = netexHelpers.getGeoZoneFareTable(matchingData, placeHolderText, 'test');
+                const geoZoneFareTables = netexHelpers.getGeoZoneFareTable(
+                    matchingData,
+                    placeHolderText,
+                    'test',
+                    'carnetDetails' in matchingData.products[0],
+                );
                 expect(geoZoneFareTables).toHaveLength(expectedLength);
                 geoZoneFareTables.forEach(fareTable => {
                     expect(fareTable).toEqual(geoZoneFareTableSchema(carnet));
@@ -310,7 +406,11 @@ describe('periodTicketNetexHelpers', () => {
                 const expectedLength = periodMultipleServicesTicket.products
                     .map(product => product.salesOfferPackages.length)
                     .reduce((a, b) => a + b);
-                const multiServiceFareTables = netexHelpers.getMultiServiceFareTable(matchingData, 'test');
+                const multiServiceFareTables = netexHelpers.getMultiServiceFareTable(
+                    matchingData,
+                    'test',
+                    'carnetDetails' in matchingData.products[0],
+                );
                 expect(multiServiceFareTables).toHaveLength(expectedLength);
                 multiServiceFareTables.forEach(fareTable => {
                     expect(fareTable).toEqual(multiServiceFareTableSchema(carnet));
@@ -319,48 +419,28 @@ describe('periodTicketNetexHelpers', () => {
         );
 
         it('returns a list of fare table objects when given flatFareTicket matching data', () => {
-            const flatFareFareTableSchema = {
-                version: '1.0',
-                id: opString,
-                Name: { $t: expect.any(String) },
-                pricesFor: {
-                    SalesOfferPackageRef: {
-                        version: '1.0',
-                        ref: expect.any(String),
-                    },
-                    PreassignedFareProductRef: {
-                        version: '1.0',
-                        ref: expect.any(String),
-                    },
-                },
-                limitations: {
-                    UserProfileRef: {
-                        version: '1.0',
-                        ref: expect.any(String),
-                    },
-                },
-                includes: {
-                    FareTable: {
-                        version: '1.0',
-                        id: opString,
-                        Name: { $t: expect.any(String) },
-                        prices: {
-                            DistanceMatrixElementPrice: {
-                                version: '1.0',
-                                id: opString,
-                                Amount: { $t: expect.any(String) },
-                            },
-                        },
-                    },
-                },
-            };
             const expectedLength = flatFareTicket.products
                 .map(product => product.salesOfferPackages.length)
                 .reduce((a, b) => a + b);
-            const flatFareFareTables = netexHelpers.getMultiServiceFareTable(flatFareTicket, 'test');
+            const flatFareFareTables = netexHelpers.getMultiServiceFareTable(
+                flatFareTicket,
+                'test',
+                'carnetDetails' in flatFareTicket.products[0],
+            );
             expect(flatFareFareTables).toHaveLength(expectedLength);
             flatFareFareTables.forEach(fareTable => {
-                expect(fareTable).toEqual(flatFareFareTableSchema);
+                expect(fareTable).toEqual(flatFareFareTableSchema(false));
+            });
+        });
+
+        it('returns a list of fare table objects when given carnet flatFareTicket matching data', () => {
+            const expectedLength = carnetFlatFareTicket.products
+                .map(product => product.salesOfferPackages.length)
+                .reduce((a, b) => a + b);
+            const flatFareFareTables = netexHelpers.getMultiServiceFareTable(carnetFlatFareTicket, 'test', true);
+            expect(flatFareFareTables).toHaveLength(expectedLength);
+            flatFareFareTables.forEach(fareTable => {
+                expect(fareTable).toEqual(flatFareFareTableSchema(true));
             });
         });
     });
@@ -374,11 +454,25 @@ describe('periodTicketNetexHelpers', () => {
             const flatFareFareTables = netexHelpers.getMultiServiceList(
                 multiOperatorFlatFareMultiServicesTicket as PeriodMultipleServicesTicket,
                 'test',
+                false,
             );
             expect(flatFareFareTables).toHaveLength(expectedLength);
 
             flatFareFareTables.forEach(fareTable => {
-                expect(fareTable).toEqual(multiOpFlatFareFareTableSchema);
+                expect(fareTable).toEqual(multiOpFlatFareFareTableSchema(false));
+            });
+        });
+
+        it('returns a list of fare table objects when given carnet period multi services matching data', () => {
+            const expectedLength = carnetPeriodMultipleServicesTicket.products
+                .map(product => product.salesOfferPackages.length)
+                .reduce((a, b) => a + b);
+
+            const fareTables = netexHelpers.getMultiServiceList(carnetPeriodMultipleServicesTicket, 'test', true);
+            expect(fareTables).toHaveLength(expectedLength);
+
+            fareTables.forEach(fareTable => {
+                expect(fareTable).toEqual(multiServiceFareTableSchema(true));
             });
         });
 
@@ -387,10 +481,14 @@ describe('periodTicketNetexHelpers', () => {
                 .map(product => product.salesOfferPackages.length)
                 .reduce((a, b) => a + b);
 
-            const flatFareFareTables = netexHelpers.getMultiServiceList(periodMultipleServicesTicket, 'test');
-            expect(flatFareFareTables).toHaveLength(expectedLength);
+            const fareTables = netexHelpers.getMultiServiceList(
+                periodMultipleServicesTicket,
+                'test',
+                'carnetDetails' in periodMultipleServicesTicket,
+            );
+            expect(fareTables).toHaveLength(expectedLength);
 
-            flatFareFareTables.forEach(fareTable => {
+            fareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(multiServiceFareTableSchema(false));
             });
         });

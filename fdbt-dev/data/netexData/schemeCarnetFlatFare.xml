@@ -15,9 +15,7 @@
         <TypeOfFrameRef version="fxc:v1.0" ref="fxc:UK:DFT:TypeOfFrame_UK_PI_LINE_FARE_OFFER:FXCP"/>
         <NetworkFilterByValue>
           <objectReferences>
-            <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
-            <PreassignedFareProductRef version="1.0" ref="op:Pass@test_adult"/>
-            <BrandingRef version="1.0" ref="op:Test_Scheme_Op-SE@brand"/>
+            <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@test_adult"/>
             <GroupOfOperatorsRef version="1.0" ref="operators@bus"/>
           </objectReferences>
         </NetworkFilterByValue>
@@ -156,12 +154,12 @@
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:flat"/>
               <TariffBasis>flat</TariffBasis>
               <fareStructureElements>
-                <FareStructureElement version="1.0" id="mb:Tariff@multitrip@units">
+                <FareStructureElement version="1.0" id="op:Tariff@multitrip@units">
                   <Name>Carnet denominations</Name>
                   <Description>Number of flatFare units in bundle.</Description>
                   <TypeOfFareStructureElementRef version="fxc:v1.0" ref="fxc:carnet_units"/>
                   <qualityStructureFactors>
-                    <QualityStructureFactor version="1.0" id="mb:Tariff@multitrip@5">
+                    <QualityStructureFactor version="1.0" id="op:Tariff@multitrip@5">
                       <Value>5</Value>
                     </QualityStructureFactor>
                   </qualityStructureFactors>
@@ -215,11 +213,11 @@
             </Tariff>
           </tariffs>
           <fareProducts>
-            <PreassignedFareProduct version="1.0" id="op:Pass@test_adult">
+            <AmountOfPriceUnitProduct version="1.0" id="op:Pass@test_adult">
               <Name>test</Name>
               <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment@bundled"/>
               <ChargingMomentType>beforeTravel</ChargingMomentType>
-              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@trip@single"/>
+              <TypeOfFareProductRef version="fxc:v1.0" ref="fxc:standard_product@carnet@trips"/>
               <OperatorRef version="1.0" ref="noc:Test_Scheme_Op-SE">noc:Test Scheme Op-SE-opId</OperatorRef>
               <validableElements>
                 <ValidableElement version="1.0" id="op:Pass@test_adult@travel">
@@ -228,6 +226,7 @@
                     <FareStructureElementRef version="1.0" ref="op:Tariff@test@access_lines"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@test@conditions_of_travel"/>
                     <FareStructureElementRef version="1.0" ref="op:Tariff@eligibility@adult"/>
+                    <FareStructureElementRef version="1.0" ref="op:Tariff@multitrip@units"/>
                   </fareStructureElements>
                 </ValidableElement>
               </validableElements>
@@ -236,8 +235,8 @@
                   <ValidableElementRef version="1.0" ref="op:Pass@test_adult@travel"/>
                 </AccessRightInProduct>
               </accessRightsInProduct>
-              <ProductType>singleTrip</ProductType>
-            </PreassignedFareProduct>
+              <ProductType>tripCarnet</ProductType>
+            </AmountOfPriceUnitProduct>
           </fareProducts>
           <salesOfferPackages>
             <SalesOfferPackage version="1.0" id="Trip@test-test-SOP@Onboard_(cash)">
@@ -252,7 +251,7 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Trip@test-test-Onboard_(cash)@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <PreassignedFareProductRef version="1.0" ref="op:Pass@test_adult"/>
+                  <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@test_adult"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -273,8 +272,8 @@
               <Name>test</Name>
               <pricesFor>
                 <SalesOfferPackageRef version="1.0" ref="Trip@test-test-SOP@Onboard_(cash)"/>
-                <QualityStructureFactorRef version="1.0" ref="mb:Tariff@multitrip@5"/>
-                <PreassignedFareProductRef version="1.0" ref="op:Pass@test_adult"/>
+                <QualityStructureFactorRef version="1.0" ref="op:Tariff@multitrip@5"/>
+                <AmountOfPriceUnitProductRef version="1.0" ref="op:Pass@test_adult"/>
               </pricesFor>
               <limitations>
                 <UserProfileRef version="1.0" ref="op:adult-0"/>
