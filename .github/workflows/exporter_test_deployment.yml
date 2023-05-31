@@ -6,6 +6,8 @@ on:
     - repos/exporter/**
   workflow_dispatch:
 
+name: 'exporter_test'
+
 defaults:
 
   run:
@@ -13,7 +15,7 @@ defaults:
 
 jobs:
 
-  exporter_to_deploy_to_test:
+  exporter_to_deploy_test:
     name: 'exporter_test'
     runs-on: ubuntu-latest
     env:

@@ -14,7 +14,7 @@ defaults:
 
 jobs:
 
-  exporter_to_deploy_to_preprod:
+  exporter_to_deploy_preprod:
     name: 'exporter_preprod'
     runs-on: ubuntu-latest
     env:
