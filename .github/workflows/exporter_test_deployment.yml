@@ -47,10 +47,10 @@ jobs:
         echo "Running tests"
         npm run test:ci
 
-#     - name: lint
-#       run: |
-#         echo "Linting"
-#         npm run lint
+    - name: lint
+      run: |
+        echo "Linting"
+        npm run lint
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1

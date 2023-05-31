@@ -43,15 +43,15 @@ jobs:
         npm run build-bastion-${{ env.WORKSPACE }}
         npm run build-table-${{ env.WORKSPACE }}
 
-    - name: preprod
+    - name: test
       run: |
         echo "Running tests"
         npm run test:ci
 
-#     - name: lint
-#       run: |
-#         echo "Linting"
-#         npm run lint
+    - name: lint
+      run: |
+        echo "Linting"
+        npm run lint
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
