@@ -380,13 +380,13 @@ export const getCarnetElement = (ticket: Ticket): NetexObject => {
 
     const qualityStructureFactors = [...uniqueCarnetDenominations].map(uniqueCarnetDenomination => ({
         version: '1.0',
-        id: `mb:Tariff@multitrip@${uniqueCarnetDenomination}`,
+        id: `op:Tariff@multitrip@${uniqueCarnetDenomination}`,
         Value: { $t: uniqueCarnetDenomination },
     }));
 
     return {
         version: '1.0',
-        id: 'mb:Tariff@multitrip@units',
+        id: 'op:Tariff@multitrip@units',
         Name: { $t: 'Carnet denominations' },
         Description: { $t: `Number of ${ticket.type} units in bundle.` },
         TypeOfFareStructureElementRef: {
@@ -542,7 +542,7 @@ export const getCarnetQualityStructureFactorRef = (
         ? {
               QualityStructureFactorRef: {
                   version: '1.0',
-                  ref: `mb:Tariff@multitrip@${product.carnetDetails?.quantity}`,
+                  ref: `op:Tariff@multitrip@${product.carnetDetails?.quantity}`,
               },
           }
         : {};

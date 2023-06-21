@@ -16,7 +16,6 @@ describe('pages', () => {
                     showPointToPoint
                     showMultiOperator
                     showFlatFlare={false}
-                    isDevOrTest
                     showGeoZone
                 />,
             );
@@ -33,7 +32,6 @@ describe('pages', () => {
                     showPointToPoint
                     showMultiOperator={true}
                     showFlatFlare
-                    isDevOrTest
                     showGeoZone
                 />,
             );
@@ -55,7 +53,6 @@ describe('pages', () => {
                     showPointToPoint
                     showFlatFlare
                     showMultiOperator
-                    isDevOrTest
                     showGeoZone
                 />,
             );
