@@ -2,7 +2,7 @@
     "name": "netex-output",
     "version": "1.0.0",
     "scripts": {
-        "build": "tsc --noEmit",
+        "build": "tsc",
         "test": "jest --runInBand",
         "test:ci": "CI=true jest --maxWorkers=1",
         "lint": "eslint . --ext .ts",
