@@ -6,7 +6,7 @@ on:
     - repos/fdbt-site/**
   workflow_dispatch:
 
-name: 'fdbt-site_test'
+name: 'fdbt-site_prod'
 
 defaults:
   run:
