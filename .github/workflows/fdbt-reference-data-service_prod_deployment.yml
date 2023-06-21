@@ -18,9 +18,9 @@ jobs:
     name: 'fdbt-reference-data-service_to_preprod'
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: preprod
+      WORKSPACE: prod
     environment:
-      name: preprod
+      name: prod
     
     steps:
     - name: Checkout
