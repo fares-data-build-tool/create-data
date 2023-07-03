@@ -8,6 +8,7 @@ file_dir = '/tmp/file.zip'
 
 s3 = boto3.client('s3')
 cloudwatch = boto3.client('cloudwatch')
+ssm_client = boto3.client('ssm')
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -54,6 +55,12 @@ def lambda_handler(event, context):
             Namespace='FDBT/Reference-Data-Retrievers'
         )
     except Exception as e:
+        ssm_client.put_parameter(
+            Name="/scheduled/disable-table-renamer",
+            Value="true",
+            Type="String",
+            Overwrite=True
+        )
         logger.error(e)
         logger.error(
             'Error getting object {} from bucket {}.'.format(key, bucket))
