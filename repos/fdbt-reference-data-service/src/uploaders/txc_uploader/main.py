@@ -39,12 +39,6 @@ def lambda_handler(event, context):
             s3_client, cloudwatch_client, bucket, key, file_path, db_connection, logger
         )
     except Exception as e:
-        ssm_client.put_parameter(
-            Name="/scheduled/disable-table-renamer",
-            Value="true",
-            Type="String",
-            Overwrite=True
-        )
         logger.error(
             f"ERROR! Failed to write contents of 's3://{bucket}/{key}' to database, error: {e}"
         )
