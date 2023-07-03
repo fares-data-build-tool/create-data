@@ -30,11 +30,11 @@ export const handler: Handler<ZipperLambdaBody> = async () => {
 
             await connection.end();
         } else {
+            await putParameter('/scheduled/disable-table-renamer', 'false', 'String', true);
             throw new Error(
                 'The SSM Parameter used to check for errors in the scheduled job has returned TRUE indicating an issue',
             );
         }
-        await putParameter('/scheduled/disable-table-renamer', 'false', 'String', true);
     } catch (e) {
         if (e instanceof Error) {
             console.log(e);
