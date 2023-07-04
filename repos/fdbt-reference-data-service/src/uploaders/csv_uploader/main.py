@@ -32,6 +32,12 @@ def lambda_handler(event, context):
 
         insert_in_database(key, bucket)
     except Exception as e:
+        ssm.put_parameter(
+            Name="/scheduled/disable-table-renamer",
+            Value="true",
+            Type="String",
+            Overwrite=True
+        )
         logger.error(e)
         raise e
 
