@@ -66,6 +66,12 @@ def cleardown_txc_tables():
         db_connection.commit()
 
     except Exception as e:
+        ssm.put_parameter(
+            Name="/scheduled/disable-table-renamer",
+            Value="true",
+            Type="String",
+            Overwrite=True
+        )
         logger.error('ERROR: Failed to truncate tables.')
         logger.error(e)
         raise e
@@ -163,5 +169,11 @@ def lambda_handler(event, context):
             upload_tnds_data_to_s3()
 
     except Exception as e:
+        ssm.put_parameter(
+            Name="/scheduled/disable-table-renamer",
+            Value="true",
+            Type="String",
+            Overwrite=True
+        )
         logger.error(e)
         raise e
