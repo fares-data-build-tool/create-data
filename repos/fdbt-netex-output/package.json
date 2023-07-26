@@ -4,7 +4,7 @@
     "scripts": {
         "build": "tsc --noEmit",
         "test": "jest --runInBand",
-        "test:ci": "CI=true jest --maxWorkers=1",
+        "test:ci": "CI=true jest --findRelatedTests src/netex-emailer/handler.test.ts src/netex-convertor/* src/data/auroradb.test.ts --maxWorkers=1",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint --fix . --ext .ts",
         "netexConvert": "NODE_ENV=development UNVALIDATED_NETEX_BUCKET=$UNVALIDATED_NETEX_BUCKET ts-node src/netex-convertor/run-local.ts \"$EVENT_DATA\"",
