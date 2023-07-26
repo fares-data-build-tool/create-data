@@ -194,7 +194,9 @@ export class ExporterStack extends cdk.Stack {
 
         this.addAlarmsToLambda(tableRenameFunction, `tableRenameFunction-${this.stage}`, 420000);
 
-        tableRenameFunction.addToRolePolicy(new PolicyStatement({ actions: ['ssm:GetParameter'], resources: ['*'] }));
+        tableRenameFunction.addToRolePolicy(
+            new PolicyStatement({ actions: ['ssm:GetParameter', 'ssm:PutParameter'], resources: ['*'] }),
+        );
 
         new Rule(this, `table-rename-rule-${this.stage}`, {
             schedule: Schedule.cron({ minute: '30', hour: '5' }), // every day at 5:30am

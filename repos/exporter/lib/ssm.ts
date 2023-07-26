@@ -18,3 +18,22 @@ export const getSsmValue = async (parameter: string): Promise<string> => {
 
     return value;
 };
+
+export const putParameter = async (
+    name: string,
+    value: string,
+    type: 'String' | 'StringList' | 'SecureString',
+    overwrite: boolean,
+): Promise<void> => {
+    const input = {
+        Name: name,
+        Value: value,
+        Type: type,
+        Overwrite: overwrite,
+    };
+    try {
+        await ssm.putParameter(input).promise();
+    } catch (e) {
+        throw new Error(`Parameter ${name} could not be put into ssm`);
+    }
+};

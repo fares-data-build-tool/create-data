@@ -9,7 +9,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 s3 = boto3.resource("s3")
-
+ssm = boto3.client("ssm")
 
 def lambda_handler(event, context):
     try:
@@ -55,5 +55,11 @@ def lambda_handler(event, context):
             )
 
     except Exception as e:
+        ssm.put_parameter(
+            Name="/scheduled/disable-table-renamer",
+            Value="true",
+            Type="String",
+            Overwrite=True
+        )
         logger.error(e)
         raise e

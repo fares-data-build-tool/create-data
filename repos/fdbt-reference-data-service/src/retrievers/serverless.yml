@@ -12,6 +12,7 @@ provider:
       statements:
         - Effect: "Allow"
           Action:
+            - "ssm:PutParameter"
             - "ssm:GetParameter"
           Resource: "*"
         - Effect: "Allow"
