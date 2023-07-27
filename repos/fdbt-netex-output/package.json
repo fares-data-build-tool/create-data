@@ -2,7 +2,7 @@
     "name": "netex-output",
     "version": "1.0.0",
     "scripts": {
-        "build": "tsc --noEmit",
+        "build": "tsc",
         "test": "jest --runInBand",
         "test:ci": "CI=true jest --findRelatedTests src/netex-emailer/handler.test.ts src/netex-convertor/* src/data/auroradb.test.ts --maxWorkers=1",
         "lint": "eslint . --ext .ts",
