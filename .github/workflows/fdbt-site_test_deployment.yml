@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'develop'
+    - 'feat/CFDS-249_circular_returns'
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:

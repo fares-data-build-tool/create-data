@@ -13,7 +13,11 @@ import { getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken, removeDuplicateServices } from '../utils';
 import CsrfForm from '../components/CsrfForm';
-import { isPassengerType, isServiceAttributeWithErrors } from '../interfaces/typeGuards';
+import {
+    isPassengerType,
+    isServiceAttributeWithErrors,
+    isServiceAttributeWithWarnings,
+} from '../interfaces/typeGuards';
 import { getSessionAttribute, getRequiredSessionAttribute } from '../utils/sessions';
 import { redirectTo } from '../utils/apiUtils';
 
@@ -28,6 +32,7 @@ interface ServiceProps {
     error: ErrorInfo[];
     dataSourceAttribute: TxcSourceAttribute;
     csrfToken: string;
+    warning: ErrorInfo[];
 }
 
 const Service = ({
@@ -37,9 +42,14 @@ const Service = ({
     dataSourceAttribute,
     error,
     csrfToken,
+    warning,
 }: ServiceProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={error}>
-        <CsrfForm action="/api/service" method="post" csrfToken={csrfToken}>
+        <CsrfForm
+            action={`/api/service${warning && warning.length > 0 ? '?ignoreWarning=true' : ''}`}
+            method="post"
+            csrfToken={csrfToken}
+        >
             <>
                 <label htmlFor="service">
                     <h1 className="govuk-heading-l" id="service-page-heading">
@@ -50,6 +60,17 @@ const Service = ({
                     {operator} - {upperFirst(passengerType)}
                 </span>
                 <ErrorSummary errors={error} />
+                {warning && warning.length > 0 ? (
+                    <div className="govuk-warning-text">
+                        <span className="govuk-warning-text__icon" aria-hidden="true">
+                            !
+                        </span>
+                        <strong className="govuk-warning-text__text">
+                            <span className="govuk-warning-text__assistive">Warning</span>
+                            {warning[0].errorMessage}
+                        </strong>
+                    </div>
+                ) : null}
                 <div className={`govuk-form-group ${error.length > 0 ? 'govuk-form-group--error' : ''}`}>
                     <FormElementWrapper errors={error} errorId={errorId} errorClass="govuk-select--error">
                         <select
@@ -97,6 +118,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const error: ErrorInfo[] =
         serviceAttribute && isServiceAttributeWithErrors(serviceAttribute) ? serviceAttribute.errors : [];
 
+    const warning: ErrorInfo[] =
+        serviceAttribute && isServiceAttributeWithWarnings(serviceAttribute) ? serviceAttribute.warnings : [];
+
     const operatorAttribute = getSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
 
@@ -127,6 +151,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             error,
             dataSourceAttribute,
             csrfToken,
+            warning,
         },
     };
 };

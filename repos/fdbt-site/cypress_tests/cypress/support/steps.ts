@@ -536,7 +536,7 @@ export const editEndDatePointToPointPage = (): void => {
 };
 
 export const editTimeRestriction = (): void => {
-    let isSchoolTicket = false;
+    const isSchoolTicket = false;
     cy.wrap(isSchoolTicket).as('isSchoolTicket');
 
     cy.get('main').then(($main) => {
