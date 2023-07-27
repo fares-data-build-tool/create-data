@@ -74,7 +74,13 @@ const Service = ({
                             className="govuk-select"
                             id="service"
                             name="serviceId"
-                            defaultValue={error.length > 0 && error[0].userInput ? error[0].userInput : undefined}
+                            defaultValue={
+                                error.length > 0 && error[0].userInput
+                                    ? error[0].userInput
+                                    : warning && warning.length > 0
+                                    ? warning[0].userInput
+                                    : undefined
+                            }
                         >
                             <option value="" disabled>
                                 Select One
