@@ -30,7 +30,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const direction = directions.find((it) => ['outbound', 'clockwise'].includes(it));
         const inboundDirection = directions.find((it) => ['inbound', 'antiClockwise'].includes(it));
 
-        if (isReturn && (!direction || !inboundDirection) && !req.query.ignoreWarning) {
+        if (isReturn && (!direction || !inboundDirection) && !req.body?.ignoreWarning) {
             const warnings: ErrorInfo[] = [
                 {
                     id: 'service',
@@ -43,7 +43,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        if (req.query?.ignoreWarning) {
+        if (req.body?.ignoreWarning) {
             deleteCookieOnResponseObject(SERVICE_ATTRIBUTE, req, res);
         }
 

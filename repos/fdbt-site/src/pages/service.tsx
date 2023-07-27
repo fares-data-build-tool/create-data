@@ -45,12 +45,9 @@ const Service = ({
     warning,
 }: ServiceProps): ReactElement => (
     <TwoThirdsLayout title={title} description={description} errors={error}>
-        <CsrfForm
-            action={`/api/service${warning && warning.length > 0 ? '?ignoreWarning=true' : ''}`}
-            method="post"
-            csrfToken={csrfToken}
-        >
+        <CsrfForm action="/api/service" method="post" csrfToken={csrfToken}>
             <>
+                {warning && warning.length > 0 ? <input type="hidden" name="ignoreWarning" value={'true'} /> : null}
                 <label htmlFor="service">
                     <h1 className="govuk-heading-l" id="service-page-heading">
                         Select a service
