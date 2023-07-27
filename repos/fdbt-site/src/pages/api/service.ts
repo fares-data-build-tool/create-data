@@ -34,7 +34,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const warnings: ErrorInfo[] = [
                 {
                     id: 'service',
-                    errorMessage: `As your service only operates in a single direction, you cannot create a return product for this service`,
+                    errorMessage:
+                        'Please note this service only operates in one direction - click continue if you are creating a return for a circular service.',
                     userInput: req.body.serviceId,
                 },
             ];
