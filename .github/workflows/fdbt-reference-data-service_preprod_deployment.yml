@@ -49,16 +49,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
 
-    # - name: deploy-reference-data-retrievers
-    #   run: |
-    #     echo "Deploying..."
-    #     curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-    #     sudo apt-get install -y nodejs
-    #     cd src/retrievers
-    #     npm ci
-    #     npm run deploy:${{ env.WORKSPACE }}
-    #     echo "Finished deploy"
-
     - name: audit-reference-data-uploaders
       run: |
         pip install safety
@@ -73,17 +63,6 @@ jobs:
         echo "Running tests..."
         python3 -m pytest tests/
 
-    # - name: deploy-reference-data-uploaders-to
-    #   run: |
-    #     echo "Deploying..."
-    #     curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-    #     sudo apt-get install -y nodejs
-    #     cd src/uploaders
-    #     npm ci
-    #     npm run deploy:${{ env.WORKSPACE }}
-    #     echo "Finished deploy"
-
-    
     - name: Zipping code for deploy-reference-data-uploader-TxcUnzipper
       run: |
         echo "Zipping..."
