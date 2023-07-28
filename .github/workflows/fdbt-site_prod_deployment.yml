@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-    - 'v*'
+    - 'v*' 
     paths:
     - repos/fdbt-site/**
   workflow_dispatch:
