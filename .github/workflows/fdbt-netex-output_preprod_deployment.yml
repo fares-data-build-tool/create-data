@@ -92,10 +92,10 @@ jobs:
     #     echo "Running tests"
     #     npm run test:ci
 
-#     - name: lint
-#       run: |
-#         echo "Linting"
-#         npm run lint
+    - name: lint
+      run: |
+        echo "Linting"
+        npm run lint
     
     # - name: deploy-netex-output-resources
     #   run: |
