@@ -20,7 +20,7 @@ jobs:
     name: 'exporter'
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: dev
+      WORKSPACE: preprod
     
     steps:
     - name: Checkout
