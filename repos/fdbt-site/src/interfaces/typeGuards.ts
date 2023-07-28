@@ -22,6 +22,7 @@ import {
     Service,
     ServiceListAttribute,
     ServiceWithErrors,
+    ServiceWithWarnings,
     TicketPeriodWithErrors,
     TicketPeriodWithInput,
     TicketRepresentationAttribute,
@@ -80,10 +81,16 @@ export const isPassengerType = (
 };
 
 export const isServiceAttributeWithErrors = (
-    serviceAttribute: Service | ServiceWithErrors,
+    serviceAttribute: Service | ServiceWithErrors | ServiceWithWarnings,
 ): serviceAttribute is ServiceWithErrors => (serviceAttribute as ServiceWithErrors).errors !== undefined;
 
-export const isService = (service: Service | ServiceWithErrors | undefined): service is Service => {
+export const isServiceAttributeWithWarnings = (
+    serviceAttribute: Service | ServiceWithErrors | ServiceWithWarnings,
+): serviceAttribute is ServiceWithWarnings => (serviceAttribute as ServiceWithWarnings).warnings !== undefined;
+
+export const isService = (
+    service: Service | ServiceWithErrors | ServiceWithWarnings | undefined,
+): service is Service => {
     return service !== undefined && (service as Service).service !== undefined;
 };
 

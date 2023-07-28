@@ -79,6 +79,7 @@ describe('pages', () => {
                     passengerType="Adult"
                     services={mockServices}
                     error={[]}
+                    warning={[]}
                     dataSourceAttribute={{
                         source: 'bods',
                         hasTnds: false,
@@ -97,6 +98,7 @@ describe('pages', () => {
                     passengerType="Adult"
                     services={mockServices}
                     error={[]}
+                    warning={[]}
                     dataSourceAttribute={{
                         source: 'tnds',
                         hasTnds: true,
@@ -117,6 +119,7 @@ describe('pages', () => {
                     passengerType="Adult"
                     services={mockServices}
                     error={[]}
+                    warning={[]}
                     dataSourceAttribute={{
                         source: 'tnds',
                         hasTnds: true,
@@ -140,6 +143,7 @@ describe('pages', () => {
                     passengerType="Adult"
                     services={mockServices}
                     error={[]}
+                    warning={[]}
                     dataSourceAttribute={{
                         source: 'bods',
                         hasTnds: false,
@@ -174,6 +178,7 @@ describe('pages', () => {
             expect(result).toEqual({
                 props: {
                     error: [],
+                    warning: [],
                     operator: 'test',
                     passengerType: 'Adult',
                     services: [
@@ -233,6 +238,7 @@ describe('pages', () => {
             expect(result).toEqual({
                 props: {
                     error: [],
+                    warning: [],
                     operator: 'test',
                     passengerType: 'Adult',
                     services: [
