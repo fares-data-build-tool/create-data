@@ -379,8 +379,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
         isReturnPeriodValidityWithErrors(returnPeriodValidity) ||
-        !outboundUnassignedStops ||
-        !inboundUnassignedStops
+        !outboundUnassignedStops
     ) {
         logger.error('session objects', {
             matchingAttributeInfo,
@@ -408,7 +407,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         ...(returnPeriodValidity && { returnPeriodValidity }),
         unassignedStops: {
             outboundUnassignedStops,
-            inboundUnassignedStops,
+            inboundUnassignedStops: inboundUnassignedStops || [],
         },
         products,
         operatorName: service.operatorShortName,
