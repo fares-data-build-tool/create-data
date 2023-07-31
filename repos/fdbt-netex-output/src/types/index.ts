@@ -210,7 +210,6 @@ export const isPointToPointTicket = (ticketData: Ticket): ticketData is PointToP
     ticketData.type === 'single' || ticketData.type === 'return';
 
 export const isReturnTicket = (ticket: Ticket): ticket is ReturnTicket | PointToPointPeriodTicket =>
-    ((ticket as ReturnTicket).inboundFareZones !== undefined && (ticket as ReturnTicket).inboundFareZones.length > 0) ||
     ((ticket as ReturnTicket).outboundFareZones !== undefined && (ticket as ReturnTicket).outboundFareZones.length > 0);
 
 export const isSingleTicket = (ticket: Ticket): ticket is SingleTicket =>

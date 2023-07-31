@@ -84,6 +84,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     await insertDataToProductsBucketAndProductsTable(splitJson, noc, `${uuid}_${index}`, { req, res });
                 });
 
+                // eslint-disable-next-line no-console
+                console.log(userDataJson);
                 await putUserDataInProductsBucket(userDataJson, uuid, noc);
             } else {
                 await insertDataToProductsBucketAndProductsTable(userDataJson, noc, uuid, {
