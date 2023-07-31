@@ -118,8 +118,8 @@ export const getUserProfile = (user: User | GroupCompanion, index: number): Nete
             ref: `fxc:${passengerType === 'anyone' || passengerType === 'adult' ? 'none' : snakeCase(passengerType)}`,
         },
         UserType: { $t: passengerType },
-        MinimumAge: { $t: user.ageRangeMin || null },
-        MaximumAge: { $t: user.ageRangeMax || null },
+        ...(user.ageRangeMin && { MinimumAge: { $t: user.ageRangeMin } }),
+        ...(user.ageRangeMax && { MaximumAge: { $t: user.ageRangeMax } }),
         ProofRequired: { $t: user.proofDocuments?.join(' ') || null },
     };
 };
