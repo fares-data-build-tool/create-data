@@ -48,7 +48,7 @@ jobs:
       run: |
         echo "Zipping..."
         cd src/netex-validator
-        pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-netex-output/src/netex-validator -r requirements.txt
+        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-netex-output/src/netex-validator -r requirements.txt
         pwd
         ls        
         zip -r netex-validator.zip . -x /cloudformation-template-create-stack.json -x /serverless.yml   
