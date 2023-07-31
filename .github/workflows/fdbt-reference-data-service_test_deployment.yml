@@ -67,7 +67,7 @@ jobs:
       run: |
         echo "Zipping..."
         cd src/retrievers
-        pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
+        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
         pwd
         ls
         zip -r reference-data-service-retrievers-test-TxcUnzipper.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
@@ -85,7 +85,7 @@ jobs:
       run: |
         echo "Zipping..."
         cd src/retrievers
-        pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
+        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
         pwd
         ls
         zip -r reference-data-service-retrievers-test-NocRetriever.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
@@ -104,7 +104,7 @@ jobs:
       run: |
         echo "Zipping..."
         cd src/retrievers
-        pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
+        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
         pwd
         ls
         zip -r reference-data-service-retrievers-test-TxcRetrieverTnds.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
@@ -122,7 +122,7 @@ jobs:
       run: |
         echo "Zipping..."
         cd src/retrievers
-        pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
+        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
         pwd
         ls
         zip -r reference-data-service-retrievers-test-NaptanRetriever.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
@@ -140,7 +140,7 @@ jobs:
       run: |
         echo "Zipping..."
         cd src/retrievers
-        pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
+        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
         pwd
         ls
         zip -r reference-data-service-retrievers-test-TxcRetrieverBods.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
