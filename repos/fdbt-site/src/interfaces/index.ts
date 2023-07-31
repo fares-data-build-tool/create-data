@@ -586,6 +586,10 @@ export interface ServiceWithErrors {
     errors: ErrorInfo[];
 }
 
+export interface ServiceWithWarnings {
+    warnings: ErrorInfo[];
+}
+
 export interface ServiceType {
     id?: number;
     lineName: string;

@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '../../constants/attributes';
-import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
+import { redirectToError, redirectTo, getAndValidateNoc, deleteCookieOnResponseObject } from '../../utils/apiUtils';
 import { updateSessionAttribute, getRequiredSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getServiceByIdAndDataSource } from '../../data/auroradb';
@@ -30,17 +30,22 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const direction = directions.find((it) => ['outbound', 'clockwise'].includes(it));
         const inboundDirection = directions.find((it) => ['inbound', 'antiClockwise'].includes(it));
 
-        if (isReturn && (!direction || !inboundDirection)) {
-            const errors: ErrorInfo[] = [
+        if (isReturn && (!direction || !inboundDirection) && !req.body?.ignoreWarning) {
+            const warnings: ErrorInfo[] = [
                 {
                     id: 'service',
-                    errorMessage: `As your service only operates in a single direction, you cannot create a return product for this service`,
+                    errorMessage:
+                        'Please note this service only operates in one direction - click continue if you are creating a return for a circular service.',
                     userInput: req.body.serviceId,
                 },
             ];
-            updateSessionAttribute(req, SERVICE_ATTRIBUTE, { errors });
+            updateSessionAttribute(req, SERVICE_ATTRIBUTE, { warnings });
             redirectTo(res, '/service');
             return;
+        }
+
+        if (req.body?.ignoreWarning) {
+            deleteCookieOnResponseObject(SERVICE_ATTRIBUTE, req, res);
         }
 
         updateSessionAttribute(req, SERVICE_ATTRIBUTE, {

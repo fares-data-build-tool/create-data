@@ -146,6 +146,7 @@ import {
     CapSelection,
     ExemptedStopsAttribute,
     Cap,
+    ServiceWithWarnings,
 } from '../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../interfaces/matchingInterface';
 import {
@@ -201,7 +202,7 @@ export interface SessionAttributeTypes {
     [MANAGE_PASSENGER_TYPE_ERRORS_ATTRIBUTE]: ManagePassengerTypeWithErrors;
     [MANAGE_OPERATOR_GROUP_ERRORS_ATTRIBUTE]: ManageOperatorGroupWithErrors;
     [MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE]: ManageProductGroupWithErrors;
-    [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors;
+    [SERVICE_ATTRIBUTE]: Service | ServiceWithErrors | ServiceWithWarnings;
     [RETURN_SERVICE_ATTRIBUTE]: BasicService | WithErrors<BasicService>;
     [DIRECTION_ATTRIBUTE]: Direction | Errors;
     [TICKET_REPRESENTATION_ATTRIBUTE]: TicketRepresentationAttribute | TicketRepresentationAttributeWithErrors;

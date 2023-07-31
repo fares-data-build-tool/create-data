@@ -20,7 +20,7 @@ jobs:
     name: 'exporter'
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: none
+      WORKSPACE: preprod
     
     steps:
     - name: Checkout
@@ -36,7 +36,12 @@ jobs:
         echo "Starting build"
         npm ci
         echo " ci finished"
-        npm run build
+        npm install -D @types/aws-lambda esbuild
+        npm run build-atco-${{ env.WORKSPACE }}
+        npm run build-handler-${{ env.WORKSPACE }}
+        npm run build-zipper-${{ env.WORKSPACE }}
+        npm run build-bastion-${{ env.WORKSPACE }}
+        npm run build-table-${{ env.WORKSPACE }}
 
     - name: test
       run: |
