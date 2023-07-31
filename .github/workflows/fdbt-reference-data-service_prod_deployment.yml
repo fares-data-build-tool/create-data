@@ -14,8 +14,8 @@ defaults:
 
 jobs:
 
-  fdbt-reference-data-service_deploy_to_preprod:
-    name: 'fdbt-reference-data-service_to_preprod'
+  fdbt-reference-data-service_deploy_to_prod:
+    name: 'fdbt-reference-data-service_to_prod'
     runs-on: ubuntu-latest
     env:
       WORKSPACE: prod
@@ -70,16 +70,16 @@ jobs:
         pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
         pwd
         ls
-        zip -r reference-data-service-retrievers-preprod-TxcUnzipper.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-retrievers-preprod-TxcUnzipper.zip
+        zip -r reference-data-service-retrievers-prod-TxcUnzipper.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
+        zip -sf reference-data-service-retrievers-prod-TxcUnzipper.zip
         ls
 
-    - name: reference-data-service-retrievers-preprod-TxcUnzipper
+    - name: reference-data-service-retrievers-prod-TxcUnzipper
       run: |
         echo "Updating..."
         cd src/retrievers        
-        aws lambda update-function-code --function-name reference-data-service-retrievers-preprod-TxcUnzipper --zip-file fileb://reference-data-service-retrievers-preprod-TxcUnzipper.zip
-        rm -f reference-data-service-retrievers-preprod-TxcUnzipper.zip
+        aws lambda update-function-code --function-name reference-data-service-retrievers-prod-TxcUnzipper --zip-file fileb://reference-data-service-retrievers-prod-TxcUnzipper.zip
+        rm -f reference-data-service-retrievers-prod-TxcUnzipper.zip
 
     - name: Zipping code for deploy-reference-data-uploader-NocRetriever
       run: |
@@ -88,16 +88,16 @@ jobs:
         pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
         pwd
         ls
-        zip -r reference-data-service-retrievers-preprod-NocRetriever.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-retrievers-preprod-NocRetriever.zip
+        zip -r reference-data-service-retrievers-prod-NocRetriever.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
+        zip -sf reference-data-service-retrievers-prod-NocRetriever.zip
         ls
 
-    - name: reference-data-service-retrievers-preprod-NocRetriever
+    - name: reference-data-service-retrievers-prod-NocRetriever
       run: |
         echo "Updating..."
         cd src/retrievers        
-        aws lambda update-function-code --function-name reference-data-service-retrievers-preprod-NocRetriever --zip-file fileb://reference-data-service-retrievers-preprod-NocRetriever.zip
-        rm -f reference-data-service-retrievers-preprod-NocRetriever.zip
+        aws lambda update-function-code --function-name reference-data-service-retrievers-prod-NocRetriever --zip-file fileb://reference-data-service-retrievers-prod-NocRetriever.zip
+        rm -f reference-data-service-retrievers-prod-NocRetriever.zip
 
 
     - name: Zipping code for deploy-reference-data-uploader-TxcRetrieverTnds
@@ -107,16 +107,16 @@ jobs:
         pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
         pwd
         ls
-        zip -r reference-data-service-retrievers-preprod-TxcRetrieverTnds.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-retrievers-preprod-TxcRetrieverTnds.zip
+        zip -r reference-data-service-retrievers-prod-TxcRetrieverTnds.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
+        zip -sf reference-data-service-retrievers-prod-TxcRetrieverTnds.zip
         ls
 
-    - name: reference-data-service-retrievers-preprod-TxcRetrieverTnds
+    - name: reference-data-service-retrievers-prod-TxcRetrieverTnds
       run: |
         echo "Updating..."
         cd src/retrievers        
-        aws lambda update-function-code --function-name reference-data-service-retrievers-preprod-TxcRetrieverTnds --zip-file fileb://reference-data-service-retrievers-preprod-TxcRetrieverTnds.zip
-        rm -f reference-data-service-retrievers-preprod-TxcRetrieverTnds.zip
+        aws lambda update-function-code --function-name reference-data-service-retrievers-prod-TxcRetrieverTnds --zip-file fileb://reference-data-service-retrievers-prod-TxcRetrieverTnds.zip
+        rm -f reference-data-service-retrievers-prod-TxcRetrieverTnds.zip
 
     - name: Zipping code for deploy-reference-data-uploader-NaptanRetriever
       run: |
@@ -125,16 +125,16 @@ jobs:
         pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
         pwd
         ls
-        zip -r reference-data-service-retrievers-preprod-NaptanRetriever.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-retrievers-preprod-NaptanRetriever.zip
+        zip -r reference-data-service-retrievers-prod-NaptanRetriever.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
+        zip -sf reference-data-service-retrievers-prod-NaptanRetriever.zip
         ls
 
-    - name: reference-data-service-retrievers-preprod-NaptanRetriever
+    - name: reference-data-service-retrievers-prod-NaptanRetriever
       run: |
         echo "Updating..."
         cd src/retrievers        
-        aws lambda update-function-code --function-name reference-data-service-retrievers-preprod-NaptanRetriever --zip-file fileb://reference-data-service-retrievers-preprod-NaptanRetriever.zip
-        rm -f  reference-data-service-retrievers-preprod-NaptanRetriever.zip
+        aws lambda update-function-code --function-name reference-data-service-retrievers-prod-NaptanRetriever --zip-file fileb://reference-data-service-retrievers-prod-NaptanRetriever.zip
+        rm -f  reference-data-service-retrievers-prod-NaptanRetriever.zip
 
     - name: Zipping code for deploy-reference-data-uploader-TxcRetrieverBods
       run: |
@@ -143,53 +143,53 @@ jobs:
         pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
         pwd
         ls
-        zip -r reference-data-service-retrievers-preprod-TxcRetrieverBods.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-retrievers-preprod-TxcRetrieverBods.zip
+        zip -r reference-data-service-retrievers-prod-TxcRetrieverBods.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
+        zip -sf reference-data-service-retrievers-prod-TxcRetrieverBods.zip
         ls
 
-    - name: reference-data-service-retrievers-preprod-TxcRetrieverBods
+    - name: reference-data-service-retrievers-prod-TxcRetrieverBods
       run: |
         echo "Updating..."
         cd src/retrievers        
-        aws lambda update-function-code --function-name reference-data-service-retrievers-preprod-TxcRetrieverBods --zip-file fileb://reference-data-service-retrievers-preprod-TxcRetrieverBods.zip
-        rm -f  reference-data-service-retrievers-preprod-TxcRetrieverBods.zip           
+        aws lambda update-function-code --function-name reference-data-service-retrievers-prod-TxcRetrieverBods --zip-file fileb://reference-data-service-retrievers-prod-TxcRetrieverBods.zip
+        rm -f  reference-data-service-retrievers-prod-TxcRetrieverBods.zip           
 
 
-    - name: Zipping code for deploy-reference-uploaders-preprod-CsvUploader
+    - name: Zipping code for deploy-reference-uploaders-prod-CsvUploader
       run: |
         echo "Zipping..."
         cd src/uploaders
         pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/uploaders -r requirements.txt
         pwd
         ls
-        zip -r reference-data-service-uploaders-preprod-CsvUploader.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-uploaders-preprod-CsvUploader.zip
+        zip -r reference-data-service-uploaders-prod-CsvUploader.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
+        zip -sf reference-data-service-uploaders-prod-CsvUploader.zip
         ls -l
 
-    - name: reference-data-service-uploaders-preprod-CsvUploader
+    - name: reference-data-service-uploaders-prod-CsvUploader
       run: |
         echo "Updating..."
         cd src/uploaders        
-        aws lambda update-function-code --function-name reference-data-service-uploaders-preprod-CsvUploader --zip-file fileb://reference-data-service-uploaders-preprod-CsvUploader.zip
-        rm -f reference-data-service-uploaders-preprod-CsvUploader.zip
+        aws lambda update-function-code --function-name reference-data-service-uploaders-prod-CsvUploader --zip-file fileb://reference-data-service-uploaders-prod-CsvUploader.zip
+        rm -f reference-data-service-uploaders-prod-CsvUploader.zip
 
-    - name: Zipping code for deploy-reference-uploaders-preprod-CsvUploader
+    - name: Zipping code for deploy-reference-uploaders-prod-CsvUploader
       run: |
         echo "Zipping..."
         cd src/uploaders
         pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/uploaders -r requirements.txt
         pwd
         ls
-        zip -r reference-data-service-uploaders-preprod-TxcUploader.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-uploaders-preprod-TxcUploader.zip
+        zip -r reference-data-service-uploaders-prod-TxcUploader.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
+        zip -sf reference-data-service-uploaders-prod-TxcUploader.zip
         ls -l
 
-    - name: reference-data-service-uploaders-preprod-TxcUploader
+    - name: reference-data-service-uploaders-prod-TxcUploader
       run: |
         echo "Updating..."
         cd src/uploaders        
-        aws lambda update-function-code --function-name reference-data-service-uploaders-preprod-TxcUploader --zip-file fileb://reference-data-service-uploaders-preprod-TxcUploader.zip
-        rm -f reference-data-service-uploaders-preprod-TxcUploader.zip
+        aws lambda update-function-code --function-name reference-data-service-uploaders-prod-TxcUploader --zip-file fileb://reference-data-service-uploaders-prod-TxcUploader.zip
+        rm -f reference-data-service-uploaders-prod-TxcUploader.zip
     
     
 
