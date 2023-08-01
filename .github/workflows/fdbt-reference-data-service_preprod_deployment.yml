@@ -159,7 +159,7 @@ jobs:
       run: |
         echo "Zipping..."
         cd src/uploaders
-        pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/uploaders -r requirements.txt
+        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/uploaders -r requirements.txt
         pwd
         ls
         zip -r reference-data-service-uploaders-preprod-CsvUploader.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
@@ -177,7 +177,7 @@ jobs:
       run: |
         echo "Zipping..."
         cd src/uploaders
-        pip install --target=/home/runner/work/ie-igh-sandbox/ie-igh-sandbox/repos/fdbt-reference-data-service/src/uploaders -r requirements.txt
+        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/uploaders -r requirements.txt
         pwd
         ls
         zip -r reference-data-service-uploaders-preprod-TxcUploader.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
