@@ -82,5 +82,3 @@ jobs:
         npm ci
         npm run deploy:${{ env.WORKSPACE }}
         echo "Finished deploy"
-
-    
