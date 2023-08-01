@@ -49,6 +49,16 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
 
+    - name: deploy-reference-data-retrievers
+      run: |
+        echo "Deploying..."
+        curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+        cd src/retrievers
+        npm ci
+        npm run deploy:${{ env.WORKSPACE }}
+        echo "Finished deploy"
+
     - name: audit-reference-data-uploaders
       run: |
         pip install safety
@@ -62,139 +72,15 @@ jobs:
         pip install -r requirements.test.txt
         echo "Running tests..."
         python3 -m pytest tests/
-    
-    - name: Zipping code for deploy-reference-data-uploader-TxcUnzipper
+
+    - name: deploy-reference-data-uploaders-to
       run: |
-        echo "Zipping..."
-        cd src/retrievers
-        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
-        pwd
-        ls
-        zip -r reference-data-service-retrievers-prod-TxcUnzipper.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-retrievers-prod-TxcUnzipper.zip
-        ls
-
-    - name: reference-data-service-retrievers-prod-TxcUnzipper
-      run: |
-        echo "Updating..."
-        cd src/retrievers        
-        aws lambda update-function-code --function-name reference-data-service-retrievers-prod-TxcUnzipper --zip-file fileb://reference-data-service-retrievers-prod-TxcUnzipper.zip
-        rm -f reference-data-service-retrievers-prod-TxcUnzipper.zip
-
-    - name: Zipping code for deploy-reference-data-uploader-NocRetriever
-      run: |
-        echo "Zipping..."
-        cd src/retrievers
-        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
-        pwd
-        ls
-        zip -r reference-data-service-retrievers-prod-NocRetriever.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-retrievers-prod-NocRetriever.zip
-        ls
-
-    - name: reference-data-service-retrievers-prod-NocRetriever
-      run: |
-        echo "Updating..."
-        cd src/retrievers        
-        aws lambda update-function-code --function-name reference-data-service-retrievers-prod-NocRetriever --zip-file fileb://reference-data-service-retrievers-prod-NocRetriever.zip
-        rm -f reference-data-service-retrievers-prod-NocRetriever.zip
-
-
-    - name: Zipping code for deploy-reference-data-uploader-TxcRetrieverTnds
-      run: |
-        echo "Zipping..."
-        cd src/retrievers
-        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
-        pwd
-        ls
-        zip -r reference-data-service-retrievers-prod-TxcRetrieverTnds.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-retrievers-prod-TxcRetrieverTnds.zip
-        ls
-
-    - name: reference-data-service-retrievers-prod-TxcRetrieverTnds
-      run: |
-        echo "Updating..."
-        cd src/retrievers        
-        aws lambda update-function-code --function-name reference-data-service-retrievers-prod-TxcRetrieverTnds --zip-file fileb://reference-data-service-retrievers-prod-TxcRetrieverTnds.zip
-        rm -f reference-data-service-retrievers-prod-TxcRetrieverTnds.zip
-
-    - name: Zipping code for deploy-reference-data-uploader-NaptanRetriever
-      run: |
-        echo "Zipping..."
-        cd src/retrievers
-        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
-        pwd
-        ls
-        zip -r reference-data-service-retrievers-prod-NaptanRetriever.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-retrievers-prod-NaptanRetriever.zip
-        ls
-
-    - name: reference-data-service-retrievers-prod-NaptanRetriever
-      run: |
-        echo "Updating..."
-        cd src/retrievers        
-        aws lambda update-function-code --function-name reference-data-service-retrievers-prod-NaptanRetriever --zip-file fileb://reference-data-service-retrievers-prod-NaptanRetriever.zip
-        rm -f  reference-data-service-retrievers-prod-NaptanRetriever.zip
-
-    - name: Zipping code for deploy-reference-data-uploader-TxcRetrieverBods
-      run: |
-        echo "Zipping..."
-        cd src/retrievers
-        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/retrievers -r requirements.txt
-        pwd
-        ls
-        zip -r reference-data-service-retrievers-prod-TxcRetrieverBods.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-retrievers-prod-TxcRetrieverBods.zip
-        ls
-
-    - name: reference-data-service-retrievers-prod-TxcRetrieverBods
-      run: |
-        echo "Updating..."
-        cd src/retrievers        
-        aws lambda update-function-code --function-name reference-data-service-retrievers-prod-TxcRetrieverBods --zip-file fileb://reference-data-service-retrievers-prod-TxcRetrieverBods.zip
-        rm -f  reference-data-service-retrievers-prod-TxcRetrieverBods.zip           
-
-
-    - name: Zipping code for deploy-reference-uploaders-prod-CsvUploader
-      run: |
-        echo "Zipping..."
+        echo "Deploying..."
+        curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+        sudo apt-get install -y nodejs
         cd src/uploaders
-        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/uploaders -r requirements.txt
-        pwd
-        ls
-        zip -r reference-data-service-uploaders-prod-CsvUploader.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-uploaders-prod-CsvUploader.zip
-        ls -l
+        npm ci
+        npm run deploy:${{ env.WORKSPACE }}
+        echo "Finished deploy"
 
-    - name: reference-data-service-uploaders-prod-CsvUploader
-      run: |
-        echo "Updating..."
-        cd src/uploaders        
-        aws lambda update-function-code --function-name reference-data-service-uploaders-prod-CsvUploader --zip-file fileb://reference-data-service-uploaders-prod-CsvUploader.zip
-        rm -f reference-data-service-uploaders-prod-CsvUploader.zip
-
-    - name: Zipping code for deploy-reference-uploaders-prod-CsvUploader
-      run: |
-        echo "Zipping..."
-        cd src/uploaders
-        pip install --target=/home/runner/work/create-data/create-data/repos/fdbt-reference-data-service/src/uploaders -r requirements.txt
-        pwd
-        ls
-        zip -r reference-data-service-uploaders-prod-TxcUploader.zip . -x /package.json -x /serverless.yml -x /package-lock.json  
-        zip -sf reference-data-service-uploaders-prod-TxcUploader.zip
-        ls -l
-
-    - name: reference-data-service-uploaders-prod-TxcUploader
-      run: |
-        echo "Updating..."
-        cd src/uploaders        
-        aws lambda update-function-code --function-name reference-data-service-uploaders-prod-TxcUploader --zip-file fileb://reference-data-service-uploaders-prod-TxcUploader.zip
-        rm -f reference-data-service-uploaders-prod-TxcUploader.zip
-    
-    
-
-    
-
-
-    
     
