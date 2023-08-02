@@ -139,7 +139,7 @@ class TestMainFunctionality:
         db_connection = MagicMock()
         conn = boto3.resource("s3", region_name="eu-west-2")
         # pylint: disable=no-member
-        conn.create_bucket(Bucket=mock_bucket)
+        conn.create_bucket(Bucket=mock_bucket, CreateBucketConfiguration={"LocationConstraint": "eu-west-2"})
         s3.put_object(Bucket=mock_bucket, Key=mock_key, Body=open(mock_file_dir, "rb"))
 
         download_from_s3_and_write_to_db(
