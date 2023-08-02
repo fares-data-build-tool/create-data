@@ -22,7 +22,7 @@ password = ssm.get_parameter(
     WithDecryption=True
 )['Parameter']['Value']
 
-db_connection = pymysql.connect(rds_host, user=username, passwd=password, db=db_name, connect_timeout=5)
+db_connection = pymysql.connect(host=rds_host, user=username, password=password, database=db_name, connect_timeout=5)
 
 
 def lambda_handler(event, context):
