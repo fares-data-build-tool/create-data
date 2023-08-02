@@ -4,4 +4,4 @@ PyMySQL==1.0.1
 xmltodict==0.13.0
 pytest==7.4.0
 moto==4.1.14
-urllib3==2.0.0
+urllib3>=1.25.4,<2
