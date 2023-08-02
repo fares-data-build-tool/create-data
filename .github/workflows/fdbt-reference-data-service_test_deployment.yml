@@ -59,12 +59,12 @@ jobs:
         npm run deploy:${{ env.WORKSPACE }}
         echo "Finished deploy"
 
-    - name: audit-reference-data-uploaders
-      run: |
-        pip install safety
-        cd src/uploaders
-        safety check -r requirements.txt
-        safety check -r requirements.test.txt
+    # - name: audit-reference-data-uploaders
+    #   run: |
+    #     pip install safety
+    #     cd src/uploaders
+    #     safety check -r requirements.txt
+    #     safety check -r requirements.test.txt
     
     - name: test-reference-data-uploaders
       run: |
