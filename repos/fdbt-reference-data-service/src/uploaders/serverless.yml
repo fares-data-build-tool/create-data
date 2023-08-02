@@ -21,6 +21,7 @@ provider:
                 - Effect: 'Allow'
                   Action:
                       - 'ssm:GetParameter'
+                      - 'ssm:PutParameter'
                   Resource: '*'
                 - Effect: 'Allow'
                   Action:
