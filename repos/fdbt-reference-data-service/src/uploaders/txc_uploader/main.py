@@ -25,7 +25,7 @@ password = ssm_client.get_parameter(
 )["Parameter"]["Value"]
 
 db_connection = pymysql.connect(
-    rds_host, user=username, passwd=password, db=db_name, connect_timeout=5
+    host=rds_host, user=username, password=password, database=db_name, connect_timeout=5
 )
 
 
