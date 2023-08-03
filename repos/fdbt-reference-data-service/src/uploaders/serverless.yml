@@ -2,7 +2,7 @@ service: reference-data-service-uploaders
 
 provider:
     name: aws
-    runtime: python3.8
+    runtime: python3.10
     region: eu-west-2
     stage: ${opt:stage, 'test'}
     lambdaHashingVersion: 20201221
@@ -21,6 +21,7 @@ provider:
                 - Effect: 'Allow'
                   Action:
                       - 'ssm:GetParameter'
+                      - 'ssm:PutParameter'
                   Resource: '*'
                 - Effect: 'Allow'
                   Action:

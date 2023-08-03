@@ -43,7 +43,7 @@ db_password = ssm.get_parameter(
     WithDecryption=True
 )['Parameter']['Value']
 
-db_connection = pymysql.connect(rds_host, user=db_username, passwd=db_password, db=db_name, connect_timeout=5)
+db_connection = pymysql.connect(host=rds_host, user=db_username, password=db_password, database=db_name, connect_timeout=5)
 
 queries = [
     'SET FOREIGN_KEY_CHECKS=0',
