@@ -164,7 +164,6 @@ export const matchProductsToServices = (
         return map;
     }, new Map<string, MyFaresProduct[]>());
 
-    console.log(productsByLine);
     return services.map((service) => {
         const filteredProducts = productsByLine
             .get(service.lineId)
@@ -172,7 +171,6 @@ export const matchProductsToServices = (
                 showProductAgainstService(product.startDate, product.endDate, service.startDate, service.endDate),
             );
 
-        console.log(filteredProducts);
         return {
             ...service,
             endDate: service.endDate || '',
