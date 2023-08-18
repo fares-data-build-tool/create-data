@@ -259,7 +259,7 @@ def insert_into_txc_operator_service_table(
     line_id = line.get("@id", "")
     line_name = line.get("LineName", "")
 
-    if not line.get("@id") or (mode != 'bus' and data_source == "tnds"):
+    if not line.get("@id") or data_source == "tnds":
         line_id = create_unique_line_id(noc_code, line_name)
 
     try:
