@@ -317,7 +317,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when some n
                 <td
                   className="govuk-table__cell"
                 >
-                  02/09/2023
+                  02/09/2090
                 </td>
                 <td
                   className="govuk-table__cell"
@@ -392,7 +392,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when some n
                 <td
                   className="govuk-table__cell"
                 >
-                  02/09/2023
+                  02/09/2090
                 </td>
                 <td
                   className="govuk-table__cell"

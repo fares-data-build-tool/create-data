@@ -313,7 +313,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               <td
                 className="govuk-table__cell"
               >
-                02/09/2023
+                02/09/2090
               </td>
               <td
                 className="govuk-table__cell"
@@ -387,7 +387,7 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               <td
                 className="govuk-table__cell"
               >
-                02/09/2023
+                02/09/2090
               </td>
               <td
                 className="govuk-table__cell"
