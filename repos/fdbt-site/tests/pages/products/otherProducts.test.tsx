@@ -65,7 +65,7 @@ const testProducts: MyFaresOtherFaresProduct[] = [
         duration: '3 days',
         passengerType: 'infant',
         startDate: '11/12/2021',
-        endDate: '02/09/2023',
+        endDate: '02/09/2090',
     },
     {
         productDescription: 'The greatest product eveer!',
@@ -74,7 +74,7 @@ const testProducts: MyFaresOtherFaresProduct[] = [
         duration: '3 days',
         passengerType: 'adult',
         startDate: '11/12/2021',
-        endDate: '02/09/2023',
+        endDate: '02/09/2090',
     },
 ];
 
