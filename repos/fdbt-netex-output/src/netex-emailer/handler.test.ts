@@ -20,6 +20,7 @@ describe('netexEmailer SES emailer', () => {
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodGeoZoneTicket));
         mockGetNetexFileFromS3.mockImplementation(() => Promise.resolve('Body: testData.testNetexFromS3'));
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         (createMailTransporter as {}) = jest.fn().mockImplementation(() => {
             return {
                 sendMail: mockMailTransporter,
@@ -97,7 +98,7 @@ describe('redactEmailAddress', () => {
         expect(redactEmailAddress(given)).toEqual(expected);
     });
     it('email as bad input', () => {
-        const given: string = (1 as unknown) as string;
+        const given: string = 1 as unknown as string;
         const expected = '*****@*****.***';
         expect(redactEmailAddress(given)).toEqual(expected);
     });

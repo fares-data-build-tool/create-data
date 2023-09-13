@@ -62,6 +62,7 @@ const ViewOperatorGroups = ({
             <div
                 className="govuk-grid-row"
                 data-card-count={operatorGroups.length}
+                // eslint-disable-next-line react/no-unknown-property
                 operator-groups={operatorGroups.map((element) => element.name).toString()}
             >
                 <div className="govuk-grid-column-one-quarter">

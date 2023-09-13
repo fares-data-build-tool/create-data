@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import { AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react';
+import { AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react-v1';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import Page from '@govuk-react/page';
 import Nav from './components/Nav';

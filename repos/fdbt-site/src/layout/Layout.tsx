@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
-import { Portal } from 'react-portal';
+import { createPortal } from 'react-dom';
 import favicon from '../assets/images/favicon.ico';
 import Help from '../components/Help';
 import { ErrorInfo } from '../interfaces';
@@ -35,7 +35,12 @@ export const BaseLayout = ({
 
     useEffect(() => {
         setShowBanner(true);
-    });
+    }, [setShowBanner]);
+
+    let element = null;
+    if (typeof document !== 'undefined') {
+        element = document.getElementById('js-cookie-banner');
+    }
 
     return (
         <>
@@ -47,12 +52,7 @@ export const BaseLayout = ({
                 <meta charSet="utf-8" />
             </Head>
 
-            {!hideCookieBanner && showBanner && (
-                <Portal node={document && document.getElementById('js-cookie-banner')}>
-                    <CookieBanner />
-                </Portal>
-            )}
-
+            {!hideCookieBanner && showBanner && element && <div>{createPortal(<CookieBanner />, element)}</div>}
             <PhaseBanner />
 
             {showNavigation && <Navigation />}

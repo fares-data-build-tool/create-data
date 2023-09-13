@@ -12,7 +12,7 @@ const emailTemplate = (
     const productsList =
         products &&
         products
-            .map(product => {
+            .map((product) => {
                 return product.productName;
             })
             .join(', ');
@@ -20,7 +20,7 @@ const emailTemplate = (
     const serviceList =
         services &&
         services
-            .map(service => {
+            .map((service) => {
                 return service.lineName;
             })
             .join(', ');

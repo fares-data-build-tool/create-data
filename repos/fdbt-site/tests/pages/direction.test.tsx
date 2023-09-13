@@ -31,7 +31,7 @@ describe('pages', () => {
 
         describe('getServerSideProps', () => {
             it('returns correct values for props', async () => {
-                (({ ...getServiceByIdAndDataSource } as jest.Mock).mockImplementation(() => mockRawService));
+                (({ ...getServiceByIdAndDataSource }) as jest.Mock).mockImplementation(() => mockRawService);
 
                 const ctx = getMockContext({
                     body: { serviceId: '123' },

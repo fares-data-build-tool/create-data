@@ -64,9 +64,7 @@ export const setMailOptions = (
         html: emailTemplate(
             uuid,
             passengerType,
-            moment()
-                .tz('Europe/London')
-                .format('DD-MM-YYYY, HH:mm'),
+            moment().tz('Europe/London').format('DD-MM-YYYY, HH:mm'),
             type,
             lineName || 'N/A',
             selectedServices || [],
@@ -93,11 +91,11 @@ export const redactEmailAddress = (
             return redact(email.address);
         } else if (typeof toRedact === 'object') {
             const addresses = toRedact as Mail.Address[];
-            return addresses.map(email => {
+            return addresses.map((email) => {
                 if (email.hasOwnProperty('name') && email.hasOwnProperty('address')) {
                     return redact(email.address);
                 } else {
-                    return redact((email as unknown) as string);
+                    return redact(email as unknown as string);
                 }
             });
         }
@@ -162,7 +160,7 @@ export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
         throw new Error(
             `SES SendEmail failed. from: ${mailOptions?.from}, to: ${redactEmailAddress(mailOptions?.to)}, subject: ${
                 mailOptions?.subject
-            }, text: ${mailOptions?.text}, Error: ${err.stack}`,
+            }, text: ${mailOptions?.text}, Error: ${(err as Error).stack}`,
         );
     }
 };

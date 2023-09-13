@@ -1,10 +1,12 @@
-const withPlugins = require('next-compose-plugins');
 const withImages = require('next-images');
 
-const nextConfig = {
-    webpack5: false,
-    target: 'server',
+/** @type {import('next').NextConfig} */
+const nextConfig = withImages({
+    target: "server",
     poweredByHeader: false,
+    images: {
+        disableStaticImages: true
+    },
     webpack: (config, { isServer }) => {
         config.module.rules.push({
             test: /\.(pdf|csv)$/,
@@ -22,13 +24,12 @@ const nextConfig = {
         config.resolve = { ...config.resolve, symlinks: false };
 
         if (!isServer) {
-            config.node = {
-                fs: 'empty',
-            };
+            config.resolve.fallback.fs = false;
         }
 
         return config;
     },
-};
+});
+  
+module.exports = nextConfig
 
-module.exports = withPlugins([[withImages]], nextConfig);

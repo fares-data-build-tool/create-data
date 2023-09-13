@@ -55,9 +55,9 @@ export const getOperatorDetailsByNoc = async (nocCode: string): Promise<Operator
 };
 
 export const removeDuplicateOperators = (operators: Operator[]): Operator[] => {
-    const filteredOperators = operators.filter(op => {
+    const filteredOperators = operators.filter((op) => {
         // find the number of times the operator appears in the operators array
-        const operatorCount = operators.filter(operator => operator.nocCode === op.nocCode).length;
+        const operatorCount = operators.filter((operator) => operator.nocCode === op.nocCode).length;
         // only return operators where they appear once or their mode is bus
         return operatorCount === 1 || op.mode === 'Bus';
     });
@@ -66,7 +66,7 @@ export const removeDuplicateOperators = (operators: Operator[]): Operator[] => {
 
 export const getOperatorDataByNocCode = async (nocCodes: string[]): Promise<Operator[]> => {
     try {
-        const cleansedNocs: string[] = nocCodes.map(noc => replaceIWBusCoNocCode(noc));
+        const cleansedNocs: string[] = nocCodes.map((noc) => replaceIWBusCoNocCode(noc));
         if (cleansedNocs.length < 1) {
             throw new Error('No noc codes provided');
         }

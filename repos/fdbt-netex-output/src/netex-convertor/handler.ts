@@ -79,7 +79,7 @@ export const buildNocList = (ticket: Ticket): string[] => {
     }
 
     if ('additionalOperators' in ticket) {
-        nocs.push(...ticket.additionalOperators.map(op => op.nocCode));
+        nocs.push(...ticket.additionalOperators.map((op) => op.nocCode));
     }
 
     return nocs;
