@@ -92,10 +92,11 @@ const EditUser = ({ isFullAdmin }: EditUserProps): ReactElement => {
                 <br />
                 <input
                     id="email"
+                    name="email"
+                    ref={register({ required: true })}
                     style={{ width: `50%` }}
                     value={parseCognitoUser(user).email}
                     readOnly
-                    {...register('email', { required: true })}
                 />
                 <br />
                 <br />
@@ -107,12 +108,13 @@ const EditUser = ({ isFullAdmin }: EditUserProps): ReactElement => {
                 <br />
                 <input
                     id="nocs"
+                    name="nocs"
+                    ref={register({ required: true })}
                     style={{ width: `75%` }}
                     defaultValue={nocs}
                     key={nocs === 'Loading...' ? 'notLoadedYet' : 'loaded'}
                     disabled={nocs === 'Loading...'}
                     readOnly={false}
-                    {...register('nocs', { required: true })}
                 />
                 <br />
                 <br />

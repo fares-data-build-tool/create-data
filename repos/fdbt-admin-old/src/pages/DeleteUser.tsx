@@ -1,40 +1,33 @@
-import { ReactElement, useState, useEffect } from 'react';
+import { ReactElement, useState } from 'react';
 import { H1 } from '@govuk-react/heading';
 import { BrowserRouter, Redirect, useParams } from 'react-router-dom';
 import Button from '@govuk-react/button';
 import { useForm } from 'react-hook-form';
 import { AdminGetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 
-import { adminUpdateUserAttributes, getUser } from '../data/cognito';
-import {
-    getCognitoClientAndUserPool,
-    cognitoFormatNocs,
-    humanFormatNocs,
-    htmlFormatNocs,
-    parseCognitoUser,
-} from '../utils/cognito';
 import useAsyncEffect from '../hooks/useAsyncEffect';
+import { adminDeleteUser, getUser } from '../data/cognito';
+import { getCognitoClientAndUserPool, humanFormatNocs, parseCognitoUser } from '../utils/cognito';
 
-export interface EditFormUser {
+export interface DeleteFormUser {
     email: string;
     nocs: string;
 }
 
-interface EditUserProps {
+interface DeleteUserProps {
     isFullAdmin: boolean;
 }
 
-type EditUserParams = {
+type DeleteUserParams = {
     username: string;
 };
 
-const EditUser = ({ isFullAdmin }: EditUserProps): ReactElement => {
+const DeleteUser = ({ isFullAdmin }: DeleteUserProps): ReactElement => {
     const adminGetUserResponse: AdminGetUserResponse = { Username: '' };
     const [user, setUser] = useState(adminGetUserResponse);
-    const [nocs, setNocs] = useState('');
-    const { username } = useParams<EditUserParams>();
+    const { username } = useParams<DeleteUserParams>();
 
-    const { register, handleSubmit, formState, reset } = useForm<EditFormUser>({
+    const { register, handleSubmit, formState, reset } = useForm<DeleteFormUser>({
         defaultValues: {
             nocs: parseCognitoUser(user).nocs,
         },
@@ -46,82 +39,63 @@ const EditUser = ({ isFullAdmin }: EditUserProps): ReactElement => {
             const gotUser = await getUser(client, userPoolId, username);
             if (!isCanceled()) {
                 setUser(gotUser);
-                setNocs(humanFormatNocs(parseCognitoUser(gotUser).nocs));
             }
         },
         [username],
     );
 
-    const [updatedUserNocs, setUpdatedUserNocs] = useState('');
+    const [deletedUser, setDeletedUser] = useState('');
     const [error, setError] = useState('');
 
-    const onSubmit = async (formUser: EditFormUser) => {
-        setUpdatedUserNocs('');
+    const onSubmit = async (formUser: DeleteFormUser) => {
+        setDeletedUser('');
         setError('');
-
-        const formattedUser = { ...formUser, nocs: cognitoFormatNocs(formUser.nocs) };
-
         reset();
 
         try {
             const { client, userPoolId } = await getCognitoClientAndUserPool();
-            await adminUpdateUserAttributes(client, userPoolId, formattedUser);
-            setUpdatedUserNocs(formUser.nocs);
+            await adminDeleteUser(client, userPoolId, username);
+            setDeletedUser(formUser.email);
         } catch (err) {
             setError((err as Error).message);
         }
     };
 
-    useEffect(() => {
-        reset({ nocs });
-    }, [nocs]);
-
-    useEffect(() => {
-        reset({ nocs: updatedUserNocs });
-    }, [updatedUserNocs]);
-
     return isFullAdmin ? (
         <>
-            <H1>Edit User</H1>
+            <H1>Delete User</H1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="email">User Email</label>
                 <br />
-                <small>
-                    Email addresses cannot be changed, delete the existing user and create a new one if needed
-                </small>
-                <br />
                 <input
                     id="email"
+                    name="email"
+                    ref={register({ required: true })}
                     style={{ width: `50%` }}
                     value={parseCognitoUser(user).email}
                     readOnly
-                    {...register('email', { required: true })}
                 />
                 <br />
                 <br />
                 <label htmlFor="nocs">User National Operator Code (NOC)</label>
                 <br />
-                <small>
-                    If the user has multiple NOCs, enter a comma-separated list. For example: &apos;NOC1,NOC2,NOC3&apos;
-                </small>
-                <br />
                 <input
                     id="nocs"
+                    name="nocs"
+                    ref={register({ required: true })}
                     style={{ width: `75%` }}
-                    defaultValue={nocs}
-                    key={nocs === 'Loading...' ? 'notLoadedYet' : 'loaded'}
-                    disabled={nocs === 'Loading...'}
-                    readOnly={false}
-                    {...register('nocs', { required: true })}
+                    value={humanFormatNocs(parseCognitoUser(user).nocs)}
+                    readOnly
                 />
                 <br />
                 <br />
-                <Button disabled={formState.isSubmitting}>Submit</Button>
+                <Button buttonColour="#d4351c" disabled={formState.isSubmitting}>
+                    Delete
+                </Button>
                 <br />
-                {updatedUserNocs && (
+                {deletedUser && (
                     <div style={{ color: 'green' }}>
-                        Account edited successfully for <b>{parseCognitoUser(user).email}</b> setting NOCs to{' '}
-                        <b>{htmlFormatNocs(updatedUserNocs)}</b>
+                        Account deleted successfully for <b>{parseCognitoUser(user).email}</b>
                     </div>
                 )}
                 {error && <div style={{ color: 'red' }}>{error}</div>}
@@ -134,4 +108,4 @@ const EditUser = ({ isFullAdmin }: EditUserProps): ReactElement => {
     );
 };
 
-export default EditUser;
+export default DeleteUser;

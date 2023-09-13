@@ -69,8 +69,7 @@ const DeleteUser = ({ isFullAdmin }: DeleteUserProps): ReactElement => {
                 <br />
                 <input
                     id="email"
-                    name="email"
-                    ref={register({ required: true })}
+                    {...register('email', { required: true })}
                     style={{ width: `50%` }}
                     value={parseCognitoUser(user).email}
                     readOnly
@@ -81,8 +80,7 @@ const DeleteUser = ({ isFullAdmin }: DeleteUserProps): ReactElement => {
                 <br />
                 <input
                     id="nocs"
-                    name="nocs"
-                    ref={register({ required: true })}
+                    {...register('nocs', { required: true })}
                     style={{ width: `75%` }}
                     value={humanFormatNocs(parseCognitoUser(user).nocs)}
                     readOnly

@@ -11,20 +11,10 @@ import {
     UserPoolDescriptionType,
     UserType,
 } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { randomBytes } from 'crypto';
 import { AWS_REGION } from '../constants';
 import { AddFormUser } from '../pages/AddUser';
 import { EditFormUser } from '../pages/EditUser';
-
-const randomBytes = (numberOfBytes: number) => {
-    function randomString(length: number, chars: string) {
-        var result = '';
-        for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-        return result;
-    }
-    var rString = randomString(numberOfBytes, '0123456789abcdefghijklmnopqrstuvwxyz');
-    const buf1 = Buffer.from(rString, 'hex');
-    return buf1
-}
 
 export const getCognitoClient = async (): Promise<CognitoIdentityServiceProvider> =>
     new CognitoIdentityServiceProvider({ region: AWS_REGION, credentials: await Auth.currentUserCredentials() });
