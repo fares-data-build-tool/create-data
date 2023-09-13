@@ -18,7 +18,13 @@ import {
     getCapByNocAndId,
     getCaps,
 } from '../../data/auroradb';
-import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation, Cap } from '../../interfaces';
+import {
+    ProductDetailsElement,
+    NextPageContextWithSession,
+    ProductDateInformation,
+    Cap,
+    DistancePricingData,
+} from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
 import { getTag } from './services';
 import { getProductsMatchingJson } from '../../data/s3';
@@ -551,7 +557,7 @@ const createProductDetails = async (
             editLink: '/definePricingPerDistance',
         });
 
-        pricingByDistance.distanceBands.forEach((capDistance, index) => {
+        (pricingByDistance as DistancePricingData).distanceBands.forEach((capDistance, index) => {
             productDetailsElements.push({
                 name: `Distance band ${index + 1}`,
                 content: [

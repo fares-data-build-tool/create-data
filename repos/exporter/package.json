@@ -53,6 +53,7 @@
         "eslint-config-prettier": "^5.0.0",
         "fdbt-types": "file:../fdbt-types",
         "jest": "^27.2.1",
+        "husky": "^8.0.0",
         "prettier": "^2.4.1",
         "ts-jest": "^27.0.5",
         "ts-node": "^10.2.1",

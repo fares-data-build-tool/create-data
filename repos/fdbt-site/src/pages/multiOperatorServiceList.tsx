@@ -532,9 +532,11 @@ export const getServerSideProps = async (
         // we need to enrich the service using
         // the services we get back from the database
         multiOperatorData = multiOperatorData.map((operator) => {
-            const matchingOperator: AdditionalOperator | undefined = (
-                multiOperatorServicesAttribute as MultiOperatorInfoWithErrors
-            ).multiOperatorInfo.find((op: AdditionalOperator) => op.nocCode === operator.nocCode);
+            const matchingOperator: AdditionalOperator | undefined =
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+                (multiOperatorServicesAttribute as MultiOperatorInfoWithErrors).multiOperatorInfo.find(
+                    (op: AdditionalOperator) => op.nocCode === operator.nocCode,
+                );
             if (!matchingOperator) {
                 return operator;
             }

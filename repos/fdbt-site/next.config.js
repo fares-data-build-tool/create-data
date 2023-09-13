@@ -2,7 +2,6 @@ const withImages = require('next-images');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withImages({
-    target: "server",
     poweredByHeader: false,
     images: {
         disableStaticImages: true
