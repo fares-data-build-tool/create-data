@@ -16,6 +16,7 @@ import {
     MATCHING_JSON_META_DATA_ATTRIBUTE,
 } from '../../../src/constants/attributes';
 import * as userData from '../../../src/utils/apiUtils/userData';
+import { FileJSON } from 'formidable';
 
 const putDataInS3Spy = jest.spyOn(s3, 'putDataInS3');
 jest.mock('../../../src/data/auroradb');
@@ -52,8 +53,8 @@ describe('csvZoneUpload', () => {
                     path: 'string',
                     name: 'string',
                     type: 'text/csv',
-                    toJSON(): string {
-                        return '';
+                    toJSON(): FileJSON {
+                        return '' as unknown as FileJSON;
                     },
                 },
             };
@@ -89,8 +90,8 @@ describe('csvZoneUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
-                    return '';
+                toJSON(): FileJSON {
+                    return '' as unknown as FileJSON;
                 },
             },
         };
@@ -121,8 +122,8 @@ describe('csvZoneUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
-                    return '';
+                toJSON(): FileJSON {
+                    return '' as unknown as FileJSON;
                 },
             },
         };
@@ -296,8 +297,8 @@ describe('csvZoneUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
-                    return '';
+                toJSON(): FileJSON {
+                    return '' as unknown as FileJSON;
                 },
             },
         };
@@ -328,8 +329,8 @@ describe('csvZoneUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
-                    return '';
+                toJSON(): FileJSON {
+                    return '' as unknown as FileJSON;
                 },
             },
         };
@@ -361,8 +362,8 @@ describe('csvZoneUpload', () => {
                 path: 'string',
                 name: 'string',
                 type: 'text/csv',
-                toJSON(): string {
-                    return '';
+                toJSON(): FileJSON {
+                    return '' as unknown as FileJSON;
                 },
             },
         };
@@ -397,8 +398,8 @@ describe('csvZoneUpload', () => {
                     path: 'string',
                     name: 'string',
                     type: 'text/csv',
-                    toJSON(): string {
-                        return '';
+                    toJSON(): FileJSON {
+                        return '' as unknown as FileJSON;
                     },
                 },
             };
@@ -437,8 +438,8 @@ describe('csvZoneUpload', () => {
                     path: 'string',
                     name: 'string',
                     type: 'text/csv',
-                    toJSON(): string {
-                        return '';
+                    toJSON(): FileJSON {
+                        return '' as unknown as FileJSON;
                     },
                 },
             };
@@ -477,8 +478,8 @@ describe('csvZoneUpload', () => {
                     path: 'string',
                     name: 'string',
                     type: 'text/pdf',
-                    toJSON(): string {
-                        return '';
+                    toJSON(): FileJSON {
+                        return '' as unknown as FileJSON;
                     },
                 },
             };
@@ -519,8 +520,8 @@ describe('csvZoneUpload', () => {
                     path: 'string',
                     name: 'string',
                     type: 'text/pdf',
-                    toJSON(): string {
-                        return '';
+                    toJSON(): FileJSON {
+                        return '' as unknown as FileJSON;
                     },
                 },
             };

@@ -9,13 +9,13 @@ import { containsViruses } from './virusScan';
 
 export interface FileData {
     name: string;
-    files: formidable.Files;
+    files: { [file: string]: formidable.File };
     fileContents: string;
     fields?: formidable.Fields;
 }
 
 interface FilesAndFields {
-    files: formidable.Files;
+    files: { [file: string]: formidable.File };
     fields?: formidable.Fields;
 }
 
@@ -35,7 +35,7 @@ export const formParse = async (req: NextApiRequest): Promise<FilesAndFields> =>
             }
 
             return resolve({
-                files,
+                files: files as { [file: string]: formidable.File },
                 fields,
             });
         });
@@ -47,9 +47,9 @@ export const getFormData = async (req: NextApiRequest): Promise<FileData> => {
     const { type, name } = files['csv-upload'];
     let fileContents = '';
 
-    if (ALLOWED_CSV_FILE_TYPES.includes(type)) {
+    if (type && ALLOWED_CSV_FILE_TYPES.includes(type)) {
         fileContents = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
-    } else if (ALLOWED_XLSX_FILE_TYPES.includes(type)) {
+    } else if (type && ALLOWED_XLSX_FILE_TYPES.includes(type)) {
         const workBook = XLSX.readFile(files['csv-upload'].path);
         const sheetName = workBook.SheetNames[0];
         fileContents = XLSX.utils.sheet_to_csv(workBook.Sheets[sheetName]);
@@ -59,7 +59,7 @@ export const getFormData = async (req: NextApiRequest): Promise<FileData> => {
         files,
         fileContents,
         fields,
-        name,
+        name: name || '',
     };
 };
 
@@ -76,9 +76,9 @@ export const getServiceListFormData = async (req: NextApiRequest): Promise<FileD
     const { type, name } = files['csv-upload'];
     let fileContents = '';
 
-    if (ALLOWED_CSV_FILE_TYPES.includes(type)) {
+    if (type && ALLOWED_CSV_FILE_TYPES.includes(type)) {
         fileContents = await fs.promises.readFile(files['csv-upload'].path, 'utf-8');
-    } else if (ALLOWED_XLSX_FILE_TYPES.includes(type)) {
+    } else if (type && ALLOWED_XLSX_FILE_TYPES.includes(type)) {
         const workBook = XLSX.readFile(files['csv-upload'].path);
         const sheetName = workBook.SheetNames[0];
         fileContents = XLSX.utils.sheet_to_csv(workBook.Sheets[sheetName]);
@@ -88,7 +88,7 @@ export const getServiceListFormData = async (req: NextApiRequest): Promise<FileD
         files,
         fileContents,
         fields,
-        name,
+        name: name || '',
     };
 };
 
@@ -118,7 +118,7 @@ export const validateFile = (fileData: formidable.File, fileContents: string): s
         return `The selected file must be smaller than 5MB`;
     }
 
-    if (!ALLOWED_CSV_FILE_TYPES.includes(type) && !ALLOWED_XLSX_FILE_TYPES.includes(type)) {
+    if (type && !ALLOWED_CSV_FILE_TYPES.includes(type) && !ALLOWED_XLSX_FILE_TYPES.includes(type)) {
         logger.warn('', { context: 'api.utils.validateFile', message: 'file not of allowed type', type });
 
         return 'The selected file must be a .csv or .xlsx';

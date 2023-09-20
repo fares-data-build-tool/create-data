@@ -28,6 +28,7 @@ describe('_document', () => {
             ampFirstPages: [''],
             devFiles: [''],
             lowPriorityFiles: [''],
+            rootMainFiles: [''],
             pages: {
                 '/_app': [''],
             },

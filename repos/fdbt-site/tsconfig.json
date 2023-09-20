@@ -20,6 +20,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false,
     "outDir": ".build",
     "rootDir": "./",
     "jsx": "preserve",
