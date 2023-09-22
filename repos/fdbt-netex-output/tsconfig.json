@@ -22,5 +22,5 @@
         "./node_modules/*",
         "../../node_modules/*",
         "jest.config.js"
-      ]
+    ]
 }
