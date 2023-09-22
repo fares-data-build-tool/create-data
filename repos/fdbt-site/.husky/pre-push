@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
-cd ./repos/fdbt-site && npx lint-staged 
+cd ./repos/fdbt-site
 
 npm test;
 npm run lint;

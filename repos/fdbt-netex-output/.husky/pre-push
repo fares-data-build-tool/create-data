@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
-cd ./repos/fdbt-netex-output && npx lint-staged 
+cd ./repos/fdbt-netex-output
 
 npm test;
 npm run lint;
