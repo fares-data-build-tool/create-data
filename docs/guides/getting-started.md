@@ -46,10 +46,6 @@ Unless otherwise stated node 14 has been used for development of the service.
 
 `pip install awscli-local`
 
-## Globally install lerna
-
-`npm install lerna -g`
-
 ## Getting AWS access
 
 See [Access AWS](../how-to/access-aws.md) for details on getting setup with AWS
