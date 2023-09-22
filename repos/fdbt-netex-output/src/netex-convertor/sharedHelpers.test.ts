@@ -291,11 +291,11 @@ describe('Shared Helpers', () => {
             } as CoreData;
 
             const result = sharedHelpers.getFareStructuresElements(flatFareTicket, coreData, false, false);
-            const namesOfTypesOfFareStructureElements: string[] = result.map((element) => {
+            const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
             });
 
-            namesOfTypesOfFareStructureElements.forEach((name) => {
+            namesOfTypesOfFareStructureElements.forEach(name => {
                 expect(
                     name === 'Available lines and/or zones' ||
                         name === 'Eligible user types' ||
@@ -323,11 +323,11 @@ describe('Shared Helpers', () => {
                 false,
                 false,
             );
-            const namesOfTypesOfFareStructureElements: string[] = result.map((element) => {
+            const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
             });
 
-            namesOfTypesOfFareStructureElements.forEach((name) => {
+            namesOfTypesOfFareStructureElements.forEach(name => {
                 expect(
                     name === 'Available lines and/or zones' ||
                         name === 'Available lines' ||
@@ -351,11 +351,11 @@ describe('Shared Helpers', () => {
             } as CoreData;
 
             const result = sharedHelpers.getFareStructuresElements(geoUserPeriodTicket, coreData, false, false);
-            const namesOfTypesOfFareStructureElements: string[] = result.map((element) => {
+            const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
             });
 
-            namesOfTypesOfFareStructureElements.forEach((name) => {
+            namesOfTypesOfFareStructureElements.forEach(name => {
                 expect(
                     name === 'Available lines and/or zones' ||
                         name === 'Available lines' ||
@@ -449,7 +449,7 @@ describe('Shared Helpers', () => {
                 GenericParameterAssignment: expect.any(Object),
             };
 
-            geoResult.forEach((fareStructureElement) => {
+            geoResult.forEach(fareStructureElement => {
                 if (fareStructureElement.timeIntervals) {
                     expect(fareStructureElement).toEqual(expectedDurationsFareStructureElement);
                 } else if (fareStructureElement.qualityStructureFactors === null) {

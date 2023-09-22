@@ -102,7 +102,7 @@ const getFullServicesList = (
     let servicesList: SelectedService[] = [];
 
     if ('additionalOperators' in userPeriodTicket) {
-        servicesList = userPeriodTicket.additionalOperators.flatMap((operator) => operator.selectedServices);
+        servicesList = userPeriodTicket.additionalOperators.flatMap(operator => operator.selectedServices);
     }
     if ('selectedServices' in userPeriodTicket) {
         servicesList = servicesList.concat(userPeriodTicket.selectedServices);
@@ -124,10 +124,10 @@ export const getLinesList = (
 
     if (isMultiOperatorMultipleServicesTicket(userPeriodTicket) || isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
         linesList = userPeriodTicket.additionalOperators.flatMap((operator): Line[] => {
-            const currentOperator = operatorData.find((o) => o.nocCode === operator.nocCode);
+            const currentOperator = operatorData.find(o => o.nocCode === operator.nocCode);
 
             const duplicateLines = operator.selectedServices
-                ? operator.selectedServices.map((service) => ({
+                ? operator.selectedServices.map(service => ({
                       version: '1.0',
                       id: service.lineId,
                       Name: { $t: `Line ${service.lineName}` },
@@ -149,13 +149,13 @@ export const getLinesList = (
                 : [];
 
             const seen: string[] = [];
-            return duplicateLines?.filter((item) => (seen.includes(item.id) ? false : seen.push(item.id))) ?? [];
+            return duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id))) ?? [];
         });
     }
 
     if (!isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
         const duplicateLines = userPeriodTicket.selectedServices
-            ? userPeriodTicket.selectedServices.map((service) => ({
+            ? userPeriodTicket.selectedServices.map(service => ({
                   version: '1.0',
                   id: service.lineId,
                   Name: { $t: `Line ${service.lineName}` },
@@ -177,9 +177,8 @@ export const getLinesList = (
             : [];
         const seen: string[] = [];
         return (
-            linesList?.concat(
-                duplicateLines?.filter((item) => (seen.includes(item.id) ? false : seen.push(item.id))),
-            ) ?? []
+            linesList?.concat(duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id)))) ??
+            []
         );
     }
 
@@ -189,7 +188,7 @@ export const getLinesList = (
 export const getExemptedLinesList = (exemptedServices: SelectedService[], nocCode: string, website: string): Line[] => {
     const linesList: Line[] = [];
 
-    const duplicateLines = exemptedServices.map((service) => ({
+    const duplicateLines = exemptedServices.map(service => ({
         version: '1.0',
         id: service.lineId,
         Name: { $t: `Line ${service.lineName}` },
@@ -208,12 +207,12 @@ export const getExemptedLinesList = (exemptedServices: SelectedService[], nocCod
     }));
     const seen: string[] = [];
     return (
-        linesList?.concat(duplicateLines?.filter((item) => (seen.includes(item.id) ? false : seen.push(item.id)))) ?? []
+        linesList?.concat(duplicateLines?.filter(item => (seen.includes(item.id) ? false : seen.push(item.id)))) ?? []
     );
 };
 
 export const getExemptedGroupOfLinesList = (operatorIdentifier: string, lines: Line[]): GroupOfLines[] => {
-    const lineReferences = lines.map((line) => line.id);
+    const lineReferences = lines.map(line => line.id);
 
     return [
         {
@@ -223,7 +222,7 @@ export const getExemptedGroupOfLinesList = (operatorIdentifier: string, lines: L
                 $t: `A group of exempt services.`,
             },
             members: {
-                LineRef: lineReferences.map((lineRef) => ({
+                LineRef: lineReferences.map(lineRef => ({
                     version: '1.0',
                     ref: lineRef,
                 })),
@@ -233,7 +232,7 @@ export const getExemptedGroupOfLinesList = (operatorIdentifier: string, lines: L
 };
 
 export const getGroupOfLinesList = (operatorIdentifier: string, isHybrid: boolean, lines: Line[]): GroupOfLines[] => {
-    const lineReferences = lines.map((line) => line.id);
+    const lineReferences = lines.map(line => line.id);
 
     return [
         {
@@ -243,7 +242,7 @@ export const getGroupOfLinesList = (operatorIdentifier: string, isHybrid: boolea
                 $t: `A group of available${isHybrid ? ' additional' : ''} services.`,
             },
             members: {
-                LineRef: lineReferences.map((lineRef) => ({
+                LineRef: lineReferences.map(lineRef => ({
                     version: '1.0',
                     ref: lineRef,
                 })),
@@ -257,7 +256,7 @@ export const getLineRefList = (
 ): LineRef[] => {
     const fullServicesList = getFullServicesList(userPeriodTicket);
     return fullServicesList.length > 0
-        ? fullServicesList.map((service) => ({
+        ? fullServicesList.map(service => ({
               version: '1.0',
               ref: service.lineId,
           }))
@@ -462,8 +461,8 @@ const getFlatFareList = (
     ticketUserConcat: string,
     isCarnet: boolean,
 ): NetexObject[] =>
-    userPeriodTicket.products.flatMap((product) => {
-        return product.salesOfferPackages.map((salesOfferPackage) => {
+    userPeriodTicket.products.flatMap(product => {
+        return product.salesOfferPackages.map(salesOfferPackage => {
             return {
                 version: '1.0',
                 id: `op:${product.productName}@${salesOfferPackage.name}`,
@@ -513,7 +512,7 @@ const getFlatFareList = (
     });
 
 export const getGeographicalIntervalPrices = (distanceBands: DistanceBand[]): GeographicalIntervalPrice[] => {
-    const prices = distanceBands.flatMap((band) => {
+    const prices = distanceBands.flatMap(band => {
         const { distanceTo, distanceFrom } = band;
         let currentDistanceBand = 0;
         const numberOfPricesToGenerate = Number(distanceTo) - Number(distanceFrom);
@@ -521,9 +520,9 @@ export const getGeographicalIntervalPrices = (distanceBands: DistanceBand[]): Ge
 
         for (let i = 0; i < numberOfPricesToGenerate; i++) {
             prices.push({
-                id: `price_for_1km_travelling_${Number(distanceFrom) + currentDistanceBand}_to_${
-                    Number(distanceFrom) + currentDistanceBand + 1
-                }`,
+                id: `price_for_1km_travelling_${Number(distanceFrom) + currentDistanceBand}_to_${Number(distanceFrom) +
+                    currentDistanceBand +
+                    1}`,
                 version: '1.0',
                 Amount: {
                     $t: band.pricePerKm,
@@ -533,9 +532,9 @@ export const getGeographicalIntervalPrices = (distanceBands: DistanceBand[]): Ge
                 },
                 GeographicalIntervalRef: {
                     version: '1.0',
-                    ref: `distance_band_${Number(distanceFrom) + currentDistanceBand}_to_${
-                        Number(distanceFrom) + currentDistanceBand + 1
-                    }`,
+                    ref: `distance_band_${Number(distanceFrom) + currentDistanceBand}_to_${Number(distanceFrom) +
+                        currentDistanceBand +
+                        1}`,
                 },
             });
 
@@ -573,7 +572,7 @@ export const getPricedByDistanceSalesOfferPackages = (
     product: PriceByDistanceProduct,
     ticketUserConcat: string,
 ): SalesOfferPackagePrice[] => {
-    return product.salesOfferPackages.map((sop) => {
+    return product.salesOfferPackages.map(sop => {
         return {
             id: `SOP@Prices@${product.productName}_${sop.name}`,
             version: '1.0',
@@ -643,8 +642,8 @@ export const getSalesOfferPackageList = (
 ): NetexSalesOfferPackage[][] => {
     const isCarnet = 'carnetDetails' in userPeriodTicket.products[0];
 
-    return userPeriodTicket.products.map((product) => {
-        return product.salesOfferPackages.map((salesOfferPackage) => {
+    return userPeriodTicket.products.map(product => {
+        return product.salesOfferPackages.map(salesOfferPackage => {
             const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
 
             const buildDistributionAssignments = (): DistributionAssignment[] => {
@@ -738,7 +737,7 @@ export const getGeographicalIntervals = (product: PriceByDistanceProduct): Geogr
     const { distanceBands } = product.pricingByDistance;
     const intervals: GeographicalInterval[] = [];
 
-    distanceBands.forEach((band) => {
+    distanceBands.forEach(band => {
         const numberOfKilometresInBand = Number(band.distanceTo) - Number(band.distanceFrom);
         for (let i = 0; i < numberOfKilometresInBand; i++) {
             const fromNumber = Number(band.distanceFrom) + i;
@@ -804,7 +803,7 @@ export const getPreassignedFareProducts = (
     isCarnet: boolean,
 ): NetexObject[] => {
     const { passengerType } = userPeriodTicket;
-    return userPeriodTicket.products.map((product) => {
+    return userPeriodTicket.products.map(product => {
         let elementZeroRef = '';
         let fareStructureElementRefs: NetexObject;
 
@@ -927,7 +926,7 @@ export const getPreassignedFareProducts = (
 };
 
 export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
-    const timeIntervals = ticket.products.flatMap((product) => {
+    const timeIntervals = ticket.products.flatMap(product => {
         if ('productDuration' in product && product.productDuration) {
             const amount = product.productDuration.split(' ')[0];
             const type = product.productDuration.split(' ')[1];
@@ -1206,7 +1205,7 @@ export const getOrganisations = (
     operatorData: OperatorWithExpandedAddress[],
     baseOperatorInfo?: SchemeOperatorWithExpandedAddress,
 ): NetexOrganisationOperator[] => {
-    const organisations = operatorData.map((operator) => {
+    const organisations = operatorData.map(operator => {
         const organisationOperator = {
             version: '1.0',
             id: `noc:${operator.nocCode}`,
@@ -1308,7 +1307,7 @@ export const getGroupOfOperators = (operatorData: Operator[]): GroupOfOperators 
             },
         },
     };
-    const members = operatorData.map((operator) => ({
+    const members = operatorData.map(operator => ({
         version: '1.0',
         ref: `noc:${operator.nocCode}`,
         $t: operator.operatorName,

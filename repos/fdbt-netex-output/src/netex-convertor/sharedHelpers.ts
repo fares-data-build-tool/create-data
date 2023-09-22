@@ -175,14 +175,14 @@ export const getTime = (time: string): string => moment(time, 'HHmm').format('HH
 
 export const getEarliestTime = (timeRestriction: FullTimeRestriction): string => {
     const startTimes: string[] = timeRestriction.timeBands
-        .map((timeband) => timeband.startTime || '')
-        .filter((startTime) => startTime !== '');
+        .map(timeband => timeband.startTime || '')
+        .filter(startTime => startTime !== '');
     return startTimes.sort()[0];
 };
 
 export const getAllTimeBands = (timeRestriction: FullTimeRestriction): NetexObject =>
     timeRestriction.timeBands
-        .filter((timeBand) => timeBand.startTime)
+        .filter(timeBand => timeBand.startTime)
         .map((timeband, index) => {
             return {
                 version: '1.0',
@@ -228,7 +228,7 @@ export const getTimeRestrictions = (timeRestrictionData: FullTimeRestriction[]):
                         $t: true,
                     },
                     dayTypes: {
-                        FareDayType: timeRestrictionData.map((timeRestriction) =>
+                        FareDayType: timeRestrictionData.map(timeRestriction =>
                             getFareDayTypeElements(timeRestriction),
                         ),
                     },
@@ -262,7 +262,7 @@ export const replaceIWBusCoNocCode = (nocCode: string): string => {
 export const getCoreData = async (operators: Operator[], ticket: Ticket): Promise<CoreData> => {
     const baseOperatorInfo = isSchemeOperatorTicket(ticket)
         ? await getBaseSchemeOperatorInfo(ticket)
-        : operators.find((operator) => operator.nocCode === replaceIWBusCoNocCode(ticket.nocCode));
+        : operators.find(operator => operator.nocCode === replaceIWBusCoNocCode(ticket.nocCode));
 
     const operatorIdentifier = isSchemeOperatorTicket(ticket)
         ? `${ticket.schemeOperatorName}-${ticket.schemeOperatorRegionCode}`
@@ -372,13 +372,13 @@ export const getProductType = (ticket: Ticket): string => {
 
 export const getCarnetElement = (ticket: Ticket): NetexObject => {
     const uniqueCarnetDenominations = new Set();
-    ticket.products.forEach((product) => {
+    ticket.products.forEach(product => {
         if ('carnetDetails' in product) {
             uniqueCarnetDenominations.add(product.carnetDetails.quantity);
         }
     });
 
-    const qualityStructureFactors = [...uniqueCarnetDenominations].map((uniqueCarnetDenomination) => ({
+    const qualityStructureFactors = [...uniqueCarnetDenominations].map(uniqueCarnetDenomination => ({
         version: '1.0',
         id: `op:Tariff@multitrip@${uniqueCarnetDenomination}`,
         Value: { $t: uniqueCarnetDenomination },
@@ -436,7 +436,7 @@ export const getFareStructuresElements = (
         return fareStructureElements;
     }
 
-    const productFareStructureElements = ticket.products.flatMap((product) => {
+    const productFareStructureElements = ticket.products.flatMap(product => {
         let availabilityElementId = '';
         let validityParametersObject = {};
         let result = [];

@@ -23,10 +23,10 @@ import {
     getProductType,
 } from '../sharedHelpers';
 
-export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap((zone) => zone.stops);
+export const getStops = (fareZones: FareZone[]): Stop[] => fareZones.flatMap(zone => zone.stops);
 
 export const getUniquePriceGroups = (fareZones: FareZone[]): string[] => [
-    ...new Set(fareZones.flatMap((zone) => zone.prices.flatMap((price) => price.price))),
+    ...new Set(fareZones.flatMap(zone => zone.prices.flatMap(price => price.price))),
 ];
 
 export const getIdName = (name: string): string => name.replace(/(\s)+/g, '_');
@@ -38,10 +38,10 @@ export const hasDuplicates = (array: string[]): boolean => {
 export const hasDuplicatesWithinASingleFareZone = (fareZones: FareZone[]): boolean => {
     let hasDuplicatesWithinASingleFareZone = false;
 
-    hasDuplicatesWithinASingleFareZone = fareZones.some((fz) => {
+    hasDuplicatesWithinASingleFareZone = fareZones.some(fz => {
         const stopsWithinFareZone = fz.stops;
 
-        const atcoCodesOfStopsWithinFareZone = stopsWithinFareZone.map((s) => s.atcoCode);
+        const atcoCodesOfStopsWithinFareZone = stopsWithinFareZone.map(s => s.atcoCode);
 
         const hasDuplicateStops = hasDuplicates(atcoCodesOfStopsWithinFareZone);
 
@@ -54,7 +54,7 @@ export const hasDuplicatesWithinASingleFareZone = (fareZones: FareZone[]): boole
 export const hasDuplicatesAcrossFareZones = (fareZones: FareZone[]): boolean => {
     const stops = getStops(fareZones);
 
-    const stopsAtcoCodes = stops.map((s) => s.atcoCode);
+    const stopsAtcoCodes = stops.map(s => s.atcoCode);
 
     const hasDuplicateStops = hasDuplicates(stopsAtcoCodes);
 
@@ -65,10 +65,10 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
     let stops = getStops(fareZones);
 
     if (stops.length !== 0) {
-        const fareZonesWithDuplicateStopsRemoved = fareZones.map((fareZone) => {
+        const fareZonesWithDuplicateStopsRemoved = fareZones.map(fareZone => {
             const set = new Set();
 
-            const stops = fareZone.stops.filter((o) => {
+            const stops = fareZone.stops.filter(o => {
                 if (!set.has(o.atcoCode)) {
                     set.add(o.atcoCode);
 
@@ -104,7 +104,7 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
 
     const set = new Set();
 
-    const stopsWithDuplicatesRemoved = stops.filter((stop) => {
+    const stopsWithDuplicatesRemoved = stops.filter(stop => {
         if (!set.has(stop.atcoCode)) {
             set.add(stop.atcoCode);
 
@@ -112,7 +112,7 @@ export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): S
         } else return false;
     });
 
-    return stopsWithDuplicatesRemoved.map((stop) => ({
+    return stopsWithDuplicatesRemoved.map(stop => ({
         version: 'any',
         id: stop.atcoCode ? `atco:${stop.atcoCode}` : `naptan:${stop.naptanCode}`,
         Name: { $t: stop.stopName },
@@ -130,7 +130,7 @@ export const getPriceGroups = (matchingData: PointToPointTicket | PointToPointPe
         ? [...matchingData.outboundFareZones, ...matchingData.inboundFareZones]
         : matchingData.fareZones;
 
-    const priceGroups = getUniquePriceGroups(fareZones).map((price) => ({
+    const priceGroups = getUniquePriceGroups(fareZones).map(price => ({
         version: '1.0',
         id: `price_band_${price}`,
         members: [
@@ -147,12 +147,12 @@ export const getPriceGroups = (matchingData: PointToPointTicket | PointToPointPe
 };
 
 export const getFareZoneList = (fareZones: FareZone[]): FareZoneList[] =>
-    fareZones.map((zone) => ({
+    fareZones.map(zone => ({
         version: '1.0',
         id: `fs@${getIdName(zone.name)}`,
         Name: { $t: zone.name },
         members: {
-            ScheduledStopPointRef: zone.stops.map((stop) => ({
+            ScheduledStopPointRef: zone.stops.map(stop => ({
                 ref: stop.atcoCode ? `atco:${stop.atcoCode}` : `naptan:${stop.naptanCode}`,
                 version: 'any',
                 $t: `${stop.stopName}, ${stop.localityName}`,
@@ -161,9 +161,9 @@ export const getFareZoneList = (fareZones: FareZone[]): FareZoneList[] =>
     }));
 
 export const getDistanceMatrixElements = (fareZones: FareZone[]): {}[] =>
-    fareZones.flatMap((zone) =>
-        zone.prices.flatMap((price) =>
-            price.fareZones.map((secondZone) => ({
+    fareZones.flatMap(zone =>
+        zone.prices.flatMap(price =>
+            price.fareZones.map(secondZone => ({
                 version: '1.0',
                 id: `${getIdName(zone.name)}+${getIdName(secondZone)}`,
                 priceGroups: {
@@ -194,9 +194,8 @@ export const getFareTableElements = (
 ): {}[] =>
     fareZones.slice(0, -1).map((zone, index) => ({
         version: '1.0',
-        id: `Trip@${type}-SOP@${salesOfferPackageName}@${lineIdName}@${userType}@${elementPrefix}${
-            index + 1
-        }@${getIdName(zone.name)}`,
+        id: `Trip@${type}-SOP@${salesOfferPackageName}@${lineIdName}@${userType}@${elementPrefix}${index +
+            1}@${getIdName(zone.name)}`,
         order: index + 1,
         Name: { $t: zone.name },
     }));
@@ -212,9 +211,8 @@ export const getInnerFareTables = (
     columns.flatMap((zone, columnNum) => {
         let rowCount = columns.length - columnNum;
         let order = 0;
-        const columnRef = `Trip@${type}-SOP@${salesOfferPackageName}@${lineIdName}@${userType}@c${
-            columnNum + 1
-        }@${getIdName(zone.name)}`;
+        const columnRef = `Trip@${type}-SOP@${salesOfferPackageName}@${lineIdName}@${userType}@c${columnNum +
+            1}@${getIdName(zone.name)}`;
 
         return {
             id: columnRef,
@@ -222,8 +220,8 @@ export const getInnerFareTables = (
             Name: { $t: `FareTable for ${productName}` },
             Description: { $t: `Column ${columnNum + 1}` },
             cells: {
-                Cell: zone.prices.flatMap((price) =>
-                    price.fareZones.map((secondZone) => {
+                Cell: zone.prices.flatMap(price =>
+                    price.fareZones.map(secondZone => {
                         rowCount -= 1;
                         order += 1;
 
@@ -253,9 +251,8 @@ export const getInnerFareTables = (
                             },
                             RowRef: {
                                 versionRef: '1',
-                                ref: `Trip@${type}-SOP@${salesOfferPackageName}@${lineIdName}@${userType}@r${
-                                    rowCount + 1
-                                }@${getIdName(secondZone)}`,
+                                ref: `Trip@${type}-SOP@${salesOfferPackageName}@${lineIdName}@${userType}@r${rowCount +
+                                    1}@${getIdName(secondZone)}`,
                             },
                         };
                     }),
@@ -288,7 +285,7 @@ export const getPreassignedFareProduct = (
     productNameForPlainText: string,
     isCarnet: boolean,
 ): NetexObject => {
-    const fareStructureElementRefs = fareStructuresElements.map((element) => ({
+    const fareStructureElementRefs = fareStructuresElements.map(element => ({
         version: '1.0',
         ref: element.id,
     }));
@@ -416,7 +413,7 @@ export const buildSalesOfferPackage = (
 };
 
 export const buildSalesOfferPackages = (product: BaseProduct, ticketUserConcat: string): NetexSalesOfferPackage[] => {
-    return product.salesOfferPackages.map((salesOfferPackage) => {
+    return product.salesOfferPackages.map(salesOfferPackage => {
         return buildSalesOfferPackage(salesOfferPackage, ticketUserConcat, 'carnetDetails' in product);
     });
 };
@@ -429,7 +426,7 @@ export const getFareTables = (
 ): NetexObject[] => {
     const fareZones = isReturnTicket(matchingData) ? matchingData.outboundFareZones : matchingData.fareZones;
 
-    return matchingData.products[0].salesOfferPackages.map((salesOfferPackage) => {
+    return matchingData.products[0].salesOfferPackages.map(salesOfferPackage => {
         return {
             id: `Trip@${matchingData.type}-SOP@${salesOfferPackage.name}@Line_${lineIdName}@${matchingData.passengerType}`,
             version: '1.0',
@@ -512,13 +509,13 @@ export const getFareTables = (
 export const combineFareZones = (outbound: FareZone[], inbound: FareZone[]): FareZone[] => {
     const combinedFareZones = [...outbound];
 
-    inbound.forEach((zone) => {
-        const outboundZone = combinedFareZones.find((x) => x.name === zone.name);
+    inbound.forEach(zone => {
+        const outboundZone = combinedFareZones.find(x => x.name === zone.name);
         if (!outboundZone) {
             combinedFareZones.push(zone);
         } else {
-            zone.stops.forEach((stop) => {
-                if (!outboundZone.stops.some((s) => s.naptanCode === stop.naptanCode)) {
+            zone.stops.forEach(stop => {
+                if (!outboundZone.stops.some(s => s.naptanCode === stop.naptanCode)) {
                     outboundZone.stops.push(stop);
                 }
             });

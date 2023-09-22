@@ -1786,11 +1786,11 @@ describe('Netex Helpers', () => {
                 cells: expect.objectContaining({ Cell: expect.any(Array) }),
             };
 
-            fareTables.forEach((table) => {
+            fareTables.forEach(table => {
                 expect(table).toEqual(expectedFormat);
             });
 
-            cells.forEach((cell) => {
+            cells.forEach(cell => {
                 expect(cell).toEqual(expectedCellFormat);
             });
         });

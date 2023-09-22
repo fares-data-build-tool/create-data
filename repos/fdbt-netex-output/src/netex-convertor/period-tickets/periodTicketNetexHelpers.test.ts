@@ -317,7 +317,7 @@ describe('periodTicketNetexHelpers', () => {
             const expectedLength = stops.length;
 
             expect(scheduledStopPointsList).toHaveLength(expectedLength);
-            scheduledStopPointsList.forEach((scheduledStopPoint) => {
+            scheduledStopPointsList.forEach(scheduledStopPoint => {
                 expect(scheduledStopPoint).toEqual(
                     expect.objectContaining({
                         versionRef: 'EXTERNAL',
@@ -343,13 +343,13 @@ describe('periodTicketNetexHelpers', () => {
                 LineType: { $t: 'local' },
             };
             const seen: string[] = [];
-            const expectedLength = periodMultipleServicesTicket.selectedServices.filter((item) => {
+            const expectedLength = periodMultipleServicesTicket.selectedServices.filter(item => {
                 return seen.includes(item.lineId) ? false : seen.push(item.lineId);
             }).length;
             const linesList = netexHelpers.getLinesList(periodMultipleServicesTicket, opData.url, multiOperatorList);
 
             expect(linesList).toHaveLength(expectedLength);
-            linesList.forEach((line) => {
+            linesList.forEach(line => {
                 expect(line).toEqual(expectedLineSchema);
             });
         });
@@ -366,7 +366,7 @@ describe('periodTicketNetexHelpers', () => {
             const lineRefList = netexHelpers.getLineRefList(periodMultipleServicesTicket);
 
             expect(lineRefList).toHaveLength(expectedLength);
-            lineRefList.forEach((lineRef) => {
+            lineRefList.forEach(lineRef => {
                 expect(lineRef).toEqual(expectLineRefFormat);
             });
         });
@@ -380,7 +380,7 @@ describe('periodTicketNetexHelpers', () => {
             'returns a list of geoFareZoneTable objects for the products defined in %s matching data',
             (_ticketType, matchingData, carnet) => {
                 const expectedLength = matchingData.products
-                    .map((product) => product.salesOfferPackages.length)
+                    .map(product => product.salesOfferPackages.length)
                     .reduce((a, b) => a + b);
                 const geoZoneFareTables = netexHelpers.getGeoZoneFareTable(
                     matchingData,
@@ -389,7 +389,7 @@ describe('periodTicketNetexHelpers', () => {
                     'carnetDetails' in matchingData.products[0],
                 );
                 expect(geoZoneFareTables).toHaveLength(expectedLength);
-                geoZoneFareTables.forEach((fareTable) => {
+                geoZoneFareTables.forEach(fareTable => {
                     expect(fareTable).toEqual(geoZoneFareTableSchema(carnet));
                 });
             },
@@ -404,7 +404,7 @@ describe('periodTicketNetexHelpers', () => {
             'returns a list of fare table objects when given %s matching data',
             (_ticketType, matchingData, carnet: boolean) => {
                 const expectedLength = periodMultipleServicesTicket.products
-                    .map((product) => product.salesOfferPackages.length)
+                    .map(product => product.salesOfferPackages.length)
                     .reduce((a, b) => a + b);
                 const multiServiceFareTables = netexHelpers.getMultiServiceFareTable(
                     matchingData,
@@ -412,7 +412,7 @@ describe('periodTicketNetexHelpers', () => {
                     'carnetDetails' in matchingData.products[0],
                 );
                 expect(multiServiceFareTables).toHaveLength(expectedLength);
-                multiServiceFareTables.forEach((fareTable) => {
+                multiServiceFareTables.forEach(fareTable => {
                     expect(fareTable).toEqual(multiServiceFareTableSchema(carnet));
                 });
             },
@@ -420,7 +420,7 @@ describe('periodTicketNetexHelpers', () => {
 
         it('returns a list of fare table objects when given flatFareTicket matching data', () => {
             const expectedLength = flatFareTicket.products
-                .map((product) => product.salesOfferPackages.length)
+                .map(product => product.salesOfferPackages.length)
                 .reduce((a, b) => a + b);
             const flatFareFareTables = netexHelpers.getMultiServiceFareTable(
                 flatFareTicket,
@@ -428,18 +428,18 @@ describe('periodTicketNetexHelpers', () => {
                 'carnetDetails' in flatFareTicket.products[0],
             );
             expect(flatFareFareTables).toHaveLength(expectedLength);
-            flatFareFareTables.forEach((fareTable) => {
+            flatFareFareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(flatFareFareTableSchema(false));
             });
         });
 
         it('returns a list of fare table objects when given carnet flatFareTicket matching data', () => {
             const expectedLength = carnetFlatFareTicket.products
-                .map((product) => product.salesOfferPackages.length)
+                .map(product => product.salesOfferPackages.length)
                 .reduce((a, b) => a + b);
             const flatFareFareTables = netexHelpers.getMultiServiceFareTable(carnetFlatFareTicket, 'test', true);
             expect(flatFareFareTables).toHaveLength(expectedLength);
-            flatFareFareTables.forEach((fareTable) => {
+            flatFareFareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(flatFareFareTableSchema(true));
             });
         });
@@ -448,7 +448,7 @@ describe('periodTicketNetexHelpers', () => {
     describe('getMultiServiceList', () => {
         it('returns a list of fare table objects when given multi operator flat fare matching data', () => {
             const expectedLength = multiOperatorFlatFareMultiServicesTicket.products
-                .map((product) => product.salesOfferPackages.length)
+                .map(product => product.salesOfferPackages.length)
                 .reduce((a, b) => a + b);
 
             const flatFareFareTables = netexHelpers.getMultiServiceList(
@@ -458,27 +458,27 @@ describe('periodTicketNetexHelpers', () => {
             );
             expect(flatFareFareTables).toHaveLength(expectedLength);
 
-            flatFareFareTables.forEach((fareTable) => {
+            flatFareFareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(multiOpFlatFareFareTableSchema(false));
             });
         });
 
         it('returns a list of fare table objects when given carnet period multi services matching data', () => {
             const expectedLength = carnetPeriodMultipleServicesTicket.products
-                .map((product) => product.salesOfferPackages.length)
+                .map(product => product.salesOfferPackages.length)
                 .reduce((a, b) => a + b);
 
             const fareTables = netexHelpers.getMultiServiceList(carnetPeriodMultipleServicesTicket, 'test', true);
             expect(fareTables).toHaveLength(expectedLength);
 
-            fareTables.forEach((fareTable) => {
+            fareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(multiServiceFareTableSchema(true));
             });
         });
 
         it('returns a list of fare table objects when given multi operator matching data', () => {
             const expectedLength = periodMultipleServicesTicket.products
-                .map((product) => product.salesOfferPackages.length)
+                .map(product => product.salesOfferPackages.length)
                 .reduce((a, b) => a + b);
 
             const fareTables = netexHelpers.getMultiServiceList(
@@ -488,7 +488,7 @@ describe('periodTicketNetexHelpers', () => {
             );
             expect(fareTables).toHaveLength(expectedLength);
 
-            fareTables.forEach((fareTable) => {
+            fareTables.forEach(fareTable => {
                 expect(fareTable).toEqual(multiServiceFareTableSchema(false));
             });
         });
@@ -602,7 +602,7 @@ describe('periodTicketNetexHelpers', () => {
 
             const flattenedArrays = result.flat();
 
-            flattenedArrays.forEach((salesOfferPackage) => {
+            flattenedArrays.forEach(salesOfferPackage => {
                 expect(salesOfferPackage).toEqual(expectedFormat);
             });
 
@@ -643,7 +643,7 @@ describe('periodTicketNetexHelpers', () => {
                 version: '1.0',
             };
 
-            result.forEach((preassignedFareProduct) => {
+            result.forEach(preassignedFareProduct => {
                 expect(preassignedFareProduct).toEqual(expectedFormat);
             });
 
@@ -682,7 +682,7 @@ describe('periodTicketNetexHelpers', () => {
                 version: '1.0',
             };
 
-            result.forEach((preassignedFareProduct) => {
+            result.forEach(preassignedFareProduct => {
                 expect(preassignedFareProduct).toEqual(expectedFormat);
             });
 
@@ -702,7 +702,7 @@ describe('periodTicketNetexHelpers', () => {
 
             if (!result) throw Error('result was not defined');
 
-            result.forEach((timeInterval) => {
+            result.forEach(timeInterval => {
                 expect(timeInterval).toEqual(expectedFormat);
             });
             expect(result[0]).toStrictEqual({
@@ -1148,7 +1148,7 @@ describe('periodTicketNetexHelpers', () => {
                 },
             ];
             const exemptionElement = netexHelpers.getExemptedGroupOfLinesList('abc', exemptedLines);
-            const lineReferences = exemptedLines.map((line) => line.id);
+            const lineReferences = exemptedLines.map(line => line.id);
             expect(exemptionElement).toStrictEqual([
                 {
                     version: '1.0',
@@ -1157,7 +1157,7 @@ describe('periodTicketNetexHelpers', () => {
                         $t: `A group of exempt services.`,
                     },
                     members: {
-                        LineRef: lineReferences.map((lineRef) => ({
+                        LineRef: lineReferences.map(lineRef => ({
                             version: '1.0',
                             ref: lineRef,
                         })),

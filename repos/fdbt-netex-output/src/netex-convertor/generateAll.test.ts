@@ -53,7 +53,7 @@ describe('generateAll', () => {
 
     const fileNames: string[] = fs.readdirSync(matchingDataPath);
 
-    it.each(fileNames)('should generate identical xml for %s', async (fileName) => {
+    it.each(fileNames)('should generate identical xml for %s', async fileName => {
         // noc of logged in user
         let baseNoc = '';
 
@@ -70,8 +70,8 @@ describe('generateAll', () => {
         }
 
         const operatorData: Operator[] = [];
-        nocs.forEach((noc) => {
-            const findOperatorByNoc = allOperatorData.find((operator) => operator.nocCode === noc);
+        nocs.forEach(noc => {
+            const findOperatorByNoc = allOperatorData.find(operator => operator.nocCode === noc);
             if (findOperatorByNoc) {
                 operatorData.push(findOperatorByNoc);
             }

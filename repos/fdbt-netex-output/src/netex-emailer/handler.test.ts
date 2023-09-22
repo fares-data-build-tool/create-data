@@ -98,7 +98,7 @@ describe('redactEmailAddress', () => {
         expect(redactEmailAddress(given)).toEqual(expected);
     });
     it('email as bad input', () => {
-        const given: string = 1 as unknown as string;
+        const given: string = (1 as unknown) as string;
         const expected = '*****@*****.***';
         expect(redactEmailAddress(given)).toEqual(expected);
     });

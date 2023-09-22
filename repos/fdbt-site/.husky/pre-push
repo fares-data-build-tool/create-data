@@ -4,4 +4,4 @@ cd ./repos/fdbt-site && npx lint-staged
 
 npm test;
 npm run lint;
-npm run tsc:build;
+npm run tsc;
