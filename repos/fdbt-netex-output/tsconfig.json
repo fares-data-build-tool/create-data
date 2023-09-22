@@ -16,5 +16,11 @@
         "outDir": ".build",
         "rootDir": "./"
     },
-    "exclude": ["node_modules", "jest.config.js"]
+    "exclude": [
+        "node_modules",
+        "node_modules",
+        "./node_modules/*",
+        "../../node_modules/*",
+        "jest.config.js"
+      ]
 }
