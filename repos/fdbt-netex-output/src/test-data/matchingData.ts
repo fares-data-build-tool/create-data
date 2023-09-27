@@ -16,7 +16,7 @@ import {
     SchemeOperatorGeoZoneTicket,
     SingleTicket,
 } from '../types';
-// test
+
 export const carnetSingle: SingleTicket = {
     lineName: '4',
     lineId: 'PK1146649_RJ1_1234567',

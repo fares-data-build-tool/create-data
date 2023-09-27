@@ -1,11 +1,11 @@
 import { expect as expectCDK, matchTemplate, MatchStyle } from '@aws-cdk/assert';
-import * as cdk from '@aws-cdk/core';
 import * as Exporter from '../lib/exporter-stack';
+import { App } from 'aws-cdk-lib';
 
 process.env.STAGE = 'dev';
-// test
+
 test('Empty Stack', () => {
-    const app = new cdk.App();
+    const app = new App();
 
     // when
     const stack = new Exporter.ExporterStack(app, 'MyTestStack', {

@@ -14,13 +14,15 @@
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "outDir": ".build",
-        "rootDir": "./"
+        "rootDir": "./",
+        "skipLibCheck": true
     },
     "exclude": [
         "node_modules",
-        "node_modules",
         "./node_modules/*",
         "../../node_modules/*",
-        "jest.config.js"
+        "jest.config.js",
+        "./node_modules",
+        "./node_modules/@types/node/index.d.ts",
     ]
 }

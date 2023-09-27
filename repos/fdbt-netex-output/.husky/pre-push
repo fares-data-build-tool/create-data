@@ -4,3 +4,4 @@ cd ./repos/fdbt-netex-output
 
 npm test;
 npm run lint;
+npm run tsc;

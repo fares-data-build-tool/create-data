@@ -10,7 +10,8 @@
         "netexConvert": "NODE_ENV=development UNVALIDATED_NETEX_BUCKET=$UNVALIDATED_NETEX_BUCKET ts-node src/netex-convertor/run-local.ts \"$EVENT_DATA\"",
         "netexEmail": "NODE_ENV=development MATCHING_DATA_BUCKET=$MATCHING_DATA_BUCKET ts-node src/netex-emailer/run-local.ts \"$EVENT_DATA\"",
         "precommit": ". ${NVM_DIR}/nvm.sh && nvm use && NODE_ENV=production lint-staged && npm run test:ci",
-        "prepare": "cd ../.. && husky install repos/fdbt-netex-output/.husky"
+        "prepare": "cd ../.. && husky install repos/fdbt-netex-output/.husky",
+        "tsc": "./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.json"
     },
     "lint-staged": {
         "src/**/*.{ts,tsx}": [
