@@ -17,7 +17,7 @@ import { OPERATOR_ATTRIBUTE } from '../../src/constants/attributes';
 import { dateIsOverThirtyMinutesAgo, isADayOfTheWeek, exportHasStarted } from '../../src/utils/apiUtils';
 import { Stop } from '../../src/interfaces/matchingJsonTypes';
 import { MyFaresService, ServiceType } from '../../src/interfaces';
-
+// test
 describe('index', () => {
     describe('getHost', () => {
         it('should return http when host is localhost', () => {
