@@ -35,7 +35,7 @@
         "vm2": ">=3.9.6"
     },
     "devDependencies": {
-        "@aws-cdk/assert": "^1.145.0",
+        "@aws-cdk/assert": "^2.68.0",
         "@types/archiver": "^5.1.1",
         "@types/aws-lambda": "^8.10.83",
         "@types/dateformat": "^3.0.1",
