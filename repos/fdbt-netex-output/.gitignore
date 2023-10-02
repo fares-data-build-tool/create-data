@@ -5,6 +5,8 @@ jspm_packages
 # Serverless/Typescript/IDE directories
 .serverless
 .build
+.emailer-build
+.convertor-build
 buckets
 .idea
 

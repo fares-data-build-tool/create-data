@@ -79,31 +79,35 @@ jobs:
       - name: Zipping code for netex emailer
         run: |
           echo "Zipping..."
-          ls -a
-          cp -R node_modules .build/
-          cp package.json .build/
-          cp src/netex-convertor/period-tickets/periodTicketNetexTemplate.xml .build/src/netex-convertor/period-tickets/periodTicketNetexTemplate.xml
-          cp src/netex-convertor/point-to-point-tickets/pointToPointTicketNetexTemplate.xml .build/src/netex-convertor/point-to-point-tickets/pointToPointTicketNetexTemplate.xml
-          cd .build/
-          zip -r netex-emailer.zip . -x /node_modules/prettier/* -x /node_modules/rxjs/* -x /node_modules/node1-libxmljsmt-myh/* -x /node_modules/libxslt/* -x /src/test-data/* -x /src/netex-validator/* -x /.eslintignore  -x /.eslintrc.js  -x /.nvmrc  -x /.prettierrc.js  -x /CONTRIBUTING.md  -x /LICENSE  -x /README.md  -x /jest.config.js  -x /package-lock.json -x /serverless.yml
-          ls -l netex-emailer.zip
+          mkdir .emailer-build
+          cp package.json package-lock.json .emailer-build/
+          mkdir .emailer-build/src
+          cp -R .build/src/netex-emailer .emailer-build/src
+          cd .emailer-build/
+          npm pkg delete scripts.prepare
+          npm ci --omit=dev
+          zip -r netex-emailer.zip .
 
       - name: update-netex-emailer
         run: |
           echo "Updating....."
-          cd .build/       
-           aws lambda update-function-code --function-name netex-output-service-test-NetexEmailer --zip-file fileb://netex-emailer.zip
+          cd .emailer-build/
+          aws lambda update-function-code --function-name netex-output-service-test-NetexEmailer --zip-file fileb://netex-emailer.zip
 
       - name: Zipping code for netex convertor
         run: |
           echo "Zipping..."
-          ls -a
-          cd .build/
-          rm -f netex-emailer.zip
-          zip -r ../netex-convertor.zip . -x /node_modules/prettier/* -x /node_modules/rxjs/* -x /node_modules/node1-libxmljsmt-myh/* -x /node_modules/libxslt/* -x /src/test-data/* -x /src/netex-validator/* -x /.eslintignore  -x /.eslintrc.js  -x /.nvmrc  -x /.prettierrc.js  -x /CONTRIBUTING.md  -x /LICENSE  -x /README.md  -x /jest.config.js  -x /package-lock.json -x /serverless.yml
-          ls
+          mkdir .convertor-build
+          cp package.json package-lock.json .convertor-build/
+          mkdir .convertor-build/src
+          cp -R .build/src/netex-convertor .convertor-build/src
+          cd .convertor-build/
+          npm pkg delete scripts.prepare
+          npm ci --omit=dev
+          zip -r netex-convertor.zip .
 
       - name: update-netex-convertor
         run: |
-          echo "Updating....."       
-           aws lambda update-function-code --function-name netex-output-service-test-NetexConvertor --zip-file fileb://netex-convertor.zip
+          echo "Updating....."
+          cd .convertor-build/
+          aws lambda update-function-code --function-name netex-output-service-test-NetexConvertor --zip-file fileb://netex-convertor.zip
