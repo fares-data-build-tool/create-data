@@ -76,16 +76,19 @@ jobs:
           echo "Linting"
           npm run lint
 
+      - name: remove dev deps
+        run: |
+          npm prune --omit=dev
+
       - name: Zipping code for netex emailer
         run: |
           echo "Zipping..."
           mkdir .emailer-build
-          cp package.json package-lock.json .emailer-build/
+          cp -R package.json node_modules .emailer-build/
           mkdir .emailer-build/src
-          cp -R .build/src/netex-emailer .emailer-build/src
+          cp -R .build/src/netex-emailer .build/src/data .emailer-build/src
           cd .emailer-build/
           npm pkg delete scripts.prepare
-          npm ci --omit=dev
           zip -r netex-emailer.zip .
 
       - name: update-netex-emailer
@@ -98,12 +101,13 @@ jobs:
         run: |
           echo "Zipping..."
           mkdir .convertor-build
-          cp package.json package-lock.json .convertor-build/
+          cp -R package.json node_modules .convertor-build/
           mkdir .convertor-build/src
-          cp -R .build/src/netex-convertor .convertor-build/src
+          cp -R .build/src/netex-convertor .build/src/data .build/src/types .convertor-build/src
+          cp src/netex-convertor/period-tickets/periodTicketNetexTemplate.xml .convertor-build/src/netex-convertor/period-tickets
+          cp src/netex-convertor/point-to-point-tickets/pointToPointTicketNetexTemplate.xml .convertor-build/src/netex-convertor/point-to-point-tickets
           cd .convertor-build/
           npm pkg delete scripts.prepare
-          npm ci --omit=dev
           zip -r netex-convertor.zip .
 
       - name: update-netex-convertor
