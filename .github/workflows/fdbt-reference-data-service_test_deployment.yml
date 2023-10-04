@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - "node-18-upgrade"
+      - "develop"
     paths:
       - repos/fdbt-reference-data-service/**
   workflow_dispatch:
