@@ -37,7 +37,7 @@ const AddUser = (): ReactElement => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="email">User Email</label>
                 <br />
-                <input id="email" name="email" ref={register({ required: true })} style={{ width: `50%` }} />
+                <input id="email" style={{ width: `50%` }} {...register('email', { required: true })} />
                 <br />
                 <br />
                 <label htmlFor="nocs">User National Operator Code (NOC)</label>
@@ -46,7 +46,7 @@ const AddUser = (): ReactElement => {
                     If the user has multiple NOCs, enter a comma-separated list. For example: &apos;NOC1,NOC2,NOC3&apos;
                 </small>
                 <br />
-                <input id="nocs" name="nocs" ref={register({ required: true })} style={{ width: `75%` }} />
+                <input id="nocs" style={{ width: `75%` }} {...register('nocs', { required: true })}/>
                 <br />
                 <br />
                 <Button disabled={formState.isSubmitting}>Submit</Button>

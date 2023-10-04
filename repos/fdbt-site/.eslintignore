@@ -1,2 +1,3 @@
 .next
 cypress_tests
+node_modules/

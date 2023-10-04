@@ -461,11 +461,11 @@ export const getAllButFirstCheckbox = (): void => {
     const input: string[] = [];
     getElementByClass('govuk-checkboxes__input').each((checkbox, index) => {
         const name = checkbox.attr('name');
-        input[index] = name.split('#')[0];
+        input[index] = name?.split('#')[0] || '';
         cy.wrap(input).as('input');
     });
     cy.get('@input').then((input) => {
-        const newInputWithoutFirstItem = input.toString().split(',').slice(1);
+        const newInputWithoutFirstItem = JSON.stringify(input).split(',').slice(1);
         cy.wrap(newInputWithoutFirstItem).as('input');
     });
 };
@@ -731,7 +731,7 @@ export const addOtherProductsIfNotPresent = (): void => {
     });
 
     cy.get('@flatFareWithExemptions').then((flatFareWithExemptions) => {
-        if (flatFareWithExemptions.toString() === 'false') {
+        if (JSON.stringify(flatFareWithExemptions) === 'false') {
             selectFareType('flatFare', false);
             defineUserTypeAndTimeRestrictions();
             clickElementById('radio-option-geoZone');

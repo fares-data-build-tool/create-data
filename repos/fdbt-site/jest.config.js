@@ -1,5 +1,8 @@
 module.exports = {
     moduleFileExtensions: ['ts', 'tsx', 'js'],
+    collectCoverageFrom: [
+        "src/**/*.{js,jsx,ts,tsx}"
+    ],
     testMatch: ['**/*.(test|spec).(ts|tsx)'],
     coveragePathIgnorePatterns: ['/node_modules/', 'enzyme.js'],
     setupFiles: ['<rootDir>/.jest/setEnvVars.ts'],
