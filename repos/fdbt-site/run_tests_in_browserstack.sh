@@ -40,6 +40,6 @@ done
 
 make install-cypress-deps-ci
 
-make run-cypress-browserstack
+make run-cypress-chrome
 
 cleanup_ip_set
