@@ -162,7 +162,7 @@ export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
         throw new Error(
             `SES SendEmail failed. from: ${mailOptions?.from}, to: ${redactEmailAddress(mailOptions?.to)}, subject: ${
                 mailOptions?.subject
-            }, text: ${mailOptions?.text}, Error: ${err.stack}`,
+            }, text: ${mailOptions?.text}, Error: ${(err as Error).stack}`,
         );
     }
 };

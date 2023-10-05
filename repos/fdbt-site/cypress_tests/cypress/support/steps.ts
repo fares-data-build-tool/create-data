@@ -29,6 +29,8 @@ import {
     completePricingPerDistancePage,
 } from './helpers';
 
+const stringify = (item: any) => JSON.stringify(item).replace(/\"/g, '');
+
 export const defineUserTypeAndTimeRestrictions = (isEditing?: boolean): void => {
     randomlyDetermineUserType();
     randomlyDecideTimeRestrictions(isEditing);
@@ -387,7 +389,13 @@ export const editServicesOtherProductsPage = (): void => {
             randomlyChooseAndSelectServices();
             cy.get('@input').then((input) => {
                 continueButtonClick();
-                getElementById('selected-services').should('have.text', input.toString().split(',').join(', '));
+                getElementById('selected-services').should(
+                    'have.text',
+                    JSON.stringify(input)
+                        .split(',')
+                        .join(', ')
+                        .replace(/\"|\[|\]/g, ''),
+                );
             });
         });
 
@@ -417,7 +425,7 @@ export const editProductDuration = (): void => {
     selectRandomOptionFromDropDown('edit-period-duration-unit');
     continueButtonClick();
     cy.get('@dropdownValue').then((input) => {
-        const productDurationUnit = input.toString();
+        const productDurationUnit = stringify(input);
         const value = `${productDuration} ${productDurationUnit.toLowerCase()}`;
         getElementById('period-duration').should('have.text', value);
     });
@@ -440,7 +448,7 @@ export const editCarnetExpiry = (): void => {
     selectRandomOptionFromDropDown('edit-carnet-expiry-unit');
     continueButtonClick();
     cy.get('@dropdownValue').then((input) => {
-        const productDurationUnit = input.toString();
+        const productDurationUnit = stringify(input);
         const value =
             productDurationUnit === 'No expiry'
                 ? 'No expiry'
@@ -453,7 +461,7 @@ export const editCarnetExpiry = (): void => {
 export const editProductNamePointToPointPage = (): void => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
-        clickElementById(serviceToClick.toString());
+        clickElementById(stringify(serviceToClick));
         getElementByClass('govuk-table__body').find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
@@ -465,7 +473,7 @@ export const editPassengerType = (): void => {
     clickElementById('passenger-type-link');
     randomlyDetermineUserType();
     cy.get('@passengerType').then((passengerType) => {
-        getElementById('passenger-type').should('have.text', passengerType.toString());
+        getElementById('passenger-type').should('have.text', stringify(passengerType));
     });
     clickElementByText('Back');
 };
@@ -481,7 +489,7 @@ export const editPassengerTypeOtherProductsPage = (): void => {
 export const editPassengerTypePointToPointPage = (): void => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
-        clickElementById(serviceToClick.toString());
+        clickElementById(stringify(serviceToClick));
         getElementByClass('govuk-table__body').find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
@@ -500,7 +508,7 @@ export const editStartDate = (): void => {
 export const editStartDatePointToPointPage = (): void => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
-        clickElementById(serviceToClick.toString());
+        clickElementById(stringify(serviceToClick));
         getElementByClass('govuk-table__body').find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
@@ -527,7 +535,7 @@ export const editEndDateOtherProductsPage = (): void => {
 export const editEndDatePointToPointPage = (): void => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
-        clickElementById(serviceToClick.toString());
+        clickElementById(stringify(serviceToClick));
         getElementByClass('govuk-table__body').find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
@@ -550,7 +558,7 @@ export const editTimeRestriction = (): void => {
             clickElementById('time-restriction-link');
             randomlyDecideTimeRestrictions(true);
             cy.get('@timeRestriction').then((timeRestriction) => {
-                getElementById('time-restriction').should('have.text', timeRestriction.toString());
+                getElementById('time-restriction').should('have.text', stringify(timeRestriction).replace(/\"/g, ''));
             });
         }
     });
@@ -569,7 +577,7 @@ export const editTimeRestrictionMultiOperatorProductsPage = (): void => {
 export const editTimeRestrictionPointToPointPage = (): void => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
-        clickElementById(serviceToClick.toString());
+        clickElementById(stringify(serviceToClick));
         getElementByClass('govuk-table__body').find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
@@ -586,7 +594,7 @@ export const editPurchaseMethod = (isOtherProduct?: boolean): void => {
     });
     randomlyDeterminePurchaseType(isOtherProduct);
     cy.get('@purchaseType').then((purchaseType) => {
-        getElementById('purchase-methods').should('have.text', purchaseType.toString());
+        getElementById('purchase-methods').should('have.text', stringify(purchaseType));
     });
     clickElementByText('Back');
 };
@@ -609,7 +617,7 @@ export const getServiceLinkToClick = (): void => {
 export const editPurchaseMethodPointToPointPage = (): void => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
-        clickElementById(serviceToClick.toString());
+        clickElementById(stringify(serviceToClick));
         getElementByClass('govuk-table__body').find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
@@ -620,7 +628,7 @@ export const editPurchaseMethodPointToPointPage = (): void => {
 export const editFareTrianglePointToPointPage = (): void => {
     getServiceLinkToClick();
     cy.get('@serviceToClick').then((serviceToClick) => {
-        clickElementById(serviceToClick.toString());
+        clickElementById(stringify(serviceToClick));
         getElementByClass('govuk-table__body').find('a').eq(0).click();
         getElementById('service-name').should('not.be.empty');
         getElementById('service-status').should('not.be.empty');
@@ -644,7 +652,7 @@ export const editFareZone = (): void => {
             getElementById('zone')
                 .invoke('text')
                 .then((text) => {
-                    expect(text.toString()).to.not.equal(zone.toString());
+                    expect(text.toString()).to.not.equal(stringify(zone));
                 });
         });
     });
@@ -658,7 +666,7 @@ export const editFareZoneStops = (): void => {
             getElementById('stops')
                 .invoke('text')
                 .then((text) => {
-                    expect(text.toString()).to.not.equal(stops.toString());
+                    expect(text.toString()).to.not.equal(stringify(stops));
                 });
         });
     });
@@ -677,7 +685,7 @@ export const editExemptedServices = (): void => {
     uploadFile('csv-upload', 'fareZoneEdited.csv');
     submitButtonClick();
     cy.get('@input').then((input) => {
-        const inputText = input.toString();
+        const inputText = stringify(input);
         const result = inputText === 'N/A' ? inputText : inputText.split(',').join(', ');
         getElementById('exempted-services').should('have.text', result);
     });

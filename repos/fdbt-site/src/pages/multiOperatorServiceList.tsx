@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { Dispatch, ReactElement, SetStateAction, useEffect, useState } from 'react';
 import BackButton from '../components/BackButton';
 import CsrfForm from '../components/CsrfForm';
@@ -17,10 +18,11 @@ import {
 import {
     ErrorInfo,
     MultiOperatorInfo,
+    MultiOperatorInfoWithErrors,
     NextPageContextWithSession,
     ServiceWithOriginAndDestination,
 } from '../interfaces';
-import { OperatorDetails } from '../interfaces/matchingJsonTypes';
+import { AdditionalOperator, OperatorDetails } from '../interfaces/matchingJsonTypes';
 import { isWithErrors } from '../interfaces/typeGuards';
 import { BaseLayout } from '../layout/Layout';
 import { getCsrfToken } from '../utils';
@@ -530,9 +532,11 @@ export const getServerSideProps = async (
         // we need to enrich the service using
         // the services we get back from the database
         multiOperatorData = multiOperatorData.map((operator) => {
-            const matchingOperator = multiOperatorServicesAttribute.multiOperatorInfo.find(
-                (op) => op.nocCode === operator.nocCode,
-            );
+            const matchingOperator: AdditionalOperator | undefined =
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+                (multiOperatorServicesAttribute as MultiOperatorInfoWithErrors).multiOperatorInfo.find(
+                    (op: AdditionalOperator) => op.nocCode === operator.nocCode,
+                );
             if (!matchingOperator) {
                 return operator;
             }

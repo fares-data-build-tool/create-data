@@ -1,7 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import { AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react';
-import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 import Page from '@govuk-react/page';
 import Nav from './components/Nav';
 import AddUser from './pages/AddUser';
@@ -11,29 +10,15 @@ import Reporting from './pages/Reporting';
 import ListUsers from './pages/ListUsers';
 import ResendInvite from './pages/ResendInvite';
 
-interface AuthDataAttributes {
-    'custom:fullAdmin': number;
-}
-
-interface AuthData {
-    attributes: AuthDataAttributes;
-}
-
-const App = (): ReactElement => {
-    const [authState, setAuthState] = useState('');
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    const [user, setUser] = useState<AuthData | undefined>(undefined);
+const App = (): ReactElement | null => {
     const [isFullAdmin, setIsFullAdmin] = useState<boolean>(false);
+    const { authStatus, user } = useAuthenticator((context) => [context.route]);
 
     useEffect(() => {
-        onAuthUIStateChange((nextAuthState, authData) => {
-            setAuthState(nextAuthState);
-            setUser(authData as AuthData);
-            setIsFullAdmin(Boolean(Number((authData as AuthData)?.attributes?.['custom:fullAdmin'])));
-        });
-    }, [user]);
+        setIsFullAdmin(Boolean(Number(user.attributes?.['custom:fullAdmin'])));
+    }, [authStatus]);
 
-    return authState === AuthState.SignedIn && user ? (
+    return authStatus === 'authenticated' && user ? (
         <BrowserRouter>
             <Page header={<Nav isFullAdmin={isFullAdmin} />}>
                 <Switch>
@@ -62,11 +47,7 @@ const App = (): ReactElement => {
                 </Switch>
             </Page>
         </BrowserRouter>
-    ) : (
-        <AmplifyAuthenticator>
-            <AmplifySignIn slot="sign-in" hideSignUp />
-        </AmplifyAuthenticator>
-    );
+    ) : null;
 };
 
 export default App;

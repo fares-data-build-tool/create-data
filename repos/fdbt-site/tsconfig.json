@@ -20,12 +20,12 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false,
     "outDir": ".build",
     "rootDir": "./",
     "jsx": "preserve",
     "sourceMap": true,
     "baseUrl": ".",
-    "useUnknownInCatchVariables": false,
     "incremental": true
   },
   "include": [
@@ -36,6 +36,9 @@
     ".jest/setupEnzyme.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "node_modules",
+    "./node_modules/*",
+    "../../node_modules/*"
   ]
 }

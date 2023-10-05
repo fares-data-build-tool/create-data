@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import express, { Request, Response, Express, NextFunction } from 'express';
 import nextjs from 'next';
 import requireAuth, { setDisableAuthParameters } from './middleware/authentication';

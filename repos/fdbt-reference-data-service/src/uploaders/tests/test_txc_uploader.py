@@ -21,7 +21,6 @@ mock_data_dict = test_xml_helpers.generate_mock_data_dict()
 mock_non_bus_dict = test_xml_helpers.generate_mock_ferry_txc_data_dict()
 mock_invalid_data_dict = test_xml_helpers.generate_mock_invalid_data_dict()
 
-
 class TestLineIdGeneration:
     def test_function_returns_correctly_structured_line_id(self):
         assert(create_unique_line_id("BLAC", "UNIQ123")) == "UZ000BLAC:BLACUNIQ123"

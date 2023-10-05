@@ -4,7 +4,7 @@ The codebase for the Create Fares Data Admin Site. The site is built using React
 
 ## Pre-requisites
 
--   Node 12+
+-   Node 18
 -   AWS CLI
 -   [Amplify CLI](https://docs.amplify.aws/cli/start/install)
 

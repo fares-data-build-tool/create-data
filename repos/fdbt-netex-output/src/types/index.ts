@@ -199,18 +199,33 @@ export interface CarnetDetails {
     expiryUnit: CarnetExpiryUnit;
 }
 
-const passengerTypes = ['adult', 'child', 'infant' ,'senior' , 'student' , 'youngPerson' , 'schoolPupil' , 'military' 
-, 'disabled' , 'disabledCompanion' , 'jobSeeker' , 'employee' , 'animal' , 'anyone']
+const passengerTypes = [
+    'adult',
+    'child',
+    'infant',
+    'senior',
+    'student',
+    'youngPerson',
+    'schoolPupil',
+    'military',
+    'disabled',
+    'disabledCompanion',
+    'jobSeeker',
+    'employee',
+    'animal',
+    'anyone',
+];
 
-export const checkPassengerType = (passengerType : string): void => {
-    if(!passengerTypes.includes(passengerType)) throw new Error('Passenger type received was not one of the accepted enumerations.')
-}
+export const checkPassengerType = (passengerType: string): void => {
+    if (!passengerTypes.includes(passengerType))
+        throw new Error('Passenger type received was not one of the accepted enumerations.');
+};
 
 export const isPointToPointTicket = (ticketData: Ticket): ticketData is PointToPointTicket =>
     ticketData.type === 'single' || ticketData.type === 'return';
 
 export const isReturnTicket = (ticket: Ticket): ticket is ReturnTicket | PointToPointPeriodTicket =>
-    ((ticket as ReturnTicket).outboundFareZones !== undefined && (ticket as ReturnTicket).outboundFareZones.length > 0);
+    (ticket as ReturnTicket).outboundFareZones !== undefined && (ticket as ReturnTicket).outboundFareZones.length > 0;
 
 export const isSingleTicket = (ticket: Ticket): ticket is SingleTicket =>
     (ticket as SingleTicket).fareZones !== undefined && (ticket as SingleTicket).fareZones.length > 0;
@@ -354,7 +369,7 @@ export interface SalesOfferPackageElement {
     };
     AmountOfPriceUnitProductRef?: {
         ref: string;
-    }
+    };
 }
 
 export interface GeographicalInterval {
@@ -378,7 +393,7 @@ export interface GeographicalInterval {
     GeographicalUnitRef: {
         version: string;
         ref: string;
-    }
+    };
 }
 
 export interface GeographicalIntervalPrice {
@@ -393,7 +408,7 @@ export interface GeographicalIntervalPrice {
     GeographicalIntervalRef: {
         version: string;
         ref: string;
-    }
+    };
 }
 
 export interface PriceGroup {
@@ -402,7 +417,9 @@ export interface PriceGroup {
     Name: {
         $t: string;
     };
-    members: { GeographicalIntervalPrice: GeographicalIntervalPrice[] } | { SalesOfferPackagePrice: SalesOfferPackagePrice[] };
+    members:
+        | { GeographicalIntervalPrice: GeographicalIntervalPrice[] }
+        | { SalesOfferPackagePrice: SalesOfferPackagePrice[] };
 }
 
 export interface SalesOfferPackagePrice {

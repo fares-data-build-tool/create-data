@@ -1,22 +1,24 @@
-import * as cdk from '@aws-cdk/core';
-import { Fn, Duration } from '@aws-cdk/core';
-import { Bucket, BucketEncryption, IBucket } from '@aws-cdk/aws-s3';
-import { NodejsFunction, SourceMapMode } from '@aws-cdk/aws-lambda-nodejs';
-import { PolicyStatement } from '@aws-cdk/aws-iam';
-import { SecurityGroup, Subnet, Vpc, ISecurityGroup, IVpc, ISubnet } from '@aws-cdk/aws-ec2';
-import { Topic } from '@aws-cdk/aws-sns';
-import { SnsAction } from '@aws-cdk/aws-cloudwatch-actions';
-import { TreatMissingData } from '@aws-cdk/aws-cloudwatch';
-import { Rule, Schedule } from '@aws-cdk/aws-events';
-import { LambdaFunction } from '@aws-cdk/aws-events-targets';
+import { App, Stack, StackProps } from 'aws-cdk-lib';
+import { Fn, Duration } from 'aws-cdk-lib';
+import {
+    aws_s3 as s3,
+    aws_lambda_nodejs as lambda,
+    aws_iam as iam,
+    aws_ec2 as ec2,
+    aws_sns as sns,
+    aws_cloudwatch_actions as cloudwatchActions,
+    aws_cloudwatch as cloudwatch,
+    aws_events as events,
+    aws_events_targets as eventsTargets,
+} from 'aws-cdk-lib';
 
-export class ExporterStack extends cdk.Stack {
+export class ExporterStack extends Stack {
     private readonly stage: string;
-    private readonly matchingDataBucket: IBucket;
-    private readonly productsBucket: IBucket;
-    private readonly exportMetadataBucket: IBucket;
+    private readonly matchingDataBucket: s3.IBucket;
+    private readonly productsBucket: s3.IBucket;
+    private readonly exportMetadataBucket: s3.IBucket;
 
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: App, id: string, props?: StackProps) {
         super(scope, id, props);
 
         const stage = process.env.STAGE;
@@ -25,31 +27,31 @@ export class ExporterStack extends cdk.Stack {
         }
         this.stage = stage;
 
-        const vpc = Vpc.fromLookup(this, 'vpc', { vpcName: `fdbt-vpc-${this.stage}` });
+        const vpc = ec2.Vpc.fromLookup(this, 'vpc', { vpcName: `fdbt-vpc-${this.stage}` });
         const vpcSubnets = {
             subnets: [
-                Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${this.stage}:PrivateSubnetA`)),
-                Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${this.stage}:PrivateSubnetB`)),
+                ec2.Subnet.fromSubnetId(this, 'vpc-subnet-a', Fn.importValue(`${this.stage}:PrivateSubnetA`)),
+                ec2.Subnet.fromSubnetId(this, 'vpc-subnet-b', Fn.importValue(`${this.stage}:PrivateSubnetB`)),
             ],
         };
-        const securityGroup = SecurityGroup.fromSecurityGroupId(
+        const securityGroup = ec2.SecurityGroup.fromSecurityGroupId(
             this,
             'security-group',
             Fn.importValue(`${this.stage}:ReferenceDataUploaderLambdaSG`),
         );
 
-        this.productsBucket = new Bucket(this, `products-data-bucket-${this.stage}`, {
+        this.productsBucket = new s3.Bucket(this, `products-data-bucket-${this.stage}`, {
             bucketName: `fdbt-products-data-${this.stage}`,
-            encryption: BucketEncryption.KMS_MANAGED,
+            encryption: s3.BucketEncryption.KMS_MANAGED,
         });
 
-        this.matchingDataBucket = Bucket.fromBucketName(
+        this.matchingDataBucket = s3.Bucket.fromBucketName(
             this,
             `fdbt-matching-data-${this.stage}`,
             `fdbt-matching-data-${this.stage}`,
         );
 
-        this.exportMetadataBucket = Bucket.fromBucketName(
+        this.exportMetadataBucket = s3.Bucket.fromBucketName(
             this,
             `fdbt-export-metadata-${this.stage}`,
             `fdbt-export-metadata-${this.stage}`,
@@ -61,8 +63,12 @@ export class ExporterStack extends cdk.Stack {
         this.addExporterLambdas(securityGroup, vpc, vpcSubnets);
     }
 
-    private addNeedsAttentionLambda(securityGroup: ISecurityGroup, vpc: IVpc, vpcSubnets: { subnets: ISubnet[] }) {
-        const atcoCodeCheckerFunction = new NodejsFunction(this, `atco-code-checker-${this.stage}`, {
+    private addNeedsAttentionLambda(
+        securityGroup: ec2.ISecurityGroup,
+        vpc: ec2.IVpc,
+        vpcSubnets: { subnets: ec2.ISubnet[] },
+    ) {
+        const atcoCodeCheckerFunction = new lambda.NodejsFunction(this, `atco-code-checker-${this.stage}`, {
             functionName: `atco-code-checker-${this.stage}`,
             entry: './lib/atcoCheckerHandler.ts',
             environment: {
@@ -76,7 +82,7 @@ export class ExporterStack extends cdk.Stack {
             vpcSubnets: vpcSubnets,
             bundling: {
                 sourceMap: true,
-                sourceMapMode: SourceMapMode.DEFAULT,
+                sourceMapMode: lambda.SourceMapMode.DEFAULT,
             },
             timeout: Duration.minutes(15),
             logRetention: 180,
@@ -85,17 +91,21 @@ export class ExporterStack extends cdk.Stack {
         this.addAlarmsToLambda(atcoCodeCheckerFunction, `atcoCodeCheckerFunction-${this.stage}`, 420000);
 
         atcoCodeCheckerFunction.addToRolePolicy(
-            new PolicyStatement({ actions: ['ssm:GetParameter', 's3:GetObject'], resources: ['*'] }),
+            new iam.PolicyStatement({ actions: ['ssm:GetParameter', 's3:GetObject'], resources: ['*'] }),
         );
 
-        new Rule(this, `atco-code-checker-rule-${this.stage}`, {
-            schedule: Schedule.cron({ minute: '0', hour: '6' }), // every day at 6am
-            targets: [new LambdaFunction(atcoCodeCheckerFunction)],
+        new events.Rule(this, `atco-code-checker-rule-${this.stage}`, {
+            schedule: events.Schedule.cron({ minute: '0', hour: '6' }), // every day at 6am
+            targets: [new eventsTargets.LambdaFunction(atcoCodeCheckerFunction)],
         });
     }
 
-    private addExporterLambdas(securityGroup: ISecurityGroup, vpc: IVpc, vpcSubnets: { subnets: ISubnet[] }) {
-        const exporterFunction = new NodejsFunction(this, `exporter-${this.stage}`, {
+    private addExporterLambdas(
+        securityGroup: ec2.ISecurityGroup,
+        vpc: ec2.IVpc,
+        vpcSubnets: { subnets: ec2.ISubnet[] },
+    ) {
+        const exporterFunction = new lambda.NodejsFunction(this, `exporter-${this.stage}`, {
             functionName: `exporter-${this.stage}`,
             entry: './lib/handler.ts',
             environment: {
@@ -110,7 +120,7 @@ export class ExporterStack extends cdk.Stack {
             vpcSubnets: vpcSubnets,
             bundling: {
                 sourceMap: true,
-                sourceMapMode: SourceMapMode.DEFAULT,
+                sourceMapMode: lambda.SourceMapMode.DEFAULT,
             },
             timeout: Duration.minutes(15),
             logRetention: 180,
@@ -120,14 +130,14 @@ export class ExporterStack extends cdk.Stack {
 
         this.addAlarmsToLambda(exporterFunction, `exporter-${this.stage}`, 300000);
 
-        exporterFunction.addToRolePolicy(new PolicyStatement({ actions: ['ssm:GetParameter'], resources: ['*'] }));
+        exporterFunction.addToRolePolicy(new iam.PolicyStatement({ actions: ['ssm:GetParameter'], resources: ['*'] }));
 
         this.productsBucket.grantRead(exporterFunction);
         this.matchingDataBucket.grantWrite(exporterFunction);
         this.exportMetadataBucket.grantWrite(exporterFunction);
 
-        const netexBucket = Bucket.fromBucketName(this, 'netex-bucket', `fdbt-netex-data-${this.stage}`);
-        const zipperFunction = new NodejsFunction(this, `zipper-${this.stage}`, {
+        const netexBucket = s3.Bucket.fromBucketName(this, 'netex-bucket', `fdbt-netex-data-${this.stage}`);
+        const zipperFunction = new lambda.NodejsFunction(this, `zipper-${this.stage}`, {
             functionName: `zipper-${this.stage}`,
             entry: './lib/zipperHandler.ts',
             environment: {
@@ -137,7 +147,7 @@ export class ExporterStack extends cdk.Stack {
             },
             bundling: {
                 sourceMap: true,
-                sourceMapMode: SourceMapMode.DEFAULT,
+                sourceMapMode: lambda.SourceMapMode.DEFAULT,
             },
             timeout: Duration.minutes(15),
             logRetention: 180,
@@ -150,12 +160,12 @@ export class ExporterStack extends cdk.Stack {
     }
 
     private addBastionTerminatorLambda() {
-        const bastionTerminatorFunction = new NodejsFunction(this, `bastion-terminator-${this.stage}`, {
+        const bastionTerminatorFunction = new lambda.NodejsFunction(this, `bastion-terminator-${this.stage}`, {
             functionName: `bastion-terminator-${this.stage}`,
             entry: './lib/bastionTerminator.ts',
             bundling: {
                 sourceMap: true,
-                sourceMapMode: SourceMapMode.DEFAULT,
+                sourceMapMode: lambda.SourceMapMode.DEFAULT,
             },
             timeout: Duration.minutes(1),
             logRetention: 180,
@@ -164,17 +174,21 @@ export class ExporterStack extends cdk.Stack {
         this.addAlarmsToLambda(bastionTerminatorFunction, `bastion-terminator-${this.stage}`, 30000);
 
         bastionTerminatorFunction.addToRolePolicy(
-            new PolicyStatement({ actions: ['ec2:TerminateInstances', 'ec2:DescribeInstances'], resources: ['*'] }),
+            new iam.PolicyStatement({ actions: ['ec2:TerminateInstances', 'ec2:DescribeInstances'], resources: ['*'] }),
         );
 
-        new Rule(this, `bastion-terminator-rule-${this.stage}`, {
-            schedule: Schedule.cron({ weekDay: 'MON', minute: '0', hour: '6' }), // every monday at 6am
-            targets: [new LambdaFunction(bastionTerminatorFunction)],
+        new events.Rule(this, `bastion-terminator-rule-${this.stage}`, {
+            schedule: events.Schedule.cron({ weekDay: 'MON', minute: '0', hour: '6' }), // every monday at 6am
+            targets: [new eventsTargets.LambdaFunction(bastionTerminatorFunction)],
         });
     }
 
-    private addReferenceDataLambdas(securityGroup: ISecurityGroup, vpc: IVpc, vpcSubnets: { subnets: ISubnet[] }) {
-        const tableRenameFunction = new NodejsFunction(this, `table-rename-${this.stage}`, {
+    private addReferenceDataLambdas(
+        securityGroup: ec2.ISecurityGroup,
+        vpc: ec2.IVpc,
+        vpcSubnets: { subnets: ec2.ISubnet[] },
+    ) {
+        const tableRenameFunction = new lambda.NodejsFunction(this, `table-rename-${this.stage}`, {
             functionName: `table-rename-${this.stage}`,
             entry: './lib/referenceData/tableRenameHandler.ts',
             environment: {
@@ -186,7 +200,7 @@ export class ExporterStack extends cdk.Stack {
             vpcSubnets: vpcSubnets,
             bundling: {
                 sourceMap: true,
-                sourceMapMode: SourceMapMode.DEFAULT,
+                sourceMapMode: lambda.SourceMapMode.DEFAULT,
             },
             timeout: Duration.minutes(15),
             logRetention: 180,
@@ -195,33 +209,33 @@ export class ExporterStack extends cdk.Stack {
         this.addAlarmsToLambda(tableRenameFunction, `tableRenameFunction-${this.stage}`, 420000);
 
         tableRenameFunction.addToRolePolicy(
-            new PolicyStatement({ actions: ['ssm:GetParameter', 'ssm:PutParameter'], resources: ['*'] }),
+            new iam.PolicyStatement({ actions: ['ssm:GetParameter', 'ssm:PutParameter'], resources: ['*'] }),
         );
 
-        new Rule(this, `table-rename-rule-${this.stage}`, {
-            schedule: Schedule.cron({ minute: '30', hour: '5' }), // every day at 5:30am
-            targets: [new LambdaFunction(tableRenameFunction)],
+        new events.Rule(this, `table-rename-rule-${this.stage}`, {
+            schedule: events.Schedule.cron({ minute: '30', hour: '5' }), // every day at 5:30am
+            targets: [new eventsTargets.LambdaFunction(tableRenameFunction)],
         });
     }
 
-    private addAlarmsToLambda(lambdaFn: NodejsFunction, id: string, durationThreshold: number) {
+    private addAlarmsToLambda(lambdaFn: lambda.NodejsFunction, id: string, durationThreshold: number) {
         const alarmTopicArn = Fn.importValue(`${this.stage}:SlackAlertsTopicArn`);
-        const alarmTopic = Topic.fromTopicArn(this, `${id}-alarm-topic-${this.stage}`, alarmTopicArn);
-        const snsAction = new SnsAction(alarmTopic);
+        const alarmTopic = sns.Topic.fromTopicArn(this, `${id}-alarm-topic-${this.stage}`, alarmTopicArn);
+        const snsAction = new cloudwatchActions.SnsAction(alarmTopic);
 
         const errorsAlarm = lambdaFn
             .metricErrors({ period: Duration.minutes(1) })
             .createAlarm(this, `${id}-errors-alarm`, {
                 threshold: 1,
                 evaluationPeriods: 1,
-                treatMissingData: TreatMissingData.NOT_BREACHING,
+                treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
             });
         const durationAlarm = lambdaFn
             .metricDuration({ period: Duration.minutes(1), statistic: 'max' })
             .createAlarm(this, `${id}-duration-alarm`, {
                 threshold: durationThreshold,
                 evaluationPeriods: 1,
-                treatMissingData: TreatMissingData.NOT_BREACHING,
+                treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
             });
 
         durationAlarm.addAlarmAction(snsAction);

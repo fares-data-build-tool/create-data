@@ -11,8 +11,8 @@ import {
     UserPoolDescriptionType,
     UserType,
 } from 'aws-sdk/clients/cognitoidentityserviceprovider';
-import { randomBytes } from 'crypto';
 import { AWS_REGION } from '../constants';
+import { randomBytes } from 'crypto';
 import { AddFormUser } from '../pages/AddUser';
 import { EditFormUser } from '../pages/EditUser';
 

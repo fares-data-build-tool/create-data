@@ -10,7 +10,7 @@ import { getProductsMatchingJson } from '../../data/s3';
 import { MyFaresService, NextPageContextWithSession, ProductToDisplay, ServiceToDisplay } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
-import { getNonExpiredProducts, filterOutProductsWithNoActiveServices } from '../api/exports';
+import { getNonExpiredProducts } from '../api/exports';
 
 const title = 'Select Exports';
 const description = 'Export selected products into NeTEx.';
@@ -474,16 +474,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
     const products = await getAllProductsByNoc(noc);
     const nonExpiredProducts = getNonExpiredProducts(products);
-    const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
-    const nonExpiredProductsWithActiveServices = await filterOutProductsWithNoActiveServices(
-        noc,
-        nonExpiredProducts,
-        dataSource,
-    );
+
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
     const productsToDisplay: ProductToDisplay[] = await Promise.all(
-        nonExpiredProductsWithActiveServices.map(async (nonExpiredProduct) => {
+        nonExpiredProducts.map(async (nonExpiredProduct) => {
             const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
             const product = s3Data.products[0];
             const hasProductName = 'productName' in product;
