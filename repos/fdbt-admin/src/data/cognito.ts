@@ -12,7 +12,6 @@ import {
     UserType,
 } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { AWS_REGION } from '../constants';
-import { randomBytes } from 'crypto';
 import { AddFormUser } from '../pages/AddUser';
 import { EditFormUser } from '../pages/EditUser';
 
@@ -53,7 +52,21 @@ export const listUsersInPool = async (
     return users;
 };
 
-const generateTemporaryPassword = (): string => randomBytes(64).toString('hex').substring(2, 34);
+const generateTemporaryPassword = (length = 22): string => {
+    let generatedPassword = '';
+
+    const validChars = '0123456789' + 'abcdefghijklmnopqrstuvwxyz' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    for (let i = 0; i < length; i++) {
+        let randomNumber = crypto.getRandomValues(new Uint32Array(1))[0];
+        randomNumber = randomNumber / 0x100000000;
+        randomNumber = Math.floor(randomNumber * validChars.length);
+
+        generatedPassword += validChars[randomNumber];
+    }
+
+    return generatedPassword;
+};
 
 export const addUserToPool = async (
     cognito: CognitoIdentityServiceProvider,

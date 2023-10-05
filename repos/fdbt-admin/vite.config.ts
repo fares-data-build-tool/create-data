@@ -9,28 +9,17 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
     plugins: [],
-    resolve: {
-        alias: {
-            process: 'process/browser',
-            buffer: 'buffer/',
-            crypto: 'crypto-browserify',
-            stream: 'stream-browserify',
-            assert: 'assert',
-            http: 'stream-http',
-            https: 'https-browserify',
-            os: 'os-browserify',
-            url: 'url',
-            util: 'rollup-plugin-node-polyfills/polyfills/util',
-        },
-    },
     define: {
         'process.env': process.env ?? {},
-        ...(process.env.NODE_ENV === 'development' ? { global: {} } : {}),
+        global: 'window',
+    },
+    build: {
+        commonjsOptions: {
+            include: [],
+        },
     },
     optimizeDeps: {
-        esbuildOptions: {
-            target: 'es2020',
-        },
+        disabled: false,
     },
     server: {
         port: 3000,
