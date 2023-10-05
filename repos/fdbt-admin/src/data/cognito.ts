@@ -11,8 +11,8 @@ import {
     UserPoolDescriptionType,
     UserType,
 } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { customAlphabet } from 'nanoid';
 import { AWS_REGION } from '../constants';
-import { randomBytes } from 'crypto';
 import { AddFormUser } from '../pages/AddUser';
 import { EditFormUser } from '../pages/EditUser';
 
@@ -53,7 +53,9 @@ export const listUsersInPool = async (
     return users;
 };
 
-const generateTemporaryPassword = (): string => randomBytes(64).toString('hex').substring(2, 34);
+const nanoId = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 22);
+
+const generateTemporaryPassword = (length = 22): string => nanoId(length);
 
 export const addUserToPool = async (
     cognito: CognitoIdentityServiceProvider,
