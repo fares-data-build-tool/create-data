@@ -8,6 +8,8 @@ import { Authenticator } from '@aws-amplify/ui-react';
 
 import '@aws-amplify/ui-react/styles.css';
 
+global.window = window;
+
 Amplify.configure(awsconfig);
 
 ReactDOM.render(
