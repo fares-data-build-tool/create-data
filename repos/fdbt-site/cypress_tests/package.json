@@ -22,7 +22,7 @@
         "@typescript-eslint/eslint-plugin": "^6.7.2",
         "@typescript-eslint/parser": "^6.7.2",
         "browserstack-cypress-cli": "^1.25.3",
-        "cypress": "12.17.0",
+        "cypress": "13.3.0",
         "cypress-file-upload": "^5.0.5",
         "eslint": "^8.49.0",
         "eslint-config-airbnb": "^19.0.4",

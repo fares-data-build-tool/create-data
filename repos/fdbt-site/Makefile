@@ -27,6 +27,9 @@ install-cypress-deps-ci:
 open-cypress:
 	cd cypress_tests && npm run openCypress
 
+run-cypress-electron:
+	cd cypress_tests && BROWSER=electron npm run runCypress
+
 run-cypress-chrome:
 	cd cypress_tests && BROWSER=chrome npm run runCypress
 
