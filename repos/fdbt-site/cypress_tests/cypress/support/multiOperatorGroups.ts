@@ -47,7 +47,6 @@ export const createEditMultiOperatorGroups = (): void => {
     getElementByClass('card').eq(0).contains('Edit').click();
     clickElementByText('Back');
 
-    //need to change this
     const valuesToCompareFirst = ['Preston Bus - PBLT', 'The Blackburn Bus Company - LNUD'];
     const firstCard = getElementByClass('card').eq(0);
     firstCard.should('contain.text', multiOperatorGroup1);
