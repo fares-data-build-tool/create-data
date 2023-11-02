@@ -40,6 +40,6 @@ done
 
 make install-cypress-deps-ci
 
-make run-cypress-chrome
+make run-cypress-electron
 
 cleanup_ip_set
