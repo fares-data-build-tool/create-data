@@ -2,6 +2,7 @@ import {
     AdminInitiateAuthCommand,
     AdminInitiateAuthCommandInput,
     AdminInitiateAuthCommandOutput,
+    AdminInitiateAuthResponse,
     AdminRespondToAuthChallengeCommand,
     AdminRespondToAuthChallengeCommandInput,
     AdminSetUserPasswordCommand,
@@ -39,7 +40,7 @@ const calculateSecretHash = (username: string): string => {
         .digest('base64');
 };
 
-export const initiateAuth = async (username: string, password: string): Promise<AdminInitiateAuthCommandOutput> => {
+export const initiateAuth = async (username: string, password: string): Promise<AdminInitiateAuthResponse> => {
     logger.info('', {
         context: 'data.cognito',
         message: 'initiating auth',

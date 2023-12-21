@@ -1,7 +1,7 @@
 import { S3Event } from 'aws-lambda';
-import AWS from 'aws-sdk';
 import { promises as fs } from 'fs';
 import nodemailer from 'nodemailer';
+import { SESClient } from '@aws-sdk/client-ses'
 import Mail from 'nodemailer/lib/mailer';
 import moment from 'moment-timezone';
 import { fetchDataFromS3, getFileFromS3 } from '../data/s3';
@@ -24,7 +24,7 @@ export interface MatchingData {
 
 export const createMailTransporter = (): Mail => {
     return nodemailer.createTransport({
-        SES: new AWS.SES({
+        SES: new SESClient({
             apiVersion: '2010-12-01',
             region: 'eu-west-1',
         }),

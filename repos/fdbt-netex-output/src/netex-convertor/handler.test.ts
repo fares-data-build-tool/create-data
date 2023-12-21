@@ -32,8 +32,8 @@ const mockSnsInstance = {
     publish: jest.fn().mockReturnValue({ promise: jest.fn() }),
 };
 
-jest.mock('aws-sdk', () => {
-    return { SNS: jest.fn(() => mockSnsInstance), S3: jest.fn() };
+jest.mock('@aws-sdk/client-sns', () => {
+    return { SNSClient: jest.fn(() => mockSnsInstance), S3: jest.fn() };
 });
 
 mockUploadNetexToS3Spy.mockImplementation(() => Promise.resolve());
