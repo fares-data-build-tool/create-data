@@ -1,5 +1,5 @@
 import { Handler } from 'aws-lambda';
-import { S3 } from 'aws-sdk';
+import { S3Client } from '@aws-sdk/client-s3';
 import { WithIds, ReturnTicket, SingleTicket, PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
 import {
     saveIdsOfServicesRequiringAttentionInTheDb,
@@ -9,19 +9,19 @@ import {
 } from './database';
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import { ServiceDetails } from 'fdbt-types/dbTypes';
+import { getObject } from './s3';
 
-const s3: S3 = new S3(
+const s3 =
     process.env.NODE_ENV === 'development'
-        ? {
-              s3ForcePathStyle: true,
-              accessKeyId: 'S3RVER',
-              secretAccessKey: 'S3RVER',
+        ? new S3Client({
+              forcePathStyle: true,
+              credentials: {
+                  accessKeyId: 'S3RVER',
+                  secretAccessKey: 'S3RVER',
+              },
               endpoint: 'http://localhost:4572',
-          }
-        : {
-              region: 'eu-west-2',
-          },
-);
+          })
+        : new S3Client({ region: 'eu-west-2' });
 
 const PRODUCTS_BUCKET = process.env.PRODUCTS_BUCKET;
 
@@ -47,13 +47,13 @@ export const handler: Handler<ExportLambdaBody> = async () => {
         const productId: number = pointToPointProduct.id;
         const path = pointToPointProduct.matchingJsonLink;
 
-        const object = await s3.getObject({ Key: path, Bucket: PRODUCTS_BUCKET }).promise();
+        const object = await getObject(s3, PRODUCTS_BUCKET, path, path);
 
-        if (!object.Body) {
+        if (!object) {
             throw new Error(`body was not present [${path}]`);
         }
 
-        const pointToPointTicket = JSON.parse(object.Body.toString('utf-8')) as
+        const pointToPointTicket = JSON.parse(object.toString()) as
             | WithIds<SingleTicket>
             | WithIds<ReturnTicket>
             | WithIds<PointToPointPeriodTicket>;
