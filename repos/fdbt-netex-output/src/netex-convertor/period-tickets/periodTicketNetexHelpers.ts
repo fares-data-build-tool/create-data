@@ -76,7 +76,7 @@ export const getBaseSchemeOperatorInfo = async (
         mode: 'bus',
     };
 
-    const schemeCode = `${userPeriodTicket.schemeOperatorName.substr(0, 5)}${
+    const schemeCode = `${userPeriodTicket.schemeOperatorName.slice(0, 5)}${
         userPeriodTicket.schemeOperatorRegionCode
     }`.toUpperCase();
 
