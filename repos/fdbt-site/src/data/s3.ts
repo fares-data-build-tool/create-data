@@ -208,15 +208,6 @@ export const getNetexSignedUrl = async (key: string): Promise<string> => {
     }
 };
 
-export const getMatchingDataObject = async (key: string): Promise<Uint8Array | null> => {
-    try {
-        const enc = new TextEncoder();
-        return enc.encode((await getObject(MATCHING_DATA_BUCKET_NAME, key, key)) || '');
-    } catch (error) {
-        throw new Error(`Failed to get matching data for key: ${key}, ${error.stack}`);
-    }
-};
-
 export const retrieveExportZip = async (noc: string, exportName: string): Promise<string | undefined> => {
     const prefix = `${noc}/zips/${exportName}/`;
     const command = new ListObjectsV2Command({
