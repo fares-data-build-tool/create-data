@@ -210,7 +210,8 @@ export const getNetexSignedUrl = async (key: string): Promise<string> => {
 
 export const getMatchingDataObject = async (key: string): Promise<Uint8Array | null> => {
     try {
-        return await getObject(MATCHING_DATA_BUCKET_NAME, key, key);
+        const enc = new TextEncoder();
+        return enc.encode((await getObject(MATCHING_DATA_BUCKET_NAME, key, key)) || '');
     } catch (error) {
         throw new Error(`Failed to get matching data for key: ${key}, ${error.stack}`);
     }
