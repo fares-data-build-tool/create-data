@@ -50,6 +50,8 @@
         "@typescript-eslint/eslint-plugin": "4.27.0",
         "@typescript-eslint/parser": "4.31.2",
         "aws-lambda-mock-context": "^3.2.1",
+        "aws-sdk-client-mock": "^3.0.1",
+        "aws-sdk-client-mock-jest": "^3.0.1",
         "eslint": "7.32.0",
         "eslint-config-airbnb-base": "^14.1.0",
         "eslint-config-prettier": "^5.0.0",
