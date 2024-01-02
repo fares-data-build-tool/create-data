@@ -5,7 +5,7 @@ import {
     S3Client,
 } from '@aws-sdk/client-s3';
 
-export const getObject = async (bucket: string, key: string, originalFilename: string): Promise<string| null> => { 
+export const getObject = async (bucket: string, key: string, originalFilename: string): Promise<string | null> => {
     try {
         const input = {
             Bucket: bucket,
@@ -56,13 +56,13 @@ export interface S3ObjectParameters {
 const s3 =
     process.env.NODE_ENV === 'development'
         ? new S3Client({
-              forcePathStyle: true,
-              credentials: {
-                  accessKeyId: 'S3RVER',
-                  secretAccessKey: 'S3RVER',
-              },
-              endpoint: 'http://localhost:4572',
-          })
+            forcePathStyle: true,
+            credentials: {
+                accessKeyId: 'S3RVER',
+                secretAccessKey: 'S3RVER',
+            },
+            endpoint: 'http://localhost:4572',
+        })
         : new S3Client({ region: 'eu-west-2' });
 
 

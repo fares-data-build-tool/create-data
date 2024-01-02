@@ -41,7 +41,7 @@ const dbSpy = jest.spyOn(db, 'getOperatorDataByNocCode');
 
 describe('netexConvertorHandler', () => {
     beforeEach(() => {
-       snsMock.reset();
+        snsMock.reset();
         dbSpy.mockImplementation(() =>
             Promise.resolve([
                 {
@@ -69,7 +69,7 @@ describe('netexConvertorHandler', () => {
             `${singleTicket.nocCode}/exports/${singleTicket.nocCode}_2022_09_30/${singleTicket.nocCode}d00f5a99_1664555550706.json`,
         );
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => { } });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(singleTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -81,7 +81,7 @@ describe('netexConvertorHandler', () => {
             `${periodGeoZoneTicket.nocCode}/exports/${periodGeoZoneTicket.nocCode}_2022_09_30/${periodGeoZoneTicket.nocCode}d00f5a99_1664555550706.json`,
         );
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => { } });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodGeoZoneTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -93,7 +93,7 @@ describe('netexConvertorHandler', () => {
             `${periodMultipleServicesTicket.nocCode}/exports/${periodMultipleServicesTicket.nocCode}_2022_09_30/${periodMultipleServicesTicket.nocCode}d00f5a99_1664555550706.json`,
         );
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => { } });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(periodMultipleServicesTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -105,7 +105,7 @@ describe('netexConvertorHandler', () => {
             `${flatFareTicket.nocCode}/exports/${flatFareTicket.nocCode}_2022_09_30/${flatFareTicket.nocCode}d00f5a99_1664555550706.json`,
         );
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => { } });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(flatFareTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -118,7 +118,7 @@ describe('netexConvertorHandler', () => {
             `${id}/exports/${id}_2022_09_30/${id}d00f5a99_1664555550706.json`,
         );
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => { } });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(schemeOperatorGeoZoneTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -131,7 +131,7 @@ describe('netexConvertorHandler', () => {
             `${id}/exports/${id}_2022_09_30/${id}d00f5a99_1664555550706.json`,
         );
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        netexGeneratorSpy.mockResolvedValue({ generate: (): void => {} });
+        netexGeneratorSpy.mockResolvedValue({ generate: (): void => { } });
         mockFetchDataFromS3Spy.mockImplementation(() => Promise.resolve(schemeOperatorFlatFareTicket));
         await netexConvertorHandler(event);
         expect(netexGeneratorSpy).toHaveBeenCalled();
@@ -422,8 +422,7 @@ describe('generateFileName', () => {
         const result = generateFileName(singleTicket);
 
         expect(result).toContain(
-            `FX-PI-01_UK_MCTR_LINE-FARE_237_O_Best-Product_${mockDate}_${
-                singleTicket.ticketPeriod.startDate.split('T')[0]
+            `FX-PI-01_UK_MCTR_LINE-FARE_237_O_Best-Product_${mockDate}_${singleTicket.ticketPeriod.startDate.split('T')[0]
             }_`,
         );
         expect(result).not.toContain(' ');
