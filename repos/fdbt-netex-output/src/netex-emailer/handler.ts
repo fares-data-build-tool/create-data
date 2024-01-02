@@ -1,7 +1,7 @@
 import { S3Event } from 'aws-lambda';
 import { promises as fs } from 'fs';
 import nodemailer from 'nodemailer';
-import { SESClient } from '@aws-sdk/client-ses'
+import { SESClient } from '@aws-sdk/client-ses';
 import Mail from 'nodemailer/lib/mailer';
 import moment from 'moment-timezone';
 import { fetchDataFromS3, getFileFromS3 } from '../data/s3';
@@ -160,7 +160,8 @@ export const netexEmailerHandler = async (event: S3Event): Promise<void> => {
         }
     } catch (err) {
         throw new Error(
-            `SES SendEmail failed. from: ${mailOptions?.from}, to: ${redactEmailAddress(mailOptions?.to)}, subject: ${mailOptions?.subject
+            `SES SendEmail failed. from: ${mailOptions?.from}, to: ${redactEmailAddress(mailOptions?.to)}, subject: ${
+                mailOptions?.subject
             }, text: ${mailOptions?.text}, Error: ${(err as Error).stack}`,
         );
     }

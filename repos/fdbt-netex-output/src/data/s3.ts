@@ -1,9 +1,5 @@
 import { S3Event } from 'aws-lambda';
-import {
-    GetObjectCommand,
-    PutObjectCommand,
-    S3Client,
-} from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 export const getObject = async (bucket: string, key: string, originalFilename: string): Promise<string | null> => {
     try {
@@ -35,7 +31,7 @@ export const putObject = async (
             Body: body,
             Bucket: bucket,
             Key: key,
-            ContentType: contentType
+            ContentType: contentType,
         };
         const command = new PutObjectCommand(input);
         await s3.send(command);
@@ -56,19 +52,18 @@ export interface S3ObjectParameters {
 const s3 =
     process.env.NODE_ENV === 'development'
         ? new S3Client({
-            forcePathStyle: true,
-            credentials: {
-                accessKeyId: 'S3RVER',
-                secretAccessKey: 'S3RVER',
-            },
-            endpoint: 'http://localhost:4572',
-        })
+              forcePathStyle: true,
+              credentials: {
+                  accessKeyId: 'S3RVER',
+                  secretAccessKey: 'S3RVER',
+              },
+              endpoint: 'http://localhost:4572',
+          })
         : new S3Client({ region: 'eu-west-2' });
 
-
 export const getFileFromS3 = async (params: S3ObjectParameters): Promise<string> => {
-    const data = await getObject(params.Bucket, params.Key, params.Key)
-    return data || ""
+    const data = await getObject(params.Bucket, params.Key, params.Key);
+    return data || '';
 };
 
 export const fileNameExistsAlready = async (fileName: string): Promise<boolean> => {
@@ -120,8 +115,7 @@ export const uploadNetexToS3 = async (netex: string, fileName: string): Promise<
             fileName,
             Buffer.from(netex, 'binary'),
             'application/xml',
-        )
-
+        );
     } catch (err) {
         throw new Error(`Error uploading netex to S3. ${(err as Error).stack}`);
     }
