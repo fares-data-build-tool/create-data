@@ -1,4 +1,22 @@
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import {
+    AdminInitiateAuthCommand,
+    AdminInitiateAuthCommandInput,
+    AdminInitiateAuthCommandOutput,
+    AdminInitiateAuthResponse,
+    AdminRespondToAuthChallengeCommand,
+    AdminRespondToAuthChallengeCommandInput,
+    AdminSetUserPasswordCommand,
+    AdminSetUserPasswordCommandInput,
+    AdminUpdateUserAttributesCommand,
+    AdminUpdateUserAttributesCommandInput,
+    AdminUserGlobalSignOutCommand,
+    AdminUserGlobalSignOutCommandInput,
+    CognitoIdentityProviderClient,
+    ConfirmForgotPasswordCommand,
+    ConfirmForgotPasswordCommandInput,
+    ForgotPasswordCommand,
+    ForgotPasswordCommandInput,
+} from '@aws-sdk/client-cognito-identity-provider';
 import awsParamStore from 'aws-param-store';
 import crypto from 'crypto';
 import logger from '../utils/logger';
@@ -7,10 +25,9 @@ const clientId = process.env.FDBT_USER_POOL_CLIENT_ID as string;
 const userPoolId = process.env.FDBT_USER_POOL_ID as string;
 let clientSecret: string | undefined;
 
-const getCognitoClient = (): CognitoIdentityServiceProvider =>
-    new CognitoIdentityServiceProvider({ region: 'eu-west-2' });
-
-const cognito = getCognitoClient();
+const cognito = new CognitoIdentityProviderClient({
+    region: 'eu-west-2',
+});
 
 const calculateSecretHash = (username: string): string => {
     if (!clientSecret) {
@@ -23,16 +40,13 @@ const calculateSecretHash = (username: string): string => {
         .digest('base64');
 };
 
-export const initiateAuth = async (
-    username: string,
-    password: string,
-): Promise<CognitoIdentityServiceProvider.AdminInitiateAuthResponse> => {
+export const initiateAuth = async (username: string, password: string): Promise<AdminInitiateAuthResponse> => {
     logger.info('', {
         context: 'data.cognito',
         message: 'initiating auth',
     });
 
-    const params: CognitoIdentityServiceProvider.AdminInitiateAuthRequest = {
+    const params: AdminInitiateAuthCommandInput = {
         AuthFlow: 'ADMIN_USER_PASSWORD_AUTH',
         ClientId: clientId,
         UserPoolId: userPoolId,
@@ -44,7 +58,8 @@ export const initiateAuth = async (
     };
 
     try {
-        const response = await cognito.adminInitiateAuth(params).promise();
+        const command = new AdminInitiateAuthCommand(params);
+        const response = await cognito.send(command);
 
         return response;
     } catch (error) {
@@ -55,13 +70,13 @@ export const initiateAuth = async (
 export const initiateRefreshAuth = async (
     username: string,
     refreshToken: string,
-): Promise<CognitoIdentityServiceProvider.AdminInitiateAuthResponse> => {
+): Promise<AdminInitiateAuthCommandOutput> => {
     logger.info('', {
         context: 'data.cognito',
         message: 'initiating refresh auth',
     });
 
-    const params: CognitoIdentityServiceProvider.AdminInitiateAuthRequest = {
+    const params: AdminInitiateAuthCommandInput = {
         AuthFlow: 'REFRESH_TOKEN_AUTH',
         ClientId: clientId,
         UserPoolId: userPoolId,
@@ -72,7 +87,8 @@ export const initiateRefreshAuth = async (
     };
 
     try {
-        const response = await cognito.adminInitiateAuth(params).promise();
+        const command = new AdminInitiateAuthCommand(params);
+        const response = await cognito.send(command);
 
         return response;
     } catch (error) {
@@ -90,7 +106,7 @@ export const respondToNewPasswordChallenge = async (
         message: 'new password challenge initiated',
     });
 
-    const params: CognitoIdentityServiceProvider.AdminRespondToAuthChallengeRequest = {
+    const params: AdminRespondToAuthChallengeCommandInput = {
         ChallengeName: 'NEW_PASSWORD_REQUIRED',
         ClientId: clientId,
         UserPoolId: userPoolId,
@@ -103,7 +119,8 @@ export const respondToNewPasswordChallenge = async (
     };
 
     try {
-        await cognito.adminRespondToAuthChallenge(params).promise();
+        const command = new AdminRespondToAuthChallengeCommand(params);
+        await cognito.send(command);
     } catch (error) {
         throw new Error(`Failed to respond to password challenge: ${error.stack}`);
     }
@@ -115,13 +132,14 @@ export const globalSignOut = async (username: string): Promise<void> => {
         message: 'performing global sign out',
     });
 
-    const params: CognitoIdentityServiceProvider.AdminUserGlobalSignOutRequest = {
+    const params: AdminUserGlobalSignOutCommandInput = {
         Username: username,
         UserPoolId: userPoolId,
     };
 
     try {
-        await cognito.adminUserGlobalSignOut(params).promise();
+        const command = new AdminUserGlobalSignOutCommand(params);
+        await cognito.send(command);
     } catch (error) {
         throw new Error(`Failed to perform global sign out: ${error.stack}`);
     }
@@ -136,14 +154,15 @@ export const updateUserAttributes = async (
         message: 'updating user attributes',
     });
 
-    const params: CognitoIdentityServiceProvider.AdminUpdateUserAttributesRequest = {
+    const params: AdminUpdateUserAttributesCommandInput = {
         UserAttributes: attributes,
         UserPoolId: userPoolId,
         Username: username,
     };
 
     try {
-        await cognito.adminUpdateUserAttributes(params).promise();
+        const command = new AdminUpdateUserAttributesCommand(params);
+        await cognito.send(command);
     } catch (error) {
         throw new Error(`Failed to update user attributes: ${error.stack}`);
     }
@@ -155,14 +174,15 @@ export const forgotPassword = async (username: string): Promise<void> => {
         message: 'start forgot password',
     });
 
-    const params: CognitoIdentityServiceProvider.ForgotPasswordRequest = {
+    const params: ForgotPasswordCommandInput = {
         ClientId: clientId,
         Username: username,
         SecretHash: calculateSecretHash(username),
     };
 
     try {
-        await cognito.forgotPassword(params).promise();
+        const command = new ForgotPasswordCommand(params);
+        await cognito.send(command);
     } catch (error) {
         throw new Error(`Failed to perform forgot password request: ${error.stack}`);
     }
@@ -178,7 +198,7 @@ export const confirmForgotPassword = async (
         message: 'confirm forgot password',
     });
 
-    const params: CognitoIdentityServiceProvider.ConfirmForgotPasswordRequest = {
+    const params: ConfirmForgotPasswordCommandInput = {
         ClientId: clientId,
         Username: username,
         ConfirmationCode: confirmationCode,
@@ -187,7 +207,8 @@ export const confirmForgotPassword = async (
     };
 
     try {
-        await cognito.confirmForgotPassword(params).promise();
+        const command = new ConfirmForgotPasswordCommand(params);
+        await cognito.send(command);
     } catch (error) {
         if (error?.code === 'ExpiredCodeException') {
             throw new Error('ExpiredCodeException');
@@ -202,7 +223,7 @@ export const updateUserPassword = async (newPassword: string, username: string):
         message: 'updating user password',
     });
 
-    const params: CognitoIdentityServiceProvider.AdminSetUserPasswordRequest = {
+    const params: AdminSetUserPasswordCommandInput = {
         Password: newPassword,
         Permanent: true,
         Username: username,
@@ -210,7 +231,8 @@ export const updateUserPassword = async (newPassword: string, username: string):
     };
 
     try {
-        await cognito.adminSetUserPassword(params).promise();
+        const command = new AdminSetUserPasswordCommand(params);
+        await cognito.send(command);
     } catch (error) {
         throw new Error(`Failed to update user password: ${error.stack}`);
     }
