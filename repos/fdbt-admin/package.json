@@ -26,7 +26,6 @@
         "@testing-library/user-event": "^12.8.3",
         "aws-amplify": "^5.3.11",
         "govuk-react": "^0.10.0",
-        "install": "^0.13.0",
         "nanoid": "^5.0.1",
         "npm": "^10.2.5",
         "react": "17.0.2",
