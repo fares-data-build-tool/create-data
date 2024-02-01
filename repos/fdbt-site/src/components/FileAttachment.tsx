@@ -14,6 +14,7 @@ const FileAttachment: FC<FileAttachmentProps> = ({
     imageUrl,
     size,
 }: FileAttachmentProps) => {
+    // eslint-disable-next-line no-console
     console.log(attachmentUrl);
     return (
         <section className="file-attachment">
