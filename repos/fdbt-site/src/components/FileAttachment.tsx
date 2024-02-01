@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { FC } from 'react';
 
 interface FileAttachmentProps {
@@ -15,17 +16,17 @@ const FileAttachment: FC<FileAttachmentProps> = ({
 }: FileAttachmentProps) => (
     <section className="file-attachment">
         <div className="file-attachment-thumbnail">
-            <a href={attachmentUrl} download tabIndex={-1} aria-hidden>
+            <Link href={attachmentUrl} download tabIndex={-1} aria-hidden>
                 <img alt="" src={imageUrl} tabIndex={-1} aria-hidden />
-            </a>
+            </Link>
         </div>
         <div>
-            <a href={attachmentUrl} className="govuk-link govuk-!-font-size-14" download>
+            <Link href={attachmentUrl} className="govuk-link govuk-!-font-size-14" download>
                 {displayName}
-            </a>
+            </Link>
             <p className="file-attachment-metadata govuk-!-font-size-10">
                 <abbr title="File">
-                    {attachmentUrl.substr(attachmentUrl.length - 3).toUpperCase()}, {size}
+                    {attachmentUrl.substring(attachmentUrl.length - 3).toUpperCase()}, {size}
                 </abbr>
             </p>
         </div>
