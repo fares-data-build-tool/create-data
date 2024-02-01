@@ -1,5 +1,5 @@
 import { S3Event } from 'aws-lambda';
-import { PublishCommand, SNSClient } from '@aws-sdk/client-sns';
+import AWS, { SNS } from 'aws-sdk';
 import * as db from '../data/auroradb';
 import * as s3 from '../data/s3';
 import { isPointToPointTicket, isSchemeOperatorTicket, isSingleTicket, Ticket } from '../types/index';
@@ -146,7 +146,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
     } catch (error) {
         console.error(error);
 
-        const sns = new SNSClient();
+        const sns: SNS = new AWS.SNS();
 
         const messageParams = {
             Subject: 'NeTEx Convertor',
@@ -161,8 +161,7 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
         };
 
         if (process.env.STAGE !== 'dev') {
-            const command = new PublishCommand(messageParams);
-            await sns.send(command);
+            await sns.publish(messageParams).promise();
         }
 
         throw error;

@@ -265,8 +265,8 @@ Resources:
         ZipFile: !Join
           - |+
           - - "const response = require('cfn-response');"
-            - "const aws = require('@aws-sdk/client-cognito-identity-provider');"
-            - "const identity = new aws.CognitoIdentityProviderClient({region: 'eu-west-2');"
+            - "const aws = require('aws-sdk');"
+            - "const identity = new aws.CognitoIdentityServiceProvider();"
             - "exports.handler = (event, context, callback) => {"
             - " if (event.RequestType == 'Delete') { "
             - "   response.send(event, context, response.SUCCESS, {})"
@@ -276,8 +276,7 @@ Resources:
             - "     ClientId: event.ResourceProperties.clientId,"
             - "     UserPoolId: event.ResourceProperties.userpoolId"
             - "   };"
-            - "   const command = new aws.DescribeUserPoolClientCommand(params)"
-            - "   identity.send(command)"
+            - "   identity.describeUserPoolClient(params).promise()"
             - "     .then((res) => {"
             - "       response.send(event, context, response.SUCCESS, {'appSecret': res.UserPoolClient.ClientSecret});"
             - "     })"

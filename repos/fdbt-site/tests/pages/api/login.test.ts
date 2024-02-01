@@ -1,12 +1,12 @@
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as auth from '../../../src/data/cognito';
 import login from '../../../src/pages/api/login';
 import * as auroradb from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as sessions from '../../../src/utils/sessions';
 import { OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
-import { AdminInitiateAuthResponse } from '@aws-sdk/client-cognito-identity-provider';
 
-const mockBaseOpAuthResponse: AdminInitiateAuthResponse = {
+const mockBaseOpAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
     AuthenticationResult: {
         IdToken:
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206bm9jIjoiVEVTVCJ9.yblgxuiLnAHzUUf9d8rH975xO8N62aqR8gUszkw6cHc',
@@ -14,7 +14,7 @@ const mockBaseOpAuthResponse: AdminInitiateAuthResponse = {
     },
 };
 
-const mockSchemeOpAuthResponse: AdminInitiateAuthResponse = {
+const mockSchemeOpAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
     AuthenticationResult: {
         IdToken:
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b206c2NoZW1lT3BlcmF0b3IiOiJTQ0hFTUVfT1BFUkFUT1IiLCJjdXN0b206c2NoZW1lUmVnaW9uQ29kZSI6IlNDSEVNRV9SRUdJT04iLCJjdXN0b206bm9jIjoiVEVTVFNDSEVNRSJ9.NZEY2oD25-Y-wcaYLQMlXozGkhjI4hXxAXxkrOICXvA',

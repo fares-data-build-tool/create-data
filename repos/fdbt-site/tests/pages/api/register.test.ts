@@ -1,4 +1,4 @@
-import { AdminInitiateAuthResponse } from '@aws-sdk/client-cognito-identity-provider';
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import register, { nocsWithNoServices } from '../../../src/pages/api/register';
 import * as auth from '../../../src/data/cognito';
 import * as auroradb from '../../../src/data/auroradb';
@@ -10,7 +10,7 @@ import * as sessions from '../../../src/utils/sessions';
 jest.mock('../../../src/data/auroradb.ts');
 
 describe('register', () => {
-    const mockAuthResponse: AdminInitiateAuthResponse = {
+    const mockAuthResponse: CognitoIdentityServiceProvider.AdminInitiateAuthResponse = {
         ChallengeName: 'NEW_PASSWORD_REQUIRED',
         ChallengeParameters: {
             USER_ID_FOR_SRP: 'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
