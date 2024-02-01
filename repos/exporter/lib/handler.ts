@@ -1,5 +1,5 @@
 import { Handler } from 'aws-lambda';
-import { S3Client } from '@aws-sdk/client-s3';
+import { S3 } from 'aws-sdk';
 import {
     BaseTicket,
     FullTimeRestriction,
@@ -21,19 +21,19 @@ import {
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
 import { DbTimeRestriction } from 'fdbt-types/dbTypes';
-import { getObject, putObject } from './s3';
 
-const s3 =
+const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
-        ? new S3Client({
-              forcePathStyle: true,
-              credentials: {
-                  accessKeyId: 'S3RVER',
-                  secretAccessKey: 'S3RVER',
-              },
+        ? {
+              s3ForcePathStyle: true,
+              accessKeyId: 'S3RVER',
+              secretAccessKey: 'S3RVER',
               endpoint: 'http://localhost:4572',
-          })
-        : new S3Client({ region: 'eu-west-2' });
+          }
+        : {
+              region: 'eu-west-2',
+          },
+);
 
 const PRODUCTS_BUCKET = process.env.PRODUCTS_BUCKET;
 const MATCHING_DATA_BUCKET = process.env.MATCHING_DATA_BUCKET;
@@ -54,12 +54,12 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
     await Promise.all(
         paths.map(async (path) => {
-            const object = await getObject(s3, PRODUCTS_BUCKET, path, path);
-            if (!object) {
+            const object = await s3.getObject({ Key: path, Bucket: PRODUCTS_BUCKET }).promise();
+            if (!object.Body) {
                 throw new Error(`body was not present [${path}]`);
             }
 
-            const ticketWithIds = JSON.parse(object.toString()) as TicketWithIds;
+            const ticketWithIds = JSON.parse(object.Body.toString('utf-8')) as TicketWithIds;
             const singleOrGroupPassengerType = await getPassengerTypeById(ticketWithIds.passengerType.id, noc);
             const passengerTypeValue = singleOrGroupPassengerType.name;
 
@@ -143,7 +143,9 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             const sections = path.split('/');
             const destPath = exportPrefix ? `${noc}/exports/${exportPrefix}/${sections[sections.length - 1]}` : path;
 
-            await putObject(s3, MATCHING_DATA_BUCKET, destPath, JSON.stringify(fullTicket));
+            await s3
+                .putObject({ Key: destPath, Bucket: MATCHING_DATA_BUCKET, Body: JSON.stringify(fullTicket) })
+                .promise();
         }),
     );
 
@@ -157,7 +159,13 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
         } in metadata bucket: ${EXPORT_METADATA_BUCKET} key: ${noc}/exports/${exportPrefix}.json`,
     );
 
-    await putObject(s3, EXPORT_METADATA_BUCKET, `${noc}/exports/${exportPrefix}.json`, JSON.stringify(metadata));
+    await s3
+        .putObject({
+            Key: `${noc}/exports/${exportPrefix}.json`,
+            Bucket: EXPORT_METADATA_BUCKET,
+            Body: JSON.stringify(metadata),
+        })
+        .promise();
 
     console.log(`completed ${paths.length} files.`);
 };

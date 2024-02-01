@@ -1,28 +1,20 @@
-import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { Lambda } from 'aws-sdk';
 import { ExportLambdaBody, ZipperLambdaBody } from '../../interfaces/integrationTypes';
 
-const lambda = new LambdaClient({
-    region: 'eu-west-2',
-});
+const lambda = new Lambda({ region: 'eu-west-2' });
 
 export const triggerExport = async (params: ExportLambdaBody): Promise<void> => {
     if (process.env.STAGE !== 'dev') {
-        const command = new InvokeCommand({
-            FunctionName: `exporter-${process.env.STAGE}`,
-            Payload: JSON.stringify(params),
-            InvocationType: 'Event',
-        });
-        await lambda.send(command);
+        await lambda
+            .invokeAsync({ FunctionName: `exporter-${process.env.STAGE}`, InvokeArgs: JSON.stringify(params) })
+            .promise();
     }
 };
 
 export const triggerZipper = async (params: ZipperLambdaBody): Promise<void> => {
     if (process.env.STAGE !== 'dev') {
-        const command = new InvokeCommand({
-            FunctionName: `zipper-${process.env.STAGE}`,
-            Payload: JSON.stringify(params),
-            InvocationType: 'Event',
-        });
-        await lambda.send(command);
+        await lambda
+            .invokeAsync({ FunctionName: `zipper-${process.env.STAGE}`, InvokeArgs: JSON.stringify(params) })
+            .promise();
     }
 };

@@ -1,17 +1,21 @@
-import { GetParameterCommand, PutParameterCommand, PutParameterCommandInput, SSMClient } from '@aws-sdk/client-ssm';
+import { SSM } from 'aws-sdk';
 
-const ssm = new SSMClient({ region: 'eu-west-2' });
+const ssm = new SSM({ region: 'eu-west-2' });
 
-export const getSsmValue = async (name: string, withDecryption?: boolean): Promise<string> => {
-    const input = {
-        Name: name,
-        WithDecryption: withDecryption ? withDecryption : true,
-    };
-    const command = new GetParameterCommand(input);
-    const value = (await ssm.send(command)).Parameter?.Value;
+export const getSsmValue = async (parameter: string): Promise<string> => {
+    const value = (
+        await ssm
+            .getParameter({
+                Name: parameter,
+                WithDecryption: true,
+            })
+            .promise()
+    ).Parameter?.Value;
+
     if (!value) {
-        throw new Error(`Parameter ${name} was not found`);
+        throw new Error(`Parameter ${parameter} was not found`);
     }
+
     return value;
 };
 
@@ -21,20 +25,15 @@ export const putParameter = async (
     type: 'String' | 'StringList' | 'SecureString',
     overwrite: boolean,
 ): Promise<void> => {
+    const input = {
+        Name: name,
+        Value: value,
+        Type: type,
+        Overwrite: overwrite,
+    };
     try {
-        const input: PutParameterCommandInput = {
-            Name: name,
-            Value: value,
-            Type: type,
-            Overwrite: overwrite,
-        };
-        const command = new PutParameterCommand(input);
-        await ssm.send(command);
-    } catch (error) {
-        if (error instanceof Error) {
-            throw new Error(`Parameter ${name} could not be put into ssm`);
-        }
-
-        throw error;
+        await ssm.putParameter(input).promise();
+    } catch (e) {
+        throw new Error(`Parameter ${name} could not be put into ssm`);
     }
 };
