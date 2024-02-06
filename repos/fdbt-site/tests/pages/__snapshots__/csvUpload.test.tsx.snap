@@ -22,7 +22,6 @@ exports[`pages csvUpload should render correctly 1`] = `
         method="post"
       >
         <UserDataUploadComponent
-          csvTemplateAttachmentUrl=""
           csvUploadHintText=""
           csvUploadTitle="Upload fares triangle as CSV"
           detailBody={
@@ -46,7 +45,6 @@ exports[`pages csvUpload should render correctly 1`] = `
             </React.Fragment>
           }
           errors={Array []}
-          guidanceDocAttachmentUrl=""
           showPriceOption={true}
         />
         <input

@@ -22,7 +22,6 @@ exports[`pages csvzoneupload should render correctly 1`] = `
         method="post"
       >
         <UserDataUploadComponent
-          csvTemplateAttachmentUrl=""
           csvUploadHintText=""
           csvUploadTitle="Upload fare zone as CSV"
           detailBody={
@@ -43,7 +42,6 @@ exports[`pages csvzoneupload should render correctly 1`] = `
             </React.Fragment>
           }
           errors={Array []}
-          guidanceDocAttachmentUrl=""
         />
         <div>
           <div

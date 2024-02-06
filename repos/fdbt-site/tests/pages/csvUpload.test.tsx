@@ -10,10 +10,8 @@ describe('pages', () => {
                     csvUploadTitle="Upload fares triangle as CSV"
                     csvUploadHintText=""
                     guidanceDocDisplayName=""
-                    guidanceDocAttachmentUrl=""
                     guidanceDocSize=""
                     csvTemplateDisplayName=""
-                    csvTemplateAttachmentUrl=""
                     csvTemplateSize=""
                     errors={[]}
                     showPriceOption
