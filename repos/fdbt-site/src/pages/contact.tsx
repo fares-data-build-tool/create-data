@@ -14,6 +14,7 @@ interface ContactProps {
 }
 
 const Contact = ({ supportEmail, supportPhone }: ContactProps): ReactElement => {
+    console.log(`${ServiceGuide}`);
     return (
         <BaseLayout title={title} description={description} hideHelp>
             <div className="govuk-grid-row">
