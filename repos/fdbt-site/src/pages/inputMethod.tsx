@@ -22,10 +22,8 @@ const errorId = 'csv-upload';
 interface InputMethodProps {
     errors: ErrorInfo[];
     guidanceDocDisplayName: string;
-    guidanceDocAttachmentUrl: string;
     guidanceDocSize: string;
     csvTemplateDisplayName: string;
-    csvTemplateAttachmentUrl: string;
     csvTemplateSize: string;
     csrfToken: string;
 }
@@ -34,14 +32,10 @@ const InputMethod = ({
     errors = [],
     csrfToken,
     guidanceDocDisplayName,
-    guidanceDocAttachmentUrl,
     guidanceDocSize,
     csvTemplateDisplayName,
-    csvTemplateAttachmentUrl,
     csvTemplateSize,
 }: InputMethodProps): ReactElement => {
-    // eslint-disable-next-line no-console
-    console.log(`${guidanceDocAttachmentUrl}`, `${csvTemplateAttachmentUrl}`);
     return (
         <BaseLayout title={title} description={description} errors={errors}>
             <div className="govuk-grid-row">
@@ -136,10 +130,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: In
     return {
         props: {
             guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 592KB',
-            guidanceDocAttachmentUrl: HowToUploadFaresTriangle,
             guidanceDocSize: '1.2MB',
             csvTemplateDisplayName: 'Download fares triangle CSV template - File Type CSV - File Size 255B',
-            csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
             csvTemplateSize: '255B',
             errors: inputMethodInfo && inputMethodErrorsExist(inputMethodInfo) ? [inputMethodInfo] : [],
             csrfToken,

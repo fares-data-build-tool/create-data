@@ -42,10 +42,8 @@ interface CSVZoneUploadProps extends UserDataUploadsProps {
     clickedYes: boolean;
     backHref: string;
     guidanceDocDisplayName: string;
-    guidanceDocAttachmentUrl: string;
     guidanceDocSize: string;
     csvTemplateDisplayName: string;
-    csvTemplateAttachmentUrl: string;
     csvTemplateSize: string;
     csrfToken: string;
 }
@@ -57,10 +55,8 @@ const CsvZoneUpload = ({
     dataSourceAttribute,
     backHref,
     guidanceDocDisplayName,
-    guidanceDocAttachmentUrl,
     guidanceDocSize,
     csvTemplateDisplayName,
-    csvTemplateAttachmentUrl,
     csvTemplateSize,
     csrfToken,
     ...uploadProps
@@ -260,13 +256,13 @@ const CsvZoneUpload = ({
                     <h2 className="govuk-heading-s">Help documents</h2>
                     <FileAttachment
                         displayName={guidanceDocDisplayName}
-                        attachmentUrl={`${guidanceDocAttachmentUrl}`}
+                        attachmentUrl={`${HowToUploadFareZone}`}
                         imageUrl={guidanceDocImage}
                         size={guidanceDocSize}
                     />
                     <FileAttachment
                         displayName={csvTemplateDisplayName}
-                        attachmentUrl={`${csvTemplateAttachmentUrl}`}
+                        attachmentUrl={`${FareZoneExampleCsv}`}
                         imageUrl={csvImage}
                         size={csvTemplateSize}
                     />
