@@ -9,12 +9,12 @@ const addExtraOperator = (): void => {
 export const addSingleMultiOperatorGroup = (name: string, addExtra: boolean, addMulti: boolean): void => {
     clickElementByText('Add an operator group');
     if (addMulti) {
-        clickElementById('search-input').clear().type('blackpool');
-        clickElementById('search-button');
-        clickElementByText('Blackpool Transport - BLAC');
         clickElementById('search-input').clear().type('bus');
         clickElementById('search-button');
-        clickElementByText("Warrington's Own Buses - WBTR");
+        clickElementByText('Preston Bus - PBLT');
+        clickElementById('search-input').clear().type('bus');
+        clickElementById('search-button');
+        clickElementByText('The Blackburn Bus Company - LNUD');
     }
     if (addExtra || !addMulti) {
         addExtraOperator();
@@ -47,7 +47,7 @@ export const createEditMultiOperatorGroups = (): void => {
     getElementByClass('card').eq(0).contains('Edit').click();
     clickElementByText('Back');
 
-    const valuesToCompareFirst = ['Blackpool Transport - BLAC', "Warrington's Own Buses - WBTR"];
+    const valuesToCompareFirst = ['Preston Bus - PBLT', 'The Blackburn Bus Company - LNUD'];
     const firstCard = getElementByClass('card').eq(0);
     firstCard.should('contain.text', multiOperatorGroup1);
     checkCardBody(firstCard, 0, valuesToCompareFirst);
@@ -60,8 +60,8 @@ export const createEditMultiOperatorGroups = (): void => {
     checkCardBody(firstCard, 0, valuesToCompareFirst);
 
     const valuesToCompareSecond = [
-        'Blackpool Transport - BLAC',
-        "Warrington's Own Buses - WBTR",
+        'Preston Bus - PBLT', 
+        'The Blackburn Bus Company - LNUD',
         'Pilkingtonbus - NWBT',
     ];
     addSingleMultiOperatorGroup(multiOperatorGroup2, true, true);

@@ -64,13 +64,13 @@ exports[`pages csvUpload should render correctly 1`] = `
         Help documents
       </h2>
       <FileAttachment
-        attachmentUrl=""
+        attachmentUrl="[object Object]"
         displayName=""
         imageUrl={Object {}}
         size=""
       />
       <FileAttachment
-        attachmentUrl=""
+        attachmentUrl="[object Object]"
         displayName=""
         imageUrl={Object {}}
         size=""

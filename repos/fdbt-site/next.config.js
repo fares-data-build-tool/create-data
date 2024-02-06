@@ -9,14 +9,9 @@ const nextConfig = withImages({
     webpack: (config, { isServer }) => {
         config.module.rules.push({
             test: /\.(pdf|csv)$/,
-            use: {
-                loader: 'file-loader',
-                options: {
-                    publicPath: '/_next/static/files/',
-                    outputPath: '../static/files/',
-                    name: '[name]-[contentHash:8].[ext]',
-                    esModule: false,
-                },
+            type: 'asset/resource',
+            generator: {
+                filename: 'static/chunks/[path][name].[hash][ext]'
             },
         });
 

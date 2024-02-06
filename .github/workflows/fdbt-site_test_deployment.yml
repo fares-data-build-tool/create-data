@@ -58,6 +58,7 @@ jobs:
         run: |
           echo "Compiling typescript for site"
           ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

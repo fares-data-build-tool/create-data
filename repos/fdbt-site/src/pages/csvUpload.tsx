@@ -24,10 +24,8 @@ const description = 'CSV Upload page of the Create Fares Data Service';
 interface CsvUploadProps extends UserDataUploadsProps {
     backHref: string;
     guidanceDocDisplayName: string;
-    guidanceDocAttachmentUrl: string;
     guidanceDocSize: string;
     csvTemplateDisplayName: string;
-    csvTemplateAttachmentUrl: string;
     csvTemplateSize: string;
     csrfToken: string;
 }
@@ -36,10 +34,8 @@ const CsvUpload = ({
     errors,
     backHref,
     guidanceDocDisplayName,
-    guidanceDocAttachmentUrl,
     guidanceDocSize,
     csvTemplateDisplayName,
-    csvTemplateAttachmentUrl,
     csvTemplateSize,
     csrfToken,
     ...props
@@ -76,13 +72,13 @@ const CsvUpload = ({
                 <h2 className="govuk-heading-s">Help documents</h2>
                 <FileAttachment
                     displayName={guidanceDocDisplayName}
-                    attachmentUrl={`${guidanceDocAttachmentUrl}`}
+                    attachmentUrl={`${HowToUploadFaresTriangle}`}
                     imageUrl={guidanceDocImage}
                     size={guidanceDocSize}
                 />
                 <FileAttachment
                     displayName={csvTemplateDisplayName}
-                    attachmentUrl={`${csvTemplateAttachmentUrl}`}
+                    attachmentUrl={`${FaresTriangleExampleCsv}`}
                     imageUrl={csvImage}
                     size={csvTemplateSize}
                 />
@@ -112,10 +108,8 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Cs
             csvUploadHintText:
                 'Upload a fares triangle as a .csv or MS Excel file. Refer to the help documents section to download a help file or a fares triangle template.',
             guidanceDocDisplayName: 'Download Help File - File Type PDF - File Size 592KB',
-            guidanceDocAttachmentUrl: HowToUploadFaresTriangle,
             guidanceDocSize: '1.2MB',
             csvTemplateDisplayName: 'Download fares triangle CSV template - File Type CSV - File Size 255B',
-            csvTemplateAttachmentUrl: FaresTriangleExampleCsv,
             csvTemplateSize: '255B',
             errors,
             detailSummary: "My fare triangle won't upload",
