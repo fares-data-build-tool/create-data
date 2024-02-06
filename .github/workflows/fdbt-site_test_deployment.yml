@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - "bugfix/CFDS-258_link_failed"
+      - "develop"
     paths:
       - repos/fdbt-site/**
   workflow_dispatch:
