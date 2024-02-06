@@ -40,6 +40,7 @@ const InputMethod = ({
     csvTemplateAttachmentUrl,
     csvTemplateSize,
 }: InputMethodProps): ReactElement => {
+    // eslint-disable-next-line no-console
     console.log(`${guidanceDocAttachmentUrl}`, `${csvTemplateAttachmentUrl}`);
     return (
         <BaseLayout title={title} description={description} errors={errors}>

@@ -14,6 +14,7 @@ interface ContactProps {
 }
 
 const Contact = ({ supportEmail, supportPhone }: ContactProps): ReactElement => {
+    // eslint-disable-next-line no-console
     console.log(`${ServiceGuide}`);
     return (
         <BaseLayout title={title} description={description} hideHelp>
