@@ -7,6 +7,9 @@ CREATE TABLE txcJourneyPattern(
     `operatorServiceId` int(11) NOT NULL,
     `destinationDisplay` varchar(255) DEFAULT NULL,
     `direction` varchar(50) DEFAULT NULL,
+    `routeRef` varchar(50),
+    `journeyPatternRef` varchar(50),
+    `sectionRefs` text,
     INDEX idx_operatorServiceId (operatorServiceId),
     CONSTRAINT fk_txcJourneyPattern_txcOperatorLine_id FOREIGN KEY (operatorServiceId) REFERENCES txcOperatorLine(id) ON DELETE CASCADE,
     PRIMARY KEY (`id`)

@@ -627,10 +627,33 @@ export const getAtcoCodesByNaptanCodes = async (naptanCodes: string[]): Promise<
     }
 };
 
+export const getJourneyPatternRefs = async (dataSource: string, id: number): Promise<string[]> => {
+    const query = `SELECT vehicleJourneys.journeyPatternRef FROM txcOperatorLine INNER JOIN vehicleJourneys ON ${
+        dataSource === 'bods' ? 'vehicleJourneys.lineRef' : 'vehicleJourneys.serviceRef'
+    } =
+        ${dataSource === 'tnds' ? 'txcOperatorLine.lineId' : 'txcOperatorLine.serviceCode'}
+     WHERE txcOperatorLine.id = ?`;
+
+    let queryResult: { journeyPatternRef: string }[];
+
+    try {
+        queryResult = await executeQuery(query, [id]);
+    } catch (error) {
+        throw new Error(`Could not get journey pattern refs from Aurora DB: ${error.stack}`);
+    }
+
+    if (!queryResult?.length) {
+        return [];
+    }
+
+    return queryResult.map((ref) => ref.journeyPatternRef);
+};
+
 export const getServiceByIdAndDataSource = async (
     nocCode: string,
     id: number,
     dataSource: string,
+    journeyPatternRefs: string[],
 ): Promise<RawService> => {
     const nocCodeParameter = replaceInternalNocCode(nocCode);
     logger.info('', {
@@ -647,7 +670,7 @@ export const getServiceByIdAndDataSource = async (
         JOIN txcJourneyPatternLink AS pl ON pl.journeyPatternId = ps.id
         LEFT JOIN naptanStop nsStart ON nsStart.atcoCode=pl.fromAtcoCode
         LEFT JOIN naptanStop nsStop ON nsStop.atcoCode=pl.toAtcoCode
-        WHERE os.nocCode = ? AND os.id = ? AND os.dataSource = ?
+        WHERE os.nocCode = ? AND os.id = ? AND os.dataSource = ? AND ps.journeyPatternRef in ({{${journeyPatternRefs}}})
         ORDER BY pl.journeyPatternId ASC, pl.orderInSequence
     `;
 
