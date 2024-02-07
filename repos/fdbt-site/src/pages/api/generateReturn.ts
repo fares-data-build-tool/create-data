@@ -1,6 +1,10 @@
 import moment from 'moment';
 import { NextApiResponse } from 'next';
-import { getProductIdByMatchingJsonLink, getServiceByIdAndDataSource } from '../../data/auroradb';
+import {
+    getJourneyPatternRefs,
+    getProductIdByMatchingJsonLink,
+    getServiceByIdAndDataSource,
+} from '../../data/auroradb';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { TicketWithIds, WithIds, SingleTicket, ReturnTicket } from '../../interfaces/matchingJsonTypes';
 import { isPointToPointTicket } from '../../interfaces/typeGuards';
@@ -65,7 +69,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
         const noc = getAndValidateNoc(req, res);
 
-        const service = await getServiceByIdAndDataSource(noc, Number(serviceId), 'bods');
+        const journeyPatternRefs = await getJourneyPatternRefs('bods', Number(serviceId));
+        const service = await getServiceByIdAndDataSource(noc, Number(serviceId), 'bods', journeyPatternRefs);
         const directions = Array.from(
             service.journeyPatterns.reduce((set, pattern) => {
                 set.add(pattern.direction);

@@ -17,6 +17,7 @@ import {
     getServiceByIdAndDataSource,
     getCapByNocAndId,
     getCaps,
+    getJourneyPatternRefs,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation, Cap } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
@@ -685,9 +686,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         ? '/products/multiOperatorProducts'
         : '/products/otherProducts';
 
+    const journeyPatternRefs = await getJourneyPatternRefs(dataSource, Number(serviceId));
     const lineId =
         typeof serviceId === 'string'
-            ? (await getServiceByIdAndDataSource(noc, Number(serviceId), dataSource)).lineId
+            ? (await getServiceByIdAndDataSource(noc, Number(serviceId), dataSource, journeyPatternRefs)).lineId
             : '';
 
     return {

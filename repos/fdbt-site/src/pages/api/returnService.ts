@@ -8,7 +8,7 @@ import {
 import { redirectToError, redirectTo, getAndValidateNoc } from '../../utils/apiUtils';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { getServiceByIdAndDataSource } from '../../data/auroradb';
+import { getJourneyPatternRefs, getServiceByIdAndDataSource } from '../../data/auroradb';
 import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
 import { AdditionalService, ReturnTicket, WithIds } from '../../interfaces/matchingJsonTypes';
 import { isReturnTicket } from '../../utils';
@@ -44,7 +44,13 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (modesAttribute) {
             dataSource = 'tnds';
         }
-        const service = await getServiceByIdAndDataSource(getAndValidateNoc(req, res), serviceId, dataSource);
+        const journeyPatternRefs = await getJourneyPatternRefs(dataSource, serviceId);
+        const service = await getServiceByIdAndDataSource(
+            getAndValidateNoc(req, res),
+            serviceId,
+            dataSource,
+            journeyPatternRefs,
+        );
 
         const additionalServices: AdditionalService[] = [
             {

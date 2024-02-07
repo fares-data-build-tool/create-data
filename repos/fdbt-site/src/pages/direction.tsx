@@ -6,7 +6,7 @@ import {
     FARE_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
 } from '../constants/attributes';
-import { getServiceByIdAndDataSource } from '../data/auroradb';
+import { getJourneyPatternRefs, getServiceByIdAndDataSource } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import ErrorSummary from '../components/ErrorSummary';
 import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
@@ -85,7 +85,13 @@ export const getServerSideProps = async (
         throw new Error('Necessary attributes not found to show direction page');
     }
 
-    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSourceAttribute.source);
+    const journeyPatternRefs = await getJourneyPatternRefs(dataSourceAttribute.source, serviceAttribute.id);
+    const service = await getServiceByIdAndDataSource(
+        nocCode,
+        serviceAttribute.id,
+        dataSourceAttribute.source,
+        journeyPatternRefs,
+    );
     const directions = Array.from(
         service.journeyPatterns.reduce((set, pattern) => {
             set.add(pattern.direction);
