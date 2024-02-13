@@ -203,19 +203,19 @@ def check_journey_pattern_exists(
 ):
     query = """
         SELECT id FROM txcJourneyPatternNew
-        WHERE operatorServiceId <=> :op_service_id AND destinationDisplay <=> :destination_display AND direction <=> :direction AND routeRef <=> :route_ref AND sectionRefs <=> :section_refs
+        WHERE operatorServiceId <=> %s AND destinationDisplay <=> %s AND direction <=> %s AND routeRef <=> %s AND sectionRefs <=> %s
         LIMIT 1
     """
 
     cursor.execute(
         query,
-        {
-            "op_service_id": op_service_id,
-            "destination_display": destination_display,
-            "direction": direction,
-            "route_ref": route_ref,
-            "section_refs": joined_section_refs,
-        },
+        [
+            op_service_id,
+            destination_display,
+            direction,
+            route_ref,
+            joined_section_refs,
+        ],
     )
     result = cursor.fetchone()
 
@@ -288,17 +288,17 @@ def insert_into_txc_journey_pattern_table(
     journey_pattern_info,
     joined_section_refs,
 ):
-    query = "INSERT INTO txcJourneyPatternNew (operatorServiceId, destinationDisplay, direction, routeRef, journeyPatternRef, sectionRefs) VALUES (:op_service_id, :destination_display, :direction, :route_ref, :journey_pattern_ref, :section_refs)"
+    query = "INSERT INTO txcJourneyPatternNew (operatorServiceId, destinationDisplay, direction, routeRef, journeyPatternRef, sectionRefs) VALUES (%s, %s, %s, %s, %s, %s)"
 
     cursor.execute(
         query,
         {
-            "op_service_id": operator_service_id,
-            "destination_display": journey_pattern_info["destination_display"],
-            "direction": journey_pattern_info["direction"],
-            "route_ref": journey_pattern_info["route_ref"],
-            "journey_pattern_ref": journey_pattern_info["journey_pattern_ref"],
-            "section_refs": joined_section_refs,
+            operator_service_id,
+            journey_pattern_info["destination_display"],
+            journey_pattern_info["direction"],
+            journey_pattern_info["route_ref"],
+            journey_pattern_info["journey_pattern_ref"],
+            joined_section_refs,
         },
     )
     journey_pattern_id = cursor.lastrowid
@@ -349,7 +349,7 @@ def insert_into_txc_operator_service_table(
     ) = extract_data_for_txc_operator_service_table(operator, service, line)
 
     query = """INSERT INTO txcOperatorLineNew (nocCode, lineName, lineId, startDate, endDate, operatorShortName, inboundDirectionDescription, outboundDirectionDescription, serviceDescription, serviceCode, regionCode, dataSource, origin, destination, mode)
-        VALUES (:noc_code, :line_name, :line_id, :start_date, :end_date, :operator_short_name, :inbound_direction_description, :outbound_direction_description, :service_description, :service_code, :region_code, :data_source, :origin, :destination, :mode)"""
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
     line_id = line.get("@id", "")
     line_name = line.get("LineName", "")
@@ -360,23 +360,23 @@ def insert_into_txc_operator_service_table(
     try:
         cursor.execute(
             query,
-            {
-                "noc_code": noc_code,
-                "line_name": line_name,
-                "line_id": line_id,
-                "start_date": start_date,
-                "end_date": end_date,
-                "operator_short_name": operator_short_name,
-                "inbound_direction_description": inbound_direction_description,
-                "outbound_direction_description": outbound_direction_description,
-                "service_description": service_description,
-                "service_code": service_code,
-                "region_code": region_code,
-                "data_source": data_source,
-                "origin": origin,
-                "destination": destination,
-                "mode": mode,
-            },
+            [
+                noc_code,
+                line_name,
+                line_id,
+                start_date,
+                end_date,
+                operator_short_name,
+                inbound_direction_description,
+                outbound_direction_description,
+                service_description,
+                service_code,
+                region_code,
+                data_source,
+                origin,
+                destination,
+                mode
+            ],
         )
         operator_service_id = cursor.lastrowid
         return operator_service_id
