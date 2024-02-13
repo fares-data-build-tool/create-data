@@ -24,11 +24,9 @@ import { RawJourneyPattern, StopPoint } from '../../../src/interfaces/dbTypes';
 describe('matching', () => {
     describe('getMatchingProps', () => {
         const getServiceByNocCodeLineNameAndDataSourceSpy = jest.spyOn(auroradb, 'getServiceByIdAndDataSource');
-        const getJourneyPatternRefsSpy = jest.spyOn(auroradb, 'getJourneyPatternRefs');
         const batchGetStopsByAtcoCodeWithErrorCheckSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCodeWithErrorCheck');
         const getUserFareStagesSpy = jest.spyOn(s3, 'getUserFareStages');
 
-        getJourneyPatternRefsSpy.mockImplementation(() => Promise.resolve(['JP1', 'JP2']));
         getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockRawService));
 
         batchGetStopsByAtcoCodeWithErrorCheckSpy.mockImplementation(() =>
@@ -75,7 +73,6 @@ describe('matching', () => {
         });
 
         it('preserves the stops order', async () => {
-            getJourneyPatternRefsSpy.mockImplementation(() => Promise.resolve(['JP1', 'JP2']));
             getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() => Promise.resolve(mockRawService));
             batchGetStopsByAtcoCodeWithErrorCheckSpy.mockResolvedValue({
                 results: zoneStops,
@@ -103,7 +100,6 @@ describe('matching', () => {
         });
 
         it('generates the correct list of master stops given journeys with duplicate start and end points', async () => {
-            getJourneyPatternRefsSpy.mockImplementation(() => Promise.resolve(['JP1', 'JP2']));
             getServiceByNocCodeLineNameAndDataSourceSpy.mockImplementation(() =>
                 Promise.resolve(mockRawServiceWithDuplicates),
             );

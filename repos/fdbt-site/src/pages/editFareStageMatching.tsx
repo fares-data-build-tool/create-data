@@ -1,11 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import BackButton from '../components/BackButton';
 import { renderResetAndAutoPopulateButtons, StopItem } from '../components/MatchingBase';
-import {
-    batchGetStopsByAtcoCodeWithErrorCheck,
-    getJourneyPatternRefs,
-    getServiceByIdAndDataSource,
-} from '../data/auroradb';
+import { batchGetStopsByAtcoCodeWithErrorCheck, getServiceByIdAndDataSource } from '../data/auroradb';
 import {
     removeDuplicateAdjacentStops,
     sortingWithoutSequenceNumbers,
@@ -348,8 +344,7 @@ export const getServerSideProps = async (
     const nocCode = getAndValidateNoc(ctx);
     const dataSource = !!getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE) ? 'tnds' : 'bods';
     const serviceId = matchingJsonMetaData.serviceId;
-    const journeyPatternRefs = await getJourneyPatternRefs(dataSource, Number(serviceId));
-    const service = await getServiceByIdAndDataSource(nocCode, Number(serviceId), dataSource, journeyPatternRefs);
+    const service = await getServiceByIdAndDataSource(nocCode, Number(serviceId), dataSource);
     const lineName = service.lineName;
 
     let direction = 'outbound';

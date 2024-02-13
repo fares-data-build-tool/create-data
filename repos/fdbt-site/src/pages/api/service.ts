@@ -3,7 +3,7 @@ import { FARE_TYPE_ATTRIBUTE, SERVICE_ATTRIBUTE, TXC_SOURCE_ATTRIBUTE } from '..
 import { redirectToError, redirectTo, getAndValidateNoc, deleteCookieOnResponseObject } from '../../utils/apiUtils';
 import { updateSessionAttribute, getRequiredSessionAttribute } from '../../utils/sessions';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
-import { getJourneyPatternRefs, getServiceByIdAndDataSource } from '../../data/auroradb';
+import { getServiceByIdAndDataSource } from '../../data/auroradb';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -20,13 +20,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const fareTypeAttribute = getRequiredSessionAttribute(req, FARE_TYPE_ATTRIBUTE);
         const isReturn = 'fareType' in fareTypeAttribute && ['period', 'return'].includes(fareTypeAttribute.fareType);
 
-        const journeyPatternRefs = await getJourneyPatternRefs(dataSource, serviceId);
-        const service = await getServiceByIdAndDataSource(
-            getAndValidateNoc(req, res),
-            serviceId,
-            dataSource,
-            journeyPatternRefs,
-        );
+        const service = await getServiceByIdAndDataSource(getAndValidateNoc(req, res), serviceId, dataSource);
         const directions = Array.from(
             service.journeyPatterns.reduce((set, pattern) => {
                 set.add(pattern.direction);

@@ -14,11 +14,7 @@ import {
 import { getAndValidateNoc, getCsrfToken } from '../index';
 import { isService } from '../../interfaces/typeGuards';
 import logger from '../logger';
-import {
-    getServiceByIdAndDataSource,
-    batchGetStopsByAtcoCodeWithErrorCheck,
-    getJourneyPatternRefs,
-} from '../../data/auroradb';
+import { getServiceByIdAndDataSource, batchGetStopsByAtcoCodeWithErrorCheck } from '../../data/auroradb';
 import { getUserFareStages } from '../../data/s3';
 import { RawJourneyPattern, StopPoint } from '../../interfaces/dbTypes';
 import { FareZone, Stop, UnassignedStop } from '../../interfaces/matchingJsonTypes';
@@ -216,8 +212,7 @@ export const getMatchingProps = async (
 
     const lineName = serviceAttribute.service.split('#')[0];
     const dataSource = getRequiredSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE).source;
-    const journeyPatternRefs = await getJourneyPatternRefs(dataSource, serviceAttribute.id);
-    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSource, journeyPatternRefs);
+    const service = await getServiceByIdAndDataSource(nocCode, serviceAttribute.id, dataSource);
     const userFareStages = await getUserFareStages(operatorAttribute.uuid);
 
     const direction = isInbound ? directionAttribute.inboundDirection : directionAttribute.direction;

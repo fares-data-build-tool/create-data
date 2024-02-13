@@ -18,7 +18,6 @@ import {
 
 describe('returnService', () => {
     const redirectToErrorSpy = jest.spyOn(index, 'redirectToError');
-    jest.spyOn(auroradb, 'getJourneyPatternRefs').mockResolvedValue(['JP1', 'JP2']);
     jest.spyOn(auroradb, 'getServiceByIdAndDataSource').mockResolvedValue(mockRawService);
     jest.spyOn(utils, 'getAndValidateNoc').mockReturnValue('mynoc');
     const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
