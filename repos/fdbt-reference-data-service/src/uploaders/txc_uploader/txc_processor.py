@@ -292,14 +292,14 @@ def insert_into_txc_journey_pattern_table(
 
     cursor.execute(
         query,
-        {
+        [
             operator_service_id,
             journey_pattern_info["destination_display"],
             journey_pattern_info["direction"],
             journey_pattern_info["route_ref"],
             journey_pattern_info["journey_pattern_ref"],
             joined_section_refs,
-        },
+        ],
     )
     journey_pattern_id = cursor.lastrowid
     return journey_pattern_id
