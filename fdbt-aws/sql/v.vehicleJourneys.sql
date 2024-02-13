@@ -8,7 +8,7 @@ CREATE TABLE vehicleJourneys(
     `serviceRef` varchar(50),
     `lineRef` varchar(50),
     `journeyPatternRef` varchar(50),
-    INDEX idx_noc (noc),
+I   INDEX idx_journeyPatternRef (journeyPatternRef),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
 
