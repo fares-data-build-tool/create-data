@@ -43,7 +43,6 @@ const tables = [
     'txcJourneyPatternLink',
     'txcJourneyPattern',
     'txcOperatorLine',
-    'vehicleJourneys',
 ];
 
 export const deleteAndRenameTables = async (connection: Connection): Promise<void> => {

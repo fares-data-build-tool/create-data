@@ -520,23 +520,6 @@ def format_vehicle_journeys(vehicle_journeys: list, line_id: str):
 
     return vehicle_journeys_data
 
-
-def insert_into_txc_vehicle_journey_table(
-    cursor, vehicle_journeys_info
-):
-    values = [
-        (
-            vehicle_journey_info["vehicle_journey_code"],
-            vehicle_journey_info["service_ref"],
-            vehicle_journey_info["line_ref"],
-            vehicle_journey_info["journey_pattern_ref"],
-        )
-        for vehicle_journey_info in vehicle_journeys_info
-    ]
-
-    query = "INSERT INTO vehicleJourneysNew (vehicleJourneyCode, serviceRef, lineRef, journeyPatternRef) VALUES (%s, %s, %s, %s)"
-    cursor.executemany(query, values)
-
 def write_to_database(
     data: dict,
     region_code: Optional[str],
@@ -649,11 +632,6 @@ def write_to_database(
                                 vehicle_journeys_for_line,
                                 logger,
                             )
-
-                insert_into_txc_vehicle_journey_table(
-                    cursor,
-                    vehicle_journeys_for_line,
-                )
 
             if not file_has_nocs:
                 db_connection.rollback()
