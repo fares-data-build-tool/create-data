@@ -5,7 +5,6 @@ import { TXC_SOURCE_ATTRIBUTE } from '../../../src/constants/attributes';
 
 beforeEach(() => {
     jest.resetAllMocks();
-
     jest.spyOn(auroradb, 'getServiceByIdAndDataSource').mockResolvedValue(mockRawService);
 });
 

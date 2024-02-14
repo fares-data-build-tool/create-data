@@ -4,10 +4,12 @@ from unittest.mock import patch, MagicMock
 import boto3
 
 from txc_uploader.txc_processor import (
+    collect_vehicle_journey,
     download_from_s3_and_write_to_db,
     extract_data_for_txc_operator_service_table,
     collect_journey_pattern_section_refs_and_info,
     collect_journey_patterns,
+    format_vehicle_journeys,
     iterate_through_journey_patterns_and_run_insert_queries,
     check_file_has_usable_data,
     create_unique_line_id
@@ -20,6 +22,7 @@ logger = MagicMock()
 mock_data_dict = test_xml_helpers.generate_mock_data_dict()
 mock_non_bus_dict = test_xml_helpers.generate_mock_ferry_txc_data_dict()
 mock_invalid_data_dict = test_xml_helpers.generate_mock_invalid_data_dict()
+mock_tracks_data_dict = test_xml_helpers.generate_mock_txc_tracks_data_dict()
 
 class TestLineIdGeneration:
     def test_function_returns_correctly_structured_line_id(self):
@@ -51,11 +54,21 @@ class TestDatabaseInsertQuerying:
     ):
         service = mock_data_dict["TransXChange"]["Services"]["Service"]
         mock_journey_patterns = collect_journey_patterns(mock_data_dict, service)
+        vehicle_journeys = format_vehicle_journeys(
+            mock_data_dict["TransXChange"]["VehicleJourneys"]["VehicleJourney"],
+            "l_4_ANW",
+        )
         mock_jp_insert.side_effect = [9, 27, 13, 1, 11, 5, 28, 12, 10, 6, 13, 27, 4]
         mock_cursor = MagicMock()
         mock_op_service_id = 12
+
         iterate_through_journey_patterns_and_run_insert_queries(
-            mock_cursor, mock_data_dict, mock_op_service_id, service
+            mock_cursor,
+            mock_data_dict,
+            mock_op_service_id,
+            service,
+            vehicle_journeys,
+            logger,
         )
 
         assert mock_jp_insert.call_count == len(mock_journey_patterns)
@@ -125,6 +138,13 @@ class TestDataCollectionFunctionality:
             == test_data.expected_list_of_journey_patterns
         )
 
+    def test_collect_vehicle_journey(self):
+        assert (
+            collect_vehicle_journey(
+                mock_data_dict["TransXChange"]["VehicleJourneys"]["VehicleJourney"][0]
+            )
+            == test_data.expected_vehicle_journey
+        )
 
 class TestMainFunctionality:
     @patch("txc_uploader.txc_processor.write_to_database")
