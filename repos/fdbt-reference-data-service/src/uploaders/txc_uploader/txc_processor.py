@@ -197,8 +197,6 @@ def check_journey_pattern_exists(
     op_service_id,
     destination_display,
     direction,
-    route_ref,
-    joined_section_refs,
     logger,
 ):
     query = """
@@ -212,9 +210,7 @@ def check_journey_pattern_exists(
         [
             op_service_id,
             destination_display,
-            direction,
-            route_ref,
-            joined_section_refs,
+            direction
         ],
     )
     result = cursor.fetchone()
@@ -262,8 +258,6 @@ def iterate_through_journey_patterns_and_run_insert_queries(
             operator_service_id,
             journey_pattern_info["destination_display"],
             journey_pattern_info["direction"],
-            journey_pattern_info["route_ref"],
-            joined_section_refs,
             logger,
         ):
             continue
