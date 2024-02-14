@@ -53,8 +53,6 @@ queries = [
     'CREATE TABLE txcJourneyPatternNew LIKE txcJourneyPattern',
     'DROP TABLE IF EXISTS txcOperatorLineNew',
     'CREATE TABLE txcOperatorLineNew LIKE txcOperatorLine',
-    "DROP TABLE IF EXISTS vehicleJourneysNew",
-    "CREATE TABLE vehicleJourneysNew LIKE vehicleJourneys",
     'SET FOREIGN_KEY_CHECKS=1'
 ]
 

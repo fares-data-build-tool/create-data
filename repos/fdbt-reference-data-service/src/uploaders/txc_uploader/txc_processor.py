@@ -269,7 +269,7 @@ def iterate_through_journey_patterns_and_run_insert_queries(
             continue
 
         journey_pattern_id = insert_into_txc_journey_pattern_table(
-            cursor, operator_service_id, journey_pattern_info, joined_section_refs
+            cursor, operator_service_id, journey_pattern_info
         )
 
         links = []
@@ -285,20 +285,16 @@ def iterate_through_journey_patterns_and_run_insert_queries(
 def insert_into_txc_journey_pattern_table(
     cursor,
     operator_service_id,
-    journey_pattern_info,
-    joined_section_refs,
+    journey_pattern_info
 ):
-    query = "INSERT INTO txcJourneyPatternNew (operatorServiceId, destinationDisplay, direction, routeRef, journeyPatternRef, sectionRefs) VALUES (%s, %s, %s, %s, %s, %s)"
+    query = "INSERT INTO txcJourneyPatternNew (operatorServiceId, destinationDisplay, direction) VALUES (%s, %s, %s)"
 
     cursor.execute(
         query,
         [
             operator_service_id,
             journey_pattern_info["destination_display"],
-            journey_pattern_info["direction"],
-            journey_pattern_info["route_ref"],
-            journey_pattern_info["journey_pattern_ref"],
-            joined_section_refs,
+            journey_pattern_info["direction"]
         ],
     )
     journey_pattern_id = cursor.lastrowid

@@ -146,28 +146,6 @@ class TestDataCollectionFunctionality:
             == test_data.expected_vehicle_journey
         )
 
-    @patch("txc_uploader.txc_processor.insert_into_txc_journey_pattern_table")
-    @patch("txc_uploader.txc_processor.insert_into_txc_journey_pattern_link_table")
-    def test_correct_route_ref_and_links_selected_for_journey_pattern(
-        self, mock_jp_insert, mock_jpl_insert
-    ):
-        service = mock_tracks_data_dict["TransXChange"]["Services"]["Service"]
-        mock_cursor = MagicMock()
-        mock_op_service_id = 12
-        vehicle_journeys = format_vehicle_journeys(
-            mock_data_dict["TransXChange"]["VehicleJourneys"]["VehicleJourney"],
-            "l_4_ANW",
-        )
-        iterate_through_journey_patterns_and_run_insert_queries(
-            mock_cursor,
-            mock_tracks_data_dict,
-            mock_op_service_id,
-            service,
-            vehicle_journeys,
-            logger,
-        )
-
-
 class TestMainFunctionality:
     @patch("txc_uploader.txc_processor.write_to_database")
     def test_integration_between_s3_download_and_database_write_functionality(
