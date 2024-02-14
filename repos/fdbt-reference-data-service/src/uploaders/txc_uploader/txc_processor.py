@@ -192,37 +192,6 @@ def collect_journey_patterns(data: dict, service: dict):
 
     return journey_patterns
 
-def check_journey_pattern_exists(
-    cursor,
-    op_service_id,
-    destination_display,
-    direction,
-    logger,
-):
-    query = """
-        SELECT id FROM txcJourneyPatternNew
-        WHERE operatorServiceId <=> %s AND destinationDisplay <=> %s AND direction <=> %s
-        LIMIT 1
-    """
-
-    cursor.execute(
-        query,
-        [
-            op_service_id,
-            destination_display,
-            direction
-        ],
-    )
-    result = cursor.fetchone()
-
-    journey_pattern_id = result[0] if result and len(result) > 0 else None
-    if journey_pattern_id:
-        logger.info(
-            f"Existing journey pattern found - '{op_service_id}' - '{destination_display}' - '{direction}''"
-        )
-
-    return True if journey_pattern_id else False
-
 def iterate_through_journey_patterns_and_run_insert_queries(
     cursor,
     data: dict,
@@ -246,25 +215,14 @@ def iterate_through_journey_patterns_and_run_insert_queries(
         ):
             continue
 
-        if check_journey_pattern_exists(
-            cursor,
-            operator_service_id,
-            journey_pattern_info["destination_display"],
-            journey_pattern_info["direction"],
-            logger,
-        ):
-            continue
-
         journey_pattern_id = insert_into_txc_journey_pattern_table(
             cursor, operator_service_id, journey_pattern_info
         )
 
         links = []
-        stop_codes = set()
+
         for journey_pattern_section in journey_pattern["journey_pattern_sections"]:
             for journey_pattern_timing_link in journey_pattern_section:
-                stop_codes.add(journey_pattern_timing_link["from_atco_code"])
-                stop_codes.add(journey_pattern_timing_link["to_atco_code"])
                 links.append(journey_pattern_timing_link)
 
         insert_into_txc_journey_pattern_link_table(cursor, links, journey_pattern_id)
@@ -483,25 +441,10 @@ def format_vehicle_journeys(vehicle_journeys: list, line_id: str):
         )
     ]
 
-    vehicle_journeys_data = []
-    journey_pattern_count = {}
-
-    for vehicle_journey in vehicle_journeys_for_line:
-        journey_pattern_ref = (
-            vehicle_journey["JourneyPatternRef"]
-            if "JourneyPatternRef" in vehicle_journey
-            else None
-        )
-
-        if journey_pattern_ref not in journey_pattern_count:
-            if journey_pattern_ref is not None:
-                journey_pattern_count[journey_pattern_ref] = 1
-        else:
-            journey_pattern_count[journey_pattern_ref] += 1
-
-        vehicle_journeys_data.append(collect_vehicle_journey(vehicle_journey))
-
-    return vehicle_journeys_data
+    return [
+        collect_vehicle_journey(vehicle_journey)
+        for vehicle_journey in vehicle_journeys_for_line
+    ]
 
 def write_to_database(
     data: dict,
