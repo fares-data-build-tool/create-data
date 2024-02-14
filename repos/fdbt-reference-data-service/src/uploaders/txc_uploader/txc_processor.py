@@ -203,7 +203,7 @@ def check_journey_pattern_exists(
 ):
     query = """
         SELECT id FROM txcJourneyPatternNew
-        WHERE operatorServiceId <=> %s AND destinationDisplay <=> %s AND direction <=> %s AND routeRef <=> %s AND sectionRefs <=> %s
+        WHERE operatorServiceId <=> %s AND destinationDisplay <=> %s AND direction
         LIMIT 1
     """
 
