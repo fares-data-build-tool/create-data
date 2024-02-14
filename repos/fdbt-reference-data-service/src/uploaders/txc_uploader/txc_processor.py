@@ -218,7 +218,7 @@ def check_journey_pattern_exists(
     journey_pattern_id = result[0] if result and len(result) > 0 else None
     if journey_pattern_id:
         logger.info(
-            f"Existing journey pattern found - '{op_service_id}' - '{destination_display}' - '{direction}' - '{route_ref}' - '{joined_section_refs}'"
+            f"Existing journey pattern found - '{op_service_id}' - '{destination_display}' - '{direction}''"
         )
 
     return True if journey_pattern_id else False
