@@ -246,13 +246,6 @@ def iterate_through_journey_patterns_and_run_insert_queries(
         ):
             continue
 
-        journey_pattern_section_refs: list = journey_pattern[
-            "journey_pattern_section_refs"
-        ]
-        sorted_journey_pattern_section_refs = sorted(journey_pattern_section_refs)
-
-        joined_section_refs = "".join(sorted_journey_pattern_section_refs)
-
         if check_journey_pattern_exists(
             cursor,
             operator_service_id,
