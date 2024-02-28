@@ -153,7 +153,7 @@
 				</ServiceFrame>
 				<!--==== STEP 3:: THIS IS OUR FARE STAGES DEFINED IN HERE AND LINKED TO THE SERVICE FRAME ====-->
 				<FareFrame version="1.0" id="epd:UK:HCTY:SiteFrame_UK_PI_NETWORK:Line_16:op" dataSourceRef="op:operator" responsibilitySetRef="network_data">
-					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_NETWORK:FXCP" version="fxc:v1.0" />
+					<TypeOfFrameRef ref="fxc:UK:DFT:TypeOfFrame_UK_PI_FARE_NETWORK:FXCP" version="fxc:v1.0" />
 					<!--==== Fare zones === -->
 					<fareZones>
 					</fareZones>
