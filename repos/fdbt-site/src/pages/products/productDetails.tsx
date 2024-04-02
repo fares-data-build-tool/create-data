@@ -35,6 +35,7 @@ import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { Stop, TicketWithIds } from '../../interfaces/matchingJsonTypes';
 import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
+import { STAGE } from '../../constants';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -55,6 +56,7 @@ interface ProductDetailsProps {
     cannotGenerateReturn: boolean;
     csrfToken: string;
     fareTriangleModified?: string;
+    stage: string;
 }
 
 const createGenerateReturnUrl = (
@@ -226,6 +228,7 @@ const createProductDetails = async (
     fareTriangleModified: string | undefined,
     dataSource: string,
     isDevOrTest: boolean,
+    stage: string,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
     productName: string;
@@ -538,7 +541,7 @@ const createProductDetails = async (
         });
     }
 
-    if ('pricingByDistance' in product && product.pricingByDistance) {
+    if ('pricingByDistance' in product && product.pricingByDistance && stage === 'dev') {
         const { pricingByDistance } = product;
 
         productDetailsElements.push({
@@ -707,6 +710,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             cannotGenerateReturn,
             csrfToken,
             fareTriangleModified,
+            stage: STAGE,
         },
     };
 };

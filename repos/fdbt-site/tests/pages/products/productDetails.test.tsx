@@ -90,6 +90,7 @@ describe('myfares pages', () => {
                     cannotGenerateReturn={false}
                     passengerTypeId={2}
                     csrfToken=""
+                    stage="dev"
                 />,
             );
 
@@ -154,6 +155,7 @@ describe('myfares pages', () => {
                     cannotGenerateReturn={false}
                     passengerTypeId={2}
                     csrfToken=""
+                    stage="dev"
                 />,
             );
 
@@ -212,6 +214,7 @@ describe('myfares pages', () => {
                     cannotGenerateReturn
                     passengerTypeId={2}
                     csrfToken=""
+                    stage="dev"
                 />,
             );
 
@@ -276,6 +279,7 @@ describe('myfares pages', () => {
                     passengerTypeId={2}
                     csrfToken=""
                     fareTriangleModified={'18/10/2021'}
+                    stage="dev"
                 />,
             );
 
@@ -322,6 +326,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
+                    stage: 'dev',
                     backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'Test Passenger Type - Single (school)',
                     startDate: '17/12/2020',
@@ -393,6 +398,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
+                    stage: 'dev',
                     backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'My product',
                     startDate: '17/12/2020',
@@ -474,6 +480,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
+                    stage: 'dev',
                     backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'Test Passenger Type - Return',
                     startDate: '17/12/2020',
@@ -566,6 +573,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
+                    stage: 'dev',
                     backHref: `/products/otherProducts`,
                     productName: 'Test Return Product',
                     startDate: '17/12/2020',
@@ -660,6 +668,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
+                    stage: 'dev',
                     backHref: `/products/otherProducts`,
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
@@ -743,6 +752,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
+                    stage: 'dev',
                     backHref: '/products/multiOperatorProducts',
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
@@ -831,6 +841,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
+                    stage: 'dev',
                     backHref: '/products/otherProducts',
                     productName: 'product one',
                     startDate: '17/12/2020',
@@ -906,6 +917,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
+                    stage: 'dev',
                     backHref: '/products/otherProducts',
                     productName: 'Weekly Ticket',
                     startDate: '17/12/2020',
@@ -989,6 +1001,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
+                    stage: 'dev',
                     backHref: `/products/pointToPointProducts?serviceId=2`,
                     productName: 'Test Passenger Type - Single (school)',
                     startDate: '17/12/2020',
@@ -1063,6 +1076,7 @@ describe('myfares pages', () => {
             expect(await getServerSideProps(ctx)).toStrictEqual({
                 props: {
                     requiresAttention: false,
+                    stage: 'dev',
                     backHref: '/products/otherProducts',
                     productName: 'Flat fare with geo zone',
                     startDate: '17/12/2020',

@@ -102,6 +102,13 @@ void (async (): Promise<void> => {
             });
         });
 
+        server.get('/definePricingPerDistance', requireAuth, (req, res) => {
+            if (process.env.STAGE !== 'dev') {
+                redirectTo(res, '/error');
+            }
+            return handle(req, res);
+        });
+
         server.get('*', requireAuth, (req: Request, res: Response) => {
             res.locals.csrfToken = req.csrfToken();
             return handle(req, res);
