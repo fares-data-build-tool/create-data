@@ -90,7 +90,6 @@ describe('myfares pages', () => {
                     cannotGenerateReturn={false}
                     passengerTypeId={2}
                     csrfToken=""
-                    stage="dev"
                 />,
             );
 
@@ -155,7 +154,6 @@ describe('myfares pages', () => {
                     cannotGenerateReturn={false}
                     passengerTypeId={2}
                     csrfToken=""
-                    stage="dev"
                 />,
             );
 
@@ -214,7 +212,6 @@ describe('myfares pages', () => {
                     cannotGenerateReturn
                     passengerTypeId={2}
                     csrfToken=""
-                    stage="dev"
                 />,
             );
 
@@ -279,7 +276,6 @@ describe('myfares pages', () => {
                     passengerTypeId={2}
                     csrfToken=""
                     fareTriangleModified={'18/10/2021'}
-                    stage="dev"
                 />,
             );
 
