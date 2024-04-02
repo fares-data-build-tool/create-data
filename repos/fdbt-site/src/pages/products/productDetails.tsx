@@ -56,7 +56,6 @@ interface ProductDetailsProps {
     cannotGenerateReturn: boolean;
     csrfToken: string;
     fareTriangleModified?: string;
-    stage: string;
 }
 
 const createGenerateReturnUrl = (
@@ -680,6 +679,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         fareTriangleModified,
         dataSource,
         isDevOrTest,
+        STAGE,
     );
 
     const backHref = serviceId
@@ -710,7 +710,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             cannotGenerateReturn,
             csrfToken,
             fareTriangleModified,
-            stage: STAGE,
         },
     };
 };
