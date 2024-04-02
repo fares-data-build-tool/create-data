@@ -108,14 +108,12 @@ void (async (): Promise<void> => {
             max: 100,
             standardHeaders: true,
             legacyHeaders: false,
-            handler: (_req, res) => {
-                res.status(429).json({
-                    message: 'Too many requests, please try again later.',
-                });
-            },
+            message: 'Too many requests from this IP, please try again after 15 minutes',
         });
 
-        server.get('/definePricingPerDistance', requireAuth, definePricingPerDistanceLimiter, (req, res) => {
+        server.use('/definePricingPerDistance', definePricingPerDistanceLimiter);
+
+        server.get('/definePricingPerDistance', requireAuth, (req, res) => {
             if (process.env.STAGE !== 'dev') {
                 redirectTo(res, '/error');
             }
