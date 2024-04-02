@@ -108,7 +108,7 @@ void (async (): Promise<void> => {
             max: 100,
             standardHeaders: true,
             legacyHeaders: false,
-            handler: function (_req, res) {
+            handler: (_req, res) => {
                 res.status(429).json({
                     message: 'Too many requests, please try again later.',
                 });
