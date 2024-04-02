@@ -8,6 +8,7 @@ import setupLogging from './middleware/logging';
 import setupSessions from './middleware/sessions';
 import logger from '../src/utils/logger';
 import { redirectTo } from '../src/utils/apiUtils';
+import rateLimit from 'express-rate-limit';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });
@@ -102,7 +103,19 @@ void (async (): Promise<void> => {
             });
         });
 
-        server.get('/definePricingPerDistance', requireAuth, (req, res) => {
+        const definePricingPerDistanceLimiter = rateLimit({
+            windowMs: 15 * 60 * 1000,
+            max: 100,
+            standardHeaders: true,
+            legacyHeaders: false,
+            handler: function (_req, res) {
+                res.status(429).json({
+                    message: 'Too many requests, please try again later.',
+                });
+            },
+        });
+
+        server.get('/definePricingPerDistance', requireAuth, definePricingPerDistanceLimiter, (req, res) => {
             if (process.env.STAGE !== 'dev') {
                 redirectTo(res, '/error');
             }
