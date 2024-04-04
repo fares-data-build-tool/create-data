@@ -291,7 +291,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const fieldset: RadioConditionalInputFieldset = getFieldset(
         errors,
         endOfFareDay,
-        capsAttribute?.capDetails.productValidity,
+        capsAttribute?.capDetails.capExpiry.productValidity,
     );
     return {
         props: {

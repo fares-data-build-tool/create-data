@@ -9,7 +9,7 @@ import selectCaps from '../../../src/pages/api/selectCaps';
 import * as sessions from '../../../src/utils/sessions';
 import { expectedSingleTicket, getMockRequestAndResponse, mockIdTokenMultiple } from '../../testData/mockData';
 import * as userData from '../../../src/utils/apiUtils/userData';
-import { ExpiryUnit } from '../../../src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit, ProductValidity } from '../../../src/interfaces/matchingJsonTypes';
 
 describe('selectCaps', () => {
     const writeHeadMock = jest.fn();
@@ -28,8 +28,12 @@ describe('selectCaps', () => {
             capDetails: {
                 name: 'cappy cap',
                 price: '2',
-                durationAmount: '24hr',
-                durationUnits: ExpiryUnit.HOUR,
+                durationAmount: '1',
+                durationUnits: CapExpiryUnit.MONTH,
+                capExpiry: {
+                    productValidity: 'endOfCalendarDay' as ProductValidity,
+                    productEndTime: '',
+                },
             },
         });
         const { req, res } = getMockRequestAndResponse({
@@ -66,8 +70,12 @@ describe('selectCaps', () => {
             capDetails: {
                 name: 'cappy cap',
                 price: '2',
-                durationAmount: '24hr',
-                durationUnits: ExpiryUnit.HOUR,
+                durationAmount: '1',
+                durationUnits: CapExpiryUnit.MONTH,
+                capExpiry: {
+                    productValidity: 'endOfCalendarDay' as ProductValidity,
+                    productEndTime: '',
+                },
             },
         });
 
