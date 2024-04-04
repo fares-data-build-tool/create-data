@@ -9,7 +9,7 @@ import SalesConfirmation, {
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
 import { CAPS_DEFINITION_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
-import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
 import * as db from '../../src/data/auroradb';
 
 describe('pages', () => {
@@ -63,7 +63,8 @@ describe('pages', () => {
                     name: 'Best cap',
                     price: '2',
                     durationAmount: '2',
-                    durationUnits: ExpiryUnit.HOUR,
+                    durationUnits: CapExpiryUnit.MONTH,
+                    capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
                 },
             },
             {
@@ -72,7 +73,8 @@ describe('pages', () => {
                     name: 'Other cap',
                     price: '3',
                     durationAmount: '3',
-                    durationUnits: ExpiryUnit.HOUR,
+                    durationUnits: CapExpiryUnit.MONTH,
+                    capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
                 },
             },
         ]);
@@ -84,7 +86,8 @@ describe('pages', () => {
                 name: 'Best cap',
                 price: '2',
                 durationAmount: '2',
-                durationUnits: ExpiryUnit.HOUR,
+                durationUnits: CapExpiryUnit.MONTH,
+                capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
             },
         });
 
@@ -113,7 +116,8 @@ describe('pages', () => {
                         name: 'Best cap',
                         price: '2',
                         durationAmount: '2',
-                        durationUnits: ExpiryUnit.HOUR,
+                        durationUnits: CapExpiryUnit.MONTH,
+                        capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
                     },
                 },
             };
@@ -155,7 +159,8 @@ describe('pages', () => {
                         name: 'cappy cap',
                         price: '2',
                         durationAmount: '24hr',
-                        durationUnits: ExpiryUnit.HOUR,
+                        durationUnits: CapExpiryUnit.MONTH,
+                        capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
                     },
                 },
             );
