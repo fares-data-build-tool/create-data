@@ -2,7 +2,7 @@ import ticketConfirmation from '../../../src/pages/api/ticketConfirmation';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as index from '../../../src/utils/apiUtils';
 import * as db from '../../../src/data/auroradb';
-import { ExpiryUnit, FromDb } from '../../../src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit, FromDb } from '../../../src/interfaces/matchingJsonTypes';
 import { Cap } from '../../../src/interfaces';
 
 describe('ticketConfirmation', () => {
@@ -23,7 +23,8 @@ describe('ticketConfirmation', () => {
             name: 'Cap 1',
             price: '4',
             durationAmount: '2',
-            durationUnits: 'hour' as ExpiryUnit,
+            durationUnits: 'month' as CapExpiryUnit,
+            capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
         },
         id: 2,
     };
