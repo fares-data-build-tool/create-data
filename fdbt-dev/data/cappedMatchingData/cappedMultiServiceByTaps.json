@@ -28,19 +28,19 @@
           "name": "Day cap",
           "price": "2",
           "durationAmount": "2",
-          "durationUnits": "day"
+          "durationUnits": "day",
+          "capExpiry": { "productValidity": "24hr", "productEndTime": "" }
         },
         {
           "name": "wefeFw",
           "price": "2",
           "durationAmount": "1",
-          "durationUnits": "day"
+          "durationUnits": "day",
+          "capExpiry": { "productValidity": "24hr", "productEndTime": "" }
         }
       ],
       "productName": "product name"
-    },
-    "capExpiry": { "productValidity": "24hr", "productEndTime": "" },
-    "capStart": { "type": "fixedWeekdays", "startDay": "monday" }
+    }
   },
   "products": [
     { "productName": "product name", "salesOfferPackages": [{ "id": 3 }] }

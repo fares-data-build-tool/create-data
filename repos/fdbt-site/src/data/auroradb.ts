@@ -1694,53 +1694,6 @@ export const upsertFareDayEnd = async (nocCode: string, fareDayEnd: string): Pro
     }
 };
 
-export const getCapExpiry = async (nocCode: string): Promise<string | undefined> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'retrieving cap expiry for given nocCode',
-        nocCode,
-    });
-
-    try {
-        const queryInput = `
-            SELECT contents
-            FROM caps
-            WHERE noc = ?
-            AND isExpiry = 1
-        `;
-
-        const queryResults = await executeQuery<{ contents: string }[]>(queryInput, [nocCode]);
-        // contents will be like {"productValidity":"fareDayEnd"} or {"productValidity":"24hr"}
-        return queryResults[0]?.contents;
-    } catch (error) {
-        throw new Error(`Could not retrieve cap expiry by nocCode from AuroraDB: ${error.stack}`);
-    }
-};
-
-export const upsertCapExpiry = async (nocCode: string, capExpiry: CapExpiry): Promise<void> => {
-    logger.info('', {
-        context: 'data.auroradb',
-        message: 'upserting cap expiry',
-        nocCode,
-    });
-
-    try {
-        const updateQuery = `UPDATE caps
-                             SET contents = ?
-                             WHERE noc = ?
-                             AND isExpiry = 1`;
-        const meta = await executeQuery<ResultSetHeader>(updateQuery, [JSON.stringify(capExpiry), nocCode]);
-        if (meta.affectedRows > 1) {
-            throw Error(`Updated too many rows when updating cap expiry ${meta}`);
-        } else if (meta.affectedRows === 0) {
-            const insertQuery = `INSERT INTO caps (contents, noc, isExpiry) VALUES (?, ?, 1)`;
-            await executeQuery(insertQuery, [JSON.stringify(capExpiry), nocCode]);
-        }
-    } catch (error) {
-        throw new Error(`Could not insert caps expiry into the caps table. ${error}`);
-    }
-};
-
 export const getCaps = async (nocCode: string): Promise<FromDb<Cap>[]> => {
     logger.info('', {
         context: 'data.auroradb',

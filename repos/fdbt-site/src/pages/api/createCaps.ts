@@ -1,9 +1,9 @@
 import { NextApiResponse } from 'next';
-import { getCaps, insertCaps, updateCaps } from '../../data/auroradb';
+import { getCaps, getFareDayEnd, insertCaps, updateCaps } from '../../data/auroradb';
 import { CREATE_CAPS_ATTRIBUTE } from '../../constants/attributes';
 import { Cap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces/index';
-import { CapStart, DayOfTheWeek, ExpiryUnit, FromDb } from '../../interfaces/matchingJsonTypes';
-import { getAndValidateNoc, isADayOfTheWeek, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { CapExpiryUnit, FromDb, ProductValidity } from '../../interfaces/matchingJsonTypes';
+import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {
     checkDurationIsValid,
     checkPriceIsValid,
@@ -12,15 +12,15 @@ import {
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { isADayOrLonger } from '../createCaps';
 
 export interface InputtedCap {
     name: string | undefined;
     price: string | undefined;
     durationAmount: string | undefined;
     durationUnits: string | undefined;
-    type: string | undefined;
-    startDay: string | undefined;
+    productValidity: 'endOfCalendarDay' | 'fareDayEnd' | undefined;
+    productEndTime: string | undefined;
+    fareDayEnd: string | undefined;
 }
 
 export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createdCap: Cap } => {
@@ -55,32 +55,19 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
         errors.push({ errorMessage: capDurationUnitsError, id: 'cap-duration-unit' });
     }
 
-    let capStart = undefined;
+    const trimmedCapProductValidity = removeExcessWhiteSpace(inputtedCap.productValidity);
 
-    if (isADayOrLonger(inputtedCap.durationAmount, inputtedCap.durationUnits)) {
-        const capType = inputtedCap.type;
+    if (trimmedCapProductValidity !== 'endOfCalendarDay' && trimmedCapProductValidity !== 'fareDayEnd') {
+        errors.push({ errorMessage: 'Select a cap expiry', id: 'cap-expiry' });
+    }
 
-        if (!(capType === 'fixedWeekdays' || capType === 'rollingDays')) {
+    const trimmedCapProductEndTime = removeExcessWhiteSpace(inputtedCap.productEndTime);
+    if (trimmedCapProductValidity === 'fareDayEnd') {
+        if (!inputtedCap.fareDayEnd) {
             errors.push({
-                id: 'fixed-weekdays',
-                errorMessage: 'Choose an option regarding your cap ticket start',
+                id: 'product-end-time',
+                errorMessage: 'No fare day end defined',
             });
-        }
-
-        if (capType === 'fixedWeekdays') {
-            if (!isADayOfTheWeek(inputtedCap.startDay)) {
-                errors.push({
-                    id: 'start',
-                    errorMessage: 'Select a start day',
-                });
-            }
-        }
-
-        if (capType === 'fixedWeekdays' || capType === 'rollingDays') {
-            capStart = {
-                type: capType as CapStart,
-                startDay: capType === 'rollingDays' ? undefined : (inputtedCap.startDay as DayOfTheWeek),
-            };
         }
     }
 
@@ -88,12 +75,15 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
         name: trimmedCapName,
         price: trimmedCapPrice,
         durationAmount: trimmedCapDurationAmount,
-        durationUnits: (inputtedCap.durationUnits as ExpiryUnit) || '',
+        durationUnits: (inputtedCap.durationUnits as CapExpiryUnit) || '',
+        capExpiry: {
+            productValidity: trimmedCapProductValidity as ProductValidity,
+            productEndTime: trimmedCapProductEndTime,
+        },
     };
 
     const createdCap: Cap = {
         capDetails: cap,
-        capStart,
     };
 
     return {
@@ -105,7 +95,8 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const noc = getAndValidateNoc(req, res);
-        const { capName, capPrice, capDuration, capDurationUnits, capStart, startDay } = req.body;
+        const endOfFareDay = await getFareDayEnd(noc);
+        const { capName, capPrice, capDuration, capDurationUnits, capProductValidity, capProductEndTime } = req.body;
         const id = req.body.id && Number(req.body.id);
 
         const inputtedCap: InputtedCap = {
@@ -113,8 +104,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             price: capPrice,
             durationAmount: capDuration,
             durationUnits: capDurationUnits,
-            type: capStart,
-            startDay: startDay,
+            productValidity: capProductValidity,
+            productEndTime: capProductEndTime,
+            fareDayEnd: endOfFareDay,
         };
 
         const { createdCap, errors } = validateAndFormatCapInputs(inputtedCap);

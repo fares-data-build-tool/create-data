@@ -68,7 +68,6 @@ import {
     MANAGE_PRODUCT_GROUP_ERRORS_ATTRIBUTE,
     VIEW_PRODUCT_GROUP_ERRORS,
     EDIT_CARNET_PROPERTIES_ERROR,
-    CAP_EXPIRY_ATTRIBUTE,
     CAP_START_ATTRIBUTE,
     PRICING_PER_DISTANCE_ATTRIBUTE,
     MULTI_TAPS_PRICING_ATTRIBUTE,
@@ -243,7 +242,6 @@ export interface SessionAttributeTypes {
     [CREATE_CAPS_ATTRIBUTE]: Cap | WithErrors<Cap>;
     [EDIT_PERIOD_DURATION_ERROR]: ErrorInfo[];
     [EDIT_CARNET_PROPERTIES_ERROR]: ErrorInfo[];
-    [CAP_EXPIRY_ATTRIBUTE]: CapExpiry | ErrorInfo[];
     [CAP_START_ATTRIBUTE]: CapStartInfo | ErrorInfo[];
     [PRICING_PER_DISTANCE_ATTRIBUTE]: DistancePricingData | WithErrors<DistancePricingData>;
     [MULTI_TAPS_PRICING_ATTRIBUTE]: MultiTapPricing | WithErrors<MultiTapPricing>;

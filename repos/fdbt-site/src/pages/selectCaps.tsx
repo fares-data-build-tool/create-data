@@ -6,7 +6,7 @@ import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { CapCardBody } from './viewCaps';
 import BackButton from '../components/BackButton';
-import { getCaps } from '../data/auroradb';
+import { getCaps, getFareDayEnd } from '../data/auroradb';
 import { getSessionAttribute } from '../../src/utils/sessions';
 import {
     CAPS_DEFINITION_ATTRIBUTE,
@@ -24,9 +24,17 @@ interface SelectCapsProps {
     capsFromDb: Cap[];
     backHref: string;
     selectedId: number | null;
+    fareDayEnd?: string;
 }
 
-const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: SelectCapsProps): ReactElement => {
+const SelectCaps = ({
+    csrfToken,
+    errors,
+    capsFromDb,
+    backHref,
+    selectedId,
+    fareDayEnd,
+}: SelectCapsProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
@@ -82,6 +90,7 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: Sel
                                                     key={capFromDb.capDetails.name}
                                                     cap={capFromDb}
                                                     selectedId={selectedId}
+                                                    fareDayEnd={fareDayEnd}
                                                 />
                                             ))
                                         ) : (
@@ -126,7 +135,15 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: Sel
     );
 };
 
-const CapsCard = ({ cap, selectedId }: { cap: Cap; selectedId: number | null }): ReactElement => {
+const CapsCard = ({
+    cap,
+    selectedId,
+    fareDayEnd,
+}: {
+    cap: Cap;
+    selectedId: number | null;
+    fareDayEnd?: string;
+}): ReactElement => {
     return (
         <div className="card">
             <div className="card__body caps">
@@ -145,7 +162,7 @@ const CapsCard = ({ cap, selectedId }: { cap: Cap; selectedId: number | null }):
                         <label className="govuk-label govuk-radios__label" />
                     </div>
                 </div>
-                <CapCardBody cap={cap} />
+                <CapCardBody cap={cap} fareDayEnd={fareDayEnd} />
             </div>
         </div>
     );
@@ -155,6 +172,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if (!(process.env.NODE_ENV === 'development' || process.env.STAGE === 'test') && ctx.res) {
         redirectTo(ctx.res, '/selectPurchaseMethods');
     }
+    const nocCode = getAndValidateNoc(ctx);
+    const endOfFareDay = await getFareDayEnd(nocCode);
 
     const csrfToken = getCsrfToken(ctx);
     const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
@@ -189,6 +208,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             capsFromDb,
             backHref,
             selectedId,
+            fareDayEnd: endOfFareDay || '',
         },
     };
 };

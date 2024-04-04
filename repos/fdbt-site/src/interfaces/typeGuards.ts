@@ -173,13 +173,6 @@ export const isPeriodExpiry = (
     periodExpiryAttribute: PeriodExpiry | ErrorInfo[] | undefined,
 ): periodExpiryAttribute is PeriodExpiry => !!periodExpiryAttribute && 'productValidity' in periodExpiryAttribute;
 
-export const isCapExpiry = (capExpiryAttribute: CapExpiry | ErrorInfo[] | undefined): capExpiryAttribute is CapExpiry =>
-    !!capExpiryAttribute && 'productValidity' in capExpiryAttribute;
-
-export const isCapStartInfo = (
-    capStartAttribute: CapStartInfo | ErrorInfo[] | undefined,
-): capStartAttribute is CapStartInfo => !!capStartAttribute && 'type' in capStartAttribute;
-
 export const isMultiOperatorMultipleServicesTicket = (
     ticket: Ticket | WithIds<Ticket>,
 ): ticket is MultiOperatorMultipleServicesTicket =>

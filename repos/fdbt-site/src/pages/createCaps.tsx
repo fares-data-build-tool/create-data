@@ -1,53 +1,96 @@
-import React, { ReactElement, useState } from 'react';
-import { ExpiryUnit } from '../interfaces/matchingJsonTypes';
+import React, { ReactElement } from 'react';
+import { CapExpiryUnit } from '../interfaces/matchingJsonTypes';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
-import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
+import { Cap, ErrorInfo, NextPageContextWithSession, RadioConditionalInputFieldset } from '../interfaces';
 import { isWithErrors } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getAndValidateNoc, getCsrfToken, getErrorsByIds } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { upperFirst } from 'lodash';
-import { getCapByNocAndId } from '../data/auroradb';
-import { daysOfWeek } from '../constants';
+import { getCapByNocAndId, getFareDayEnd } from '../data/auroradb';
 import BackButton from '../components/BackButton';
+import RadioConditionalInput from '../components/RadioConditionalInput';
 
 const title = 'Create Caps - Create Fares Data Service';
 const description = 'Create caps page of the Create Fares Data Service';
+
+export const expiryHintText: { [expiry: string]: string } = {
+    endOfCalendarDay: 'The cap applies to journeys made before midnight',
+    '24hr': 'The cap applies to journeys made within 24hrs of the first tap',
+    fareDayEnd: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
+};
+
+export const getFieldset = (
+    errors: ErrorInfo[],
+    endOfFareDay?: string,
+    capExpiry?: string,
+): RadioConditionalInputFieldset => {
+    const CapExpiryFieldSet: RadioConditionalInputFieldset = {
+        heading: {
+            id: 'cap-validity',
+            content: 'Is this ticket only valid on certain days or times?',
+            hidden: true,
+        },
+        radios: [
+            {
+                id: 'cap-end-calendar',
+                name: 'capValid',
+                value: 'endOfCalendarDay',
+                label: 'At the end of a calendar day',
+                radioButtonHint: {
+                    id: 'cap-end-calendar-hint',
+                    content: expiryHintText['endOfCalendarDay'],
+                },
+                defaultChecked: capExpiry === 'endOfCalendarDay',
+            },
+            {
+                id: 'cap-end-of-service',
+                disableAutoSelect: capExpiry !== 'fareDayEnd',
+                name: 'capValid',
+                value: 'fareDayEnd',
+                dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
+                label: 'Fare day end',
+                radioButtonHint: {
+                    id: 'cap-end-of-service-hint',
+                    content: expiryHintText['fareDayEnd'],
+                },
+                defaultChecked: capExpiry === 'fareDayEnd',
+                inputHint: {
+                    id: 'product-end-time-hint',
+                    content: 'You can update your fare day end in operator settings',
+                    hidden: true,
+                },
+                inputType: 'text',
+                inputs: [
+                    {
+                        id: 'product-end-time',
+                        name: 'productEndTime',
+                        label: 'End time',
+                        disabled: true,
+                        defaultValue: endOfFareDay ?? '',
+                    },
+                ],
+                inputErrors: getErrorsByIds(['product-end-time'], errors),
+            },
+        ],
+        radioError: getErrorsByIds(['cap-end-calendar'], errors),
+    };
+    return CapExpiryFieldSet;
+};
 
 interface CreateCapsProps {
     errors: ErrorInfo[];
     userInput?: Cap;
     csrfToken: string;
     editId?: number;
+    fieldset: RadioConditionalInputFieldset;
 }
-export const isADayOrLonger = (duration: string | undefined, durationUnit: string | undefined): boolean =>
-    !!durationUnit && !!duration && !(durationUnit === 'hour' && Number(duration) <= 24);
 
-const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsProps): ReactElement => {
-    const optionList: string[] = Object.values(ExpiryUnit).filter((option) => option !== 'term');
-
-    const capDurationAmount = userInput?.capDetails.durationAmount;
-    const capDurationUnit = userInput?.capDetails.durationUnits as string;
-
-    const [showCapStartInfo, setShowCapStartInfo] = useState<boolean>(
-        isADayOrLonger(capDurationAmount, capDurationUnit),
-    );
-    const [durationAmount, setDurationAmount] = useState(capDurationAmount);
-    const [durationUnit, setDurationUnit] = useState(capDurationUnit);
-    const [startDay, setStartDay] = useState(!!userInput?.capStart?.startDay);
-
-    const updateDurationUnit = (durationUnit: string): void => {
-        setDurationUnit(durationUnit);
-        setShowCapStartInfo(isADayOrLonger(durationAmount, durationUnit));
-    };
-
-    const updateDurationAmount = (durationAmount: string): void => {
-        setDurationAmount(durationAmount);
-        setShowCapStartInfo(isADayOrLonger(durationAmount, durationUnit));
-    };
+const CreateCaps = ({ errors = [], userInput, csrfToken, editId, fieldset }: CreateCapsProps): ReactElement => {
+    const optionList: string[] = Object.values(CapExpiryUnit).filter((option) => option !== 'term');
 
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
@@ -164,7 +207,6 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                                         id="cap-period-duration-quantity"
                                                         aria-describedby="cap-duration-hint"
                                                         defaultValue={userInput?.capDetails.durationAmount || ''}
-                                                        onChange={(e): void => updateDurationAmount(e.target.value)}
                                                     />
                                                 </FormElementWrapper>
                                                 <FormElementWrapper
@@ -179,7 +221,6 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                                         name="capDurationUnits"
                                                         id="cap-duration-unit"
                                                         defaultValue={userInput?.capDetails.durationUnits || ''}
-                                                        onChange={(e): void => updateDurationUnit(e.target.value)}
                                                     >
                                                         <option value="" disabled key="select-one">
                                                             Select One
@@ -198,100 +239,21 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsPro
                                 </div>
                             </div>
 
-                            {showCapStartInfo ? (
-                                <FormGroupWrapper errors={errors} errorIds={['fixed-weekdays', 'rolling-days']}>
-                                    <div className="govuk-!-margin-left-4">
-                                        <h2 className="govuk-heading-l govuk-!-margin-top-6">
-                                            Define when cap is calculated from
-                                        </h2>
-                                        <h2 className="govuk-heading-m govuk-!-margin-top-6">Business week</h2>
-                                        <span id="fixed-weekdays-hint" className="govuk-hint">
-                                            Which day does your cap start on?
+                            <div className="govuk-!-margin-left-2 govuk-!-margin-right-2 govuk-!-margin-top-4">
+                                <FormGroupWrapper errors={errors} errorIds={['cap-expiry']}>
+                                    <fieldset className="govuk-fieldset" aria-describedby="cap-expiry-page-heading">
+                                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                            <h2 className="govuk-fieldset__heading" id="cap-expiry-page-heading">
+                                                When does the cap expire?
+                                            </h2>
+                                        </legend>
+                                        <span className="govuk-hint" id="cap-expiry-hint">
+                                            We need to know the time that this cap would be valid until
                                         </span>
-                                        <div className="govuk-radios" data-module="govuk-radios">
-                                            <div className="govuk-radios__item">
-                                                <input
-                                                    className="govuk-radios__input"
-                                                    id="fixed-weekdays"
-                                                    name="capStart"
-                                                    type="radio"
-                                                    value="fixedWeekdays"
-                                                    data-aria-controls="conditional-fixed-weekdays"
-                                                    onChange={(): void => setStartDay(true)}
-                                                    defaultChecked={
-                                                        userInput &&
-                                                        userInput.capStart &&
-                                                        userInput.capStart.type === 'fixedWeekdays'
-                                                    }
-                                                />
-
-                                                <label
-                                                    className="govuk-label govuk-radios__label"
-                                                    htmlFor="fixed-weekdays"
-                                                >
-                                                    Fixed weekdays
-                                                </label>
-                                            </div>
-
-                                            <div
-                                                className={`govuk-radios__conditional ${
-                                                    !startDay && 'govuk-visually-hidden'
-                                                }`}
-                                                id="conditional-fixed-weekdays"
-                                            >
-                                                <div className="govuk-form-group">
-                                                    <label className="govuk-label" htmlFor="start-day">
-                                                        Start
-                                                    </label>
-                                                    <select className="govuk-select" id="start-day" name="startDay">
-                                                        {daysOfWeek.map((day) => (
-                                                            <option
-                                                                defaultValue={day[0]}
-                                                                key={day}
-                                                                value={day}
-                                                                selected={
-                                                                    userInput &&
-                                                                    userInput.capStart &&
-                                                                    userInput.capStart.startDay &&
-                                                                    userInput.capStart.startDay === day
-                                                                }
-                                                            >
-                                                                {upperFirst(day)}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div className="govuk-radios__item">
-                                                <input
-                                                    className="govuk-radios__input"
-                                                    id="rolling-days"
-                                                    name="capStart"
-                                                    type="radio"
-                                                    value="rollingDays"
-                                                    aria-describedby="rolling-days-hint"
-                                                    onChange={(): void => setStartDay(false)}
-                                                    defaultChecked={
-                                                        userInput &&
-                                                        userInput.capStart &&
-                                                        userInput.capStart.type === 'rollingDays'
-                                                    }
-                                                />
-                                                <label
-                                                    className="govuk-label govuk-radios__label"
-                                                    htmlFor="rolling-days"
-                                                >
-                                                    Rolling days
-                                                </label>
-                                                <div id="rolling-days-hint" className="govuk-hint govuk-radios__hint">
-                                                    Rolling seven days from first journey
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
+                                    </fieldset>
                                 </FormGroupWrapper>
-                            ) : null}
+                            </div>
                         </fieldset>
                         <input type="hidden" name="id" value={editId} />
                         <input
@@ -312,10 +274,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const capsAttribute = getSessionAttribute(ctx.req, CREATE_CAPS_ATTRIBUTE);
     let userInput = capsAttribute ? capsAttribute : undefined;
-
     const id = Number(ctx.query.id);
     const editId = Number.isInteger(id) ? id : undefined;
     const nocCode = getAndValidateNoc(ctx);
+    const endOfFareDay = await getFareDayEnd(nocCode);
 
     if (editId && !userInput) {
         userInput = await getCapByNocAndId(nocCode, editId);
@@ -324,12 +286,20 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }
     }
 
+    const errors = isWithErrors(capsAttribute) ? capsAttribute.errors : [];
+
+    const fieldset: RadioConditionalInputFieldset = getFieldset(
+        errors,
+        endOfFareDay,
+        capsAttribute?.capDetails.productValidity,
+    );
     return {
         props: {
-            errors: isWithErrors(capsAttribute) ? capsAttribute.errors : [],
+            errors,
             csrfToken,
             ...(userInput && { userInput }),
             ...(editId && { editId }),
+            fieldset,
         },
     };
 };

@@ -383,6 +383,15 @@ export enum ExpiryUnit {
     TERM = 'term',
 }
 
+export enum CapExpiryUnit {
+    DAY = 'day',
+    WEEK = 'week',
+    MONTH = 'month',
+    TERM = 'term',
+}
+
+export type ProductValidity = 'endOfCalendarDay' | 'fareDayEnd';
+
 export interface Stop {
     stopName: string;
     naptanCode: string;

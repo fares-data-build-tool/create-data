@@ -28,22 +28,25 @@
           "name": "Day cap",
           "price": "5",
           "durationAmount": "1",
-          "durationUnits": "day"
+          "durationUnits": "day",
+          "capExpiry": {
+            "productValidity": "endOfCalendarDay",
+            "productEndTime": ""
+          }
         },
         {
           "name": "Week cap",
           "price": "20",
           "durationAmount": "1",
-          "durationUnits": "week"
+          "durationUnits": "week",
+          "capExpiry": {
+            "productValidity": "endOfCalendarDay",
+            "productEndTime": ""
+          }
         }
       ],
       "productName": "By Products thing"
-    },
-    "capExpiry": {
-      "productValidity": "endOfCalendarDay",
-      "productEndTime": ""
-    },
-    "capStart": { "type": "fixedWeekdays", "startDay": "monday" }
+    }
   },
   "products": [
     { "productName": "By Products thing", "salesOfferPackages": [{ "id": 3 }] }

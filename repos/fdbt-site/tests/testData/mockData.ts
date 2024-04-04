@@ -6396,17 +6396,6 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
             defaultChecked: false,
         },
         {
-            id: 'cap-twenty-four-hours',
-            name: 'capValid',
-            value: '24hr',
-            label: 'At the end of a 24 hour period',
-            radioButtonHint: {
-                id: 'cap-twenty-four-hours-hint',
-                content: 'The cap applies to journeys made within 24hrs of the first tap',
-            },
-            defaultChecked: false,
-        },
-        {
             id: 'cap-end-of-service',
             name: 'capValid',
             value: 'fareDayEnd',
@@ -6454,17 +6443,6 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
             radioButtonHint: {
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
-            },
-            defaultChecked: false,
-        },
-        {
-            id: 'cap-twenty-four-hours',
-            name: 'capValid',
-            value: '24hr',
-            label: 'At the end of a 24 hour period',
-            radioButtonHint: {
-                id: 'cap-twenty-four-hours-hint',
-                content: 'The cap applies to journeys made within 24hrs of the first tap',
             },
             defaultChecked: false,
         },
@@ -6521,17 +6499,6 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
             radioButtonHint: {
                 id: 'cap-end-calendar-hint',
                 content: 'The cap applies to journeys made before midnight',
-            },
-            defaultChecked: false,
-        },
-        {
-            id: 'cap-twenty-four-hours',
-            name: 'capValid',
-            value: '24hr',
-            label: 'At the end of a 24 hour period',
-            radioButtonHint: {
-                id: 'cap-twenty-four-hours-hint',
-                content: 'The cap applies to journeys made within 24hrs of the first tap',
             },
             defaultChecked: false,
         },
