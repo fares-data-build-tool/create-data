@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import CapTable from '../../src/components/CapTable';
-import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit, ProductValidity } from '../../src/interfaces/matchingJsonTypes';
 
 describe('CapTable', () => {
     it('should render the table upon first opening of page', () => {
@@ -17,13 +17,21 @@ describe('CapTable', () => {
                         name: 'First cap',
                         price: '2.33',
                         durationAmount: '2',
-                        durationUnits: ExpiryUnit.WEEK,
+                        durationUnits: CapExpiryUnit.WEEK,
+                        capExpiry: {
+                            productValidity: 'endOfCalendarDay' as ProductValidity,
+                            productEndTime: '',
+                        },
                     },
                     {
                         name: 'Second cap',
                         price: '3.33',
                         durationAmount: '2',
-                        durationUnits: ExpiryUnit.DAY,
+                        durationUnits: CapExpiryUnit.DAY,
+                        capExpiry: {
+                            productValidity: 'endOfCalendarDay' as ProductValidity,
+                            productEndTime: '',
+                        },
                     },
                 ]}
                 numberOfEntitesByDistancesToDisplay={2}
@@ -41,13 +49,21 @@ describe('CapTable', () => {
                         name: 'First cap',
                         price: '2.33',
                         durationAmount: '2',
-                        durationUnits: ExpiryUnit.WEEK,
+                        durationUnits: CapExpiryUnit.WEEK,
+                        capExpiry: {
+                            productValidity: 'endOfCalendarDay' as ProductValidity,
+                            productEndTime: '',
+                        },
                     },
                     {
                         name: 'First cap',
                         price: '3.33',
                         durationAmount: '2',
-                        durationUnits: ExpiryUnit.DAY,
+                        durationUnits: CapExpiryUnit.DAY,
+                        capExpiry: {
+                            productValidity: 'endOfCalendarDay' as ProductValidity,
+                            productEndTime: '',
+                        },
                     },
                 ]}
                 numberOfEntitesByDistancesToDisplay={2}
