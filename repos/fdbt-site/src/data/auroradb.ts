@@ -31,14 +31,7 @@ import {
     MyFaresOtherProduct,
     DbProduct,
 } from '../interfaces/dbTypes';
-import {
-    Stop,
-    FromDb,
-    SalesOfferPackage,
-    CompanionInfo,
-    OperatorDetails,
-    CapExpiry,
-} from '../interfaces/matchingJsonTypes';
+import { Stop, FromDb, SalesOfferPackage, CompanionInfo, OperatorDetails } from '../interfaces/matchingJsonTypes';
 
 interface ServiceQueryData {
     operatorShortName: string;

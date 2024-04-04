@@ -161,7 +161,6 @@ import {
     ReturnPeriodValidity,
     SalesOfferPackage,
     AdditionalOperator,
-    CapExpiry,
     CapStartInfo,
 } from '../interfaces/matchingJsonTypes';
 import { PassengerType, GroupPassengerType, GroupPassengerTypeDb } from '../interfaces/dbTypes';
