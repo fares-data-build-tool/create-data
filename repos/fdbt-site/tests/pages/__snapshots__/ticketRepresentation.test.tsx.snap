@@ -1,5 +1,91 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages ticketRepresentation price per distance radio not show when in test 1`] = `
+<TwoThirdsLayout
+  description="Ticket Representation selection page of the Create Fares Data Service"
+  errors={Array []}
+  title="Ticket Representation - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/ticketRepresentation"
+    csrfToken=""
+    method="post"
+  >
+    <ErrorSummary
+      errors={Array []}
+    />
+    <div
+      className="govuk-form-group "
+    >
+      <fieldset
+        aria-describedby="ticket-representation-page-heading"
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <h1
+            className="govuk-fieldset__heading"
+            id="ticket-representation-page-heading"
+          >
+            Select a type of multi operator ticket
+          </h1>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--errors"
+          errorId="geo-zone"
+          errors={Array []}
+        >
+          <RadioButtons
+            inputName="ticketType"
+            options={
+              Array [
+                Object {
+                  "hint": "Travel within a geographical zone",
+                  "label": "A ticket within a geographical zone",
+                  "value": "geoZone",
+                },
+                Object {
+                  "hint": "Travel on specific service or set of services",
+                  "label": "A ticket for a set of services",
+                  "value": "multipleServices",
+                },
+                Object {
+                  "hint": "A flat fare multi operator ticket for travel on specific service or set of services",
+                  "label": "Flat fare, for a set of services",
+                  "value": "multipleServicesFlatFareMultiOperator",
+                },
+                Object {
+                  "hint": "A flat fare multi operator ticket for travel within a geographical zone",
+                  "label": "Flat fare, within a geographical zone",
+                  "value": "geoZoneFlatFareMultiOperator",
+                },
+                Object {
+                  "hint": "Unlimited travel between two fixed points in both directions",
+                  "label": "Point to point",
+                  "value": "pointToPointPeriod",
+                },
+                Object {
+                  "hint": "Return trip on a specific service or set of services",
+                  "label": "A return ticket for a set of services",
+                  "value": "multipleServicesReturn",
+                },
+              ]
+            }
+          />
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button"
+      id="continue-button"
+      type="submit"
+      value="Continue"
+    />
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
 exports[`pages ticketRepresentation should render correctly when the fare type is a multi operator ticket 1`] = `
 <TwoThirdsLayout
   description="Ticket Representation selection page of the Create Fares Data Service"

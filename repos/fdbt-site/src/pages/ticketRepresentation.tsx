@@ -14,6 +14,7 @@ import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
 import { getCsrfToken, isSchemeOperator, sentenceCaseString } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
+import { STAGE } from '../constants';
 
 const title = 'Ticket Representation - Create Fares Data Service';
 const description = 'Ticket Representation selection page of the Create Fares Data Service';
@@ -27,6 +28,7 @@ interface TicketRepresentationProps {
     showFlatFlare: boolean;
     showMultiOperator: boolean;
     showGeoZone: boolean;
+    stage?: string;
 }
 
 const getFareTypeDesc = (fareType: TicketType) => {
@@ -69,6 +71,7 @@ const TicketRepresentation = ({
     showFlatFlare,
     showMultiOperator,
     showGeoZone,
+    stage,
 }: TicketRepresentationProps): ReactElement => {
     const fareTypeDesc = getFareTypeDesc(fareType);
     const fareTypeHint = getFareTypeHint(fareType);
@@ -146,7 +149,7 @@ const TicketRepresentation = ({
                                                   },
                                               ]
                                             : []),
-                                        ...(showFlatFlare
+                                        ...(showFlatFlare && stage === 'dev'
                                             ? [
                                                   {
                                                       value: 'multipleServicesPricedByDistance',
@@ -184,6 +187,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             showFlatFlare: fareType === 'flatFare' && !isScheme && !isCarnet,
             showMultiOperator: fareType === 'multiOperator',
             showGeoZone: fareType !== 'schoolService',
+            stage: STAGE || 'dev',
         },
     };
 };

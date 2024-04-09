@@ -35,6 +35,7 @@ import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { Stop, TicketWithIds } from '../../interfaces/matchingJsonTypes';
 import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
+import { STAGE } from '../../constants';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -226,6 +227,7 @@ const createProductDetails = async (
     fareTriangleModified: string | undefined,
     dataSource: string,
     isDevOrTest: boolean,
+    stage: string,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
     productName: string;
@@ -538,7 +540,7 @@ const createProductDetails = async (
         });
     }
 
-    if ('pricingByDistance' in product && product.pricingByDistance) {
+    if ('pricingByDistance' in product && product.pricingByDistance && stage === 'dev') {
         const { pricingByDistance } = product;
 
         productDetailsElements.push({
@@ -677,6 +679,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         fareTriangleModified,
         dataSource,
         isDevOrTest,
+        STAGE,
     );
 
     const backHref = serviceId

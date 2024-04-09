@@ -17,6 +17,7 @@ describe('pages', () => {
                     showMultiOperator
                     showFlatFlare={false}
                     showGeoZone
+                    stage="dev"
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -33,6 +34,24 @@ describe('pages', () => {
                     showMultiOperator={true}
                     showFlatFlare
                     showGeoZone
+                    stage="dev"
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('price per distance radio not show when in test', () => {
+            const tree = shallow(
+                <TicketRepresentation
+                    fareType="multiOperator"
+                    errors={[]}
+                    csrfToken=""
+                    showHybrid={false}
+                    showPointToPoint
+                    showMultiOperator={true}
+                    showFlatFlare
+                    showGeoZone
+                    stage="test"
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -54,6 +73,7 @@ describe('pages', () => {
                     showFlatFlare
                     showMultiOperator
                     showGeoZone
+                    stage="dev"
                 />,
             );
             expect(tree).toMatchSnapshot();
