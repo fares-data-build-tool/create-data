@@ -22,6 +22,7 @@ import uniq from 'lodash/uniq';
 import { batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { csvParser, getAtcoCodesForStops } from './csvZoneUpload';
 import logger from '../../utils/logger';
+import { STAGE } from '../../constants';
 
 // The below 'config' needs to be exported for the formidable library to work.
 export const config = {
@@ -256,7 +257,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        if (ticketType === 'multipleServicesPricedByDistance') {
+        if (ticketType === 'multipleServicesPricedByDistance' && STAGE === 'dev') {
             redirectTo(res, '/definePricingPerDistance');
             return;
         }
