@@ -49,7 +49,7 @@ export const getFieldset = (
             {
                 id: 'cap-end-of-service',
                 disableAutoSelect: capExpiry !== 'fareDayEnd',
-                name: 'capProductValidity',
+                name: 'capProductEndTime',
                 value: 'fareDayEnd',
                 dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
                 label: 'Fare day end',
