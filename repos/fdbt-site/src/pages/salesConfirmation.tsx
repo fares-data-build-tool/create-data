@@ -33,7 +33,7 @@ export interface SalesConfirmationProps {
     endDate: string | null;
     fareType: string;
     hasCaps: boolean;
-    selectedCap: (Cap & { id: number }) | null;
+    selectedCaps: (Cap & { id: number })[] | null;
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -52,7 +52,7 @@ export const buildSalesConfirmationElements = (
     endDateIn: string | null,
     fareType: string,
     hasCaps: boolean,
-    selectedCap?: (Cap & { id: number }) | null,
+    selectedCaps?: (Cap & { id: number })[] | null,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -104,8 +104,8 @@ export const buildSalesConfirmationElements = (
 
     if (fareTypeIsAllowedToAddACap(fareType) && hasCaps) {
         confirmationElements.push({
-            name: 'Cap',
-            content: selectedCap?.capDetails.name || 'N/A',
+            name: 'Caps',
+            content: selectedCaps?.map((cap) => cap.capDetails.name).join(', ') || 'N/A',
             href: 'selectCaps',
         });
     }
@@ -120,7 +120,7 @@ const SalesConfirmation = ({
     endDate,
     fareType,
     hasCaps,
-    selectedCap,
+    selectedCaps,
 }: SalesConfirmationProps): ReactElement => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -141,7 +141,7 @@ const SalesConfirmation = ({
                             endDate,
                             fareType,
                             hasCaps,
-                            selectedCap,
+                            selectedCaps,
                         )}
                     />
                     <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
@@ -176,7 +176,6 @@ export const getServerSideProps = async (
     const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
     const caps = await getCaps(nocCode);
-
     if (
         !salesOfferPackageInfo ||
         !isArray(salesOfferPackageInfo) ||
@@ -194,9 +193,13 @@ export const getServerSideProps = async (
             csrfToken,
             fareType: fareTypeAttribute.fareType,
             hasCaps: caps.length > 0,
-            selectedCap:
-                !!capAttribute && !('errors' in capAttribute)
-                    ? ((await getCapByNocAndId(nocCode, capAttribute.id)) as Cap & { id: number })
+            selectedCaps:
+                !!capAttribute && !('errors' in capAttribute) && capAttribute.length > 0
+                    ? ((await Promise.all(
+                          capAttribute.map(async (c) => await getCapByNocAndId(nocCode, c.id)),
+                      )) as (Cap & {
+                          id: number;
+                      })[])
                     : null,
         },
     };

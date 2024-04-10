@@ -35,6 +35,7 @@ import {
 } from '../../constants/attributes';
 import {
     batchGetStopsByAtcoCode,
+    getCapByNocAndId,
     getPointToPointProductsByLineId,
     getProductById,
     insertProducts,
@@ -52,6 +53,7 @@ import {
     Direction,
     DistancePricingData,
     ServiceListAttribute,
+    Cap,
 } from '../../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import {
@@ -96,6 +98,7 @@ import {
     AdditionalOperator,
     FlatFareMultipleServices,
 } from '../../interfaces/matchingJsonTypes';
+import { getNocFromIdToken } from '../../utils/apiUtils/index';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
@@ -315,7 +318,10 @@ const getPointToPointProducts = (req: NextApiRequestWithSession): WithIds<PointT
     ];
 };
 
-export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): WithIds<SingleTicket> => {
+export const getSingleTicketJson = async (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): Promise<WithIds<SingleTicket>> => {
     const isMatchingInfo = (
         matchingAttributeInfo: MatchingInfo | MatchingWithErrors,
     ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
@@ -325,17 +331,23 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const products = getPointToPointProducts(req);
     const singleUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
-    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const noc = getNocFromIdToken(req, res);
 
     if (
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
         !singleUnassignedStops ||
         !directionAttribute ||
-        'errors' in directionAttribute
+        'errors' in directionAttribute ||
+        !noc
     ) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
+    const capsInfo =
+        !!caps && !('errors' in caps) && caps.length > 0
+            ? ((await Promise.all(caps.map(async (c) => await getCapByNocAndId(noc, c.id)))) as Cap[])
+            : [];
 
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
 
@@ -352,11 +364,14 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
         journeyDirection: (directionAttribute as Direction).direction,
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
     };
 };
 
-export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApiResponse): WithIds<ReturnTicket> => {
+export const getReturnTicketJson = async (
+    req: NextApiRequestWithSession,
+    res: NextApiResponse,
+): Promise<WithIds<ReturnTicket>> => {
     const isMatchingInfo = (
         matchingAttributeInfo: MatchingInfo | MatchingWithErrors,
     ): matchingAttributeInfo is MatchingInfo => (matchingAttributeInfo as MatchingInfo)?.service !== null;
@@ -373,22 +388,30 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const products = getPointToPointProducts(req);
     const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const inboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE);
-    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const noc = getNocFromIdToken(req, res);
 
     if (
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
         isReturnPeriodValidityWithErrors(returnPeriodValidity) ||
-        !outboundUnassignedStops
+        !outboundUnassignedStops ||
+        !noc
     ) {
         logger.error('session objects', {
             matchingAttributeInfo,
             returnPeriodValidity,
             outboundUnassignedStops,
             inboundUnassignedStops,
+            noc,
         });
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
+
+    const capsInfo =
+        !!caps && !('errors' in caps) && caps.length > 0
+            ? ((await Promise.all(caps.map(async (c) => await getCapByNocAndId(noc, c.id)))) as Cap[])
+            : [];
 
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
 
@@ -412,7 +435,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
     };
 };
 
@@ -425,9 +448,10 @@ export const getGeoZoneTicketJson = async (
     const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
     const exemptions = getSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE) as ServiceListAttribute;
-    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const noc = getNocFromIdToken(req, res);
 
-    if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName)) {
+    if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName) || !noc) {
         throw new Error('Could not create geo zone ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -450,6 +474,11 @@ export const getGeoZoneTicketJson = async (
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
     }
 
+    const capsInfo =
+        !!caps && !('errors' in caps) && caps.length > 0
+            ? ((await Promise.all(caps.map(async (c) => await getCapByNocAndId(noc, c.id)))) as Cap[])
+            : [];
+
     return {
         ...basePeriodTicketAttributes,
         zoneName: fareZoneName,
@@ -457,33 +486,36 @@ export const getGeoZoneTicketJson = async (
         ...(additionalNocs && { additionalNocs }),
         ...(operatorGroupId && { operatorGroupId }),
         ...(exemptions && { exemptedServices: exemptions.selectedServices }),
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
     };
 };
 
-export const getMultipleServicesByDistanceTicketJson = (
+export const getMultipleServicesByDistanceTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): WithIds<FlatFareMultipleServices> => {
+): Promise<WithIds<FlatFareMultipleServices>> => {
     const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const { selectedServices } = serviceListAttribute;
     const pricingByDistance = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE) as SalesOfferPackage[];
     const baseTicketAttributes = getBaseTicketAttributes(req, res, 'flatFare');
-    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const noc = getNocFromIdToken(req, res);
 
     if (
         !operatorAttribute ||
         !operatorAttribute.name ||
         !pricingByDistance ||
         !salesOfferPackages ||
-        salesOfferPackages.length <= 0
+        salesOfferPackages.length <= 0 ||
+        !noc
     ) {
         logger.error('Attributes missing / incorrect', {
             operatorAttribute,
             pricingByDistance,
             salesOfferPackages,
+            noc,
         });
         throw new Error(`Could not create flat fare by distance ticket json. Necessary attributes could not be found.`);
     }
@@ -504,6 +536,11 @@ export const getMultipleServicesByDistanceTicketJson = (
         exemptStops = exemptStopsAttribute.exemptStops;
     }
 
+    const capsInfo =
+        !!caps && !('errors' in caps) && caps.length > 0
+            ? ((await Promise.all(caps.map(async (c) => await getCapByNocAndId(noc, c.id)))) as Cap[])
+            : [];
+
     return {
         operatorName: name,
         ...baseTicketAttributes,
@@ -511,24 +548,37 @@ export const getMultipleServicesByDistanceTicketJson = (
         selectedServices,
         ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
     } as WithIds<FlatFareMultipleServices>;
 };
 
-export const getMultipleServicesTicketJson = (
+export const getMultipleServicesTicketJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): WithIds<PeriodMultipleServicesTicket> | WithIds<MultiOperatorMultipleServicesTicket> => {
+): Promise<WithIds<PeriodMultipleServicesTicket> | WithIds<MultiOperatorMultipleServicesTicket>> => {
     const serviceListAttribute = getSessionAttribute(req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const { selectedServices } = serviceListAttribute;
     let exemptStops: Stop[] = [];
     const exemptStopsAttribute = getSessionAttribute(req, STOPS_EXEMPTION_ATTRIBUTE);
-    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const noc = getNocFromIdToken(req, res);
+
+    if (!noc) {
+        logger.error('Attributes missing / incorrect', {
+            noc,
+        });
+        throw new Error(`Could not create multiple services ticket json. Necessary attributes could not be found.`);
+    }
 
     if (!!exemptStopsAttribute && !isExemptStopsAttributeWithErrors(exemptStopsAttribute)) {
         exemptStops = exemptStopsAttribute.exemptStops;
     }
     const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
+
+    const capsInfo =
+        !!caps && !('errors' in caps) && caps.length > 0
+            ? ((await Promise.all(caps.map(async (c) => await getCapByNocAndId(noc, c.id)))) as Cap[])
+            : [];
     if (basePeriodTicketAttributes.type === 'multiOperator') {
         const additionalOperators = getSessionAttribute(
             req,
@@ -544,7 +594,7 @@ export const getMultipleServicesTicketJson = (
             additionalOperators,
             termTime: isTermTime(req),
             ...(operatorGroupId && { operatorGroupId }),
-            ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+            ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
             ...(exemptStops.length > 0 && { exemptStops }),
         };
     }
@@ -556,7 +606,7 @@ export const getMultipleServicesTicketJson = (
         selectedServices,
         ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
         ...(!!isFlatFareReturn && { return: true }),
     };
 };
@@ -566,15 +616,15 @@ export const getHybridTicketJson = async (
     res: NextApiResponse,
 ): Promise<WithIds<PeriodHybridTicket>> => {
     const geoZone = await getGeoZoneTicketJson(req, res);
-    const multipleServices = getMultipleServicesTicketJson(req, res);
+    const multipleServices = await getMultipleServicesTicketJson(req, res);
     return { ...geoZone, ...multipleServices };
 };
 
-export const getPointToPointPeriodJson = (
+export const getPointToPointPeriodJson = async (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-): WithIds<PointToPointPeriodTicket> => {
-    const userDataJson = getReturnTicketJson(req, res);
+): Promise<WithIds<PointToPointPeriodTicket>> => {
+    const userDataJson = await getReturnTicketJson(req, res);
     const pointToPointProduct = getSessionAttribute(req, POINT_TO_POINT_PRODUCT_ATTRIBUTE);
     if (!pointToPointProduct || isWithErrors(pointToPointProduct)) {
         throw new Error('Point to point period product could not be retrieved from session');

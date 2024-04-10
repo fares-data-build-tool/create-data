@@ -248,7 +248,7 @@ export interface SessionAttributeTypes {
         | AdditionalPricing
         | { clickedYes: boolean; additionalPricingStructures: WithErrors<AdditionalPricing> };
     [MULTI_MODAL_ATTRIBUTE]: { modes: string[] };
-    [CAPS_DEFINITION_ATTRIBUTE]: CapSelection | { errors: ErrorInfo[] };
+    [CAPS_DEFINITION_ATTRIBUTE]: CapSelection[] | { errors: ErrorInfo[] };
     [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: ServiceListAttribute | { errors: ErrorInfo[] };
     [STOPS_EXEMPTION_ATTRIBUTE]: ExemptedStopsAttribute | { errors: ErrorInfo[] };
     [FLAT_FARE_RETURN_ATTRIBUTE]: boolean;

@@ -39,7 +39,7 @@ describe('selectCaps', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 capChoice: 'yes',
-                cap: 2,
+                caps: [2],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -51,9 +51,11 @@ describe('selectCaps', () => {
             },
         });
         await selectCaps(req, res);
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAPS_DEFINITION_ATTRIBUTE, {
-            id: 2,
-        });
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAPS_DEFINITION_ATTRIBUTE, [
+            {
+                id: 2,
+            },
+        ]);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectPurchaseMethods',
         });
@@ -82,7 +84,7 @@ describe('selectCaps', () => {
         const { req, res } = getMockRequestAndResponse({
             body: {
                 capChoice: 'yes',
-                cap: 2,
+                caps: [2],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,

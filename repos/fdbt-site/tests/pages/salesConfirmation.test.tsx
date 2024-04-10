@@ -33,7 +33,7 @@ describe('pages', () => {
                     csrfToken=""
                     fareType="single"
                     hasCaps={false}
-                    selectedCap={null}
+                    selectedCaps={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -99,9 +99,11 @@ describe('pages', () => {
                         endDate: mockEndDate,
                         dateInput: mockDateInput,
                     },
-                    [CAPS_DEFINITION_ATTRIBUTE]: {
-                        id: 2,
-                    },
+                    [CAPS_DEFINITION_ATTRIBUTE]: [
+                        {
+                            id: 2,
+                        },
+                    ],
                 },
             });
             const expectedProps = {
@@ -110,16 +112,18 @@ describe('pages', () => {
                 endDate: mockEndDate,
                 fareType: 'single',
                 hasCaps: true,
-                selectedCap: {
-                    id: 2,
-                    capDetails: {
-                        name: 'Best cap',
-                        price: '2',
-                        durationAmount: '2',
-                        durationUnits: CapExpiryUnit.MONTH,
-                        capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
+                selectedCaps: [
+                    {
+                        id: 2,
+                        capDetails: {
+                            name: 'Best cap',
+                            price: '2',
+                            durationAmount: '2',
+                            durationUnits: CapExpiryUnit.MONTH,
+                            capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
+                        },
                     },
-                },
+                ],
             };
             const actualProps = await getServerSideProps(ctx);
             expect((actualProps as { props: SalesConfirmationProps }).props).toEqual(expectedProps);
@@ -153,16 +157,18 @@ describe('pages', () => {
                 moment().add(100, 'years').toISOString(),
                 'single',
                 true,
-                {
-                    id: 2,
-                    capDetails: {
-                        name: 'cappy cap',
-                        price: '2',
-                        durationAmount: '24hr',
-                        durationUnits: CapExpiryUnit.MONTH,
-                        capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
+                [
+                    {
+                        id: 2,
+                        capDetails: {
+                            name: 'cappy cap',
+                            price: '2',
+                            durationAmount: '2',
+                            durationUnits: CapExpiryUnit.MONTH,
+                            capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
+                        },
                     },
-                },
+                ],
             );
             expect(result).toStrictEqual([
                 {
@@ -188,7 +194,7 @@ describe('pages', () => {
                 {
                     content: 'cappy cap',
                     href: 'selectCaps',
-                    name: 'Cap',
+                    name: 'Caps',
                 },
             ]);
         });
@@ -300,7 +306,7 @@ describe('pages', () => {
                 {
                     content: 'N/A',
                     href: 'selectCaps',
-                    name: 'Cap',
+                    name: 'Caps',
                 },
             ]);
         });

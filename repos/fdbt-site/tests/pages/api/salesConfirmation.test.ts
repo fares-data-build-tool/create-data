@@ -202,8 +202,8 @@ describe('salesConfirmation', () => {
             'insertDataToProductsBucketAndProductsTable',
         );
         insertDataToProductsBucketAndProductsTableSpy.mockImplementationOnce(() => Promise.resolve('pathOne'));
-        getSingleTicketJsonSpy.mockImplementation(() => {
-            return expectedSingleTicket;
+        getSingleTicketJsonSpy.mockImplementation(async () => {
+            return Promise.resolve(expectedSingleTicket);
         });
         const { req, res } = getMockRequestAndResponse({
             body: {},
