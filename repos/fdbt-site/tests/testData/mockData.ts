@@ -6386,7 +6386,7 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
     radios: [
         {
             id: 'cap-end-calendar',
-            name: 'capValid',
+            name: 'capProductValidity',
             value: 'endOfCalendarDay',
             label: 'At the end of a calendar day',
             radioButtonHint: {
@@ -6397,7 +6397,7 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
         },
         {
             id: 'cap-end-of-service',
-            name: 'capValid',
+            name: 'capProductValidity',
             value: 'fareDayEnd',
             disableAutoSelect: true,
             dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
@@ -6437,7 +6437,7 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
     radios: [
         {
             id: 'cap-end-calendar',
-            name: 'capValid',
+            name: 'capProductValidity',
             value: 'endOfCalendarDay',
             label: 'At the end of a calendar day',
             radioButtonHint: {
@@ -6448,7 +6448,7 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
         },
         {
             id: 'cap-end-of-service',
-            name: 'capValid',
+            name: 'capProductValidity',
             value: 'fareDayEnd',
             disableAutoSelect: true,
             dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
@@ -6493,7 +6493,7 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
     radios: [
         {
             id: 'cap-end-calendar',
-            name: 'capValid',
+            name: 'capProductValidity',
             value: 'endOfCalendarDay',
             label: 'At the end of a calendar day',
             radioButtonHint: {
@@ -6505,7 +6505,7 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
         {
             id: 'cap-end-of-service',
             disableAutoSelect: true,
-            name: 'capValid',
+            name: 'capProductValidity',
             value: 'fareDayEnd',
             dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
             label: 'Fare day end',
