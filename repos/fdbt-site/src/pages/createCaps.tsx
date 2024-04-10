@@ -37,7 +37,7 @@ export const getFieldset = (
         radios: [
             {
                 id: 'cap-end-calendar',
-                name: 'capValid',
+                name: 'capProductValidity',
                 value: 'endOfCalendarDay',
                 label: 'At the end of a calendar day',
                 radioButtonHint: {
@@ -49,7 +49,7 @@ export const getFieldset = (
             {
                 id: 'cap-end-of-service',
                 disableAutoSelect: capExpiry !== 'fareDayEnd',
-                name: 'capValid',
+                name: 'capProductValidity',
                 value: 'fareDayEnd',
                 dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
                 label: 'Fare day end',
@@ -291,7 +291,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const fieldset: RadioConditionalInputFieldset = getFieldset(
         errors,
         endOfFareDay,
-        capsAttribute?.capDetails.capExpiry.productValidity,
+        userInput?.capDetails.capExpiry.productValidity,
     );
     return {
         props: {
