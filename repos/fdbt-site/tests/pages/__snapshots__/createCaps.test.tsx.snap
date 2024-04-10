@@ -284,7 +284,7 @@ exports[`pages create caps should render correctly 1`] = `
                         "defaultChecked": false,
                         "id": "cap-end-calendar",
                         "label": "At the end of a calendar day",
-                        "name": "capValid",
+                        "name": "capProductValidity",
                         "radioButtonHint": Object {
                           "content": "The cap applies to journeys made before midnight",
                           "id": "cap-end-calendar-hint",
@@ -313,7 +313,7 @@ exports[`pages create caps should render correctly 1`] = `
                           },
                         ],
                         "label": "Fare day end",
-                        "name": "capValid",
+                        "name": "capProductValidity",
                         "radioButtonHint": Object {
                           "content": "The cap applies to journeys made during the 'fare day' as defined by your business rules",
                           "id": "cap-end-of-service-hint",
@@ -631,7 +631,7 @@ exports[`pages create caps should render correctly on edit mode 1`] = `
                         "defaultChecked": false,
                         "id": "cap-end-calendar",
                         "label": "At the end of a calendar day",
-                        "name": "capValid",
+                        "name": "capProductValidity",
                         "radioButtonHint": Object {
                           "content": "The cap applies to journeys made before midnight",
                           "id": "cap-end-calendar-hint",
@@ -660,7 +660,7 @@ exports[`pages create caps should render correctly on edit mode 1`] = `
                           },
                         ],
                         "label": "Fare day end",
-                        "name": "capValid",
+                        "name": "capProductValidity",
                         "radioButtonHint": Object {
                           "content": "The cap applies to journeys made during the 'fare day' as defined by your business rules",
                           "id": "cap-end-of-service-hint",
@@ -1046,7 +1046,7 @@ exports[`pages create caps should render correctly on input errors 1`] = `
                         "defaultChecked": false,
                         "id": "cap-end-calendar",
                         "label": "At the end of a calendar day",
-                        "name": "capValid",
+                        "name": "capProductValidity",
                         "radioButtonHint": Object {
                           "content": "The cap applies to journeys made before midnight",
                           "id": "cap-end-calendar-hint",
@@ -1075,7 +1075,7 @@ exports[`pages create caps should render correctly on input errors 1`] = `
                           },
                         ],
                         "label": "Fare day end",
-                        "name": "capValid",
+                        "name": "capProductValidity",
                         "radioButtonHint": Object {
                           "content": "The cap applies to journeys made during the 'fare day' as defined by your business rules",
                           "id": "cap-end-of-service-hint",

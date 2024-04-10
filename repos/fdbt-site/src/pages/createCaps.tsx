@@ -67,7 +67,7 @@ export const getFieldset = (
                 inputs: [
                     {
                         id: 'product-end-time',
-                        name: 'productEndTime',
+                        name: 'capProductEndTime',
                         label: 'End time',
                         disabled: true,
                         defaultValue: endOfFareDay ?? '',
