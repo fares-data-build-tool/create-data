@@ -4296,7 +4296,7 @@ export const mockPeriodValidityFieldset: RadioConditionalInputFieldset = {
             inputs: [
                 {
                     id: 'product-end-time',
-                    name: 'productEndTime',
+                    name: 'capProductEndTime',
                     label: 'End time',
                     defaultValue: '',
                 },
@@ -4422,7 +4422,7 @@ export const mockPeriodValidityFieldsetWithErrors: RadioConditionalInputFieldset
             inputs: [
                 {
                     id: 'product-end-time',
-                    name: 'productEndTime',
+                    name: 'capProductEndTime',
                     label: 'End time',
                     defaultValue: '',
                 },
@@ -4559,7 +4559,7 @@ export const mockPeriodValidityFieldsetWithInputErrors: RadioConditionalInputFie
             inputs: [
                 {
                     id: 'product-end-time',
-                    name: 'productEndTime',
+                    name: 'capProductEndTime',
                     label: 'End time',
                     defaultValue: '',
                 },
@@ -6416,7 +6416,7 @@ export const mockSelectCapValidityFieldset: RadioConditionalInputFieldset = {
             inputs: [
                 {
                     id: 'product-end-time',
-                    name: 'productEndTime',
+                    name: 'capProductEndTime',
                     label: 'End time',
                     defaultValue: '',
                     disabled: true,
@@ -6467,7 +6467,7 @@ export const mockSelectCapValidityFieldsetWithErrors: RadioConditionalInputField
             inputs: [
                 {
                     id: 'product-end-time',
-                    name: 'productEndTime',
+                    name: 'capProductEndTime',
                     label: 'End time',
                     defaultValue: '',
                     disabled: true,
@@ -6523,7 +6523,7 @@ export const mockSelectCapValidityFieldsetWithInputErrors: RadioConditionalInput
             inputs: [
                 {
                     id: 'product-end-time',
-                    name: 'productEndTime',
+                    name: 'capProductEndTime',
                     label: 'End time',
                     defaultValue: '',
                     disabled: true,
