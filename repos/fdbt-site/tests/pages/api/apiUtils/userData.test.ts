@@ -370,7 +370,7 @@ describe('userData', () => {
             expect(result).toEqual(expectedCircularReturnTicket);
         });
 
-        it('should correctly add carnet detail', async () => {
+        it('should correctly add carnet detail',  () => {
             const { req, res } = getMockRequestAndResponse({
                 session: {
                     [MATCHING_ATTRIBUTE]: {
@@ -417,7 +417,7 @@ describe('userData', () => {
                     ],
                 },
             });
-            const result = await getReturnTicketJson(req, res);
+            const result = getReturnTicketJson(req, res);
             expect(result).toEqual(expectedCarnetReturnTicket);
         });
     });
