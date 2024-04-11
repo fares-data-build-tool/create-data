@@ -126,19 +126,27 @@ export interface DbTimeRestriction {
 
 export type DayOfTheWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
-export interface CapStartInfo {
-    type: CapStart;
-    startDay?: DayOfTheWeek;
+export enum CapExpiryUnit {
+    DAY = 'day',
+    WEEK = 'week',
+    MONTH = 'month',
+    TERM = 'term',
 }
 
-export type CapStart = 'rollingDays' | 'fixedWeekdays';
+export type ProductValidity = 'endOfCalendarDay' | 'fareDayEnd';
 
 export interface DbCap {
-    name: string;
-    price: string;
-    durationAmount: string;
-    durationUnits: ExpiryUnit;
-    capStart?: CapStartInfo;
+    id?: number;
+    capDetails: {
+        name: string;
+        price: string;
+        durationAmount: string;
+        durationUnits: CapExpiryUnit;
+        capExpiry: {
+            productValidity: ProductValidity;
+            productEndTime?: string;
+        };
+    };
 }
 
 export interface ServiceDetails {

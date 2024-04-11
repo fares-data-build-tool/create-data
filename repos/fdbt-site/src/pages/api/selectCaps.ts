@@ -68,7 +68,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         if (ticket && matchingJsonMetaData) {
             const updatedTicket = {
                 ...ticket,
-                caps: capChoice === 'yes' && !!selectedCaps ? selectedCaps.map((cap) => ({ id: cap.id })) : undefined,
+                caps:
+                    capChoice === 'yes' && !!selectedCaps && selectedCaps.length > 0
+                        ? selectedCaps.map((cap) => ({ id: cap.id }))
+                        : undefined,
             };
 
             await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
@@ -84,7 +87,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
         // end of edit mode
 
-        if (capChoice === 'yes' && !!selectedCaps) {
+        if (capChoice === 'yes' && !!selectedCaps && selectedCaps.length > 0) {
             updateSessionAttribute(
                 req,
                 CAPS_DEFINITION_ATTRIBUTE,

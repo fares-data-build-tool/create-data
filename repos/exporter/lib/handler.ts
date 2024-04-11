@@ -90,7 +90,13 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ? await getTimeRestrictionsByIdAndNoc(ticketWithIds.timeRestriction.id, noc)
                 : [];
 
-            const cap = !!ticketWithIds.cap ? await getCapByNocAndId(noc, ticketWithIds.cap.id) : undefined;
+            const caps = !!ticketWithIds.caps
+                ? await Promise.all(
+                      (ticketWithIds.caps as { id: number }[]).map(
+                          async (c: { id: number }) => await getCapByNocAndId(noc, c.id),
+                      ),
+                  )
+                : undefined;
 
             const fareDayEnd = await getFareDayEnd(noc);
 
@@ -130,7 +136,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ...passengerType,
                 groupDefinition,
                 timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
-                ...(!!cap && cap),
+                ...(!!caps && caps.length>0 && caps),
             };
             /* eslint-enable */
 

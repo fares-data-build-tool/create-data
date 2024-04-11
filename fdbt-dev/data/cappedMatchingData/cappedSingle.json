@@ -1,0 +1,1136 @@
+{
+  "lineName": "4",
+  "lineId": "PK1146649_RJ1_123",
+  "nocCode": "BLAC",
+  "operatorName": "Blackpool Transport",
+  "serviceDescription": "CLEVELEYS - MERESIDE via Blackpool",
+  "type": "single",
+  "email": "test@example.com",
+  "uuid": "BLACc1363964",
+  "termTime": true,
+  "journeyDirection": "outbound",
+  "timeRestriction": [
+    {
+      "day": "bankHoliday",
+      "timeBands": [
+        {
+          "startTime": "",
+          "endTime": ""
+        }
+      ]
+    },
+    {
+      "day": "tuesday",
+      "timeBands": [
+        {
+          "startTime": "0900",
+          "endTime": "1700"
+        },
+        {
+          "startTime": "1800",
+          "endTime": "2200"
+        }
+      ]
+    },
+    {
+      "day": "wednesday",
+      "timeBands": [
+        {
+          "startTime": "1350",
+          "endTime": "1950"
+        },
+        {
+          "startTime": "2350",
+          "endTime": ""
+        }
+      ]
+    },
+    {
+      "day": "thursday",
+      "timeBands": [
+        {
+          "startTime": "0000",
+          "endTime": "2359"
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "salesOfferPackages": [
+        {
+          "name": "Onboard (cash)",
+          "description": "Purchasable on board the bus, with cash, as a paper ticket.",
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "cash"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
+        },
+        {
+          "name": "Onboard (contactless)",
+          "description": "Purchasable on board the bus, with a contactless card or device, as a paper ticket.",
+          "purchaseLocations": [
+            "onBoard"
+          ],
+          "paymentMethods": [
+            "contactlessPaymentCard"
+          ],
+          "ticketFormats": [
+            "paperTicket"
+          ]
+        },
+        {
+          "name": "Online (smart card)",
+          "description": "Purchasable online, with a debit/credit card or direct debit transaction, on a smart card or similar.",
+          "purchaseLocations": [
+            "online"
+          ],
+          "paymentMethods": [
+            "directDebit",
+            "creditCard",
+            "debitCard"
+          ],
+          "ticketFormats": [
+            "smartCard"
+          ]
+        },
+        {
+          "name": "Mobile App",
+          "description": "Purchasable on a mobile device application, with a debit/credit card or direct debit transaction, stored on the mobile application.",
+          "purchaseLocations": [
+            "mobileDevice"
+          ],
+          "paymentMethods": [
+            "debitCard",
+            "creditCard",
+            "mobilePhone",
+            "directDebit"
+          ],
+          "ticketFormats": [
+            "mobileApp"
+          ]
+        },
+        {
+          "name": "All Encompassing",
+          "description": "All currently available options selected",
+          "purchaseLocations": [
+            "onBoard",
+            "online",
+            "mobileDevice"
+          ],
+          "paymentMethods": [
+            "cash",
+            "debitCard",
+            "creditCard",
+            "mobilePhone"
+          ],
+          "ticketFormats": [
+            "paperTicket",
+            "mobileApp",
+            "smartCard"
+          ]
+        }
+      ],
+      "productName": "adult - single"
+    }
+  ],
+  "fareZones": [
+    {
+      "name": "Test Stage 1",
+      "stops": [
+        {
+          "stopName": "Victoria Square",
+          "naptanCode": "lanjdgjt",
+          "atcoCode": "2500B0204",
+          "localityCode": "E0016545",
+          "localityName": "Cleveleys",
+          "parentLocalityName": "",
+          "indicator": "Stop D",
+          "street": "Cleveleys East",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "1.00",
+          "fareZones": [
+            "Test Stage 2"
+          ]
+        },
+        {
+          "price": "2.00",
+          "fareZones": [
+            "Test Stage 3"
+          ]
+        },
+        {
+          "price": "3.00",
+          "fareZones": [
+            "Test Stage 4"
+          ]
+        },
+        {
+          "price": "4.00",
+          "fareZones": [
+            "Test Stage 5",
+            "Test Stage 6",
+            "Test Stage 7"
+          ]
+        },
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 8",
+            "Test Stage 9",
+            "Test Stage 10",
+            "Test Stage 11",
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 2",
+      "stops": [
+        {
+          "stopName": "Lauderdale Avenue",
+          "naptanCode": "blpadpaw",
+          "atcoCode": "2590B0205",
+          "localityCode": "E0035271",
+          "localityName": "Anchorsholme",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "by",
+          "street": "Kelso Avenue",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "2.00",
+          "fareZones": [
+            "Test Stage 3"
+          ]
+        },
+        {
+          "price": "3.00",
+          "fareZones": [
+            "Test Stage 4"
+          ]
+        },
+        {
+          "price": "4.00",
+          "fareZones": [
+            "Test Stage 5",
+            "Test Stage 6",
+            "Test Stage 7"
+          ]
+        },
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 8",
+            "Test Stage 9",
+            "Test Stage 10",
+            "Test Stage 11",
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 3",
+      "stops": [
+        {
+          "stopName": "Anchorsholme Lane Shops",
+          "naptanCode": "blpadpda",
+          "atcoCode": "2590B0206",
+          "localityCode": "E0035271",
+          "localityName": "Anchorsholme",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "opp",
+          "street": "Anchorsholme Lane",
+          "qualifierName": ""
+        },
+        {
+          "stopName": "Cresswood Avenue",
+          "naptanCode": "blpadpdg",
+          "atcoCode": "2590B0207",
+          "localityCode": "E0035271",
+          "localityName": "Anchorsholme",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "opp",
+          "street": "Anchorsholme Lane East",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "3.00",
+          "fareZones": [
+            "Test Stage 4"
+          ]
+        },
+        {
+          "price": "4.00",
+          "fareZones": [
+            "Test Stage 5",
+            "Test Stage 6",
+            "Test Stage 7"
+          ]
+        },
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 8",
+            "Test Stage 9",
+            "Test Stage 10",
+            "Test Stage 11",
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 4",
+      "stops": [
+        {
+          "stopName": "North Drive",
+          "naptanCode": "blpagjmj",
+          "atcoCode": "2590B0487",
+          "localityCode": "E0035271",
+          "localityName": "Anchorsholme",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "adj",
+          "street": "North Drive",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "4.00",
+          "fareZones": [
+            "Test Stage 5",
+            "Test Stage 6",
+            "Test Stage 7"
+          ]
+        },
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 8",
+            "Test Stage 9",
+            "Test Stage 10",
+            "Test Stage 11",
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 5",
+      "stops": [
+        {
+          "stopName": "Luton Road",
+          "naptanCode": "blpagjmp",
+          "atcoCode": "2590B0488",
+          "localityCode": "E0035271",
+          "localityName": "Anchorsholme",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "by",
+          "street": "North Drive",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "4.00",
+          "fareZones": [
+            "Test Stage 6",
+            "Test Stage 7"
+          ]
+        },
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 8",
+            "Test Stage 9",
+            "Test Stage 10",
+            "Test Stage 11",
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 6",
+      "stops": [
+        {
+          "stopName": "All Saints Church",
+          "naptanCode": "blpagjmt",
+          "atcoCode": "2590B0489",
+          "localityCode": "E0035271",
+          "localityName": "Anchorsholme",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "o/s",
+          "street": "North Drive",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "4.00",
+          "fareZones": [
+            "Test Stage 7"
+          ]
+        },
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 8",
+            "Test Stage 9",
+            "Test Stage 10",
+            "Test Stage 11",
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 7",
+      "stops": [
+        {
+          "stopName": "Lyddesdale Avenue",
+          "naptanCode": "blpagjmw",
+          "atcoCode": "2590B0490",
+          "localityCode": "E0035271",
+          "localityName": "Anchorsholme",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "opp",
+          "street": "Valeway Avenue",
+          "qualifierName": ""
+        },
+        {
+          "stopName": "Branstree Road",
+          "naptanCode": "blpadmad",
+          "atcoCode": "2590B0151",
+          "localityCode": "E0035290",
+          "localityName": "Mereside",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Langdale Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 8",
+            "Test Stage 9",
+            "Test Stage 10",
+            "Test Stage 11",
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 8",
+      "stops": [
+        {
+          "stopName": "Russell Avenue",
+          "naptanCode": "blpagjpa",
+          "atcoCode": "2590B0491",
+          "localityCode": "E0035271",
+          "localityName": "Anchorsholme",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "by",
+          "street": "Fleetwood Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 9",
+            "Test Stage 10",
+            "Test Stage 11",
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 9",
+      "stops": [
+        {
+          "stopName": "Norbreck School",
+          "naptanCode": "blpajawt",
+          "atcoCode": "2590B0814",
+          "localityCode": "E0035271",
+          "localityName": "Anchorsholme",
+          "parentLocalityName": "Cleveleys",
+          "indicator": "o/s",
+          "street": "Russell Avenue",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 10",
+            "Test Stage 11",
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 10",
+      "stops": [
+        {
+          "stopName": "Shore Road",
+          "naptanCode": "blpajdad",
+          "atcoCode": "2590B0815",
+          "localityCode": "E0035291",
+          "localityName": "Norbreck",
+          "parentLocalityName": "Blackpool",
+          "indicator": "opp",
+          "street": "Norbreck Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 11",
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 11",
+      "stops": [
+        {
+          "stopName": "Wilson Square",
+          "naptanCode": "blpajdag",
+          "atcoCode": "2590B0816",
+          "localityCode": "E0035291",
+          "localityName": "Norbreck",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Norbreck Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "5.00",
+          "fareZones": [
+            "Test Stage 12"
+          ]
+        },
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 12",
+      "stops": [
+        {
+          "stopName": "Mossom Lane",
+          "naptanCode": "blpajdaj",
+          "atcoCode": "2590B0817",
+          "localityCode": "E0035291",
+          "localityName": "Norbreck",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Norbreck Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 13",
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 13",
+      "stops": [
+        {
+          "stopName": "Guildford Avenue",
+          "naptanCode": "blpajdam",
+          "atcoCode": "2590B0818",
+          "localityCode": "E0035291",
+          "localityName": "Norbreck",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Norbreck Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 14",
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 14",
+      "stops": [
+        {
+          "stopName": "Norbreck Shops",
+          "naptanCode": "blpajdap",
+          "atcoCode": "2590B0819",
+          "localityCode": "E0035291",
+          "localityName": "Norbreck",
+          "parentLocalityName": "Blackpool",
+          "indicator": "o/s",
+          "street": "Norbreck Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "6.00",
+          "fareZones": [
+            "Test Stage 15"
+          ]
+        },
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 15",
+      "stops": [
+        {
+          "stopName": "Chatsworth Avenue",
+          "naptanCode": "blpajdat",
+          "atcoCode": "2590B0820",
+          "localityCode": "E0035291",
+          "localityName": "Norbreck",
+          "parentLocalityName": "Blackpool",
+          "indicator": "opp",
+          "street": "Norcliffe Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 16",
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 16",
+      "stops": [
+        {
+          "stopName": "Leyburn Avenue",
+          "naptanCode": "blpajdaw",
+          "atcoCode": "2590B0821",
+          "localityCode": "E0035291",
+          "localityName": "Norbreck",
+          "parentLocalityName": "Blackpool",
+          "indicator": "opp",
+          "street": "Beaufort Avenue",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 17",
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 17",
+      "stops": [
+        {
+          "stopName": "Madison Avenue",
+          "naptanCode": "blpajdga",
+          "atcoCode": "2590B0822",
+          "localityCode": "E0035272",
+          "localityName": "Bispham",
+          "parentLocalityName": "Blackpool",
+          "indicator": "opp",
+          "street": "Beaufort Avenue",
+          "qualifierName": ""
+        },
+        {
+          "stopName": "Lowther Avenue",
+          "naptanCode": "blpadgjp",
+          "atcoCode": "2590B0070",
+          "localityCode": "E0035292",
+          "localityName": "North Shore",
+          "parentLocalityName": "Blackpool",
+          "indicator": "opp",
+          "street": "Warbreck Drive",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "7.00",
+          "fareZones": [
+            "Test Stage 18"
+          ]
+        },
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 18",
+      "stops": [
+        {
+          "stopName": "Warbreck Hill",
+          "naptanCode": "blpadgma",
+          "atcoCode": "2590B0073",
+          "localityCode": "E0035292",
+          "localityName": "North Shore",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Warbreck Hill Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 19",
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 19",
+      "stops": [
+        {
+          "stopName": "Ashburton Road",
+          "naptanCode": "blpadgam",
+          "atcoCode": "2590B0055",
+          "localityCode": "E0035276",
+          "localityName": "Claremont",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Sherbourne Road",
+          "qualifierName": ""
+        },
+        {
+          "stopName": "Oxford Square",
+          "naptanCode": "blpamjmt",
+          "atcoCode": "2590BTA01280",
+          "localityCode": "N0079372",
+          "localityName": "Oxford Square",
+          "parentLocalityName": "Blackpool",
+          "indicator": "adj",
+          "street": "Whitegate Drive",
+          "qualifierName": ""
+        }
+      ],
+      "prices": [
+        {
+          "price": "8.00",
+          "fareZones": [
+            "Test Stage 20"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test Stage 20",
+      "stops": [
+        {
+          "stopName": "Doncaster Road",
+          "naptanCode": "blpajdjp",
+          "atcoCode": "2590B0839",
+          "localityCode": "E0035278",
+          "localityName": "Marton",
+          "parentLocalityName": "Blackpool",
+          "indicator": "by",
+          "street": "Worcester Road",
+          "qualifierName": ""
+        }
+      ],
+      "prices": []
+    }
+  ],
+  "passengerType": "adult",
+  "ageRange": "Yes",
+  "ageRangeMin": "18",
+  "proof": "No",
+  "ticketPeriod": {
+    "startDate": "2010-12-17T00:00:00.000Z",
+    "endDate": "2028-12-17T23:59:59.999Z"
+  },
+  "caps": [
+    {
+      "capDetails": {
+        "name": "cappy cap",
+        "price": "2",
+        "durationAmount": "3",
+        "durationUnits": "month",
+        "capExpiry": {
+          "productValidity": "endOfCalendarDay",
+          "productEndTime": ""
+        }
+      }
+    },
+    {
+      "capDetails": {
+        "name": "cappy cap3",
+        "price": "2",
+        "durationAmount": "3",
+        "durationUnits": "day",
+        "capExpiry": {
+          "productValidity": "endOfCalendarDay",
+          "productEndTime": ""
+        }
+      }
+    }
+  ]
+}

@@ -35,7 +35,6 @@ import {
 } from '../../constants/attributes';
 import {
     batchGetStopsByAtcoCode,
-    getCapByNocAndId,
     getPointToPointProductsByLineId,
     getProductById,
     insertProducts,
@@ -53,7 +52,6 @@ import {
     Direction,
     DistancePricingData,
     ServiceListAttribute,
-    Cap,
 } from '../../interfaces';
 import { InboundMatchingInfo, MatchingInfo, MatchingWithErrors } from '../../interfaces/matchingInterface';
 import {
@@ -340,14 +338,11 @@ export const getSingleTicketJson = async (
         !singleUnassignedStops ||
         !directionAttribute ||
         'errors' in directionAttribute ||
+        (caps && 'errors' in caps) ||
         !noc
     ) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
-    const capsInfo =
-        !!caps && !('errors' in caps) && caps.length > 0
-            ? ((await Promise.all(caps.map(async (c) => await getCapByNocAndId(noc, c.id)))) as Cap[])
-            : [];
 
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
 
@@ -364,7 +359,7 @@ export const getSingleTicketJson = async (
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
         journeyDirection: (directionAttribute as Direction).direction,
-        ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
+        ...(!!caps && caps.length > 0 && { caps }),
     };
 };
 
@@ -396,6 +391,7 @@ export const getReturnTicketJson = async (
         !isMatchingInfo(matchingAttributeInfo) ||
         isReturnPeriodValidityWithErrors(returnPeriodValidity) ||
         !outboundUnassignedStops ||
+        (caps && 'errors' in caps) ||
         !noc
     ) {
         logger.error('session objects', {
@@ -407,11 +403,6 @@ export const getReturnTicketJson = async (
         });
         throw new Error('Could not create return ticket json. Necessary cookies and session objects not found.');
     }
-
-    const capsInfo =
-        !!caps && !('errors' in caps) && caps.length > 0
-            ? ((await Promise.all(caps.map(async (c) => await getCapByNocAndId(noc, c.id)))) as Cap[])
-            : [];
 
     const { service, userFareStages, matchingFareZones } = matchingAttributeInfo;
 
@@ -435,7 +426,7 @@ export const getReturnTicketJson = async (
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
-        ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
+        ...(!!caps && caps.length > 0 && { caps }),
     };
 };
 
@@ -451,7 +442,7 @@ export const getGeoZoneTicketJson = async (
     const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
     const noc = getNocFromIdToken(req, res);
 
-    if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName) || !noc) {
+    if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName) || (caps && 'errors' in caps) || !noc) {
         throw new Error('Could not create geo zone ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -474,11 +465,6 @@ export const getGeoZoneTicketJson = async (
         throw new Error(`No stops found for atcoCodes: ${atcoCodes}`);
     }
 
-    const capsInfo =
-        !!caps && !('errors' in caps) && caps.length > 0
-            ? ((await Promise.all(caps.map(async (c) => await getCapByNocAndId(noc, c.id)))) as Cap[])
-            : [];
-
     return {
         ...basePeriodTicketAttributes,
         zoneName: fareZoneName,
@@ -486,7 +472,7 @@ export const getGeoZoneTicketJson = async (
         ...(additionalNocs && { additionalNocs }),
         ...(operatorGroupId && { operatorGroupId }),
         ...(exemptions && { exemptedServices: exemptions.selectedServices }),
-        ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
+        ...(!!caps && caps.length > 0 && { caps }),
     };
 };
 
@@ -509,6 +495,7 @@ export const getMultipleServicesByDistanceTicketJson = async (
         !pricingByDistance ||
         !salesOfferPackages ||
         salesOfferPackages.length <= 0 ||
+        (caps && 'errors' in caps) ||
         !noc
     ) {
         logger.error('Attributes missing / incorrect', {
@@ -536,11 +523,6 @@ export const getMultipleServicesByDistanceTicketJson = async (
         exemptStops = exemptStopsAttribute.exemptStops;
     }
 
-    const capsInfo =
-        !!caps && !('errors' in caps) && caps.length > 0
-            ? ((await Promise.all(caps.map(async (c) => await getCapByNocAndId(noc, c.id)))) as Cap[])
-            : [];
-
     return {
         operatorName: name,
         ...baseTicketAttributes,
@@ -548,7 +530,7 @@ export const getMultipleServicesByDistanceTicketJson = async (
         selectedServices,
         ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
-        ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
+        ...(!!caps && caps.length > 0 && { caps }),
     } as WithIds<FlatFareMultipleServices>;
 };
 
@@ -563,7 +545,7 @@ export const getMultipleServicesTicketJson = async (
     const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
     const noc = getNocFromIdToken(req, res);
 
-    if (!noc) {
+    if (!noc || (caps && 'errors' in caps)) {
         logger.error('Attributes missing / incorrect', {
             noc,
         });
@@ -575,10 +557,6 @@ export const getMultipleServicesTicketJson = async (
     }
     const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
 
-    const capsInfo =
-        !!caps && !('errors' in caps) && caps.length > 0
-            ? ((await Promise.all(caps.map(async (c) => await getCapByNocAndId(noc, c.id)))) as Cap[])
-            : [];
     if (basePeriodTicketAttributes.type === 'multiOperator') {
         const additionalOperators = getSessionAttribute(
             req,
@@ -594,7 +572,7 @@ export const getMultipleServicesTicketJson = async (
             additionalOperators,
             termTime: isTermTime(req),
             ...(operatorGroupId && { operatorGroupId }),
-            ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
+            ...(!!caps && caps.length > 0 && { caps }),
             ...(exemptStops.length > 0 && { exemptStops }),
         };
     }
@@ -606,7 +584,7 @@ export const getMultipleServicesTicketJson = async (
         selectedServices,
         ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
-        ...(!!capsInfo && capsInfo.length > 0 && { caps: capsInfo }),
+        ...(!!caps && caps.length > 0 && { caps }),
         ...(!!isFlatFareReturn && { return: true }),
     };
 };

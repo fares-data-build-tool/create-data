@@ -1733,7 +1733,6 @@ export const getCapByNocAndId = async (nocCode: string, id: number): Promise<(Ca
         `;
 
         const queryResults = await executeQuery<{ id: number; contents: string }[]>(queryInput, [nocCode, id]);
-        // contents will be like {"cap":{"name":"cap2","price":"2","durationAmount":"23","durationUnits":"day"},"capStart":{"type":"rollingDays"}}
 
         return queryResults.length !== 0
             ? ({ ...JSON.parse(queryResults[0].contents), id: queryResults[0].id } as Cap & { id: number })

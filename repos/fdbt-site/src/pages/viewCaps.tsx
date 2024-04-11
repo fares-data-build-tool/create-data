@@ -146,18 +146,24 @@ const CapCard = ({ cap, index, deleteActionHandler, fareDayEnd }: CapCardProps):
                         {cap.capDetails.durationUnits}
                     </p>
 
-                    <h4 className="govuk-heading-m govuk-!-padding-bottom-4">
+                    <p className="govuk-body-s govuk-!-margin-bottom-2">
+                        <span className="govuk-!-font-weight-bold">Validity:</span>{' '}
                         {cap.capDetails.capExpiry.productValidity === 'endOfCalendarDay'
                             ? 'At the end of a calendar day'
                             : 'Fare day end'}
-                    </h4>
+                    </p>
+
                     <p className="govuk-body-s govuk-!-margin-bottom-2">
                         {expiryHintText[cap.capDetails.capExpiry.productValidity]}
                     </p>
 
                     {cap.capDetails.capExpiry.productValidity === 'fareDayEnd' ? (
                         <p className="govuk-body-s govuk-!-margin-bottom-2">
-                            {fareDayEnd.substring(0, 2)}:{fareDayEnd.substring(2, 4)}
+                            <span className="govuk-!-font-weight-bold">End time:</span>
+
+                            <p className="govuk-body-s govuk-!-margin-bottom-2">
+                                {fareDayEnd.substring(0, 2)}:{fareDayEnd.substring(2, 4)}
+                            </p>
                         </p>
                     ) : undefined}
                 </div>
