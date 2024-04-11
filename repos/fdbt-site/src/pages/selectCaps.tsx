@@ -211,9 +211,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     if (ticket && matchingJsonMetaData) {
         selectedIds =
-            'caps' in ticket && ticket.caps && Array.isArray(ticket.caps)
-                ? (ticket.caps.map((cap) => cap.id) as number[])
-                : null;
+            'caps' in ticket && ticket.caps && Array.isArray(ticket.caps) ? ticket.caps.map((cap) => cap.id) : null;
     }
 
     return {

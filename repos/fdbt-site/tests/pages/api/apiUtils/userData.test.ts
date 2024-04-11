@@ -198,7 +198,7 @@ describe('userData', () => {
     });
 
     describe('getSingleTicketJson', () => {
-        it('should return a SingleTicket object', async () => {
+        it('should return a SingleTicket object', () => {
             const { req, res } = getMockRequestAndResponse({
                 session: {
                     [MATCHING_ATTRIBUTE]: {
@@ -233,11 +233,11 @@ describe('userData', () => {
                     },
                 },
             });
-            const result = await getSingleTicketJson(req, res);
+            const result = getSingleTicketJson(req, res);
             expect(result).toEqual(expectedSingleTicket);
         });
 
-        it('should correctly add carnet detail', async () => {
+        it('should correctly add carnet detail', () => {
             const { req, res } = getMockRequestAndResponse({
                 session: {
                     [MATCHING_ATTRIBUTE]: {
@@ -279,13 +279,13 @@ describe('userData', () => {
                     },
                 },
             });
-            const result = await getSingleTicketJson(req, res);
+            const result = getSingleTicketJson(req, res);
             expect(result).toEqual(expectedCarnetSingleTicket);
         });
     });
 
     describe('getReturnTicketJson', () => {
-        it('should return a ReturnTicket object for a non circular return journey', async () => {
+        it('should return a ReturnTicket object for a non circular return journey', () => {
             const { req, res } = getMockRequestAndResponse({
                 session: {
                     [MATCHING_ATTRIBUTE]: {
@@ -325,11 +325,11 @@ describe('userData', () => {
                     ],
                 },
             });
-            const result = await getReturnTicketJson(req, res);
+            const result = getReturnTicketJson(req, res);
             expect(result).toEqual(expectedNonCircularReturnTicket);
         });
 
-        it('should return a ReturnTicket object for a circular journey', async () => {
+        it('should return a ReturnTicket object for a circular journey', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 session: {
@@ -366,7 +366,7 @@ describe('userData', () => {
                     ],
                 },
             });
-            const result = await getReturnTicketJson(req, res);
+            const result = getReturnTicketJson(req, res);
             expect(result).toEqual(expectedCircularReturnTicket);
         });
 
@@ -427,7 +427,7 @@ describe('userData', () => {
             jest.resetAllMocks();
         });
 
-        it('creates appropriate matching JSON for a point to point period ticket', async () => {
+        it('creates appropriate matching JSON for a point to point period ticket', () => {
             const { req, res } = getMockRequestAndResponse({
                 session: {
                     [MATCHING_ATTRIBUTE]: {
@@ -476,7 +476,7 @@ describe('userData', () => {
                     ],
                 },
             });
-            const result = await getPointToPointPeriodJson(req, res);
+            const result = getPointToPointPeriodJson(req, res);
             expect(result).toEqual(expectedPointToPointPeriodTicket);
         });
     });
@@ -651,7 +651,7 @@ describe('userData', () => {
     });
 
     describe('getPeriodMulipleServicesTicketJson', () => {
-        it('should return a PeriodMultipleServicesTicket object', async () => {
+        it('should return a PeriodMultipleServicesTicket object', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 session: {
@@ -775,11 +775,11 @@ describe('userData', () => {
                     [FULL_TIME_RESTRICTIONS_ATTRIBUTE]: mockFullTimeRestrictionAttribute,
                 },
             });
-            const result = await getMultipleServicesTicketJson(req, res);
+            const result = getMultipleServicesTicketJson(req, res);
             expect(result).toEqual(expectedPeriodMultipleServicesTicketWithMultipleProducts);
         });
 
-        it('should return a carnet PeriodMultipleServicesTicket object if the products are carnet', async () => {
+        it('should return a carnet PeriodMultipleServicesTicket object if the products are carnet', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 session: {
@@ -921,11 +921,11 @@ describe('userData', () => {
                     },
                 },
             });
-            const result = await getMultipleServicesTicketJson(req, res);
+            const result = getMultipleServicesTicketJson(req, res);
             expect(result).toEqual(expectedCarnetPeriodMultipleServicesTicketWithMultipleProducts);
         });
 
-        it('should return a MultiOperatorMultipleServicesTicket object if the ticket is multipleOperators', async () => {
+        it('should return a MultiOperatorMultipleServicesTicket object if the ticket is multipleOperators', () => {
             const { req, res } = getMockRequestAndResponse({
                 cookieValues: {},
                 session: {
@@ -1125,13 +1125,13 @@ describe('userData', () => {
                     },
                 },
             });
-            const result = await getMultipleServicesTicketJson(req, res);
+            const result = getMultipleServicesTicketJson(req, res);
             expect(result).toStrictEqual(expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators);
         });
     });
 
     describe('Flat fares', () => {
-        it('should return a FlatFareTicket object for multiple services', async () => {
+        it('should return a FlatFareTicket object for multiple services', () => {
             const { req, res } = getMockRequestAndResponse({
                 session: {
                     [MULTIPLE_PRODUCT_ATTRIBUTE]: {
@@ -1182,7 +1182,7 @@ describe('userData', () => {
                     ],
                 },
             });
-            const result = await getMultipleServicesTicketJson(req, res);
+            const result = getMultipleServicesTicketJson(req, res);
             expect(result).toEqual(expectedFlatFareTicket);
         });
 

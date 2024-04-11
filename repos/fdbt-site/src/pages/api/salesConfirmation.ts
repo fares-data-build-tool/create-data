@@ -42,9 +42,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const baseSchemeOperatorJson = getSchemeOperatorTicketJson(req, res);
             userDataJson = await adjustSchemeOperatorJson(req, res, baseSchemeOperatorJson);
         } else if (fareType === 'single') {
-            userDataJson = await getSingleTicketJson(req, res);
+            userDataJson = getSingleTicketJson(req, res);
         } else if (fareType === 'return') {
-            userDataJson = await getReturnTicketJson(req, res);
+            userDataJson = getReturnTicketJson(req, res);
         } else if (['period', 'multiOperator', 'flatFare'].includes(fareType)) {
             switch (ticketType) {
                 case 'geoZone':
@@ -53,16 +53,16 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     break;
                 case 'multipleServices':
                 case 'multipleServicesFlatFareMultiOperator':
-                    userDataJson = await getMultipleServicesTicketJson(req, res);
+                    userDataJson = getMultipleServicesTicketJson(req, res);
                     break;
                 case 'multipleServicesPricedByDistance':
-                    userDataJson = await getMultipleServicesByDistanceTicketJson(req, res);
+                    userDataJson = getMultipleServicesByDistanceTicketJson(req, res);
                     break;
                 case 'hybrid':
                     userDataJson = await getHybridTicketJson(req, res);
                     break;
                 case 'pointToPointPeriod':
-                    userDataJson = await getPointToPointPeriodJson(req, res);
+                    userDataJson = getPointToPointPeriodJson(req, res);
                     break;
                 default:
                     throw new Error(
