@@ -1,4 +1,4 @@
-import { CompanionInfo, DbTimeBand, TimeRestrictionDay, ExpiryUnit } from './matchingJsonTypes';
+import { CompanionInfo, DbTimeBand, TimeRestrictionDay } from './matchingJsonTypes';
 
 export interface FullGroupPassengerType {
     id: number;

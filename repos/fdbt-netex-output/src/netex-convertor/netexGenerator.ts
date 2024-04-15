@@ -45,6 +45,8 @@ import {
     getPriceGroups,
     combineFareZones,
     getAdditionalReturnLines,
+    getCappedDiscountRight,
+    getCapFareTables,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
 import {
     convertJsonToXml,
@@ -78,9 +80,8 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         const publicationRequestToUpdate = { ...publicationRequest };
 
         publicationRequestToUpdate.RequestTimestamp.$t = coreData.currentDate;
-        publicationRequestToUpdate.Description.$t = `Request for ${
-            isPointToPointTicket(ticket) ? `${ticket.nocCode} ${coreData.lineIdName}` : coreData.operatorIdentifier
-        } bus pass fares`;
+        publicationRequestToUpdate.Description.$t = `Request for ${isPointToPointTicket(ticket) ? `${ticket.nocCode} ${coreData.lineIdName}` : coreData.operatorIdentifier
+            } bus pass fares`;
 
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref =
             coreData.nocCodeFormat;
@@ -170,9 +171,8 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
     const updateResourceFrame = (resourceFrame: NetexObject): NetexObject => {
         const resourceFrameToUpdate = { ...resourceFrame };
 
-        resourceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ResourceFrame_UK_PI_COMMON${`:${
-            !isPointToPointTicket(ticket) ? `${coreData.operatorIdentifier}:` : ''
-        }`}op`;
+        resourceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ResourceFrame_UK_PI_COMMON${`:${!isPointToPointTicket(ticket) ? `${coreData.operatorIdentifier}:` : ''
+            }`}op`;
         resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = coreData.url;
         resourceFrameToUpdate.dataSources.DataSource.Email.$t = baseOperatorInfo.email;
 
@@ -214,10 +214,10 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 },
                 ...('postcode' in baseOperatorInfo
                     ? {
-                          Town: { $t: baseOperatorInfo.town },
-                          PostCode: { $t: baseOperatorInfo.postcode },
-                          PostalRegion: { $t: baseOperatorInfo.county },
-                      }
+                        Town: { $t: baseOperatorInfo.town },
+                        PostCode: { $t: baseOperatorInfo.postcode },
+                        PostalRegion: { $t: baseOperatorInfo.county },
+                    }
                     : undefined),
             }),
                 (resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(baseOperatorInfo.mode));
@@ -439,7 +439,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         }
 
         priceFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${ticketIdentifier}@pass:op`;
-        const tariff = priceFareFrameToUpdate.tariffs.Tariff;
+        let tariff = priceFareFrameToUpdate.tariffs.Tariff;
         tariff.id = coreData.lineIdName
             ? `Tariff@${coreData.ticketType}@${coreData.lineIdName}`
             : `op:Tariff@${coreData.placeholderGroupOfProductsName}`;
@@ -478,12 +478,12 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             ValidityCondition:
                 'termTime' in ticket && ticket.termTime && ticket.type === 'period' && 'selectedServices' in ticket
                     ? {
-                          id: 'op:termtime',
-                          version: '1.0',
-                          Name: {
-                              $t: 'Term Time Usage Only',
-                          },
-                      }
+                        id: 'op:termtime',
+                        version: '1.0',
+                        Name: {
+                            $t: 'Term Time Usage Only',
+                        },
+                    }
                     : undefined,
         };
 
@@ -519,10 +519,33 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 delete priceFareFrameToUpdate.fareProducts.AmountOfPriceUnitProduct;
             }
 
+            if ('caps' in ticket && ticket.caps) {
+                const cappedDiscountRight = getCappedDiscountRight(ticket, coreData.ticketUserConcat, coreData.nocCodeFormat)
+                priceFareFrameToUpdate.fareProducts.CappedDiscountRight = cappedDiscountRight
+            }
             priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = buildSalesOfferPackages(
                 ticket.products[0],
                 coreData.ticketUserConcat,
+                priceFareFrameToUpdate.fareProducts.CappedDiscountRight?.id ?? ""
             );
+
+            const timeIntervalsToAdd = { TimeInterval: getTimeIntervals(ticket) };
+            tariff.timeIntervals = timeIntervalsToAdd
+            // This is horrible but in the netex the timeIntervals need to come before the qualityStructureFactors and fareStructureElements
+            const timeIntervalsToUpdate = tariff.timeIntervals
+            const fareStructureElementsToUpdate = tariff.fareStructureElements;
+            const qualityStructureFactorsToUpdate = tariff.qualityStructureFactors;
+            delete tariff.fareStructureElements;
+            delete tariff.qualityStructureFactors;
+            delete tariff.timeIntervals;
+            priceFareFrameToUpdate.tariffs.Tariff = {
+                ...tariff,
+                timeIntervals: timeIntervalsToUpdate,
+                qualityStructureFactors: qualityStructureFactorsToUpdate,
+                fareStructureElements: fareStructureElementsToUpdate,
+            };
+
+            tariff = priceFareFrameToUpdate.tariffs.Tariff
 
             if (isPointToPointTicket(ticket)) return priceFareFrameToUpdate;
         }
@@ -583,8 +606,12 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             delete priceFareFrameToUpdate.fareProducts.AmountOfPriceUnitProduct;
         }
 
+        if ('caps' in ticket && ticket.caps) {
+            const cappedDiscountRight = getCappedDiscountRight(ticket, coreData.ticketUserConcat, coreData.nocCodeFormat)
+            priceFareFrameToUpdate.fareProducts.CappedDiscountRight = cappedDiscountRight
+        }
         // Sales Offer Packages
-        const salesOfferPackages = getSalesOfferPackageList(ticket, coreData.ticketUserConcat);
+        const salesOfferPackages = getSalesOfferPackageList(ticket, coreData.ticketUserConcat, priceFareFrameToUpdate.fareProducts.CappedDiscountRight?.id ?? "");
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = salesOfferPackages.flat();
 
         return priceFareFrameToUpdate;
@@ -639,6 +666,10 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         } else {
             assertNever(ticket);
         }
+
+        if ('caps' in ticket && ticket.caps) {
+            fareTableFareFrameToUpdate.fareTables.FareTable = [...fareTableFareFrameToUpdate.fareTables.FareTable, ...getCapFareTables(ticket, coreData.lineIdName, coreData)]
+        } 
 
         return fareTableFareFrameToUpdate;
     };

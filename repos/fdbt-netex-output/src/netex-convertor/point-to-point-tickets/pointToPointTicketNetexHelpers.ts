@@ -1,5 +1,5 @@
 import startCase from 'lodash/startCase';
-import { PointToPointPeriodTicket, ReturnTicket, SelectedService } from 'fdbt-types/matchingJsonTypes';
+import { PointToPointPeriodTicket, ReturnTicket, SelectedService, Ticket } from 'fdbt-types/matchingJsonTypes';
 import {
     FareZone,
     FareZoneList,
@@ -291,6 +291,7 @@ export const getPreassignedFareProduct = (
     }));
 
     const productType = getProductType(matchingData);
+    const hasCaps = matchingData.caps && matchingData.caps.length > 0
 
     let typeOfFareProductRef = '';
 
@@ -310,10 +311,10 @@ export const getPreassignedFareProduct = (
         },
         ChargingMomentRef: {
             versionRef: 'fxc:v1.0',
-            ref: isCarnet ? 'fxc:prepayment@bundled' : 'fxc:prepayment',
+            ref: isCarnet ? 'fxc:prepayment@bundled' : hasCaps ? 'fxc:post_payment' : 'fxc:prepayment',
         },
         ChargingMomentType: {
-            $t: 'beforeTravel',
+            $t: hasCaps ? 'atEndOfTravel' : 'beforeTravel',
         },
         TypeOfFareProductRef: {
             version: '1.0',
@@ -346,10 +347,71 @@ export const getPreassignedFareProduct = (
     };
 };
 
+export const getCappedDiscountRight = (
+    matchingData: Ticket,
+    ticketUserConcat: string,
+    noc: string
+): NetexObject => {
+    const getCappingRules = () => {
+        if (matchingData.caps && matchingData.caps.length > 0) {
+            return matchingData.caps?.map(cap => {
+                return {
+                    CappingRule: {
+                        id: `Cap@${cap.capDetails.name}`,
+                        Name: {
+                            $t: cap.capDetails.name,
+                        },
+                        CappingPeriod: {
+                            $t: cap.capDetails.durationUnits,
+                        },
+                        ValidableElementRef: {
+                            version: '1.0',
+                            ref: `Trip@${ticketUserConcat}@travel`,
+                        },
+                        GenericParameterAssignment: {
+                            id: `${cap.capDetails.name}@${ticketUserConcat}`,
+                            Name: {
+                                $t: `limit a ${matchingData.passengerType} to ${cap.capDetails.durationAmount} ${cap.capDetails.durationUnits}`,
+                            },
+                            PreassignedFareProductRef: {
+                                version: '1.0',
+                                ref: `Trip@${ticketUserConcat}`,
+                            },
+                            limitations: {
+                                UserProfileRef: {
+                                    version: '1.0',
+                                    ref: `Trip@${matchingData.passengerType}`,
+                                },
+                            },
+                            TimeIntervalRef: {
+                                version: '1.0',
+                                ref: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${cap.capDetails.durationAmount}${cap.capDetails.durationUnits}`,
+                            },
+                        },
+
+                    }
+                }
+            })
+        }
+        return []
+    }
+
+    return {
+        id: `op:Cap:@trip`,
+        version: '1.0',
+        Name: {
+            $t: `Cap ${noc}`,
+        },
+        cappingRules: getCappingRules()
+
+    };
+}
+
 export const buildSalesOfferPackage = (
     salesOfferPackageInfo: SalesOfferPackage,
     ticketUserConcat: string,
     isCarnet: boolean,
+    capId: string,
 ): NetexSalesOfferPackage => {
     const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
 
@@ -372,7 +434,7 @@ export const buildSalesOfferPackage = (
         return distribAssignments;
     };
 
-    const buildSalesOfferPackageElements = (isCarnet: boolean): SalesOfferPackageElement[] => {
+    const buildSalesOfferPackageElements = (isCarnet: boolean, capId: string): SalesOfferPackageElement[] => {
         const salesOfferPackageElements = salesOfferPackageInfo.ticketFormats.map((ticketFormat, index) => {
             return {
                 id: `${salesOfferPackageInfo.name}@${ticketUserConcat}-SOP@${ticketFormat}`,
@@ -382,6 +444,7 @@ export const buildSalesOfferPackage = (
                     version: 'fxc:v1.0',
                     ref: `fxc:${ticketFormat}`,
                 },
+                ...(capId && { CappedDiscountRightRef: { version: "1.0", ref: capId } }),
                 ...(isCarnet && { AmountOfPriceUnitProductRef: { version: '1.0', ref: `Trip@${ticketUserConcat}` } }),
                 ...(!isCarnet && {
                     PreassignedFareProductRef: {
@@ -407,14 +470,14 @@ export const buildSalesOfferPackage = (
             DistributionAssignment: buildDistributionAssignments(),
         },
         salesOfferPackageElements: {
-            SalesOfferPackageElement: buildSalesOfferPackageElements(isCarnet),
+            SalesOfferPackageElement: buildSalesOfferPackageElements(isCarnet, capId),
         },
     };
 };
 
-export const buildSalesOfferPackages = (product: BaseProduct, ticketUserConcat: string): NetexSalesOfferPackage[] => {
+export const buildSalesOfferPackages = (product: BaseProduct, ticketUserConcat: string, capId: string): NetexSalesOfferPackage[] => {
     return product.salesOfferPackages.map(salesOfferPackage => {
-        return buildSalesOfferPackage(salesOfferPackage, ticketUserConcat, 'carnetDetails' in product);
+        return buildSalesOfferPackage(salesOfferPackage, ticketUserConcat, 'carnetDetails' in product, capId);
     });
 };
 
@@ -495,6 +558,54 @@ export const getFareTables = (
             },
         };
     });
+};
+
+export const getCapFareTables = (
+    matchingData: Ticket,
+    lineIdName: string,
+    coreData: CoreData,
+): NetexObject[] => {
+    if (matchingData.caps && matchingData.caps.length > 0) {
+        return matchingData.caps.map((cap) => {
+            return {
+                id: `Trip@${matchingData.type}-cap@${cap.capDetails.name}@Line_${lineIdName}@${matchingData.passengerType}`,
+                version: '1.0',
+                Name: { $t: `FareTable for ${cap.capDetails.name}` },
+                pricesFor: {
+                    CappedDiscountRightRef: `op:Cap:@trip`,
+                },
+                OperatorRef: {
+                    version: '1.0',
+                    ref: coreData.nocCodeFormat,
+                    $t: coreData.opIdNocFormat,
+                },
+                limitations: {
+                    UserProfileRef: {
+                        version: '1.0',
+                        ref: `Trip@${matchingData.passengerType}`,
+                    }
+                },
+                prices: {
+                    CappingRulePrice: {
+                        version: '1.0',
+                        ref: `op:Price:${cap.capDetails.name}@${matchingData.type}_trip`,
+                        Name: {
+                            $t: "Cap based on daily pass price"
+                        },
+                        Amount: {
+                            $t: cap.capDetails.price
+                        },
+                        CappingRuleRef: {
+                            version: "1.0",
+                            ref: `op:${cap.capDetails.name}@${matchingData.type}_trip`
+                        }
+                    }
+                }
+
+            };
+        });
+    }
+    return []
 };
 
 /**
@@ -608,13 +719,13 @@ export const getEligibilityElement = (ticket: PointToPointTicket | PointToPointP
     const users = ticket.groupDefinition
         ? ticket.groupDefinition.companions
         : [
-              {
-                  ageRangeMin: ticket.ageRangeMin,
-                  ageRangeMax: ticket.ageRangeMax,
-                  passengerType: ticket.passengerType,
-                  proofDocuments: ticket.proofDocuments,
-              },
-          ];
+            {
+                ageRangeMin: ticket.ageRangeMin,
+                ageRangeMax: ticket.ageRangeMax,
+                passengerType: ticket.passengerType,
+                proofDocuments: ticket.proofDocuments,
+            },
+        ];
 
     return {
         version: '1.0',
