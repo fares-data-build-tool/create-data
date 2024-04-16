@@ -2044,7 +2044,7 @@ describe('Netex Helpers', () => {
                     ticket.products[0].salesOfferPackages[0].purchaseLocations.length,
                 );
                 expect(returnedSalesOfferPackage.salesOfferPackageElements.SalesOfferPackageElement.length).toBe(
-                    ticket.products[0].salesOfferPackages[0].ticketFormats.length,
+                    ticket.products[0].salesOfferPackages[0].ticketFormats.length + 1,
                 );
             },
         );
@@ -2058,7 +2058,7 @@ describe('Netex Helpers', () => {
         ])(
             'should return an array of sales Offer Packages for each sales offer package inside the ticket  %s',
             (_ticketType, ticket) => {
-                const returnedSalesOfferPackageArray = buildSalesOfferPackages(ticket.products[0], 'a string' , 'capId');
+                const returnedSalesOfferPackageArray = buildSalesOfferPackages(ticket.products[0], 'a string', 'capId');
 
                 const testDataSalesOfferPackage = ticket.products[0].salesOfferPackages;
 

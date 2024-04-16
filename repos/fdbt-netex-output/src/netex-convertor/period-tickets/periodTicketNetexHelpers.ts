@@ -640,6 +640,17 @@ export const getSalesOfferPackageList = (
 ): NetexSalesOfferPackage[][] => {
     const isCarnet = 'carnetDetails' in userPeriodTicket.products[0];
 
+    const capSalesOfferPackageElement = (SOPLength: number) => capId ? [{
+        id: `Trip@${ticketUserConcat}-SOP-cap`,
+        version: '1.0',
+        order: (SOPLength + 1).toString(),
+        TypeOfTravelDocumentRef: {
+            version: 'fxc:v1.0',
+            ref: `fxc:m-ticket`,
+        },
+        CappedDiscountRightRef: { version: "1.0", ref: capId },
+    }] : []
+
     return userPeriodTicket.products.map(product => {
         return product.salesOfferPackages.map(salesOfferPackage => {
             const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
@@ -662,7 +673,7 @@ export const getSalesOfferPackageList = (
                 });
             };
 
-            const buildSalesOfferPackageElements = (capId: string): SalesOfferPackageElement[] => {
+            const buildSalesOfferPackageElements = (): SalesOfferPackageElement[] => {
                 return salesOfferPackage.ticketFormats.map((ticketFormat, index) => {
                     return {
                         id: `Trip@${ticketUserConcat}-${product.productName}-${salesOfferPackage.name}@${ticketFormat}`,
@@ -672,7 +683,6 @@ export const getSalesOfferPackageList = (
                             version: 'fxc:v1.0',
                             ref: `fxc:${ticketFormat}`,
                         },
-                        ...(capId && { CappedDiscountRightRef: { version: "1.0", ref: capId } }),
                         ...(isCarnet && {
                             AmountOfPriceUnitProductRef: {
                                 version: '1.0',
@@ -688,6 +698,7 @@ export const getSalesOfferPackageList = (
                     };
                 });
             };
+            const salesOfferPackageElements = buildSalesOfferPackageElements()
             return {
                 version: '1.0',
                 id: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
@@ -696,7 +707,7 @@ export const getSalesOfferPackageList = (
                 },
                 Description: { $t: `${salesOfferPackage.description ?? ''}` },
                 distributionAssignments: { DistributionAssignment: buildDistributionAssignments() },
-                salesOfferPackageElements: { SalesOfferPackageElement: buildSalesOfferPackageElements(capId) },
+                salesOfferPackageElements: { SalesOfferPackageElement: [...salesOfferPackageElements, ...capSalesOfferPackageElement(salesOfferPackageElements.length)] },
             };
         });
     });

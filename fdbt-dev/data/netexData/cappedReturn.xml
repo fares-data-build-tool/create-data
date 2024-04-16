@@ -770,8 +770,11 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Onboard_(cash)@Another_product-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
+                </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="Trip@Another_product-SOP-cap" version="1.0" order="2">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -788,8 +791,11 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Onboard_(contactless)@Another_product-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
+                </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="Trip@Another_product-SOP-cap" version="1.0" order="2">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -806,8 +812,11 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Online_(smart_card)@Another_product-SOP@smartCard" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
+                </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="Trip@Another_product-SOP-cap" version="1.0" order="2">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -824,8 +833,11 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="Mobile_App@Another_product-SOP@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
+                </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="Trip@Another_product-SOP-cap" version="1.0" order="2">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -852,18 +864,19 @@
               <salesOfferPackageElements>
                 <SalesOfferPackageElement id="All_Encompassing@Another_product-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
-                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
                 <SalesOfferPackageElement id="All_Encompassing@Another_product-SOP@mobileApp" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
-                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
                 <SalesOfferPackageElement id="All_Encompassing@Another_product-SOP@smartCard" version="1.0" order="3">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
-                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
+                </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="Trip@Another_product-SOP-cap" version="1.0" order="4">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>

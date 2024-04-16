@@ -415,6 +415,17 @@ export const buildSalesOfferPackage = (
 ): NetexSalesOfferPackage => {
     const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
 
+    const capSalesOfferPackageElement = (SOPLength: number) => capId ? [{
+        id: `Trip@${ticketUserConcat}-SOP-cap`,
+        version: '1.0',
+        order: (SOPLength + 1).toString(),
+        TypeOfTravelDocumentRef: {
+            version: 'fxc:v1.0',
+            ref: `fxc:m-ticket`,
+        },
+        CappedDiscountRightRef: { version: "1.0", ref: capId },
+    }] : []
+
     const buildDistributionAssignments = (): DistributionAssignment[] => {
         const distribAssignments = salesOfferPackageInfo.purchaseLocations.map((purchaseLocation, index) => {
             return {
@@ -434,7 +445,7 @@ export const buildSalesOfferPackage = (
         return distribAssignments;
     };
 
-    const buildSalesOfferPackageElements = (isCarnet: boolean, capId: string): SalesOfferPackageElement[] => {
+    const buildSalesOfferPackageElements = (isCarnet: boolean): SalesOfferPackageElement[] => {
         const salesOfferPackageElements = salesOfferPackageInfo.ticketFormats.map((ticketFormat, index) => {
             return {
                 id: `${salesOfferPackageInfo.name}@${ticketUserConcat}-SOP@${ticketFormat}`,
@@ -444,7 +455,6 @@ export const buildSalesOfferPackage = (
                     version: 'fxc:v1.0',
                     ref: `fxc:${ticketFormat}`,
                 },
-                ...(capId && { CappedDiscountRightRef: { version: "1.0", ref: capId } }),
                 ...(isCarnet && { AmountOfPriceUnitProductRef: { version: '1.0', ref: `Trip@${ticketUserConcat}` } }),
                 ...(!isCarnet && {
                     PreassignedFareProductRef: {
@@ -457,6 +467,7 @@ export const buildSalesOfferPackage = (
         return salesOfferPackageElements;
     };
 
+    const salesOfferPackageElements = buildSalesOfferPackageElements(isCarnet)
     return {
         Name: {
             $t: salesOfferPackageInfo.name,
@@ -470,7 +481,7 @@ export const buildSalesOfferPackage = (
             DistributionAssignment: buildDistributionAssignments(),
         },
         salesOfferPackageElements: {
-            SalesOfferPackageElement: buildSalesOfferPackageElements(isCarnet, capId),
+            SalesOfferPackageElement: [...salesOfferPackageElements, ...capSalesOfferPackageElement(salesOfferPackageElements.length)],
         },
     };
 };
