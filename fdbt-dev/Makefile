@@ -213,7 +213,7 @@ validate-this-netex:
 	./scripts/validate_this_netex.sh $(file)
 
 copy-latest-netex:
-	EDGE_PORT=4572 awslocal s3 cp s3://fdbt-unvalidated-netex-data-dev/$(EDGE_PORT=4572 awslocal s3 ls s3://fdbt-unvalidated-netex-data-dev --recursive | sort | tail -n 1 | awk '{print $NF}') .
+	awslocal s3 cp s3://fdbt-unvalidated-netex-data-dev/$(awslocal s3 ls s3://fdbt-unvalidated-netex-data-dev --recursive | sort | tail -n 1 | awk '{print $NF}') .
 
 generate-validate-all: add-data-to-buckets
 	./scripts/generate_validate_all_netex.sh
@@ -243,24 +243,24 @@ wait-for-mysql:
 	./scripts/wait_for_mysql.sh
 
 create-local-buckets:
-	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-raw-user-data-dev
-	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-user-data-dev
-	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-matching-data-dev
-	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-netex-data-dev
-	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-unvalidated-netex-data-dev
-	EDGE_PORT=4572 awslocal s3 mb s3://fdbt-products-data-dev
+	awslocal s3 mb s3://fdbt-raw-user-data-dev || true
+	awslocal s3 mb s3://fdbt-user-data-dev || true
+	awslocal s3 mb s3://fdbt-matching-data-dev || true
+	awslocal s3 mb s3://fdbt-netex-data-dev || true
+	awslocal s3 mb s3://fdbt-unvalidated-netex-data-dev || true
+	awslocal s3 mb s3://fdbt-products-data-dev || true
 
 create-local-dynamodb-table:
-	EDGE_PORT=4569 awslocal dynamodb create-table --attribute-definitions AttributeName=id,AttributeType=S --table-name sessions --key-schema AttributeName=id,KeyType=HASH --billing-mode PAY_PER_REQUEST
-	EDGE_PORT=4569 awslocal dynamodb update-time-to-live --table-name sessions --time-to-live-specification "Enabled=true, AttributeName=expires"
+	awslocal dynamodb create-table --attribute-definitions AttributeName=id,AttributeType=S --table-name sessions --key-schema AttributeName=id,KeyType=HASH --billing-mode PAY_PER_REQUEST || true
+	awslocal dynamodb update-time-to-live --table-name sessions --time-to-live-specification "Enabled=true, AttributeName=expires"
 
 create-sns-topics:
-	EDGE_PORT=4575 awslocal sns create-topic --name AlertsTopic
+	awslocal sns create-topic --name AlertsTopic || true
 
 add-data-to-buckets:
-	EDGE_PORT=4572 awslocal s3 sync ./data/matchingData/ s3://fdbt-matching-data-dev/BLAC
-	EDGE_PORT=4572 awslocal s3 sync ./data/netexData/ s3://fdbt-netex-data-dev/BLAC
-	EDGE_PORT=4572 awslocal s3 sync ./data/productsData/ s3://fdbt-products-data-dev/BLAC
+	awslocal s3 sync ./data/matchingData/ s3://fdbt-matching-data-dev/BLAC
+	awslocal s3 sync ./data/netexData/ s3://fdbt-netex-data-dev/BLAC
+	awslocal s3 sync ./data/productsData/ s3://fdbt-products-data-dev/BLAC
 
 print-help:
 	@echo "\n\n**************************\n"
