@@ -16,7 +16,7 @@ const Header = ({ isAuthed, csrfToken, noc, multiOperator }: HeaderProps): React
                     <svg
                         focusable="false"
                         role="img"
-                        className="govuk-header__logotype"
+                        className="govuk-header__logotype crownPadding"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 148 30"
                         height="30"

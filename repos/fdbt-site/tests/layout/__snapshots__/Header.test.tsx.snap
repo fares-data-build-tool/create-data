@@ -18,7 +18,7 @@ exports[`Header should render correctly 1`] = `
       >
         <svg
           aria-label="GOV.UK"
-          className="govuk-header__logotype"
+          className="govuk-header__logotype crownPadding"
           focusable="false"
           height="30"
           role="img"
