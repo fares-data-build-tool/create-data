@@ -2,11 +2,12 @@
 
 exports[`Header should render correctly 1`] = `
 <header
-  className="govuk-header"
+  className="govuk-header app-header"
   data-module="govuk-header"
+  role="banner"
 >
   <div
-    className="govuk-header__container govuk-width-container"
+    className="govuk-header__container app-header__container govuk-width-container"
   >
     <div
       className="govuk-header__logo"
