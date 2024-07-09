@@ -201,7 +201,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="minimum-passengers-Regular Senior"
+                    htmlFor="minimum-passengers-1"
                   >
                     Minimum (optional)
                   </label>
@@ -218,7 +218,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="maximum-passengers-Regular Senior"
+                    htmlFor="maximum-passengers-1"
                   >
                     Maximum (required)
                   </label>
@@ -279,7 +279,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="minimum-passengers-Regular infant"
+                    htmlFor="minimum-passengers-2"
                   >
                     Minimum (optional)
                   </label>
@@ -296,7 +296,7 @@ exports[`pages managePassengerGroup should render correctly after errors are mad
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="maximum-passengers-Regular infant"
+                    htmlFor="maximum-passengers-2"
                   >
                     Maximum (required)
                   </label>
@@ -517,7 +517,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="minimum-passengers-Regular Senior"
+                    htmlFor="minimum-passengers-1"
                   >
                     Minimum (optional)
                   </label>
@@ -534,7 +534,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="maximum-passengers-Regular Senior"
+                    htmlFor="maximum-passengers-1"
                   >
                     Maximum (required)
                   </label>
@@ -595,7 +595,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="minimum-passengers-Regular infant"
+                    htmlFor="minimum-passengers-2"
                   >
                     Minimum (optional)
                   </label>
@@ -612,7 +612,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode 1`] = `
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="maximum-passengers-Regular infant"
+                    htmlFor="maximum-passengers-2"
                   >
                     Maximum (required)
                   </label>
@@ -881,7 +881,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="minimum-passengers-Regular Senior"
+                    htmlFor="minimum-passengers-1"
                   >
                     Minimum (optional)
                   </label>
@@ -898,7 +898,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="maximum-passengers-Regular Senior"
+                    htmlFor="maximum-passengers-1"
                   >
                     Maximum (required)
                   </label>
@@ -959,7 +959,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="minimum-passengers-Regular infant"
+                    htmlFor="minimum-passengers-2"
                   >
                     Minimum (optional)
                   </label>
@@ -976,7 +976,7 @@ exports[`pages managePassengerGroup should render correctly in edit mode with er
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="maximum-passengers-Regular infant"
+                    htmlFor="maximum-passengers-2"
                   >
                     Maximum (required)
                   </label>
@@ -1193,7 +1193,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="minimum-passengers-Normal Adult"
+                    htmlFor="minimum-passengers-1"
                   >
                     Minimum (optional)
                   </label>
@@ -1210,7 +1210,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="maximum-passengers-Normal Adult"
+                    htmlFor="maximum-passengers-1"
                   >
                     Maximum (required)
                   </label>
@@ -1271,7 +1271,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="minimum-passengers-Normal child"
+                    htmlFor="minimum-passengers-2"
                   >
                     Minimum (optional)
                   </label>
@@ -1288,7 +1288,7 @@ exports[`pages managePassengerGroup should render correctly on first opening of 
                 >
                   <label
                     className="govuk-label"
-                    htmlFor="maximum-passengers-Normal child"
+                    htmlFor="maximum-passengers-2"
                   >
                     Maximum (required)
                   </label>
