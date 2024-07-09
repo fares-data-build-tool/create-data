@@ -88,7 +88,7 @@ exports[`pages service should render correctly when data source is bods 1`] = `
         <a
           href="/contact"
         >
-          here
+          on the contact page
         </a>
       </span>
     </div>

@@ -59,11 +59,16 @@ const Home = ({ csrfToken, showDeleteProductsLink }: HomeProps): ReactElement =>
                 <div className="govuk-!-margin-top-7 govuk-!-padding-bottom-7">
                     <h2 className="govuk-heading-s govuk-!-margin-top-3">Related services</h2>
                     <p className="govuk-body">
-                        If your query relates to the use of the Bus Open Data Service go&nbsp;
-                        <a href="https://publish.bus-data.dft.gov.uk/" aria-label="go to the bus open data service">
-                            here
+                        <a
+                            href="https://www.bus-data.dft.gov.uk/contact/"
+                            aria-label="go to the bus open data service"
+                            className="underline govuk-link"
+                        >
+                            https://www.bus-data.dft.gov.uk/contact/
                         </a>
-                        &nbsp;to view their contact details.
+                        <br />
+                        <br />
+                        The Bus Open Data Service deals with queries relating to the use of Bus Open Data.
                         {showDeleteProductsLink ? (
                             <p>
                                 <a

@@ -58,14 +58,16 @@ exports[`contact should render correctly 1`] = `
       <p
         className="govuk-body"
       >
-        If your query relates to the use of the Bus Open Data Service go 
         <a
           aria-label="go to the bus open data service"
-          href="https://publish.bus-data.dft.gov.uk/"
+          className="underline govuk-link"
+          href="https://www.bus-data.dft.gov.uk/contact/"
         >
-          here
+          https://www.bus-data.dft.gov.uk/contact/
         </a>
-         to view their contact details
+        <br />
+        <br />
+        The Bus Open Data Service deals with queries relating to the use of Bus Open Data.
       </p>
       <h3
         className="govuk-heading-s"
