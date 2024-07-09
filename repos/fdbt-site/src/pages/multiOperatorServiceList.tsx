@@ -48,7 +48,7 @@ const bodsDataSourceHtml = (
 const tndsDataSourceHtml = (
     <>
         This data is taken from the <b>Traveline National Dataset (TNDS)</b>. If the you are looking for service data
-        published on BODS, contact the BODS help desk for advice <a href="/contact">here</a>.
+        published on BODS, contact the BODS help desk for advice <a href="/contact">on the contact page</a>.
     </>
 );
 
