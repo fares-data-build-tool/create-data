@@ -130,7 +130,7 @@ const ServiceList = ({
                                         : 'Bus Open Data Service (BODS)'}
                                 </b>
                                 . If the service you are looking for is not listed, contact the BODS help desk for
-                                advice <a href="/contact">here</a>.
+                                advice <a href="/contact">on the contact page</a>.
                             </span>
                             <FormElementWrapper
                                 errors={containsErrorForServices(errors) ? errors : []}

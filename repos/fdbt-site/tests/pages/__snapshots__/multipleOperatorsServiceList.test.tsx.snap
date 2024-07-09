@@ -41,7 +41,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
         <a
           href="/contact"
         >
-          here
+          on the contact page
         </a>
         .
       </span>
@@ -288,7 +288,7 @@ exports[`pages multipleOperatorsServiceList should render the multiOperatorData 
         <a
           href="/contact"
         >
-          here
+          on the contact page
         </a>
         .
       </span>
