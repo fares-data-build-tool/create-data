@@ -93,7 +93,7 @@ const ManageOperatorDetails = ({
                         <CsrfForm action="/api/manageOperatorDetails" method="post" csrfToken={csrfToken}>
                             {inputDetails.map((details) => (
                                 <FormGroupWrapper key={details.inputId} errorIds={[details.inputId]} errors={errors}>
-                                    <fieldset className="govuk-fieldset">
+                                    <div className="govuk-form-group">
                                         <label
                                             className="govuk-label govuk-!-font-weight-bold"
                                             htmlFor={details.inputId}
@@ -114,7 +114,7 @@ const ManageOperatorDetails = ({
                                                 defaultValue={details.defaultValue}
                                             />
                                         </FormElementWrapper>
-                                    </fieldset>
+                                    </div>
                                 </FormGroupWrapper>
                             ))}
                             <input type="submit" value={`Save`} className="govuk-button" />
