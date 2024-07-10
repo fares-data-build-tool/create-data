@@ -182,11 +182,15 @@ const ProductDetails = ({
                     productId={productId}
                     serviceId={serviceId}
                     csrfToken={csrfToken}
+                    isOpen={editNamePopupOpen}
                 />
             )}
 
             {generateReturnPopupOpen && lineId && (
-                <GenerateReturnPopup cancelActionHandler={generateReturnCancelActionHandler} />
+                <GenerateReturnPopup
+                    cancelActionHandler={generateReturnCancelActionHandler}
+                    isOpen={generateReturnPopupOpen && !!lineId}
+                />
             )}
         </TwoThirdsLayout>
     );

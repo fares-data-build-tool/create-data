@@ -273,6 +273,7 @@ exports[`pages manage passenger types should render popup if saved 1`] = `
             value="Save"
           />
           <InfoPopup
+            isOpen={true}
             okActionHandler={[Function]}
             text="You have saved your fare day end time."
             title="Success"

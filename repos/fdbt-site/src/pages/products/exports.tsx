@@ -198,6 +198,7 @@ const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSett
                                 title="We are preparing your export"
                                 text="Your export will take a few seconds to show in the table below."
                                 okActionHandler={() => setShowExportPopup(false)}
+                                isOpen={showExportPopup}
                             />
                         )}
 

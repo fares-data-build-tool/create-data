@@ -80,6 +80,7 @@ const ManageFareDayEnd = ({ errors, csrfToken, fareDayEnd, referer, saved }: Man
                                     title="Success"
                                     text={`You have saved your fare day end time.`}
                                     okActionHandler={() => setShowSaved(false)}
+                                    isOpen={showSaved}
                                 />
                             )}
                         </CsrfForm>

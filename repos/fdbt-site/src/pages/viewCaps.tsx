@@ -126,6 +126,7 @@ const ViewCaps = ({ caps, referer, capExpiry, fareDayEnd, viewCapErrors = [], cs
                     entityName={popUpState.capName}
                     deleteUrl={buildDeleteUrl(popUpState.capId, csrfToken)}
                     cancelActionHandler={cancelActionHandler}
+                    isOpen={!!popUpState.capId}
                 />
             ) : null}
         </BaseLayout>
@@ -254,8 +255,8 @@ const CapExpiryCard = ({ capExpiry: capExpiry, fareDayEnd }: CapExpiryCardProps)
                             {capExpiry === 'endOfCalendarDay'
                                 ? 'At the end of a calendar day'
                                 : capExpiry === '24hr'
-                                ? 'At the end of a 24 hour period'
-                                : 'Fare day end'}
+                                    ? 'At the end of a 24 hour period'
+                                    : 'Fare day end'}
                         </h4>
                         <p className="govuk-body-s govuk-!-margin-bottom-2">{expiryHintText[capExpiry]}</p>
 
