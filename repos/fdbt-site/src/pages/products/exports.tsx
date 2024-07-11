@@ -161,7 +161,9 @@ const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSett
                                         <th scope="col" className="govuk-table__header">
                                             Export status
                                         </th>
-                                        <th scope="col" className="govuk-table__header"></th>
+                                        <th scope="col" className="govuk-table__header">
+                                            <span className="govuk-visually-hidden">Actions</span>
+                                        </th>
                                     </tr>
                                 </thead>
 
