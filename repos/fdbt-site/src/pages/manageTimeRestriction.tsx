@@ -296,7 +296,7 @@ const ManageTimeRestriction = ({
                                                     className="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden"
                                                     id={`conditional-input-${index}`}
                                                 >
-                                                    <fieldset className="govuk-fieldset flex-container time-restrictions-table">
+                                                    <div className="flex-container time-restrictions-table">
                                                         <div
                                                             className={`govuk-form-group ${
                                                                 errors.some((error) =>
@@ -306,7 +306,7 @@ const ManageTimeRestriction = ({
                                                         >
                                                             {timeRestrictionRows}
                                                         </div>
-                                                    </fieldset>
+                                                    </div>
                                                     <div className="flex-container govuk-!-margin-bottom-4">
                                                         <button
                                                             id={`add-another-button-${day.id}`}
