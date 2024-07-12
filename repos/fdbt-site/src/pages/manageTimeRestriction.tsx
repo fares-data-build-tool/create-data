@@ -171,7 +171,6 @@ const ManageTimeRestriction = ({
                                     }`}
                                     id={`start-time-${day}-${i}`}
                                     name={`startTime${day}`}
-                                    aria-describedby="time-restrictions-hint"
                                     type="text"
                                     defaultValue={findCorrectDefaultValue(startTimeInputs, day, i)}
                                 />
@@ -189,14 +188,13 @@ const ManageTimeRestriction = ({
                                     disabled={lastRow && useFareDayEnd}
                                     id={`end-time-${day}-${i}`}
                                     name={`endTime${day}`}
-                                    aria-describedby="time-restrictions-hint"
                                     type="text"
                                     ref={lastRow ? endTimeRef : undefined}
                                     defaultValue={findCorrectDefaultValue(endTimeInputs, day, i, fareDayEnd)}
                                 />
                             </>
                         </div>
-                        {lastRow && (
+                        {lastRow ? (
                             <>
                                 <span className="govuk-label item">OR </span>
 
@@ -205,7 +203,7 @@ const ManageTimeRestriction = ({
                                         className="govuk-checkboxes__input"
                                         name={`fareDayEnd${day}`}
                                         type="checkbox"
-                                        id="use-fare-day-end"
+                                        id={`use-fare-day-end-${day}-${i}`}
                                         onChange={(e) => {
                                             setUseFareDayEnd(e.currentTarget.checked);
                                             if (endTimeRef.current) {
@@ -215,12 +213,15 @@ const ManageTimeRestriction = ({
                                         }}
                                         checked={useFareDayEnd}
                                     />
-                                    <label className="govuk-label govuk-checkboxes__label" htmlFor="use-fare-day-end">
+                                    <label
+                                        className="govuk-label govuk-checkboxes__label"
+                                        htmlFor={`use-fare-day-end-${day}-${i}`}
+                                    >
                                         Use fare day end
                                     </label>
                                 </div>
                             </>
-                        )}
+                        ) : null}
                     </div>
                 </div>,
             );
