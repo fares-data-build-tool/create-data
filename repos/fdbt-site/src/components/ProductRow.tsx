@@ -28,21 +28,21 @@ export const renderTable = (
             <div className="govuk-!-margin-left-4 govuk-!-margin-right-2">
                 <FormGroupWrapper errors={errors} errorIds={[`multiple-product-name-${index}`]} hideErrorBar>
                     <>
-                        {index === 0 ? (
-                            <>
-                                <label className="govuk-label" htmlFor={`multiple-product-name-${index}`}>
-                                    <span className="govuk-visually-hidden">{`Product Name - Product ${
-                                        index + 1
-                                    }`}</span>
-                                    <span aria-hidden>Product name</span>
-                                </label>
-                                <span className="govuk-hint" id={`product-name-hint-${index}`}>
-                                    50 characters max
-                                </span>{' '}
-                            </>
-                        ) : (
-                            ''
-                        )}
+                        <>
+                            <label
+                                className={`govuk-label ${index > 0 ? 'govuk-visually-hidden' : ''}`}
+                                htmlFor={`multiple-product-name-${index}`}
+                            >
+                                <span className="govuk-visually-hidden">{`Product Name - Product ${index + 1}`}</span>
+                                <span aria-hidden>Product name</span>
+                            </label>
+                            <span
+                                className={`govuk-hint ${index > 0 ? 'govuk-visually-hidden' : ''}`}
+                                id={`product-name-hint-${index}`}
+                            >
+                                50 characters max
+                            </span>{' '}
+                        </>
 
                         <FormElementWrapper
                             errors={errors}
@@ -56,7 +56,7 @@ export const renderTable = (
                                 id={`multiple-product-name-${index}`}
                                 name={`multipleProductNameInput${index}`}
                                 type="text"
-                                aria-describedby={`product-name-hint-${index}`}
+                                aria-labelledby={`product-name-hint-${index}`}
                                 maxLength={50}
                                 defaultValue={userInput[index]?.productName ?? ''}
                             />
@@ -67,21 +67,23 @@ export const renderTable = (
             <div className="govuk-!-margin-left-2 govuk-!-margin-right-2">
                 <FormGroupWrapper errors={errors} errorIds={[`multiple-product-price-${index}`]} hideErrorBar>
                     <>
-                        {index === 0 ? (
-                            <>
-                                <label className="govuk-label" htmlFor={`multiple-product-price-${index}`}>
-                                    <span className="govuk-visually-hidden">{`Product Price, in pounds - Product ${
-                                        index + 1
-                                    }`}</span>
-                                    <span aria-hidden>Price</span>
-                                </label>
-                                <span className="govuk-hint" id={`product-price-hint-${index}`}>
-                                    e.g. 2.99
-                                </span>
-                            </>
-                        ) : (
-                            ''
-                        )}
+                        <>
+                            <label
+                                className={`govuk-label ${index > 0 ? 'govuk-visually-hidden' : ''}`}
+                                htmlFor={`multiple-product-price-${index}`}
+                            >
+                                <span className="govuk-visually-hidden">{`Product Price, in pounds - Product ${
+                                    index + 1
+                                }`}</span>
+                                <span aria-hidden>Price</span>
+                            </label>
+                            <span
+                                className={`govuk-hint ${index > 0 ? 'govuk-visually-hidden' : ''}`}
+                                id={`product-price-hint-${index}`}
+                            >
+                                e.g. 2.99
+                            </span>
+                        </>
 
                         <div className="govuk-currency-input">
                             <div className="govuk-currency-input__inner">
@@ -98,7 +100,7 @@ export const renderTable = (
                                         name={`multipleProductPriceInput${index}`}
                                         data-non-numeric
                                         type="text"
-                                        aria-describedby={`product-price-hint-${index}`}
+                                        aria-labelledby={`product-price-hint-${index}`}
                                         id={`multiple-product-price-${index}`}
                                         defaultValue={userInput[index]?.productPrice ?? ''}
                                     />
@@ -119,25 +121,24 @@ export const renderTable = (
                         hideErrorBar
                     >
                         <>
-                            {index === 0 ? (
-                                <>
-                                    <label className="govuk-label" htmlFor="product-details-period-duration">
-                                        Period duration
-                                    </label>
-                                    <span className="govuk-hint" id="product-period-duration-hint">
-                                        For example, 3 days
-                                    </span>
-                                </>
-                            ) : (
-                                ''
-                            )}
+                            <>
+                                <p className={`govuk-label ${index > 0 ? 'govuk-visually-hidden' : ''}`}>
+                                    Period duration
+                                </p>
+                                <span
+                                    className={`govuk-hint ${index > 0 ? 'govuk-visually-hidden' : ''}`}
+                                    id={`product-period-duration-hint-${index}`}
+                                >
+                                    For example, 3 days
+                                </span>
+                            </>
 
                             <ExpirySelector
                                 defaultDuration={userInput[index]?.productDuration ?? ''}
                                 defaultUnit={userInput[index]?.productDurationUnits ?? undefined}
                                 quantityName={`multipleProductDurationInput${index}`}
                                 quantityId={`product-details-period-duration-quantity-${index}`}
-                                hintId="product-period-duration-hint"
+                                hintId={`product-period-duration-hint-${index}`}
                                 unitName={`multipleProductDurationUnitsInput${index}`}
                                 unitId={`product-details-period-duration-unit-${index}`}
                                 carnet={false}
@@ -203,10 +204,8 @@ export const renderTable = (
                             <>
                                 {index === 0 ? (
                                     <>
-                                        <label className="govuk-label" htmlFor="product-details-carnet-expiry">
-                                            Carnet expiry
-                                        </label>
-                                        <span className="govuk-hint" id="product-carnet-expiry-hint">
+                                        <p className="govuk-label">Carnet expiry</p>
+                                        <span className="govuk-hint" id={`product-carnet-expiry-hint-${index}`}>
                                             e.g. 2 months
                                         </span>
                                     </>
@@ -219,7 +218,7 @@ export const renderTable = (
                                     defaultUnit={userInput[index]?.carnetDetails?.expiryUnit ?? undefined}
                                     quantityName={`carnetExpiryDurationInput${index}`}
                                     quantityId={`product-details-carnet-expiry-quantity-${index}`}
-                                    hintId="product-carnet-expiry-hint"
+                                    hintId={`product-carnet-expiry-hint-${index}`}
                                     unitName={`carnetExpiryUnitInput${index}`}
                                     unitId={`product-details-carnet-expiry-unit-${index}`}
                                     carnet

@@ -12,7 +12,7 @@ exports[`ExpirySelector should render the selector for a carnet 1`] = `
     hideText={true}
   >
     <input
-      aria-describedby=""
+      aria-labelledby=""
       className="govuk-input govuk-input--width-3"
       defaultValue=""
       id="test-quantity-id"
@@ -27,6 +27,7 @@ exports[`ExpirySelector should render the selector for a carnet 1`] = `
     hideText={true}
   >
     <select
+      aria-labelledby=""
       className="govuk-select govuk-select--width-3 expiry-selector-units"
       defaultValue=""
       id="test-unit-id"
@@ -92,7 +93,7 @@ exports[`ExpirySelector should render the selector for a non-carnet 1`] = `
     hideText={true}
   >
     <input
-      aria-describedby=""
+      aria-labelledby=""
       className="govuk-input govuk-input--width-3"
       defaultValue=""
       id="test-quantity-id"
@@ -107,6 +108,7 @@ exports[`ExpirySelector should render the selector for a non-carnet 1`] = `
     hideText={true}
   >
     <select
+      aria-labelledby=""
       className="govuk-select govuk-select--width-3 expiry-selector-units"
       defaultValue=""
       id="test-unit-id"
@@ -166,7 +168,7 @@ exports[`ExpirySelector should render the selector for a school ticket 1`] = `
     hideText={true}
   >
     <input
-      aria-describedby=""
+      aria-labelledby=""
       className="govuk-input govuk-input--width-3"
       defaultValue=""
       id="test-quantity-id"
@@ -181,6 +183,7 @@ exports[`ExpirySelector should render the selector for a school ticket 1`] = `
     hideText={true}
   >
     <select
+      aria-labelledby=""
       className="govuk-select govuk-select--width-3 expiry-selector-units"
       defaultValue=""
       id="test-unit-id"
