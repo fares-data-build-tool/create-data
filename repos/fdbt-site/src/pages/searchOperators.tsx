@@ -289,15 +289,18 @@ export const showSearchResults = (
                                 const { nocCode, name } = operator;
                                 return (
                                     <div className="govuk-checkboxes__item" key={`checkbox-item-${nocCode}`}>
-                                        <span
+                                        <input
+                                            className="govuk-checkboxes__input"
                                             id={`operator-to-add-${index}`}
-                                            // eslint-disable-next-line jsx-a11y/aria-role
-                                            role="input"
-                                            className="govuk-label govuk-checkboxes__label"
+                                            type="checkbox"
                                             onClick={() => addOperator(operator.nocCode, operator.name)}
+                                        />
+                                        <label
+                                            className="govuk-label govuk-checkboxes__label"
+                                            htmlFor={`operator-to-add-${index}`}
                                         >
                                             {name} - {nocCode}
-                                        </span>
+                                        </label>
                                     </div>
                                 );
                             })}

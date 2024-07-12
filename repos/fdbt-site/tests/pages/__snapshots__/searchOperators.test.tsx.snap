@@ -119,12 +119,15 @@ exports[`pages searchOperator should render a selection error when the user trie
                 className="govuk-checkboxes__item"
                 key="checkbox-item-BLAC"
               >
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="id"
+                <input
+                  className="govuk-checkboxes__input"
                   id="operator-to-add-0"
                   onClick={[Function]}
-                  role="input"
+                  type="checkbox"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="operator-to-add-0"
                 >
                   Blackpool
                    - 
@@ -1019,12 +1022,15 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
                 className="govuk-checkboxes__item"
                 key="checkbox-item-WBTR"
               >
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="id"
+                <input
+                  className="govuk-checkboxes__input"
                   id="operator-to-add-0"
                   onClick={[Function]}
-                  role="input"
+                  type="checkbox"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="operator-to-add-0"
                 >
                   Warrington's Own Buses
                    - 
@@ -1637,12 +1643,15 @@ exports[`pages searchOperator should render the search input and search results 
                 className="govuk-checkboxes__item"
                 key="checkbox-item-BLAC"
               >
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="id"
+                <input
+                  className="govuk-checkboxes__input"
                   id="operator-to-add-0"
                   onClick={[Function]}
-                  role="input"
+                  type="checkbox"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="operator-to-add-0"
                 >
                   Blackpool
                    - 
@@ -1895,12 +1904,15 @@ exports[`pages searchOperator should render the search input, search results and
                 className="govuk-checkboxes__item"
                 key="checkbox-item-WBTR"
               >
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="id"
+                <input
+                  className="govuk-checkboxes__input"
                   id="operator-to-add-0"
                   onClick={[Function]}
-                  role="input"
+                  type="checkbox"
+                />
+                <label
+                  className="govuk-label govuk-checkboxes__label"
+                  htmlFor="operator-to-add-0"
                 >
                   Warrington's Own Buses
                    - 
