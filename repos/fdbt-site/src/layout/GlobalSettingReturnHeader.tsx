@@ -10,7 +10,7 @@ export const GlobalSettingReturnHeader: FunctionComponent = () => (
         >
             <div className="govuk-notification-banner__header" />
             <div className="govuk-notification-banner__content global-settings-return-banner">
-                <p className="govuk-heading-s govuk-!-margin-0">
+                <p className="govuk-heading-s govuk-!-margin-0" id="govuk-notification-banner-title">
                     Once you&apos;ve made your changes you can return to your fare creation.
                 </p>
                 <a href={`/globalSettingsRedirect`} className="govuk-button govuk-button--secondary">
