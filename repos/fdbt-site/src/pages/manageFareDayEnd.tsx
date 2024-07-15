@@ -57,22 +57,20 @@ const ManageFareDayEnd = ({ errors, csrfToken, fareDayEnd, referer, saved }: Man
 
                         <CsrfForm action="/api/manageFareDayEnd" method="post" csrfToken={csrfToken}>
                             <FormGroupWrapper errorIds={[fareDayEndInputId]} errors={errors}>
-                                <fieldset className="govuk-fieldset">
-                                    <FormElementWrapper
-                                        errors={errors}
-                                        errorId={fareDayEndInputId}
-                                        errorClass="govuk-input--error"
-                                    >
-                                        <input
-                                            className={`govuk-input govuk-input--width-5 govuk-!-margin-right-4`}
-                                            id={fareDayEndInputId}
-                                            name={`fareDayEnd`}
-                                            aria-describedby="fare-day-text"
-                                            type="text"
-                                            defaultValue={fareDayEnd}
-                                        />
-                                    </FormElementWrapper>
-                                </fieldset>
+                                <FormElementWrapper
+                                    errors={errors}
+                                    errorId={fareDayEndInputId}
+                                    errorClass="govuk-input--error"
+                                >
+                                    <input
+                                        className={`govuk-input govuk-input--width-5 govuk-!-margin-right-4`}
+                                        id={fareDayEndInputId}
+                                        name={`fareDayEnd`}
+                                        aria-labelledby="fare-day-text"
+                                        type="text"
+                                        defaultValue={fareDayEnd}
+                                    />
+                                </FormElementWrapper>
                             </FormGroupWrapper>
                             <input type="submit" value={`Save`} className="govuk-button" />
                             {showSaved && (
