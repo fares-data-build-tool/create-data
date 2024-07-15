@@ -60,7 +60,9 @@ export const BaseLayout = ({
             {referer && <GlobalSettingReturnHeader />}
 
             <div className="govuk-width-container">
-                <main className="govuk-main-wrapper">{children}</main>
+                <main className="govuk-main-wrapper" id="main-content">
+                    {children}
+                </main>
                 {!hideHelp && <Help />}
             </div>
             <Footer />
