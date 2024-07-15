@@ -54,7 +54,7 @@ const ExpirySelector = ({
                         name={quantityName}
                         type="text"
                         id={quantityId}
-                        aria-describedby={hintId || ''}
+                        aria-labelledby={hintId || ''}
                         defaultValue={defaultDuration || ''}
                     />
                 </FormElementWrapper>
@@ -63,6 +63,7 @@ const ExpirySelector = ({
                         className="govuk-select govuk-select--width-3 expiry-selector-units"
                         name={unitName}
                         id={unitId}
+                        aria-labelledby={hintId || ''}
                         defaultValue={defaultUnit || ''}
                     >
                         <option value="" disabled key="select-one">

@@ -79,7 +79,7 @@ export const showSelectedOperators = (
                     errors.length > 0 && errors[0].id == 'operator-group-name' ? 'govuk-form-group--error' : ''
                 }`}
             >
-                <fieldset className="govuk-fieldset" aria-describedby="selected-operators">
+                <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend--m">
                         <h3 className="govuk-fieldset__heading" id="operator-group-name-heading">
                             Enter a name for this group
@@ -96,6 +96,7 @@ export const showSelectedOperators = (
                         className={`govuk-input ${
                             errors.length > 0 && errors[0].id == 'operator-group-name' ? 'govuk-input--error' : ''
                         }`}
+                        aria-labelledby="operator-group-name-heading"
                         name="operatorGroupName"
                         type="text"
                         key="operator-group-name"
@@ -176,7 +177,7 @@ export const renderSearchBox = (
     });
     return (
         <div className={`govuk-form-group ${searchInputErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-            <fieldset className="govuk-fieldset" aria-describedby={fieldsetProps.heading.id}>
+            <fieldset className="govuk-fieldset">
                 <legend className={fieldsetProps.legend.className}>
                     <h2 className={fieldsetProps.heading.className} id={fieldsetProps.heading.id}>
                         {fieldsetProps.heading.content}

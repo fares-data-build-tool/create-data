@@ -79,7 +79,7 @@ const SelectTimeRestrictions = ({
                                             (!!selectedId && isEditing)
                                         }
                                     />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
+                                    <label className="govuk-label govuk-radios__label" htmlFor="valid-days-required">
                                         Yes
                                     </label>
                                 </div>
@@ -117,7 +117,10 @@ const SelectTimeRestrictions = ({
                                         data-aria-controls="conditional-time-restriction-2"
                                         defaultChecked={!selectedId}
                                     />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
+                                    <label
+                                        className="govuk-label govuk-radios__label"
+                                        htmlFor="valid-days-not-required"
+                                    >
                                         No
                                     </label>
                                 </div>

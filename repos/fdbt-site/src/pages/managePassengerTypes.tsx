@@ -251,9 +251,9 @@ const ManagePassengerTypes = ({
                         </legend>
 
                         <div className={`govuk-form-group${hasError(errors, 'age-range-min')}`}>
-                            <div id="age-range-min" className="govuk-hint">
+                            <label id="age-range-min" className="govuk-hint" htmlFor="ageRangeMin">
                                 Minimum age (if applicable)
-                            </div>
+                            </label>
 
                             <FormElementWrapper
                                 errors={errors}
@@ -264,15 +264,16 @@ const ManagePassengerTypes = ({
                                     className="govuk-input govuk-input--width-5"
                                     name="ageRangeMin"
                                     type="text"
+                                    id="ageRangeMin"
                                     defaultValue={ageRangeMin}
                                 />
                             </FormElementWrapper>
                         </div>
 
                         <div className={`govuk-form-group${hasError(errors, 'age-range-max')}`}>
-                            <div id="age-range-max" className="govuk-hint">
+                            <label id="age-range-max" className="govuk-hint" htmlFor="ageRangeMax">
                                 Maximum age (if applicable)
-                            </div>
+                            </label>
 
                             <FormElementWrapper
                                 errors={errors}
@@ -283,6 +284,7 @@ const ManagePassengerTypes = ({
                                     className="govuk-input govuk-input--width-5"
                                     name="ageRangeMax"
                                     type="text"
+                                    id="ageRangeMax"
                                     defaultValue={ageRangeMax}
                                 />
                             </FormElementWrapper>

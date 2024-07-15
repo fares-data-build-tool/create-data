@@ -23,7 +23,6 @@ exports[`pages searchOperator should render a selection error when the user trie
           className="govuk-form-group "
         >
           <fieldset
-            aria-describedby="operator-search"
             className="govuk-fieldset"
           >
             <legend
@@ -152,7 +151,6 @@ exports[`pages searchOperator should render a selection error when the user trie
             className="govuk-form-group "
           >
             <fieldset
-              aria-describedby="selected-operators"
               className="govuk-fieldset"
             >
               <legend
@@ -166,6 +164,7 @@ exports[`pages searchOperator should render a selection error when the user trie
                 </h3>
               </legend>
               <input
+                aria-labelledby="operator-group-name-heading"
                 className="govuk-input "
                 defaultValue=""
                 id="operator-group-name"
@@ -257,7 +256,6 @@ exports[`pages searchOperator should render a selection error when the user trie
           className="govuk-form-group "
         >
           <fieldset
-            aria-describedby="operator-search"
             className="govuk-fieldset"
           >
             <legend
@@ -344,7 +342,6 @@ exports[`pages searchOperator should render a selection error when the user trie
             className="govuk-form-group "
           >
             <fieldset
-              aria-describedby="selected-operators"
               className="govuk-fieldset"
             >
               <legend
@@ -358,6 +355,7 @@ exports[`pages searchOperator should render a selection error when the user trie
                 </h3>
               </legend>
               <input
+                aria-labelledby="operator-group-name-heading"
                 className="govuk-input "
                 defaultValue=""
                 id="operator-group-name"
@@ -553,7 +551,6 @@ exports[`pages searchOperator should render an input error when the user makes a
           className="govuk-form-group govuk-form-group--error"
         >
           <fieldset
-            aria-describedby="operator-search"
             className="govuk-fieldset"
           >
             <legend
@@ -624,7 +621,6 @@ exports[`pages searchOperator should render an input error when the user makes a
             className="govuk-form-group "
           >
             <fieldset
-              aria-describedby="selected-operators"
               className="govuk-fieldset"
             >
               <legend
@@ -638,6 +634,7 @@ exports[`pages searchOperator should render an input error when the user makes a
                 </h3>
               </legend>
               <input
+                aria-labelledby="operator-group-name-heading"
                 className="govuk-input "
                 defaultValue=""
                 id="operator-group-name"
@@ -729,7 +726,6 @@ exports[`pages searchOperator should render just the search input when the user 
           className="govuk-form-group "
         >
           <fieldset
-            aria-describedby="operator-search"
             className="govuk-fieldset"
           >
             <legend
@@ -789,7 +785,6 @@ exports[`pages searchOperator should render just the search input when the user 
             className="govuk-form-group "
           >
             <fieldset
-              aria-describedby="selected-operators"
               className="govuk-fieldset"
             >
               <legend
@@ -803,6 +798,7 @@ exports[`pages searchOperator should render just the search input when the user 
                 </h3>
               </legend>
               <input
+                aria-labelledby="operator-group-name-heading"
                 className="govuk-input "
                 defaultValue=""
                 id="operator-group-name"
@@ -900,7 +896,6 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
           className="govuk-form-group "
         >
           <fieldset
-            aria-describedby="operator-search"
             className="govuk-fieldset"
           >
             <legend
@@ -1055,7 +1050,6 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
             className="govuk-form-group "
           >
             <fieldset
-              aria-describedby="selected-operators"
               className="govuk-fieldset"
             >
               <legend
@@ -1069,6 +1063,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
                 </h3>
               </legend>
               <input
+                aria-labelledby="operator-group-name-heading"
                 className="govuk-input "
                 defaultValue="OperatorG Group"
                 id="operator-group-name"
@@ -1258,7 +1253,6 @@ exports[`pages searchOperator should render the search input and a list of selec
           className="govuk-form-group "
         >
           <fieldset
-            aria-describedby="operator-search"
             className="govuk-fieldset"
           >
             <legend
@@ -1345,7 +1339,6 @@ exports[`pages searchOperator should render the search input and a list of selec
             className="govuk-form-group "
           >
             <fieldset
-              aria-describedby="selected-operators"
               className="govuk-fieldset"
             >
               <legend
@@ -1359,6 +1352,7 @@ exports[`pages searchOperator should render the search input and a list of selec
                 </h3>
               </legend>
               <input
+                aria-labelledby="operator-group-name-heading"
                 className="govuk-input "
                 defaultValue=""
                 id="operator-group-name"
@@ -1547,7 +1541,6 @@ exports[`pages searchOperator should render the search input and search results 
           className="govuk-form-group "
         >
           <fieldset
-            aria-describedby="operator-search"
             className="govuk-fieldset"
           >
             <legend
@@ -1676,7 +1669,6 @@ exports[`pages searchOperator should render the search input and search results 
             className="govuk-form-group "
           >
             <fieldset
-              aria-describedby="selected-operators"
               className="govuk-fieldset"
             >
               <legend
@@ -1690,6 +1682,7 @@ exports[`pages searchOperator should render the search input and search results 
                 </h3>
               </legend>
               <input
+                aria-labelledby="operator-group-name-heading"
                 className="govuk-input "
                 defaultValue=""
                 id="operator-group-name"
@@ -1781,7 +1774,6 @@ exports[`pages searchOperator should render the search input, search results and
           className="govuk-form-group "
         >
           <fieldset
-            aria-describedby="operator-search"
             className="govuk-fieldset"
           >
             <legend
@@ -1937,7 +1929,6 @@ exports[`pages searchOperator should render the search input, search results and
             className="govuk-form-group "
           >
             <fieldset
-              aria-describedby="selected-operators"
               className="govuk-fieldset"
             >
               <legend
@@ -1951,6 +1942,7 @@ exports[`pages searchOperator should render the search input, search results and
                 </h3>
               </legend>
               <input
+                aria-labelledby="operator-group-name-heading"
                 className="govuk-input "
                 defaultValue=""
                 id="operator-group-name"
