@@ -56,24 +56,20 @@ exports[`pages manage passenger types should render correctly 1`] = `
             }
             errors={Array []}
           >
-            <fieldset
-              className="govuk-fieldset"
+            <FormElementWrapper
+              errorClass="govuk-input--error"
+              errorId="fare-day-end-input"
+              errors={Array []}
             >
-              <FormElementWrapper
-                errorClass="govuk-input--error"
-                errorId="fare-day-end-input"
-                errors={Array []}
-              >
-                <input
-                  aria-describedby="fare-day-text"
-                  className="govuk-input govuk-input--width-5 govuk-!-margin-right-4"
-                  defaultValue="1234"
-                  id="fare-day-end-input"
-                  name="fareDayEnd"
-                  type="text"
-                />
-              </FormElementWrapper>
-            </fieldset>
+              <input
+                aria-labelledby="fare-day-text"
+                className="govuk-input govuk-input--width-5 govuk-!-margin-right-4"
+                defaultValue="1234"
+                id="fare-day-end-input"
+                name="fareDayEnd"
+                type="text"
+              />
+            </FormElementWrapper>
           </FormGroupWrapper>
           <input
             className="govuk-button"
@@ -154,31 +150,27 @@ exports[`pages manage passenger types should render error state if error 1`] = `
               ]
             }
           >
-            <fieldset
-              className="govuk-fieldset"
+            <FormElementWrapper
+              errorClass="govuk-input--error"
+              errorId="fare-day-end-input"
+              errors={
+                Array [
+                  Object {
+                    "errorMessage": "An error happened!",
+                    "id": "fare-day-end-input",
+                  },
+                ]
+              }
             >
-              <FormElementWrapper
-                errorClass="govuk-input--error"
-                errorId="fare-day-end-input"
-                errors={
-                  Array [
-                    Object {
-                      "errorMessage": "An error happened!",
-                      "id": "fare-day-end-input",
-                    },
-                  ]
-                }
-              >
-                <input
-                  aria-describedby="fare-day-text"
-                  className="govuk-input govuk-input--width-5 govuk-!-margin-right-4"
-                  defaultValue="Not a time"
-                  id="fare-day-end-input"
-                  name="fareDayEnd"
-                  type="text"
-                />
-              </FormElementWrapper>
-            </fieldset>
+              <input
+                aria-labelledby="fare-day-text"
+                className="govuk-input govuk-input--width-5 govuk-!-margin-right-4"
+                defaultValue="Not a time"
+                id="fare-day-end-input"
+                name="fareDayEnd"
+                type="text"
+              />
+            </FormElementWrapper>
           </FormGroupWrapper>
           <input
             className="govuk-button"
@@ -248,24 +240,20 @@ exports[`pages manage passenger types should render popup if saved 1`] = `
             }
             errors={Array []}
           >
-            <fieldset
-              className="govuk-fieldset"
+            <FormElementWrapper
+              errorClass="govuk-input--error"
+              errorId="fare-day-end-input"
+              errors={Array []}
             >
-              <FormElementWrapper
-                errorClass="govuk-input--error"
-                errorId="fare-day-end-input"
-                errors={Array []}
-              >
-                <input
-                  aria-describedby="fare-day-text"
-                  className="govuk-input govuk-input--width-5 govuk-!-margin-right-4"
-                  defaultValue="1254"
-                  id="fare-day-end-input"
-                  name="fareDayEnd"
-                  type="text"
-                />
-              </FormElementWrapper>
-            </fieldset>
+              <input
+                aria-labelledby="fare-day-text"
+                className="govuk-input govuk-input--width-5 govuk-!-margin-right-4"
+                defaultValue="1254"
+                id="fare-day-end-input"
+                name="fareDayEnd"
+                type="text"
+              />
+            </FormElementWrapper>
           </FormGroupWrapper>
           <input
             className="govuk-button"
