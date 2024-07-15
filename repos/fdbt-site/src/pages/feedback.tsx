@@ -56,6 +56,7 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
                             id="hear-about-service-question"
                             name="hearAboutServiceQuestion"
                             rows={3}
+                            aria-labelledby="hear-about-service-header"
                         />
                     </fieldset>
                 </div>
@@ -73,6 +74,7 @@ const Feedback = ({ csrfToken, feedbackSubmitted }: FeedbackProps): ReactElement
                             id="general-feedback-question"
                             name="generalFeedbackQuestion"
                             rows={6}
+                            aria-labelledby="general-feedback-header"
                         />
                     </fieldset>
                 </div>
