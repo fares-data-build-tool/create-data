@@ -138,6 +138,12 @@ const ProductDetails = ({
                                         })}
                                         {serviceId && isSingle && (
                                             <form>
+                                                {generateReturnPopupOpen && lineId && (
+                                                    <GenerateReturnPopup
+                                                        cancelActionHandler={generateReturnCancelActionHandler}
+                                                        isOpen={generateReturnPopupOpen && !!lineId}
+                                                    />
+                                                )}
                                                 <button
                                                     className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2 govuk-!-margin-bottom-0"
                                                     formAction={createGenerateReturnUrl(
@@ -183,13 +189,6 @@ const ProductDetails = ({
                     serviceId={serviceId}
                     csrfToken={csrfToken}
                     isOpen={editNamePopupOpen}
-                />
-            )}
-
-            {generateReturnPopupOpen && lineId && (
-                <GenerateReturnPopup
-                    cancelActionHandler={generateReturnCancelActionHandler}
-                    isOpen={generateReturnPopupOpen && !!lineId}
                 />
             )}
         </TwoThirdsLayout>
