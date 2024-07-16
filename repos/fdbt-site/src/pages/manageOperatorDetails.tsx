@@ -123,6 +123,7 @@ const ManageOperatorDetails = ({
                                     title="Success"
                                     text={`You have saved your operator details.`}
                                     okActionHandler={() => setShowSaved(false)}
+                                    isOpen={showSaved}
                                 />
                             )}
                         </CsrfForm>
