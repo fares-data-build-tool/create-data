@@ -51,6 +51,7 @@
         "express-session": "^1.17.1",
         "express-winston": "^4.0.3",
         "file-loader": "^6.2.0",
+        "focus-trap-react": "^10.2.3",
         "formidable": "1.2.2",
         "govuk-frontend": "^3.13.0",
         "helmet": "^3.22.0",

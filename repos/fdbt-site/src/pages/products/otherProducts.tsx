@@ -65,6 +65,7 @@ const OtherProducts = ({ otherProducts, csrfToken }: OtherProductsProps): ReactE
                                     setPopUpState(undefined);
                                 }}
                                 hintText="When you delete this product it will be removed from the system and will no longer be included in future exports."
+                                isOpen={!!popUpState.productId}
                             />
                         )}
                     </div>
