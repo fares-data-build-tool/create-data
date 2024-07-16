@@ -6,7 +6,7 @@ describe('InfoPopup', () => {
     it('should render the InfoPopup', () => {
         const okActionHandler = jest.fn();
         const wrapper = shallow(
-            <InfoPopup title="my title" text="this is my text" okActionHandler={okActionHandler} />,
+            <InfoPopup title="my title" text="this is my text" okActionHandler={okActionHandler} isOpen={true} />,
         );
         expect(wrapper).toMatchSnapshot();
 

@@ -120,12 +120,14 @@ const ViewPassengerTypes = ({
                                 {...popUpState}
                                 csrfToken={csrfToken}
                                 cancelActionHandler={cancelActionHandler}
+                                isOpen={popUpState.groupsInUse?.length > 0}
                             />
                         ) : (
                             <DeleteConfirmationPopup
                                 entityName={popUpState.passengerTypeName}
                                 deleteUrl={buildDeleteUrl(popUpState.isGroup, popUpState.passengerTypeId, csrfToken)}
                                 cancelActionHandler={cancelActionHandler}
+                                isOpen={!!popUpState.passengerTypeId}
                             />
                         ))}
                 </div>

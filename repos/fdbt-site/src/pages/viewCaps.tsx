@@ -102,6 +102,7 @@ const ViewCaps = ({ caps, referer, fareDayEnd, viewCapErrors = [], csrfToken }: 
                     entityName={popUpState.capName}
                     deleteUrl={buildDeleteUrl(popUpState.capId, csrfToken)}
                     cancelActionHandler={cancelActionHandler}
+                    isOpen={!!popUpState.capId}
                 />
             ) : null}
         </BaseLayout>

@@ -59,6 +59,7 @@ exports[`pages feedback should render correctly after feedback has been successf
           How did you hear about our service?
         </legend>
         <textarea
+          aria-labelledby="hear-about-service-header"
           className="govuk-textarea"
           id="hear-about-service-question"
           name="hearAboutServiceQuestion"
@@ -78,6 +79,7 @@ exports[`pages feedback should render correctly after feedback has been successf
           Please let us know any feedback or suggestions for improvements you may have
         </legend>
         <textarea
+          aria-labelledby="general-feedback-header"
           className="govuk-textarea"
           id="general-feedback-question"
           name="generalFeedbackQuestion"
@@ -262,6 +264,7 @@ exports[`pages feedback should render correctly after the user tries to submit n
           How did you hear about our service?
         </legend>
         <textarea
+          aria-labelledby="hear-about-service-header"
           className="govuk-textarea"
           id="hear-about-service-question"
           name="hearAboutServiceQuestion"
@@ -281,6 +284,7 @@ exports[`pages feedback should render correctly after the user tries to submit n
           Please let us know any feedback or suggestions for improvements you may have
         </legend>
         <textarea
+          aria-labelledby="general-feedback-header"
           className="govuk-textarea"
           id="general-feedback-question"
           name="generalFeedbackQuestion"
@@ -441,6 +445,7 @@ exports[`pages feedback should render correctly when the page is first visited 1
           How did you hear about our service?
         </legend>
         <textarea
+          aria-labelledby="hear-about-service-header"
           className="govuk-textarea"
           id="hear-about-service-question"
           name="hearAboutServiceQuestion"
@@ -460,6 +465,7 @@ exports[`pages feedback should render correctly when the page is first visited 1
           Please let us know any feedback or suggestions for improvements you may have
         </legend>
         <textarea
+          aria-labelledby="general-feedback-header"
           className="govuk-textarea"
           id="general-feedback-question"
           name="generalFeedbackQuestion"

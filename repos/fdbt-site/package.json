@@ -19,7 +19,7 @@
         "lint:cypress": "cd cypress_tests && npm run lint",
         "lint:cypress-fix": "cd cypress_tests && npm run lint:fix",
         "postshrinkwrap": "npm install --no-package-lock --no-audit --no-fund --no-progress --silent && npx prettier --write ./package-lock.json",
-        "precommit": ". ${NVM_DIR}/nvm.sh && nvm use && npm run lint && npm run lint:cypress && npm run tsc && CI=true jest --silent",
+        "precommit": ". npm run lint && npm run lint:cypress && npm run tsc && CI=true jest --silent",
         "prepare": "cd ../.. && husky install repos/fdbt-site/.husky"
     },
     "lint-staged": {
@@ -51,6 +51,7 @@
         "express-session": "^1.17.1",
         "express-winston": "^4.0.3",
         "file-loader": "^6.2.0",
+        "focus-trap-react": "^10.2.3",
         "formidable": "1.2.2",
         "govuk-frontend": "^3.13.0",
         "helmet": "^3.22.0",

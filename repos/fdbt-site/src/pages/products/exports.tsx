@@ -161,7 +161,9 @@ const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSett
                                         <th scope="col" className="govuk-table__header">
                                             Export status
                                         </th>
-                                        <th scope="col" className="govuk-table__header"></th>
+                                        <th scope="col" className="govuk-table__header">
+                                            <span className="govuk-visually-hidden">Actions</span>
+                                        </th>
                                     </tr>
                                 </thead>
 
@@ -198,6 +200,7 @@ const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSett
                                 title="We are preparing your export"
                                 text="Your export will take a few seconds to show in the table below."
                                 okActionHandler={() => setShowExportPopup(false)}
+                                isOpen={showExportPopup}
                             />
                         )}
 

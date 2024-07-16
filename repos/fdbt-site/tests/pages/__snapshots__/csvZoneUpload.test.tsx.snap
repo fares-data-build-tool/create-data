@@ -114,43 +114,39 @@ exports[`pages csvzoneupload should render correctly 1`] = `
                     <div
                       className="govuk-form-group"
                     >
-                      <fieldset
-                        className="govuk-fieldset"
+                      <input
+                        className="govuk-button govuk-button--secondary"
+                        id="select-all-button"
+                        name="selectAll"
+                        onClick={[Function]}
+                        type="button"
+                        value="Select All Services"
+                      />
+                      <div
+                        className="govuk-checkboxes"
                       >
-                        <input
-                          className="govuk-button govuk-button--secondary"
-                          id="select-all-button"
-                          name="selectAll"
-                          onClick={[Function]}
-                          type="button"
-                          value="Select All Services"
-                        />
                         <div
-                          className="govuk-checkboxes"
+                          className="govuk-checkboxes__item"
+                          key="checkbox-item-123"
                         >
-                          <div
-                            className="govuk-checkboxes__item"
-                            key="checkbox-item-123"
+                          <input
+                            checked={false}
+                            className="govuk-checkboxes__input"
+                            defaultChecked={false}
+                            id="checkbox-0"
+                            name="123#3h3vb32ik#NW_05_BLAC_123_1"
+                            onChange={[Function]}
+                            type="checkbox"
+                            value="IW Bus Service 123"
+                          />
+                          <label
+                            className="govuk-label govuk-checkboxes__label"
+                            htmlFor="checkbox-0"
                           >
-                            <input
-                              checked={false}
-                              className="govuk-checkboxes__input"
-                              defaultChecked={false}
-                              id="checkbox-0"
-                              name="123#3h3vb32ik#NW_05_BLAC_123_1"
-                              onChange={[Function]}
-                              type="checkbox"
-                              value="IW Bus Service 123"
-                            />
-                            <label
-                              className="govuk-label govuk-checkboxes__label"
-                              htmlFor="checkbox-0"
-                            >
-                              123 Manchester - Leeds
-                            </label>
-                          </div>
+                            123 Manchester - Leeds
+                          </label>
                         </div>
-                      </fieldset>
+                      </div>
                     </div>
                   </div>
                   <div

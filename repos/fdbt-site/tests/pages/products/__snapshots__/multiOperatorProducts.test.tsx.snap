@@ -85,11 +85,23 @@ exports[`myfares pages multiOperatorProducts should render correctly when no non
                 <th
                   className="govuk-table__header"
                   scope="col"
-                />
+                >
+                  <span
+                    className="govuk-visually-hidden"
+                  >
+                    Copy
+                  </span>
+                </th>
                 <th
                   className="govuk-table__header"
                   scope="col"
-                />
+                >
+                  <span
+                    className="govuk-visually-hidden"
+                  >
+                    Delete
+                  </span>
+                </th>
               </tr>
             </thead>
             <tbody
@@ -195,11 +207,23 @@ exports[`myfares pages multiOperatorProducts should render correctly when some n
                 <th
                   className="govuk-table__header"
                   scope="col"
-                />
+                >
+                  <span
+                    className="govuk-visually-hidden"
+                  >
+                    Copy
+                  </span>
+                </th>
                 <th
                   className="govuk-table__header"
                   scope="col"
-                />
+                >
+                  <span
+                    className="govuk-visually-hidden"
+                  >
+                    Delete
+                  </span>
+                </th>
               </tr>
             </thead>
             <tbody
