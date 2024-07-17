@@ -114,6 +114,9 @@ exports[`contact should render correctly 1`] = `
         imageUrl={Object {}}
         size="8KB"
       />
+      <AccessibilityDetails
+        supportEmail="mock-support-address@email.co.uk"
+      />
     </div>
   </div>
 </BaseLayout>

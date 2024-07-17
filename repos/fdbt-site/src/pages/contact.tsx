@@ -4,6 +4,7 @@ import { BaseLayout } from '../layout/Layout';
 import FileAttachment from '../components/FileAttachment';
 import ServiceGuide from '../assets/files/Create-Fares-Data-Service-Guide.pdf';
 import ServiceGuideFrontPage from '../assets/images/service-guide-front-page.png';
+import AccessibilityDetails from '../components/AccessibilityDetails';
 
 const title = 'Contact - Create Fares Data Service';
 const description = 'Contact page for the Create Fares Data Service';
@@ -70,6 +71,7 @@ const Contact = ({ supportEmail, supportPhone }: ContactProps): ReactElement => 
                         imageUrl={ServiceGuideFrontPage}
                         size="8KB"
                     />
+                    <AccessibilityDetails supportEmail={supportEmail} />
                 </div>
             </div>
         </BaseLayout>
