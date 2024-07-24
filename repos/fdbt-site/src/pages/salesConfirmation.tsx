@@ -23,7 +23,6 @@ import { ticketFormatsList } from './managePurchaseMethod';
 import { GetServerSidePropsResult } from 'next';
 import { SalesOfferPackage } from '../interfaces/matchingJsonTypes';
 import { getCapByNocAndId, getCaps } from '../../src/data/auroradb';
-import { getIsCarnet } from '../utils/apiUtils';
 
 const title = 'Sales Confirmation - Create Fares Data Service';
 const description = 'Sales Confirmation page of the Create Fares Data Service';
