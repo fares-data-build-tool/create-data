@@ -165,8 +165,9 @@ const TimeRestrictionCard = ({
                             aria-label={timeRestriction.name}
                             defaultChecked={selectedId === timeRestriction.id}
                         />
-                        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                        <label className="govuk-label govuk-radios__label" />
+                        <label className="govuk-label govuk-radios__label" htmlFor={`${timeRestriction.name}-radio`}>
+                            <span className="govuk-visually-hidden">{`${timeRestriction.name}`}</span>
+                        </label>
                     </div>
                 </div>
                 <TimeRestrictionCardBody entity={timeRestriction} />
