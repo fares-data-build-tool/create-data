@@ -556,6 +556,20 @@ describe('myfares pages', () => {
         });
 
         it('correctly returns the elements which should be displayed on the page for a carnet return ticket', async () => {
+            (getCaps as jest.Mock).mockResolvedValue([
+                {
+                    name: 'Day cap',
+                    price: '5',
+                    durationAmount: '1',
+                    durationUnits: 'day',
+                },
+                {
+                    name: 'Week cap',
+                    price: '20',
+                    durationAmount: '1',
+                    durationUnits: 'week',
+                },
+            ]);
             (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
                 ...expectedCarnetReturnTicket,
                 returnPeriodValidity: { amount: '3', typeOfDuration: 'month' },
