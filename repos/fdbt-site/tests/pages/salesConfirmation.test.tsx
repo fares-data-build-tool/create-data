@@ -34,6 +34,7 @@ describe('pages', () => {
                     fareType="single"
                     hasCaps={false}
                     selectedCap={null}
+                    isCarnet={false}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -116,6 +117,7 @@ describe('pages', () => {
                         durationUnits: ExpiryUnit.HOUR,
                     },
                 },
+                isCarnet: false,
             };
             const actualProps = await getServerSideProps(ctx);
             expect((actualProps as { props: SalesConfirmationProps }).props).toEqual(expectedProps);
@@ -149,6 +151,7 @@ describe('pages', () => {
                 moment().add(100, 'years').toISOString(),
                 'single',
                 true,
+                false,
                 {
                     id: 2,
                     capDetails: {
@@ -237,6 +240,7 @@ describe('pages', () => {
                 now.add(100, 'years').toISOString(),
                 'single',
                 true,
+                false,
                 null,
             );
             expect(result).toStrictEqual([
