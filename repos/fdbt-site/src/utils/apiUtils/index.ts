@@ -4,7 +4,12 @@ import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { decode } from 'jsonwebtoken';
 import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../../constants';
-import { OPERATOR_ATTRIBUTE, FARE_TYPE_ATTRIBUTE, SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
+import {
+    OPERATOR_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
+} from '../../constants/attributes';
 import {
     CognitoIdToken,
     ErrorInfo,
@@ -70,6 +75,12 @@ export const redirectToError = (
 ): void => {
     logger.error(message, { context, error: error.stack });
     redirectTo(res, '/error');
+};
+
+export const getIsCarnet = (req: NextApiRequestWithSession): boolean => {
+    const isCarnet = getSessionAttribute(req, CARNET_FARE_TYPE_ATTRIBUTE);
+
+    return isCarnet || false;
 };
 
 export const getFareTypeFromFromAttributes = (req: NextApiRequestWithSession): string => {
