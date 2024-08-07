@@ -35,8 +35,8 @@ const Header = ({ isAuthed, csrfToken, noc, multiOperator }: HeaderProps): React
             <div className="govuk-header__content">
                 <a
                     href={isAuthed ? '/home' : '/'}
+                    className="govuk-header__link govuk-header__service-name"
                     id="title-link"
-                    className="govuk-header__link govuk-header__link--service-name"
                 >
                     Create Fares Data
                 </a>

@@ -127,7 +127,7 @@ const CsvZoneUpload = ({
                                     !
                                 </span>
                                 <strong className="govuk-warning-text__text">
-                                    <span className="govuk-warning-text__assistive">Warning</span>
+                                    <span className="govuk-visually-hidden">Warning</span>
                                     If there are services exempt, you can omit them by selecting yes below and selecting
                                     the services you want to omit.
                                 </strong>
