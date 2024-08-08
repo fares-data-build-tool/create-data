@@ -53,7 +53,7 @@ const setStaticRoutes = (server: Express): void => {
 
     server.use(
         '/assets',
-        express.static(`${rootPath}/node_modules/govuk-frontend/govuk/assets`, {
+        express.static(`${rootPath}/node_modules/govuk-frontend/dist/govuk/assets`, {
             maxAge: '365d',
             immutable: true,
         }),
@@ -69,7 +69,7 @@ const setStaticRoutes = (server: Express): void => {
 
     server.use(
         '/scripts',
-        express.static(`${rootPath}/node_modules/govuk-frontend/govuk`, {
+        express.static(`${rootPath}/node_modules/govuk-frontend/dist/govuk/`, {
             maxAge: '365d',
             immutable: true,
         }),

@@ -1,6 +1,7 @@
 import '../design/main.scss';
 import { AppProps } from 'next/app';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useRef } from 'react';
+import { initAll } from 'govuk-frontend';
 
 declare global {
     interface Window {
@@ -11,14 +12,22 @@ declare global {
 }
 
 const MyApp = ({ Component, pageProps }: AppProps): ReactElement => {
+    const initialized = useRef(false);
+
     useEffect(() => {
-        document.getElementsByTagName('body')[0].classList.add('js-enabled');
+        if (!initialized.current) {
+            initialized.current = true;
 
-        if (window.GOVUKFrontend) {
-            window.GOVUKFrontend.initAll();
+            const bodyElement = document.getElementsByTagName('body')[0];
+            bodyElement.classList.add('js-enabled');
+
+            if ('noModule' in HTMLScriptElement.prototype) {
+                bodyElement.classList.add('govuk-frontend-supported');
+            }
+
+            initAll();
         }
-    });
-
+    }, []);
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <Component {...pageProps} />;
 };

@@ -114,7 +114,6 @@ const SelectTimeRestrictions = ({
                                         name="timeRestrictionChoice"
                                         type="radio"
                                         value="no"
-                                        data-aria-controls="conditional-time-restriction-2"
                                         defaultChecked={!selectedId}
                                     />
                                     <label
