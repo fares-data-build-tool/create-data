@@ -49,7 +49,7 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: Sel
                                     !
                                 </span>
                                 <strong className="govuk-warning-text__text">
-                                    <span className="govuk-warning-text__assistive">Warning</span>
+                                    <span className="govuk-visually-hidden">Warning</span>
                                     You can create new caps in your <a href="/viewCaps">operator settings</a>.<br />{' '}
                                     Don&apos;t worry you can navigate back to this page when you are finished.
                                 </strong>

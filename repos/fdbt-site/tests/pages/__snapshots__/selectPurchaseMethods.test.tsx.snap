@@ -39,7 +39,7 @@ exports[`pages selectPurchaseMethods should render an error when an error messag
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>
@@ -116,7 +116,7 @@ exports[`pages selectPurchaseMethods should render an error when an error messag
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>
@@ -187,7 +187,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>
@@ -486,7 +486,7 @@ exports[`pages selectPurchaseMethods should render correctly for capped ticket 1
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>
@@ -694,7 +694,7 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>
@@ -808,7 +808,7 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>

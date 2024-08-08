@@ -80,7 +80,7 @@ export const showSelectedOperators = (
                 }`}
             >
                 <fieldset className="govuk-fieldset">
-                    <legend className="govuk-fieldset__legend--m">
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                         <h3 className="govuk-fieldset__heading" id="operator-group-name-heading">
                             Enter a name for this group
                         </h3>
@@ -104,7 +104,7 @@ export const showSelectedOperators = (
                     />
                 </fieldset>
             </div>
-            <table className="border-collapse width-100">
+            <table className="govuk-table border-collapse width-100">
                 <caption className="govuk-table__caption govuk-table__caption--m">Selected operator(s)</caption>
                 <thead className="selectedOperators-header-color">
                     <tr>
@@ -159,7 +159,9 @@ export const renderSearchBox = (
 ): ReactElement => {
     const fieldsetProps = {
         legend: {
-            className: operatorsAdded ? 'govuk-fieldset__legend--m' : 'govuk-fieldset__legend--l',
+            className: operatorsAdded
+                ? 'govuk-fieldset__legend govuk-fieldset__legend--m'
+                : 'govuk-fieldset__legend govuk-fieldset__legend--l',
         },
         heading: {
             className: 'govuk-fieldset__heading',

@@ -44,7 +44,7 @@ exports[`pages reuseOperatorGroup should render coorectly when one operator grou
             className="govuk-warning-text__text"
           >
             <span
-              className="govuk-warning-text__assistive"
+              className="govuk-visually-hidden"
             >
               Warning
             </span>
@@ -145,7 +145,7 @@ exports[`pages reuseOperatorGroup should render correctly 1`] = `
             className="govuk-warning-text__text"
           >
             <span
-              className="govuk-warning-text__assistive"
+              className="govuk-visually-hidden"
             >
               Warning
             </span>
@@ -239,7 +239,7 @@ exports[`pages reuseOperatorGroup should render errors when user does not select
             className="govuk-warning-text__text"
           >
             <span
-              className="govuk-warning-text__assistive"
+              className="govuk-visually-hidden"
             >
               Warning
             </span>

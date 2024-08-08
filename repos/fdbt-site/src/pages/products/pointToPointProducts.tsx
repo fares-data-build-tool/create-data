@@ -61,7 +61,7 @@ const PointToPointProducts = ({
                             !
                         </span>
                         <strong className="govuk-warning-text__text">
-                            <span className="govuk-warning-text__assistive">Warning</span>
+                            <span className="govuk-visually-hidden">Warning</span>
                             Your service has been updated in BODS. Stops have been added and/or removed since the
                             creation of your product(s). These products will need updating to reflect these changes.
                         </strong>

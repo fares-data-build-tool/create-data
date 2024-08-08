@@ -7,7 +7,7 @@ const PhaseBanner = (): ReactElement => (
             <strong className="govuk-tag govuk-phase-banner__content__tag">Beta</strong>
             <span className="govuk-phase-banner__text">
                 This is a new service. Help us improve it and{' '}
-                <a className="govuk-link" href={FEEDBACK_LINK}>
+                <a className="govuk-link" href={FEEDBACK_LINK} id="feedback-link">
                     give your feedback (opens in new tab)
                 </a>
                 .

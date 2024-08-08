@@ -54,7 +54,7 @@ const SelectTimeRestrictions = ({
                             </div>
 
                             <div className="govuk-warning-text">
-                                <span className="govuk-warning-text__icon" aria-hidden="true">
+                                <span className="govuk-warning-text__icon govuk-!-margin-top-1" aria-hidden="true">
                                     !
                                 </span>
                                 <strong className="govuk-warning-text__text">
