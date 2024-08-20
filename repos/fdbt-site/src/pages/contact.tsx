@@ -49,9 +49,9 @@ const Contact = ({ supportEmail, supportPhone }: ContactProps): ReactElement => 
                     </p>
                     <h3 className="govuk-heading-s">Feedback</h3>
                     <p className="govuk-body">
-                        To help improve the Create Fares Data service, send us your feedback&nbsp;
+                        To help improve the Create Fares Data service, send us your&nbsp;
                         <a href="/feedback" aria-label="send feedback">
-                            here
+                            feedback
                         </a>
                     </p>
                 </div>
