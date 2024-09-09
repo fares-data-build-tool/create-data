@@ -33,7 +33,7 @@ describe('pages', () => {
                     csrfToken=""
                     fareType="single"
                     hasCaps={false}
-                    selectedCap={null}
+                    selectedCaps={null}
                     isCarnet={false}
                 />,
             );
@@ -124,7 +124,7 @@ describe('pages', () => {
                             capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
                         },
                     },
-                },
+                ],
                 isCarnet: false,
             };
             const actualProps = await getServerSideProps(ctx);
@@ -160,13 +160,16 @@ describe('pages', () => {
                 'single',
                 true,
                 false,
-                {
-                    id: 2,
-                    capDetails: {
-                        name: 'cappy cap',
-                        price: '2',
-                        durationAmount: '24hr',
-                        durationUnits: ExpiryUnit.HOUR,
+                [
+                    {
+                        id: 2,
+                        capDetails: {
+                            name: 'cappy cap',
+                            price: '2',
+                            durationAmount: '2',
+                            durationUnits: CapExpiryUnit.MONTH,
+                            capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
+                        },
                     },
                 ],
             );
