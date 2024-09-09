@@ -396,7 +396,7 @@ const createProductDetails = async (
 
     const hasCaps = (await getCaps(noc)).length > 0;
 
-    if (isDevOrTest && fareTypeIsAllowedToAddACap(ticket.type) && hasCaps) {
+    if (isDevOrTest && fareTypeIsAllowedToAddACap(ticket.type) && hasCaps && !ticket.carnet) {
         let capContent = 'N/A';
         if ('caps' in ticket && ticket.caps) {
             const caps = await Promise.all(
