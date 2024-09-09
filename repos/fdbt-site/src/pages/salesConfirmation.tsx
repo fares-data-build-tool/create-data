@@ -6,6 +6,7 @@ import {
     PRODUCT_DATE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     CAPS_DEFINITION_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
 import { NextPageContextWithSession, ProductWithSalesOfferPackages, ConfirmationElement, Cap } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
@@ -33,7 +34,8 @@ export interface SalesConfirmationProps {
     endDate: string | null;
     fareType: string;
     hasCaps: boolean;
-    selectedCaps: (Cap & { id: number })[] | null;
+    selectedCap: (Cap & { id: number }) | null;
+    isCarnet: boolean;
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -52,7 +54,8 @@ export const buildSalesConfirmationElements = (
     endDateIn: string | null,
     fareType: string,
     hasCaps: boolean,
-    selectedCaps?: (Cap & { id: number })[] | null,
+    isCarnet: boolean,
+    selectedCap?: (Cap & { id: number }) | null,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -102,7 +105,7 @@ export const buildSalesConfirmationElements = (
         },
     );
 
-    if (fareTypeIsAllowedToAddACap(fareType) && hasCaps) {
+    if (fareTypeIsAllowedToAddACap(fareType) && hasCaps && !isCarnet) {
         confirmationElements.push({
             name: 'Caps',
             content: selectedCaps?.map((cap) => cap.capDetails.name).join(', ') || 'N/A',
@@ -120,7 +123,8 @@ const SalesConfirmation = ({
     endDate,
     fareType,
     hasCaps,
-    selectedCaps,
+    selectedCap,
+    isCarnet,
 }: SalesConfirmationProps): ReactElement => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -141,7 +145,8 @@ const SalesConfirmation = ({
                             endDate,
                             fareType,
                             hasCaps,
-                            selectedCaps,
+                            isCarnet,
+                            selectedCap,
                         )}
                     />
                     <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
@@ -176,6 +181,8 @@ export const getServerSideProps = async (
     const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
     const caps = await getCaps(nocCode);
+    const isCarnet = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE) || false;
+
     if (
         !salesOfferPackageInfo ||
         !isArray(salesOfferPackageInfo) ||
@@ -201,6 +208,7 @@ export const getServerSideProps = async (
                           id: number;
                       })[])
                     : null,
+            isCarnet,
         },
     };
 };

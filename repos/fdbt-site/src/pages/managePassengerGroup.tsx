@@ -123,7 +123,7 @@ const ManagePassengerGroup = ({
                                                     <div className="govuk-form-group">
                                                         <label
                                                             className="govuk-label"
-                                                            htmlFor={`minimum-passengers-${passenger.name}`}
+                                                            htmlFor={`minimum-passengers-${passenger.id}`}
                                                         >
                                                             Minimum (optional)
                                                         </label>
@@ -141,7 +141,7 @@ const ManagePassengerGroup = ({
                                                     <div className="govuk-form-group">
                                                         <label
                                                             className="govuk-label"
-                                                            htmlFor={`maximum-passengers-${passenger.name}`}
+                                                            htmlFor={`maximum-passengers-${passenger.id}`}
                                                         >
                                                             Maximum (required)
                                                         </label>

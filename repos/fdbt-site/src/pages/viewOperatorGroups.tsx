@@ -116,6 +116,7 @@ const ViewOperatorGroups = ({
                         entityName={popUpState.operatorGroupName}
                         deleteUrl={buildDeleteUrl(popUpState.operatorGroupId, csrfToken)}
                         cancelActionHandler={cancelActionHandler}
+                        isOpen={!!popUpState.operatorGroupId}
                     />
                 )}
             </div>

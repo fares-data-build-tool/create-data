@@ -106,14 +106,14 @@ const ServiceList = ({
                             containsErrorForServices(errors) ? 'govuk-form-group--error' : ''
                         }`}
                     >
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-                            <h1 className="govuk-heading-l" id="service-list-page-heading">
-                                Which {additional ? 'additional ' : multiOperatorText}services is the ticket valid for?
-                            </h1>
-                        </legend>
-
-                        <span className="govuk-heading-s">Select all {multiOperatorText}services that apply</span>
                         <fieldset className="govuk-fieldset">
+                            <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h1 className="govuk-heading-l" id="service-list-page-heading">
+                                    Which {additional ? 'additional ' : multiOperatorText}services is the ticket valid
+                                    for?
+                                </h1>
+                            </legend>
+                            <span className="govuk-heading-s">Select all {multiOperatorText}services that apply</span>
                             <input
                                 type="button"
                                 name="selectAll"
@@ -130,7 +130,7 @@ const ServiceList = ({
                                         : 'Bus Open Data Service (BODS)'}
                                 </b>
                                 . If the service you are looking for is not listed, contact the BODS help desk for
-                                advice <a href="/contact">here</a>.
+                                advice <a href="/contact">on the contact page</a>.
                             </span>
                             <FormElementWrapper
                                 errors={containsErrorForServices(errors) ? errors : []}
@@ -305,22 +305,20 @@ const ServiceList = ({
                                                         errors={containsErrorForExempt(errors) ? errors : []}
                                                         errorIds={['csv-upload']}
                                                     >
-                                                        <fieldset className="govuk-fieldset">
-                                                            <FormElementWrapper
-                                                                errorId="csv-upload"
-                                                                errorClass="govuk-file-upload--error"
-                                                                errors={containsErrorForExempt(errors) ? errors : []}
-                                                            >
-                                                                <input
-                                                                    className="govuk-file-upload"
-                                                                    id="csv-upload"
-                                                                    name="csv-upload"
-                                                                    type="file"
-                                                                    accept=".csv,.xlsx,.xls"
-                                                                    aria-describedby="csv-upload-hint"
-                                                                />
-                                                            </FormElementWrapper>
-                                                        </fieldset>
+                                                        <FormElementWrapper
+                                                            errorId="csv-upload"
+                                                            errorClass="govuk-file-upload--error"
+                                                            errors={containsErrorForExempt(errors) ? errors : []}
+                                                        >
+                                                            <input
+                                                                className="govuk-file-upload"
+                                                                id="csv-upload"
+                                                                name="csv-upload"
+                                                                type="file"
+                                                                accept=".csv,.xlsx,.xls"
+                                                                aria-describedby="csv-upload-hint"
+                                                            />
+                                                        </FormElementWrapper>
                                                     </FormGroupWrapper>
                                                 </div>
 

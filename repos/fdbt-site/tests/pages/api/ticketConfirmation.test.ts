@@ -9,6 +9,7 @@ describe('ticketConfirmation', () => {
     const writeHeadMock = jest.fn();
     const { req, res } = getMockRequestAndResponse({ body: {}, mockWriteHeadFn: writeHeadMock });
     const getFareTypeSpy = jest.spyOn(index, 'getFareTypeFromFromAttributes');
+    const getIsCarnetSpy = jest.spyOn(index, 'getIsCarnet');
     jest.spyOn(index, 'getAndValidateNoc').mockReturnValue('BLAC');
     jest.mock('../../../src/utils/apiUtils');
     jest.mock('../../../src/data/auroradb');
@@ -56,6 +57,16 @@ describe('ticketConfirmation', () => {
     it('should return 302 redirect to /selectPurchaseMethods when the fareType is single and no cap exists', async () => {
         getFareTypeSpy.mockReturnValue('single');
         getCapsSpy.mockResolvedValueOnce([]);
+        await ticketConfirmation(req, res);
+        expect(writeHeadMock).toBeCalledWith(302, {
+            Location: '/selectPurchaseMethods',
+        });
+    });
+
+    it('should return 302 redirect to /selectPurchaseMethods when product is carnet', async () => {
+        getFareTypeSpy.mockReturnValue('single');
+        getIsCarnetSpy.mockReturnValue(true);
+        getCapsSpy.mockResolvedValueOnce([cap]);
         await ticketConfirmation(req, res);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectPurchaseMethods',

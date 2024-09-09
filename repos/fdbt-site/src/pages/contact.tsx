@@ -36,17 +36,22 @@ const Contact = ({ supportEmail, supportPhone }: ContactProps): ReactElement => 
                     </p>
                     <h3 className="govuk-heading-s">Related services</h3>
                     <p className="govuk-body">
-                        If your query relates to the use of the Bus Open Data Service go&nbsp;
-                        <a href="https://publish.bus-data.dft.gov.uk/" aria-label="go to the bus open data service">
-                            here
+                        <a
+                            href="https://www.bus-data.dft.gov.uk/contact/"
+                            aria-label="go to the bus open data service"
+                            className="underline govuk-link"
+                        >
+                            https://www.bus-data.dft.gov.uk/contact/
                         </a>
-                        &nbsp;to view their contact details
+                        <br />
+                        <br />
+                        The Bus Open Data Service deals with queries relating to the use of Bus Open Data.
                     </p>
                     <h3 className="govuk-heading-s">Feedback</h3>
                     <p className="govuk-body">
-                        To help improve the Create Fares Data service, send us your feedback&nbsp;
+                        To help improve the Create Fares Data service, send us your&nbsp;
                         <a href="/feedback" aria-label="send feedback">
-                            here
+                            feedback
                         </a>
                     </p>
                 </div>

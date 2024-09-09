@@ -28,7 +28,8 @@ const s3: S3 = new S3(
               s3ForcePathStyle: true,
               accessKeyId: 'S3RVER',
               secretAccessKey: 'S3RVER',
-              endpoint: 'http://localhost:4572',
+              endpoint: 'http://127.0.0.1:4566',
+              region: 'eu-west-2',
           }
         : {
               region: 'eu-west-2',

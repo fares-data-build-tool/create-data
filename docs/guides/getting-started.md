@@ -28,9 +28,9 @@ It is recommended to use `pyenv` to manage versions of python easily, see [https
 
 ## Install Node.js
 
-`nvm` is required to manage versions of node, see [https://github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm) for installation instructions.
+`asdf` should be used to manage versions of node, see [https://asdf-vm.com/](https://asdf-vm.com/) for installation instructions.
 
-Unless otherwise stated node 14 has been used for development of the service.
+Unless otherwise stated node 18 has been used for development of the service.
 
 ## Install jq
 

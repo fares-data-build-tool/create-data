@@ -5,7 +5,7 @@ import GenerateReturnPopup from '../../src/components/GenerateReturnPopup';
 describe('GenerateReturnPopup', () => {
     it('should render the GenerateReturnPopup', () => {
         const cancelActionHandler = jest.fn();
-        const wrapper = shallow(<GenerateReturnPopup cancelActionHandler={cancelActionHandler} />);
+        const wrapper = shallow(<GenerateReturnPopup cancelActionHandler={cancelActionHandler} isOpen={true} />);
         expect(wrapper).toMatchSnapshot();
 
         expect(cancelActionHandler).not.toHaveBeenCalled();

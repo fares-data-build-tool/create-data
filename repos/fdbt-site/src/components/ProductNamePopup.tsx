@@ -1,5 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { checkProductOrCapNameIsValid, removeExcessWhiteSpace } from '../utils/apiUtils/validator';
+import Trap from './Trap';
 
 interface ProductNamePopupProps {
     defaultValue: string;
@@ -7,6 +8,7 @@ interface ProductNamePopupProps {
     serviceId?: string;
     cancelActionHandler: React.MouseEventHandler<HTMLButtonElement>;
     csrfToken: string;
+    isOpen: boolean;
 }
 
 export const buildEditUrl = (
@@ -26,6 +28,7 @@ const ProductNamePopup = ({
     csrfToken,
     productId,
     serviceId,
+    isOpen,
 }: ProductNamePopupProps): ReactElement | null => {
     const [popupError, setPopupError] = useState('');
     const [productName, updateProductName] = useState('');
@@ -47,52 +50,54 @@ const ProductNamePopup = ({
     }, [productName]);
 
     return (
-        <div className="popup">
-            <div className="popup__content">
-                <form>
-                    <h1 className="govuk-heading-m">Rename product</h1>
+        <Trap active={isOpen}>
+            <div className="popup">
+                <div className="popup__content">
+                    <form>
+                        <h1 className="govuk-heading-m">Rename product</h1>
 
-                    {popupError && <span className="govuk-error-message">{popupError}</span>}
+                        {popupError && <span className="govuk-error-message">{popupError}</span>}
 
-                    <div className={`govuk-form-group ${popupError ? 'govuk-form-group--error' : ''}`}>
-                        <input
-                            className="govuk-input"
-                            id="product-name"
-                            type="text"
-                            defaultValue={defaultValue}
-                            onChange={(e) => {
-                                updateProductName(e.target.value);
-                            }}
-                        />
-                    </div>
+                        <div className={`govuk-form-group ${popupError ? 'govuk-form-group--error' : ''}`}>
+                            <input
+                                className="govuk-input"
+                                id="product-name"
+                                type="text"
+                                defaultValue={defaultValue}
+                                onChange={(e) => {
+                                    updateProductName(e.target.value);
+                                }}
+                            />
+                        </div>
 
-                    <span className="govuk-hint" id="edit-product-hint">
-                        You can enter up to 50 characters
-                    </span>
+                        <span className="govuk-hint" id="edit-product-hint">
+                            You can enter up to 50 characters
+                        </span>
 
-                    <button className="govuk-button govuk-button--secondary" onClick={cancelActionHandler}>
-                        Cancel
-                    </button>
-
-                    {showSubmitButton && (
-                        <button
-                            className="govuk-button"
-                            formAction={buildEditUrl(
-                                productId,
-                                csrfToken,
-                                removeExcessWhiteSpace(productName),
-                                serviceId,
-                            )}
-                            formMethod="post"
-                            type="submit"
-                            id="popup-edit-product-name-button"
-                        >
-                            Save
+                        <button className="govuk-button govuk-button--secondary" onClick={cancelActionHandler}>
+                            Cancel
                         </button>
-                    )}
-                </form>
+
+                        {showSubmitButton && (
+                            <button
+                                className="govuk-button"
+                                formAction={buildEditUrl(
+                                    productId,
+                                    csrfToken,
+                                    removeExcessWhiteSpace(productName),
+                                    serviceId,
+                                )}
+                                formMethod="post"
+                                type="submit"
+                                id="popup-edit-product-name-button"
+                            >
+                                Save
+                            </button>
+                        )}
+                    </form>
+                </div>
             </div>
-        </div>
+        </Trap>
     );
 };
 

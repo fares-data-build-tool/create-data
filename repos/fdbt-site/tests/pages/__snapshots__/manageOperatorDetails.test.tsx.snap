@@ -49,8 +49,8 @@ exports[`pages manage operator details should render correctly 1`] = `
             errors={Array []}
             key="operatorName"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -72,7 +72,7 @@ exports[`pages manage operator details should render correctly 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -83,8 +83,8 @@ exports[`pages manage operator details should render correctly 1`] = `
             errors={Array []}
             key="contactNumber"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -106,7 +106,7 @@ exports[`pages manage operator details should render correctly 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -117,8 +117,8 @@ exports[`pages manage operator details should render correctly 1`] = `
             errors={Array []}
             key="email"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -140,7 +140,7 @@ exports[`pages manage operator details should render correctly 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -151,8 +151,8 @@ exports[`pages manage operator details should render correctly 1`] = `
             errors={Array []}
             key="url"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -174,7 +174,7 @@ exports[`pages manage operator details should render correctly 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -185,8 +185,8 @@ exports[`pages manage operator details should render correctly 1`] = `
             errors={Array []}
             key="street"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -208,7 +208,7 @@ exports[`pages manage operator details should render correctly 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -219,8 +219,8 @@ exports[`pages manage operator details should render correctly 1`] = `
             errors={Array []}
             key="town"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -242,7 +242,7 @@ exports[`pages manage operator details should render correctly 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -253,8 +253,8 @@ exports[`pages manage operator details should render correctly 1`] = `
             errors={Array []}
             key="county"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -276,7 +276,7 @@ exports[`pages manage operator details should render correctly 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -287,8 +287,8 @@ exports[`pages manage operator details should render correctly 1`] = `
             errors={Array []}
             key="postcode"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -310,7 +310,7 @@ exports[`pages manage operator details should render correctly 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <input
             className="govuk-button"
@@ -427,8 +427,8 @@ exports[`pages manage operator details should render error state if error 1`] = 
             }
             key="operatorName"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -477,7 +477,7 @@ exports[`pages manage operator details should render error state if error 1`] = 
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -515,8 +515,8 @@ exports[`pages manage operator details should render error state if error 1`] = 
             }
             key="contactNumber"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -565,7 +565,7 @@ exports[`pages manage operator details should render error state if error 1`] = 
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -603,8 +603,8 @@ exports[`pages manage operator details should render error state if error 1`] = 
             }
             key="email"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -653,7 +653,7 @@ exports[`pages manage operator details should render error state if error 1`] = 
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -691,8 +691,8 @@ exports[`pages manage operator details should render error state if error 1`] = 
             }
             key="url"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -741,7 +741,7 @@ exports[`pages manage operator details should render error state if error 1`] = 
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -779,8 +779,8 @@ exports[`pages manage operator details should render error state if error 1`] = 
             }
             key="street"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -829,7 +829,7 @@ exports[`pages manage operator details should render error state if error 1`] = 
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -867,8 +867,8 @@ exports[`pages manage operator details should render error state if error 1`] = 
             }
             key="town"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -917,7 +917,7 @@ exports[`pages manage operator details should render error state if error 1`] = 
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -955,8 +955,8 @@ exports[`pages manage operator details should render error state if error 1`] = 
             }
             key="county"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -1005,7 +1005,7 @@ exports[`pages manage operator details should render error state if error 1`] = 
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -1043,8 +1043,8 @@ exports[`pages manage operator details should render error state if error 1`] = 
             }
             key="postcode"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -1093,7 +1093,7 @@ exports[`pages manage operator details should render error state if error 1`] = 
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <input
             className="govuk-button"
@@ -1156,8 +1156,8 @@ exports[`pages manage operator details should render popup if saved 1`] = `
             errors={Array []}
             key="operatorName"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -1179,7 +1179,7 @@ exports[`pages manage operator details should render popup if saved 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -1190,8 +1190,8 @@ exports[`pages manage operator details should render popup if saved 1`] = `
             errors={Array []}
             key="contactNumber"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -1213,7 +1213,7 @@ exports[`pages manage operator details should render popup if saved 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -1224,8 +1224,8 @@ exports[`pages manage operator details should render popup if saved 1`] = `
             errors={Array []}
             key="email"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -1247,7 +1247,7 @@ exports[`pages manage operator details should render popup if saved 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -1258,8 +1258,8 @@ exports[`pages manage operator details should render popup if saved 1`] = `
             errors={Array []}
             key="url"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -1281,7 +1281,7 @@ exports[`pages manage operator details should render popup if saved 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -1292,8 +1292,8 @@ exports[`pages manage operator details should render popup if saved 1`] = `
             errors={Array []}
             key="street"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -1315,7 +1315,7 @@ exports[`pages manage operator details should render popup if saved 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -1326,8 +1326,8 @@ exports[`pages manage operator details should render popup if saved 1`] = `
             errors={Array []}
             key="town"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -1349,7 +1349,7 @@ exports[`pages manage operator details should render popup if saved 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -1360,8 +1360,8 @@ exports[`pages manage operator details should render popup if saved 1`] = `
             errors={Array []}
             key="county"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -1383,7 +1383,7 @@ exports[`pages manage operator details should render popup if saved 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <FormGroupWrapper
             errorIds={
@@ -1394,8 +1394,8 @@ exports[`pages manage operator details should render popup if saved 1`] = `
             errors={Array []}
             key="postcode"
           >
-            <fieldset
-              className="govuk-fieldset"
+            <div
+              className="govuk-form-group"
             >
               <label
                 className="govuk-label govuk-!-font-weight-bold"
@@ -1417,7 +1417,7 @@ exports[`pages manage operator details should render popup if saved 1`] = `
                   type="text"
                 />
               </FormElementWrapper>
-            </fieldset>
+            </div>
           </FormGroupWrapper>
           <input
             className="govuk-button"
@@ -1425,6 +1425,7 @@ exports[`pages manage operator details should render popup if saved 1`] = `
             value="Save"
           />
           <InfoPopup
+            isOpen={true}
             okActionHandler={[Function]}
             text="You have saved your operator details."
             title="Success"
