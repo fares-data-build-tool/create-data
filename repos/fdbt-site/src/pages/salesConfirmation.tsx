@@ -34,7 +34,7 @@ export interface SalesConfirmationProps {
     endDate: string | null;
     fareType: string;
     hasCaps: boolean;
-    selectedCap: (Cap & { id: number }) | null;
+    selectedCaps: (Cap & { id: number })[] | null;
     isCarnet: boolean;
 }
 
@@ -55,7 +55,7 @@ export const buildSalesConfirmationElements = (
     fareType: string,
     hasCaps: boolean,
     isCarnet: boolean,
-    selectedCap?: (Cap & { id: number }) | null,
+    selectedCaps: (Cap & { id: number })[] | null,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -123,7 +123,7 @@ const SalesConfirmation = ({
     endDate,
     fareType,
     hasCaps,
-    selectedCap,
+    selectedCaps,
     isCarnet,
 }: SalesConfirmationProps): ReactElement => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -146,7 +146,7 @@ const SalesConfirmation = ({
                             fareType,
                             hasCaps,
                             isCarnet,
-                            selectedCap,
+                            selectedCaps,
                         )}
                     />
                     <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
