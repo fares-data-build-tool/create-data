@@ -76,8 +76,9 @@ export const getBaseSchemeOperatorInfo = async (
         mode: 'bus',
     };
 
-    const schemeCode = `${userPeriodTicket.schemeOperatorName.substr(0, 5)}${userPeriodTicket.schemeOperatorRegionCode
-        }`.toUpperCase();
+    const schemeCode = `${userPeriodTicket.schemeOperatorName.substr(0, 5)}${
+        userPeriodTicket.schemeOperatorRegionCode
+    }`.toUpperCase();
 
     const schemeDetails = await db.getOperatorDetailsByNoc(schemeCode);
 
@@ -127,24 +128,24 @@ export const getLinesList = (
 
             const duplicateLines = operator.selectedServices
                 ? operator.selectedServices.map(service => ({
-                    version: '1.0',
-                    id: service.lineId,
-                    Name: { $t: `Line ${service.lineName}` },
-                    Description: { $t: service.serviceDescription },
-                    Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
-                    PublicCode: { $t: service.lineName },
-                    PrivateCode: service.lineId
-                        ? {
-                            type: 'txc:Line@id',
-                            $t: service.lineId,
-                        }
-                        : {},
-                    OperatorRef: {
-                        version: '1.0',
-                        ref: `noc:${operator.nocCode}`,
-                    },
-                    LineType: { $t: 'local' },
-                }))
+                      version: '1.0',
+                      id: service.lineId,
+                      Name: { $t: `Line ${service.lineName}` },
+                      Description: { $t: service.serviceDescription },
+                      Url: { $t: currentOperator ? getCleanWebsite(currentOperator.url) : '' },
+                      PublicCode: { $t: service.lineName },
+                      PrivateCode: service.lineId
+                          ? {
+                                type: 'txc:Line@id',
+                                $t: service.lineId,
+                            }
+                          : {},
+                      OperatorRef: {
+                          version: '1.0',
+                          ref: `noc:${operator.nocCode}`,
+                      },
+                      LineType: { $t: 'local' },
+                  }))
                 : [];
 
             const seen: string[] = [];
@@ -155,24 +156,24 @@ export const getLinesList = (
     if (!isSchemeOperatorFlatFareTicket(userPeriodTicket)) {
         const duplicateLines = userPeriodTicket.selectedServices
             ? userPeriodTicket.selectedServices.map(service => ({
-                version: '1.0',
-                id: service.lineId,
-                Name: { $t: `Line ${service.lineName}` },
-                Description: { $t: service.serviceDescription },
-                Url: { $t: website },
-                PublicCode: { $t: service.lineName },
-                PrivateCode: service.lineId
-                    ? {
-                        type: 'txc:Line@id',
-                        $t: service.lineId,
-                    }
-                    : {},
-                OperatorRef: {
-                    version: '1.0',
-                    ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
-                },
-                LineType: { $t: 'local' },
-            }))
+                  version: '1.0',
+                  id: service.lineId,
+                  Name: { $t: `Line ${service.lineName}` },
+                  Description: { $t: service.serviceDescription },
+                  Url: { $t: website },
+                  PublicCode: { $t: service.lineName },
+                  PrivateCode: service.lineId
+                      ? {
+                            type: 'txc:Line@id',
+                            $t: service.lineId,
+                        }
+                      : {},
+                  OperatorRef: {
+                      version: '1.0',
+                      ref: `noc:${replaceIWBusCoNocCode(userPeriodTicket.nocCode)}`,
+                  },
+                  LineType: { $t: 'local' },
+              }))
             : [];
         const seen: string[] = [];
         return (
@@ -256,9 +257,9 @@ export const getLineRefList = (
     const fullServicesList = getFullServicesList(userPeriodTicket);
     return fullServicesList.length > 0
         ? fullServicesList.map(service => ({
-            version: '1.0',
-            ref: service.lineId,
-        }))
+              version: '1.0',
+              ref: service.lineId,
+          }))
         : [];
 };
 
@@ -324,28 +325,29 @@ export const getGeoZoneFareTable = (
                                         prices:
                                             'productDuration' in product
                                                 ? {
-                                                    TimeIntervalPrice: {
-                                                        version: '1.0',
-                                                        id: `op:${product.productName}@${salesOfferPackage.name}@zone`,
-                                                        Amount: {
-                                                            $t: `${salesOfferPackage.price || product.productPrice}`,
-                                                        },
-                                                        TimeIntervalRef: {
-                                                            version: '1.0',
-                                                            ref: `op:Tariff@${product.productName
-                                                                }@${product.productDuration.replace(' ', '-')}`,
-                                                        },
-                                                    },
-                                                }
+                                                      TimeIntervalPrice: {
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@zone`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                          TimeIntervalRef: {
+                                                              version: '1.0',
+                                                              ref: `op:Tariff@${
+                                                                  product.productName
+                                                              }@${product.productDuration.replace(' ', '-')}`,
+                                                          },
+                                                      },
+                                                  }
                                                 : {
-                                                    DistanceMatrixElementPrice: {
-                                                        version: '1.0',
-                                                        id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
-                                                        Amount: {
-                                                            $t: `${salesOfferPackage.price || product.productPrice}`,
-                                                        },
-                                                    },
-                                                },
+                                                      DistanceMatrixElementPrice: {
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@${userPeriodTicket.passengerType}`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                      },
+                                                  },
                                     },
                                 },
                             },
@@ -369,9 +371,9 @@ export const getMultiServiceList = (
             const serviceCount =
                 'additionalOperators' in userPeriodTicket
                     ? userPeriodTicket.additionalOperators.reduce(
-                        (count, it) => count + it.selectedServices.length,
-                        ownServiceCount,
-                    )
+                          (count, it) => count + it.selectedServices.length,
+                          ownServiceCount,
+                      )
                     : ownServiceCount;
 
             return {
@@ -423,24 +425,25 @@ export const getMultiServiceList = (
                                             TimeIntervalPrice:
                                                 'productDuration' in product
                                                     ? {
-                                                        version: '1.0',
-                                                        id: `op:${product.productName}@${salesOfferPackage.name}@service`,
-                                                        Amount: {
-                                                            $t: `${salesOfferPackage.price || product.productPrice}`,
-                                                        },
-                                                        TimeIntervalRef: {
-                                                            version: '1.0',
-                                                            ref: `op:Tariff@${product.productName
-                                                                }@${product.productDuration.replace(' ', '-')}`,
-                                                        },
-                                                    }
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@service`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                          TimeIntervalRef: {
+                                                              version: '1.0',
+                                                              ref: `op:Tariff@${
+                                                                  product.productName
+                                                              }@${product.productDuration.replace(' ', '-')}`,
+                                                          },
+                                                      }
                                                     : {
-                                                        version: '1.0',
-                                                        id: `op:${product.productName}@${salesOfferPackage.name}@service`,
-                                                        Amount: {
-                                                            $t: `${salesOfferPackage.price || product.productPrice}`,
-                                                        },
-                                                    },
+                                                          version: '1.0',
+                                                          id: `op:${product.productName}@${salesOfferPackage.name}@service`,
+                                                          Amount: {
+                                                              $t: `${salesOfferPackage.price || product.productPrice}`,
+                                                          },
+                                                      },
                                         },
                                     },
                                 },
@@ -640,16 +643,21 @@ export const getSalesOfferPackageList = (
 ): NetexSalesOfferPackage[][] => {
     const isCarnet = 'carnetDetails' in userPeriodTicket.products[0];
 
-    const capSalesOfferPackageElement = (SOPLength: number) => capId ? [{
-        id: `Trip@${ticketUserConcat}-SOP-cap`,
-        version: '1.0',
-        order: (SOPLength + 1).toString(),
-        TypeOfTravelDocumentRef: {
-            version: 'fxc:v1.0',
-            ref: `fxc:m-ticket`,
-        },
-        CappedDiscountRightRef: { version: "1.0", ref: capId },
-    }] : []
+    const capSalesOfferPackageElement = (SOPLength: number) =>
+        capId
+            ? [
+                  {
+                      id: `Trip@${ticketUserConcat}-SOP-cap`,
+                      version: '1.0',
+                      order: (SOPLength + 1).toString(),
+                      TypeOfTravelDocumentRef: {
+                          version: 'fxc:v1.0',
+                          ref: `fxc:m-ticket`,
+                      },
+                      CappedDiscountRightRef: { version: '1.0', ref: capId },
+                  },
+              ]
+            : [];
 
     return userPeriodTicket.products.map(product => {
         return product.salesOfferPackages.map(salesOfferPackage => {
@@ -698,7 +706,7 @@ export const getSalesOfferPackageList = (
                     };
                 });
             };
-            const salesOfferPackageElements = buildSalesOfferPackageElements()
+            const salesOfferPackageElements = buildSalesOfferPackageElements();
             return {
                 version: '1.0',
                 id: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
@@ -707,7 +715,12 @@ export const getSalesOfferPackageList = (
                 },
                 Description: { $t: `${salesOfferPackage.description ?? ''}` },
                 distributionAssignments: { DistributionAssignment: buildDistributionAssignments() },
-                salesOfferPackageElements: { SalesOfferPackageElement: [...salesOfferPackageElements, ...capSalesOfferPackageElement(salesOfferPackageElements.length)] },
+                salesOfferPackageElements: {
+                    SalesOfferPackageElement: [
+                        ...salesOfferPackageElements,
+                        ...capSalesOfferPackageElement(salesOfferPackageElements.length),
+                    ],
+                },
             };
         });
     });
@@ -718,19 +731,19 @@ const getPeriodTicketFareStructureElementRefs = (
     productName: string,
     passengerType: string,
 ): NetexObject[] => [
-        {
-            version: '1.0',
-            ref: elementZeroRef,
-        },
-        {
-            version: '1.0',
-            ref: `op:Tariff@${productName}@durations@${passengerType}`,
-        },
-        {
-            version: '1.0',
-            ref: `op:Tariff@${productName}@conditions_of_travel`,
-        },
-    ];
+    {
+        version: '1.0',
+        ref: elementZeroRef,
+    },
+    {
+        version: '1.0',
+        ref: `op:Tariff@${productName}@durations@${passengerType}`,
+    },
+    {
+        version: '1.0',
+        ref: `op:Tariff@${productName}@conditions_of_travel`,
+    },
+];
 
 const getFlatFareFareStructureElementRefs = (elementZeroRef: string, productName: string): NetexObject[] => [
     {
@@ -816,7 +829,7 @@ export const getPreassignedFareProducts = (
     return userPeriodTicket.products.map(product => {
         let elementZeroRef = '';
         let fareStructureElementRefs: NetexObject;
-        const hasCaps = userPeriodTicket.caps && userPeriodTicket.caps.length > 0
+        const hasCaps = userPeriodTicket.caps && userPeriodTicket.caps.length > 0;
 
         if (isGeoZoneTicket(userPeriodTicket) || isHybridTicket(userPeriodTicket)) {
             elementZeroRef = `op:Tariff@${product.productName}@access_zones`;
@@ -937,8 +950,7 @@ export const getPreassignedFareProducts = (
 };
 
 export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
-
-    let timeIntervals = []
+    let timeIntervals = [];
     timeIntervals = ticket.products.flatMap(product => {
         if ('productDuration' in product && product.productDuration) {
             const amount = product.productDuration.split(' ')[0];
@@ -960,23 +972,28 @@ export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
         return [];
     });
     if ('caps' in ticket && ticket.caps) {
-        timeIntervals = [...timeIntervals, ...ticket.caps.map(cap => {
-            const duration = `${cap.capDetails.durationAmount} ${cap.capDetails.durationUnits}`
-            const amount = duration.split(' ')[0];
-            const type = duration.split(' ')[1];
-            let firstLetterOfType = type.charAt(0).toUpperCase();
-            let finalAmount = amount;
-            if (firstLetterOfType === 'W') {
-                finalAmount = (Number(amount) * 7).toString();
-                firstLetterOfType = 'D';
-            }
-            return {
-                version: '1.0',
-                id: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${cap.capDetails.durationAmount}${cap.capDetails.durationUnits}`,
-                Name: { $t: `${cap.capDetails.name}` },
-                Duration:{ $t: `P${finalAmount}${firstLetterOfType}` },
-            };
-        })]
+        timeIntervals = [
+            ...timeIntervals,
+            ...ticket.caps.map(cap => {
+                const duration = `${cap.capDetails.durationAmount} ${cap.capDetails.durationUnits}`;
+                const amount = duration.split(' ')[0];
+                const type = duration.split(' ')[1];
+                let firstLetterOfType = type.charAt(0).toUpperCase();
+                let finalAmount = amount;
+                if (firstLetterOfType === 'W') {
+                    finalAmount = (Number(amount) * 7).toString();
+                    firstLetterOfType = 'D';
+                }
+                return {
+                    version: '1.0',
+                    id: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${cap.capDetails.durationAmount}${
+                        cap.capDetails.durationUnits
+                    }`,
+                    Name: { $t: `${cap.capDetails.name}` },
+                    Duration: { $t: `P${finalAmount}${firstLetterOfType}` },
+                };
+            }),
+        ];
     }
 
     return timeIntervals.length > 0 ? timeIntervals : undefined;
@@ -1090,13 +1107,13 @@ export const getPeriodEligibilityElement = (userPeriodTicket: Ticket): NetexObje
     const users = userPeriodTicket.groupDefinition
         ? userPeriodTicket.groupDefinition.companions
         : [
-            {
-                ageRangeMin: userPeriodTicket.ageRangeMin,
-                ageRangeMax: userPeriodTicket.ageRangeMax,
-                passengerType: userPeriodTicket.passengerType,
-                proofDocuments: userPeriodTicket.proofDocuments,
-            },
-        ];
+              {
+                  ageRangeMin: userPeriodTicket.ageRangeMin,
+                  ageRangeMax: userPeriodTicket.ageRangeMax,
+                  passengerType: userPeriodTicket.passengerType,
+                  proofDocuments: userPeriodTicket.proofDocuments,
+              },
+          ];
 
     return users.map((user: GroupCompanion | User, index) => ({
         version: '1.0',
@@ -1175,12 +1192,12 @@ export const getPeriodConditionsElement = (
                 StandardDuration: product.productValidity === 'endOfCalendarDay' ? { $t: 'P0Y0M1D' } : undefined,
                 EndTime:
                     product.productValidity === 'fareDayEnd' &&
-                        'fareDayEnd' in userPeriodTicket &&
-                        userPeriodTicket.fareDayEnd
+                    'fareDayEnd' in userPeriodTicket &&
+                    userPeriodTicket.fareDayEnd
                         ? { $t: getTime(userPeriodTicket.fareDayEnd) }
                         : product.productValidity === 'endOfCalendarDay'
-                            ? { $t: '23:59:00' }
-                            : undefined,
+                        ? { $t: '23:59:00' }
+                        : undefined,
             },
         };
     }
@@ -1205,29 +1222,29 @@ export const getPeriodConditionsElement = (
             limitations: {
                 ...(isFlatFareType(userPeriodTicket) || isMultiOpFlatFareType(userPeriodTicket)
                     ? {
-                        RoundTrip: {
-                            version: '1.0',
-                            id: `Tariff@single@condition@direction`,
-                            Name: { $t: `Single Trip` },
-                            TripType: { $t: `single` },
-                        },
-                        FrequencyOfUse: {
-                            version: '1.0',
-                            id: `Tariff@single@oneTrip`,
-                            Name: { $t: 'One trip no transfers' },
-                            FrequencyOfUseType: { $t: 'single' },
-                            MaximalFrequency: { $t: '1' },
-                        },
-                        ...usagePeriodValidity,
-                    }
+                          RoundTrip: {
+                              version: '1.0',
+                              id: `Tariff@single@condition@direction`,
+                              Name: { $t: `Single Trip` },
+                              TripType: { $t: `single` },
+                          },
+                          FrequencyOfUse: {
+                              version: '1.0',
+                              id: `Tariff@single@oneTrip`,
+                              Name: { $t: 'One trip no transfers' },
+                              FrequencyOfUseType: { $t: 'single' },
+                              MaximalFrequency: { $t: '1' },
+                          },
+                          ...usagePeriodValidity,
+                      }
                     : {
-                        FrequencyOfUse: {
-                            version: '1.0',
-                            id: `op:Pass@${product.productName}@frequency`,
-                            FrequencyOfUseType: { $t: 'unlimited' },
-                        },
-                        ...usagePeriodValidity,
-                    }),
+                          FrequencyOfUse: {
+                              version: '1.0',
+                              id: `op:Pass@${product.productName}@frequency`,
+                              FrequencyOfUseType: { $t: 'unlimited' },
+                          },
+                          ...usagePeriodValidity,
+                      }),
             },
         },
     };
@@ -1267,10 +1284,10 @@ export const getOrganisations = (
                 },
                 ...('postcode' in operator
                     ? {
-                        Town: { $t: operator.town },
-                        PostCode: { $t: operator.postcode },
-                        PostalRegion: { $t: operator.county },
-                    }
+                          Town: { $t: operator.town },
+                          PostCode: { $t: operator.postcode },
+                          PostalRegion: { $t: operator.county },
+                      }
                     : undefined),
             },
             PrimaryMode: {
@@ -1311,10 +1328,10 @@ export const getOrganisations = (
                 },
                 ...('postcode' in baseOperatorInfo
                     ? {
-                        Town: { $t: baseOperatorInfo.town },
-                        PostCode: { $t: baseOperatorInfo.postcode },
-                        PostalRegion: { $t: baseOperatorInfo.county },
-                    }
+                          Town: { $t: baseOperatorInfo.town },
+                          PostCode: { $t: baseOperatorInfo.postcode },
+                          PostalRegion: { $t: baseOperatorInfo.county },
+                      }
                     : undefined),
             },
             PrimaryMode: {
