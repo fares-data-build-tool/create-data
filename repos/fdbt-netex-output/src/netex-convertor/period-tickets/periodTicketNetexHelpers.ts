@@ -961,11 +961,20 @@ export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
     });
     if ('caps' in ticket && ticket.caps) {
         timeIntervals = [...timeIntervals, ...ticket.caps.map(cap => {
+            const duration = `${cap.capDetails.durationAmount} ${cap.capDetails.durationUnits}`
+            const amount = duration.split(' ')[0];
+            const type = duration.split(' ')[1];
+            let firstLetterOfType = type.charAt(0).toUpperCase();
+            let finalAmount = amount;
+            if (firstLetterOfType === 'W') {
+                finalAmount = (Number(amount) * 7).toString();
+                firstLetterOfType = 'D';
+            }
             return {
                 version: '1.0',
                 id: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${cap.capDetails.durationAmount}${cap.capDetails.durationUnits}`,
                 Name: { $t: `${cap.capDetails.name}` },
-                Duration: { $t: `${cap.capDetails.durationAmount} ${cap.capDetails.durationUnits}` },
+                Duration:{ $t: `P${finalAmount}${firstLetterOfType}` },
             };
         })]
     }

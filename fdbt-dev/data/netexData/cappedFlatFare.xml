@@ -148,11 +148,11 @@
               <timeIntervals>
                 <TimeInterval version="1.0" id="op:Tariff@cappy-cap@3month">
                   <Name>cappy cap</Name>
-                  <Duration>3 month</Duration>
+                  <Duration>P3M</Duration>
                 </TimeInterval>
                 <TimeInterval version="1.0" id="op:Tariff@cappy-cap3@3day">
                   <Name>cappy cap3</Name>
-                  <Duration>3 day</Duration>
+                  <Duration>P3D</Duration>
                 </TimeInterval>
               </timeIntervals>
               <fareStructureElements>
