@@ -80,8 +80,9 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         const publicationRequestToUpdate = { ...publicationRequest };
 
         publicationRequestToUpdate.RequestTimestamp.$t = coreData.currentDate;
-        publicationRequestToUpdate.Description.$t = `Request for ${isPointToPointTicket(ticket) ? `${ticket.nocCode} ${coreData.lineIdName}` : coreData.operatorIdentifier
-            } bus pass fares`;
+        publicationRequestToUpdate.Description.$t = `Request for ${
+            isPointToPointTicket(ticket) ? `${ticket.nocCode} ${coreData.lineIdName}` : coreData.operatorIdentifier
+        } bus pass fares`;
 
         publicationRequestToUpdate.topics.NetworkFrameTopic.NetworkFilterByValue.objectReferences.OperatorRef.ref =
             coreData.nocCodeFormat;
@@ -171,8 +172,9 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
     const updateResourceFrame = (resourceFrame: NetexObject): NetexObject => {
         const resourceFrameToUpdate = { ...resourceFrame };
 
-        resourceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ResourceFrame_UK_PI_COMMON${`:${!isPointToPointTicket(ticket) ? `${coreData.operatorIdentifier}:` : ''
-            }`}op`;
+        resourceFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:ResourceFrame_UK_PI_COMMON${`:${
+            !isPointToPointTicket(ticket) ? `${coreData.operatorIdentifier}:` : ''
+        }`}op`;
         resourceFrameToUpdate.codespaces.Codespace.XmlnsUrl.$t = coreData.url;
         resourceFrameToUpdate.dataSources.DataSource.Email.$t = baseOperatorInfo.email;
 
@@ -214,10 +216,10 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 },
                 ...('postcode' in baseOperatorInfo
                     ? {
-                        Town: { $t: baseOperatorInfo.town },
-                        PostCode: { $t: baseOperatorInfo.postcode },
-                        PostalRegion: { $t: baseOperatorInfo.county },
-                    }
+                          Town: { $t: baseOperatorInfo.town },
+                          PostCode: { $t: baseOperatorInfo.postcode },
+                          PostalRegion: { $t: baseOperatorInfo.county },
+                      }
                     : undefined),
             }),
                 (resourceFrameToUpdate.organisations.Operator.PrimaryMode.$t = getNetexMode(baseOperatorInfo.mode));
@@ -478,12 +480,12 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             ValidityCondition:
                 'termTime' in ticket && ticket.termTime && ticket.type === 'period' && 'selectedServices' in ticket
                     ? {
-                        id: 'op:termtime',
-                        version: '1.0',
-                        Name: {
-                            $t: 'Term Time Usage Only',
-                        },
-                    }
+                          id: 'op:termtime',
+                          version: '1.0',
+                          Name: {
+                              $t: 'Term Time Usage Only',
+                          },
+                      }
                     : undefined,
         };
 
@@ -520,19 +522,23 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             }
 
             if ('caps' in ticket && ticket.caps) {
-                const cappedDiscountRight = getCappedDiscountRight(ticket, coreData.ticketUserConcat, coreData.nocCodeFormat)
-                priceFareFrameToUpdate.fareProducts.CappedDiscountRight = cappedDiscountRight
+                const cappedDiscountRight = getCappedDiscountRight(
+                    ticket,
+                    coreData.ticketUserConcat,
+                    coreData.nocCodeFormat,
+                );
+                priceFareFrameToUpdate.fareProducts.CappedDiscountRight = cappedDiscountRight;
             }
             priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = buildSalesOfferPackages(
                 ticket.products[0],
                 coreData.ticketUserConcat,
-                priceFareFrameToUpdate.fareProducts.CappedDiscountRight?.id ?? ""
+                priceFareFrameToUpdate.fareProducts.CappedDiscountRight?.id ?? '',
             );
 
             const timeIntervalsToAdd = { TimeInterval: getTimeIntervals(ticket) };
-            tariff.timeIntervals = timeIntervalsToAdd
+            tariff.timeIntervals = timeIntervalsToAdd;
             // This is horrible but in the netex the timeIntervals need to come before the qualityStructureFactors and fareStructureElements
-            const timeIntervalsToUpdate = tariff.timeIntervals
+            const timeIntervalsToUpdate = tariff.timeIntervals;
             const fareStructureElementsToUpdate = tariff.fareStructureElements;
             const qualityStructureFactorsToUpdate = tariff.qualityStructureFactors;
             delete tariff.fareStructureElements;
@@ -545,7 +551,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 fareStructureElements: fareStructureElementsToUpdate,
             };
 
-            tariff = priceFareFrameToUpdate.tariffs.Tariff
+            tariff = priceFareFrameToUpdate.tariffs.Tariff;
 
             if (isPointToPointTicket(ticket)) return priceFareFrameToUpdate;
         }
@@ -607,11 +613,19 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         }
 
         if ('caps' in ticket && ticket.caps) {
-            const cappedDiscountRight = getCappedDiscountRight(ticket, coreData.ticketUserConcat, coreData.nocCodeFormat)
-            priceFareFrameToUpdate.fareProducts.CappedDiscountRight = cappedDiscountRight
+            const cappedDiscountRight = getCappedDiscountRight(
+                ticket,
+                coreData.ticketUserConcat,
+                coreData.nocCodeFormat,
+            );
+            priceFareFrameToUpdate.fareProducts.CappedDiscountRight = cappedDiscountRight;
         }
         // Sales Offer Packages
-        const salesOfferPackages = getSalesOfferPackageList(ticket, coreData.ticketUserConcat, priceFareFrameToUpdate.fareProducts.CappedDiscountRight?.id ?? "");
+        const salesOfferPackages = getSalesOfferPackageList(
+            ticket,
+            coreData.ticketUserConcat,
+            priceFareFrameToUpdate.fareProducts.CappedDiscountRight?.id ?? '',
+        );
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = salesOfferPackages.flat();
 
         return priceFareFrameToUpdate;
@@ -668,8 +682,11 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         }
 
         if ('caps' in ticket && ticket.caps) {
-            fareTableFareFrameToUpdate.fareTables.FareTable = [...fareTableFareFrameToUpdate.fareTables.FareTable, ...getCapFareTables(ticket, coreData.lineIdName, coreData)]
-        } 
+            fareTableFareFrameToUpdate.fareTables.FareTable = [
+                ...fareTableFareFrameToUpdate.fareTables.FareTable,
+                ...getCapFareTables(ticket, coreData.lineIdName, coreData),
+            ];
+        }
 
         return fareTableFareFrameToUpdate;
     };
