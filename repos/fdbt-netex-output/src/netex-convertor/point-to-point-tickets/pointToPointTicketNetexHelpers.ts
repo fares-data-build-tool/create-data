@@ -291,7 +291,7 @@ export const getPreassignedFareProduct = (
     }));
 
     const productType = getProductType(matchingData);
-    const hasCaps = matchingData.caps && matchingData.caps.length > 0
+    const hasCaps = matchingData.caps && matchingData.caps.length > 0;
 
     let typeOfFareProductRef = '';
 
@@ -347,11 +347,7 @@ export const getPreassignedFareProduct = (
     };
 };
 
-export const getCappedDiscountRight = (
-    matchingData: Ticket,
-    ticketUserConcat: string,
-    noc: string
-): NetexObject => {
+export const getCappedDiscountRight = (matchingData: Ticket, ticketUserConcat: string, noc: string): NetexObject => {
     const getCappingRules = () => {
         if (matchingData.caps && matchingData.caps.length > 0) {
             return matchingData.caps?.map(cap => {
@@ -385,16 +381,17 @@ export const getCappedDiscountRight = (
                             },
                             TimeIntervalRef: {
                                 version: '1.0',
-                                ref: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${cap.capDetails.durationAmount}${cap.capDetails.durationUnits}`,
+                                ref: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${
+                                    cap.capDetails.durationAmount
+                                }${cap.capDetails.durationUnits}`,
                             },
                         },
-
-                    }
-                }
-            })
+                    },
+                };
+            });
         }
-        return []
-    }
+        return [];
+    };
 
     return {
         id: `op:Cap:@trip`,
@@ -402,10 +399,9 @@ export const getCappedDiscountRight = (
         Name: {
             $t: `Cap ${noc}`,
         },
-        cappingRules: getCappingRules()
-
+        cappingRules: getCappingRules(),
     };
-}
+};
 
 export const buildSalesOfferPackage = (
     salesOfferPackageInfo: SalesOfferPackage,
@@ -415,16 +411,21 @@ export const buildSalesOfferPackage = (
 ): NetexSalesOfferPackage => {
     const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
 
-    const capSalesOfferPackageElement = (SOPLength: number) => capId ? [{
-        id: `Trip@${ticketUserConcat}-SOP-cap`,
-        version: '1.0',
-        order: (SOPLength + 1).toString(),
-        TypeOfTravelDocumentRef: {
-            version: 'fxc:v1.0',
-            ref: `fxc:m-ticket`,
-        },
-        CappedDiscountRightRef: { version: "1.0", ref: capId },
-    }] : []
+    const capSalesOfferPackageElement = (SOPLength: number) =>
+        capId
+            ? [
+                  {
+                      id: `Trip@${ticketUserConcat}-SOP-cap`,
+                      version: '1.0',
+                      order: (SOPLength + 1).toString(),
+                      TypeOfTravelDocumentRef: {
+                          version: 'fxc:v1.0',
+                          ref: `fxc:m-ticket`,
+                      },
+                      CappedDiscountRightRef: { version: '1.0', ref: capId },
+                  },
+              ]
+            : [];
 
     const buildDistributionAssignments = (): DistributionAssignment[] => {
         const distribAssignments = salesOfferPackageInfo.purchaseLocations.map((purchaseLocation, index) => {
@@ -467,7 +468,7 @@ export const buildSalesOfferPackage = (
         return salesOfferPackageElements;
     };
 
-    const salesOfferPackageElements = buildSalesOfferPackageElements(isCarnet)
+    const salesOfferPackageElements = buildSalesOfferPackageElements(isCarnet);
     return {
         Name: {
             $t: salesOfferPackageInfo.name,
@@ -481,12 +482,19 @@ export const buildSalesOfferPackage = (
             DistributionAssignment: buildDistributionAssignments(),
         },
         salesOfferPackageElements: {
-            SalesOfferPackageElement: [...salesOfferPackageElements, ...capSalesOfferPackageElement(salesOfferPackageElements.length)],
+            SalesOfferPackageElement: [
+                ...salesOfferPackageElements,
+                ...capSalesOfferPackageElement(salesOfferPackageElements.length),
+            ],
         },
     };
 };
 
-export const buildSalesOfferPackages = (product: BaseProduct, ticketUserConcat: string, capId: string): NetexSalesOfferPackage[] => {
+export const buildSalesOfferPackages = (
+    product: BaseProduct,
+    ticketUserConcat: string,
+    capId: string,
+): NetexSalesOfferPackage[] => {
     return product.salesOfferPackages.map(salesOfferPackage => {
         return buildSalesOfferPackage(salesOfferPackage, ticketUserConcat, 'carnetDetails' in product, capId);
     });
@@ -571,13 +579,9 @@ export const getFareTables = (
     });
 };
 
-export const getCapFareTables = (
-    matchingData: Ticket,
-    lineIdName: string,
-    coreData: CoreData,
-): NetexObject[] => {
+export const getCapFareTables = (matchingData: Ticket, lineIdName: string, coreData: CoreData): NetexObject[] => {
     if (matchingData.caps && matchingData.caps.length > 0) {
-        return matchingData.caps.map((cap) => {
+        return matchingData.caps.map(cap => {
             return {
                 id: `Trip@${matchingData.type}-cap@${cap.capDetails.name}@Line_${lineIdName}@${matchingData.passengerType}`,
                 version: '1.0',
@@ -594,29 +598,28 @@ export const getCapFareTables = (
                     UserProfileRef: {
                         version: '1.0',
                         ref: `Trip@${matchingData.passengerType}`,
-                    }
+                    },
                 },
                 prices: {
                     CappingRulePrice: {
                         version: '1.0',
                         ref: `op:Price:${cap.capDetails.name}@${matchingData.type}_trip`,
                         Name: {
-                            $t: "Cap based on daily pass price"
+                            $t: 'Cap based on daily pass price',
                         },
                         Amount: {
-                            $t: cap.capDetails.price
+                            $t: cap.capDetails.price,
                         },
                         CappingRuleRef: {
-                            version: "1.0",
-                            ref: `op:${cap.capDetails.name}@${matchingData.type}_trip`
-                        }
-                    }
-                }
-
+                            version: '1.0',
+                            ref: `op:${cap.capDetails.name}@${matchingData.type}_trip`,
+                        },
+                    },
+                },
             };
         });
     }
-    return []
+    return [];
 };
 
 /**
@@ -730,13 +733,13 @@ export const getEligibilityElement = (ticket: PointToPointTicket | PointToPointP
     const users = ticket.groupDefinition
         ? ticket.groupDefinition.companions
         : [
-            {
-                ageRangeMin: ticket.ageRangeMin,
-                ageRangeMax: ticket.ageRangeMax,
-                passengerType: ticket.passengerType,
-                proofDocuments: ticket.proofDocuments,
-            },
-        ];
+              {
+                  ageRangeMin: ticket.ageRangeMin,
+                  ageRangeMax: ticket.ageRangeMax,
+                  passengerType: ticket.passengerType,
+                  proofDocuments: ticket.proofDocuments,
+              },
+          ];
 
     return {
         version: '1.0',

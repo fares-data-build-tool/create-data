@@ -1968,7 +1968,7 @@ describe('Netex Helpers', () => {
                 const actualSalesOfferPackages = netexHelpers.buildSalesOfferPackages(
                     ticket.products[0],
                     `${ticket.type}_${ticket.passengerType}`,
-                    'capId'
+                    'capId',
                 );
                 expect(actualSalesOfferPackages.length).toEqual(ticket.products[0].salesOfferPackages.length);
             },
@@ -2038,7 +2038,7 @@ describe('Netex Helpers', () => {
                     ticket.products[0].salesOfferPackages[0],
                     `${ticket.type}_${ticket.passengerType}`,
                     'carnetDetails' in ticket.products[0],
-                    'capHere'
+                    'capHere',
                 );
                 expect(returnedSalesOfferPackage.distributionAssignments.DistributionAssignment.length).toBe(
                     ticket.products[0].salesOfferPackages[0].purchaseLocations.length,
