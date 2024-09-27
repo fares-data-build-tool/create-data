@@ -642,7 +642,7 @@ export const getSalesOfferPackageList = (
     capId: string,
 ): NetexSalesOfferPackage[][] => {
     const isCarnet = 'carnetDetails' in userPeriodTicket.products[0];
-
+    //here
     const capSalesOfferPackageElement = (SOPLength: number) =>
         capId
             ? [

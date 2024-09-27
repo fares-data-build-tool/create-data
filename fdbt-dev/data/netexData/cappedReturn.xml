@@ -725,30 +725,30 @@
             <CappedDiscountRight id="op:Cap:@trip" version="1.0">
               <Name>Cap noc:BLAC</Name>
               <cappingRules>
-                <CappingRule id="Cap@cappy_cap">
+                <CappingRule version="1.0" id="op:cappy_cap@return_trip">
                   <Name>cappy cap</Name>
                   <CappingPeriod>month</CappingPeriod>
                   <ValidableElementRef version="1.0" ref="Trip@Another_product@travel"/>
-                  <GenericParameterAssignment id="cappy_cap@Another_product">
+                  <GenericParameterAssignment version="1.0" id="cappy_cap@Another_product" order="1">
                     <Name>limit a child to 3 month</Name>
                     <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                     <limitations>
-                      <UserProfileRef version="1.0" ref="Trip@child"/>
+                      <UserProfileRef version="1.0" ref="op:child-0"/>
                     </limitations>
                     <TimeIntervalRef version="1.0" ref="op:Tariff@cappy-cap@3month"/>
                   </GenericParameterAssignment>
                 </CappingRule>
               </cappingRules>
               <cappingRules>
-                <CappingRule id="Cap@cappy_cap3">
+                <CappingRule version="1.0" id="op:cappy_cap3@return_trip">
                   <Name>cappy cap3</Name>
                   <CappingPeriod>day</CappingPeriod>
                   <ValidableElementRef version="1.0" ref="Trip@Another_product@travel"/>
-                  <GenericParameterAssignment id="cappy_cap3@Another_product">
+                  <GenericParameterAssignment version="1.0" id="cappy_cap3@Another_product" order="1">
                     <Name>limit a child to 3 day</Name>
                     <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                     <limitations>
-                      <UserProfileRef version="1.0" ref="Trip@child"/>
+                      <UserProfileRef version="1.0" ref="op:child-0"/>
                     </limitations>
                     <TimeIntervalRef version="1.0" ref="op:Tariff@cappy-cap3@3day"/>
                   </GenericParameterAssignment>
@@ -772,7 +772,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Another_product-SOP-cap" version="1.0" order="2">
+                <SalesOfferPackageElement version="1.0" id="Trip@Another_product-SOP-cap" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
@@ -793,7 +793,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Another_product-SOP-cap" version="1.0" order="2">
+                <SalesOfferPackageElement version="1.0" id="Trip@Another_product-SOP-cap" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
@@ -814,7 +814,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Another_product-SOP-cap" version="1.0" order="2">
+                <SalesOfferPackageElement version="1.0" id="Trip@Another_product-SOP-cap" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
@@ -835,7 +835,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Another_product-SOP-cap" version="1.0" order="2">
+                <SalesOfferPackageElement version="1.0" id="Trip@Another_product-SOP-cap" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
@@ -874,7 +874,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@Another_product"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Another_product-SOP-cap" version="1.0" order="4">
+                <SalesOfferPackageElement version="1.0" id="Trip@Another_product-SOP-cap" order="4">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
@@ -2560,30 +2560,34 @@
                 </FareTable>
               </includes>
             </FareTable>
-            <FareTable id="Trip@return-cap@cappy_cap@Line_PK1146649_RJ1_1234@child" version="1.0">
+            <FareTable version="1.0" id="Trip@return-cap@cappy_cap@Line_PK1146649_RJ1_1234@child">
               <Name>FareTable for cappy cap</Name>
-              <pricesFor CappedDiscountRightRef="op:Cap:@trip"/>
+              <pricesFor>
+                <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
+              </pricesFor>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <limitations>
                 <UserProfileRef version="1.0" ref="Trip@child"/>
               </limitations>
               <prices>
-                <CappingRulePrice version="1.0" ref="op:Price:cappy_cap@return_trip">
+                <CappingRulePrice version="1.0" id="op:Price:cappy_cap@return_trip">
                   <Name>Cap based on daily pass price</Name>
                   <Amount>2</Amount>
                   <CappingRuleRef version="1.0" ref="op:cappy_cap@return_trip"/>
                 </CappingRulePrice>
               </prices>
             </FareTable>
-            <FareTable id="Trip@return-cap@cappy_cap3@Line_PK1146649_RJ1_1234@child" version="1.0">
+            <FareTable version="1.0" id="Trip@return-cap@cappy_cap3@Line_PK1146649_RJ1_1234@child">
               <Name>FareTable for cappy cap3</Name>
-              <pricesFor CappedDiscountRightRef="op:Cap:@trip"/>
+              <pricesFor>
+                <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
+              </pricesFor>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <limitations>
                 <UserProfileRef version="1.0" ref="Trip@child"/>
               </limitations>
               <prices>
-                <CappingRulePrice version="1.0" ref="op:Price:cappy_cap3@return_trip">
+                <CappingRulePrice version="1.0" id="op:Price:cappy_cap3@return_trip">
                   <Name>Cap based on daily pass price</Name>
                   <Amount>2</Amount>
                   <CappingRuleRef version="1.0" ref="op:cappy_cap3@return_trip"/>
@@ -3996,6 +4000,10 @@
             <TypeOfTravelDocument id="fxc:membership_card" version="fxc:v1.0">
               <MediaType>card</MediaType>
               <MachineReadable>none</MachineReadable>
+            </TypeOfTravelDocument>
+            <TypeOfTravelDocument id="fxc:m-ticket" version="fxc:v1.0">
+              <MediaType>card</MediaType>
+              <MachineReadable>nfc</MachineReadable>
             </TypeOfTravelDocument>
           </typesOfTravelDocuments>
         </FareFrame>

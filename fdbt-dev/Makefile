@@ -132,6 +132,16 @@ generate-capped-return:
 
 generate-validate-capped-return: generate-capped-return validate-latest-file
 
+generate-capped-flat-fare:
+	./scripts/trigger_netex_convertor.sh cappedFlatFare
+
+generate-validate-capped-flat-fare: generate-capped-flat-fare validate-latest-file
+
+generate-capped-single:
+	./scripts/trigger_netex_convertor.sh cappedSingle
+
+generate-validate-capped-single: generate-capped-single validate-latest-file
+
 generate-carnet-period-geo-zone:
 	./scripts/trigger_netex_convertor.sh carnetPeriodGeoZone
 

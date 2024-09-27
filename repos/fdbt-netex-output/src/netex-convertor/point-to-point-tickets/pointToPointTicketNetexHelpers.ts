@@ -13,6 +13,7 @@ import {
     NetexSalesOfferPackage,
     isReturnTicket,
     CoreData,
+    isPointToPointTicket,
 } from '../../types';
 import {
     NetexObject,
@@ -353,7 +354,8 @@ export const getCappedDiscountRight = (matchingData: Ticket, ticketUserConcat: s
             return matchingData.caps?.map(cap => {
                 return {
                     CappingRule: {
-                        id: `Cap@${cap.capDetails.name}`,
+                        version: '1.0',
+                        id: `op:${cap.capDetails.name}@${matchingData.type}_trip`,
                         Name: {
                             $t: cap.capDetails.name,
                         },
@@ -362,22 +364,25 @@ export const getCappedDiscountRight = (matchingData: Ticket, ticketUserConcat: s
                         },
                         ValidableElementRef: {
                             version: '1.0',
-                            ref: `Trip@${ticketUserConcat}@travel`,
+                            ref: isPointToPointTicket(matchingData)
+                            ? `Trip@${ticketUserConcat}@travel`
+                            : `op:Pass@${matchingData.products[0].productName}_${matchingData.passengerType}@travel`,
                         },
                         GenericParameterAssignment: {
+                            version: '1.0',
                             id: `${cap.capDetails.name}@${ticketUserConcat}`,
+                            order: '1',
                             Name: {
                                 $t: `limit a ${matchingData.passengerType} to ${cap.capDetails.durationAmount} ${cap.capDetails.durationUnits}`,
                             },
                             PreassignedFareProductRef: {
                                 version: '1.0',
-                                ref: `Trip@${ticketUserConcat}`,
+                                ref: isPointToPointTicket(matchingData)
+                                    ? `Trip@${ticketUserConcat}`
+                                    : `op:Pass@${matchingData.products[0].productName}_${matchingData.passengerType}`,
                             },
                             limitations: {
-                                UserProfileRef: {
-                                    version: '1.0',
-                                    ref: `Trip@${matchingData.passengerType}`,
-                                },
+                                ...getProfileRef(matchingData),
                             },
                             TimeIntervalRef: {
                                 version: '1.0',
@@ -415,8 +420,8 @@ export const buildSalesOfferPackage = (
         capId
             ? [
                   {
-                      id: `Trip@${ticketUserConcat}-SOP-cap`,
                       version: '1.0',
+                      id: `Trip@${ticketUserConcat}-SOP-cap`,
                       order: (SOPLength + 1).toString(),
                       TypeOfTravelDocumentRef: {
                           version: 'fxc:v1.0',
@@ -583,11 +588,14 @@ export const getCapFareTables = (matchingData: Ticket, lineIdName: string, coreD
     if (matchingData.caps && matchingData.caps.length > 0) {
         return matchingData.caps.map(cap => {
             return {
-                id: `Trip@${matchingData.type}-cap@${cap.capDetails.name}@Line_${lineIdName}@${matchingData.passengerType}`,
                 version: '1.0',
+                id: `Trip@${matchingData.type}-cap@${cap.capDetails.name}@Line_${lineIdName}@${matchingData.passengerType}`,
                 Name: { $t: `FareTable for ${cap.capDetails.name}` },
                 pricesFor: {
-                    CappedDiscountRightRef: `op:Cap:@trip`,
+                    CappedDiscountRightRef: {
+                        version: '1.0',
+                        ref: `op:Cap:@trip`,
+                    },
                 },
                 OperatorRef: {
                     version: '1.0',
@@ -603,7 +611,7 @@ export const getCapFareTables = (matchingData: Ticket, lineIdName: string, coreD
                 prices: {
                     CappingRulePrice: {
                         version: '1.0',
-                        ref: `op:Price:${cap.capDetails.name}@${matchingData.type}_trip`,
+                        id: `op:Price:${cap.capDetails.name}@${matchingData.type}_trip`,
                         Name: {
                             $t: 'Cap based on daily pass price',
                         },

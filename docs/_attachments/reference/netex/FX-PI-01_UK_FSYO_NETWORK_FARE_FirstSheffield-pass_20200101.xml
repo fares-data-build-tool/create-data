@@ -60,11 +60,11 @@ ______	______	______	|	Adult	Child	Group	Student	|	Adult	Child	Group	Student	|
 FirstPass				|									|									|								|
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
  
-FirstDay:	1	day		|	£4.40	£2.30	xxxxx	xxxxx	|	£4.00	£2.00	xxxxx	xxxxx	|	 
-Firstweek	:	7	day	|	£14.50	£8.00	xxxxx	£l0.00	|	£14.00	£7.00	xxxxx	£10.00	|	 
-First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£54.00	£28.00	xxxxx	£36.00	|	 
-FirstUnLimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£52.00	xxxxx	xxxxx	xxxxx	|	 
-FirstYear:	1	year	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£572.00	xxxxx	xxxxx	xxxxx	|	  
+FirstDay:	1	day		|	ï¿½4.40	ï¿½2.30	xxxxx	xxxxx	|	ï¿½4.00	ï¿½2.00	xxxxx	xxxxx	|	 
+Firstweek	:	7	day	|	ï¿½14.50	ï¿½8.00	xxxxx	ï¿½l0.00	|	ï¿½14.00	ï¿½7.00	xxxxx	ï¿½10.00	|	 
+First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	ï¿½54.00	ï¿½28.00	xxxxx	ï¿½36.00	|	 
+FirstUnLimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	ï¿½52.00	xxxxx	xxxxx	xxxxx	|	 
+FirstYear:	1	year	|	xxxxx	xxxxx	xxxxx	xxxxx	|	ï¿½572.00	xxxxx	xxxxx	xxxxx	|	  
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
  
 
@@ -75,13 +75,13 @@ ______	______	______	|	Adult	Child	Group	Student	|	Adult	Child	Group	Student	|
 FirstPass				|									|									|								|
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
  
-FirstDay:	1	day		|	£5.00	£2.30	£10.00	xxxxx	|	£5.00	£2.00	£9.00	xxxxx	|	 
-Firstweek	:	7	day	|	£20.00	£8.00	xxxxx	£l5.00	|	£20.00	£7.00	xxxxx	xxxx	|	 
-First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£76.00	£28.00	xxxxx	£36.00	|	 
-FirstUnLimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£74.00	xxxxx	xxxxx	xxxxx	|	 
-FirstYear:	1	year	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£814.00	xxxxx	xxxxx	xxxxx	|	 
-Term1	:	1	term	|	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	£109.00	|	 
-Term1	:	1	day		|	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	£249.00	|	 
+FirstDay:	1	day		|	ï¿½5.00	ï¿½2.30	ï¿½10.00	xxxxx	|	ï¿½5.00	ï¿½2.00	ï¿½9.00	xxxxx	|	 
+Firstweek	:	7	day	|	ï¿½20.00	ï¿½8.00	xxxxx	ï¿½l5.00	|	ï¿½20.00	ï¿½7.00	xxxxx	xxxx	|	 
+First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	ï¿½76.00	ï¿½28.00	xxxxx	ï¿½36.00	|	 
+FirstUnLimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	ï¿½74.00	xxxxx	xxxxx	xxxxx	|	 
+FirstYear:	1	year	|	xxxxx	xxxxx	xxxxx	xxxxx	|	ï¿½814.00	xxxxx	xxxxx	xxxxx	|	 
+Term1	:	1	term	|	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	ï¿½109.00	|	 
+Term1	:	1	day		|	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	ï¿½249.00	|	 
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
  
 
@@ -6366,6 +6366,10 @@ These tickets also offer unlimited travel on our services around South Yorkshire
 						<TypeOfTravelDocument id="fxc:membership_card" version="fxc:v1.0">
 							<MediaType>card</MediaType>
 							<MachineReadable>none</MachineReadable>
+						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:m-ticket" version="fxc:v1.0">
+							<MediaType>card</MediaType>
+							<MachineReadable>nfc</MachineReadable>
 						</TypeOfTravelDocument>
 					</typesOfTravelDocuments>
 				</FareFrame>

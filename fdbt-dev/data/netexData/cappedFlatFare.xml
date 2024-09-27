@@ -150,10 +150,6 @@
                   <Name>cappy cap</Name>
                   <Duration>P3M</Duration>
                 </TimeInterval>
-                <TimeInterval version="1.0" id="op:Tariff@cappy-cap3@3day">
-                  <Name>cappy cap3</Name>
-                  <Duration>P3D</Duration>
-                </TimeInterval>
               </timeIntervals>
               <fareStructureElements>
                 <FareStructureElement version="1.0" id="op:Tariff@Weekly_Rider@access_lines">
@@ -233,32 +229,17 @@
             <CappedDiscountRight id="op:Cap:@trip" version="1.0">
               <Name>Cap noc:BLAC</Name>
               <cappingRules>
-                <CappingRule id="Cap@cappy_cap">
+                <CappingRule version="1.0" id="op:cappy_cap@flatFare_trip">
                   <Name>cappy cap</Name>
                   <CappingPeriod>month</CappingPeriod>
-                  <ValidableElementRef version="1.0" ref="Trip@Weekly_Rider@travel"/>
-                  <GenericParameterAssignment id="cappy_cap@Weekly_Rider">
+                  <ValidableElementRef version="1.0" ref="op:Pass@Weekly_Rider_senior@travel"/>
+                  <GenericParameterAssignment version="1.0" id="cappy_cap@Weekly_Rider" order="1">
                     <Name>limit a senior to 3 month</Name>
-                    <PreassignedFareProductRef version="1.0" ref="Trip@Weekly_Rider"/>
+                    <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                     <limitations>
-                      <UserProfileRef version="1.0" ref="Trip@senior"/>
+                      <UserProfileRef version="1.0" ref="op:senior-0"/>
                     </limitations>
                     <TimeIntervalRef version="1.0" ref="op:Tariff@cappy-cap@3month"/>
-                  </GenericParameterAssignment>
-                </CappingRule>
-              </cappingRules>
-              <cappingRules>
-                <CappingRule id="Cap@cappy_cap3">
-                  <Name>cappy cap3</Name>
-                  <CappingPeriod>day</CappingPeriod>
-                  <ValidableElementRef version="1.0" ref="Trip@Weekly_Rider@travel"/>
-                  <GenericParameterAssignment id="cappy_cap3@Weekly_Rider">
-                    <Name>limit a senior to 3 day</Name>
-                    <PreassignedFareProductRef version="1.0" ref="Trip@Weekly_Rider"/>
-                    <limitations>
-                      <UserProfileRef version="1.0" ref="Trip@senior"/>
-                    </limitations>
-                    <TimeIntervalRef version="1.0" ref="op:Tariff@cappy-cap3@3day"/>
                   </GenericParameterAssignment>
                 </CappingRule>
               </cappingRules>
@@ -557,33 +538,20 @@
                 </FareTable>
               </includes>
             </FareTable>
-            <FareTable id="Trip@flatFare-cap@cappy_cap@Line_@senior" version="1.0">
+            <FareTable version="1.0" id="Trip@flatFare-cap@cappy_cap@Line_@senior">
               <Name>FareTable for cappy cap</Name>
-              <pricesFor CappedDiscountRightRef="op:Cap:@trip"/>
+              <pricesFor>
+                <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
+              </pricesFor>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <limitations>
                 <UserProfileRef version="1.0" ref="Trip@senior"/>
               </limitations>
               <prices>
-                <CappingRulePrice version="1.0" ref="op:Price:cappy_cap@flatFare_trip">
+                <CappingRulePrice version="1.0" id="op:Price:cappy_cap@flatFare_trip">
                   <Name>Cap based on daily pass price</Name>
                   <Amount>2</Amount>
                   <CappingRuleRef version="1.0" ref="op:cappy_cap@flatFare_trip"/>
-                </CappingRulePrice>
-              </prices>
-            </FareTable>
-            <FareTable id="Trip@flatFare-cap@cappy_cap3@Line_@senior" version="1.0">
-              <Name>FareTable for cappy cap3</Name>
-              <pricesFor CappedDiscountRightRef="op:Cap:@trip"/>
-              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
-              <limitations>
-                <UserProfileRef version="1.0" ref="Trip@senior"/>
-              </limitations>
-              <prices>
-                <CappingRulePrice version="1.0" ref="op:Price:cappy_cap3@flatFare_trip">
-                  <Name>Cap based on daily pass price</Name>
-                  <Amount>2</Amount>
-                  <CappingRuleRef version="1.0" ref="op:cappy_cap3@flatFare_trip"/>
                 </CappingRulePrice>
               </prices>
             </FareTable>
@@ -2148,6 +2116,10 @@
             <TypeOfTravelDocument id="fxc:membership_card" version="fxc:v1.0">
               <MediaType>card</MediaType>
               <MachineReadable>none</MachineReadable>
+            </TypeOfTravelDocument>
+            <TypeOfTravelDocument id="fxc:m-ticket" version="fxc:v1.0">
+              <MediaType>card</MediaType>
+              <MachineReadable>nfc</MachineReadable>
             </TypeOfTravelDocument>
           </typesOfTravelDocuments>
         </FareFrame>
