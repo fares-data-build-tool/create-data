@@ -365,8 +365,8 @@ export const getCappedDiscountRight = (matchingData: Ticket, ticketUserConcat: s
                         ValidableElementRef: {
                             version: '1.0',
                             ref: isPointToPointTicket(matchingData)
-                            ? `Trip@${ticketUserConcat}@travel`
-                            : `op:Pass@${matchingData.products[0].productName}_${matchingData.passengerType}@travel`,
+                                ? `Trip@${ticketUserConcat}@travel`
+                                : `op:Pass@${matchingData.products[0].productName}_${matchingData.passengerType}@travel`,
                         },
                         GenericParameterAssignment: {
                             version: '1.0',
@@ -386,9 +386,8 @@ export const getCappedDiscountRight = (matchingData: Ticket, ticketUserConcat: s
                             },
                             TimeIntervalRef: {
                                 version: '1.0',
-                                ref: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${
-                                    cap.capDetails.durationAmount
-                                }${cap.capDetails.durationUnits}`,
+                                ref: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${cap.capDetails.durationAmount
+                                    }${cap.capDetails.durationUnits}`,
                             },
                         },
                     },
@@ -419,17 +418,17 @@ export const buildSalesOfferPackage = (
     const capSalesOfferPackageElement = (SOPLength: number) =>
         capId
             ? [
-                  {
-                      version: '1.0',
-                      id: `Trip@${ticketUserConcat}-SOP-cap`,
-                      order: (SOPLength + 1).toString(),
-                      TypeOfTravelDocumentRef: {
-                          version: 'fxc:v1.0',
-                          ref: `fxc:m-ticket`,
-                      },
-                      CappedDiscountRightRef: { version: '1.0', ref: capId },
-                  },
-              ]
+                {
+                    version: '1.0',
+                    id: `Trip@${ticketUserConcat}-SOP-cap`,
+                    order: (SOPLength + 1).toString(),
+                    TypeOfTravelDocumentRef: {
+                        version: 'fxc:v1.0',
+                        ref: `fxc:m-ticket`,
+                    },
+                    CappedDiscountRightRef: { version: '1.0', ref: capId },
+                },
+            ]
             : [];
 
     const buildDistributionAssignments = (): DistributionAssignment[] => {
@@ -603,10 +602,7 @@ export const getCapFareTables = (matchingData: Ticket, lineIdName: string, coreD
                     $t: coreData.opIdNocFormat,
                 },
                 limitations: {
-                    UserProfileRef: {
-                        version: '1.0',
-                        ref: `Trip@${matchingData.passengerType}`,
-                    },
+                    ...getProfileRef(matchingData),
                 },
                 prices: {
                     CappingRulePrice: {
@@ -741,13 +737,13 @@ export const getEligibilityElement = (ticket: PointToPointTicket | PointToPointP
     const users = ticket.groupDefinition
         ? ticket.groupDefinition.companions
         : [
-              {
-                  ageRangeMin: ticket.ageRangeMin,
-                  ageRangeMax: ticket.ageRangeMax,
-                  passengerType: ticket.passengerType,
-                  proofDocuments: ticket.proofDocuments,
-              },
-          ];
+            {
+                ageRangeMin: ticket.ageRangeMin,
+                ageRangeMax: ticket.ageRangeMax,
+                passengerType: ticket.passengerType,
+                proofDocuments: ticket.proofDocuments,
+            },
+        ];
 
     return {
         version: '1.0',

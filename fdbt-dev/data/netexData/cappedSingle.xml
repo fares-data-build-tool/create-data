@@ -11025,7 +11025,7 @@
               </pricesFor>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <limitations>
-                <UserProfileRef version="1.0" ref="Trip@adult"/>
+                <UserProfileRef version="1.0" ref="op:adult-0"/>
               </limitations>
               <prices>
                 <CappingRulePrice version="1.0" id="op:Price:cappy_cap@single_trip">

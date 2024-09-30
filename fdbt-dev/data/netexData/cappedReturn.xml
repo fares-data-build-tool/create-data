@@ -2567,7 +2567,7 @@
               </pricesFor>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <limitations>
-                <UserProfileRef version="1.0" ref="Trip@child"/>
+                <UserProfileRef version="1.0" ref="op:child-0"/>
               </limitations>
               <prices>
                 <CappingRulePrice version="1.0" id="op:Price:cappy_cap@return_trip">
@@ -2584,7 +2584,7 @@
               </pricesFor>
               <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
               <limitations>
-                <UserProfileRef version="1.0" ref="Trip@child"/>
+                <UserProfileRef version="1.0" ref="op:child-0"/>
               </limitations>
               <prices>
                 <CappingRulePrice version="1.0" id="op:Price:cappy_cap3@return_trip">
