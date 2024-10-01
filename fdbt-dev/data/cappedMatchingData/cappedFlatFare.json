@@ -226,11 +226,7 @@
         "name": "cappy cap",
         "price": "2",
         "durationAmount": "3",
-        "durationUnits": "month",
-        "capExpiry": {
-          "productValidity": "endOfCalendarDay",
-          "productEndTime": ""
-        }
+        "durationUnits": "month"
       }
     },
     {
@@ -238,11 +234,7 @@
         "name": "cappy cap3",
         "price": "2",
         "durationAmount": "3",
-        "durationUnits": "day",
-        "capExpiry": {
-          "productValidity": "endOfCalendarDay",
-          "productEndTime": ""
-        }
+        "durationUnits": "day"
       }
     }
   ]

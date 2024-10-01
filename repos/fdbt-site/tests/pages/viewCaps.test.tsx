@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import { Cap } from 'src/interfaces';
-import { CapExpiryUnit, FromDb, ProductValidity } from '../../src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit, FromDb } from '../../src/interfaces/matchingJsonTypes';
 import ViewCaps, { CapCardBody } from '../../src/pages/viewCaps';
 
 describe('pages', () => {
@@ -27,10 +27,6 @@ describe('pages', () => {
                     price: '2',
                     durationAmount: '1',
                     durationUnits: 'hour' as CapExpiryUnit,
-                    capExpiry: {
-                        productValidity: 'endOfCalendarDay' as ProductValidity,
-                        productEndTime: '',
-                    },
                 },
                 id: 1,
             };
@@ -48,10 +44,6 @@ describe('pages', () => {
                     price: '2',
                     durationAmount: '1',
                     durationUnits: 'hour' as CapExpiryUnit,
-                    capExpiry: {
-                        productValidity: 'endOfCalendarDay' as ProductValidity,
-                        productEndTime: '',
-                    },
                 },
                 id: 1,
             };
@@ -69,10 +61,6 @@ describe('pages', () => {
                     price: '2',
                     durationAmount: '1',
                     durationUnits: 'hour' as CapExpiryUnit,
-                    capExpiry: {
-                        productValidity: 'fareDayEnd' as ProductValidity,
-                        productEndTime: '2323',
-                    },
                 },
                 id: 1,
             };
@@ -95,10 +83,6 @@ describe('pages', () => {
                             price: '2',
                             durationAmount: '1',
                             durationUnits: CapExpiryUnit.MONTH,
-                            capExpiry: {
-                                productValidity: 'endOfCalendarDay' as ProductValidity,
-                                productEndTime: '',
-                            },
                         },
                     }}
                 />,

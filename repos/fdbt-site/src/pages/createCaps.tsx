@@ -4,92 +4,26 @@ import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
 import FormElementWrapper, { FormGroupWrapper } from '../components/FormElementWrapper';
 import { CREATE_CAPS_ATTRIBUTE } from '../constants/attributes';
-import { Cap, ErrorInfo, NextPageContextWithSession, RadioConditionalInputFieldset } from '../interfaces';
+import { Cap, ErrorInfo, NextPageContextWithSession } from '../interfaces';
 import { isWithErrors } from '../interfaces/typeGuards';
 import { FullColumnLayout } from '../layout/Layout';
-import { getAndValidateNoc, getCsrfToken, getErrorsByIds } from '../utils';
+import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { upperFirst } from 'lodash';
-import { getCapByNocAndId, getFareDayEnd } from '../data/auroradb';
+import { getCapByNocAndId } from '../data/auroradb';
 import BackButton from '../components/BackButton';
-import RadioConditionalInput from '../components/RadioConditionalInput';
 
 const title = 'Create Caps - Create Fares Data Service';
 const description = 'Create caps page of the Create Fares Data Service';
-
-export const expiryHintText: { [expiry: string]: string } = {
-    endOfCalendarDay: 'The cap applies to journeys made before midnight',
-    '24hr': 'The cap applies to journeys made within 24hrs of the first tap',
-    fareDayEnd: "The cap applies to journeys made during the 'fare day' as defined by your business rules",
-};
-
-export const getFieldset = (
-    errors: ErrorInfo[],
-    endOfFareDay?: string,
-    capExpiry?: string,
-): RadioConditionalInputFieldset => {
-    const CapExpiryFieldSet: RadioConditionalInputFieldset = {
-        heading: {
-            id: 'cap-validity',
-            content: 'Is this ticket only valid on certain days or times?',
-            hidden: true,
-        },
-        radios: [
-            {
-                id: 'cap-end-calendar',
-                name: 'capProductValidity',
-                value: 'endOfCalendarDay',
-                label: 'At the end of a calendar day',
-                radioButtonHint: {
-                    id: 'cap-end-calendar-hint',
-                    content: expiryHintText['endOfCalendarDay'],
-                },
-                defaultChecked: capExpiry === 'endOfCalendarDay',
-            },
-            {
-                id: 'cap-end-of-service',
-                disableAutoSelect: capExpiry !== 'fareDayEnd',
-                name: 'capProductValidity',
-                value: 'fareDayEnd',
-                dataAriaControls: 'cap-expiry-end-of-service-required-conditional',
-                label: 'Fare day end',
-                radioButtonHint: {
-                    id: 'cap-end-of-service-hint',
-                    content: expiryHintText['fareDayEnd'],
-                },
-                defaultChecked: capExpiry === 'fareDayEnd',
-                inputHint: {
-                    id: 'product-end-time-hint',
-                    content: 'You can update your fare day end in operator settings',
-                    hidden: true,
-                },
-                inputType: 'text',
-                inputs: [
-                    {
-                        id: 'product-end-time',
-                        name: 'capProductEndTime',
-                        label: 'End time',
-                        disabled: true,
-                        defaultValue: endOfFareDay ?? '',
-                    },
-                ],
-                inputErrors: getErrorsByIds(['product-end-time'], errors),
-            },
-        ],
-        radioError: getErrorsByIds(['cap-end-calendar'], errors),
-    };
-    return CapExpiryFieldSet;
-};
 
 interface CreateCapsProps {
     errors: ErrorInfo[];
     userInput?: Cap;
     csrfToken: string;
     editId?: number;
-    fieldset: RadioConditionalInputFieldset;
 }
 
-const CreateCaps = ({ errors = [], userInput, csrfToken, editId, fieldset }: CreateCapsProps): ReactElement => {
+const CreateCaps = ({ errors = [], userInput, csrfToken, editId }: CreateCapsProps): ReactElement => {
     const optionList: string[] = Object.values(CapExpiryUnit).filter((option) => option !== 'term');
 
     return (
@@ -238,22 +172,6 @@ const CreateCaps = ({ errors = [], userInput, csrfToken, editId, fieldset }: Cre
                                     </FormGroupWrapper>
                                 </div>
                             </div>
-
-                            <div className="govuk-!-margin-left-2 govuk-!-margin-right-2 govuk-!-margin-top-4">
-                                <FormGroupWrapper errors={errors} errorIds={['cap-expiry']}>
-                                    <fieldset className="govuk-fieldset" aria-describedby="cap-expiry-page-heading">
-                                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                            <h2 className="govuk-fieldset__heading" id="cap-expiry-page-heading">
-                                                When does the cap expire?
-                                            </h2>
-                                        </legend>
-                                        <span className="govuk-hint" id="cap-expiry-hint">
-                                            We need to know the time that this cap would be valid until
-                                        </span>
-                                        <RadioConditionalInput key={fieldset.heading.id} fieldset={fieldset} />
-                                    </fieldset>
-                                </FormGroupWrapper>
-                            </div>
                         </fieldset>
                         <input type="hidden" name="id" value={editId} />
                         <input
@@ -277,7 +195,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const id = Number(ctx.query.id);
     const editId = Number.isInteger(id) ? id : undefined;
     const nocCode = getAndValidateNoc(ctx);
-    const endOfFareDay = await getFareDayEnd(nocCode);
 
     if (editId && !userInput) {
         userInput = await getCapByNocAndId(nocCode, editId);
@@ -288,18 +205,12 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const errors = isWithErrors(capsAttribute) ? capsAttribute.errors : [];
 
-    const fieldset: RadioConditionalInputFieldset = getFieldset(
-        errors,
-        endOfFareDay,
-        userInput?.capDetails.capExpiry.productValidity,
-    );
     return {
         props: {
             errors,
             csrfToken,
             ...(userInput && { userInput }),
             ...(editId && { editId }),
-            fieldset,
         },
     };
 };

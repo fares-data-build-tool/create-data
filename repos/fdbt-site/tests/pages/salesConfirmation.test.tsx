@@ -65,7 +65,6 @@ describe('pages', () => {
                     price: '2',
                     durationAmount: '2',
                     durationUnits: CapExpiryUnit.MONTH,
-                    capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
                 },
             },
             {
@@ -75,7 +74,6 @@ describe('pages', () => {
                     price: '3',
                     durationAmount: '3',
                     durationUnits: CapExpiryUnit.MONTH,
-                    capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
                 },
             },
         ]);
@@ -88,7 +86,6 @@ describe('pages', () => {
                 price: '2',
                 durationAmount: '2',
                 durationUnits: CapExpiryUnit.MONTH,
-                capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
             },
         });
 
@@ -121,7 +118,6 @@ describe('pages', () => {
                             price: '2',
                             durationAmount: '2',
                             durationUnits: CapExpiryUnit.MONTH,
-                            capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
                         },
                     },
                 ],
@@ -168,7 +164,6 @@ describe('pages', () => {
                             price: '2',
                             durationAmount: '2',
                             durationUnits: CapExpiryUnit.MONTH,
-                            capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
                         },
                     },
                 ],

@@ -109,7 +109,7 @@ const ViewCaps = ({ caps, referer, fareDayEnd, viewCapErrors = [], csrfToken }: 
     );
 };
 
-const CapCard = ({ cap, index, deleteActionHandler, fareDayEnd }: CapCardProps): ReactElement => {
+const CapCard = ({ cap, index, deleteActionHandler }: CapCardProps): ReactElement => {
     return (
         <>
             <div className="card" id={`cap-${index}`}>
@@ -146,27 +146,6 @@ const CapCard = ({ cap, index, deleteActionHandler, fareDayEnd }: CapCardProps):
                         <span className="govuk-!-font-weight-bold">Duration:</span> {cap.capDetails.durationAmount}{' '}
                         {cap.capDetails.durationUnits}
                     </p>
-
-                    <p className="govuk-body-s govuk-!-margin-bottom-2">
-                        <span className="govuk-!-font-weight-bold">Validity:</span>{' '}
-                        {cap.capDetails.capExpiry.productValidity === 'endOfCalendarDay'
-                            ? 'At the end of a calendar day'
-                            : 'Fare day end'}
-                    </p>
-
-                    <p className="govuk-body-s govuk-!-margin-bottom-2">
-                        {expiryHintText[cap.capDetails.capExpiry.productValidity]}
-                    </p>
-
-                    {cap.capDetails.capExpiry.productValidity === 'fareDayEnd' ? (
-                        <p className="govuk-body-s govuk-!-margin-bottom-2">
-                            <span className="govuk-!-font-weight-bold">End time:</span>
-
-                            <p className="govuk-body-s govuk-!-margin-bottom-2">
-                                {fareDayEnd.substring(0, 2)}:{fareDayEnd.substring(2, 4)}
-                            </p>
-                        </p>
-                    ) : undefined}
                 </div>
             </div>
         </>
@@ -191,18 +170,6 @@ export const CapCardBody: FunctionComponent<{ cap: Cap; fareDayEnd?: string }> =
             <span className="govuk-!-font-weight-bold">Duration:</span> {cap.capDetails.durationAmount}{' '}
             {cap.capDetails.durationUnits}
         </p>
-
-        <p className="govuk-body-s govuk-!-margin-bottom-2">
-            <span className="govuk-!-font-weight-bold">Expiry:</span>{' '}
-            {sentenceCaseString(cap.capDetails.capExpiry.productValidity)}
-        </p>
-
-        {cap.capDetails.capExpiry.productValidity === 'fareDayEnd' && fareDayEnd ? (
-            <p className="govuk-body-s govuk-!-margin-bottom-2">
-                <span className="govuk-!-font-weight-bold">Validity:</span> {fareDayEnd.substring(0, 2)}:
-                {fareDayEnd.substring(2, 4)}
-            </p>
-        ) : undefined}
     </>
 );
 

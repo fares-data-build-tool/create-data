@@ -9,7 +9,7 @@ import selectCaps from '../../../src/pages/api/selectCaps';
 import * as sessions from '../../../src/utils/sessions';
 import { expectedSingleTicket, getMockRequestAndResponse, mockIdTokenMultiple } from '../../testData/mockData';
 import * as userData from '../../../src/utils/apiUtils/userData';
-import { CapExpiryUnit, ProductValidity } from '../../../src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit } from '../../../src/interfaces/matchingJsonTypes';
 
 describe('selectCaps', () => {
     const writeHeadMock = jest.fn();
@@ -30,10 +30,6 @@ describe('selectCaps', () => {
                 price: '2',
                 durationAmount: '1',
                 durationUnits: CapExpiryUnit.MONTH,
-                capExpiry: {
-                    productValidity: 'endOfCalendarDay' as ProductValidity,
-                    productEndTime: '',
-                },
             },
         });
         const { req, res } = getMockRequestAndResponse({
@@ -74,10 +70,6 @@ describe('selectCaps', () => {
                 price: '2',
                 durationAmount: '1',
                 durationUnits: CapExpiryUnit.MONTH,
-                capExpiry: {
-                    productValidity: 'endOfCalendarDay' as ProductValidity,
-                    productEndTime: '',
-                },
             },
         });
 

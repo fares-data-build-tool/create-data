@@ -142,10 +142,6 @@ export interface DbCap {
         price: string;
         durationAmount: string;
         durationUnits: CapExpiryUnit;
-        capExpiry: {
-            productValidity: ProductValidity;
-            productEndTime?: string;
-        };
     };
 }
 
