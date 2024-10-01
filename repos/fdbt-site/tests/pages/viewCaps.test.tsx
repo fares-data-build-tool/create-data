@@ -7,15 +7,13 @@ import ViewCaps, { CapCardBody } from '../../src/pages/viewCaps';
 describe('pages', () => {
     describe('view caps', () => {
         it('should render correctly on no cap expiry', () => {
-            const tree = shallow(<ViewCaps caps={[]} fareDayEnd="" viewCapErrors={[]} csrfToken="" referer={null} />);
+            const tree = shallow(<ViewCaps caps={[]} viewCapErrors={[]} csrfToken="" referer={null} />);
 
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly when cap validity is fare day end', () => {
-            const tree = shallow(
-                <ViewCaps caps={[]} fareDayEnd="2323" viewCapErrors={[]} csrfToken="" referer={null} />,
-            );
+            const tree = shallow(<ViewCaps caps={[]} viewCapErrors={[]} csrfToken="" referer={null} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -30,9 +28,7 @@ describe('pages', () => {
                 },
                 id: 1,
             };
-            const tree = shallow(
-                <ViewCaps caps={[cap]} fareDayEnd="2323" viewCapErrors={[]} csrfToken="" referer={null} />,
-            );
+            const tree = shallow(<ViewCaps caps={[cap]} viewCapErrors={[]} csrfToken="" referer={null} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -47,9 +43,7 @@ describe('pages', () => {
                 },
                 id: 1,
             };
-            const tree = shallow(
-                <ViewCaps caps={[cap]} fareDayEnd="2323" viewCapErrors={[]} csrfToken="" referer={null} />,
-            );
+            const tree = shallow(<ViewCaps caps={[cap]} viewCapErrors={[]} csrfToken="" referer={null} />);
 
             expect(tree).toMatchSnapshot();
         });
@@ -64,9 +58,7 @@ describe('pages', () => {
                 },
                 id: 1,
             };
-            const tree = shallow(
-                <ViewCaps caps={[cap]} fareDayEnd="2323" viewCapErrors={[]} csrfToken="" referer={null} />,
-            );
+            const tree = shallow(<ViewCaps caps={[cap]} viewCapErrors={[]} csrfToken="" referer={null} />);
 
             expect(tree).toMatchSnapshot();
         });

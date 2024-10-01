@@ -138,7 +138,6 @@ exports[`pages view caps should render correctly when cap expiry validity is far
               }
             }
             deleteActionHandler={[Function]}
-            fareDayEnd="2323"
             index={0}
             key="1"
           />
@@ -206,7 +205,6 @@ exports[`pages view caps should render correctly when cap validity and cap with 
               }
             }
             deleteActionHandler={[Function]}
-            fareDayEnd="2323"
             index={0}
             key="1"
           />
@@ -274,7 +272,6 @@ exports[`pages view caps should render correctly when cap validity and cap with 
               }
             }
             deleteActionHandler={[Function]}
-            fareDayEnd="2323"
             index={0}
             key="1"
           />
