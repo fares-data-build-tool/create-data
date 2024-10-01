@@ -157,15 +157,19 @@ const TimeRestrictionCard = ({
                     <div className="govuk-radios__item card__selector">
                         <input
                             className="govuk-radios__input"
-                            id={`${timeRestriction.name}-radio`}
+                            id={`${timeRestriction.name}-${timeRestriction.id}-radio`}
                             name="timeRestriction"
                             type="radio"
                             value={timeRestriction.name}
                             aria-label={timeRestriction.name}
                             defaultChecked={selectedId === timeRestriction.id}
                         />
-                        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                        <label className="govuk-label govuk-radios__label" />
+                        <label
+                            className="govuk-label govuk-radios__label"
+                            htmlFor={`${timeRestriction.name}-${timeRestriction.id}-radio`}
+                        >
+                            <span className="govuk-visually-hidden">{timeRestriction.name}</span>
+                        </label>
                     </div>
                 </div>
                 <TimeRestrictionCardBody entity={timeRestriction} />
