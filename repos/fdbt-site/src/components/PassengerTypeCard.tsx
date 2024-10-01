@@ -51,7 +51,6 @@ const PassengerTypeCard = ({
                                 name="passengerTypeId"
                                 type="radio"
                                 value={id}
-                                aria-label={name}
                                 defaultChecked={defaultChecked}
                             />
                             <label className="govuk-label govuk-radios__label" htmlFor={`${name}-radio`}>

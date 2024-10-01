@@ -50,7 +50,6 @@ const OperatorGroupCard = ({
                                 name="operatorGroupId"
                                 type="radio"
                                 value={id}
-                                aria-label={name}
                                 defaultChecked={defaultChecked}
                             />
                             <label

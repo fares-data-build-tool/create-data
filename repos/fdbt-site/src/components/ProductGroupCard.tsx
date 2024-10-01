@@ -50,7 +50,6 @@ const ProductGroupCard = ({
                                 name="productGroupId"
                                 type="radio"
                                 value={id}
-                                aria-label={name}
                                 defaultChecked={defaultChecked}
                             />
                             <label className="govuk-label govuk-radios__label" htmlFor={`product-group-${index}-radio`}>

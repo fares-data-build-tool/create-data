@@ -36,7 +36,7 @@ const ReuseOperatorGroup = ({
             <>
                 <ErrorSummary errors={errors} />
                 <div className="govuk-form-group ">
-                    <fieldset className="govuk-fieldset" aria-describedby="operator-group-page-heading">
+                    <fieldset className="govuk-fieldset">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 className="govuk-fieldset__heading" id="reuse-operator-group-page-heading">
                                 Select an operator group

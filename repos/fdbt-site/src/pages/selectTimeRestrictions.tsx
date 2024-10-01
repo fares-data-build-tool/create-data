@@ -158,7 +158,7 @@ const TimeRestrictionCard = ({
                     <div className="govuk-radios__item card__selector">
                         <input
                             className="govuk-radios__input"
-                            id={`${timeRestriction.name}-radio`}
+                            id={`${timeRestriction.name}-${timeRestriction.id}-radio`}
                             name="timeRestriction"
                             type="radio"
                             value={timeRestriction.name}

@@ -15,7 +15,6 @@ exports[`ProductGroupCard should render checked 1`] = `
         className="govuk-radios__item card__selector"
       >
         <input
-          aria-label="The capped products"
           className="govuk-radios__input"
           defaultChecked={true}
           id="product-group-0-radio"
@@ -66,7 +65,6 @@ exports[`ProductGroupCard should render not checked 1`] = `
         className="govuk-radios__item card__selector"
       >
         <input
-          aria-label="The capped products"
           className="govuk-radios__input"
           defaultChecked={false}
           id="product-group-0-radio"
