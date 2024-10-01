@@ -50,11 +50,15 @@ const OperatorGroupCard = ({
                                 name="operatorGroupId"
                                 type="radio"
                                 value={id}
-                                aria-label={name}
                                 defaultChecked={defaultChecked}
                             />
-                            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                            <label className="govuk-label govuk-radios__label" />
+                            <label
+                                id={`operator-group-${index}-radio-label`}
+                                className="govuk-label govuk-radios__label"
+                                htmlFor={`operator-group-${index}-radio`}
+                            >
+                                <span className="govuk-visually-hidden">{name}</span>
+                            </label>
                         </div>
                     </div>
                 )}

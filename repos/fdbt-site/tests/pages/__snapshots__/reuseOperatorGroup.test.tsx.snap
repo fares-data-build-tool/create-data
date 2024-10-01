@@ -18,7 +18,6 @@ exports[`pages reuseOperatorGroup should render coorectly when one operator grou
       className="govuk-form-group "
     >
       <fieldset
-        aria-describedby="operator-group-page-heading"
         className="govuk-fieldset"
       >
         <legend
@@ -119,7 +118,6 @@ exports[`pages reuseOperatorGroup should render correctly 1`] = `
       className="govuk-form-group "
     >
       <fieldset
-        aria-describedby="operator-group-page-heading"
         className="govuk-fieldset"
       >
         <legend
@@ -213,7 +211,6 @@ exports[`pages reuseOperatorGroup should render errors when user does not select
       className="govuk-form-group "
     >
       <fieldset
-        aria-describedby="operator-group-page-heading"
         className="govuk-fieldset"
       >
         <legend
