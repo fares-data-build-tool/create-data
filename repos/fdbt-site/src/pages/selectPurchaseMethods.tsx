@@ -80,11 +80,13 @@ const generateCheckbox = (
                                     defaultChecked={!!selectedOffer}
                                     onChange={updateSelected}
                                 />
-                                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                                 <label
+                                    id={`${productNameIds}-checkbox-label-${index}`}
                                     className="govuk-label govuk-checkboxes__label"
                                     htmlFor={`product-${productNameIds}-checkbox-${index}`}
-                                />
+                                >
+                                    <span className="govuk-visually-hidden">{name}</span>
+                                </label>
                             </div>
 
                             <PurchaseMethodCardBody entity={offer} />
@@ -99,14 +101,22 @@ const generateCheckbox = (
                                             hideText
                                             addFormGroupError={false}
                                         >
-                                            <input
-                                                className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
-                                                name={`price-${productName}-${offer.id}`}
-                                                data-non-numeric
-                                                type="text"
-                                                id={`${removeAllWhiteSpace(productName)}-price-${index}`}
-                                                defaultValue={selectedOffer?.price || defaultPrice}
-                                            />
+                                            <>
+                                                <input
+                                                    className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
+                                                    name={`price-${productName}-${offer.id}`}
+                                                    data-non-numeric
+                                                    type="text"
+                                                    id={`${removeAllWhiteSpace(productName)}-price-${index}`}
+                                                    defaultValue={selectedOffer?.price || defaultPrice}
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-label--s govuk-visually-hidden"
+                                                    htmlFor={`${removeAllWhiteSpace(productName)}-price-${index}`}
+                                                >
+                                                    Price
+                                                </label>
+                                            </>
                                         </FormElementWrapper>
                                     </div>
                                 </div>

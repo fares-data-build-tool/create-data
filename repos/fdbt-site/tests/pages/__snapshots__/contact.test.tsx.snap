@@ -77,12 +77,12 @@ exports[`contact should render correctly 1`] = `
       <p
         className="govuk-body"
       >
-        To help improve the Create Fares Data service, send us your feedback 
+        To help improve the Create Fares Data service, send us your 
         <a
           aria-label="send feedback"
           href="/feedback"
         >
-          here
+          feedback
         </a>
       </p>
     </div>
