@@ -6,7 +6,7 @@ import CsrfForm from '../components/CsrfForm';
 import { getAndValidateNoc, getCsrfToken } from '../utils';
 import { CapCardBody } from './viewCaps';
 import BackButton from '../components/BackButton';
-import { getCaps, getFareDayEnd } from '../data/auroradb';
+import { getCaps } from '../data/auroradb';
 import { getSessionAttribute } from '../../src/utils/sessions';
 import {
     CAPS_DEFINITION_ATTRIBUTE,
@@ -24,17 +24,9 @@ interface SelectCapsProps {
     capsFromDb: (Cap & { id: number })[];
     backHref: string;
     selectedIds: number[] | null;
-    fareDayEnd?: string;
 }
 
-const SelectCaps = ({
-    csrfToken,
-    errors,
-    capsFromDb,
-    backHref,
-    selectedIds,
-    fareDayEnd,
-}: SelectCapsProps): ReactElement => {
+const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedIds }: SelectCapsProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
@@ -93,7 +85,6 @@ const SelectCaps = ({
                                                     key={capFromDb.capDetails.name}
                                                     cap={capFromDb}
                                                     selectedIds={selectedIds}
-                                                    fareDayEnd={fareDayEnd}
                                                 />
                                             ))
                                         ) : (
@@ -141,15 +132,7 @@ const SelectCaps = ({
     );
 };
 
-const CapsCard = ({
-    cap,
-    selectedIds,
-    fareDayEnd,
-}: {
-    cap: Cap & { id: number };
-    selectedIds: number[] | null;
-    fareDayEnd?: string;
-}): ReactElement => {
+const CapsCard = ({ cap, selectedIds }: { cap: Cap & { id: number }; selectedIds: number[] | null }): ReactElement => {
     return (
         <div className="card" key={`checkbox-item-${cap.capDetails.name}`}>
             <div className="card__body card_align">
@@ -171,7 +154,7 @@ const CapsCard = ({
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <label className="govuk-label govuk-checkboxes__label" />
                 </div>
-                <CapCardBody cap={cap} fareDayEnd={fareDayEnd} />
+                <CapCardBody cap={cap} />
             </div>
         </div>
     );
@@ -181,8 +164,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     if (!(process.env.NODE_ENV === 'development' || process.env.STAGE === 'test') && ctx.res) {
         redirectTo(ctx.res, '/selectPurchaseMethods');
     }
-    const nocCode = getAndValidateNoc(ctx);
-    const endOfFareDay = await getFareDayEnd(nocCode);
 
     const csrfToken = getCsrfToken(ctx);
     const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
@@ -221,7 +202,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             capsFromDb,
             backHref,
             selectedIds,
-            fareDayEnd: endOfFareDay || '',
         },
     };
 };
