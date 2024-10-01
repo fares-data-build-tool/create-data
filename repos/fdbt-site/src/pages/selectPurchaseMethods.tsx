@@ -20,7 +20,7 @@ import { getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
 import { removeAllWhiteSpace } from '../utils/apiUtils/validator';
 import { PurchaseMethodCardBody } from './viewPurchaseMethods';
-import { SalesOfferPackage, FromDb, TicketWithIds } from '../interfaces/matchingJsonTypes';
+import { SalesOfferPackage, FromDb } from '../interfaces/matchingJsonTypes';
 import BackButton from '../components/BackButton';
 import { getProductsByValues } from './api/selectSalesOfferPackage';
 
