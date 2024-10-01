@@ -31,17 +31,6 @@ exports[`pages cap inner component renders normally when caps are present 1`] = 
      
     month
   </p>
-  <p
-    className="govuk-body-s govuk-!-margin-bottom-2"
-  >
-    <span
-      className="govuk-!-font-weight-bold"
-    >
-      Expiry:
-    </span>
-     
-    End of calendar day
-  </p>
 </Fragment>
 `;
 
@@ -140,10 +129,6 @@ exports[`pages view caps should render correctly when cap expiry validity is far
             cap={
               Object {
                 "capDetails": Object {
-                  "capExpiry": Object {
-                    "productEndTime": "",
-                    "productValidity": "endOfCalendarDay",
-                  },
                   "durationAmount": "1",
                   "durationUnits": "hour",
                   "name": "Cap 1",
@@ -153,7 +138,6 @@ exports[`pages view caps should render correctly when cap expiry validity is far
               }
             }
             deleteActionHandler={[Function]}
-            fareDayEnd="2323"
             index={0}
             key="1"
           />
@@ -212,10 +196,6 @@ exports[`pages view caps should render correctly when cap validity and cap with 
             cap={
               Object {
                 "capDetails": Object {
-                  "capExpiry": Object {
-                    "productEndTime": "",
-                    "productValidity": "endOfCalendarDay",
-                  },
                   "durationAmount": "1",
                   "durationUnits": "hour",
                   "name": "Cap 1",
@@ -225,7 +205,6 @@ exports[`pages view caps should render correctly when cap validity and cap with 
               }
             }
             deleteActionHandler={[Function]}
-            fareDayEnd="2323"
             index={0}
             key="1"
           />
@@ -284,10 +263,6 @@ exports[`pages view caps should render correctly when cap validity and cap with 
             cap={
               Object {
                 "capDetails": Object {
-                  "capExpiry": Object {
-                    "productEndTime": "2323",
-                    "productValidity": "fareDayEnd",
-                  },
                   "durationAmount": "1",
                   "durationUnits": "hour",
                   "name": "Cap 1",
@@ -297,7 +272,6 @@ exports[`pages view caps should render correctly when cap validity and cap with 
               }
             }
             deleteActionHandler={[Function]}
-            fareDayEnd="2323"
             index={0}
             key="1"
           />

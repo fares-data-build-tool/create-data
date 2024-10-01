@@ -25,7 +25,6 @@ describe('ticketConfirmation', () => {
             price: '4',
             durationAmount: '2',
             durationUnits: 'month' as CapExpiryUnit,
-            capExpiry: { productValidity: 'endOfCalendarDay', productEndTime: '' },
         },
         id: 2,
     };
