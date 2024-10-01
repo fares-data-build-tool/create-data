@@ -386,8 +386,9 @@ export const getCappedDiscountRight = (matchingData: Ticket, ticketUserConcat: s
                             },
                             TimeIntervalRef: {
                                 version: '1.0',
-                                ref: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${cap.capDetails.durationAmount
-                                    }${cap.capDetails.durationUnits}`,
+                                ref: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${
+                                    cap.capDetails.durationAmount
+                                }${cap.capDetails.durationUnits}`,
                             },
                         },
                     },
@@ -415,20 +416,20 @@ export const buildSalesOfferPackage = (
 ): NetexSalesOfferPackage => {
     const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
 
-    const capSalesOfferPackageElement = (SOPLength: number) =>
+    const capSalesOfferPackageElement = (SOPLength: number, salesOfferPackageName: string) =>
         capId
             ? [
-                {
-                    version: '1.0',
-                    id: `Trip@${ticketUserConcat}-SOP-cap`,
-                    order: (SOPLength + 1).toString(),
-                    TypeOfTravelDocumentRef: {
-                        version: 'fxc:v1.0',
-                        ref: `fxc:m-ticket`,
-                    },
-                    CappedDiscountRightRef: { version: '1.0', ref: capId },
-                },
-            ]
+                  {
+                      version: '1.0',
+                      id: `Trip@${ticketUserConcat}-SOP@${salesOfferPackageName}-cap`,
+                      order: (SOPLength + 1).toString(),
+                      TypeOfTravelDocumentRef: {
+                          version: 'fxc:v1.0',
+                          ref: `fxc:m-ticket`,
+                      },
+                      CappedDiscountRightRef: { version: '1.0', ref: capId },
+                  },
+              ]
             : [];
 
     const buildDistributionAssignments = (): DistributionAssignment[] => {
@@ -488,7 +489,7 @@ export const buildSalesOfferPackage = (
         salesOfferPackageElements: {
             SalesOfferPackageElement: [
                 ...salesOfferPackageElements,
-                ...capSalesOfferPackageElement(salesOfferPackageElements.length),
+                ...capSalesOfferPackageElement(salesOfferPackageElements.length, salesOfferPackageInfo.name),
             ],
         },
     };
@@ -737,13 +738,13 @@ export const getEligibilityElement = (ticket: PointToPointTicket | PointToPointP
     const users = ticket.groupDefinition
         ? ticket.groupDefinition.companions
         : [
-            {
-                ageRangeMin: ticket.ageRangeMin,
-                ageRangeMax: ticket.ageRangeMax,
-                passengerType: ticket.passengerType,
-                proofDocuments: ticket.proofDocuments,
-            },
-        ];
+              {
+                  ageRangeMin: ticket.ageRangeMin,
+                  ageRangeMax: ticket.ageRangeMax,
+                  passengerType: ticket.passengerType,
+                  proofDocuments: ticket.proofDocuments,
+              },
+          ];
 
     return {
         version: '1.0',

@@ -271,7 +271,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP-cap" version="1.0" order="2">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP@Onboard_(cash)-cap" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
@@ -292,7 +292,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP-cap" version="1.0" order="2">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP@Onboard_(contactless)-cap" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
@@ -313,7 +313,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP-cap" version="1.0" order="2">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP@Online_(smart_card)-cap" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
@@ -334,7 +334,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP-cap" version="1.0" order="2">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP@Mobile_App-cap" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
@@ -373,7 +373,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP-cap" version="1.0" order="4">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP@All_Encompassing-cap" version="1.0" order="4">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
@@ -399,7 +399,7 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="op:Pass@Weekly_Rider_senior"/>
                 </SalesOfferPackageElement>
-                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP-cap" version="1.0" order="2">
+                <SalesOfferPackageElement id="Trip@Weekly_Rider-SOP@School_Service_Payment_Methods-cap" version="1.0" order="2">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:m-ticket"/>
                   <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>

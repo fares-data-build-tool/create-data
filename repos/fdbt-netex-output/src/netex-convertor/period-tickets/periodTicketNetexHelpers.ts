@@ -641,13 +641,12 @@ export const getSalesOfferPackageList = (
     ticketUserConcat: string,
     capId: string,
 ): NetexSalesOfferPackage[][] => {
-    const isCarnet = 'carnetDetails' in userPeriodTicket.products[0];
-    //here
-    const capSalesOfferPackageElement = (SOPLength: number) =>
+    const isCarnet = 'carnetDetails' in userPeriodTicket.products[0];    
+    const capSalesOfferPackageElement = (SOPLength: number, salesOfferPackageName: string) =>
         capId
             ? [
                   {
-                      id: `Trip@${ticketUserConcat}-SOP-cap`,
+                      id: `Trip@${ticketUserConcat}-SOP@${salesOfferPackageName}-cap`,
                       version: '1.0',
                       order: (SOPLength + 1).toString(),
                       TypeOfTravelDocumentRef: {
@@ -718,7 +717,7 @@ export const getSalesOfferPackageList = (
                 salesOfferPackageElements: {
                     SalesOfferPackageElement: [
                         ...salesOfferPackageElements,
-                        ...capSalesOfferPackageElement(salesOfferPackageElements.length),
+                        ...capSalesOfferPackageElement(salesOfferPackageElements.length, salesOfferPackage.name),
                     ],
                 },
             };
