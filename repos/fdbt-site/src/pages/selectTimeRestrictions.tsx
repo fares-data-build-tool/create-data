@@ -165,7 +165,10 @@ const TimeRestrictionCard = ({
                             aria-label={timeRestriction.name}
                             defaultChecked={selectedId === timeRestriction.id}
                         />
-                        <label className="govuk-label govuk-radios__label" htmlFor={`${timeRestriction.name}-radio`}>
+                        <label
+                            className="govuk-label govuk-radios__label"
+                            htmlFor={`${timeRestriction.name}-${timeRestriction.id}-radio`}
+                        >
                             <span className="govuk-visually-hidden">{`${timeRestriction.name}`}</span>
                         </label>
                     </div>
