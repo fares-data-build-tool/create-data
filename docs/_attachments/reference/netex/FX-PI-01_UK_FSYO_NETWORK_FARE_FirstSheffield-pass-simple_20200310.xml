@@ -66,11 +66,11 @@ ______	______	______	|	Cash	onbus					|	m-ticket						|
 Type of First Pass		|	Adult	Child	Group	Student	|	Adult	Child	Group	Student	|	 							|
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
  
-FirstDay:		1	day	|	�4.40	�2.30	xxxxx	xxxxx	|	�4.00	�2.00	xxxxx	xxxxx	|	 
-Firstweek	:	7	day	|	�14.50	�8.00	xxxxx	�l0.00	|	�14.00	�7.00	xxxxx	�10.00	|	 
-First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�54.00	�28.00	xxxxx	�36.00	|	 
-FirstUnlimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�52.00	xxxxx	xxxxx	xxxxx	|	 
-FirstYear:		1	year|	xxxxx	xxxxx	xxxxx	xxxxx	|	�572.00	xxxxx	xxxxx	xxxxx	|	 
+FirstDay:		1	day	|	£4.40	£2.30	xxxxx	xxxxx	|	£4.00	£2.00	xxxxx	xxxxx	|	 
+Firstweek	:	7	day	|	£14.50	£8.00	xxxxx	£l0.00	|	£14.00	£7.00	xxxxx	£10.00	|	 
+First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£54.00	£28.00	xxxxx	£36.00	|	 
+FirstUnlimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£52.00	xxxxx	xxxxx	xxxxx	|	 
+FirstYear:		1	year|	xxxxx	xxxxx	xxxxx	xxxxx	|	£572.00	xxxxx	xxxxx	xxxxx	|	 
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
  
 
@@ -79,13 +79,13 @@ ______	______	______	|	Cash	onbus					|	m-ticket						|
 Type of First Pass		|	Adult	Child	Group	Student	|	Adult	Child	Group	Student	|	 						|
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
  
-FirstDay	:	1	day	|	�5.00	�2.30	�10.00	xxxxx	|	�5.00	�2.00	�9.00	xxxxx	|	 
-Firstweek	:	7	day	|	�20.00	�8.00	xxxxx	�l5.00	|	�20.00	�7.00	xxxxx	xxxx	|	 
-First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�76.00	�28.00	xxxxx	�36.00	|	 
-FirstUnlimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�74.00	xxxxx	xxxxx	xxxxx	|	 
-FirstYear:	1	year	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�814.00	xxxxx	xxxxx	xxxxx	|	 
-Term1:		1	term	|	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	�109.00	|	 
-Allterms:	1	ac year |	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	�249.00	|	 
+FirstDay	:	1	day	|	£5.00	£2.30	£10.00	xxxxx	|	£5.00	£2.00	£9.00	xxxxx	|	 
+Firstweek	:	7	day	|	£20.00	£8.00	xxxxx	£l5.00	|	£20.00	£7.00	xxxxx	xxxx	|	 
+First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£76.00	£28.00	xxxxx	£36.00	|	 
+FirstUnlimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£74.00	xxxxx	xxxxx	xxxxx	|	 
+FirstYear:	1	year	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£814.00	xxxxx	xxxxx	xxxxx	|	 
+Term1:		1	term	|	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	£109.00	|	 
+Allterms:	1	ac year |	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	£249.00	|	 
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
  
 
@@ -5115,11 +5115,11 @@ These tickets also offer unlimited travel on our services around South Yorkshire
 FARE ZONE: SHeffield	|	Cash	onbus	p-ticket		|	m-ticket						|	 
 ______	______	______	|	Adult	Child	Group	Student	|	Adult	Child	Group	Student	|	 							|
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
-FirstDay:	1	day		|	�4.40	�2.30	xxxxx	xxxxx	|	�4.00	�2.00	xxxxx	xxxxx	|	 
-Firstweek	:	7	day	|	�14.50	�8.00	xxxxx	�l0.00	|	�14.00	�7.00	xxxxx	�10.00	|	 
-First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�54.00	�28.00	xxxxx	�36.00	|	 
-FirstUnlimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�52.00	xxxxx	xxxxx	xxxxx	|	 
-FirstYear:	1	year	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�572.00	xxxxx	xxxxx	xxxxx	|	 
+FirstDay:	1	day		|	£4.40	£2.30	xxxxx	xxxxx	|	£4.00	£2.00	xxxxx	xxxxx	|	 
+Firstweek	:	7	day	|	£14.50	£8.00	xxxxx	£l0.00	|	£14.00	£7.00	xxxxx	£10.00	|	 
+First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£54.00	£28.00	xxxxx	£36.00	|	 
+FirstUnlimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£52.00	xxxxx	xxxxx	xxxxx	|	 
+FirstYear:	1	year	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£572.00	xxxxx	xxxxx	xxxxx	|	 
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
  -->
 									<specifics>
@@ -5460,13 +5460,13 @@ ______	______	_____	|	______	______	______	_______	|	______	______	______	______
 FARE ZONE: South Yorks 	|	Cash	onbus					|	m-ticket						|	 
 ______	______	______	|	Adult	Child	Group	Student	|	Adult	Child	Group	Student	|	 
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
-FirstDay:	1	day		|	�5.00	�2.30	�10.00	xxxxx	|	�5.00	�2.00	�9.00	xxxxx	|	 
-Firstweek	:	7	day	|	�20.00	�8.00	xxxxx	�l5.00	|	�20.00	�7.00	xxxxx	xxxx	|	 
-First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�76.00	�28.00	xxxxx	�36.00	|	 
-FirstUnlimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�74.00	xxxxx	xxxxx	xxxxx	|	 
-FirstYear:	1	year	|	xxxxx	xxxxx	xxxxx	xxxxx	|	�814.00	xxxxx	xxxxx	xxxxx	|	 
-Term1	:	1	term	|	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	�109.00	|	 
-Allterms:	1	ac year |	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	�249.00	|	 
+FirstDay:	1	day		|	£5.00	£2.30	£10.00	xxxxx	|	£5.00	£2.00	£9.00	xxxxx	|	 
+Firstweek	:	7	day	|	£20.00	£8.00	xxxxx	£l5.00	|	£20.00	£7.00	xxxxx	xxxx	|	 
+First4Week	:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£76.00	£28.00	xxxxx	£36.00	|	 
+FirstUnlimited:	28	day	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£74.00	xxxxx	xxxxx	xxxxx	|	 
+FirstYear:	1	year	|	xxxxx	xxxxx	xxxxx	xxxxx	|	£814.00	xxxxx	xxxxx	xxxxx	|	 
+Term1	:	1	term	|	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	£109.00	|	 
+Allterms:	1	ac year |	xxxxx	xxxxx	xxxxx	xxxxx	|	xxxxx	xxxxx	xxxxx	£249.00	|	 
 ______	______	_____	|	______	______	______	_______	|	______	______	______	______	| 
  
 -->
