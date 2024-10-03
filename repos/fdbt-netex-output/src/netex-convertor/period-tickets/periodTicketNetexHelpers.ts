@@ -642,22 +642,6 @@ export const getSalesOfferPackageList = (
     capId: string,
 ): NetexSalesOfferPackage[][] => {
     const isCarnet = 'carnetDetails' in userPeriodTicket.products[0];
-    const capSalesOfferPackageElement = (SOPLength: number, salesOfferPackageName: string) =>
-        capId
-            ? [
-                  {
-                      id: `Trip@${ticketUserConcat}-SOP@${salesOfferPackageName}-cap`,
-                      version: '1.0',
-                      order: (SOPLength + 1).toString(),
-                      TypeOfTravelDocumentRef: {
-                          version: 'fxc:v1.0',
-                          ref: `fxc:m-ticket`,
-                      },
-                      CappedDiscountRightRef: { version: '1.0', ref: capId },
-                  },
-              ]
-            : [];
-
     return userPeriodTicket.products.map(product => {
         return product.salesOfferPackages.map(salesOfferPackage => {
             const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
@@ -680,28 +664,34 @@ export const getSalesOfferPackageList = (
                 });
             };
 
-            const buildSalesOfferPackageElements = (): SalesOfferPackageElement[] => {
+            const buildSalesOfferPackageElements = (capId?: string): SalesOfferPackageElement[] => {
                 return salesOfferPackage.ticketFormats.map((ticketFormat, index) => {
                     return {
-                        id: `Trip@${ticketUserConcat}-${product.productName}-${salesOfferPackage.name}@${ticketFormat}`,
+                        id: `Trip@${ticketUserConcat}-${product.productName}-${salesOfferPackage.name}${
+                            capId ? '-cap' : ''
+                        }@${ticketFormat}`,
                         version: '1.0',
-                        order: `${index + 1}`,
+                        order: capId ? `${index + 2}` : `${index + 1}`,
                         TypeOfTravelDocumentRef: {
                             version: 'fxc:v1.0',
                             ref: `fxc:${ticketFormat}`,
                         },
-                        ...(isCarnet && {
-                            AmountOfPriceUnitProductRef: {
-                                version: '1.0',
-                                ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
-                            },
-                        }),
-                        ...(!isCarnet && {
-                            PreassignedFareProductRef: {
-                                version: '1.0',
-                                ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
-                            },
-                        }),
+                        ...(capId
+                            ? { CappedDiscountRightRef: { version: '1.0', ref: capId } }
+                            : {
+                                  ...(isCarnet && {
+                                      AmountOfPriceUnitProductRef: {
+                                          version: '1.0',
+                                          ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                                      },
+                                  }),
+                                  ...(!isCarnet && {
+                                      PreassignedFareProductRef: {
+                                          version: '1.0',
+                                          ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                                      },
+                                  }),
+                              }),
                     };
                 });
             };
@@ -715,10 +705,7 @@ export const getSalesOfferPackageList = (
                 Description: { $t: `${salesOfferPackage.description ?? ''}` },
                 distributionAssignments: { DistributionAssignment: buildDistributionAssignments() },
                 salesOfferPackageElements: {
-                    SalesOfferPackageElement: [
-                        ...salesOfferPackageElements,
-                        ...capSalesOfferPackageElement(salesOfferPackageElements.length, salesOfferPackage.name),
-                    ],
+                    SalesOfferPackageElement: [...salesOfferPackageElements, ...buildSalesOfferPackageElements(capId)],
                 },
             };
         });
