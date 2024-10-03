@@ -20,7 +20,7 @@ import {
 } from './database';
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
-import { DbTimeRestriction } from 'fdbt-types/dbTypes';
+import { DbCap, DbTimeRestriction } from 'fdbt-types/dbTypes';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -91,14 +91,14 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ? await getTimeRestrictionsByIdAndNoc(ticketWithIds.timeRestriction.id, noc)
                 : [];
 
-            const caps = !!ticketWithIds.caps
+            const caps = ticketWithIds.caps
                 ? await Promise.all(
-                      (ticketWithIds.caps as { id: number }[]).map(
-                          async (c: { id: number }) => await getCapByNocAndId(noc, c.id),
+                      (ticketWithIds.caps as { id: number }[]).map(({ id }) =>
+                          getCapByNocAndId(noc, id).then((cap) => cap || null),
                       ),
-                  )
+                  ).then((results) => results.filter((cap): cap is DbCap => cap !== null))
                 : undefined;
-
+            console.log(caps);
             const fareDayEnd = await getFareDayEnd(noc);
 
             const timeRestrictionWithUpdatedFareDayEnds: FullTimeRestriction[] = timeRestriction.map(
@@ -137,7 +137,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ...passengerType,
                 groupDefinition,
                 timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
-                ...(!!caps && caps.length>0 && caps),
+                ...(!!caps && caps.length > 0 && caps),
             };
             /* eslint-enable */
 
@@ -146,7 +146,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 products: fullProducts,
                 fareDayEnd: setFareDayEnd ? fareDayEnd : undefined,
             } as Ticket;
-
+            console.log(fullTicket);
             const sections = path.split('/');
             const destPath = exportPrefix ? `${noc}/exports/${exportPrefix}/${sections[sections.length - 1]}` : path;
 
