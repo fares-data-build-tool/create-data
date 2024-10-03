@@ -10,6 +10,7 @@ import {
     MULTIPLE_PRODUCT_ATTRIBUTE,
     SALES_OFFER_PACKAGES_ATTRIBUTE,
     SCHOOL_FARE_TYPE_ATTRIBUTE,
+    CAPS_DEFINITION_ATTRIBUTE,
 } from '../constants/attributes';
 import { getSalesOfferPackagesByNocCode } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, ProductInfo, ProductWithSalesOfferPackages } from '../interfaces';
@@ -239,18 +240,20 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     .includes(purchaseMethod.id),
             ),
         };
-
+        const isCapped = 'caps' in ticket ? !!(ticket.caps && ticket.caps.length > 0) : false;
         return {
             props: {
                 ...(selectedValue && { selected: selectedValue }),
                 products: [productInfo],
-                purchaseMethodsList: purchaseMethodsList as FromDb<SalesOfferPackage>[],
+                purchaseMethodsList: purchaseMethodsList.filter(
+                    (purchaseMethod) => purchaseMethod.isCapped === isCapped,
+                ),
                 errors,
                 csrfToken,
                 backHref: `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
                     matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
                 }`,
-                isCapped: false,
+                isCapped,
             },
         };
     }
@@ -295,8 +298,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                   )
                   .reduce((result, item) => ({ ...result, [item[0]]: item[1] }), {}));
 
-    const isCapped = false;
-
+    const isCapped = !!getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
     return {
         props: {
             ...(selected && { selected: selected }),
