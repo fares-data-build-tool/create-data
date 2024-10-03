@@ -412,7 +412,7 @@ export const buildSalesOfferPackage = (
     salesOfferPackageInfo: SalesOfferPackage,
     ticketUserConcat: string,
     isCarnet: boolean,
-    capId: string,
+    capId?: string,
 ): NetexSalesOfferPackage => {
     const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
 
@@ -477,7 +477,10 @@ export const buildSalesOfferPackage = (
             DistributionAssignment: buildDistributionAssignments(),
         },
         salesOfferPackageElements: {
-            SalesOfferPackageElement: [...salesOfferPackageElements, ...buildSalesOfferPackageElements(isCarnet, capId)],
+            SalesOfferPackageElement: [
+                ...salesOfferPackageElements,
+                ...(capId ? buildSalesOfferPackageElements(isCarnet, capId) : []),
+            ],
         },
     };
 };
