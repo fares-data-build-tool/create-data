@@ -705,7 +705,10 @@ export const getSalesOfferPackageList = (
                 Description: { $t: `${salesOfferPackage.description ?? ''}` },
                 distributionAssignments: { DistributionAssignment: buildDistributionAssignments() },
                 salesOfferPackageElements: {
-                    SalesOfferPackageElement: [...salesOfferPackageElements, ...buildSalesOfferPackageElements(capId)],
+                    SalesOfferPackageElement: [
+                        ...salesOfferPackageElements,
+                        ...(capId ? buildSalesOfferPackageElements(capId) : []),
+                    ],
                 },
             };
         });
