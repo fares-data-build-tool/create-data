@@ -98,7 +98,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                       ),
                   ).then((results) => results.filter((cap): cap is DbCap => cap !== null))
                 : undefined;
-            console.log(caps);
+
             const fareDayEnd = await getFareDayEnd(noc);
 
             const timeRestrictionWithUpdatedFareDayEnds: FullTimeRestriction[] = timeRestriction.map(
@@ -146,7 +146,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 products: fullProducts,
                 fareDayEnd: setFareDayEnd ? fareDayEnd : undefined,
             } as Ticket;
-            console.log(fullTicket);
+
             const sections = path.split('/');
             const destPath = exportPrefix ? `${noc}/exports/${exportPrefix}/${sections[sections.length - 1]}` : path;
 
