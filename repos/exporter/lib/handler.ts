@@ -137,7 +137,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ...passengerType,
                 groupDefinition,
                 timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
-                ...(!!caps && caps.length > 0 && caps),
+                ...(!!caps && caps.length > 0 ? { caps: caps } : {}),
             };
             /* eslint-enable */
 
