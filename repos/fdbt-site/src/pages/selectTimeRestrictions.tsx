@@ -169,7 +169,7 @@ const TimeRestrictionCard = ({
                             className="govuk-label govuk-radios__label"
                             htmlFor={`${timeRestriction.name}-${timeRestriction.id}-radio`}
                         >
-                            <span className="govuk-visually-hidden">{timeRestriction.name}</span>
+                            <span className="govuk-visually-hidden">{`${timeRestriction.name}`}</span>
                         </label>
                     </div>
                 </div>

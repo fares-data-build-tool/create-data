@@ -53,11 +53,10 @@ const OperatorGroupCard = ({
                                 defaultChecked={defaultChecked}
                             />
                             <label
-                                id={`operator-group-${index}-radio-label`}
                                 className="govuk-label govuk-radios__label"
                                 htmlFor={`operator-group-${index}-radio`}
                             >
-                                <span className="govuk-visually-hidden">{name}</span>
+                                <span className="govuk-visually-hidden">{`operator-group-${index}`}</span>
                             </label>
                         </div>
                     </div>

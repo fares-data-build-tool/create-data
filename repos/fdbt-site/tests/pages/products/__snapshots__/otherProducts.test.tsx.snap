@@ -84,11 +84,23 @@ exports[`myfares pages otherProducts should render correctly when no non-Point-t
               <th
                 className="govuk-table__header"
                 scope="col"
-              />
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Copy
+                </span>
+              </th>
               <th
                 className="govuk-table__header"
                 scope="col"
-              />
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Delete
+                </span>
+              </th>
             </tr>
           </thead>
           <tbody
@@ -192,11 +204,23 @@ exports[`myfares pages otherProducts should render correctly when some non-Point
               <th
                 className="govuk-table__header"
                 scope="col"
-              />
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Copy
+                </span>
+              </th>
               <th
                 className="govuk-table__header"
                 scope="col"
-              />
+              >
+                <span
+                  className="govuk-visually-hidden"
+                >
+                  Delete
+                </span>
+              </th>
             </tr>
           </thead>
           <tbody

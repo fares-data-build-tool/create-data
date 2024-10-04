@@ -52,12 +52,8 @@ const ProductGroupCard = ({
                                 value={id}
                                 defaultChecked={defaultChecked}
                             />
-                            <label
-                                id={`product-group-${index}-radio-label`}
-                                className="govuk-label govuk-radios__label"
-                                htmlFor={`product-group-${index}-radio`}
-                            >
-                                <span className="govuk-visually-hidden">{name}</span>
+                            <label className="govuk-label govuk-radios__label" htmlFor={`product-group-${index}-radio`}>
+                                <span className="govuk-visually-hidden">{`product-group-${index}`}</span>
                             </label>
                         </div>
                     </div>
