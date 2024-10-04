@@ -13,6 +13,8 @@ import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { inputMethodErrorsExist } from '../interfaces/typeGuards';
 import { getCsrfToken } from '../utils';
 import FileAttachment from '../components/FileAttachment';
+import AccessibilityDetails from '../components/AccessibilityDetails';
+import { SUPPORT_EMAIL_ADDRESS } from '../constants';
 
 const title = 'Input Method - Create Fares Data Service';
 const description = 'Input Method selection page of the Create Fares Data Service';
@@ -26,6 +28,7 @@ interface InputMethodProps {
     csvTemplateDisplayName: string;
     csvTemplateSize: string;
     csrfToken: string;
+    supportEmail: string;
 }
 
 const InputMethod = ({
@@ -35,6 +38,7 @@ const InputMethod = ({
     guidanceDocSize,
     csvTemplateDisplayName,
     csvTemplateSize,
+    supportEmail,
 }: InputMethodProps): ReactElement => {
     return (
         <BaseLayout title={title} description={description} errors={errors}>
@@ -111,6 +115,7 @@ const InputMethod = ({
                         imageUrl={guidanceDocImage}
                         size={guidanceDocSize}
                     />
+                    <AccessibilityDetails supportEmail={supportEmail} />
                     <FileAttachment
                         displayName={csvTemplateDisplayName}
                         attachmentUrl={`${FaresTriangleExampleCsv}`}
@@ -135,6 +140,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: In
             csvTemplateSize: '255B',
             errors: inputMethodInfo && inputMethodErrorsExist(inputMethodInfo) ? [inputMethodInfo] : [],
             csrfToken,
+            supportEmail: SUPPORT_EMAIL_ADDRESS || 'test@example.com',
         },
     };
 };

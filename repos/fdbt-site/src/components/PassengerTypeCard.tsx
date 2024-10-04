@@ -53,12 +53,8 @@ const PassengerTypeCard = ({
                                 value={id}
                                 defaultChecked={defaultChecked}
                             />
-                            <label
-                                id={`${name}-radio-label`}
-                                className="govuk-label govuk-radios__label"
-                                htmlFor={`${name}-radio`}
-                            >
-                                <span className="govuk-visually-hidden">{name}</span>
+                            <label className="govuk-label govuk-radios__label" htmlFor={`${name}-radio`}>
+                                <span className="govuk-visually-hidden">{`${name}`}</span>
                             </label>
                         </div>
                     </div>

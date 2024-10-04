@@ -116,6 +116,9 @@ exports[`pages inputMethod should render correctly 1`] = `
         imageUrl={Object {}}
         size="1.2MB"
       />
+      <AccessibilityDetails
+        supportEmail="mock-support-address@email.co.uk"
+      />
       <FileAttachment
         attachmentUrl="[object Object]"
         displayName="Download fares triangle CSV template - File Type CSV - File Size 255B"

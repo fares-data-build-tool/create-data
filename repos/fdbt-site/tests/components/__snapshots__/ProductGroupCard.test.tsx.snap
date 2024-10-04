@@ -25,12 +25,11 @@ exports[`ProductGroupCard should render checked 1`] = `
         <label
           className="govuk-label govuk-radios__label"
           htmlFor="product-group-0-radio"
-          id="product-group-0-radio-label"
         >
           <span
             className="govuk-visually-hidden"
           >
-            The capped products
+            product-group-0
           </span>
         </label>
       </div>
@@ -76,12 +75,11 @@ exports[`ProductGroupCard should render not checked 1`] = `
         <label
           className="govuk-label govuk-radios__label"
           htmlFor="product-group-0-radio"
-          id="product-group-0-radio-label"
         >
           <span
             className="govuk-visually-hidden"
           >
-            The capped products
+            product-group-0
           </span>
         </label>
       </div>

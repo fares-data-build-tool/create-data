@@ -194,6 +194,9 @@ exports[`pages csvzoneupload should render correctly 1`] = `
         imageUrl={Object {}}
         size=""
       />
+      <AccessibilityDetails
+        supportEmail="mock-support-address@email.co.uk"
+      />
       <FileAttachment
         attachmentUrl="[object Object]"
         displayName=""
