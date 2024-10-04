@@ -2966,6 +2966,12 @@
                     version: 'fxc:v1.0',
                     MediaType: { '$t': 'card' },
                     MachineReadable: { '$t': 'none' }
+                  },
+                  {
+                    id: 'fxc:m-ticket',
+                    version: 'fxc:v1.0',
+                    MediaType: { '$t': 'card' },
+                    MachineReadable: { '$t': 'nfc' }
                   }
                 ]
               }

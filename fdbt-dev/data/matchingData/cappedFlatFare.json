@@ -228,14 +228,6 @@
         "durationAmount": "3",
         "durationUnits": "month"
       }
-    },
-    {
-      "capDetails": {
-        "name": "cappy cap3",
-        "price": "2",
-        "durationAmount": "3",
-        "durationUnits": "day"
-      }
     }
   ]
 }

@@ -524,9 +524,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         const dataSource = multiModalAttribute ? 'tnds' : 'bods';
         const allBodsServices = await getBodsOrTndsServicesByNoc(noc, dataSource);
         uniqueServiceLineIds.forEach((uniqueServiceLineId) => {
-            allServicesWithMatchingLineIds.push(
-                allBodsServices.find((service) => service.lineId === uniqueServiceLineId) as MyFaresService,
-            );
+            const matchingService = allBodsServices.find((service) => service.lineId === uniqueServiceLineId);
+            if (matchingService) {
+                allServicesWithMatchingLineIds.push(matchingService);
+            }
         });
     }
 

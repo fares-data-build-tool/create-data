@@ -559,7 +559,7 @@ describe('periodTicketNetexHelpers', () => {
     describe('getSalesOfferPackageList', () => {
         it('returns a sales offer package for each product in the products array', () => {
             const expectedLength = geoUserPeriodTicket.products.length;
-            const result = netexHelpers.getSalesOfferPackageList(geoUserPeriodTicket, 'test');
+            const result = netexHelpers.getSalesOfferPackageList(geoUserPeriodTicket, 'test', 'capId');
 
             const expectedFormat = {
                 Description: expect.objectContaining({ $t: expect.any(String) }),

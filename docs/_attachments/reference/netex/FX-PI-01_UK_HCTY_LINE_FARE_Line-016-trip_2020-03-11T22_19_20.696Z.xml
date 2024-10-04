@@ -2537,6 +2537,10 @@ Acomb Green Lane
 							<MediaType>card</MediaType>
 							<MachineReadable>none</MachineReadable>
 						</TypeOfTravelDocument>
+						<TypeOfTravelDocument id="fxc:m-ticket" version="fxc:v1.0">
+							<MediaType>card</MediaType>
+							<MachineReadable>nfc</MachineReadable>
+						</TypeOfTravelDocument>
 					</typesOfTravelDocuments>
 				</FareFrame>
 				<ResourceFrame id="fxc:UK_Bus_Tariffs@Common_Resources" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:common">

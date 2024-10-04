@@ -160,7 +160,7 @@ export interface BaseTicket<T extends TicketType = TicketType> {
     ticketPeriod: TicketPeriod;
     groupDefinition?: GroupDefinition;
     carnet?: boolean;
-    caps?: DbCap;
+    caps?: DbCap[];
 }
 
 export type WithIds<T extends { products: BaseProduct[] }> = WithBaseIds<

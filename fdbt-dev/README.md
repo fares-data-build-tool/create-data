@@ -66,7 +66,7 @@ make
 This will start the following:
 
 - Site on http://localhost:5555
-- LocalStack S3 on http://localhost:4572
+- LocalStack S3 on http://127.0.0.1:4566
 - MySQL on 127.0.0.1:3306
 
 ## Other features
