@@ -232,7 +232,7 @@ const MultiOperatorsServiceList = ({
                             <InsetText text={'All services have been added'} italic />
                         )}
 
-                        <div className="govuk-checkboxes">
+                        <div className="govuk-checkboxes" data-module="govuk-checkboxes">
                             {getActiveOperator(activeOperatorNoc, operators).services.map((service, index) => {
                                 const serviceIsAlreadySelected = !!getActiveOperator(
                                     activeOperatorNoc,
@@ -250,7 +250,10 @@ const MultiOperatorsServiceList = ({
                                 const { lineName, origin, destination } = service;
                                 const checkboxTitles = `${lineName} ${origin || 'N/A'} - ${destination || 'N/A'}`;
                                 return (
-                                    <div className="govuk-checkboxes__item" key={`checkbox-item-${index}`}>
+                                    <div
+                                        className="govuk-checkboxes__item dft-padding-left"
+                                        key={`checkbox-item-${index}`}
+                                    >
                                         <label
                                             id={`service-to-add-${index}`}
                                             // eslint-disable-next-line jsx-a11y/aria-role, jsx-a11y/no-noninteractive-element-to-interactive-role
@@ -276,7 +279,7 @@ const MultiOperatorsServiceList = ({
                     </div>
                     <div className="govuk-grid-column-one-third ">
                         <div>
-                            <table className="border-collapse govuk-!-width-full">
+                            <table className="govuk-table border-collapse govuk-!-width-full">
                                 <caption className={`govuk-table__caption govuk-table__caption--m `}>
                                     Selected Services
                                 </caption>

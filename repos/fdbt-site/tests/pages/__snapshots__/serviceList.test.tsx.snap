@@ -52,6 +52,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
           type="button"
           value="Unselect All Services"
         />
+        <br />
         <span
           className="govuk-hint"
           id="txc-hint"
@@ -69,6 +70,8 @@ exports[`pages serviceList should render an error when the error flag is set to 
           </a>
           .
         </span>
+        <br />
+        <br />
         <FormElementWrapper
           addFormGroupError={false}
           errorClass=""
@@ -97,7 +100,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
           className="govuk-warning-text__text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            className="govuk-visually-hidden"
           >
             Warning
           </span>
@@ -301,6 +304,7 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           type="button"
           value="Select All Services"
         />
+        <br />
         <span
           className="govuk-hint"
           id="txc-hint"
@@ -318,6 +322,8 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           </a>
           .
         </span>
+        <br />
+        <br />
         <FormElementWrapper
           addFormGroupError={false}
           errorClass=""
@@ -368,7 +374,7 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           className="govuk-warning-text__text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            className="govuk-visually-hidden"
           >
             Warning
           </span>
@@ -573,6 +579,7 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
           type="button"
           value="Select All Services"
         />
+        <br />
         <span
           className="govuk-hint"
           id="txc-hint"
@@ -590,6 +597,8 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
           </a>
           .
         </span>
+        <br />
+        <br />
         <FormElementWrapper
           addFormGroupError={false}
           errorClass=""
@@ -700,7 +709,7 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
           className="govuk-warning-text__text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            className="govuk-visually-hidden"
           >
             Warning
           </span>
@@ -902,6 +911,7 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
           type="button"
           value="Select All Services"
         />
+        <br />
         <span
           className="govuk-hint"
           id="txc-hint"
@@ -919,6 +929,8 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
           </a>
           .
         </span>
+        <br />
+        <br />
         <FormElementWrapper
           addFormGroupError={false}
           errorClass=""
@@ -969,7 +981,7 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
           className="govuk-warning-text__text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            className="govuk-visually-hidden"
           >
             Warning
           </span>

@@ -71,9 +71,10 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
         </button>
         <div
           className="govuk-checkboxes"
+          data-module="govuk-checkboxes"
         >
           <div
-            className="govuk-checkboxes__item"
+            className="govuk-checkboxes__item dft-padding-left"
             key="checkbox-item-0"
           >
             <label
@@ -87,7 +88,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
             </label>
           </div>
           <div
-            className="govuk-checkboxes__item"
+            className="govuk-checkboxes__item dft-padding-left"
             key="checkbox-item-1"
           >
             <label
@@ -107,7 +108,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
       >
         <div>
           <table
-            className="border-collapse govuk-!-width-full"
+            className="govuk-table border-collapse govuk-!-width-full"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m "
@@ -318,9 +319,10 @@ exports[`pages multipleOperatorsServiceList should render the multiOperatorData 
         </button>
         <div
           className="govuk-checkboxes"
+          data-module="govuk-checkboxes"
         >
           <div
-            className="govuk-checkboxes__item"
+            className="govuk-checkboxes__item dft-padding-left"
             key="checkbox-item-0"
           >
             <label
@@ -334,7 +336,7 @@ exports[`pages multipleOperatorsServiceList should render the multiOperatorData 
             </label>
           </div>
           <div
-            className="govuk-checkboxes__item"
+            className="govuk-checkboxes__item dft-padding-left"
             key="checkbox-item-1"
           >
             <label
@@ -354,7 +356,7 @@ exports[`pages multipleOperatorsServiceList should render the multiOperatorData 
       >
         <div>
           <table
-            className="border-collapse govuk-!-width-full"
+            className="govuk-table border-collapse govuk-!-width-full"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m "

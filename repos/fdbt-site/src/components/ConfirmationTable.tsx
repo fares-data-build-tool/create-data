@@ -40,8 +40,8 @@ const ConfirmationTable = ({ confirmationElements, header }: ConfirmationTablePr
                     !
                 </span>
                 <strong className="govuk-warning-text__text">
-                    <span className="govuk-warning-text__assistive">Warning</span>
-                    You will not be shown these answers again, ensure they are correct
+                    <span className="govuk-visually-hidden">Warning</span>
+                    You will not be shown these answers again, ensure they are correct.
                 </strong>
             </div>
             {builtElements}
