@@ -16,7 +16,7 @@ const FileAttachment: FC<FileAttachmentProps> = ({
     return (
         <section className="file-attachment">
             <div className="file-attachment-thumbnail">
-                <a href={attachmentUrl} download tabIndex={-1} aria-hidden title={displayName}>
+                <a href={attachmentUrl} download tabIndex={-1} aria-hidden>
                     <img alt={displayName} src={imageUrl} tabIndex={-1} />
                 </a>
             </div>
