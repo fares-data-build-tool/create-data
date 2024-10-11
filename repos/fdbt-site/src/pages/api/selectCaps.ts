@@ -22,7 +22,7 @@ const getCapContent = async (cap: number, noc: string): Promise<Cap & { id: numb
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const { capChoice, cap } = req.body;
+        const { capChoice, caps } = req.body;
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
@@ -44,7 +44,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const noc = getAndValidateNoc(req, res);
 
-        if (capChoice === 'yes' && !cap) {
+        if (capChoice === 'yes' && !caps) {
             const errors = {
                 errors: [{ errorMessage: 'Choose one of the premade caps', id: 'caps' }],
             };
@@ -54,17 +54,24 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             return;
         }
 
-        if (!Number.isInteger(Number(cap))) {
-            throw Error(`Received invalid cap id: ${cap}`);
+        let capData = caps;
+        if (caps && !Array.isArray(caps)) {
+            capData = [caps];
+        }
+        if (Array.isArray(capData) && !capData.every((c) => Number.isInteger(Number(c)))) {
+            throw Error(`Received invalid caps: ${caps}`);
         }
 
-        const selectedCap = await getCapContent(Number(cap), noc);
+        const selectedCaps = await Promise.all((capData as number[]).map(async (c) => await getCapContent(c, noc)));
 
         // if in edit mode
         if (ticket && matchingJsonMetaData) {
             const updatedTicket = {
                 ...ticket,
-                cap: capChoice === 'yes' && !!selectedCap ? { id: selectedCap.id } : undefined,
+                caps:
+                    capChoice === 'yes' && !!selectedCaps && selectedCaps.length > 0
+                        ? selectedCaps.map((cap) => ({ id: cap.id }))
+                        : undefined,
             };
 
             await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
@@ -80,10 +87,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
         // end of edit mode
 
-        if (capChoice === 'yes' && !!selectedCap) {
-            updateSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE, {
-                id: selectedCap.id,
-            });
+        if (capChoice === 'yes' && !!selectedCaps && selectedCaps.length > 0) {
+            updateSessionAttribute(
+                req,
+                CAPS_DEFINITION_ATTRIBUTE,
+                selectedCaps.map((cap) => ({ id: cap.id })),
+            );
             redirectTo(res, '/selectPurchaseMethods');
             return;
         }

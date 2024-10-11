@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { CapStart, ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
 import CreateCaps from '../../src/pages/createCaps';
 
 describe('pages', () => {
@@ -27,28 +27,11 @@ describe('pages', () => {
                 name: 'Cap 1',
                 price: '2',
                 durationAmount: '2',
-                durationUnits: 'hour' as ExpiryUnit,
+                durationUnits: 'month' as CapExpiryUnit,
             };
             const tree = shallow(
                 <CreateCaps errors={[]} userInput={{ capDetails: capInfo }} editId={1} csrfToken="" />,
             );
-
-            expect(tree).toMatchSnapshot();
-        });
-
-        it('should render correctly on edit mode with cap start', () => {
-            const cap = {
-                capDetails: {
-                    name: 'Cap 1',
-                    price: '2',
-                    durationAmount: '2',
-                    durationUnits: 'hour' as ExpiryUnit,
-                },
-                capStart: {
-                    type: 'rollingDays' as CapStart,
-                },
-            };
-            const tree = shallow(<CreateCaps errors={[]} userInput={cap} editId={1} csrfToken="" />);
 
             expect(tree).toMatchSnapshot();
         });

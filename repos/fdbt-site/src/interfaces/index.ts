@@ -16,8 +16,8 @@ import {
     TicketType,
     ExpiryUnit,
     AdditionalOperator,
-    CapStartInfo,
     Stop,
+    CapExpiryUnit,
 } from './matchingJsonTypes';
 
 // Session Attributes and Cookies
@@ -739,7 +739,6 @@ export interface ServiceToDisplay {
 export interface Cap {
     id?: number;
     capDetails: CapDetails;
-    capStart?: CapStartInfo;
 }
 
 export interface CapSelection {
@@ -755,7 +754,7 @@ export interface CapDetails {
     name: string;
     price: string;
     durationAmount: string;
-    durationUnits: ExpiryUnit;
+    durationUnits: CapExpiryUnit;
 }
 
 export interface DistanceBand {

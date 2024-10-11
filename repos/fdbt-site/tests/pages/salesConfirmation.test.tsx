@@ -9,7 +9,7 @@ import SalesConfirmation, {
 } from '../../src/pages/salesConfirmation';
 import { getMockContext } from '../testData/mockData';
 import { CAPS_DEFINITION_ATTRIBUTE, PRODUCT_DATE_ATTRIBUTE } from '../../src/constants/attributes';
-import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
 import * as db from '../../src/data/auroradb';
 
 describe('pages', () => {
@@ -33,7 +33,7 @@ describe('pages', () => {
                     csrfToken=""
                     fareType="single"
                     hasCaps={false}
-                    selectedCap={null}
+                    selectedCaps={null}
                     isCarnet={false}
                 />,
             );
@@ -64,7 +64,7 @@ describe('pages', () => {
                     name: 'Best cap',
                     price: '2',
                     durationAmount: '2',
-                    durationUnits: ExpiryUnit.HOUR,
+                    durationUnits: CapExpiryUnit.MONTH,
                 },
             },
             {
@@ -73,7 +73,7 @@ describe('pages', () => {
                     name: 'Other cap',
                     price: '3',
                     durationAmount: '3',
-                    durationUnits: ExpiryUnit.HOUR,
+                    durationUnits: CapExpiryUnit.MONTH,
                 },
             },
         ]);
@@ -85,7 +85,7 @@ describe('pages', () => {
                 name: 'Best cap',
                 price: '2',
                 durationAmount: '2',
-                durationUnits: ExpiryUnit.HOUR,
+                durationUnits: CapExpiryUnit.MONTH,
             },
         });
 
@@ -97,9 +97,11 @@ describe('pages', () => {
                         endDate: mockEndDate,
                         dateInput: mockDateInput,
                     },
-                    [CAPS_DEFINITION_ATTRIBUTE]: {
-                        id: 2,
-                    },
+                    [CAPS_DEFINITION_ATTRIBUTE]: [
+                        {
+                            id: 2,
+                        },
+                    ],
                 },
             });
             const expectedProps = {
@@ -108,15 +110,17 @@ describe('pages', () => {
                 endDate: mockEndDate,
                 fareType: 'single',
                 hasCaps: true,
-                selectedCap: {
-                    id: 2,
-                    capDetails: {
-                        name: 'Best cap',
-                        price: '2',
-                        durationAmount: '2',
-                        durationUnits: ExpiryUnit.HOUR,
+                selectedCaps: [
+                    {
+                        id: 2,
+                        capDetails: {
+                            name: 'Best cap',
+                            price: '2',
+                            durationAmount: '2',
+                            durationUnits: CapExpiryUnit.MONTH,
+                        },
                     },
-                },
+                ],
                 isCarnet: false,
             };
             const actualProps = await getServerSideProps(ctx);
@@ -152,15 +156,17 @@ describe('pages', () => {
                 'single',
                 true,
                 false,
-                {
-                    id: 2,
-                    capDetails: {
-                        name: 'cappy cap',
-                        price: '2',
-                        durationAmount: '24hr',
-                        durationUnits: ExpiryUnit.HOUR,
+                [
+                    {
+                        id: 2,
+                        capDetails: {
+                            name: 'cappy cap',
+                            price: '2',
+                            durationAmount: '2',
+                            durationUnits: CapExpiryUnit.MONTH,
+                        },
                     },
-                },
+                ],
             );
             expect(result).toStrictEqual([
                 {
@@ -186,7 +192,7 @@ describe('pages', () => {
                 {
                     content: 'cappy cap',
                     href: 'selectCaps',
-                    name: 'Cap',
+                    name: 'Caps',
                 },
             ]);
         });
@@ -299,7 +305,7 @@ describe('pages', () => {
                 {
                     content: 'N/A',
                     href: 'selectCaps',
-                    name: 'Cap',
+                    name: 'Caps',
                 },
             ]);
         });

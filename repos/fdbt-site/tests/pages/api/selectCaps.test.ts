@@ -9,7 +9,7 @@ import selectCaps from '../../../src/pages/api/selectCaps';
 import * as sessions from '../../../src/utils/sessions';
 import { expectedSingleTicket, getMockRequestAndResponse, mockIdTokenMultiple } from '../../testData/mockData';
 import * as userData from '../../../src/utils/apiUtils/userData';
-import { ExpiryUnit } from '../../../src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit } from '../../../src/interfaces/matchingJsonTypes';
 
 describe('selectCaps', () => {
     const writeHeadMock = jest.fn();
@@ -28,14 +28,14 @@ describe('selectCaps', () => {
             capDetails: {
                 name: 'cappy cap',
                 price: '2',
-                durationAmount: '24hr',
-                durationUnits: ExpiryUnit.HOUR,
+                durationAmount: '1',
+                durationUnits: CapExpiryUnit.MONTH,
             },
         });
         const { req, res } = getMockRequestAndResponse({
             body: {
                 capChoice: 'yes',
-                cap: 2,
+                caps: [2],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -47,9 +47,11 @@ describe('selectCaps', () => {
             },
         });
         await selectCaps(req, res);
-        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAPS_DEFINITION_ATTRIBUTE, {
-            id: 2,
-        });
+        expect(updateSessionAttributeSpy).toHaveBeenCalledWith(req, CAPS_DEFINITION_ATTRIBUTE, [
+            {
+                id: 2,
+            },
+        ]);
         expect(writeHeadMock).toBeCalledWith(302, {
             Location: '/selectPurchaseMethods',
         });
@@ -66,15 +68,15 @@ describe('selectCaps', () => {
             capDetails: {
                 name: 'cappy cap',
                 price: '2',
-                durationAmount: '24hr',
-                durationUnits: ExpiryUnit.HOUR,
+                durationAmount: '1',
+                durationUnits: CapExpiryUnit.MONTH,
             },
         });
 
         const { req, res } = getMockRequestAndResponse({
             body: {
                 capChoice: 'yes',
-                cap: 2,
+                caps: [2],
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,

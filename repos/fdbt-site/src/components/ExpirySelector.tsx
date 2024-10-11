@@ -1,7 +1,7 @@
 import upperFirst from 'lodash/upperFirst';
 import React, { ReactElement } from 'react';
 import { ErrorInfo } from '../interfaces';
-import { ExpiryUnit, CarnetExpiryUnit } from '../interfaces/matchingJsonTypes';
+import { ExpiryUnit, CarnetExpiryUnit, CapExpiryUnit } from '../interfaces/matchingJsonTypes';
 import FormElementWrapper from './FormElementWrapper';
 
 interface DurationSelectorProps {
@@ -9,13 +9,14 @@ interface DurationSelectorProps {
     quantityId: string;
     hintId?: string;
     quantityName: string;
-    defaultUnit?: ExpiryUnit | CarnetExpiryUnit;
+    defaultUnit?: ExpiryUnit | CarnetExpiryUnit | CapExpiryUnit;
     unitName: string;
     unitId: string;
     carnet?: boolean;
     school?: boolean;
     errors?: ErrorInfo[];
     hideFormGroupError?: boolean;
+    cap?: boolean;
 }
 
 const ExpirySelector = ({
@@ -30,9 +31,10 @@ const ExpirySelector = ({
     errors,
     school = false,
     hideFormGroupError = false,
+    cap = false,
 }: DurationSelectorProps): ReactElement => {
     let optionList: string[] = [];
-    Object.values(carnet ? CarnetExpiryUnit : ExpiryUnit).map((unit) => {
+    Object.values(carnet ? CarnetExpiryUnit : cap ? CapExpiryUnit : ExpiryUnit).map((unit) => {
         optionList.push(unit);
     });
     if (!school) {

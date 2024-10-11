@@ -158,6 +158,7 @@ exports[`CapTable should render the table upon first opening of page 1`] = `
             For example, 3 days
           </span>
           <ExpirySelector
+            cap={true}
             defaultDuration=""
             errors={Array []}
             hideFormGroupError={true}
@@ -367,6 +368,7 @@ exports[`CapTable should render the table with errors 1`] = `
             For example, 3 days
           </span>
           <ExpirySelector
+            cap={true}
             defaultDuration="2"
             defaultUnit="week"
             errors={
@@ -524,6 +526,7 @@ exports[`CapTable should render the table with errors 1`] = `
           hideErrorBar={true}
         >
           <ExpirySelector
+            cap={true}
             defaultDuration="2"
             defaultUnit="day"
             errors={
@@ -706,6 +709,7 @@ exports[`CapTable should render the table with no errors 1`] = `
             For example, 3 days
           </span>
           <ExpirySelector
+            cap={true}
             defaultDuration="2"
             defaultUnit="week"
             errors={Array []}
@@ -821,6 +825,7 @@ exports[`CapTable should render the table with no errors 1`] = `
           hideErrorBar={true}
         >
           <ExpirySelector
+            cap={true}
             defaultDuration="2"
             defaultUnit="day"
             errors={Array []}

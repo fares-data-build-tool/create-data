@@ -2,8 +2,8 @@ import { NextApiResponse } from 'next';
 import { getCaps, insertCaps, updateCaps } from '../../data/auroradb';
 import { CREATE_CAPS_ATTRIBUTE } from '../../constants/attributes';
 import { Cap, ErrorInfo, NextApiRequestWithSession } from '../../interfaces/index';
-import { CapStart, DayOfTheWeek, ExpiryUnit, FromDb } from '../../interfaces/matchingJsonTypes';
-import { getAndValidateNoc, isADayOfTheWeek, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { CapExpiryUnit, FromDb } from '../../interfaces/matchingJsonTypes';
+import { getAndValidateNoc, redirectTo, redirectToError } from '../../utils/apiUtils';
 import {
     checkDurationIsValid,
     checkPriceIsValid,
@@ -12,15 +12,12 @@ import {
     removeExcessWhiteSpace,
 } from '../../utils/apiUtils/validator';
 import { updateSessionAttribute } from '../../utils/sessions';
-import { isADayOrLonger } from '../createCaps';
 
 export interface InputtedCap {
     name: string | undefined;
     price: string | undefined;
     durationAmount: string | undefined;
     durationUnits: string | undefined;
-    type: string | undefined;
-    startDay: string | undefined;
 }
 
 export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: ErrorInfo[]; createdCap: Cap } => {
@@ -55,45 +52,15 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
         errors.push({ errorMessage: capDurationUnitsError, id: 'cap-duration-unit' });
     }
 
-    let capStart = undefined;
-
-    if (isADayOrLonger(inputtedCap.durationAmount, inputtedCap.durationUnits)) {
-        const capType = inputtedCap.type;
-
-        if (!(capType === 'fixedWeekdays' || capType === 'rollingDays')) {
-            errors.push({
-                id: 'fixed-weekdays',
-                errorMessage: 'Choose an option regarding your cap ticket start',
-            });
-        }
-
-        if (capType === 'fixedWeekdays') {
-            if (!isADayOfTheWeek(inputtedCap.startDay)) {
-                errors.push({
-                    id: 'start',
-                    errorMessage: 'Select a start day',
-                });
-            }
-        }
-
-        if (capType === 'fixedWeekdays' || capType === 'rollingDays') {
-            capStart = {
-                type: capType as CapStart,
-                startDay: capType === 'rollingDays' ? undefined : (inputtedCap.startDay as DayOfTheWeek),
-            };
-        }
-    }
-
     const cap = {
         name: trimmedCapName,
         price: trimmedCapPrice,
         durationAmount: trimmedCapDurationAmount,
-        durationUnits: (inputtedCap.durationUnits as ExpiryUnit) || '',
+        durationUnits: (inputtedCap.durationUnits as CapExpiryUnit) || '',
     };
 
     const createdCap: Cap = {
         capDetails: cap,
-        capStart,
     };
 
     return {
@@ -105,7 +72,7 @@ export const validateAndFormatCapInputs = (inputtedCap: InputtedCap): { errors: 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
         const noc = getAndValidateNoc(req, res);
-        const { capName, capPrice, capDuration, capDurationUnits, capStart, startDay } = req.body;
+        const { capName, capPrice, capDuration, capDurationUnits } = req.body;
         const id = req.body.id && Number(req.body.id);
 
         const inputtedCap: InputtedCap = {
@@ -113,8 +80,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             price: capPrice,
             durationAmount: capDuration,
             durationUnits: capDurationUnits,
-            type: capStart,
-            startDay: startDay,
         };
 
         const { createdCap, errors } = validateAndFormatCapInputs(inputtedCap);

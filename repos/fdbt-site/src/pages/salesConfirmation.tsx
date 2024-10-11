@@ -34,7 +34,7 @@ export interface SalesConfirmationProps {
     endDate: string | null;
     fareType: string;
     hasCaps: boolean;
-    selectedCap: (Cap & { id: number }) | null;
+    selectedCaps: (Cap & { id: number })[] | null;
     isCarnet: boolean;
 }
 
@@ -55,7 +55,7 @@ export const buildSalesConfirmationElements = (
     fareType: string,
     hasCaps: boolean,
     isCarnet: boolean,
-    selectedCap?: (Cap & { id: number }) | null,
+    selectedCaps: (Cap & { id: number })[] | null,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
     if (isProductWithSalesOfferPackages(salesOfferPackages)) {
@@ -107,8 +107,8 @@ export const buildSalesConfirmationElements = (
 
     if (fareTypeIsAllowedToAddACap(fareType) && hasCaps && !isCarnet) {
         confirmationElements.push({
-            name: 'Cap',
-            content: selectedCap?.capDetails.name || 'N/A',
+            name: 'Caps',
+            content: selectedCaps?.map((cap) => cap.capDetails.name).join(', ') || 'N/A',
             href: 'selectCaps',
         });
     }
@@ -123,7 +123,7 @@ const SalesConfirmation = ({
     endDate,
     fareType,
     hasCaps,
-    selectedCap,
+    selectedCaps,
     isCarnet,
 }: SalesConfirmationProps): ReactElement => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -146,7 +146,7 @@ const SalesConfirmation = ({
                             fareType,
                             hasCaps,
                             isCarnet,
-                            selectedCap,
+                            selectedCaps,
                         )}
                     />
                     <h2 className="govuk-heading-m">Now submit your data to create the product</h2>
@@ -200,9 +200,13 @@ export const getServerSideProps = async (
             csrfToken,
             fareType: fareTypeAttribute.fareType,
             hasCaps: caps.length > 0,
-            selectedCap:
-                !!capAttribute && !('errors' in capAttribute)
-                    ? ((await getCapByNocAndId(nocCode, capAttribute.id)) as Cap & { id: number })
+            selectedCaps:
+                !!capAttribute && !('errors' in capAttribute) && capAttribute.length > 0
+                    ? ((await Promise.all(
+                          capAttribute.map(async (c) => await getCapByNocAndId(nocCode, c.id)),
+                      )) as (Cap & {
+                          id: number;
+                      })[])
                     : null,
             isCarnet,
         },

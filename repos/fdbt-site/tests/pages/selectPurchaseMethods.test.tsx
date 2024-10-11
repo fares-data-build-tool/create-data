@@ -112,7 +112,7 @@ describe('pages', () => {
         errors: [{ errorMessage: 'Choose at least one service from the options', id: 'sales-offer-package-error' }],
         csrfToken: '',
         backHref: '',
-        isCapped: false,
+        isCapped: true,
     };
 
     describe('selectPurchaseMethods', () => {

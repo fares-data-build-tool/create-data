@@ -71,6 +71,15 @@ import {
     expectedFlatFareGeoZoneTicketWithExemptions,
 } from '../../../testData/mockData';
 import { CarnetExpiryUnit, ExpiryUnit, PeriodExpiry, TicketType } from '../../../../src/interfaces/matchingJsonTypes';
+import * as util from '../../../../src/utils/apiUtils';
+
+beforeEach(() => {
+    jest.spyOn(util, 'getNocFromIdToken').mockImplementationOnce(() => 'BLAC');
+});
+
+afterEach(() => {
+    jest.resetAllMocks();
+});
 
 describe('userData', () => {
     describe('isTermTime', () => {
@@ -2062,7 +2071,6 @@ describe('userData', () => {
                             },
                         ] as MultiProduct[],
                     },
-                    [MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE]: mockMultiOperatorServices,
                     [PERIOD_EXPIRY_ATTRIBUTE]: {
                         productValidity: '24hr',
                         productEndTime: '',

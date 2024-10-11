@@ -83,7 +83,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 splitUserDataJson.map(async (splitJson, index) => {
                     await insertDataToProductsBucketAndProductsTable(splitJson, noc, `${uuid}_${index}`, { req, res });
                 });
-
                 await putUserDataInProductsBucket(userDataJson, uuid, noc);
             } else {
                 await insertDataToProductsBucketAndProductsTable(userDataJson, noc, uuid, {
