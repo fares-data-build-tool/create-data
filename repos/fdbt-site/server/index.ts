@@ -8,6 +8,7 @@ import setupLogging from './middleware/logging';
 import setupSessions from './middleware/sessions';
 import logger from '../src/utils/logger';
 import { redirectTo } from '../src/utils/apiUtils';
+import rateLimit from 'express-rate-limit';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = nextjs({ dev });
@@ -52,7 +53,7 @@ const setStaticRoutes = (server: Express): void => {
 
     server.use(
         '/assets',
-        express.static(`${rootPath}/node_modules/govuk-frontend/govuk/assets`, {
+        express.static(`${rootPath}/node_modules/govuk-frontend/dist/govuk/assets`, {
             maxAge: '365d',
             immutable: true,
         }),
@@ -68,7 +69,7 @@ const setStaticRoutes = (server: Express): void => {
 
     server.use(
         '/scripts',
-        express.static(`${rootPath}/node_modules/govuk-frontend/govuk`, {
+        express.static(`${rootPath}/node_modules/govuk-frontend/dist/govuk/`, {
             maxAge: '365d',
             immutable: true,
         }),
@@ -100,6 +101,23 @@ void (async (): Promise<void> => {
             server.post(route, (req: Request, res: Response) => {
                 return handle(req, res);
             });
+        });
+
+        const definePricingPerDistanceLimiter = rateLimit({
+            windowMs: 15 * 60 * 1000,
+            max: 100,
+            standardHeaders: true,
+            legacyHeaders: false,
+            message: 'Too many requests from this IP, please try again after 15 minutes',
+        });
+
+        server.use('/definePricingPerDistance', definePricingPerDistanceLimiter);
+
+        server.get('/definePricingPerDistance', requireAuth, (req, res) => {
+            if (process.env.STAGE !== 'dev') {
+                redirectTo(res, '/error');
+            }
+            return handle(req, res);
         });
 
         server.get('*', requireAuth, (req: Request, res: Response) => {

@@ -104,7 +104,7 @@ const CapExpiry = ({ errors = [], fieldset, csrfToken }: CapExpiryProps): ReactE
                     <ErrorSummary errors={errors}>
                         {errors.some((error) => error.id === 'product-end-time') && (
                             <p className="govuk-body-m govuk-!-margin-bottom-0 govuk-!-margin-top-4">
-                                <span className="govuk-warning-text__assistive">Warning</span>
+                                <span className="govuk-visually-hidden">Warning</span>
                                 You can set your fare day end in{' '}
                                 <a className="govuk-link" href="/manageFareDayEnd">
                                     operator settings.

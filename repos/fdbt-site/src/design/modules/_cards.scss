@@ -56,15 +56,10 @@
             }
 
             .actions__delete {
-                color: govuk-colour('red');
                 padding: 0;
                 border: 0;
                 text-decoration: underline;
                 cursor: pointer;
-
-                &:hover {
-                    color: govuk-shade(govuk-colour('red'), 20%);
-                }
             }
         }
 

@@ -24,26 +24,26 @@ exports[`pages serviceList should render an error when the error flag is set to 
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--s"
-      >
-        <h1
-          className="govuk-heading-l"
-          id="service-list-page-heading"
-        >
-          Which 
-          services is the ticket valid for?
-        </h1>
-      </legend>
-      <span
-        className="govuk-heading-s"
-      >
-        Select all 
-        services that apply
-      </span>
       <fieldset
         className="govuk-fieldset"
       >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--s"
+        >
+          <h1
+            className="govuk-heading-l"
+            id="service-list-page-heading"
+          >
+            Which 
+            services is the ticket valid for?
+          </h1>
+        </legend>
+        <span
+          className="govuk-heading-s"
+        >
+          Select all 
+          services that apply
+        </span>
         <input
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
@@ -52,6 +52,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
           type="button"
           value="Unselect All Services"
         />
+        <br />
         <span
           className="govuk-hint"
           id="txc-hint"
@@ -65,10 +66,12 @@ exports[`pages serviceList should render an error when the error flag is set to 
           <a
             href="/contact"
           >
-            here
+            on the contact page
           </a>
           .
         </span>
+        <br />
+        <br />
         <FormElementWrapper
           addFormGroupError={false}
           errorClass=""
@@ -97,7 +100,7 @@ exports[`pages serviceList should render an error when the error flag is set to 
           className="govuk-warning-text__text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            className="govuk-visually-hidden"
           >
             Warning
           </span>
@@ -177,24 +180,20 @@ exports[`pages serviceList should render an error when the error flag is set to 
                     }
                     errors={Array []}
                   >
-                    <fieldset
-                      className="govuk-fieldset"
+                    <FormElementWrapper
+                      errorClass="govuk-file-upload--error"
+                      errorId="csv-upload"
+                      errors={Array []}
                     >
-                      <FormElementWrapper
-                        errorClass="govuk-file-upload--error"
-                        errorId="csv-upload"
-                        errors={Array []}
-                      >
-                        <input
-                          accept=".csv,.xlsx,.xls"
-                          aria-describedby="csv-upload-hint"
-                          className="govuk-file-upload"
-                          id="csv-upload"
-                          name="csv-upload"
-                          type="file"
-                        />
-                      </FormElementWrapper>
-                    </fieldset>
+                      <input
+                        accept=".csv,.xlsx,.xls"
+                        aria-describedby="csv-upload-hint"
+                        className="govuk-file-upload"
+                        id="csv-upload"
+                        name="csv-upload"
+                        type="file"
+                      />
+                    </FormElementWrapper>
                   </FormGroupWrapper>
                 </div>
                 <details
@@ -275,28 +274,28 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--s"
-      >
-        <h1
-          className="govuk-heading-l"
-          id="service-list-page-heading"
-        >
-          Which 
-          of your 
-          services is the ticket valid for?
-        </h1>
-      </legend>
-      <span
-        className="govuk-heading-s"
-      >
-        Select all 
-        of your 
-        services that apply
-      </span>
       <fieldset
         className="govuk-fieldset"
       >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--s"
+        >
+          <h1
+            className="govuk-heading-l"
+            id="service-list-page-heading"
+          >
+            Which 
+            of your 
+            services is the ticket valid for?
+          </h1>
+        </legend>
+        <span
+          className="govuk-heading-s"
+        >
+          Select all 
+          of your 
+          services that apply
+        </span>
         <input
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
@@ -305,6 +304,7 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           type="button"
           value="Select All Services"
         />
+        <br />
         <span
           className="govuk-hint"
           id="txc-hint"
@@ -318,10 +318,12 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           <a
             href="/contact"
           >
-            here
+            on the contact page
           </a>
           .
         </span>
+        <br />
+        <br />
         <FormElementWrapper
           addFormGroupError={false}
           errorClass=""
@@ -372,7 +374,7 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
           className="govuk-warning-text__text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            className="govuk-visually-hidden"
           >
             Warning
           </span>
@@ -452,24 +454,20 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
                     }
                     errors={Array []}
                   >
-                    <fieldset
-                      className="govuk-fieldset"
+                    <FormElementWrapper
+                      errorClass="govuk-file-upload--error"
+                      errorId="csv-upload"
+                      errors={Array []}
                     >
-                      <FormElementWrapper
-                        errorClass="govuk-file-upload--error"
-                        errorId="csv-upload"
-                        errors={Array []}
-                      >
-                        <input
-                          accept=".csv,.xlsx,.xls"
-                          aria-describedby="csv-upload-hint"
-                          className="govuk-file-upload"
-                          id="csv-upload"
-                          name="csv-upload"
-                          type="file"
-                        />
-                      </FormElementWrapper>
-                    </fieldset>
+                      <input
+                        accept=".csv,.xlsx,.xls"
+                        aria-describedby="csv-upload-hint"
+                        className="govuk-file-upload"
+                        id="csv-upload"
+                        name="csv-upload"
+                        type="file"
+                      />
+                    </FormElementWrapper>
                   </FormGroupWrapper>
                 </div>
                 <details
@@ -553,26 +551,26 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--s"
-      >
-        <h1
-          className="govuk-heading-l"
-          id="service-list-page-heading"
-        >
-          Which 
-          services is the ticket valid for?
-        </h1>
-      </legend>
-      <span
-        className="govuk-heading-s"
-      >
-        Select all 
-        services that apply
-      </span>
       <fieldset
         className="govuk-fieldset"
       >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--s"
+        >
+          <h1
+            className="govuk-heading-l"
+            id="service-list-page-heading"
+          >
+            Which 
+            services is the ticket valid for?
+          </h1>
+        </legend>
+        <span
+          className="govuk-heading-s"
+        >
+          Select all 
+          services that apply
+        </span>
         <input
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
@@ -581,6 +579,7 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
           type="button"
           value="Select All Services"
         />
+        <br />
         <span
           className="govuk-hint"
           id="txc-hint"
@@ -594,10 +593,12 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
           <a
             href="/contact"
           >
-            here
+            on the contact page
           </a>
           .
         </span>
+        <br />
+        <br />
         <FormElementWrapper
           addFormGroupError={false}
           errorClass=""
@@ -708,7 +709,7 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
           className="govuk-warning-text__text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            className="govuk-visually-hidden"
           >
             Warning
           </span>
@@ -788,24 +789,20 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
                     }
                     errors={Array []}
                   >
-                    <fieldset
-                      className="govuk-fieldset"
+                    <FormElementWrapper
+                      errorClass="govuk-file-upload--error"
+                      errorId="csv-upload"
+                      errors={Array []}
                     >
-                      <FormElementWrapper
-                        errorClass="govuk-file-upload--error"
-                        errorId="csv-upload"
-                        errors={Array []}
-                      >
-                        <input
-                          accept=".csv,.xlsx,.xls"
-                          aria-describedby="csv-upload-hint"
-                          className="govuk-file-upload"
-                          id="csv-upload"
-                          name="csv-upload"
-                          type="file"
-                        />
-                      </FormElementWrapper>
-                    </fieldset>
+                      <input
+                        accept=".csv,.xlsx,.xls"
+                        aria-describedby="csv-upload-hint"
+                        className="govuk-file-upload"
+                        id="csv-upload"
+                        name="csv-upload"
+                        type="file"
+                      />
+                    </FormElementWrapper>
                   </FormGroupWrapper>
                 </div>
                 <details
@@ -886,26 +883,26 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
     <div
       className="govuk-form-group "
     >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--s"
-      >
-        <h1
-          className="govuk-heading-l"
-          id="service-list-page-heading"
-        >
-          Which 
-          services is the ticket valid for?
-        </h1>
-      </legend>
-      <span
-        className="govuk-heading-s"
-      >
-        Select all 
-        services that apply
-      </span>
       <fieldset
         className="govuk-fieldset"
       >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--s"
+        >
+          <h1
+            className="govuk-heading-l"
+            id="service-list-page-heading"
+          >
+            Which 
+            services is the ticket valid for?
+          </h1>
+        </legend>
+        <span
+          className="govuk-heading-s"
+        >
+          Select all 
+          services that apply
+        </span>
         <input
           className="govuk-button govuk-button--secondary"
           id="select-all-button"
@@ -914,6 +911,7 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
           type="button"
           value="Select All Services"
         />
+        <br />
         <span
           className="govuk-hint"
           id="txc-hint"
@@ -927,10 +925,12 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
           <a
             href="/contact"
           >
-            here
+            on the contact page
           </a>
           .
         </span>
+        <br />
+        <br />
         <FormElementWrapper
           addFormGroupError={false}
           errorClass=""
@@ -981,7 +981,7 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
           className="govuk-warning-text__text"
         >
           <span
-            className="govuk-warning-text__assistive"
+            className="govuk-visually-hidden"
           >
             Warning
           </span>
@@ -1061,24 +1061,20 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
                     }
                     errors={Array []}
                   >
-                    <fieldset
-                      className="govuk-fieldset"
+                    <FormElementWrapper
+                      errorClass="govuk-file-upload--error"
+                      errorId="csv-upload"
+                      errors={Array []}
                     >
-                      <FormElementWrapper
-                        errorClass="govuk-file-upload--error"
-                        errorId="csv-upload"
-                        errors={Array []}
-                      >
-                        <input
-                          accept=".csv,.xlsx,.xls"
-                          aria-describedby="csv-upload-hint"
-                          className="govuk-file-upload"
-                          id="csv-upload"
-                          name="csv-upload"
-                          type="file"
-                        />
-                      </FormElementWrapper>
-                    </fieldset>
+                      <input
+                        accept=".csv,.xlsx,.xls"
+                        aria-describedby="csv-upload-hint"
+                        className="govuk-file-upload"
+                        id="csv-upload"
+                        name="csv-upload"
+                        type="file"
+                      />
+                    </FormElementWrapper>
                   </FormGroupWrapper>
                 </div>
                 <details

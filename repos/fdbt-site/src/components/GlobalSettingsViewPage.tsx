@@ -123,6 +123,7 @@ export const GlobalSettingsViewPage = <T extends Entity>({
                                 entityName={popUpState.entityName}
                                 deleteUrl={buildDeleteUrl(popUpState.entityId, csrfToken)}
                                 cancelActionHandler={cancelActionHandler}
+                                isOpen={!!popUpState.entityId}
                             />
                         )}
                     </div>

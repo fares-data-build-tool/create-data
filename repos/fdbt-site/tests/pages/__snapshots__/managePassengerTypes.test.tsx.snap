@@ -319,12 +319,13 @@ exports[`pages manage passenger types should render correctly 1`] = `
       <div
         className="govuk-form-group"
       >
-        <div
+        <label
           className="govuk-hint"
+          htmlFor="ageRangeMin"
           id="age-range-min"
         >
           Minimum age (if applicable)
-        </div>
+        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="age-range-min"
@@ -332,6 +333,7 @@ exports[`pages manage passenger types should render correctly 1`] = `
         >
           <input
             className="govuk-input govuk-input--width-5"
+            id="ageRangeMin"
             name="ageRangeMin"
             type="text"
           />
@@ -340,12 +342,13 @@ exports[`pages manage passenger types should render correctly 1`] = `
       <div
         className="govuk-form-group"
       >
-        <div
+        <label
           className="govuk-hint"
+          htmlFor="ageRangeMax"
           id="age-range-max"
         >
           Maximum age (if applicable)
-        </div>
+        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="age-range-max"
@@ -353,6 +356,7 @@ exports[`pages manage passenger types should render correctly 1`] = `
         >
           <input
             className="govuk-input govuk-input--width-5"
+            id="ageRangeMax"
             name="ageRangeMax"
             type="text"
           />
@@ -811,12 +815,13 @@ exports[`pages manage passenger types should render correctly in edit mode 1`] =
       <div
         className="govuk-form-group"
       >
-        <div
+        <label
           className="govuk-hint"
+          htmlFor="ageRangeMin"
           id="age-range-min"
         >
           Minimum age (if applicable)
-        </div>
+        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="age-range-min"
@@ -824,6 +829,7 @@ exports[`pages manage passenger types should render correctly in edit mode 1`] =
         >
           <input
             className="govuk-input govuk-input--width-5"
+            id="ageRangeMin"
             name="ageRangeMin"
             type="text"
           />
@@ -832,12 +838,13 @@ exports[`pages manage passenger types should render correctly in edit mode 1`] =
       <div
         className="govuk-form-group"
       >
-        <div
+        <label
           className="govuk-hint"
+          htmlFor="ageRangeMax"
           id="age-range-max"
         >
           Maximum age (if applicable)
-        </div>
+        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="age-range-max"
@@ -845,6 +852,7 @@ exports[`pages manage passenger types should render correctly in edit mode 1`] =
         >
           <input
             className="govuk-input govuk-input--width-5"
+            id="ageRangeMax"
             name="ageRangeMax"
             type="text"
           />
@@ -1319,12 +1327,13 @@ exports[`pages manage passenger types should render error state on name form gro
       <div
         className="govuk-form-group"
       >
-        <div
+        <label
           className="govuk-hint"
+          htmlFor="ageRangeMin"
           id="age-range-min"
         >
           Minimum age (if applicable)
-        </div>
+        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="age-range-min"
@@ -1340,6 +1349,7 @@ exports[`pages manage passenger types should render error state on name form gro
           <input
             className="govuk-input govuk-input--width-5"
             defaultValue="4"
+            id="ageRangeMin"
             name="ageRangeMin"
             type="text"
           />
@@ -1348,12 +1358,13 @@ exports[`pages manage passenger types should render error state on name form gro
       <div
         className="govuk-form-group"
       >
-        <div
+        <label
           className="govuk-hint"
+          htmlFor="ageRangeMax"
           id="age-range-max"
         >
           Maximum age (if applicable)
-        </div>
+        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="age-range-max"
@@ -1369,6 +1380,7 @@ exports[`pages manage passenger types should render error state on name form gro
           <input
             className="govuk-input govuk-input--width-5"
             defaultValue="15"
+            id="ageRangeMax"
             name="ageRangeMax"
             type="text"
           />
@@ -1850,12 +1862,13 @@ exports[`pages manage passenger types should render error state on passenger typ
       <div
         className="govuk-form-group"
       >
-        <div
+        <label
           className="govuk-hint"
+          htmlFor="ageRangeMin"
           id="age-range-min"
         >
           Minimum age (if applicable)
-        </div>
+        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="age-range-min"
@@ -1871,6 +1884,7 @@ exports[`pages manage passenger types should render error state on passenger typ
           <input
             className="govuk-input govuk-input--width-5"
             defaultValue="15"
+            id="ageRangeMin"
             name="ageRangeMin"
             type="text"
           />
@@ -1879,12 +1893,13 @@ exports[`pages manage passenger types should render error state on passenger typ
       <div
         className="govuk-form-group"
       >
-        <div
+        <label
           className="govuk-hint"
+          htmlFor="ageRangeMax"
           id="age-range-max"
         >
           Maximum age (if applicable)
-        </div>
+        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="age-range-max"
@@ -1900,6 +1915,7 @@ exports[`pages manage passenger types should render error state on passenger typ
           <input
             className="govuk-input govuk-input--width-5"
             defaultValue="65"
+            id="ageRangeMax"
             name="ageRangeMax"
             type="text"
           />
@@ -2360,12 +2376,13 @@ exports[`pages manage passenger types should render update passenger type button
       <div
         className="govuk-form-group"
       >
-        <div
+        <label
           className="govuk-hint"
+          htmlFor="ageRangeMin"
           id="age-range-min"
         >
           Minimum age (if applicable)
-        </div>
+        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="age-range-min"
@@ -2374,6 +2391,7 @@ exports[`pages manage passenger types should render update passenger type button
           <input
             className="govuk-input govuk-input--width-5"
             defaultValue="4"
+            id="ageRangeMin"
             name="ageRangeMin"
             type="text"
           />
@@ -2382,12 +2400,13 @@ exports[`pages manage passenger types should render update passenger type button
       <div
         className="govuk-form-group"
       >
-        <div
+        <label
           className="govuk-hint"
+          htmlFor="ageRangeMax"
           id="age-range-max"
         >
           Maximum age (if applicable)
-        </div>
+        </label>
         <FormElementWrapper
           errorClass="govuk-input--error"
           errorId="age-range-max"
@@ -2396,6 +2415,7 @@ exports[`pages manage passenger types should render update passenger type button
           <input
             className="govuk-input govuk-input--width-5"
             defaultValue="15"
+            id="ageRangeMax"
             name="ageRangeMax"
             type="text"
           />

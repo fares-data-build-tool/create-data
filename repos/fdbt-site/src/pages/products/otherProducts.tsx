@@ -65,6 +65,7 @@ const OtherProducts = ({ otherProducts, csrfToken }: OtherProductsProps): ReactE
                                     setPopUpState(undefined);
                                 }}
                                 hintText="When you delete this product it will be removed from the system and will no longer be included in future exports."
+                                isOpen={!!popUpState.productId}
                             />
                         )}
                     </div>
@@ -109,8 +110,12 @@ const otherProductsTable = (
                         <th scope="col" className="govuk-table__header">
                             Product status
                         </th>
-                        <th scope="col" className="govuk-table__header" />
-                        <th scope="col" className="govuk-table__header" />
+                        <th scope="col" className="govuk-table__header">
+                            <span className="govuk-visually-hidden">Copy</span>
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            <span className="govuk-visually-hidden">Delete</span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody className="govuk-table__body">

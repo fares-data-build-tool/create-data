@@ -1,29 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`GenerateReturnPopup should render the GenerateReturnPopup 1`] = `
-<div
-  className="popup"
+<Trap
+  active={true}
 >
   <div
-    className="popup__content"
+    className="popup"
   >
-    <h1
-      className="govuk-heading-m"
+    <div
+      className="popup__content"
     >
-      A return cannot be auto-generated for this product.
-    </h1>
-    <span
-      className="govuk-hint"
-      id="delete-hint"
-    >
-      Two singles must be created, one for inbound and one for outbound. They must have the same passenger type and not be expired. Services with one direction (circular services for example) cannot be used to generate returns.
-    </span>
-    <button
-      className="govuk-button govuk-button--secondary"
-      onClick={[MockFunction]}
-    >
-      Close
-    </button>
+      <h1
+        className="govuk-heading-m"
+      >
+        A return cannot be auto-generated for this product.
+      </h1>
+      <span
+        className="govuk-hint"
+        id="delete-hint"
+      >
+        Two singles must be created, one for inbound and one for outbound. They must have the same passenger type and not be expired. Services with one direction (circular services for example) cannot be used to generate returns.
+      </span>
+      <button
+        className="govuk-button govuk-button--secondary"
+        onClick={[MockFunction]}
+      >
+        Close
+      </button>
+    </div>
   </div>
-</div>
+</Trap>
 `;

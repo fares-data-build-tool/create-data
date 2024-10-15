@@ -1,7 +1,7 @@
-import { Express } from 'express';
 import AWS, { DynamoDB } from 'aws-sdk';
-import session, { SessionOptions, Store } from 'express-session';
 import connectDynamoDb from 'connect-dynamodb';
+import { Express } from 'express';
+import session, { SessionOptions, Store } from 'express-session';
 
 interface DynamoDbOptions {
     table: string;
@@ -22,7 +22,12 @@ export default (server: Express): void => {
     };
 
     if (process.env.NODE_ENV === 'development') {
-        dynamoDbOptions.client = new AWS.DynamoDB({ endpoint: 'http://localhost:4569', region: 'eu-west-2' });
+        dynamoDbOptions.client = new AWS.DynamoDB({
+            endpoint: 'http://127.0.0.1:4566',
+            region: 'eu-west-2',
+            accessKeyId: 'DUMMY',
+            secretAccessKey: 'DUMMY',
+        });
     }
 
     const sessionOptions: SessionOptions = {

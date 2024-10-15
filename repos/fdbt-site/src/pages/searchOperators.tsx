@@ -79,8 +79,8 @@ export const showSelectedOperators = (
                     errors.length > 0 && errors[0].id == 'operator-group-name' ? 'govuk-form-group--error' : ''
                 }`}
             >
-                <fieldset className="govuk-fieldset" aria-describedby="selected-operators">
-                    <legend className="govuk-fieldset__legend--m">
+                <fieldset className="govuk-fieldset">
+                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                         <h3 className="govuk-fieldset__heading" id="operator-group-name-heading">
                             Enter a name for this group
                         </h3>
@@ -96,6 +96,7 @@ export const showSelectedOperators = (
                         className={`govuk-input ${
                             errors.length > 0 && errors[0].id == 'operator-group-name' ? 'govuk-input--error' : ''
                         }`}
+                        aria-labelledby="operator-group-name-heading"
                         name="operatorGroupName"
                         type="text"
                         key="operator-group-name"
@@ -103,7 +104,7 @@ export const showSelectedOperators = (
                     />
                 </fieldset>
             </div>
-            <table className="border-collapse width-100">
+            <table className="govuk-table border-collapse width-100">
                 <caption className="govuk-table__caption govuk-table__caption--m">Selected operator(s)</caption>
                 <thead className="selectedOperators-header-color">
                     <tr>
@@ -158,7 +159,9 @@ export const renderSearchBox = (
 ): ReactElement => {
     const fieldsetProps = {
         legend: {
-            className: operatorsAdded ? 'govuk-fieldset__legend--m' : 'govuk-fieldset__legend--l',
+            className: operatorsAdded
+                ? 'govuk-fieldset__legend govuk-fieldset__legend--m'
+                : 'govuk-fieldset__legend govuk-fieldset__legend--l',
         },
         heading: {
             className: 'govuk-fieldset__heading',
@@ -176,7 +179,7 @@ export const renderSearchBox = (
     });
     return (
         <div className={`govuk-form-group ${searchInputErrors.length > 0 ? 'govuk-form-group--error' : ''}`}>
-            <fieldset className="govuk-fieldset" aria-describedby={fieldsetProps.heading.id}>
+            <fieldset className="govuk-fieldset">
                 <legend className={fieldsetProps.legend.className}>
                     <h2 className={fieldsetProps.heading.className} id={fieldsetProps.heading.id}>
                         {fieldsetProps.heading.content}
@@ -289,13 +292,15 @@ export const showSearchResults = (
                                 const { nocCode, name } = operator;
                                 return (
                                     <div className="govuk-checkboxes__item" key={`checkbox-item-${nocCode}`}>
-                                        <label
+                                        <input
+                                            className="govuk-checkboxes__input"
                                             id={`operator-to-add-${index}`}
-                                            // eslint-disable-next-line jsx-a11y/aria-role
-                                            role="input"
-                                            htmlFor="id"
-                                            className="govuk-label govuk-checkboxes__label"
+                                            type="checkbox"
                                             onClick={() => addOperator(operator.nocCode, operator.name)}
+                                        />
+                                        <label
+                                            className="govuk-label govuk-checkboxes__label"
+                                            htmlFor={`operator-to-add-${index}`}
                                         >
                                             {name} - {nocCode}
                                         </label>

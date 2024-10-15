@@ -17,6 +17,8 @@ import FileAttachment from '../components/FileAttachment';
 import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
 import csvImage from '../assets/images/csv.png';
 import CsrfForm from '../components/CsrfForm';
+import { SUPPORT_EMAIL_ADDRESS } from '../constants';
+import AccessibilityDetails from '../components/AccessibilityDetails';
 
 const title = 'CSV Upload - Create Fares Data Service';
 const description = 'CSV Upload page of the Create Fares Data Service';
@@ -28,6 +30,7 @@ interface CsvUploadProps extends UserDataUploadsProps {
     csvTemplateDisplayName: string;
     csvTemplateSize: string;
     csrfToken: string;
+    supportEmail: string;
 }
 
 const CsvUpload = ({
@@ -38,6 +41,7 @@ const CsvUpload = ({
     csvTemplateDisplayName,
     csvTemplateSize,
     csrfToken,
+    supportEmail,
     ...props
 }: CsvUploadProps): ReactElement => (
     <BaseLayout title={title} description={description} errors={errors}>
@@ -76,6 +80,7 @@ const CsvUpload = ({
                     imageUrl={guidanceDocImage}
                     size={guidanceDocSize}
                 />
+                <AccessibilityDetails supportEmail={supportEmail} />
                 <FileAttachment
                     displayName={csvTemplateDisplayName}
                     attachmentUrl={`${FaresTriangleExampleCsv}`}
@@ -117,6 +122,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Cs
             poundsOrPence,
             csrfToken: getCsrfToken(ctx),
             backHref,
+            supportEmail: SUPPORT_EMAIL_ADDRESS || 'test@example.com',
         },
     };
 };

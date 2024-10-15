@@ -61,7 +61,7 @@ const PointToPointProducts = ({
                             !
                         </span>
                         <strong className="govuk-warning-text__text">
-                            <span className="govuk-warning-text__assistive">Warning</span>
+                            <span className="govuk-visually-hidden">Warning</span>
                             Your service has been updated in BODS. Stops have been added and/or removed since the
                             creation of your product(s). These products will need updating to reflect these changes.
                         </strong>
@@ -86,6 +86,7 @@ const PointToPointProducts = ({
                                     setPopUpState(undefined);
                                 }}
                                 hintText="When you delete this product it will be removed from the system and will no longer be included in future exports."
+                                isOpen={!!popUpState.productId}
                             />
                         )}
                     </div>

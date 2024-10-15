@@ -6,6 +6,7 @@ import {
     PRODUCT_DATE_ATTRIBUTE,
     FARE_TYPE_ATTRIBUTE,
     CAPS_DEFINITION_ATTRIBUTE,
+    CARNET_FARE_TYPE_ATTRIBUTE,
 } from '../constants/attributes';
 import { NextPageContextWithSession, ProductWithSalesOfferPackages, ConfirmationElement, Cap } from '../interfaces';
 import TwoThirdsLayout from '../layout/Layout';
@@ -34,6 +35,7 @@ export interface SalesConfirmationProps {
     fareType: string;
     hasCaps: boolean;
     selectedCap: (Cap & { id: number }) | null;
+    isCarnet: boolean;
 }
 
 export const sopTicketFormatConverter = (enumerations: string[]): string => {
@@ -52,6 +54,7 @@ export const buildSalesConfirmationElements = (
     endDateIn: string | null,
     fareType: string,
     hasCaps: boolean,
+    isCarnet: boolean,
     selectedCap?: (Cap & { id: number }) | null,
 ): ConfirmationElement[] => {
     const confirmationElements: ConfirmationElement[] = [];
@@ -102,7 +105,7 @@ export const buildSalesConfirmationElements = (
         },
     );
 
-    if (fareTypeIsAllowedToAddACap(fareType) && hasCaps) {
+    if (fareTypeIsAllowedToAddACap(fareType) && hasCaps && !isCarnet) {
         confirmationElements.push({
             name: 'Cap',
             content: selectedCap?.capDetails.name || 'N/A',
@@ -121,6 +124,7 @@ const SalesConfirmation = ({
     fareType,
     hasCaps,
     selectedCap,
+    isCarnet,
 }: SalesConfirmationProps): ReactElement => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -141,6 +145,7 @@ const SalesConfirmation = ({
                             endDate,
                             fareType,
                             hasCaps,
+                            isCarnet,
                             selectedCap,
                         )}
                     />
@@ -176,6 +181,7 @@ export const getServerSideProps = async (
     const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
     const nocCode = getAndValidateNoc(ctx);
     const caps = await getCaps(nocCode);
+    const isCarnet = getSessionAttribute(ctx.req, CARNET_FARE_TYPE_ATTRIBUTE) || false;
 
     if (
         !salesOfferPackageInfo ||
@@ -198,6 +204,7 @@ export const getServerSideProps = async (
                 !!capAttribute && !('errors' in capAttribute)
                     ? ((await getCapByNocAndId(nocCode, capAttribute.id)) as Cap & { id: number })
                     : null,
+            isCarnet,
         },
     };
 };

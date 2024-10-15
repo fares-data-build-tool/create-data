@@ -27,7 +27,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
           hideErrorBar={true}
         >
           <label
-            className="govuk-label"
+            className="govuk-label "
             htmlFor="multiple-product-name-0"
           >
             <span
@@ -42,7 +42,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
             </span>
           </label>
           <span
-            className="govuk-hint"
+            className="govuk-hint "
             id="product-name-hint-0"
           >
             50 characters max
@@ -56,7 +56,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
             hideText={true}
           >
             <input
-              aria-describedby="product-name-hint-0"
+              aria-labelledby="product-name-hint-0"
               className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
               defaultValue=""
               id="multiple-product-name-0"
@@ -80,7 +80,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
           hideErrorBar={true}
         >
           <label
-            className="govuk-label"
+            className="govuk-label "
             htmlFor="multiple-product-price-0"
           >
             <span
@@ -95,7 +95,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
             </span>
           </label>
           <span
-            className="govuk-hint"
+            className="govuk-hint "
             id="product-price-hint-0"
           >
             e.g. 2.99
@@ -119,7 +119,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
                 hideText={true}
               >
                 <input
-                  aria-describedby="product-price-hint-0"
+                  aria-labelledby="product-price-hint-0"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
                   defaultValue=""
@@ -158,6 +158,28 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-name-1"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Name - Product 2
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Product name
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-name-hint-1"
+          >
+            50 characters max
+          </span>
+           
           <FormElementWrapper
             addFormGroupError={false}
             errorClass="govuk-input--error"
@@ -166,7 +188,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
             hideText={true}
           >
             <input
-              aria-describedby="product-name-hint-1"
+              aria-labelledby="product-name-hint-1"
               className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
               defaultValue=""
               id="multiple-product-name-1"
@@ -189,6 +211,27 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-price-1"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Price, in pounds - Product 2
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Price
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-price-hint-1"
+          >
+            e.g. 2.99
+          </span>
           <div
             className="govuk-currency-input"
           >
@@ -208,7 +251,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
                 hideText={true}
               >
                 <input
-                  aria-describedby="product-price-hint-1"
+                  aria-labelledby="product-price-hint-1"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
                   defaultValue=""
@@ -247,6 +290,28 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-name-2"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Name - Product 3
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Product name
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-name-hint-2"
+          >
+            50 characters max
+          </span>
+           
           <FormElementWrapper
             addFormGroupError={false}
             errorClass="govuk-input--error"
@@ -255,7 +320,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
             hideText={true}
           >
             <input
-              aria-describedby="product-name-hint-2"
+              aria-labelledby="product-name-hint-2"
               className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
               defaultValue=""
               id="multiple-product-name-2"
@@ -278,6 +343,27 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-price-2"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Price, in pounds - Product 3
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Price
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-price-hint-2"
+          >
+            e.g. 2.99
+          </span>
           <div
             className="govuk-currency-input"
           >
@@ -297,7 +383,7 @@ exports[`product row renders the right amount of rows for a flatFare ticket 1`] 
                 hideText={true}
               >
                 <input
-                  aria-describedby="product-price-hint-2"
+                  aria-labelledby="product-price-hint-2"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
                   defaultValue=""
@@ -342,7 +428,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
           hideErrorBar={true}
         >
           <label
-            className="govuk-label"
+            className="govuk-label "
             htmlFor="multiple-product-name-0"
           >
             <span
@@ -357,7 +443,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
             </span>
           </label>
           <span
-            className="govuk-hint"
+            className="govuk-hint "
             id="product-name-hint-0"
           >
             50 characters max
@@ -371,7 +457,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
             hideText={true}
           >
             <input
-              aria-describedby="product-name-hint-0"
+              aria-labelledby="product-name-hint-0"
               className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
               defaultValue=""
               id="multiple-product-name-0"
@@ -395,7 +481,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
           hideErrorBar={true}
         >
           <label
-            className="govuk-label"
+            className="govuk-label "
             htmlFor="multiple-product-price-0"
           >
             <span
@@ -410,7 +496,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
             </span>
           </label>
           <span
-            className="govuk-hint"
+            className="govuk-hint "
             id="product-price-hint-0"
           >
             e.g. 2.99
@@ -434,7 +520,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
                 hideText={true}
               >
                 <input
-                  aria-describedby="product-price-hint-0"
+                  aria-labelledby="product-price-hint-0"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
                   defaultValue=""
@@ -507,15 +593,14 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
           errors={Array []}
           hideErrorBar={true}
         >
-          <label
+          <p
             className="govuk-label"
-            htmlFor="product-details-carnet-expiry"
           >
             Carnet expiry
-          </label>
+          </p>
           <span
             className="govuk-hint"
-            id="product-carnet-expiry-hint"
+            id="product-carnet-expiry-hint-0"
           >
             e.g. 2 months
           </span>
@@ -524,7 +609,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
             defaultDuration=""
             errors={Array []}
             hideFormGroupError={true}
-            hintId="product-carnet-expiry-hint"
+            hintId="product-carnet-expiry-hint-0"
             quantityId="product-details-carnet-expiry-quantity-0"
             quantityName="carnetExpiryDurationInput0"
             unitId="product-details-carnet-expiry-unit-0"
@@ -558,6 +643,28 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-name-1"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Name - Product 2
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Product name
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-name-hint-1"
+          >
+            50 characters max
+          </span>
+           
           <FormElementWrapper
             addFormGroupError={false}
             errorClass="govuk-input--error"
@@ -566,7 +673,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
             hideText={true}
           >
             <input
-              aria-describedby="product-name-hint-1"
+              aria-labelledby="product-name-hint-1"
               className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
               defaultValue=""
               id="multiple-product-name-1"
@@ -589,6 +696,27 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-price-1"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Price, in pounds - Product 2
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Price
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-price-hint-1"
+          >
+            e.g. 2.99
+          </span>
           <div
             className="govuk-currency-input"
           >
@@ -608,7 +736,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
                 hideText={true}
               >
                 <input
-                  aria-describedby="product-price-hint-1"
+                  aria-labelledby="product-price-hint-1"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
                   defaultValue=""
@@ -670,7 +798,7 @@ exports[`product row renders the right amount of rows for a flatfare carnet 1`] 
             defaultDuration=""
             errors={Array []}
             hideFormGroupError={true}
-            hintId="product-carnet-expiry-hint"
+            hintId="product-carnet-expiry-hint-1"
             quantityId="product-details-carnet-expiry-quantity-1"
             quantityName="carnetExpiryDurationInput1"
             unitId="product-details-carnet-expiry-unit-1"
@@ -710,7 +838,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
           hideErrorBar={true}
         >
           <label
-            className="govuk-label"
+            className="govuk-label "
             htmlFor="multiple-product-name-0"
           >
             <span
@@ -725,7 +853,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
             </span>
           </label>
           <span
-            className="govuk-hint"
+            className="govuk-hint "
             id="product-name-hint-0"
           >
             50 characters max
@@ -739,7 +867,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
             hideText={true}
           >
             <input
-              aria-describedby="product-name-hint-0"
+              aria-labelledby="product-name-hint-0"
               className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
               defaultValue=""
               id="multiple-product-name-0"
@@ -763,7 +891,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
           hideErrorBar={true}
         >
           <label
-            className="govuk-label"
+            className="govuk-label "
             htmlFor="multiple-product-price-0"
           >
             <span
@@ -778,7 +906,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
             </span>
           </label>
           <span
-            className="govuk-hint"
+            className="govuk-hint "
             id="product-price-hint-0"
           >
             e.g. 2.99
@@ -802,7 +930,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
                 hideText={true}
               >
                 <input
-                  aria-describedby="product-price-hint-0"
+                  aria-labelledby="product-price-hint-0"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
                   defaultValue=""
@@ -828,15 +956,14 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
-          <label
-            className="govuk-label"
-            htmlFor="product-details-period-duration"
+          <p
+            className="govuk-label "
           >
             Period duration
-          </label>
+          </p>
           <span
-            className="govuk-hint"
-            id="product-period-duration-hint"
+            className="govuk-hint "
+            id="product-period-duration-hint-0"
           >
             For example, 3 days
           </span>
@@ -845,7 +972,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
             defaultDuration=""
             errors={Array []}
             hideFormGroupError={true}
-            hintId="product-period-duration-hint"
+            hintId="product-period-duration-hint-0"
             quantityId="product-details-period-duration-quantity-0"
             quantityName="multipleProductDurationInput0"
             school={true}
@@ -914,15 +1041,14 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
-          <label
+          <p
             className="govuk-label"
-            htmlFor="product-details-carnet-expiry"
           >
             Carnet expiry
-          </label>
+          </p>
           <span
             className="govuk-hint"
-            id="product-carnet-expiry-hint"
+            id="product-carnet-expiry-hint-0"
           >
             e.g. 2 months
           </span>
@@ -931,7 +1057,7 @@ exports[`product row renders the right amount of rows for a period carnet 1`] = 
             defaultDuration=""
             errors={Array []}
             hideFormGroupError={true}
-            hintId="product-carnet-expiry-hint"
+            hintId="product-carnet-expiry-hint-0"
             quantityId="product-details-carnet-expiry-quantity-0"
             quantityName="carnetExpiryDurationInput0"
             unitId="product-details-carnet-expiry-unit-0"
@@ -971,7 +1097,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           hideErrorBar={true}
         >
           <label
-            className="govuk-label"
+            className="govuk-label "
             htmlFor="multiple-product-name-0"
           >
             <span
@@ -986,7 +1112,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             </span>
           </label>
           <span
-            className="govuk-hint"
+            className="govuk-hint "
             id="product-name-hint-0"
           >
             50 characters max
@@ -1000,7 +1126,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             hideText={true}
           >
             <input
-              aria-describedby="product-name-hint-0"
+              aria-labelledby="product-name-hint-0"
               className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
               defaultValue=""
               id="multiple-product-name-0"
@@ -1024,7 +1150,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           hideErrorBar={true}
         >
           <label
-            className="govuk-label"
+            className="govuk-label "
             htmlFor="multiple-product-price-0"
           >
             <span
@@ -1039,7 +1165,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             </span>
           </label>
           <span
-            className="govuk-hint"
+            className="govuk-hint "
             id="product-price-hint-0"
           >
             e.g. 2.99
@@ -1063,7 +1189,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
                 hideText={true}
               >
                 <input
-                  aria-describedby="product-price-hint-0"
+                  aria-labelledby="product-price-hint-0"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
                   defaultValue=""
@@ -1089,15 +1215,14 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
-          <label
-            className="govuk-label"
-            htmlFor="product-details-period-duration"
+          <p
+            className="govuk-label "
           >
             Period duration
-          </label>
+          </p>
           <span
-            className="govuk-hint"
-            id="product-period-duration-hint"
+            className="govuk-hint "
+            id="product-period-duration-hint-0"
           >
             For example, 3 days
           </span>
@@ -1106,7 +1231,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             defaultDuration=""
             errors={Array []}
             hideFormGroupError={true}
-            hintId="product-period-duration-hint"
+            hintId="product-period-duration-hint-0"
             quantityId="product-details-period-duration-quantity-0"
             quantityName="multipleProductDurationInput0"
             school={false}
@@ -1141,6 +1266,28 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-name-1"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Name - Product 2
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Product name
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-name-hint-1"
+          >
+            50 characters max
+          </span>
+           
           <FormElementWrapper
             addFormGroupError={false}
             errorClass="govuk-input--error"
@@ -1149,7 +1296,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             hideText={true}
           >
             <input
-              aria-describedby="product-name-hint-1"
+              aria-labelledby="product-name-hint-1"
               className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
               defaultValue=""
               id="multiple-product-name-1"
@@ -1172,6 +1319,27 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-price-1"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Price, in pounds - Product 2
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Price
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-price-hint-1"
+          >
+            e.g. 2.99
+          </span>
           <div
             className="govuk-currency-input"
           >
@@ -1191,7 +1359,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
                 hideText={true}
               >
                 <input
-                  aria-describedby="product-price-hint-1"
+                  aria-labelledby="product-price-hint-1"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
                   defaultValue=""
@@ -1217,12 +1385,23 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
+          <p
+            className="govuk-label govuk-visually-hidden"
+          >
+            Period duration
+          </p>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-period-duration-hint-1"
+          >
+            For example, 3 days
+          </span>
           <ExpirySelector
             carnet={false}
             defaultDuration=""
             errors={Array []}
             hideFormGroupError={true}
-            hintId="product-period-duration-hint"
+            hintId="product-period-duration-hint-1"
             quantityId="product-details-period-duration-quantity-1"
             quantityName="multipleProductDurationInput1"
             school={false}
@@ -1257,6 +1436,28 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-name-2"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Name - Product 3
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Product name
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-name-hint-2"
+          >
+            50 characters max
+          </span>
+           
           <FormElementWrapper
             addFormGroupError={false}
             errorClass="govuk-input--error"
@@ -1265,7 +1466,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             hideText={true}
           >
             <input
-              aria-describedby="product-name-hint-2"
+              aria-labelledby="product-name-hint-2"
               className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
               defaultValue=""
               id="multiple-product-name-2"
@@ -1288,6 +1489,27 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-price-2"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Price, in pounds - Product 3
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Price
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-price-hint-2"
+          >
+            e.g. 2.99
+          </span>
           <div
             className="govuk-currency-input"
           >
@@ -1307,7 +1529,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
                 hideText={true}
               >
                 <input
-                  aria-describedby="product-price-hint-2"
+                  aria-labelledby="product-price-hint-2"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
                   defaultValue=""
@@ -1333,12 +1555,23 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
+          <p
+            className="govuk-label govuk-visually-hidden"
+          >
+            Period duration
+          </p>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-period-duration-hint-2"
+          >
+            For example, 3 days
+          </span>
           <ExpirySelector
             carnet={false}
             defaultDuration=""
             errors={Array []}
             hideFormGroupError={true}
-            hintId="product-period-duration-hint"
+            hintId="product-period-duration-hint-2"
             quantityId="product-details-period-duration-quantity-2"
             quantityName="multipleProductDurationInput2"
             school={false}
@@ -1373,6 +1606,28 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-name-3"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Name - Product 4
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Product name
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-name-hint-3"
+          >
+            50 characters max
+          </span>
+           
           <FormElementWrapper
             addFormGroupError={false}
             errorClass="govuk-input--error"
@@ -1381,7 +1636,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
             hideText={true}
           >
             <input
-              aria-describedby="product-name-hint-3"
+              aria-labelledby="product-name-hint-3"
               className="govuk-input govuk-input--width-40 govuk-product-name-input__inner__input"
               defaultValue=""
               id="multiple-product-name-3"
@@ -1404,6 +1659,27 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
+          <label
+            className="govuk-label govuk-visually-hidden"
+            htmlFor="multiple-product-price-3"
+          >
+            <span
+              className="govuk-visually-hidden"
+            >
+              Product Price, in pounds - Product 4
+            </span>
+            <span
+              aria-hidden={true}
+            >
+              Price
+            </span>
+          </label>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-price-hint-3"
+          >
+            e.g. 2.99
+          </span>
           <div
             className="govuk-currency-input"
           >
@@ -1423,7 +1699,7 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
                 hideText={true}
               >
                 <input
-                  aria-describedby="product-price-hint-3"
+                  aria-labelledby="product-price-hint-3"
                   className="govuk-input govuk-input--width-4 govuk-currency-input__inner__input"
                   data-non-numeric={true}
                   defaultValue=""
@@ -1449,12 +1725,23 @@ exports[`product row renders the right amount of rows for a period ticket 1`] = 
           errors={Array []}
           hideErrorBar={true}
         >
+          <p
+            className="govuk-label govuk-visually-hidden"
+          >
+            Period duration
+          </p>
+          <span
+            className="govuk-hint govuk-visually-hidden"
+            id="product-period-duration-hint-3"
+          >
+            For example, 3 days
+          </span>
           <ExpirySelector
             carnet={false}
             defaultDuration=""
             errors={Array []}
             hideFormGroupError={true}
-            hintId="product-period-duration-hint"
+            hintId="product-period-duration-hint-3"
             quantityId="product-details-period-duration-quantity-3"
             quantityName="multipleProductDurationInput3"
             school={false}

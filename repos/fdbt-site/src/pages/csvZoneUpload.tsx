@@ -32,6 +32,8 @@ import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
 import csvImage from '../assets/images/csv.png';
 import CsrfForm from '../components/CsrfForm';
 import { isServiceListAttributeWithErrors } from '../interfaces/typeGuards';
+import AccessibilityDetails from '../components/AccessibilityDetails';
+import { SUPPORT_EMAIL_ADDRESS } from '../constants';
 
 const title = 'CSV Zone Upload - Create Fares Data Service';
 const description = 'CSV Zone Upload page of the Create Fares Data Service';
@@ -46,6 +48,7 @@ interface CSVZoneUploadProps extends UserDataUploadsProps {
     csvTemplateDisplayName: string;
     csvTemplateSize: string;
     csrfToken: string;
+    supportEmail: string;
 }
 
 const CsvZoneUpload = ({
@@ -59,6 +62,7 @@ const CsvZoneUpload = ({
     csvTemplateDisplayName,
     csvTemplateSize,
     csrfToken,
+    supportEmail,
     ...uploadProps
 }: CSVZoneUploadProps): ReactElement => {
     const seen: string[] = [];
@@ -123,11 +127,11 @@ const CsvZoneUpload = ({
 
                         <div>
                             <div className="govuk-warning-text">
-                                <span className="govuk-warning-text__icon" aria-hidden="true">
+                                <span className="govuk-warning-text__icon govuk-!-margin-top-1" aria-hidden="true">
                                     !
                                 </span>
                                 <strong className="govuk-warning-text__text">
-                                    <span className="govuk-warning-text__assistive">Warning</span>
+                                    <span className="govuk-visually-hidden">Warning</span>
                                     If there are services exempt, you can omit them by selecting yes below and selecting
                                     the services you want to omit.
                                 </strong>
@@ -164,70 +168,67 @@ const CsvZoneUpload = ({
                                                 id="conditional-yes"
                                             >
                                                 <div className="govuk-form-group">
-                                                    <fieldset className="govuk-fieldset">
-                                                        <input
-                                                            type="button"
-                                                            name="selectAll"
-                                                            value={buttonText}
-                                                            id="select-all-button"
-                                                            className="govuk-button govuk-button--secondary"
-                                                            onClick={toggleAllServices}
-                                                        />
-                                                        <div className="govuk-checkboxes">
-                                                            {uniqueServiceList.map((service, index) => {
-                                                                const {
-                                                                    lineName,
-                                                                    lineId,
-                                                                    serviceCode,
-                                                                    description,
-                                                                    checked,
-                                                                    origin,
-                                                                    destination,
-                                                                } = service;
+                                                    <input
+                                                        type="button"
+                                                        name="selectAll"
+                                                        value={buttonText}
+                                                        id="select-all-button"
+                                                        className="govuk-button govuk-button--secondary"
+                                                        onClick={toggleAllServices}
+                                                    />
+                                                    <div className="govuk-checkboxes">
+                                                        {uniqueServiceList.map((service, index) => {
+                                                            const {
+                                                                lineName,
+                                                                lineId,
+                                                                serviceCode,
+                                                                description,
+                                                                checked,
+                                                                origin,
+                                                                destination,
+                                                            } = service;
 
-                                                                const checkboxTitles =
-                                                                    dataSourceAttribute &&
-                                                                    dataSourceAttribute.source === 'tnds'
-                                                                        ? `${lineName} - ${description}`
-                                                                        : `${lineName} ${origin || 'N/A'} - ${
-                                                                              destination || 'N/A'
-                                                                          }`;
+                                                            const checkboxTitles =
+                                                                dataSourceAttribute &&
+                                                                dataSourceAttribute.source === 'tnds'
+                                                                    ? `${lineName} - ${description}`
+                                                                    : `${lineName} ${origin || 'N/A'} - ${
+                                                                          destination || 'N/A'
+                                                                      }`;
 
-                                                                const checkBoxValues = `${description}`;
+                                                            const checkBoxValues = `${description}`;
 
-                                                                return (
-                                                                    <div
-                                                                        className="govuk-checkboxes__item"
-                                                                        key={`checkbox-item-${lineName}`}
+                                                            return (
+                                                                <div
+                                                                    className="govuk-checkboxes__item"
+                                                                    key={`checkbox-item-${lineName}`}
+                                                                >
+                                                                    <input
+                                                                        className="govuk-checkboxes__input"
+                                                                        id={`checkbox-${index}`}
+                                                                        name={`${lineName}#${lineId}#${serviceCode}`}
+                                                                        type="checkbox"
+                                                                        value={checkBoxValues}
+                                                                        checked={
+                                                                            !!checkedServices.find(
+                                                                                (service) => service.lineId === lineId,
+                                                                            )
+                                                                        }
+                                                                        defaultChecked={checked}
+                                                                        onChange={(e) =>
+                                                                            updateCheckedServiceList(e, lineId)
+                                                                        }
+                                                                    />
+                                                                    <label
+                                                                        className="govuk-label govuk-checkboxes__label"
+                                                                        htmlFor={`checkbox-${index}`}
                                                                     >
-                                                                        <input
-                                                                            className="govuk-checkboxes__input"
-                                                                            id={`checkbox-${index}`}
-                                                                            name={`${lineName}#${lineId}#${serviceCode}`}
-                                                                            type="checkbox"
-                                                                            value={checkBoxValues}
-                                                                            checked={
-                                                                                !!checkedServices.find(
-                                                                                    (service) =>
-                                                                                        service.lineId === lineId,
-                                                                                )
-                                                                            }
-                                                                            defaultChecked={checked}
-                                                                            onChange={(e) =>
-                                                                                updateCheckedServiceList(e, lineId)
-                                                                            }
-                                                                        />
-                                                                        <label
-                                                                            className="govuk-label govuk-checkboxes__label"
-                                                                            htmlFor={`checkbox-${index}`}
-                                                                        >
-                                                                            {checkboxTitles}
-                                                                        </label>
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    </fieldset>
+                                                                        {checkboxTitles}
+                                                                    </label>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div className="govuk-radios__item">
@@ -260,6 +261,7 @@ const CsvZoneUpload = ({
                         imageUrl={guidanceDocImage}
                         size={guidanceDocSize}
                     />
+                    <AccessibilityDetails supportEmail={supportEmail} />
                     <FileAttachment
                         displayName={csvTemplateDisplayName}
                         attachmentUrl={`${FareZoneExampleCsv}`}
@@ -351,6 +353,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         csrfToken: getCsrfToken(ctx),
         backHref,
         dataSourceAttribute,
+        supportEmail: SUPPORT_EMAIL_ADDRESS || 'test@example.com',
     };
 
     const hasClickedYes = (serviceList: ServicesInfo[]) => {

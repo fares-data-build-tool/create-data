@@ -35,6 +35,7 @@ import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { Stop, TicketWithIds } from '../../interfaces/matchingJsonTypes';
 import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
+import { STAGE } from '../../constants';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -137,6 +138,12 @@ const ProductDetails = ({
                                         })}
                                         {serviceId && isSingle && (
                                             <form>
+                                                {generateReturnPopupOpen && lineId && (
+                                                    <GenerateReturnPopup
+                                                        cancelActionHandler={generateReturnCancelActionHandler}
+                                                        isOpen={generateReturnPopupOpen && !!lineId}
+                                                    />
+                                                )}
                                                 <button
                                                     className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2 govuk-!-margin-bottom-0"
                                                     formAction={createGenerateReturnUrl(
@@ -181,11 +188,8 @@ const ProductDetails = ({
                     productId={productId}
                     serviceId={serviceId}
                     csrfToken={csrfToken}
+                    isOpen={editNamePopupOpen}
                 />
-            )}
-
-            {generateReturnPopupOpen && lineId && (
-                <GenerateReturnPopup cancelActionHandler={generateReturnCancelActionHandler} />
             )}
         </TwoThirdsLayout>
     );
@@ -226,6 +230,7 @@ const createProductDetails = async (
     fareTriangleModified: string | undefined,
     dataSource: string,
     isDevOrTest: boolean,
+    stage: string,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
     productName: string;
@@ -391,7 +396,7 @@ const createProductDetails = async (
 
     const hasCaps = (await getCaps(noc)).length > 0;
 
-    if (isDevOrTest && fareTypeIsAllowedToAddACap(ticket.type) && hasCaps) {
+    if (isDevOrTest && fareTypeIsAllowedToAddACap(ticket.type) && hasCaps && !ticket.carnet) {
         let capContent = 'N/A';
 
         if ('cap' in ticket && ticket.cap) {
@@ -538,7 +543,7 @@ const createProductDetails = async (
         });
     }
 
-    if ('pricingByDistance' in product && product.pricingByDistance) {
+    if ('pricingByDistance' in product && product.pricingByDistance && stage === 'dev') {
         const { pricingByDistance } = product;
 
         productDetailsElements.push({
@@ -677,6 +682,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         fareTriangleModified,
         dataSource,
         isDevOrTest,
+        STAGE,
     );
 
     const backHref = serviceId
