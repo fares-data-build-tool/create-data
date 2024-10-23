@@ -63,7 +63,7 @@ const Service = ({
                             !
                         </span>
                         <strong className="govuk-warning-text__text">
-                            <span className="govuk-warning-text__assistive">Warning</span>
+                            <span className="govuk-visually-hidden">Warning</span>
                             {warning[0].errorMessage}
                         </strong>
                     </div>

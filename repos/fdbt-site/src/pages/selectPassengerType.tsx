@@ -55,7 +55,7 @@ const SelectPassengerType = ({
                                 !
                             </span>
                             <strong className="govuk-warning-text__text">
-                                <span className="govuk-warning-text__assistive">Warning</span>
+                                <span className="govuk-visually-hidden">Warning</span>
                                 You can create new types in your{' '}
                                 <a className="govuk-link" href="/viewPassengerTypes">
                                     operator settings.

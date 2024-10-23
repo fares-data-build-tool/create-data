@@ -50,11 +50,11 @@ const ProductGroupCard = ({
                                 name="productGroupId"
                                 type="radio"
                                 value={id}
-                                aria-label={name}
                                 defaultChecked={defaultChecked}
                             />
-                            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                            <label className="govuk-label govuk-radios__label" />
+                            <label className="govuk-label govuk-radios__label" htmlFor={`product-group-${index}-radio`}>
+                                <span className="govuk-visually-hidden">{`product-group-${index}`}</span>
+                            </label>
                         </div>
                     </div>
                 )}

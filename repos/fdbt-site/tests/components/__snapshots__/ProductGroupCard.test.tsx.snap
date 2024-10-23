@@ -15,7 +15,6 @@ exports[`ProductGroupCard should render checked 1`] = `
         className="govuk-radios__item card__selector"
       >
         <input
-          aria-label="The capped products"
           className="govuk-radios__input"
           defaultChecked={true}
           id="product-group-0-radio"
@@ -25,7 +24,14 @@ exports[`ProductGroupCard should render checked 1`] = `
         />
         <label
           className="govuk-label govuk-radios__label"
-        />
+          htmlFor="product-group-0-radio"
+        >
+          <span
+            className="govuk-visually-hidden"
+          >
+            product-group-0
+          </span>
+        </label>
       </div>
     </div>
     <h4
@@ -59,7 +65,6 @@ exports[`ProductGroupCard should render not checked 1`] = `
         className="govuk-radios__item card__selector"
       >
         <input
-          aria-label="The capped products"
           className="govuk-radios__input"
           defaultChecked={false}
           id="product-group-0-radio"
@@ -69,7 +74,14 @@ exports[`ProductGroupCard should render not checked 1`] = `
         />
         <label
           className="govuk-label govuk-radios__label"
-        />
+          htmlFor="product-group-0-radio"
+        >
+          <span
+            className="govuk-visually-hidden"
+          >
+            product-group-0
+          </span>
+        </label>
       </div>
     </div>
     <h4

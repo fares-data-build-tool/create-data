@@ -49,7 +49,7 @@ exports[`pages csvzoneupload should render correctly 1`] = `
           >
             <span
               aria-hidden="true"
-              className="govuk-warning-text__icon"
+              className="govuk-warning-text__icon govuk-!-margin-top-1"
             >
               !
             </span>
@@ -57,7 +57,7 @@ exports[`pages csvzoneupload should render correctly 1`] = `
               className="govuk-warning-text__text"
             >
               <span
-                className="govuk-warning-text__assistive"
+                className="govuk-visually-hidden"
               >
                 Warning
               </span>
@@ -193,6 +193,9 @@ exports[`pages csvzoneupload should render correctly 1`] = `
         displayName=""
         imageUrl={Object {}}
         size=""
+      />
+      <AccessibilityDetails
+        supportEmail="mock-support-address@email.co.uk"
       />
       <FileAttachment
         attachmentUrl="[object Object]"

@@ -110,8 +110,12 @@ const otherProductsTable = (
                         <th scope="col" className="govuk-table__header">
                             Product status
                         </th>
-                        <th scope="col" className="govuk-table__header" />
-                        <th scope="col" className="govuk-table__header" />
+                        <th scope="col" className="govuk-table__header">
+                            <span className="govuk-visually-hidden">Copy</span>
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            <span className="govuk-visually-hidden">Delete</span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody className="govuk-table__body">

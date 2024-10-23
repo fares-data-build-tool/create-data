@@ -39,7 +39,7 @@ exports[`pages selectPurchaseMethods should render an error when an error messag
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>
@@ -116,7 +116,7 @@ exports[`pages selectPurchaseMethods should render an error when an error messag
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>
@@ -187,7 +187,7 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>
@@ -265,7 +265,14 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                       <label
                         className="govuk-label govuk-checkboxes__label"
                         htmlFor="product-GreatProduct-checkbox-0"
-                      />
+                        id="GreatProduct-checkbox-label-0"
+                      >
+                        <span
+                          className="govuk-visually-hidden"
+                        >
+                          Onboard (cash)
+                        </span>
+                      </label>
                     </div>
                     <PurchaseMethodCardBody
                       entity={
@@ -310,7 +317,14 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                       <label
                         className="govuk-label govuk-checkboxes__label"
                         htmlFor="product-GreatProduct-checkbox-1"
-                      />
+                        id="GreatProduct-checkbox-label-1"
+                      >
+                        <span
+                          className="govuk-visually-hidden"
+                        >
+                          Onboard (contactless)
+                        </span>
+                      </label>
                     </div>
                     <PurchaseMethodCardBody
                       entity={
@@ -355,7 +369,14 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                       <label
                         className="govuk-label govuk-checkboxes__label"
                         htmlFor="product-GreatProduct-checkbox-2"
-                      />
+                        id="GreatProduct-checkbox-label-2"
+                      >
+                        <span
+                          className="govuk-visually-hidden"
+                        >
+                          Online (smart card)
+                        </span>
+                      </label>
                     </div>
                     <PurchaseMethodCardBody
                       entity={
@@ -402,7 +423,14 @@ exports[`pages selectPurchaseMethods should render correctly 1`] = `
                       <label
                         className="govuk-label govuk-checkboxes__label"
                         htmlFor="product-GreatProduct-checkbox-3"
-                      />
+                        id="GreatProduct-checkbox-label-3"
+                      >
+                        <span
+                          className="govuk-visually-hidden"
+                        >
+                          Mobile App
+                        </span>
+                      </label>
                     </div>
                     <PurchaseMethodCardBody
                       entity={
@@ -486,7 +514,7 @@ exports[`pages selectPurchaseMethods should render correctly for capped ticket 1
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>
@@ -565,7 +593,14 @@ exports[`pages selectPurchaseMethods should render correctly for capped ticket 1
                       <label
                         className="govuk-label govuk-checkboxes__label"
                         htmlFor="product-GreatProduct-checkbox-0"
-                      />
+                        id="GreatProduct-checkbox-label-0"
+                      >
+                        <span
+                          className="govuk-visually-hidden"
+                        >
+                          Capped Purchase Method Mobile
+                        </span>
+                      </label>
                     </div>
                     <PurchaseMethodCardBody
                       entity={
@@ -611,7 +646,14 @@ exports[`pages selectPurchaseMethods should render correctly for capped ticket 1
                       <label
                         className="govuk-label govuk-checkboxes__label"
                         htmlFor="product-GreatProduct-checkbox-1"
-                      />
+                        id="GreatProduct-checkbox-label-1"
+                      >
+                        <span
+                          className="govuk-visually-hidden"
+                        >
+                          Mobile App
+                        </span>
+                      </label>
                     </div>
                     <PurchaseMethodCardBody
                       entity={
@@ -694,7 +736,7 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>
@@ -808,7 +850,7 @@ exports[`pages selectPurchaseMethods should render correctly with no purchase me
         className="govuk-warning-text__text"
       >
         <span
-          className="govuk-warning-text__assistive"
+          className="govuk-visually-hidden"
         >
           Warning
         </span>

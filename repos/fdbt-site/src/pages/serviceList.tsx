@@ -122,6 +122,7 @@ const ServiceList = ({
                                 className="govuk-button govuk-button--secondary"
                                 onClick={toggleAllServices}
                             />
+                            <br />
                             <span className="govuk-hint" id="txc-hint">
                                 This data is taken from the{' '}
                                 <b>
@@ -132,6 +133,8 @@ const ServiceList = ({
                                 . If the service you are looking for is not listed, contact the BODS help desk for
                                 advice <a href="/contact">on the contact page</a>.
                             </span>
+                            <br />
+                            <br />
                             <FormElementWrapper
                                 errors={containsErrorForServices(errors) ? errors : []}
                                 errorId="checkbox-0"
@@ -239,7 +242,7 @@ const ServiceList = ({
                                 !
                             </span>
                             <strong className="govuk-warning-text__text">
-                                <span className="govuk-warning-text__assistive">Warning</span>
+                                <span className="govuk-visually-hidden">Warning</span>
                                 If there are stops exempt, you can omit them by selecting yes below and uploading the
                                 stops you want to omit.
                             </strong>

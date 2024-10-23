@@ -49,7 +49,7 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedIds }: Se
                                     !
                                 </span>
                                 <strong className="govuk-warning-text__text">
-                                    <span className="govuk-warning-text__assistive">Warning</span>
+                                    <span className="govuk-visually-hidden">Warning</span>
                                     You can create new caps in your <a href="/viewCaps">operator settings</a>.<br />{' '}
                                     Don&apos;t worry you can navigate back to this page when you are finished.
                                 </strong>
@@ -69,7 +69,7 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedIds }: Se
                                             (!!selectedIds && selectedIds.length > 0)
                                         }
                                     />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="yes-choice">
+                                    <label className="govuk-label govuk-radios__label" htmlFor="caps">
                                         Yes
                                     </label>
                                 </div>
@@ -102,13 +102,12 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedIds }: Se
                                         name="capChoice"
                                         type="radio"
                                         value="no"
-                                        data-aria-controls="conditional-caps-2"
                                         defaultChecked={
                                             (!selectedIds || (selectedIds && selectedIds.length === 0)) &&
                                             !errors.some((error) => error.id === 'caps')
                                         }
                                     />
-                                    <label className="govuk-label govuk-radios__label" htmlFor="no-choice">
+                                    <label className="govuk-label govuk-radios__label" htmlFor="no-caps">
                                         No
                                     </label>
                                 </div>
@@ -151,8 +150,12 @@ const CapsCard = ({ cap, selectedIds }: { cap: Cap & { id: number }; selectedIds
                             selectedIds.includes(Number(cap.id))
                         }
                     />
-                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                    <label className="govuk-label govuk-checkboxes__label" />
+                    <label
+                        className="govuk-label govuk-checkboxes__label"
+                        htmlFor={`${cap.capDetails.name}-${cap.id}-checkbox`}
+                    >
+                        <span className="govuk-visually-hidden">{`${cap.capDetails.name}`}</span>
+                    </label>
                 </div>
                 <CapCardBody cap={cap} />
             </div>

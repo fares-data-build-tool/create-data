@@ -26,7 +26,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             className="govuk-fieldset"
           >
             <legend
-              className="govuk-fieldset__legend--l"
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
             >
               <h2
                 className="govuk-fieldset__heading"
@@ -154,7 +154,7 @@ exports[`pages searchOperator should render a selection error when the user trie
               className="govuk-fieldset"
             >
               <legend
-                className="govuk-fieldset__legend--m"
+                className="govuk-fieldset__legend govuk-fieldset__legend--m"
               >
                 <h3
                   className="govuk-fieldset__heading"
@@ -175,7 +175,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             </fieldset>
           </div>
           <table
-            className="border-collapse width-100"
+            className="govuk-table border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -259,7 +259,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             className="govuk-fieldset"
           >
             <legend
-              className="govuk-fieldset__legend--m"
+              className="govuk-fieldset__legend govuk-fieldset__legend--m"
             >
               <h2
                 className="govuk-fieldset__heading"
@@ -345,7 +345,7 @@ exports[`pages searchOperator should render a selection error when the user trie
               className="govuk-fieldset"
             >
               <legend
-                className="govuk-fieldset__legend--m"
+                className="govuk-fieldset__legend govuk-fieldset__legend--m"
               >
                 <h3
                   className="govuk-fieldset__heading"
@@ -366,7 +366,7 @@ exports[`pages searchOperator should render a selection error when the user trie
             </fieldset>
           </div>
           <table
-            className="border-collapse width-100"
+            className="govuk-table border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -554,7 +554,7 @@ exports[`pages searchOperator should render an input error when the user makes a
             className="govuk-fieldset"
           >
             <legend
-              className="govuk-fieldset__legend--l"
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
             >
               <h2
                 className="govuk-fieldset__heading"
@@ -624,7 +624,7 @@ exports[`pages searchOperator should render an input error when the user makes a
               className="govuk-fieldset"
             >
               <legend
-                className="govuk-fieldset__legend--m"
+                className="govuk-fieldset__legend govuk-fieldset__legend--m"
               >
                 <h3
                   className="govuk-fieldset__heading"
@@ -645,7 +645,7 @@ exports[`pages searchOperator should render an input error when the user makes a
             </fieldset>
           </div>
           <table
-            className="border-collapse width-100"
+            className="govuk-table border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -729,7 +729,7 @@ exports[`pages searchOperator should render just the search input when the user 
             className="govuk-fieldset"
           >
             <legend
-              className="govuk-fieldset__legend--l"
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
             >
               <h2
                 className="govuk-fieldset__heading"
@@ -788,7 +788,7 @@ exports[`pages searchOperator should render just the search input when the user 
               className="govuk-fieldset"
             >
               <legend
-                className="govuk-fieldset__legend--m"
+                className="govuk-fieldset__legend govuk-fieldset__legend--m"
               >
                 <h3
                   className="govuk-fieldset__heading"
@@ -809,7 +809,7 @@ exports[`pages searchOperator should render just the search input when the user 
             </fieldset>
           </div>
           <table
-            className="border-collapse width-100"
+            className="govuk-table border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -899,7 +899,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
             className="govuk-fieldset"
           >
             <legend
-              className="govuk-fieldset__legend--m"
+              className="govuk-fieldset__legend govuk-fieldset__legend--m"
             >
               <h2
                 className="govuk-fieldset__heading"
@@ -1053,7 +1053,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
               className="govuk-fieldset"
             >
               <legend
-                className="govuk-fieldset__legend--m"
+                className="govuk-fieldset__legend govuk-fieldset__legend--m"
               >
                 <h3
                   className="govuk-fieldset__heading"
@@ -1074,7 +1074,7 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
             </fieldset>
           </div>
           <table
-            className="border-collapse width-100"
+            className="govuk-table border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -1256,7 +1256,7 @@ exports[`pages searchOperator should render the search input and a list of selec
             className="govuk-fieldset"
           >
             <legend
-              className="govuk-fieldset__legend--m"
+              className="govuk-fieldset__legend govuk-fieldset__legend--m"
             >
               <h2
                 className="govuk-fieldset__heading"
@@ -1342,7 +1342,7 @@ exports[`pages searchOperator should render the search input and a list of selec
               className="govuk-fieldset"
             >
               <legend
-                className="govuk-fieldset__legend--m"
+                className="govuk-fieldset__legend govuk-fieldset__legend--m"
               >
                 <h3
                   className="govuk-fieldset__heading"
@@ -1363,7 +1363,7 @@ exports[`pages searchOperator should render the search input and a list of selec
             </fieldset>
           </div>
           <table
-            className="border-collapse width-100"
+            className="govuk-table border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -1544,7 +1544,7 @@ exports[`pages searchOperator should render the search input and search results 
             className="govuk-fieldset"
           >
             <legend
-              className="govuk-fieldset__legend--l"
+              className="govuk-fieldset__legend govuk-fieldset__legend--l"
             >
               <h2
                 className="govuk-fieldset__heading"
@@ -1672,7 +1672,7 @@ exports[`pages searchOperator should render the search input and search results 
               className="govuk-fieldset"
             >
               <legend
-                className="govuk-fieldset__legend--m"
+                className="govuk-fieldset__legend govuk-fieldset__legend--m"
               >
                 <h3
                   className="govuk-fieldset__heading"
@@ -1693,7 +1693,7 @@ exports[`pages searchOperator should render the search input and search results 
             </fieldset>
           </div>
           <table
-            className="border-collapse width-100"
+            className="govuk-table border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"
@@ -1777,7 +1777,7 @@ exports[`pages searchOperator should render the search input, search results and
             className="govuk-fieldset"
           >
             <legend
-              className="govuk-fieldset__legend--m"
+              className="govuk-fieldset__legend govuk-fieldset__legend--m"
             >
               <h2
                 className="govuk-fieldset__heading"
@@ -1932,7 +1932,7 @@ exports[`pages searchOperator should render the search input, search results and
               className="govuk-fieldset"
             >
               <legend
-                className="govuk-fieldset__legend--m"
+                className="govuk-fieldset__legend govuk-fieldset__legend--m"
               >
                 <h3
                   className="govuk-fieldset__heading"
@@ -1953,7 +1953,7 @@ exports[`pages searchOperator should render the search input, search results and
             </fieldset>
           </div>
           <table
-            className="border-collapse width-100"
+            className="govuk-table border-collapse width-100"
           >
             <caption
               className="govuk-table__caption govuk-table__caption--m"

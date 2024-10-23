@@ -15,11 +15,11 @@ exports[`ConfirmationTable should render the table with options 1`] = `
       className="govuk-warning-text__text"
     >
       <span
-        className="govuk-warning-text__assistive"
+        className="govuk-visually-hidden"
       >
         Warning
       </span>
-      You will not be shown these answers again, ensure they are correct
+      You will not be shown these answers again, ensure they are correct.
     </strong>
   </div>
   <dl

@@ -32,6 +32,8 @@ import guidanceDocImage from '../assets/images/Guidance-doc-front-page.png';
 import csvImage from '../assets/images/csv.png';
 import CsrfForm from '../components/CsrfForm';
 import { isServiceListAttributeWithErrors } from '../interfaces/typeGuards';
+import AccessibilityDetails from '../components/AccessibilityDetails';
+import { SUPPORT_EMAIL_ADDRESS } from '../constants';
 
 const title = 'CSV Zone Upload - Create Fares Data Service';
 const description = 'CSV Zone Upload page of the Create Fares Data Service';
@@ -46,6 +48,7 @@ interface CSVZoneUploadProps extends UserDataUploadsProps {
     csvTemplateDisplayName: string;
     csvTemplateSize: string;
     csrfToken: string;
+    supportEmail: string;
 }
 
 const CsvZoneUpload = ({
@@ -59,6 +62,7 @@ const CsvZoneUpload = ({
     csvTemplateDisplayName,
     csvTemplateSize,
     csrfToken,
+    supportEmail,
     ...uploadProps
 }: CSVZoneUploadProps): ReactElement => {
     const seen: string[] = [];
@@ -123,11 +127,11 @@ const CsvZoneUpload = ({
 
                         <div>
                             <div className="govuk-warning-text">
-                                <span className="govuk-warning-text__icon" aria-hidden="true">
+                                <span className="govuk-warning-text__icon govuk-!-margin-top-1" aria-hidden="true">
                                     !
                                 </span>
                                 <strong className="govuk-warning-text__text">
-                                    <span className="govuk-warning-text__assistive">Warning</span>
+                                    <span className="govuk-visually-hidden">Warning</span>
                                     If there are services exempt, you can omit them by selecting yes below and selecting
                                     the services you want to omit.
                                 </strong>
@@ -257,6 +261,7 @@ const CsvZoneUpload = ({
                         imageUrl={guidanceDocImage}
                         size={guidanceDocSize}
                     />
+                    <AccessibilityDetails supportEmail={supportEmail} />
                     <FileAttachment
                         displayName={csvTemplateDisplayName}
                         attachmentUrl={`${FareZoneExampleCsv}`}
@@ -348,6 +353,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         csrfToken: getCsrfToken(ctx),
         backHref,
         dataSourceAttribute,
+        supportEmail: SUPPORT_EMAIL_ADDRESS || 'test@example.com',
     };
 
     const hasClickedYes = (serviceList: ServicesInfo[]) => {

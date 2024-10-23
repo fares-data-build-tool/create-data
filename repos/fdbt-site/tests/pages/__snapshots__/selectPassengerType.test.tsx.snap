@@ -44,7 +44,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
             className="govuk-warning-text__text"
           >
             <span
-              className="govuk-warning-text__assistive"
+              className="govuk-visually-hidden"
             >
               Warning
             </span>
@@ -124,7 +124,7 @@ exports[`pages selectPassengerType should render correctly with no saved groups 
             className="govuk-warning-text__text"
           >
             <span
-              className="govuk-warning-text__assistive"
+              className="govuk-visually-hidden"
             >
               Warning
             </span>
@@ -269,7 +269,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
             className="govuk-warning-text__text"
           >
             <span
-              className="govuk-warning-text__assistive"
+              className="govuk-visually-hidden"
             >
               Warning
             </span>
@@ -481,7 +481,7 @@ exports[`pages selectPassengerType should render correctly with saved groups and
             className="govuk-warning-text__text"
           >
             <span
-              className="govuk-warning-text__assistive"
+              className="govuk-visually-hidden"
             >
               Warning
             </span>
