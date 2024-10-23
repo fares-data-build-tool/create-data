@@ -45,7 +45,7 @@ def get_s3_client():
             's3',
             aws_access_key_id='S3RVER',
             aws_secret_access_key='S3RVER',
-            endpoint_url='http://localhost:4572',
+            endpoint_url='http://127.0.0.1:4566',
         )
     else:
         s3_client = boto3.client('s3')
@@ -59,7 +59,7 @@ def get_sns_client():
             'sns',
             aws_access_key_id='S3RVER',
             aws_secret_access_key='S3RVER',
-            endpoint_url='http://localhost:4575',
+            endpoint_url='http://127.0.0.1:4566',
         )
     else:
         sns_client = boto3.client('sns')

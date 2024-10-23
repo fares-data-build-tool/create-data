@@ -474,6 +474,12 @@
               <LineRef version="1.0" ref="PK1146649_RJ1_123"/>
               <TypeOfTariffRef version="fxc:v1.0" ref="fxc:zone_to_zone"/>
               <TariffBasis>zoneToZone</TariffBasis>
+              <timeIntervals>
+                <TimeInterval version="1.0" id="op:Tariff@cappy-cap@3month">
+                  <Name>cappy cap</Name>
+                  <Duration>P3M</Duration>
+                </TimeInterval>
+              </timeIntervals>
               <qualityStructureFactors>
                 <FareDemandFactor id="op@Tariff@Demand" version="1.0">
                   <validityConditions>
@@ -1933,8 +1939,8 @@
           <fareProducts>
             <PreassignedFareProduct id="Trip@adult_-_single" version="1.0">
               <Name>adult - single</Name>
-              <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:prepayment"/>
-              <ChargingMomentType>beforeTravel</ChargingMomentType>
+              <ChargingMomentRef versionRef="fxc:v1.0" ref="fxc:post_payment"/>
+              <ChargingMomentType>atEndOfTravel</ChargingMomentType>
               <TypeOfFareProductRef version="1.0" ref="fxc:standard_product@trip@single"/>
               <validableElements>
                 <ValidableElement id="Trip@adult_-_single@travel" version="1.0">
@@ -1954,6 +1960,24 @@
               </accessRightsInProduct>
               <ProductType>singleTrip</ProductType>
             </PreassignedFareProduct>
+            <CappedDiscountRight id="op:Cap:@trip" version="1.0">
+              <Name>Cap noc:BLAC</Name>
+              <cappingRules>
+                <CappingRule version="1.0" id="op:cappy_cap@single_trip">
+                  <Name>cappy cap</Name>
+                  <CappingPeriod>month</CappingPeriod>
+                  <ValidableElementRef version="1.0" ref="Trip@adult_-_single@travel"/>
+                  <GenericParameterAssignment version="1.0" id="cappy_cap@adult_-_single" order="1">
+                    <Name>limit a adult to 3 month</Name>
+                    <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
+                    <limitations>
+                      <UserProfileRef version="1.0" ref="op:adult-0"/>
+                    </limitations>
+                    <TimeIntervalRef version="1.0" ref="op:Tariff@cappy-cap@3month"/>
+                  </GenericParameterAssignment>
+                </CappingRule>
+              </cappingRules>
+            </CappedDiscountRight>
           </fareProducts>
           <salesOfferPackages>
             <SalesOfferPackage version="1.0" id="Trip@adult_-_single-SOP@Onboard_(cash)">
@@ -1970,6 +1994,10 @@
                 <SalesOfferPackageElement id="Onboard_(cash)@adult_-_single-SOP@paperTicket" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
+                </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="Onboard_(cash)@adult_-_single-SOP-cap@paperTicket" version="1.0" order="2">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -1988,6 +2016,10 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
                 </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="Onboard_(contactless)@adult_-_single-SOP-cap@paperTicket" version="1.0" order="2">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
+                </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
             <SalesOfferPackage version="1.0" id="Trip@adult_-_single-SOP@Online_(smart_card)">
@@ -2005,6 +2037,10 @@
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
                 </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="Online_(smart_card)@adult_-_single-SOP-cap@smartCard" version="1.0" order="2">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
+                </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
             <SalesOfferPackage version="1.0" id="Trip@adult_-_single-SOP@Mobile_App">
@@ -2021,6 +2057,10 @@
                 <SalesOfferPackageElement id="Mobile_App@adult_-_single-SOP@mobileApp" version="1.0" order="1">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
+                </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="Mobile_App@adult_-_single-SOP-cap@mobileApp" version="1.0" order="2">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -2056,6 +2096,18 @@
                 <SalesOfferPackageElement id="All_Encompassing@adult_-_single-SOP@smartCard" version="1.0" order="3">
                   <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
                   <PreassignedFareProductRef version="1.0" ref="Trip@adult_-_single"/>
+                </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="All_Encompassing@adult_-_single-SOP-cap@paperTicket" version="1.0" order="2">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:paperTicket"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
+                </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="All_Encompassing@adult_-_single-SOP-cap@mobileApp" version="1.0" order="3">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:mobileApp"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
+                </SalesOfferPackageElement>
+                <SalesOfferPackageElement id="All_Encompassing@adult_-_single-SOP-cap@smartCard" version="1.0" order="4">
+                  <TypeOfTravelDocumentRef version="fxc:v1.0" ref="fxc:smartCard"/>
+                  <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
                 </SalesOfferPackageElement>
               </salesOfferPackageElements>
             </SalesOfferPackage>
@@ -10973,6 +11025,23 @@
                   </cells>
                 </FareTable>
               </includes>
+            </FareTable>
+            <FareTable version="1.0" id="Trip@single-cap@cappy_cap@Line_PK1146649_RJ1_123@adult">
+              <Name>FareTable for cappy cap</Name>
+              <pricesFor>
+                <CappedDiscountRightRef version="1.0" ref="op:Cap:@trip"/>
+              </pricesFor>
+              <OperatorRef version="1.0" ref="noc:BLAC">noc:135742</OperatorRef>
+              <limitations>
+                <UserProfileRef version="1.0" ref="op:adult-0"/>
+              </limitations>
+              <prices>
+                <CappingRulePrice version="1.0" id="op:Price:cappy_cap@single_trip">
+                  <Name>Cap based on daily pass price</Name>
+                  <Amount>2</Amount>
+                  <CappingRuleRef version="1.0" ref="op:cappy_cap@single_trip"/>
+                </CappingRulePrice>
+              </prices>
             </FareTable>
           </fareTables>
         </FareFrame>

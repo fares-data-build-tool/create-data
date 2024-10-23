@@ -639,9 +639,9 @@ export const getHybridFareTable = (
 export const getSalesOfferPackageList = (
     userPeriodTicket: PeriodTicket | FlatFareTicket | SchemeOperatorTicket,
     ticketUserConcat: string,
+    capId: string,
 ): NetexSalesOfferPackage[][] => {
     const isCarnet = 'carnetDetails' in userPeriodTicket.products[0];
-
     return userPeriodTicket.products.map(product => {
         return product.salesOfferPackages.map(salesOfferPackage => {
             const combineArrayedStrings = (strings: string[]): string => strings.join(' ');
@@ -664,31 +664,38 @@ export const getSalesOfferPackageList = (
                 });
             };
 
-            const buildSalesOfferPackageElements = (): SalesOfferPackageElement[] => {
+            const buildSalesOfferPackageElements = (capId?: string): SalesOfferPackageElement[] => {
                 return salesOfferPackage.ticketFormats.map((ticketFormat, index) => {
                     return {
-                        id: `Trip@${ticketUserConcat}-${product.productName}-${salesOfferPackage.name}@${ticketFormat}`,
+                        id: `Trip@${ticketUserConcat}-${product.productName}-${salesOfferPackage.name}${
+                            capId ? '-cap' : ''
+                        }@${ticketFormat}`,
                         version: '1.0',
-                        order: `${index + 1}`,
+                        order: capId ? `${index + 2}` : `${index + 1}`,
                         TypeOfTravelDocumentRef: {
                             version: 'fxc:v1.0',
                             ref: `fxc:${ticketFormat}`,
                         },
-                        ...(isCarnet && {
-                            AmountOfPriceUnitProductRef: {
-                                version: '1.0',
-                                ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
-                            },
-                        }),
-                        ...(!isCarnet && {
-                            PreassignedFareProductRef: {
-                                version: '1.0',
-                                ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
-                            },
-                        }),
+                        ...(capId
+                            ? { CappedDiscountRightRef: { version: '1.0', ref: capId } }
+                            : {
+                                  ...(isCarnet && {
+                                      AmountOfPriceUnitProductRef: {
+                                          version: '1.0',
+                                          ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                                      },
+                                  }),
+                                  ...(!isCarnet && {
+                                      PreassignedFareProductRef: {
+                                          version: '1.0',
+                                          ref: `op:Pass@${product.productName}_${userPeriodTicket.passengerType}`,
+                                      },
+                                  }),
+                              }),
                     };
                 });
             };
+            const salesOfferPackageElements = buildSalesOfferPackageElements();
             return {
                 version: '1.0',
                 id: `Trip@${ticketUserConcat}-${product.productName}-SOP@${salesOfferPackage.name}`,
@@ -697,7 +704,12 @@ export const getSalesOfferPackageList = (
                 },
                 Description: { $t: `${salesOfferPackage.description ?? ''}` },
                 distributionAssignments: { DistributionAssignment: buildDistributionAssignments() },
-                salesOfferPackageElements: { SalesOfferPackageElement: buildSalesOfferPackageElements() },
+                salesOfferPackageElements: {
+                    SalesOfferPackageElement: [
+                        ...salesOfferPackageElements,
+                        ...(capId ? buildSalesOfferPackageElements(capId) : []),
+                    ],
+                },
             };
         });
     });
@@ -806,6 +818,7 @@ export const getPreassignedFareProducts = (
     return userPeriodTicket.products.map(product => {
         let elementZeroRef = '';
         let fareStructureElementRefs: NetexObject;
+        const hasCaps = userPeriodTicket.caps && userPeriodTicket.caps.length > 0;
 
         if (isGeoZoneTicket(userPeriodTicket) || isHybridTicket(userPeriodTicket)) {
             elementZeroRef = `op:Tariff@${product.productName}@access_zones`;
@@ -883,10 +896,10 @@ export const getPreassignedFareProducts = (
             },
             ChargingMomentRef: {
                 versionRef: 'fxc:v1.0',
-                ref: isCarnet ? 'fxc:prepayment@bundled' : 'fxc:prepayment',
+                ref: isCarnet ? 'fxc:prepayment@bundled' : hasCaps ? 'fxc:post_payment' : 'fxc:prepayment',
             },
             ChargingMomentType: {
-                $t: 'beforeTravel',
+                $t: hasCaps ? 'atEndOfTravel' : 'beforeTravel',
             },
             TypeOfFareProductRef: {
                 version: 'fxc:v1.0',
@@ -926,7 +939,8 @@ export const getPreassignedFareProducts = (
 };
 
 export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
-    const timeIntervals = ticket.products.flatMap(product => {
+    let timeIntervals = [];
+    timeIntervals = ticket.products.flatMap(product => {
         if ('productDuration' in product && product.productDuration) {
             const amount = product.productDuration.split(' ')[0];
             const type = product.productDuration.split(' ')[1];
@@ -946,6 +960,30 @@ export const getTimeIntervals = (ticket: Ticket): NetexObject[] | undefined => {
 
         return [];
     });
+    if ('caps' in ticket && ticket.caps) {
+        timeIntervals = [
+            ...timeIntervals,
+            ...ticket.caps.map(cap => {
+                const duration = `${cap.capDetails.durationAmount} ${cap.capDetails.durationUnits}`;
+                const amount = duration.split(' ')[0];
+                const type = duration.split(' ')[1];
+                let firstLetterOfType = type.charAt(0).toUpperCase();
+                let finalAmount = amount;
+                if (firstLetterOfType === 'W') {
+                    finalAmount = (Number(amount) * 7).toString();
+                    firstLetterOfType = 'D';
+                }
+                return {
+                    version: '1.0',
+                    id: `op:Tariff@${cap.capDetails.name.replace(' ', '-')}@${cap.capDetails.durationAmount}${
+                        cap.capDetails.durationUnits
+                    }`,
+                    Name: { $t: `${cap.capDetails.name}` },
+                    Duration: { $t: `P${finalAmount}${firstLetterOfType}` },
+                };
+            }),
+        ];
+    }
 
     return timeIntervals.length > 0 ? timeIntervals : undefined;
 };
