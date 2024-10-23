@@ -1,11 +1,11 @@
 import * as session from '../../../src/utils/sessions';
-import { getMockRequestAndResponse } from '../../testData/mockData';
 import * as index from '../../../src/utils/apiUtils';
 import { CREATE_CAPS_ATTRIBUTE } from '../../../src/constants/attributes';
 import createCaps from '../../../src/pages/api/createCaps';
 import * as db from '../../../src/data/auroradb';
-import { ExpiryUnit, FromDb } from 'src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit, FromDb } from 'src/interfaces/matchingJsonTypes';
 import { Cap } from 'src/interfaces';
+import { getMockRequestAndResponse } from '../../testData/mockData';
 
 describe('createCaps', () => {
     const writeHeadMock = jest.fn();
@@ -17,7 +17,9 @@ describe('createCaps', () => {
     const updateSessionAttributeSpy = jest.spyOn(session, 'updateSessionAttribute');
     jest.spyOn(index, 'getAndValidateNoc').mockReturnValue('BLAC');
 
-    beforeEach(jest.resetAllMocks);
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
 
     it('redirects back to /createCaps if there is no user entry', async () => {
         const { req, res } = getMockRequestAndResponse({
@@ -37,7 +39,12 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            capDetails: { durationAmount: '', durationUnits: '', name: '', price: '' },
+            capDetails: {
+                durationAmount: '',
+                durationUnits: '',
+                name: '',
+                price: '',
+            },
             errors: [
                 { errorMessage: 'Cap name cannot have less than 2 characters', id: 'cap-name' },
                 { errorMessage: 'Cap price cannot be empty', id: 'cap-price' },
@@ -65,7 +72,12 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            capDetails: { durationAmount: '2', durationUnits: '', name: 'hello', price: '' },
+            capDetails: {
+                durationAmount: '2',
+                durationUnits: '',
+                name: 'hello',
+                price: '',
+            },
             errors: [
                 { errorMessage: 'Cap price cannot be empty', id: 'cap-price' },
                 { errorMessage: 'Choose an option from the dropdown', id: 'cap-duration-unit' },
@@ -91,63 +103,13 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            capDetails: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '0' },
-            capStart: undefined,
-            errors: [
-                { errorMessage: 'Cap prices cannot be zero', id: 'cap-price' },
-                { errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' },
-            ],
-        });
-    });
-
-    it('redirects back to /createCaps if the user enters 000 as an input', async () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                capName: 'Name',
-                capPrice: '000',
-                capDuration: '2',
-                capDurationUnits: 'week',
+            capDetails: {
+                durationAmount: '2',
+                durationUnits: 'week',
+                name: 'Name',
+                price: '0',
             },
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        await createCaps(req, res);
-
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/createCaps',
-        });
-
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            capDetails: { durationAmount: '2', durationUnits: 'week', name: 'Name', price: '000' },
-            capStart: undefined,
-            errors: [
-                { errorMessage: 'Cap prices cannot be zero', id: 'cap-price' },
-                { errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' },
-            ],
-        });
-    });
-
-    it('redirects back to /createCaps if the user enters more than 24 hour duration but not selected cap start', async () => {
-        const { req, res } = getMockRequestAndResponse({
-            body: {
-                capName: 'Name',
-                capPrice: '2',
-                capDuration: '25',
-                capDurationUnits: 'hour',
-            },
-            mockWriteHeadFn: writeHeadMock,
-        });
-
-        await createCaps(req, res);
-
-        expect(res.writeHead).toBeCalledWith(302, {
-            Location: '/createCaps',
-        });
-
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            capDetails: { durationAmount: '25', durationUnits: 'hour', name: 'Name', price: '2' },
-            capStart: undefined,
-            errors: [{ errorMessage: 'Choose an option regarding your cap ticket start', id: 'fixed-weekdays' }],
+            errors: [{ errorMessage: 'Cap prices cannot be zero', id: 'cap-price' }],
         });
     });
 
@@ -157,7 +119,7 @@ describe('createCaps', () => {
                 capName: 'Cap 1',
                 capPrice: '2',
                 capDuration: '2',
-                capDurationUnits: 'hour',
+                capDurationUnits: 'week',
             },
             mockWriteHeadFn: writeHeadMock,
         });
@@ -167,7 +129,7 @@ describe('createCaps', () => {
                 name: 'Cap 1',
                 price: '4',
                 durationAmount: '2',
-                durationUnits: 'hour' as ExpiryUnit,
+                durationUnits: 'week' as CapExpiryUnit,
             },
             id: 2,
         };
@@ -181,7 +143,12 @@ describe('createCaps', () => {
         });
 
         expect(updateSessionAttributeSpy).toBeCalledWith(req, CREATE_CAPS_ATTRIBUTE, {
-            capDetails: { durationAmount: '2', durationUnits: 'hour', name: 'Cap 1', price: '2' },
+            capDetails: {
+                durationAmount: '2',
+                durationUnits: 'week',
+                name: 'Cap 1',
+                price: '2',
+            },
             errors: [{ errorMessage: 'You already have a cap named Cap 1. Choose another name.', id: 'cap-name' }],
         });
     });
@@ -192,7 +159,7 @@ describe('createCaps', () => {
                 capName: 'Cap 1',
                 capPrice: '2',
                 capDuration: '2',
-                capDurationUnits: 'hour',
+                capDurationUnits: 'month',
             },
             mockWriteHeadFn: writeHeadMock,
         });
@@ -202,7 +169,7 @@ describe('createCaps', () => {
                 name: 'Cap 1',
                 price: '2',
                 durationAmount: '2',
-                durationUnits: 'hour',
+                durationUnits: 'month',
             },
         };
         getCapsSpy.mockResolvedValueOnce([]);
@@ -224,7 +191,7 @@ describe('createCaps', () => {
                 capName: 'Cap 1',
                 capPrice: '2',
                 capDuration: '2',
-                capDurationUnits: 'hour',
+                capDurationUnits: 'month',
                 id: '1',
             },
             mockWriteHeadFn: writeHeadMock,
@@ -235,7 +202,7 @@ describe('createCaps', () => {
                 name: 'Cap 1',
                 price: '2',
                 durationAmount: '2',
-                durationUnits: 'hour',
+                durationUnits: 'month',
             },
         };
         getCapsSpy.mockResolvedValueOnce([]);

@@ -124,6 +124,7 @@ export const renderTable = (index: number, errors: ErrorInfo[], userInputtedCaps
                             unitId={`cap-duration-unit-${index}`}
                             errors={errors}
                             hideFormGroupError
+                            cap={true}
                         />
                     </>
                 </FormGroupWrapper>

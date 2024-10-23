@@ -27,9 +27,9 @@ exports[`pages cap inner component renders normally when caps are present 1`] = 
       Duration:
     </span>
      
-    24hr
+    1
      
-    hour
+    month
   </p>
 </Fragment>
 `;
@@ -68,33 +68,87 @@ exports[`pages view caps should render correctly on no cap expiry 1`] = `
         Define your different types of caps and when they expire.
       </p>
       <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Cap expiry
-        </h2>
         <p
           className="govuk-body"
         >
           <em>
-            You currently have no cap expiry saved.
+            You currently have no caps saved.
           </em>
         </p>
         <a
           className="govuk-button"
           data-module="govuk-button"
-          href="/selectCapExpiry"
+          href="/createCaps"
         >
-          Add cap expiry
+          Add a cap
         </a>
       </div>
+    </div>
+  </div>
+</BaseLayout>
+`;
+
+exports[`pages view caps should render correctly when cap expiry validity is fareDayEnd 1`] = `
+<BaseLayout
+  description="View and edit your caps."
+  referer={null}
+  showNavigation={true}
+  title="Caps - Create Fares Data Service"
+>
+  <div>
+    <ErrorSummary
+      errors={Array []}
+    />
+  </div>
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-one-quarter"
+    >
+      <SubNavigation />
+    </div>
+    <div
+      className="govuk-grid-column-three-quarters"
+    >
+      <h1
+        className="govuk-heading-xl"
+      >
+        Caps
+      </h1>
+      <p
+        className="govuk-body govuk-!-margin-bottom-8"
+      >
+        Define your different types of caps and when they expire.
+      </p>
       <div>
-        <h2
-          className="govuk-heading-l"
+        <div
+          className="card-row"
         >
-          Caps
-        </h2>
-        <NoCapsCard />
+          <CapCard
+            cap={
+              Object {
+                "capDetails": Object {
+                  "durationAmount": "1",
+                  "durationUnits": "hour",
+                  "name": "Cap 1",
+                  "price": "2",
+                },
+                "id": 1,
+              }
+            }
+            deleteActionHandler={[Function]}
+            index={0}
+            key="1"
+          />
+        </div>
+        <a
+          className="govuk-button"
+          data-module="govuk-button"
+          href="/createCaps"
+        >
+          Add a cap
+        </a>
       </div>
     </div>
   </div>
@@ -135,22 +189,6 @@ exports[`pages view caps should render correctly when cap validity and cap with 
         Define your different types of caps and when they expire.
       </p>
       <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Cap expiry
-        </h2>
-        <CapExpiryCard
-          capExpiry="fareDayEnd"
-          fareDayEnd="2323"
-        />
-      </div>
-      <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Caps
-        </h2>
         <div
           className="card-row"
         >
@@ -218,22 +256,6 @@ exports[`pages view caps should render correctly when cap validity and cap with 
         Define your different types of caps and when they expire.
       </p>
       <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Cap expiry
-        </h2>
-        <CapExpiryCard
-          capExpiry="fareDayEnd"
-          fareDayEnd="2323"
-        />
-      </div>
-      <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Caps
-        </h2>
         <div
           className="card-row"
         >
@@ -246,10 +268,6 @@ exports[`pages view caps should render correctly when cap validity and cap with 
                   "name": "Cap 1",
                   "price": "2",
                 },
-                "capStart": Object {
-                  "startDay": "friday",
-                  "type": "fixedWeekdays",
-                },
                 "id": 1,
               }
             }
@@ -258,162 +276,6 @@ exports[`pages view caps should render correctly when cap validity and cap with 
             key="1"
           />
         </div>
-        <a
-          className="govuk-button"
-          data-module="govuk-button"
-          href="/createCaps"
-        >
-          Add a cap
-        </a>
-      </div>
-    </div>
-  </div>
-</BaseLayout>
-`;
-
-exports[`pages view caps should render correctly when cap validity and rollingDays cap start is present 1`] = `
-<BaseLayout
-  description="View and edit your caps."
-  referer={null}
-  showNavigation={true}
-  title="Caps - Create Fares Data Service"
->
-  <div>
-    <ErrorSummary
-      errors={Array []}
-    />
-  </div>
-  <div
-    className="govuk-grid-row"
-  >
-    <div
-      className="govuk-grid-column-one-quarter"
-    >
-      <SubNavigation />
-    </div>
-    <div
-      className="govuk-grid-column-three-quarters"
-    >
-      <h1
-        className="govuk-heading-xl"
-      >
-        Caps
-      </h1>
-      <p
-        className="govuk-body govuk-!-margin-bottom-8"
-      >
-        Define your different types of caps and when they expire.
-      </p>
-      <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Cap expiry
-        </h2>
-        <CapExpiryCard
-          capExpiry="fareDayEnd"
-          fareDayEnd="2323"
-        />
-      </div>
-      <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Caps
-        </h2>
-        <div
-          className="card-row"
-        >
-          <CapCard
-            cap={
-              Object {
-                "capDetails": Object {
-                  "durationAmount": "1",
-                  "durationUnits": "hour",
-                  "name": "Cap 1",
-                  "price": "2",
-                },
-                "capStart": Object {
-                  "type": "rollingDays",
-                },
-                "id": 1,
-              }
-            }
-            deleteActionHandler={[Function]}
-            index={0}
-            key="1"
-          />
-        </div>
-        <a
-          className="govuk-button"
-          data-module="govuk-button"
-          href="/createCaps"
-        >
-          Add a cap
-        </a>
-      </div>
-    </div>
-  </div>
-</BaseLayout>
-`;
-
-exports[`pages view caps should render correctly when cap validity is 24 hr 1`] = `
-<BaseLayout
-  description="View and edit your caps."
-  referer={null}
-  showNavigation={true}
-  title="Caps - Create Fares Data Service"
->
-  <div>
-    <ErrorSummary
-      errors={Array []}
-    />
-  </div>
-  <div
-    className="govuk-grid-row"
-  >
-    <div
-      className="govuk-grid-column-one-quarter"
-    >
-      <SubNavigation />
-    </div>
-    <div
-      className="govuk-grid-column-three-quarters"
-    >
-      <h1
-        className="govuk-heading-xl"
-      >
-        Caps
-      </h1>
-      <p
-        className="govuk-body govuk-!-margin-bottom-8"
-      >
-        Define your different types of caps and when they expire.
-      </p>
-      <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Cap expiry
-        </h2>
-        <CapExpiryCard
-          capExpiry="24hr"
-          fareDayEnd=""
-        />
-      </div>
-      <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Caps
-        </h2>
-        <p
-          className="govuk-body"
-        >
-          <em>
-            You currently have no caps saved.
-          </em>
-        </p>
         <a
           className="govuk-button"
           data-module="govuk-button"
@@ -461,22 +323,6 @@ exports[`pages view caps should render correctly when cap validity is fare day e
         Define your different types of caps and when they expire.
       </p>
       <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Cap expiry
-        </h2>
-        <CapExpiryCard
-          capExpiry="fareDayEnd"
-          fareDayEnd="2323"
-        />
-      </div>
-      <div>
-        <h2
-          className="govuk-heading-l"
-        >
-          Caps
-        </h2>
         <p
           className="govuk-body"
         >
