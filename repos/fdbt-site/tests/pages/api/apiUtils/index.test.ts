@@ -265,26 +265,79 @@ describe('apiUtils', () => {
         const noPasswordError = { id: 'test', errorMessage: 'Enter a new password' };
         const passwordLengthError = { id: 'test', errorMessage: 'Password must be at least 8 characters long' };
         const passwordMatchError = { id: 'test', errorMessage: 'Passwords do not match' };
+        const passwordSpecialCharacterError = {
+            id: 'test',
+            errorMessage: 'Password must contain at least one special character',
+        };
+        const passwordNumberError = { id: 'test', errorMessage: 'Password must contain at least one number' };
+        const passwordUppercaseError = {
+            id: 'test',
+            errorMessage: 'Password must contain at least one uppercase letter',
+        };
+        const passwordLowercaseError = {
+            id: 'test',
+            errorMessage: 'Password must contain at least one lowercase letter',
+        };
         const weakPasswordError = {
             id: 'test',
             errorMessage:
                 'Your password is too weak. Try adding another word or two. Uncommon words are better. Avoid repeating characters. An example of a strong password is one with three or more uncommon words, one after another.',
         };
+        const passwordMultiplePolicyError = {
+            id: 'test',
+            errorMessage:
+                'Password must be at least 8 characters long, contain at least one uppercase letter, contain at least one number, and contain at least one special character',
+        };
 
         it.each([
-            ['no errors', 'passwords match and are a suitable length', 'iLoveBuses', 'iLoveBuses', null],
+            ['no errors', 'passwords match and are a suitable length', 'iLoveBuses1!', 'iLoveBuses1!', null],
             ['a no password error', 'no input is provided', '', '', noPasswordError],
             ['a no password error', 'no new password is provided', '', 'iLoveBuses', noPasswordError],
-            ['a password length error', 'new password is too short', 'bus', 'iLoveBuses', passwordLengthError],
+            ['a password length error', 'new password is too short', 'Bus1!', 'iLoveBuses', passwordLengthError],
             [
                 'a password match error',
                 'the two passwords do not match',
-                'iHateBuses',
+                'iHateBuses1!',
                 'iLoveBuses',
                 passwordMatchError,
             ],
-            ['a weak password error', 'weak password provided', 'Password', 'Password', weakPasswordError],
-            ['a weak password error', 'weak password provided', 'password123', 'password123', weakPasswordError],
+            ['a weak password error', 'weak password provided', 'Password1!', 'Password1!', weakPasswordError],
+            ['a weak password error', 'weak password provided', 'Password123!', 'Password123!', weakPasswordError],
+            [
+                'a password missing special character error',
+                'new password missing special character',
+                'iLoveBuses1',
+                'iLoveBuses1',
+                passwordSpecialCharacterError,
+            ],
+            [
+                'a password missing number error',
+                'new password missing number',
+                'iLoveBuses!',
+                'iLoveBuses!',
+                passwordNumberError,
+            ],
+            [
+                'a password missing uppercase letter error',
+                'new password missing uppercase letter',
+                'ilovebuses1!',
+                'ilovebuses1!',
+                passwordUppercaseError,
+            ],
+            [
+                'a password missing lowercase letter error',
+                'new password missing lowercase letter',
+                'ILOVEBUSES1!',
+                'ILOVEBUSES1!',
+                passwordLowercaseError,
+            ],
+            [
+                'a password missing multiple aspects of password policy error',
+                'new password missing multiple aspects of password policy',
+                'bus',
+                'bus',
+                passwordMultiplePolicyError,
+            ],
         ])('should return %s when %s', (_errors, _case, newPassword, confirmNewPassword, expectedResult) => {
             const res = validatePassword(newPassword, confirmNewPassword, 'test', true);
             expect(res).toEqual(expectedResult);

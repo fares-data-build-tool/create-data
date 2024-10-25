@@ -59,8 +59,8 @@ describe('register', () => {
             'empty email',
             {
                 email: '',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
+                password: 'chromosoneTelepathyDinosaur1!',
+                confirmPassword: 'chromosoneTelepathyDinosaur1!',
                 regKey: 'abcdefg',
                 checkboxUserResearch: 'checkboxUserResearch',
             },
@@ -78,8 +78,8 @@ describe('register', () => {
             'password less than 8 characters',
             {
                 email: 'test@test.com',
-                password: 'abchi',
-                confirmPassword: 'abchi',
+                password: 'Abchi1!',
+                confirmPassword: 'Abchi1!',
                 regKey: 'abcdefg',
                 checkboxUserResearch: 'checkboxUserResearch',
             },
@@ -126,7 +126,7 @@ describe('register', () => {
             'passwords fields do not match',
             {
                 email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
+                password: 'chromosoneTelepathyDinosaur1!',
                 confirmPassword: 'chromosoneTelepathyDinosa',
                 regKey: 'abcdefg',
                 checkboxUserResearch: '',
@@ -139,6 +139,103 @@ describe('register', () => {
                         errorMessage: '',
                     },
                     { userInput: '', id: 'password', errorMessage: 'Passwords do not match' },
+                ],
+            },
+        ],
+        [
+            'password does not contain special character',
+            {
+                email: 'test@test.com',
+                password: 'chromosoneTelepathyDinosaur1',
+                confirmPassword: 'chromosoneTelepathyDinosaur1',
+                regKey: 'abcdefg',
+                checkboxUserResearch: 'checkboxUserResearch',
+            },
+            {
+                errors: [
+                    {
+                        userInput: 'test@test.com',
+                        id: 'email',
+                        errorMessage: '',
+                    },
+                    {
+                        userInput: '',
+                        id: 'password',
+                        errorMessage: 'Password must contain at least one special character',
+                    },
+                ],
+            },
+        ],
+        [
+            'password does not contain uppercase letter',
+            {
+                email: 'test@test.com',
+                password: 'chromosonetelepathydinosaur1!',
+                confirmPassword: 'chromosonetelepathydinosaur1!',
+                regKey: 'abcdefg',
+                checkboxUserResearch: 'checkboxUserResearch',
+            },
+            {
+                errors: [
+                    {
+                        userInput: 'test@test.com',
+                        id: 'email',
+                        errorMessage: '',
+                    },
+                    {
+                        userInput: '',
+                        id: 'password',
+                        errorMessage: 'Password must contain at least one uppercase letter',
+                    },
+                ],
+            },
+        ],
+        [
+            'password does not contain lowercase letter',
+            {
+                email: 'test@test.com',
+                password: 'CHROMOSONETELEPATHYDINOSAUR1!',
+                confirmPassword: 'CHROMOSONETELEPATHYDINOSAUR1!',
+                regKey: 'abcdefg',
+                checkboxUserResearch: 'checkboxUserResearch',
+            },
+            {
+                errors: [
+                    {
+                        userInput: 'test@test.com',
+                        id: 'email',
+                        errorMessage: '',
+                    },
+                    {
+                        userInput: '',
+                        id: 'password',
+                        errorMessage: 'Password must contain at least one lowercase letter',
+                    },
+                ],
+            },
+        ],
+        [
+            'password does not conform to multiple aspects of password policy',
+            {
+                email: 'test@test.com',
+                password: 'chromosonetelepathydinosaur',
+                confirmPassword: 'chromosonetelepathydinosaur',
+                regKey: 'abcdefg',
+                checkboxUserResearch: 'checkboxUserResearch',
+            },
+            {
+                errors: [
+                    {
+                        userInput: 'test@test.com',
+                        id: 'email',
+                        errorMessage: '',
+                    },
+                    {
+                        userInput: '',
+                        id: 'password',
+                        errorMessage:
+                            'Password must contain at least one uppercase letter, contain at least one number, and contain at least one special character',
+                    },
                 ],
             },
         ],
@@ -166,8 +263,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
+                password: 'chromosoneTelepathyDinosaur1!',
+                confirmPassword: 'chromosoneTelepathyDinosaur1!',
                 regKey: 'abcdefg',
             },
             uuid: '',
@@ -179,7 +276,7 @@ describe('register', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'chromosoneTelepathyDinosaur',
+            'chromosoneTelepathyDinosaur1!',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
@@ -195,8 +292,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
+                password: 'chromosoneTelepathyDinosaur1!',
+                confirmPassword: 'chromosoneTelepathyDinosaur1!',
                 regKey: 'abcdefg',
             },
             uuid: '',
@@ -234,8 +331,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
+                password: 'chromosoneTelepathyDinosaur1!',
+                confirmPassword: 'chromosoneTelepathyDinosaur1!',
                 regKey: 'abcdefg',
             },
             uuid: '',
@@ -252,8 +349,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
+                password: 'chromosoneTelepathyDinosaur1!',
+                confirmPassword: 'chromosoneTelepathyDinosaur1!',
                 regKey: 'abcdefg',
                 contactable: 'yes',
             },
@@ -269,7 +366,7 @@ describe('register', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'chromosoneTelepathyDinosaur',
+            'chromosoneTelepathyDinosaur1!',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
@@ -283,8 +380,8 @@ describe('register', () => {
             cookieValues: {},
             body: {
                 email: 'test@test.com',
-                password: 'chromosoneTelepathyDinosaur',
-                confirmPassword: 'chromosoneTelepathyDinosaur',
+                password: 'chromosoneTelepathyDinosaur1!',
+                confirmPassword: 'chromosoneTelepathyDinosaur1!',
                 regKey: 'abcdefg',
                 contactable: '',
             },
@@ -300,7 +397,7 @@ describe('register', () => {
         expect(authSignInSpy).toHaveBeenCalledWith('test@test.com', 'abcdefg');
         expect(authCompletePasswordSpy).toHaveBeenCalledWith(
             'd3eddd2a-a1c6-4201-82d3-bdab8dcbb586',
-            'chromosoneTelepathyDinosaur',
+            'chromosoneTelepathyDinosaur1!',
             'session',
         );
         expect(authSignOutSpy).toHaveBeenCalled();
