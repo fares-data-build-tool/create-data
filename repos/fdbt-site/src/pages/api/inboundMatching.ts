@@ -42,8 +42,8 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/inboundMatching');
             return;
         } else if (
-            (isFareStageUnassigned(uploadedUserFareStages, matchingFareZones) ||
-                Object.keys(matchingFareZones).length === 0) &&
+            isFareStageUnassigned(uploadedUserFareStages, matchingFareZones) &&
+            matchingFareZones !== {} &&
             !overrideWarning
         ) {
             const selectedStagesList: string[][] = getSelectedStages(req);

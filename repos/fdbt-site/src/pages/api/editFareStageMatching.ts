@@ -51,10 +51,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const userFareStages = getFareStagesFromTicket(ticket);
 
-        if (
-            isAnyFareStageUnassigned(userFareStages, matchingFareZones) ||
-            Object.keys(matchingFareZones).length === 0
-        ) {
+        if (isAnyFareStageUnassigned(userFareStages, matchingFareZones) && matchingFareZones !== {}) {
             const errors: ErrorInfo[] = [
                 {
                     errorMessage: 'One or more fare stages have not been assigned, assign each fare stage to a stop',
