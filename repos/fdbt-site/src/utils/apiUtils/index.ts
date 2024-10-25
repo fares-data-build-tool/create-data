@@ -220,7 +220,7 @@ export const getSelectedStages = (req: NextApiRequest): string[][] => {
     return selectObjectsArray;
 };
 
-export const validatePasswordConformsToPolicy = (password: string) => {
+export const validatePasswordConformsToPolicy = (password: string): string[] => {
     const passwordError = [];
 
     if (password.length < 8) {
