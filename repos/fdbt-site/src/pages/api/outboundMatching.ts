@@ -19,8 +19,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
 
         const service: BasicService = JSON.parse(req.body.service);
         const userFareStages: UserFareStages = JSON.parse(req.body.userfarestages);
-        const parsedInputs = getMatchingFareZonesAndUnassignedStopsFromForm(req);
-        const { matchingFareZones, unassignedStops } = parsedInputs;
+        const { matchingFareZones, unassignedStops } = getMatchingFareZonesAndUnassignedStopsFromForm(req);
 
         // Deleting these keys from the object in order to facilitate looping through the fare stage values in the body
         delete req.body.service;
@@ -38,8 +37,7 @@ export default (req: NextApiRequestWithSession, res: NextApiResponse): void => {
             redirectTo(res, '/outboundMatching');
             return;
         } else if (
-            isFareStageUnassigned(userFareStages, matchingFareZones) &&
-            matchingFareZones !== {} &&
+            (isFareStageUnassigned(userFareStages, matchingFareZones) || Object.keys(matchingFareZones).length === 0) &&
             !overrideWarning
         ) {
             const selectedStagesList: string[][] = getSelectedStages(req);

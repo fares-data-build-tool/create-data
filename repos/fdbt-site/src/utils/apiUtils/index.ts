@@ -3,12 +3,12 @@ import zxcvbn from 'zxcvbn';
 import Cookies from 'cookies';
 import { ServerResponse } from 'http';
 import { decode } from 'jsonwebtoken';
-import { ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, DISABLE_AUTH_COOKIE } from '../../constants';
+import { DISABLE_AUTH_COOKIE, ID_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '../../constants';
 import {
-    OPERATOR_ATTRIBUTE,
-    FARE_TYPE_ATTRIBUTE,
-    SCHOOL_FARE_TYPE_ATTRIBUTE,
     CARNET_FARE_TYPE_ATTRIBUTE,
+    FARE_TYPE_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    SCHOOL_FARE_TYPE_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
     CognitoIdToken,
@@ -23,6 +23,8 @@ import logger from '../logger';
 import { destroySession, getSessionAttribute } from '../sessions';
 import { isFareType, isWithErrors } from '../../interfaces/typeGuards';
 import { daysOfWeek } from '../../../src/constants';
+
+const listFormat = new Intl.ListFormat('en');
 
 export const setCookieOnResponseObject = (
     cookieName: string,
@@ -218,6 +220,32 @@ export const getSelectedStages = (req: NextApiRequest): string[][] => {
     return selectObjectsArray;
 };
 
+export const validatePasswordConformsToPolicy = (password: string) => {
+    const passwordError = [];
+
+    if (password.length < 8) {
+        passwordError.push('be at least 8 characters long');
+    }
+
+    if (!/[A-Z]/.test(password)) {
+        passwordError.push('contain at least one uppercase letter');
+    }
+
+    if (!/[a-z]/.test(password)) {
+        passwordError.push('contain at least one lowercase letter');
+    }
+
+    if (!/[0-9]/.test(password)) {
+        passwordError.push('contain at least one number');
+    }
+
+    if (!/[$^*.\[\]{}()?"!@#%&\/\\,><':;|_~`=+-]/.test(password)) {
+        passwordError.push('contain at least one special character');
+    }
+
+    return passwordError;
+};
+
 export const validatePassword = (
     password: string,
     confirmPassword: string,
@@ -226,14 +254,18 @@ export const validatePassword = (
 ): ErrorInfo | null => {
     let passwordError = '';
 
-    if (password.length < 8) {
-        passwordError =
-            password.length === 0
-                ? `Enter a ${isUpdate ? 'new ' : ''}password`
-                : 'Password must be at least 8 characters long';
+    if (password.length === 0) {
+        passwordError = `Enter a ${isUpdate ? 'new ' : ''}password`;
 
         return { id: errorId, errorMessage: passwordError };
     }
+
+    const passwordPolicyErrors = validatePasswordConformsToPolicy(password);
+
+    if (passwordPolicyErrors.length > 0) {
+        return { id: errorId, errorMessage: `Password must ${listFormat.format(passwordPolicyErrors)}` };
+    }
+
     if (password !== confirmPassword) {
         return { id: errorId, errorMessage: 'Passwords do not match' };
     }
