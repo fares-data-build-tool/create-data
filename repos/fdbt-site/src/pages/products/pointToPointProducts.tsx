@@ -148,7 +148,7 @@ const PointToPointProductsTable = (
                                       {getTag(product.startDate, product.endDate, true)}
                                       {product.requiresAttention ? (
                                           <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
-                                              NEEDS ATTENTION
+                                              Needs attention
                                           </strong>
                                       ) : null}
                                   </td>

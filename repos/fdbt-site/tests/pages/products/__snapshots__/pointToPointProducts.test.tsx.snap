@@ -425,7 +425,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
                 <strong
                   className="govuk-tag govuk-tag--yellow dft-table-tag"
                 >
-                  NEEDS ATTENTION
+                  Needs attention
                 </strong>
               </td>
               <td

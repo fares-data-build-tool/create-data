@@ -33,7 +33,7 @@ const Home = ({ csrfToken, showDeleteProductsLink }: HomeProps): ReactElement =>
 
                 <div className="govuk-!-margin-top-7">
                     <h2 className="govuk-heading-s">
-                        <strong className="govuk-tag new-tag">new</strong>
+                        <strong className="govuk-tag new-tag">New</strong>
                         Manage fares
                     </h2>
                     <p className="govuk-body">View and manage all of your products and services in one place.</p>

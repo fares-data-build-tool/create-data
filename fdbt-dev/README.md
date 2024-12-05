@@ -29,8 +29,8 @@ In order to use the scripts in this repo, the FDBT repos need to be in a particu
 | Var                         | Description                                                                                                                          |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | PATH_TO_ROOT                | The absolute path to the root of the [repo structure](#repo-structure)                                                               |
-| COGNITO_USER_POOL_ID        | In the AWS console, using the cfd-test role, Cognito -> Manage User Pools -> fdbt-user-pool-test -> **Pool Id**                      |
-| COGNITO_USER_POOL_CLIENT_ID | In the AWS console, using the cfd-test role, Cognito -> Manage User Pools -> fdbt-user-pool-test -> App clients -> **App client id** |
+| COGNITO_USER_POOL_ID        | In the AWS console, using the aws-tfn-test role, Cognito -> Manage User Pools -> fdbt-user-pool-test -> **Pool Id**                      |
+| COGNITO_USER_POOL_CLIENT_ID | In the AWS console, using the aws-tfn-test role, Cognito -> Manage User Pools -> fdbt-user-pool-test -> App clients -> **App client id** |
 
 Set the above env vars in your .zshrc or .bashrc:
 

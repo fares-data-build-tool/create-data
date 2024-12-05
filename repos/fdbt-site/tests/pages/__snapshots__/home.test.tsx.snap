@@ -44,7 +44,7 @@ exports[`pages home page should render correctly 1`] = `
           <strong
             className="govuk-tag new-tag"
           >
-            new
+            New
           </strong>
           Manage fares
         </h2>
@@ -179,7 +179,7 @@ exports[`pages home page should render correctly for prod environment 1`] = `
           <strong
             className="govuk-tag new-tag"
           >
-            new
+            New
           </strong>
           Manage fares
         </h2>

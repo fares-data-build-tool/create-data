@@ -117,7 +117,7 @@ const ProductDetails = ({
             <div id="product-status" className="govuk-hint">
                 Product status: {getTag(startDate, endDate, false)}
                 {requiresAttention && (
-                    <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">NEEDS ATTENTION</strong>
+                    <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">Needs attention</strong>
                 )}
             </div>
 
