@@ -464,7 +464,7 @@ exports[`myfares pages services should render correctly when services require at
                 <strong
                   className="govuk-tag govuk-tag--yellow dft-table-tag"
                 >
-                  NEEDS ATTENTION
+                  Needs attention
                 </strong>
               </td>
             </tr>

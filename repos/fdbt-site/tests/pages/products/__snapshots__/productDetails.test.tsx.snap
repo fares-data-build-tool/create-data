@@ -39,7 +39,7 @@ exports[`myfares pages productDetails should render correctly 1`] = `
     <strong
       className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2"
     >
-      NEEDS ATTENTION
+      Needs attention
     </strong>
   </div>
   <dl
@@ -378,7 +378,7 @@ exports[`myfares pages productDetails should render correctly for a copied produ
     <strong
       className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2"
     >
-      NEEDS ATTENTION
+      Needs attention
     </strong>
   </div>
   <dl
@@ -692,7 +692,7 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
     <strong
       className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2"
     >
-      NEEDS ATTENTION
+      Needs attention
     </strong>
   </div>
   <dl
@@ -1003,7 +1003,7 @@ exports[`myfares pages productDetails should render correctly while the cannot g
     <strong
       className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2"
     >
-      NEEDS ATTENTION
+      Needs attention
     </strong>
   </div>
   <dl
