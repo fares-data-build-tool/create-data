@@ -474,12 +474,28 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const noc = getAndValidateNoc(ctx);
     const products = await getAllProductsByNoc(noc);
     const nonExpiredProducts = getNonExpiredProducts(products);
-
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
+    const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
+    const dataSource = multiModalAttribute ? 'tnds' : 'bods';
+    const allBodsServices = await getBodsOrTndsServicesByNoc(noc, dataSource);
+    const allServicesWithMatchingLineIds: Record<string, MyFaresService> = {};
+
+    const validProducts = nonExpiredProducts.filter((product) => {
+        const matchingService = allBodsServices.find((service) => service.lineId === product.lineId);
+
+        if (matchingService) {
+            allServicesWithMatchingLineIds[matchingService.id] = matchingService;
+
+            return true;
+        }
+
+        return false;
+    });
+
     const productsToDisplay: ProductToDisplay[] = await Promise.all(
-        nonExpiredProducts.map(async (nonExpiredProduct) => {
-            const s3Data = await getProductsMatchingJson(nonExpiredProduct.matchingJsonLink);
+        validProducts.map(async (validProduct) => {
+            const s3Data = await getProductsMatchingJson(validProduct.matchingJsonLink);
             const product = s3Data.products[0];
             const hasProductName = 'productName' in product;
             let passengerTypeName = '';
@@ -497,10 +513,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             }
 
             return {
-                id: nonExpiredProduct.id,
+                id: validProduct.id,
                 productName: hasProductName ? product.productName : `${passengerTypeName} - ${startCase(s3Data.type)}`,
-                startDate: nonExpiredProduct.startDate,
-                endDate: nonExpiredProduct.endDate || '',
+                startDate: validProduct.startDate,
+                endDate: validProduct.endDate || '',
                 serviceLineId: 'lineId' in s3Data ? s3Data.lineId : null,
                 direction: 'journeyDirection' in s3Data ? s3Data.journeyDirection : null,
                 fareType: s3Data.type === 'schoolService' ? 'period' : s3Data.type,
@@ -509,61 +525,35 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         }),
     );
 
-    const servicesLineIds = productsToDisplay
-        .map((product) => {
-            return product.serviceLineId || '';
-        })
-        .filter((lineId) => lineId);
+    const servicesToDisplay: ServiceToDisplay[] = [];
 
-    const uniqueServiceLineIds = Array.from(new Set(servicesLineIds));
+    for (const service of Object.values(allServicesWithMatchingLineIds)) {
+        const productsWithSameLineId = productsToDisplay.filter(
+            (product) => !!product.serviceLineId && product.serviceLineId === service.lineId,
+        );
 
-    const allServicesWithMatchingLineIds: MyFaresService[] = [];
+        const matchingProducts = productsWithSameLineId.filter((product) => {
+            const momentProductStartDate = moment(product.startDate, 'DD/MM/YYYY').valueOf();
+            const momentProductEndDate = product.endDate && moment(product.endDate, 'DD/MM/YYYY').valueOf();
+            const momentServiceStartDate = moment(service.startDate, 'DD/MM/YYYY').valueOf();
+            const momentServiceEndDate = service.endDate ? moment(service.endDate, 'DD/MM/YYYY').valueOf() : undefined;
 
-    if (uniqueServiceLineIds.length > 0) {
-        const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
-        const dataSource = multiModalAttribute ? 'tnds' : 'bods';
-        const allBodsServices = await getBodsOrTndsServicesByNoc(noc, dataSource);
-        uniqueServiceLineIds.forEach((uniqueServiceLineId) => {
-            const matchingService = allBodsServices.find((service) => service.lineId === uniqueServiceLineId);
-            if (matchingService) {
-                allServicesWithMatchingLineIds.push(matchingService);
-            }
+            const productMatchesService =
+                (!momentProductEndDate || momentProductEndDate >= momentServiceStartDate) &&
+                (!momentServiceEndDate || momentServiceEndDate >= momentProductStartDate);
+
+            return productMatchesService;
         });
-    }
 
-    const servicesToDisplay: ServiceToDisplay[] = allServicesWithMatchingLineIds
-        .map((service) => {
-            const productsWithSameLineId = productsToDisplay.filter(
-                (product) => !!product.serviceLineId && product.serviceLineId === service.lineId,
-            );
-
-            const matchingProducts = productsWithSameLineId.filter((product) => {
-                const momentProductStartDate = moment(product.startDate, 'DD/MM/YYYY').valueOf();
-                const momentProductEndDate = product.endDate && moment(product.endDate, 'DD/MM/YYYY').valueOf();
-                const momentServiceStartDate = moment(service.startDate, 'DD/MM/YYYY').valueOf();
-                const momentServiceEndDate = service.endDate
-                    ? moment(service.endDate, 'DD/MM/YYYY').valueOf()
-                    : undefined;
-
-                const productMatchesService =
-                    (!momentProductEndDate || momentProductEndDate >= momentServiceStartDate) &&
-                    (!momentServiceEndDate || momentServiceEndDate >= momentProductStartDate);
-
-                return productMatchesService;
+        if (matchingProducts.length > 0) {
+            servicesToDisplay.push({
+                lineId: service.lineId,
+                origin: service.origin,
+                destination: service.destination,
+                lineName: service.lineName,
             });
-
-            if (matchingProducts.length > 0) {
-                return {
-                    lineId: service.lineId,
-                    origin: service.origin,
-                    destination: service.destination,
-                    lineName: service.lineName,
-                };
-            } else {
-                return undefined;
-            }
-        })
-        .filter((service) => !!service) as ServiceToDisplay[];
+        }
+    }
 
     const seenLineIds: string[] = [];
     const uniqueServicesToDisplay =
