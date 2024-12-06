@@ -482,11 +482,15 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const allServicesWithMatchingLineIds: Record<string, MyFaresService> = {};
 
     const validProducts = nonExpiredProducts.filter((product) => {
+        if (!product.lineId) {
+            return true;
+        }
+
+        // If the product has a line ID but the ID doesn't match any of the services, the product should no longer be surfaced
         const matchingService = allBodsServices.find((service) => service.lineId === product.lineId);
 
         if (matchingService) {
             allServicesWithMatchingLineIds[matchingService.id] = matchingService;
-
             return true;
         }
 
