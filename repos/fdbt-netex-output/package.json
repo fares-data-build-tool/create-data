@@ -21,9 +21,13 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "aws-lambda": "^1.0.5",
+        "@aws-sdk/client-s3": "^3.705.0",
+        "@aws-sdk/client-ses": "^3.699.0",
+        "@aws-sdk/client-sns": "^3.699.0",
+        "aws-lambda": "^1.0.7",
         "aws-param-store": "^3.2.0",
-        "aws-sdk": "^2.938.0",
+        "aws-sdk-client-mock": "^4.1.0",
+        "aws-sdk-client-mock-jest": "^4.1.0",
         "fdbt-types": "file:../fdbt-types",
         "lodash": "^4.17.21",
         "moment": "^2.27.0",
@@ -35,9 +39,9 @@
         "xml2json": "^0.12.0"
     },
     "devDependencies": {
-        "@types/aws-lambda": "^8.10.77",
-        "@types/aws-lambda-mock-context": "^3.2.0",
-        "@types/aws-param-store": "^2.1.1",
+        "@types/aws-lambda": "^8.10.146",
+        "@types/aws-lambda-mock-context": "^3.2.4",
+        "@types/aws-param-store": "^2.1.3",
         "@types/jest": "^27.0.2",
         "@types/libxslt": "^0.9.0",
         "@types/lodash": "^4.14.170",

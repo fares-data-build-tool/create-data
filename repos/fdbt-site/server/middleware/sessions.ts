@@ -1,34 +1,18 @@
-import AWS, { DynamoDB } from 'aws-sdk';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import connectDynamoDb from 'connect-dynamodb';
 import { Express } from 'express';
 import session, { SessionOptions, Store } from 'express-session';
 
-interface DynamoDbOptions {
-    table: string;
-    AWSConfigJSON: {
-        region: string;
-    };
-    client?: DynamoDB;
-}
-
 export default (server: Express): void => {
     const DynamoDbStore: new (options: object) => Store = connectDynamoDb(session);
 
-    const dynamoDbOptions: DynamoDbOptions = {
+    const options = {
         table: 'sessions',
-        AWSConfigJSON: {
+        client: new DynamoDBClient({
             region: 'eu-west-2',
-        },
+            ...(process.env.NODE_ENV === 'development' ? { endpoint: 'http://localhost:4569' } : {}),
+        }),
     };
-
-    if (process.env.NODE_ENV === 'development') {
-        dynamoDbOptions.client = new AWS.DynamoDB({
-            endpoint: 'http://127.0.0.1:4566',
-            region: 'eu-west-2',
-            accessKeyId: 'DUMMY',
-            secretAccessKey: 'DUMMY',
-        });
-    }
 
     const sessionOptions: SessionOptions = {
         cookie: {
@@ -39,7 +23,7 @@ export default (server: Express): void => {
         saveUninitialized: false,
         resave: false,
         secret: process.env.SESSION_SECRET || 'secret',
-        store: new DynamoDbStore(dynamoDbOptions),
+        store: new DynamoDbStore(options),
     };
 
     server.use(session(sessionOptions));

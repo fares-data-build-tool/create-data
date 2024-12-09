@@ -1,14 +1,8 @@
 import { Fragment, ReactElement, useEffect, useState } from 'react';
 import { H1 } from '@govuk-react/heading';
 import LoadingBox from '@govuk-react/loading-box';
-import {
-    AttributeListType,
-    UsersListType,
-    UserType,
-    UsernameType,
-} from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { AttributeType, UserType } from '@aws-sdk/client-cognito-identity-provider';
 import Table from '@govuk-react/table';
-
 import { ATTRIBUTE_MAP, STATUS_MAP } from '../constants';
 import { listUsersInPool } from '../data/cognito';
 import { getCognitoClientAndUserPool } from '../utils/cognito';
@@ -17,15 +11,15 @@ interface ListUsersProps {
     isFullAdmin: boolean;
 }
 
-const formatAttributes = (attributes: AttributeListType) => {
+const formatAttributes = (attributes: AttributeType[]) => {
     return attributes
-        .filter((attribute) => ATTRIBUTE_MAP[attribute.Name])
+        .filter((attribute) => attribute.Name && ATTRIBUTE_MAP[attribute.Name])
         .map(
             (attribute) =>
                 attribute.Value !== undefined && (
                     <Fragment key={attribute.Name}>
                         <span>
-                            <strong>{ATTRIBUTE_MAP[attribute.Name]}</strong>: {attribute.Value.replace(/\|/g, ', ')}
+                            <strong>{attribute.Name && ATTRIBUTE_MAP[attribute.Name]}</strong>: {attribute.Value.replace(/\|/g, ', ')}
                         </span>
                         <br />
                     </Fragment>
@@ -36,9 +30,9 @@ const formatAttributes = (attributes: AttributeListType) => {
 const getAttributeValue = (user: UserType, attributeName: string): string | undefined =>
     user?.Attributes?.find((item) => item.Name === attributeName)?.Value;
 
-const getDeleteUrl = (username: UsernameType | undefined): string => (username ? `/deleteUser/${username}` : '/');
-const getEditUrl = (username: UsernameType | undefined): string => (username ? `/editUser/${username}` : '/');
-const getResendUrl = (username: UsernameType | undefined): string => (username ? `/resendInvite/${username}` : '/');
+const getDeleteUrl = (username?: string): string => (username ? `/deleteUser/${username}` : '/');
+const getEditUrl = (username?: string): string => (username ? `/editUser/${username}` : '/');
+const getResendUrl = (username?: string): string => (username ? `/resendInvite/${username}` : '/');
 
 const sortByEmail = (a: UserType, b: UserType) => {
     const aEmail = a.Attributes?.find((attribute) => attribute.Name === 'email')?.Value || 'z';
@@ -47,14 +41,14 @@ const sortByEmail = (a: UserType, b: UserType) => {
 };
 
 const ListUsers = ({ isFullAdmin }: ListUsersProps): ReactElement => {
-    const [users, setUsers] = useState<UsersListType>([]);
+    const [users, setUsers] = useState<UserType[]>([]);
     const [loaded, setLoaded] = useState<boolean>(false);
     const nonTestUsers = users?.filter((user) => !getAttributeValue(user, 'custom:noc')?.includes('IWBusCo'));
     const completedRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'CONFIRMED');
     const pendingRegisteredUsers = nonTestUsers.filter((user) => user?.UserStatus === 'FORCE_CHANGE_PASSWORD');
 
     useEffect(() => {
-        const getUsers = async (): Promise<UsersListType> => {
+        const getUsers = async (): Promise<UserType[]> => {
             const { client, userPoolId } = await getCognitoClientAndUserPool();
 
             return listUsersInPool(client, userPoolId);

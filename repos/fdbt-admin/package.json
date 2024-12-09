@@ -11,6 +11,9 @@
     },
     "dependencies": {
         "@aws-amplify/ui-react": "^5.3.0",
+        "@aws-sdk/client-cognito-identity-provider": "^3.699.0",
+        "@aws-sdk/client-s3": "^3.705.0",
+        "@aws-sdk/client-ses": "^3.699.0",
         "@govuk-react/button": "^0.10.0",
         "@govuk-react/details": "^0.10.0",
         "@govuk-react/heading": "^0.10.0",
@@ -22,7 +25,6 @@
         "@testing-library/react": "^11.2.7",
         "@testing-library/user-event": "^12.8.3",
         "aws-amplify": "^5.3.11",
-        "aws-sdk": "^2.1046.0",
         "govuk-react": "^0.10.0",
         "nanoid": "^5.0.1",
         "react": "17.0.2",

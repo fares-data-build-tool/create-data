@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import AWS from 'aws-sdk';
+import { SESClient } from '@aws-sdk/client-ses';
 import { SERVICE_EMAIL_ADDRESS, STAGE } from '../../constants';
 import { Feedback } from '../../interfaces';
 
@@ -32,7 +32,7 @@ export const setFeedbackMailOptions = (
 
 export const createMailTransporter = (): Mail => {
     return nodemailer.createTransport({
-        SES: new AWS.SES({
+        SES: new SESClient({
             apiVersion: '2010-12-01',
             region: 'eu-west-1',
         }),
