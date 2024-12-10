@@ -144,8 +144,6 @@ export const netexConvertorHandler = async (event: S3Event): Promise<void> => {
             console.info(`NeTEx generation complete for type ${scheme}${carnet}${type}`);
         }
     } catch (error) {
-        console.error(error);
-
         const sns = new SNSClient();
 
         const messageParams = {

@@ -26,8 +26,6 @@
         "@aws-sdk/client-sns": "^3.699.0",
         "@aws-sdk/client-ssm": "^3.699.0",
         "aws-lambda": "^1.0.7",
-        "aws-sdk-client-mock": "^4.1.0",
-        "aws-sdk-client-mock-jest": "^4.1.0",
         "fdbt-types": "file:../fdbt-types",
         "lodash": "^4.17.21",
         "moment": "^2.27.0",
