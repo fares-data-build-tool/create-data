@@ -32,7 +32,7 @@ jest.spyOn(s3, 'uploadNetexToS3').mockImplementation(() => Promise.resolve());
 const mockFetchDataFromS3Spy = jest.spyOn(s3, 'fetchDataFromS3');
 const mockUploadNetexToS3Spy = jest.spyOn(s3, 'uploadNetexToS3');
 
-const snsMock = mockClient(SNSClient);
+const snsMock = mockClient(SNSClient as any);
 
 mockUploadNetexToS3Spy.mockImplementation(() => Promise.resolve());
 
@@ -389,7 +389,7 @@ describe('netexConvertorHandler', () => {
                 Subject: 'NeTEx Convertor',
             };
 
-            expect(snsMock).toHaveReceivedCommandWith(PublishCommand, expectedObject);
+            expect(snsMock).toHaveReceivedCommandWith(PublishCommand as any, expectedObject);
         }
     });
 });
