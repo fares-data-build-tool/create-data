@@ -17,9 +17,9 @@ import {
     ForgotPasswordCommand,
     ForgotPasswordCommandInput,
 } from '@aws-sdk/client-cognito-identity-provider';
-import awsParamStore from 'aws-param-store';
 import crypto from 'crypto';
 import logger from '../utils/logger';
+import { getSsmValue } from './ssm';
 
 const clientId = process.env.FDBT_USER_POOL_CLIENT_ID as string;
 const userPoolId = process.env.FDBT_USER_POOL_ID as string;
@@ -29,13 +29,17 @@ const cognito = new CognitoIdentityProviderClient({
     region: 'eu-west-2',
 });
 
-const calculateSecretHash = (username: string): string => {
+const calculateSecretHash = async (username: string): Promise<string> => {
     if (!clientSecret) {
-        clientSecret = awsParamStore.getParameterSync('fdbt-cognito-client-secret', { region: 'eu-west-2' }).Value;
+        clientSecret = await getSsmValue('fdbt-cognito-client-secret');
+    }
+
+    if (!clientSecret) {
+        throw new Error('Client secret not found in SSM');
     }
 
     return crypto
-        .createHmac('SHA256', clientSecret as string)
+        .createHmac('SHA256', clientSecret)
         .update(username + clientId)
         .digest('base64');
 };
@@ -53,7 +57,7 @@ export const initiateAuth = async (username: string, password: string): Promise<
         AuthParameters: {
             USERNAME: username,
             PASSWORD: password,
-            SECRET_HASH: calculateSecretHash(username),
+            SECRET_HASH: await calculateSecretHash(username),
         },
     };
 
@@ -81,7 +85,7 @@ export const initiateRefreshAuth = async (
         UserPoolId: userPoolId,
         AuthParameters: {
             REFRESH_TOKEN: refreshToken,
-            SECRET_HASH: calculateSecretHash(username),
+            SECRET_HASH: await calculateSecretHash(username),
         },
     };
 
@@ -111,7 +115,7 @@ export const respondToNewPasswordChallenge = async (
         ChallengeResponses: {
             USERNAME: username,
             NEW_PASSWORD: password,
-            SECRET_HASH: calculateSecretHash(username),
+            SECRET_HASH: await calculateSecretHash(username),
         },
         Session: session,
     };
@@ -172,7 +176,7 @@ export const forgotPassword = async (username: string): Promise<void> => {
     const params: ForgotPasswordCommandInput = {
         ClientId: clientId,
         Username: username,
-        SecretHash: calculateSecretHash(username),
+        SecretHash: await calculateSecretHash(username),
     };
 
     try {
@@ -197,7 +201,7 @@ export const confirmForgotPassword = async (
         Username: username,
         ConfirmationCode: confirmationCode,
         Password: password,
-        SecretHash: calculateSecretHash(username),
+        SecretHash: await calculateSecretHash(username),
     };
 
     try {

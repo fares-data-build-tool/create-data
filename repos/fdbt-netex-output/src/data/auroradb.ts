@@ -1,9 +1,9 @@
 import { createPool, Pool } from 'mysql2/promise';
-import awsParamStore from 'aws-param-store';
 import { Operator, OperatorDetails } from '../types';
 import { replaceIWBusCoNocCode } from '../netex-convertor/sharedHelpers';
+import { getSsmValue } from './ssm';
 
-export const getAuroraDBClient = (): Pool => {
+export const getAuroraDBClient = async (): Promise<Pool> => {
     let client: Pool;
 
     if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
@@ -19,8 +19,8 @@ export const getAuroraDBClient = (): Pool => {
     } else {
         client = createPool({
             host: process.env.RDS_HOST,
-            user: awsParamStore.getParameterSync('fdbt-rds-netex-output-username', { region: 'eu-west-2' }).Value,
-            password: awsParamStore.getParameterSync('fdbt-rds-netex-output-password', { region: 'eu-west-2' }).Value,
+            user: await getSsmValue('fdbt-rds-netex-output-username'),
+            password: await getSsmValue('fdbt-rds-netex-output-password'),
             database: 'fdbt',
             waitForConnections: true,
             connectionLimit: 1,
@@ -31,9 +31,12 @@ export const getAuroraDBClient = (): Pool => {
     return client;
 };
 
-const connectionPool = getAuroraDBClient();
+let connectionPool: Pool;
 
 const executeQuery = async <T>(query: string, values: string[]): Promise<T> => {
+    if (!connectionPool) {
+        connectionPool = await getAuroraDBClient();
+    }
     const [rows] = await connectionPool.execute(query, values);
     return JSON.parse(JSON.stringify(rows));
 };
