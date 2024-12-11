@@ -65,7 +65,7 @@
         "@aws-sdk/client-ssm": "^3.699.0",
         "@aws-sdk/lib-storage": "^3.705.0",
         "archiver": "^5.3.0",
-        "mysql2": "^2.3.0",
+        "mysql2": "^3.11.5",
         "source-map-support": "^0.5.20"
     }
 }
