@@ -21,12 +21,12 @@ const description = 'Select Caps page of the Create Fares Data Service';
 interface SelectCapsProps {
     csrfToken: string;
     errors: ErrorInfo[];
-    capsFromDb: Cap[];
+    capsFromDb: (Cap & { id: number })[];
     backHref: string;
-    selectedId: number | null;
+    selectedIds: number[] | null;
 }
 
-const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: SelectCapsProps): ReactElement => {
+const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedIds }: SelectCapsProps): ReactElement => {
     return (
         <FullColumnLayout title={title} description={description} errors={errors}>
             {!!backHref && errors.length === 0 ? <BackButton href={backHref} /> : null}
@@ -64,7 +64,10 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: Sel
                                         type="radio"
                                         value="yes"
                                         data-aria-controls="conditional-caps"
-                                        defaultChecked={errors.some((error) => error.id === 'caps') || !!selectedId}
+                                        defaultChecked={
+                                            errors.some((error) => error.id === 'caps') ||
+                                            (!!selectedIds && selectedIds.length > 0)
+                                        }
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="caps">
                                         Yes
@@ -81,7 +84,7 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: Sel
                                                 <CapsCard
                                                     key={capFromDb.capDetails.name}
                                                     cap={capFromDb}
-                                                    selectedId={selectedId}
+                                                    selectedIds={selectedIds}
                                                 />
                                             ))
                                         ) : (
@@ -99,7 +102,10 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: Sel
                                         name="capChoice"
                                         type="radio"
                                         value="no"
-                                        defaultChecked={!selectedId && !errors.some((error) => error.id === 'caps')}
+                                        defaultChecked={
+                                            (!selectedIds || (selectedIds && selectedIds.length === 0)) &&
+                                            !errors.some((error) => error.id === 'caps')
+                                        }
                                     />
                                     <label className="govuk-label govuk-radios__label" htmlFor="no-caps">
                                         No
@@ -125,28 +131,31 @@ const SelectCaps = ({ csrfToken, errors, capsFromDb, backHref, selectedId }: Sel
     );
 };
 
-const CapsCard = ({ cap, selectedId }: { cap: Cap; selectedId: number | null }): ReactElement => {
+const CapsCard = ({ cap, selectedIds }: { cap: Cap & { id: number }; selectedIds: number[] | null }): ReactElement => {
     return (
-        <div className="card">
-            <div className="card__body caps">
-                <div className="govuk-radios">
-                    <div className="govuk-radios__item card__selector">
-                        <input
-                            className="govuk-radios__input"
-                            id={`${cap.capDetails.name}-${cap.id}-radio`}
-                            name="cap"
-                            type="radio"
-                            value={cap.id}
-                            aria-label={cap.capDetails.name}
-                            defaultChecked={selectedId === cap.id}
-                        />
-                        <label
-                            className="govuk-label govuk-radios__label"
-                            htmlFor={`${cap.capDetails.name}-${cap.id}-radio`}
-                        >
-                            <span className="govuk-visually-hidden">{`${cap.capDetails.name}`}</span>
-                        </label>
-                    </div>
+        <div className="card" key={`checkbox-item-${cap.capDetails.name}`}>
+            <div className="card__body card_align">
+                <div className="govuk-checkboxes__item card__selector">
+                    <input
+                        className="govuk-checkboxes__input"
+                        id={`${cap.capDetails.name}-radio`}
+                        name="caps"
+                        type="checkbox"
+                        value={cap.id}
+                        aria-label={cap.capDetails.name}
+                        defaultChecked={
+                            !!selectedIds &&
+                            Array.isArray(selectedIds) &&
+                            !!cap.id &&
+                            selectedIds.includes(Number(cap.id))
+                        }
+                    />
+                    <label
+                        className="govuk-label govuk-checkboxes__label"
+                        htmlFor={`${cap.capDetails.name}-${cap.id}-checkbox`}
+                    >
+                        <span className="govuk-visually-hidden">{`${cap.capDetails.name}`}</span>
+                    </label>
                 </div>
                 <CapCardBody cap={cap} />
             </div>
@@ -168,7 +177,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const errors = !!capAttribute && 'errors' in capAttribute ? capAttribute.errors : [];
 
-    let selectedId = !!capAttribute && !('errors' in capAttribute) ? capAttribute.id : null;
+    let selectedIds =
+        !!capAttribute && !('errors' in capAttribute) && capAttribute.length > 0
+            ? capAttribute.map((cap) => cap.id)
+            : null;
 
     const backHref =
         ticket && matchingJsonMetaData
@@ -179,10 +191,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const nationalOperatorCode = getAndValidateNoc(ctx);
 
-    const capsFromDb: Cap[] = await getCaps(nationalOperatorCode);
+    const capsFromDb: (Cap & { id: number })[] = await getCaps(nationalOperatorCode);
 
     if (ticket && matchingJsonMetaData) {
-        selectedId = 'cap' in ticket && ticket.cap ? ticket.cap.id : null;
+        selectedIds =
+            'caps' in ticket && ticket.caps && Array.isArray(ticket.caps) ? ticket.caps.map((cap) => cap.id) : null;
     }
 
     return {
@@ -191,7 +204,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             errors,
             capsFromDb,
             backHref,
-            selectedId,
+            selectedIds,
         },
     };
 };

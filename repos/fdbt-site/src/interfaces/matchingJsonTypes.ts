@@ -9,7 +9,7 @@ export type FlatFareGeoZoneTicket = Omit<PeriodGeoZoneTicket, 'products' | 'type
     type: 'flatFare';
     products: FlatFareProduct[];
     exemptedServices?: SelectedService[];
-    cap?: CapSelection;
+    caps?: CapSelection[];
 };
 
 export interface PeriodGeoZoneTicket extends BasePeriodTicket {
@@ -58,7 +58,7 @@ export interface FlatFareMultipleServices extends BaseTicket<'flatFare'> {
     termTime: boolean;
     selectedServices: SelectedService[];
     operatorName: string;
-    cap?: CapSelection;
+    caps?: CapSelection[];
     exemptStops?: Stop[];
     return?: boolean;
 }
@@ -238,7 +238,7 @@ export interface BasePointToPointTicket extends BaseTicket {
     serviceDescription: string;
     products: (BaseProduct | PointToPointCarnetProductDetails)[];
     unassignedStops: UnassignedStops;
-    cap?: CapSelection;
+    caps?: CapSelection[];
 }
 
 export type PointToPointTicket = SingleTicket | ReturnTicket;
@@ -333,11 +333,6 @@ export interface PeriodExpiry {
     productEndTime?: string;
 }
 
-export interface CapExpiry {
-    productValidity: string;
-    productEndTime?: string;
-}
-
 export interface FareZone {
     name: string;
     stops: Stop[];
@@ -382,6 +377,15 @@ export enum ExpiryUnit {
     YEAR = 'year',
     TERM = 'term',
 }
+
+export enum CapExpiryUnit {
+    DAY = 'day',
+    WEEK = 'week',
+    MONTH = 'month',
+    TERM = 'term',
+}
+
+export type ProductValidity = 'endOfCalendarDay' | 'fareDayEnd';
 
 export interface Stop {
     stopName: string;

@@ -90,6 +90,10 @@ Resources:
         PasswordPolicy:
           MinimumLength: 8
           TemporaryPasswordValidityDays: 3
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
       EmailConfiguration:
         EmailSendingAccount: "COGNITO_DEFAULT"
       AdminCreateUserConfig:

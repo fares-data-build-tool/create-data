@@ -398,15 +398,22 @@ const createProductDetails = async (
 
     if (isDevOrTest && fareTypeIsAllowedToAddACap(ticket.type) && hasCaps && !ticket.carnet) {
         let capContent = 'N/A';
+        if ('caps' in ticket && ticket.caps) {
+            const caps = await Promise.all(
+                (ticket.caps as (Cap & { id: number })[]).map(async (c) => await getCapByNocAndId(noc, c.id)),
+            );
 
-        if ('cap' in ticket && ticket.cap) {
-            const cap = (await getCapByNocAndId(noc, ticket.cap.id)) as Cap;
-            capContent = `${sentenceCaseString(cap.capDetails.name)} - £${cap.capDetails.price}`;
+            capContent =
+                caps && caps.length > 0
+                    ? caps
+                          .map((cap) => `${sentenceCaseString(cap?.capDetails.name || '')} - £${cap?.capDetails.price}`)
+                          .join(', ')
+                    : 'N/A';
         }
 
         productDetailsElements.push({
-            id: 'cap',
-            name: 'Cap',
+            id: 'caps',
+            name: 'Caps',
             content: [capContent],
             editLink: '/selectCaps',
         });

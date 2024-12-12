@@ -325,14 +325,15 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const products = getPointToPointProducts(req);
     const singleUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const directionAttribute = getSessionAttribute(req, DIRECTION_ATTRIBUTE);
-    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
 
     if (
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
         !singleUnassignedStops ||
         !directionAttribute ||
-        'errors' in directionAttribute
+        'errors' in directionAttribute ||
+        (caps && 'errors' in caps)
     ) {
         throw new Error('Could not create single ticket json. Necessary cookies and session objects not found.');
     }
@@ -352,7 +353,7 @@ export const getSingleTicketJson = (req: NextApiRequestWithSession, res: NextApi
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
         journeyDirection: (directionAttribute as Direction).direction,
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!caps && caps.length > 0 && { caps }),
     };
 };
 
@@ -373,13 +374,14 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
     const products = getPointToPointProducts(req);
     const outboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_STOPS_ATTRIBUTE);
     const inboundUnassignedStops = getSessionAttribute(req, UNASSIGNED_INBOUND_STOPS_ATTRIBUTE);
-    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
 
     if (
         !matchingAttributeInfo ||
         !isMatchingInfo(matchingAttributeInfo) ||
         isReturnPeriodValidityWithErrors(returnPeriodValidity) ||
-        !outboundUnassignedStops
+        !outboundUnassignedStops ||
+        (caps && 'errors' in caps)
     ) {
         logger.error('session objects', {
             matchingAttributeInfo,
@@ -412,7 +414,7 @@ export const getReturnTicketJson = (req: NextApiRequestWithSession, res: NextApi
         products,
         operatorName: service.operatorShortName,
         ...{ operatorShortName: undefined },
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!caps && caps.length > 0 && { caps }),
     };
 };
 
@@ -425,9 +427,9 @@ export const getGeoZoneTicketJson = async (
     const fareZoneName = getSessionAttribute(req, FARE_ZONE_ATTRIBUTE);
     const multiOpAttribute = getSessionAttribute(req, MULTIPLE_OPERATOR_ATTRIBUTE);
     const exemptions = getSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE) as ServiceListAttribute;
-    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
 
-    if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName)) {
+    if (!fareZoneName || isFareZoneAttributeWithErrors(fareZoneName) || (caps && 'errors' in caps)) {
         throw new Error('Could not create geo zone ticket json. Necessary cookies and session objects not found.');
     }
 
@@ -457,7 +459,7 @@ export const getGeoZoneTicketJson = async (
         ...(additionalNocs && { additionalNocs }),
         ...(operatorGroupId && { operatorGroupId }),
         ...(exemptions && { exemptedServices: exemptions.selectedServices }),
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!caps && caps.length > 0 && { caps }),
     };
 };
 
@@ -471,14 +473,15 @@ export const getMultipleServicesByDistanceTicketJson = (
     const pricingByDistance = getSessionAttribute(req, PRICING_PER_DISTANCE_ATTRIBUTE) as DistancePricingData;
     const salesOfferPackages = getSessionAttribute(req, SALES_OFFER_PACKAGES_ATTRIBUTE) as SalesOfferPackage[];
     const baseTicketAttributes = getBaseTicketAttributes(req, res, 'flatFare');
-    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
 
     if (
         !operatorAttribute ||
         !operatorAttribute.name ||
         !pricingByDistance ||
         !salesOfferPackages ||
-        salesOfferPackages.length <= 0
+        salesOfferPackages.length <= 0 ||
+        (caps && 'errors' in caps)
     ) {
         logger.error('Attributes missing / incorrect', {
             operatorAttribute,
@@ -511,7 +514,7 @@ export const getMultipleServicesByDistanceTicketJson = (
         selectedServices,
         ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!caps && caps.length > 0 && { caps }),
     } as WithIds<FlatFareMultipleServices>;
 };
 
@@ -523,12 +526,20 @@ export const getMultipleServicesTicketJson = (
     const { selectedServices } = serviceListAttribute;
     let exemptStops: Stop[] = [];
     const exemptStopsAttribute = getSessionAttribute(req, STOPS_EXEMPTION_ATTRIBUTE);
-    const cap = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+    const caps = getSessionAttribute(req, CAPS_DEFINITION_ATTRIBUTE);
+
+    if (caps && 'errors' in caps) {
+        logger.error('Attributes missing / incorrect', {
+            caps,
+        });
+        throw new Error(`Could not create multiple services ticket json. Necessary attributes could not be found.`);
+    }
 
     if (!!exemptStopsAttribute && !isExemptStopsAttributeWithErrors(exemptStopsAttribute)) {
         exemptStops = exemptStopsAttribute.exemptStops;
     }
     const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
+
     if (basePeriodTicketAttributes.type === 'multiOperator') {
         const additionalOperators = getSessionAttribute(
             req,
@@ -544,7 +555,7 @@ export const getMultipleServicesTicketJson = (
             additionalOperators,
             termTime: isTermTime(req),
             ...(operatorGroupId && { operatorGroupId }),
-            ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+            ...(!!caps && caps.length > 0 && { caps }),
             ...(exemptStops.length > 0 && { exemptStops }),
         };
     }
@@ -556,7 +567,7 @@ export const getMultipleServicesTicketJson = (
         selectedServices,
         ...(exemptStops.length > 0 && { exemptStops }),
         termTime: isTermTime(req),
-        ...(!!cap && !('errors' in cap) && { cap: { id: cap.id } }),
+        ...(!!caps && caps.length > 0 && { caps }),
         ...(!!isFlatFareReturn && { return: true }),
     };
 };

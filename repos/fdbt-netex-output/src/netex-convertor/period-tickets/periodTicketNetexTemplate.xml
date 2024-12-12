@@ -746,6 +746,10 @@
                             <MediaType>card</MediaType>
                             <MachineReadable>none</MachineReadable>
                         </TypeOfTravelDocument>
+                        <TypeOfTravelDocument id="fxc:m-ticket" version="fxc:v1.0">
+							<MediaType>card</MediaType>
+							<MachineReadable>nfc</MachineReadable>
+						</TypeOfTravelDocument>
                     </typesOfTravelDocuments>
                 </FareFrame>
                 <ResourceFrame id="fxc:UK:DFT:ResourceFrame_UK_PI_METADATA:FareXChange:fxc" version="fxc:v1.0" responsibilitySetRef="fxc:FXC_metadata" dataSourceRef="fxc:dft">

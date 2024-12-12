@@ -20,7 +20,7 @@ import {
 } from './database';
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
-import { DbTimeRestriction } from 'fdbt-types/dbTypes';
+import { DbCap, DbTimeRestriction } from 'fdbt-types/dbTypes';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -91,7 +91,13 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ? await getTimeRestrictionsByIdAndNoc(ticketWithIds.timeRestriction.id, noc)
                 : [];
 
-            const cap = !!ticketWithIds.cap ? await getCapByNocAndId(noc, ticketWithIds.cap.id) : undefined;
+            const caps = ticketWithIds.caps
+                ? await Promise.all(
+                      (ticketWithIds.caps as { id: number }[]).map(({ id }) =>
+                          getCapByNocAndId(noc, id).then((cap) => cap || null),
+                      ),
+                  ).then((results) => results.filter((cap): cap is DbCap => cap !== null))
+                : undefined;
 
             const fareDayEnd = await getFareDayEnd(noc);
 
@@ -131,7 +137,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                 ...passengerType,
                 groupDefinition,
                 timeRestriction: timeRestrictionWithUpdatedFareDayEnds,
-                ...(!!cap && cap),
+                ...(!!caps && caps.length > 0 ? { caps: caps } : {}),
             };
             /* eslint-enable */
 

@@ -45,6 +45,8 @@ import {
     getPriceGroups,
     combineFareZones,
     getAdditionalReturnLines,
+    getCappedDiscountRight,
+    getCapFareTables,
 } from './point-to-point-tickets/pointToPointTicketNetexHelpers';
 import {
     convertJsonToXml,
@@ -439,7 +441,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
         }
 
         priceFareFrameToUpdate.id = `epd:UK:${coreData.operatorIdentifier}:FareFrame_UK_PI_FARE_PRODUCT:${ticketIdentifier}@pass:op`;
-        const tariff = priceFareFrameToUpdate.tariffs.Tariff;
+        let tariff = priceFareFrameToUpdate.tariffs.Tariff;
         tariff.id = coreData.lineIdName
             ? `Tariff@${coreData.ticketType}@${coreData.lineIdName}`
             : `op:Tariff@${coreData.placeholderGroupOfProductsName}`;
@@ -519,10 +521,37 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 delete priceFareFrameToUpdate.fareProducts.AmountOfPriceUnitProduct;
             }
 
+            if ('caps' in ticket && ticket.caps) {
+                const cappedDiscountRight = getCappedDiscountRight(
+                    ticket,
+                    coreData.ticketUserConcat,
+                    coreData.nocCodeFormat,
+                );
+                priceFareFrameToUpdate.fareProducts.CappedDiscountRight = cappedDiscountRight;
+            }
             priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = buildSalesOfferPackages(
                 ticket.products[0],
                 coreData.ticketUserConcat,
+                priceFareFrameToUpdate.fareProducts.CappedDiscountRight?.id ?? '',
             );
+
+            const timeIntervalsToAdd = { TimeInterval: getTimeIntervals(ticket) };
+            tariff.timeIntervals = timeIntervalsToAdd;
+            // This is horrible but in the netex the timeIntervals need to come before the qualityStructureFactors and fareStructureElements
+            const timeIntervalsToUpdate = tariff.timeIntervals;
+            const fareStructureElementsToUpdate = tariff.fareStructureElements;
+            const qualityStructureFactorsToUpdate = tariff.qualityStructureFactors;
+            delete tariff.fareStructureElements;
+            delete tariff.qualityStructureFactors;
+            delete tariff.timeIntervals;
+            priceFareFrameToUpdate.tariffs.Tariff = {
+                ...tariff,
+                timeIntervals: timeIntervalsToUpdate,
+                qualityStructureFactors: qualityStructureFactorsToUpdate,
+                fareStructureElements: fareStructureElementsToUpdate,
+            };
+
+            tariff = priceFareFrameToUpdate.tariffs.Tariff;
 
             if (isPointToPointTicket(ticket)) return priceFareFrameToUpdate;
         }
@@ -583,8 +612,20 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             delete priceFareFrameToUpdate.fareProducts.AmountOfPriceUnitProduct;
         }
 
+        if ('caps' in ticket && ticket.caps) {
+            const cappedDiscountRight = getCappedDiscountRight(
+                ticket,
+                coreData.ticketUserConcat,
+                coreData.nocCodeFormat,
+            );
+            priceFareFrameToUpdate.fareProducts.CappedDiscountRight = cappedDiscountRight;
+        }
         // Sales Offer Packages
-        const salesOfferPackages = getSalesOfferPackageList(ticket, coreData.ticketUserConcat);
+        const salesOfferPackages = getSalesOfferPackageList(
+            ticket,
+            coreData.ticketUserConcat,
+            priceFareFrameToUpdate.fareProducts.CappedDiscountRight?.id ?? '',
+        );
         priceFareFrameToUpdate.salesOfferPackages.SalesOfferPackage = salesOfferPackages.flat();
 
         return priceFareFrameToUpdate;
@@ -638,6 +679,13 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             }
         } else {
             assertNever(ticket);
+        }
+
+        if ('caps' in ticket && ticket.caps) {
+            fareTableFareFrameToUpdate.fareTables.FareTable = [
+                ...fareTableFareFrameToUpdate.fareTables.FareTable,
+                ...getCapFareTables(ticket, coreData.lineIdName, coreData),
+            ];
         }
 
         return fareTableFareFrameToUpdate;

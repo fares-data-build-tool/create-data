@@ -29,8 +29,8 @@ describe('changePassword', () => {
             cookieValues: {},
             body: {
                 oldPassword: 'iLoveBuses',
-                newPassword: 'iReallyLoveBuses',
-                confirmNewPassword: 'iReallyLoveBuses',
+                newPassword: 'iReallyLoveBuses1!',
+                confirmNewPassword: 'iReallyLoveBuses1!',
             },
             uuid: {},
             mockWriteHeadFn: writeHeadMock,
@@ -70,7 +70,7 @@ describe('changePassword', () => {
         ],
         [
             'the user enters an incorrect old password',
-            { oldPassword: 'iLoveBuses', newPassword: 'iReallyLoveBuses', confirmNewPassword: 'iReallyLoveBuses' },
+            { oldPassword: 'iLoveBuses', newPassword: 'iReallyLoveBuses1!', confirmNewPassword: 'iReallyLoveBuses1!' },
             [{ id: 'old-password', errorMessage: 'Your old password is incorrect' }],
             0,
         ],
@@ -82,14 +82,50 @@ describe('changePassword', () => {
         ],
         [
             "the 'new-password' input is too short",
-            { oldPassword: 'iLoveBuses', newPassword: 'short', confirmNewPassword: 'short' },
+            { oldPassword: 'iLoveBuses', newPassword: 'Short1!', confirmNewPassword: 'Short1!' },
             [{ id: 'new-password', errorMessage: 'Password must be at least 8 characters long' }],
             1,
         ],
         [
             "the 'new-password' and 'confirm-new-password' inputs do no match",
-            { oldPassword: 'iLoveBuses', newPassword: 'iReallyLoveBuses', confirmNewPassword: 'iQuiteLikeBuses' },
+            { oldPassword: 'iLoveBuses', newPassword: 'iReallyLoveBuses1!', confirmNewPassword: 'iQuiteLikeBuses1!' },
             [{ id: 'new-password', errorMessage: 'Passwords do not match' }],
+            1,
+        ],
+        [
+            "the 'new-password' does not have a special character",
+            { oldPassword: 'iLoveBuses', newPassword: 'iReallyLoveBuses1', confirmNewPassword: 'iQuiteLikeBuses1' },
+            [{ id: 'new-password', errorMessage: 'Password must contain at least one special character' }],
+            1,
+        ],
+        [
+            "the 'new-password' does not contain a number",
+            { oldPassword: 'iLoveBuses', newPassword: 'iReallyLoveBuses!', confirmNewPassword: 'iReallyLoveBuses!' },
+            [{ id: 'new-password', errorMessage: 'Password must contain at least one number' }],
+            1,
+        ],
+        [
+            "the 'new-password' does not contain an uppercase letter",
+            { oldPassword: 'iLoveBuses', newPassword: 'ireallylovebuses1!', confirmNewPassword: 'ireallylovebuses1!' },
+            [{ id: 'new-password', errorMessage: 'Password must contain at least one uppercase letter' }],
+            1,
+        ],
+        [
+            "the 'new-password' does not contain an lowercase letter",
+            { oldPassword: 'iLoveBuses', newPassword: 'IREALLYLOVEBUSES1!', confirmNewPassword: 'IREALLYLOVEBUSES1!' },
+            [{ id: 'new-password', errorMessage: 'Password must contain at least one lowercase letter' }],
+            1,
+        ],
+        [
+            "the 'new-password' does not contain conform to multiple aspects of password policy",
+            { oldPassword: 'iLoveBuses', newPassword: 'ireallylovebuses', confirmNewPassword: 'ireallylovebuses' },
+            [
+                {
+                    id: 'new-password',
+                    errorMessage:
+                        'Password must contain at least one uppercase letter, contain at least one number, and contain at least one special character',
+                },
+            ],
             1,
         ],
     ])('should set an error and redirect back to the page when %s', async (_case, input, inputChecks, authResponse) => {

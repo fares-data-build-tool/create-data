@@ -32,7 +32,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             }),
         );
 
-        const productsUsingCap = tickets.filter((ticket) => 'cap' in ticket && ticket.cap && ticket.cap.id === id);
+        const productsUsingCap = tickets.filter(
+            (ticket) => 'caps' in ticket && ticket.caps && ticket.caps.filter((c) => c.id === id),
+        );
 
         if (productsUsingCap.length > 0) {
             const { name } = cap.capDetails;

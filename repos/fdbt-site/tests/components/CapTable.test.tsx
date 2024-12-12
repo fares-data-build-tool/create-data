@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import CapTable from '../../src/components/CapTable';
-import { ExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
+import { CapExpiryUnit } from '../../src/interfaces/matchingJsonTypes';
 
 describe('CapTable', () => {
     it('should render the table upon first opening of page', () => {
@@ -17,13 +17,13 @@ describe('CapTable', () => {
                         name: 'First cap',
                         price: '2.33',
                         durationAmount: '2',
-                        durationUnits: ExpiryUnit.WEEK,
+                        durationUnits: CapExpiryUnit.WEEK,
                     },
                     {
                         name: 'Second cap',
                         price: '3.33',
                         durationAmount: '2',
-                        durationUnits: ExpiryUnit.DAY,
+                        durationUnits: CapExpiryUnit.DAY,
                     },
                 ]}
                 numberOfEntitesByDistancesToDisplay={2}
@@ -41,13 +41,13 @@ describe('CapTable', () => {
                         name: 'First cap',
                         price: '2.33',
                         durationAmount: '2',
-                        durationUnits: ExpiryUnit.WEEK,
+                        durationUnits: CapExpiryUnit.WEEK,
                     },
                     {
                         name: 'First cap',
                         price: '3.33',
                         durationAmount: '2',
-                        durationUnits: ExpiryUnit.DAY,
+                        durationUnits: CapExpiryUnit.DAY,
                     },
                 ]}
                 numberOfEntitesByDistancesToDisplay={2}

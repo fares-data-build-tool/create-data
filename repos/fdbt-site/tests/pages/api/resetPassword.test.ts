@@ -24,8 +24,8 @@ describe('resetPassword', () => {
             'password less than 8 characters',
             {
                 username: 'test@test.com',
-                password: 'abbb',
-                confirmPassword: 'abcdefghi',
+                password: 'Buses1!',
+                confirmPassword: 'Buses1!',
                 regKey: 'abcdefg',
                 expiry: expiryDate,
             },
@@ -50,13 +50,86 @@ describe('resetPassword', () => {
             'passwords fields do not match',
             {
                 username: 'test@test.com',
-                password: 'abbadjhfddddd',
+                password: 'ILoveBuses1!',
                 confirmPassword: 'abcdefghi',
                 regKey: 'abcdefg',
                 expiry: expiryDate,
             },
             {
                 errors: [{ id: 'new-password', errorMessage: 'Passwords do not match' }],
+            },
+        ],
+        [
+            'password does not contain special character',
+            {
+                username: 'test@test.com',
+                password: 'chromosoneTelepathyDinosaur1',
+                confirmPassword: 'chromosoneTelepathyDinosaur1',
+                regKey: 'abcdefg',
+                expiry: expiryDate,
+            },
+            {
+                errors: [
+                    {
+                        id: 'new-password',
+                        errorMessage: 'Password must contain at least one special character',
+                    },
+                ],
+            },
+        ],
+        [
+            'password does not contain uppercase letter',
+            {
+                username: 'test@test.com',
+                password: 'chromosonetelepathydinosaur1!',
+                confirmPassword: 'chromosonetelepathydinosaur1!',
+                regKey: 'abcdefg',
+                expiry: expiryDate,
+            },
+            {
+                errors: [
+                    {
+                        id: 'new-password',
+                        errorMessage: 'Password must contain at least one uppercase letter',
+                    },
+                ],
+            },
+        ],
+        [
+            'password does not contain lowercase letter',
+            {
+                username: 'test@test.com',
+                password: 'CHROMOSONETELEPATHYDINOSAUR1!',
+                confirmPassword: 'CHROMOSONETELEPATHYDINOSAUR1!',
+                regKey: 'abcdefg',
+                expiry: expiryDate,
+            },
+            {
+                errors: [
+                    {
+                        id: 'new-password',
+                        errorMessage: 'Password must contain at least one lowercase letter',
+                    },
+                ],
+            },
+        ],
+        [
+            'password does not conform to multiple aspects of password policy',
+            {
+                username: 'test@test.com',
+                password: 'chromosonetelepathydinosaur',
+                confirmPassword: 'chromosonetelepathydinosaur',
+                regKey: 'abcdefg',
+                expiry: expiryDate,
+            },
+            {
+                errors: [
+                    {
+                        id: 'new-password',
+                        errorMessage:
+                            'Password must contain at least one uppercase letter, contain at least one number, and contain at least one special character',
+                    },
+                ],
             },
         ],
     ];
@@ -78,8 +151,8 @@ describe('resetPassword', () => {
             cookieValues: {},
             body: {
                 username: 'test@test.com',
-                password: 'jhtgyuiop1',
-                confirmPassword: 'jhtgyuiop1',
+                password: 'ILoveBuses1!',
+                confirmPassword: 'ILoveBuses1!',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
@@ -105,8 +178,8 @@ describe('resetPassword', () => {
             cookieValues: {},
             body: {
                 username: 'test@test.com',
-                password: 'jhtgyuiop1',
-                confirmPassword: 'jhtgyuiop1',
+                password: 'ILoveBuses1!',
+                confirmPassword: 'ILoveBuses1!',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
@@ -139,8 +212,8 @@ describe('resetPassword', () => {
             cookieValues: {},
             body: {
                 username: 'test@test.com',
-                password: 'jhtgyuiop1',
-                confirmPassword: 'jhtgyuiop1',
+                password: 'ILoveBuses1!',
+                confirmPassword: 'ILoveBuses1!',
                 regKey: '123ABd$',
                 expiry: expiryDate,
             },
