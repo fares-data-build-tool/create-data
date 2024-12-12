@@ -1,10 +1,8 @@
 import { ListObjectsV2Command, ListObjectsV2CommandOutput, S3Client } from '@aws-sdk/client-s3';
-import { Auth } from 'aws-amplify';
-
 import { AWS_REGION } from '../constants';
 import getEnvironment from '../utils/env';
 
-export const getS3Client = async (): Promise<S3Client> => new S3Client({ region: AWS_REGION, credentials: await Auth.currentUserCredentials() });
+export const getS3Client = async (): Promise<S3Client> => new S3Client({ region: AWS_REGION });
 
 export const getBucketName = (bucketPrefix: string): string => `${bucketPrefix}-${getEnvironment()}`;
 
