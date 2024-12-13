@@ -599,6 +599,12 @@ describe('myfares pages', () => {
                             editLink: '/selectTimeRestrictions',
                         },
                         {
+                            id: 'caps',
+                            name: 'Caps',
+                            content: ['N/A'],
+                            editLink: '/selectCaps',
+                        },
+                        {
                             id: 'fare-triangle',
                             name: 'Fare triangle',
                             content: ['You created a fare triangle'],
