@@ -17,9 +17,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const caps = await getCaps(nocCode);
         const isCarnet = getIsCarnet(req);
 
-        const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
-
-        if (isDevOrTest && fareTypeIsAllowedToAddACap(fareTypeAttribute) && caps.length > 0 && !isCarnet) {
+        if (fareTypeIsAllowedToAddACap(fareTypeAttribute) && caps.length > 0 && !isCarnet) {
             redirectTo(res, '/selectCaps');
             return;
         }
