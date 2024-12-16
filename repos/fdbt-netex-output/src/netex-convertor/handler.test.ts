@@ -23,18 +23,13 @@ import mockS3Event from './test-data/mockS3Event';
 import * as s3 from '../data/s3';
 import * as netexGenerator from './netexGenerator';
 import * as db from '../data/auroradb';
+import { PublishCommand, SNSClient } from '@aws-sdk/client-sns';
 
 jest.mock('../data/auroradb.ts');
+jest.mock('@aws-sdk/client-sns');
 jest.spyOn(s3, 'uploadNetexToS3').mockImplementation(() => Promise.resolve());
 const mockFetchDataFromS3Spy = jest.spyOn(s3, 'fetchDataFromS3');
 const mockUploadNetexToS3Spy = jest.spyOn(s3, 'uploadNetexToS3');
-const mockSnsInstance = {
-    publish: jest.fn().mockReturnValue({ promise: jest.fn() }),
-};
-
-jest.mock('aws-sdk', () => {
-    return { SNS: jest.fn(() => mockSnsInstance), S3: jest.fn() };
-});
 
 mockUploadNetexToS3Spy.mockImplementation(() => Promise.resolve());
 
@@ -389,7 +384,8 @@ describe('netexConvertorHandler', () => {
                 Subject: 'NeTEx Convertor',
             };
 
-            expect(mockSnsInstance.publish).toBeCalledWith(expectedObject);
+            expect(PublishCommand).toHaveBeenCalledWith(expectedObject);
+            expect(SNSClient).toHaveBeenCalledTimes(1);
         }
     });
 });

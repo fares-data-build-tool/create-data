@@ -8,7 +8,8 @@ import { createMailTransporter, netexEmailerHandler, redactEmailAddress } from '
 import * as s3 from '../data/s3';
 import { periodGeoZoneTicket } from '../test-data/matchingData';
 
-jest.mock('aws-sdk');
+jest.mock('@aws-sdk/client-ses');
+jest.mock('@aws-sdk/client-s3');
 
 describe('netexEmailer SES emailer', () => {
     const mockMailTransporter = jest.fn();

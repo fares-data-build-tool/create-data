@@ -1,10 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { UserPoolDescriptionType, UserType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
-
 import * as cognito from '../data/cognito';
 import { MAIN_USER_POOL_PREFIX } from '../constants';
 import ListUsers from './ListUsers';
+import { CognitoIdentityProviderClient, UserPoolDescriptionType, UserType } from '@aws-sdk/client-cognito-identity-provider';
 
 const userPoolsMock: UserPoolDescriptionType[] = [
     {
@@ -130,7 +128,7 @@ const usersMockWithIWBusCoNoc: UserType[] = [
 describe('ListUsers Component', () => {
     beforeEach(() => {
         jest.spyOn(cognito, 'getCognitoClient').mockImplementation(() =>
-            Promise.resolve(new CognitoIdentityServiceProvider()),
+            Promise.resolve(new CognitoIdentityProviderClient()),
         );
 
         jest.spyOn(cognito, 'getUserPoolList').mockImplementation(() => Promise.resolve(userPoolsMock));

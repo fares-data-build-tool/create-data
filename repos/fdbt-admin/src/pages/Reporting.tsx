@@ -6,12 +6,10 @@ import Table from '@govuk-react/table';
 import Details from '@govuk-react/details';
 import LoadingBox from '@govuk-react/loading-box';
 import { BrowserRouter, Redirect } from 'react-router-dom';
-import { ObjectList } from 'aws-sdk/clients/s3';
-import { UsersListType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 import { getCognitoClientAndUserPool } from '../utils/cognito';
 import { listUsersInPool } from '../data/cognito';
-import getS3Client from '../utils/s3';
-import { getBucketName, listBucketObjects } from '../data/s3';
+import { getBucketName, getS3Client, listBucketObjects } from '../data/s3';
 import { NETEX_DATA_BUCKET_PREFIX, PRODUCTS_DATA_BUCKET_PREFIX } from '../constants';
 import {
     createGraphData,
@@ -30,27 +28,27 @@ interface ReportingProps {
 
 const Reporting = ({ isFullAdmin }: ReportingProps): ReactElement => {
     const [loaded, setLoaded] = useState<boolean>(false);
-    const [users, setUsers] = useState<UsersListType>([]);
+    const [users, setUsers] = useState<UserType[]>([]);
     const [registeredNocs, setRegisteredNocs] = useState<string[]>([]);
     const [nocsWhoCreatedProducts, setNocsWhoCreatedProducts] = useState<string[]>([]);
     const [thirtyDayNetex, setThirtyDayNetex] = useState<string[]>([]);
     const [yearNetex, setYearNetex] = useState<string[]>([]);
     const [graphData, setGraphData] = useState<GraphData[]>([]);
 
-    const getUsers = async (): Promise<UsersListType> => {
+    const getUsers = async (): Promise<UserType[]> => {
         const { client, userPoolId } = await getCognitoClientAndUserPool();
 
         return listUsersInPool(client, userPoolId);
     };
 
-    const getExportsFromMatchingDataBucket = async (): Promise<ObjectList> => {
-        const { client } = await getS3Client();
+    const getExportsFromMatchingDataBucket = async () => {
+        const client = await getS3Client();
         const bucketName = getBucketName(NETEX_DATA_BUCKET_PREFIX);
         return listBucketObjects(client, bucketName);
     };
 
-    const getProductsFromProductsDataBucket = async (): Promise<ObjectList> => {
-        const { client } = await getS3Client();
+    const getProductsFromProductsDataBucket = async () => {
+        const client = await getS3Client();
         const bucketName = getBucketName(PRODUCTS_DATA_BUCKET_PREFIX);
         return listBucketObjects(client, bucketName);
     };

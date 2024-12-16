@@ -23,6 +23,6 @@
         "../../node_modules/*",
         "jest.config.js",
         "./node_modules",
-        "./node_modules/@types/node/index.d.ts",
+        "./node_modules/@types/node/index.d.ts"
     ]
 }

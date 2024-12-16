@@ -1,4 +1,4 @@
-import { ObjectList } from 'aws-sdk/clients/s3';
+import { _Object } from '@aws-sdk/client-s3';
 
 export interface FareTypeCount {
     single: number;
@@ -35,10 +35,10 @@ const netexFileMatchesNoc = (fileName: string, noc: string): boolean => {
     return nocPart === noc;
 };
 
-export const netexFilesGenerated = (activeNocs: string[], netexFiles: ObjectList, timeframe: 30 | 365): string[] => {
+export const netexFilesGenerated = (activeNocs: string[], netexFiles: _Object[] | undefined, timeframe: 30 | 365): string[] => {
     const nocsThatHaveGeneratedNetex: string[] = [];
     activeNocs.forEach((noc) => {
-        const netexFilesForNoc = netexFiles.find(
+        const netexFilesForNoc = netexFiles?.find(
             (file) =>
                 netexFileMatchesNoc(file.Key as string, noc) &&
                 dateIsWithinNumberOfDays(file.LastModified as Date, timeframe),
@@ -55,10 +55,10 @@ const productMatchesNoc = (fileName: string, noc: string): boolean => {
     return nocPart === noc;
 };
 
-export const productsCreated = (activeNocs: string[], products: ObjectList): string[] => {
+export const productsCreated = (activeNocs: string[], products: _Object[] | undefined): string[] => {
     const nocsThatHaveCreatedProducts: string[] = [];
     activeNocs.forEach((noc) => {
-        const productsForNoc = products.find((file) => productMatchesNoc(file.Key as string, noc));
+        const productsForNoc = products?.find((file) => productMatchesNoc(file.Key as string, noc));
         if (productsForNoc) {
             nocsThatHaveCreatedProducts.push(noc);
         }
@@ -66,7 +66,7 @@ export const productsCreated = (activeNocs: string[], products: ObjectList): str
     return nocsThatHaveCreatedProducts;
 };
 
-export const typesOfProductsCreated = (products: ObjectList): FareTypeCount => {
+export const typesOfProductsCreated = (products: _Object[] | undefined): FareTypeCount => {
     // SYRK is used for testing, so needs to be discounted
     const nocsToIgnore = ['IWBusCo', 'SYRK'];
     const count: FareTypeCount = {
@@ -77,7 +77,7 @@ export const typesOfProductsCreated = (products: ObjectList): FareTypeCount => {
         multiOperator: 0,
     };
 
-    products.forEach((product) => {
+    products?.forEach((product) => {
         const productPath = product.Key as string;
         let includesInvalidNoc = false;
 

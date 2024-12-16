@@ -1,4 +1,3 @@
-import awsParamStore from 'aws-param-store';
 import { ResultSetHeader } from 'mysql2';
 import { createPool, Pool } from 'mysql2/promise';
 import { INTERNAL_NOC } from '../constants';
@@ -32,6 +31,7 @@ import {
     DbProduct,
 } from '../interfaces/dbTypes';
 import { Stop, FromDb, SalesOfferPackage, CompanionInfo, OperatorDetails } from '../interfaces/matchingJsonTypes';
+import { getSsmValue } from './ssm';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -82,7 +82,7 @@ interface RawOperatorGroup {
     id: number;
 }
 
-export const getAuroraDBClient = (): Pool => {
+export const getAuroraDBClient = async (): Promise<Pool> => {
     let client: Pool;
 
     if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
@@ -98,8 +98,8 @@ export const getAuroraDBClient = (): Pool => {
     } else {
         client = createPool({
             host: process.env.RDS_HOST,
-            user: awsParamStore.getParameterSync('fdbt-rds-site-username', { region: 'eu-west-2' }).Value,
-            password: awsParamStore.getParameterSync('fdbt-rds-site-password', { region: 'eu-west-2' }).Value,
+            user: await getSsmValue('fdbt-rds-site-username'),
+            password: await getSsmValue('fdbt-rds-site-password'),
             database: 'fdbt',
             waitForConnections: true,
             connectionLimit: 5,
@@ -121,7 +121,7 @@ let connectionPool: Pool;
 
 const executeQuery = async <T>(query: string, values: (string | boolean | number | Date)[]): Promise<T> => {
     if (!connectionPool) {
-        connectionPool = getAuroraDBClient();
+        connectionPool = await getAuroraDBClient();
     }
     const [rows] = await connectionPool.execute(query, values);
     return JSON.parse(JSON.stringify(rows)) as T;

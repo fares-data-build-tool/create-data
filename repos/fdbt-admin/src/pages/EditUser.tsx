@@ -3,7 +3,7 @@ import { H1 } from '@govuk-react/heading';
 import { BrowserRouter, Redirect, useParams } from 'react-router-dom';
 import Button from '@govuk-react/button';
 import { useForm } from 'react-hook-form';
-import { AdminGetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { AdminGetUserResponse } from '@aws-sdk/client-cognito-identity-provider';
 
 import { adminUpdateUserAttributes, getUser } from '../data/cognito';
 import {
