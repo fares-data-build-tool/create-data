@@ -72,7 +72,7 @@ exports[`contact should render correctly 1`] = `
       Remove flag pricing by distance on flat fare journeys
     </li>
     <li>
-      Upgrade the GOVV.UK frontend version to v5
+      Upgrade the GOV.UK frontend version to v5
     </li>
     <li>
       Change crown logo to His Majesty The King

@@ -26,7 +26,7 @@ const Changelog = (): ReactElement => (
         <h2 className="govuk-heading-l">October 2024 (1.86.0)</h2>
         <ul className="govuk-list govuk-list--bullet">
             <li>Remove flag pricing by distance on flat fare journeys</li>
-            <li>Upgrade the GOVV.UK frontend version to v5</li>
+            <li>Upgrade the GOV.UK frontend version to v5</li>
             <li>Change crown logo to His Majesty The King</li>
             <li>Improve accessibility compliance across the site</li>
         </ul>
