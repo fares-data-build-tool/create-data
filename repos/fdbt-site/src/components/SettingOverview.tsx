@@ -8,7 +8,7 @@ const SettingOverview = ({ href, name, description, count }: SettingsOverview): 
                 <p className="govuk-body-s govuk-!-font-weight-bold">
                     {name}
                     {typeof count === 'number' && <b className="numberCircle">{count}</b>}
-                    {!count ? null : <strong className="govuk-tag customised-tag">CUSTOMISED</strong>}
+                    {!count ? null : <strong className="govuk-tag customised-tag">Customised</strong>}
                 </p>
                 <p className="govuk-body-s">{description}</p>
             </a>

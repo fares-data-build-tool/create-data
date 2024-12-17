@@ -23,7 +23,7 @@ const getTag = (exportDetails: Export): ReactElement => {
     if (exportDetails.netexCount === 0) {
         return (
             <strong className="govuk-tag govuk-tag--blue">
-                {`LOADING PRODUCTS (${exportDetails.numberOfFilesExpected})`}
+                {`Loading products (${exportDetails.numberOfFilesExpected})`}
             </strong>
         );
     }
@@ -31,25 +31,25 @@ const getTag = (exportDetails: Export): ReactElement => {
     if (exportDetails.netexCount === exportDetails.numberOfFilesExpected) {
         if (exportDetails.signedUrl) {
             return (
-                <strong className="govuk-tag govuk-tag--green">{`EXPORT COMPLETE ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
+                <strong className="govuk-tag govuk-tag--green">{`Export complete ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
             );
         }
         return (
-            <strong className="govuk-tag govuk-tag--blue">{`EXPORT ZIPPING ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
+            <strong className="govuk-tag govuk-tag--blue">{`Export zipping ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
         );
     }
 
     if (exportDetails.exportFailed) {
         const numberOfFilesMissing = exportDetails.numberOfFilesExpected - exportDetails.netexCount;
         return (
-            <strong className="govuk-tag govuk-tag--red">{`EXPORT FAILED - ${numberOfFilesMissing} ${
+            <strong className="govuk-tag govuk-tag--red">{`Export failed - ${numberOfFilesMissing} ${
                 numberOfFilesMissing > 0 ? 'files' : 'file'
             } failed`}</strong>
         );
     }
 
     return (
-        <strong className="govuk-tag govuk-tag--blue">{`IN PROGRESS ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
+        <strong className="govuk-tag govuk-tag--blue">{`In progress ${exportDetails.netexCount} / ${exportDetails.numberOfFilesExpected}`}</strong>
     );
 };
 

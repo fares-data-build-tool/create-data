@@ -117,7 +117,7 @@ const ProductDetails = ({
             <div id="product-status" className="govuk-hint">
                 Product status: {getTag(startDate, endDate, false)}
                 {requiresAttention && (
-                    <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">NEEDS ATTENTION</strong>
+                    <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">Needs attention</strong>
                 )}
             </div>
 
@@ -229,7 +229,6 @@ const createProductDetails = async (
     ctx: NextPageContextWithSession,
     fareTriangleModified: string | undefined,
     dataSource: string,
-    isDevOrTest: boolean,
     stage: string,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
@@ -396,7 +395,7 @@ const createProductDetails = async (
 
     const hasCaps = (await getCaps(noc)).length > 0;
 
-    if (isDevOrTest && fareTypeIsAllowedToAddACap(ticket.type) && hasCaps && !ticket.carnet) {
+    if (fareTypeIsAllowedToAddACap(ticket.type) && hasCaps && !ticket.carnet) {
         let capContent = 'N/A';
         if ('caps' in ticket && ticket.caps) {
             const caps = await Promise.all(
@@ -659,7 +658,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const productId = ctx.query?.productId;
     const copiedProduct = ctx.query?.copied === 'true';
     const cannotGenerateReturn = ctx.query?.generateReturn === 'false';
-    const isDevOrTest = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
     if (typeof productId !== 'string') {
         throw new Error(`Expected string type for productID, received: ${productId}`);
     }
@@ -688,7 +686,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         ctx,
         fareTriangleModified,
         dataSource,
-        isDevOrTest,
         STAGE,
     );
 

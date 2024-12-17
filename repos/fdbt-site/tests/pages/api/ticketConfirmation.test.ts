@@ -29,19 +29,7 @@ describe('ticketConfirmation', () => {
         id: 2,
     };
 
-    it('should return 302 redirect to /selectPurchaseMethods when the fareType is single and caps exist in production', async () => {
-        process.env.STAGE = 'prod';
-        getFareTypeSpy.mockReturnValue('single');
-
-        getCapsSpy.mockResolvedValueOnce([cap]);
-        await ticketConfirmation(req, res);
-
-        expect(writeHeadMock).toBeCalledWith(302, {
-            Location: '/selectPurchaseMethods',
-        });
-    });
-
-    it('should return 302 redirect to /selectCaps when the fareType is single and caps exist in test / local', async () => {
+    it('should return 302 redirect to /selectCaps when the fareType is single and caps exist', async () => {
         process.env.STAGE = 'test';
         getFareTypeSpy.mockReturnValue('single');
 

@@ -13,7 +13,6 @@ import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
 } from '../../src/constants/attributes';
-import { redirectTo } from '../utils/apiUtils';
 
 const title = 'Select Caps - Create Fares Data Service';
 const description = 'Select Caps page of the Create Fares Data Service';
@@ -164,10 +163,6 @@ const CapsCard = ({ cap, selectedIds }: { cap: Cap & { id: number }; selectedIds
 };
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SelectCapsProps }> => {
-    if (!(process.env.NODE_ENV === 'development' || process.env.STAGE === 'test') && ctx.res) {
-        redirectTo(ctx.res, '/selectPurchaseMethods');
-    }
-
     const csrfToken = getCsrfToken(ctx);
     const capAttribute = getSessionAttribute(ctx.req, CAPS_DEFINITION_ATTRIBUTE);
 
