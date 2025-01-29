@@ -9,6 +9,7 @@ import {
     BasePeriodTicket,
     ProductDetails,
     BaseSchemeOperatorTicket,
+    SelectedService,
 } from 'fdbt-types/matchingJsonTypes';
 import {
     getFareDayEnd,
@@ -61,6 +62,29 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             }
 
             const ticketWithIds = JSON.parse(object.Body.toString('utf-8')) as TicketWithIds;
+
+            if (path.includes('multiOperatorExternal') && 'additionalOperators' in ticketWithIds) {
+                for await (const operator of ticketWithIds.additionalOperators) {
+                    const additionalPath = `${path.substring(0, path.lastIndexOf('.json'))}_${operator.nocCode}.json`;
+                    const additionalServicesObject = await s3
+                        .getObject({ Key: additionalPath, Bucket: PRODUCTS_BUCKET })
+                        .promise();
+
+                    if (additionalServicesObject.Body) {
+                        const additionalServices = JSON.parse(additionalServicesObject.Body.toString('utf-8')) as {
+                            nocCode: string;
+                            selectedServices: SelectedService[];
+                        };
+
+                        operator.selectedServices = additionalServices.selectedServices;
+                    }
+                }
+
+                ticketWithIds.additionalOperators = ticketWithIds.additionalOperators.filter(
+                    (operator) => operator.selectedServices.length > 0,
+                );
+            }
+
             const singleOrGroupPassengerType = await getPassengerTypeById(ticketWithIds.passengerType.id, noc);
             const passengerTypeValue = singleOrGroupPassengerType.name;
 
