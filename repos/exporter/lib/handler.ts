@@ -1,5 +1,5 @@
 import { Handler } from 'aws-lambda';
-import { S3, AWSError } from 'aws-sdk';
+import { S3 } from 'aws-sdk';
 import {
     BaseTicket,
     FullTimeRestriction,
