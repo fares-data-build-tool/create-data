@@ -1,5 +1,5 @@
 import { Handler } from 'aws-lambda';
-import { S3 } from 'aws-sdk';
+import { AWSError, S3 } from 'aws-sdk';
 import {
     BaseTicket,
     FullTimeRestriction,
@@ -81,7 +81,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                             operator.selectedServices = additionalServices.selectedServices;
                         }
                     } catch (error) {
-                        if (error instanceof Error && error.name === 'NoSuchKeyException') {
+                        if ((error as AWSError).code === 'NoSuchKey') {
                             console.log(`No additional services found for ${operator.nocCode}`);
                         }
                     }
