@@ -1,5 +1,5 @@
 import { Handler } from 'aws-lambda';
-import { S3 } from 'aws-sdk';
+import { S3, AWSError } from 'aws-sdk';
 import {
     BaseTicket,
     FullTimeRestriction,
@@ -66,17 +66,24 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             if (path.includes('multiOperatorExternal') && 'additionalOperators' in ticketWithIds) {
                 for await (const operator of ticketWithIds.additionalOperators) {
                     const additionalPath = `${path.substring(0, path.lastIndexOf('.json'))}_${operator.nocCode}.json`;
-                    const additionalServicesObject = await s3
-                        .getObject({ Key: additionalPath, Bucket: PRODUCTS_BUCKET })
-                        .promise();
 
-                    if (additionalServicesObject.Body) {
-                        const additionalServices = JSON.parse(additionalServicesObject.Body.toString('utf-8')) as {
-                            nocCode: string;
-                            selectedServices: SelectedService[];
-                        };
+                    try {
+                        const additionalServicesObject = await s3
+                            .getObject({ Key: additionalPath, Bucket: PRODUCTS_BUCKET })
+                            .promise();
 
-                        operator.selectedServices = additionalServices.selectedServices;
+                        if (additionalServicesObject.Body) {
+                            const additionalServices = JSON.parse(additionalServicesObject.Body.toString('utf-8')) as {
+                                nocCode: string;
+                                selectedServices: SelectedService[];
+                            };
+
+                            operator.selectedServices = additionalServices.selectedServices;
+                        }
+                    } catch (error) {
+                        if (error instanceof Error && error.name === 'NoSuchKeyException') {
+                            console.log(`No additional services found for ${operator.nocCode}`);
+                        }
                     }
                 }
 
