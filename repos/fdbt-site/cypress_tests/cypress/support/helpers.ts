@@ -747,7 +747,7 @@ export const addOtherProductsIfNotPresent = (): void => {
 export const addMultiOperatorProductIfNotPresent = (): void => {
     getHomePage();
     clickElementById('manage-fares-link');
-    clickElementByText('Multi-operator products');
+    clickElementByText('Multi-operator products (internal)');
 
     cy.get(`[data-card-count]`).then((element) => {
         const numberOfProducts = Number(element.attr('data-card-count'));
