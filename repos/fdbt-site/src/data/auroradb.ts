@@ -2105,9 +2105,9 @@ export const getMultiOperatorExternalProducts = async (): Promise<MyFaresOtherPr
 
     try {
         const queryInput = `
-            SELECT id, matchingJsonLink, startDate, endDate
+            SELECT id, nocCode, matchingJsonLink, startDate, endDate
             FROM products
-            WHERE productType = 'multiOperatorExt'
+            WHERE fareType = 'multiOperatorExt'
 
         `;
 

@@ -1,24 +1,53 @@
-import React, { ReactElement } from 'react';
-import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
+import React, { ReactElement, useState } from 'react';
+import { NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
 import { convertDateFormat, getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../../utils';
 import { getTag } from './services';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
-import {
-    getMultiOperatorExternalProducts,
-    getMultiOperatorExternalProductsByNoc,
-    getOtherProductsByNoc,
-} from '../../data/auroradb';
+import { getGroupPassengerTypeById, getMultiOperatorExternalProducts, getPassengerTypeById } from '../../data/auroradb';
+import { getProductsMatchingJson } from '../../data/s3';
+import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 
 const title = 'Multi-operator products (external) - Create Fares Data Service';
 const description = 'View and access your multi-operator products (external) in one place.';
 
-interface MultiOperatorProductsProps {
-    multiOperatorProducts: MyFaresOtherFaresProduct[];
+export type MultiOperatorProduct = {
+    id: number;
+    actionRequired: boolean;
+    productDescription: string;
+    duration: string;
+    startDate: string;
+    endDate: string;
+    passengerType: string;
+};
+
+export interface MultiOperatorProductsProps {
+    ownedProducts: MultiOperatorProduct[];
+    sharedProducts: MultiOperatorProduct[];
     csrfToken: string;
 }
 
-const MultiOperatorProducts = ({ multiOperatorProducts, csrfToken }: MultiOperatorProductsProps) => {
+const buildDeleteUrl = (idToDelete: number, csrfToken: string): string => {
+    return `/api/deleteProduct?id=${idToDelete}&_csrf=${csrfToken}`;
+};
+
+const MultiOperatorProducts = ({
+    ownedProducts,
+    sharedProducts,
+    csrfToken,
+}: MultiOperatorProductsProps): ReactElement => {
+    const [popUpState, setPopUpState] = useState<{
+        name: string;
+        productId: number;
+    }>();
+
+    const deleteActionHandler = (productId: number, name: string): void => {
+        setPopUpState({
+            name,
+            productId,
+        });
+    };
+
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
@@ -26,17 +55,17 @@ const MultiOperatorProducts = ({ multiOperatorProducts, csrfToken }: MultiOperat
                     <h1 className="govuk-heading-xl">Multi-operator products</h1>
                     <p className="govuk-body-m ">
                         This is where operators can collaborate with other operators to define and export multi-operator
-                        products
+                        products.
                     </p>
                 </div>
                 <div className="govuk-grid-column-one-third">
                     {/*TODO: add link to multiop external flow*/}
                     <button type="submit" className="govuk-button">
-                        Create multi-operator product
+                        Create new product
                     </button>
                     {/*TODO: add link to exporter*/}
                     <button type="submit" className="govuk-button govuk-button--secondary">
-                        Export multi-operator product
+                        Export all products
                     </button>
                 </div>
             </div>
@@ -52,135 +81,180 @@ const MultiOperatorProducts = ({ multiOperatorProducts, csrfToken }: MultiOperat
                             </li>
                             <li className="govuk-tabs__list-item">
                                 <a className="govuk-tabs__tab" href="#fares-awaiting-your-input">
-                                    Fares awaiting your input
+                                    Fares shared with you
                                 </a>
                             </li>
                         </ul>
                         <div className="govuk-tabs__panel" id="fares-you-own">
-                            <table className="govuk-table">
-                                <thead className="govuk-table__head">
-                                    <tr className="govuk-table__row">
-                                        <th scope="col" className="govuk-table__header">
-                                            Product description
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            Duration
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            Passenger type
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            Start date
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            End date
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            Product status
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            <span className="govuk-visually-hidden">Copy</span>
-                                        </th>
-                                        <th scope="col" className="govuk-table__header">
-                                            <span className="govuk-visually-hidden">Delete</span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="govuk-table__body">
-                                    {multiOperatorProducts.length > 0
-                                        ? multiOperatorProducts.map((product, index) => (
-                                              <tr className="govuk-table__row" key={`product-${index}`}>
-                                                  <td className="govuk-table__cell dft-table-wrap-anywhere">
-                                                      <a
-                                                          href={`/products/productDetails?productId=${product.id}`}
-                                                          id={`product-link-${index}`}
-                                                      >
-                                                          {product.productDescription}
-                                                      </a>
-                                                  </td>
-                                                  <td className="govuk-table__cell">{product.duration}</td>
-                                                  <td className="govuk-table__cell dft-table-wrap-anywhere">
-                                                      {sentenceCaseString(product.passengerType)}
-                                                  </td>
-                                                  <td className="govuk-table__cell">{product.startDate}</td>
-                                                  <td className="govuk-table__cell">{product.endDate}</td>
-                                                  <td className="govuk-table__cell">
-                                                      {getTag(product.startDate, product.endDate, true)}
-                                                  </td>
-
-                                                  <td className="govuk-table__cell">
-                                                      <button
-                                                          className="govuk-link govuk-body button-link"
-                                                          // onClick={() =>
-                                                          //     deleteActionHandler(
-                                                          //         product.id,
-                                                          //         product.productDescription,
-                                                          //     )
-                                                          // }
-                                                          id={`delete-${index}`}
-                                                      >
-                                                          Delete
-                                                      </button>
-                                                  </td>
-                                              </tr>
-                                          ))
-                                        : null}
-                                </tbody>
-                            </table>
-                            {multiOperatorProducts.length === 0 ? (
-                                <span className="govuk-body">
-                                    <i>You currently do not own any multi-operator (external) products</i>
-                                </span>
-                            ) : null}
+                            {MultiOperatorProductsTable(
+                                ownedProducts,
+                                'You currently have no multi-operator products',
+                                deleteActionHandler,
+                            )}
                         </div>
                         <div className="govuk-tabs__panel" id="fares-awaiting-your-input">
-                            <p>I am a fare awaiting input</p>
+                            {MultiOperatorProductsTable(
+                                sharedProducts,
+                                'There are no multi-operator products shared with you',
+                            )}
                         </div>
                     </div>
+
+                    {popUpState && (
+                        <DeleteConfirmationPopup
+                            entityName={popUpState.name}
+                            deleteUrl={buildDeleteUrl(popUpState.productId, csrfToken)}
+                            cancelActionHandler={(): void => {
+                                setPopUpState(undefined);
+                            }}
+                            hintText="When you delete this product it will be removed from the system and will no longer be included in future exports."
+                            isOpen={!!popUpState.productId}
+                        />
+                    )}
                 </div>
             </div>
         </BaseLayout>
     );
 };
 
-export const getServerSideProps = (
+const MultiOperatorProductsTable = (
+    multiOperatorProducts: MultiOperatorProduct[],
+    noProductsMessage: string,
+    deleteActionHandler?: (productId: number, name: string) => void,
+): React.ReactElement => {
+    return (
+        <>
+            <table className="govuk-table" data-card-count={multiOperatorProducts.length}>
+                <thead className="govuk-table__head">
+                    <tr className="govuk-table__row">
+                        <th scope="col" className="govuk-table__header">
+                            Product description
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Duration
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Passenger type
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Start date
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            End date
+                        </th>
+                        <th scope="col" className="govuk-table__header">
+                            Product status
+                        </th>
+                        {deleteActionHandler ? (
+                            <th scope="col" className="govuk-table__header">
+                                Action
+                            </th>
+                        ) : null}
+                    </tr>
+                </thead>
+                <tbody className="govuk-table__body">
+                    {multiOperatorProducts.length > 0
+                        ? multiOperatorProducts.map((product, index) => (
+                              <tr className="govuk-table__row" key={`product-${index}`}>
+                                  <td className="govuk-table__cell dft-table-wrap-anywhere">
+                                      <a
+                                          href={`/products/productDetails?productId=${product.id}`}
+                                          id={`product-link-${index}`}
+                                      >
+                                          {product.productDescription}
+                                      </a>
+                                  </td>
+                                  <td className="govuk-table__cell">{product.duration}</td>
+                                  <td className="govuk-table__cell dft-table-wrap-anywhere">
+                                      {sentenceCaseString(product.passengerType)}
+                                  </td>
+                                  <td className="govuk-table__cell">{product.startDate}</td>
+                                  <td className="govuk-table__cell">{product.endDate}</td>
+                                  <td className="govuk-table__cell">
+                                      {product.actionRequired ? (
+                                          <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
+                                              Action required
+                                          </strong>
+                                      ) : (
+                                          getTag(product.startDate, product.endDate, true)
+                                      )}
+                                  </td>
+                                  {deleteActionHandler ? (
+                                      <td className="govuk-table__cell">
+                                          <button
+                                              className="govuk-link govuk-body button-link"
+                                              onClick={() =>
+                                                  deleteActionHandler(product.id, product.productDescription)
+                                              }
+                                              id={`delete-${index}`}
+                                          >
+                                              Delete
+                                          </button>
+                                      </td>
+                                  ) : null}
+                              </tr>
+                          ))
+                        : null}
+                </tbody>
+            </table>
+            {multiOperatorProducts.length === 0 ? (
+                <span className="govuk-body">
+                    <i>{noProductsMessage}</i>
+                </span>
+            ) : null}
+        </>
+    );
+};
+
+export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
-): {
-    props: MultiOperatorProductsProps;
-} => {
-    const noc = getAndValidateNoc(ctx);
+): Promise<{ props: MultiOperatorProductsProps }> => {
+    const yourNoc = getAndValidateNoc(ctx);
     const multiOperatorProductsFromDb: MyFaresOtherProduct[] = await getMultiOperatorExternalProducts();
 
-    const multiOperatorProducts: MyFaresOtherFaresProduct[] = [
-        {
-            id: 1,
-            productDescription: 'Weekly Pass',
-            type: 'multiOperator',
-            duration: '7 days',
-            passengerType: 'Adult',
-            startDate: convertDateFormat('2023-02-01'),
-            endDate: convertDateFormat('2026-02-01'),
-        },
-        {
-            id: 2,
-            productDescription: 'Monthly Pass',
-            type: 'multiOperator',
-            duration: '30 days',
-            passengerType: 'Student',
-            startDate: convertDateFormat('2023-02-01'),
-            endDate: convertDateFormat('2024-02-01'),
-        },
-        {
-            id: 3,
-            productDescription: 'Annual Pass',
-            type: 'multiOperator',
-            duration: '365 days',
-            passengerType: 'Senior',
-            startDate: convertDateFormat('2023-02-01'),
-            endDate: convertDateFormat('2026-02-01'),
-        },
-    ];
-    return { props: { multiOperatorProducts, csrfToken: getCsrfToken(ctx) } };
+    const ownedProducts: MultiOperatorProduct[] = [];
+    const sharedProducts: MultiOperatorProduct[] = [];
+
+    for (const product of multiOperatorProductsFromDb) {
+        const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
+
+        const additionalOperators = 'additionalOperators' in matchingJson ? matchingJson.additionalOperators : []; // todo: handle fare zone type as well
+        const isSharedProduct = additionalOperators.filter((op) => op.nocCode === yourNoc).length > 0;
+        const actionRequired = additionalOperators.filter((op) => op.selectedServices.length === 0).length > 0;
+
+        const startDate = matchingJson.ticketPeriod.startDate
+            ? convertDateFormat(matchingJson.ticketPeriod.startDate)
+            : '-';
+        const endDate = matchingJson.ticketPeriod.endDate ? convertDateFormat(matchingJson.ticketPeriod.endDate) : '-';
+
+        const passengerType =
+            (await getPassengerTypeById(matchingJson.passengerType.id, yourNoc))?.name ||
+            (await getGroupPassengerTypeById(matchingJson.passengerType.id, yourNoc))?.name ||
+            '';
+
+        for (const innerProduct of matchingJson.products) {
+            const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
+            const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
+
+            const productData = {
+                id: product.id,
+                actionRequired,
+                productDescription,
+                duration,
+                startDate,
+                endDate,
+                passengerType,
+            };
+
+            if (product.nocCode === yourNoc) {
+                ownedProducts.push(productData);
+            } else if (isSharedProduct) {
+                sharedProducts.push(productData);
+            }
+        }
+    }
+
+    return { props: { ownedProducts, sharedProducts, csrfToken: getCsrfToken(ctx) } };
 };
 
 export default MultiOperatorProducts;
