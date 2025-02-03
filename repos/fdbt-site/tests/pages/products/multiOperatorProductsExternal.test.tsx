@@ -7,6 +7,7 @@ import MultiOperatorProducts, {
     getServerSideProps,
     MultiOperatorProduct,
 } from '../../../src/pages/products/multiOperatorProductsExternal';
+import * as utils from '../../../src/utils';
 
 jest.mock('../../../src/data/auroradb');
 jest.mock('../../../src/data/s3');
@@ -61,7 +62,7 @@ describe('multiOperatorProductsExternal page', () => {
     const ownedProducts: MultiOperatorProduct[] = [
         {
             id: 1,
-            actionRequired: false,
+            isIncomplete: false,
             productDescription: 'product one',
             duration: '2 weeks',
             startDate: '17/12/2020',
@@ -70,7 +71,7 @@ describe('multiOperatorProductsExternal page', () => {
         },
         {
             id: 1,
-            actionRequired: false,
+            isIncomplete: false,
             productDescription: 'product two',
             duration: '5 days',
             startDate: '17/12/2020',
@@ -81,7 +82,7 @@ describe('multiOperatorProductsExternal page', () => {
     const sharedProducts: MultiOperatorProduct[] = [
         {
             id: 3,
-            actionRequired: true,
+            isIncomplete: true,
             productDescription: 'product one',
             duration: '2 weeks',
             startDate: '17/12/2020',
@@ -90,7 +91,7 @@ describe('multiOperatorProductsExternal page', () => {
         },
         {
             id: 3,
-            actionRequired: true,
+            isIncomplete: true,
             productDescription: 'product two',
             duration: '5 days',
             startDate: '17/12/2020',
@@ -121,14 +122,16 @@ describe('multiOperatorProductsExternal page', () => {
     });
 
     describe('getServerSideProps', () => {
+        jest.spyOn(utils, 'getAndValidateNoc').mockReturnValue('TEST');
         it('sorts multi-operator products by owned and shared product lists', async () => {
+            jest.spyOn(utils, 'checkIfMultiOperatorProductIsIncomplete').mockReturnValue(Promise.resolve(false));
             const ctx = getMockContext();
             const result = await getServerSideProps(ctx);
 
             expect(result.props.ownedProducts).toEqual([
                 {
                     id: 1,
-                    actionRequired: false,
+                    isIncomplete: false,
                     productDescription: 'product one',
                     duration: '2 weeks',
                     startDate: '17/12/2020',
@@ -137,7 +140,7 @@ describe('multiOperatorProductsExternal page', () => {
                 },
                 {
                     id: 1,
-                    actionRequired: false,
+                    isIncomplete: false,
                     productDescription: 'product two',
                     duration: '5 days',
                     startDate: '17/12/2020',
@@ -148,7 +151,7 @@ describe('multiOperatorProductsExternal page', () => {
             expect(result.props.sharedProducts).toEqual([
                 {
                     id: 3,
-                    actionRequired: true,
+                    isIncomplete: false,
                     productDescription: 'product one',
                     duration: '2 weeks',
                     startDate: '17/12/2020',
@@ -157,7 +160,7 @@ describe('multiOperatorProductsExternal page', () => {
                 },
                 {
                     id: 3,
-                    actionRequired: true,
+                    isIncomplete: false,
                     productDescription: 'product two',
                     duration: '5 days',
                     startDate: '17/12/2020',

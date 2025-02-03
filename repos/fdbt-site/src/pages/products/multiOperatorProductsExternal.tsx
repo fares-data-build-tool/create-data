@@ -1,7 +1,13 @@
 import React, { ReactElement, useState } from 'react';
 import { NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
-import { convertDateFormat, getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../../utils';
+import {
+    checkIfMultiOperatorProductIsIncomplete,
+    convertDateFormat,
+    getAndValidateNoc,
+    getCsrfToken,
+    sentenceCaseString,
+} from '../../utils';
 import { getTag } from './services';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
 import { getGroupPassengerTypeById, getMultiOperatorExternalProducts, getPassengerTypeById } from '../../data/auroradb';
@@ -13,7 +19,7 @@ const description = 'View and access your multi-operator products (external) in 
 
 export type MultiOperatorProduct = {
     id: number;
-    actionRequired: boolean;
+    isIncomplete: boolean;
     productDescription: string;
     duration: string;
     startDate: string;
@@ -171,9 +177,9 @@ const MultiOperatorProductsTable = (
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
                                   <td className="govuk-table__cell">
-                                      {product.actionRequired ? (
+                                      {product.isIncomplete ? (
                                           <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
-                                              Action required
+                                              Incomplete
                                           </strong>
                                       ) : (
                                           getTag(product.startDate, product.endDate, true)
@@ -218,38 +224,55 @@ export const getServerSideProps = async (
     for (const product of multiOperatorProductsFromDb) {
         const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
 
-        const additionalOperators = 'additionalOperators' in matchingJson ? matchingJson.additionalOperators : []; // todo: handle fare zone type as well
-        const isSharedProduct = additionalOperators.filter((op) => op.nocCode === yourNoc).length > 0;
-        const actionRequired = additionalOperators.filter((op) => op.selectedServices.length === 0).length > 0;
+        const additionalOperators = 'additionalOperators' in matchingJson ? matchingJson.additionalOperators : [];
+        const additionalNocs = 'additionalNocs' in matchingJson ? matchingJson.additionalNocs : [];
+        const isFareZoneType = 'zoneName' in matchingJson;
 
-        const startDate = matchingJson.ticketPeriod.startDate
-            ? convertDateFormat(matchingJson.ticketPeriod.startDate)
-            : '-';
-        const endDate = matchingJson.ticketPeriod.endDate ? convertDateFormat(matchingJson.ticketPeriod.endDate) : '-';
+        const otherNocs = isFareZoneType ? additionalNocs : additionalOperators.map((op) => op.nocCode);
+        const isSharedProduct = otherNocs.includes(yourNoc);
 
-        const passengerType =
-            (await getPassengerTypeById(matchingJson.passengerType.id, yourNoc))?.name ||
-            (await getGroupPassengerTypeById(matchingJson.passengerType.id, yourNoc))?.name ||
-            '';
+        if (product.nocCode === yourNoc || isSharedProduct) {
+            let isIncomplete = false;
 
-        for (const innerProduct of matchingJson.products) {
-            const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
-            const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
+            for (const noc of otherNocs) {
+                isIncomplete = await checkIfMultiOperatorProductIsIncomplete(product.matchingJsonLink, noc);
 
-            const productData = {
-                id: product.id,
-                actionRequired,
-                productDescription,
-                duration,
-                startDate,
-                endDate,
-                passengerType,
-            };
+                if (isIncomplete) {
+                    break;
+                }
+            }
 
-            if (product.nocCode === yourNoc) {
-                ownedProducts.push(productData);
-            } else if (isSharedProduct) {
-                sharedProducts.push(productData);
+            const startDate = matchingJson.ticketPeriod.startDate
+                ? convertDateFormat(matchingJson.ticketPeriod.startDate)
+                : '-';
+            const endDate = matchingJson.ticketPeriod.endDate
+                ? convertDateFormat(matchingJson.ticketPeriod.endDate)
+                : '-';
+
+            const passengerType =
+                (await getPassengerTypeById(matchingJson.passengerType.id, yourNoc))?.name ||
+                (await getGroupPassengerTypeById(matchingJson.passengerType.id, yourNoc))?.name ||
+                '';
+
+            for (const innerProduct of matchingJson.products) {
+                const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
+                const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
+
+                const productData = {
+                    id: product.id,
+                    isIncomplete,
+                    productDescription,
+                    duration,
+                    startDate,
+                    endDate,
+                    passengerType,
+                };
+
+                if (product.nocCode === yourNoc) {
+                    ownedProducts.push(productData);
+                } else if (isSharedProduct) {
+                    sharedProducts.push(productData);
+                }
             }
         }
     }

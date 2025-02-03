@@ -131,6 +131,8 @@ export interface AdditionalOperator {
     selectedServices: SelectedService[];
 }
 
+export type AdditionaOperatorFareInfo = { selectedServices: SelectedService[] } | { zoneName: string; stops: Stop[] };
+
 export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
     type: 'flatFare';
     products: FlatFareProduct[];

@@ -347,7 +347,7 @@ exports[`multiOperatorProductsExternal page renders correctly 1`] = `
                   <strong
                     className="govuk-tag govuk-tag--yellow dft-table-tag"
                   >
-                    Action required
+                    Incomplete
                   </strong>
                 </td>
               </tr>
@@ -391,7 +391,7 @@ exports[`multiOperatorProductsExternal page renders correctly 1`] = `
                   <strong
                     className="govuk-tag govuk-tag--yellow dft-table-tag"
                   >
-                    Action required
+                    Incomplete
                   </strong>
                 </td>
               </tr>
