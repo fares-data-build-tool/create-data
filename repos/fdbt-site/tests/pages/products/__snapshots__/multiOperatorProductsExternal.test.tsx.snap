@@ -2,8 +2,8 @@
 
 exports[`multiOperatorProductsExternal page renders correctly 1`] = `
 <BaseLayout
-  description="View and access your multi-operator products (external) in one place."
-  title="Multi-operator products (external) - Create Fares Data Service"
+  description="View and access your multi-operator products in one place."
+  title="Multi-operator products - Create Fares Data Service"
 >
   <div
     className="govuk-grid-row"
