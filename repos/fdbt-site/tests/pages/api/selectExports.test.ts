@@ -9,18 +9,21 @@ import { MyFaresProduct } from '../../../src/interfaces/dbTypes';
 const mockProducts: MyFaresProduct[] = [
     {
         id: 1,
+        nocCode: 'TEST',
         lineId: '231yevgy',
         matchingJsonLink: '/matching/json/link/1',
         startDate: '01/02/2022',
     },
     {
         id: 2,
+        nocCode: 'TEST',
         lineId: 'refg4q3g43',
         matchingJsonLink: '/matching/json/link/2',
         startDate: '01/02/2022',
     },
     {
         id: 3,
+        nocCode: 'TEST',
         lineId: 'q34t4tq234',
         matchingJsonLink: '/matching/json/link/3',
         startDate: '01/02/2022',
