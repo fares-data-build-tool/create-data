@@ -14,7 +14,7 @@ import logger from '../utils/logger';
 import { triggerZipper } from '../utils/apiUtils/export';
 import { DeleteObjectsRequest, ListObjectsV2Request, ObjectIdentifierList, ObjectList } from 'aws-sdk/clients/s3';
 import { objectKeyMatchesExportNameExactly } from '../utils';
-import { AdditionaOperatorFareInfo, Ticket, TicketWithIds } from '../interfaces/matchingJsonTypes';
+import { SecondaryOperatorFareInfo, Ticket, TicketWithIds } from '../interfaces/matchingJsonTypes';
 import { ExportMetadata } from '../interfaces/integrationTypes';
 
 const getS3Client = (): S3 => {
@@ -91,7 +91,7 @@ export const getProductsMatchingJson = async (path: string): Promise<TicketWithI
     }
 };
 
-export const getProductsAdditionalOperatorInfo = async (path: string): Promise<AdditionaOperatorFareInfo> => {
+export const getProductsSecondaryOperatorInfo = async (path: string): Promise<SecondaryOperatorFareInfo> => {
     const params = {
         Bucket: PRODUCTS_DATA_BUCKET_NAME,
         Key: path,
@@ -101,7 +101,7 @@ export const getProductsAdditionalOperatorInfo = async (path: string): Promise<A
         const response = await s3.getObject(params).promise();
         const dataAsString = response.Body?.toString('utf-8') ?? '';
 
-        return JSON.parse(dataAsString) as AdditionaOperatorFareInfo;
+        return JSON.parse(dataAsString) as SecondaryOperatorFareInfo;
     } catch (error) {
         throw new Error(`Could not retrieve products matching JSON from S3: ${error.stack}`);
     }

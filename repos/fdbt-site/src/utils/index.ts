@@ -26,7 +26,7 @@ import {
 } from '../interfaces';
 import dateFormat from 'dateformat';
 import { Stop, Ticket, TicketWithIds, ReturnTicket } from '../interfaces/matchingJsonTypes';
-import { getProductsAdditionalOperatorInfo } from '../data/s3';
+import { getProductsSecondaryOperatorInfo } from '../data/s3';
 import logger from './logger';
 
 export const formatFailedFileNames = (failedExportFileNames: string[]): string => {
@@ -291,7 +291,7 @@ export const checkIfMultiOperatorProductIsIncomplete = async (
     )}_${noc}.json`;
 
     try {
-        const secondaryOperatorFareInfo = await getProductsAdditionalOperatorInfo(secondaryOperatorFareInfoPath);
+        const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(secondaryOperatorFareInfoPath);
 
         // Check for stop info for fareZone type multi-operator fares
         const hasNoStops = 'stops' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.stops.length === 0;

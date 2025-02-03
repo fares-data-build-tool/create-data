@@ -228,13 +228,13 @@ export const getServerSideProps = async (
         const additionalNocs = 'additionalNocs' in matchingJson ? matchingJson.additionalNocs : [];
         const isFareZoneType = 'zoneName' in matchingJson;
 
-        const otherNocs = isFareZoneType ? additionalNocs : additionalOperators.map((op) => op.nocCode);
-        const isSharedProduct = otherNocs.includes(yourNoc);
+        const secondaryOperatorsNocs = isFareZoneType ? additionalNocs : additionalOperators.map((op) => op.nocCode);
+        const isSharedProduct = secondaryOperatorsNocs.includes(yourNoc);
 
         if (product.nocCode === yourNoc || isSharedProduct) {
             let isIncomplete = false;
 
-            for (const noc of otherNocs) {
+            for (const noc of secondaryOperatorsNocs) {
                 isIncomplete = await checkIfMultiOperatorProductIsIncomplete(product.matchingJsonLink, noc);
 
                 if (isIncomplete) {

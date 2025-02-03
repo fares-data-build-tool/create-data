@@ -1,5 +1,5 @@
 import { checkIfMultiOperatorProductIsIncomplete } from '../../src/utils';
-import { getProductsAdditionalOperatorInfo } from '../../src/data/s3';
+import { getProductsSecondaryOperatorInfo } from '../../src/data/s3';
 import logger from '../../src/utils/logger';
 
 jest.mock('../../src/data/s3');
@@ -9,7 +9,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
     const mockProductMatchingJsonLink = 'path/to/matchingJson.json';
 
     it('should return true if secondaryOperatorFareInfo has no stops', async () => {
-        (getProductsAdditionalOperatorInfo as jest.Mock).mockResolvedValue({ stops: [] });
+        (getProductsSecondaryOperatorInfo as jest.Mock).mockResolvedValue({ stops: [] });
 
         const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, 'NOC');
 
@@ -17,7 +17,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
     });
 
     it('should return true if secondaryOperatorFareInfo has no selectedServices', async () => {
-        (getProductsAdditionalOperatorInfo as jest.Mock).mockResolvedValue({ selectedServices: [] });
+        (getProductsSecondaryOperatorInfo as jest.Mock).mockResolvedValue({ selectedServices: [] });
 
         const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, 'NOC');
 
@@ -25,7 +25,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
     });
 
     it('should return false if secondaryOperatorFareInfo has stops', async () => {
-        (getProductsAdditionalOperatorInfo as jest.Mock).mockResolvedValue({
+        (getProductsSecondaryOperatorInfo as jest.Mock).mockResolvedValue({
             zoneName: 'Test Town Centre',
             stops: [
                 {
@@ -47,7 +47,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
     });
 
     it('should return false if secondaryOperatorFareInfo has selectedServices', async () => {
-        (getProductsAdditionalOperatorInfo as jest.Mock).mockResolvedValue({
+        (getProductsSecondaryOperatorInfo as jest.Mock).mockResolvedValue({
             selectedServices: [
                 {
                     lineId: '3h3vsergesrhg',
@@ -79,7 +79,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
     });
 
     it('should log an error and return true if an exception is thrown', async () => {
-        (getProductsAdditionalOperatorInfo as jest.Mock).mockRejectedValue(new Error('Test error'));
+        (getProductsSecondaryOperatorInfo as jest.Mock).mockRejectedValue(new Error('Test error'));
 
         const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, 'NOC');
 
