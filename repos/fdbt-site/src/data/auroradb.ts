@@ -2108,7 +2108,6 @@ export const getMultiOperatorExternalProducts = async (): Promise<MyFaresOtherPr
             SELECT id, nocCode, matchingJsonLink, startDate, endDate
             FROM products
             WHERE fareType = 'multiOperatorExt'
-
         `;
 
         const queryResults = await executeQuery<MyFaresOtherProduct[]>(queryInput, []);

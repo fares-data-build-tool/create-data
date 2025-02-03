@@ -14,8 +14,8 @@ import { getGroupPassengerTypeById, getMultiOperatorExternalProducts, getPasseng
 import { getProductsMatchingJson } from '../../data/s3';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 
-const title = 'Multi-operator products (external) - Create Fares Data Service';
-const description = 'View and access your multi-operator products (external) in one place.';
+const title = 'Multi-operator products - Create Fares Data Service';
+const description = 'View and access your multi-operator products in one place.';
 
 export type MultiOperatorProduct = {
     id: number;
