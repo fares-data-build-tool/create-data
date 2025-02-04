@@ -250,8 +250,8 @@ export const getServerSideProps = async (
                 : '-';
 
             const passengerType =
-                (await getPassengerTypeById(matchingJson.passengerType.id, yourNoc))?.name ||
-                (await getGroupPassengerTypeById(matchingJson.passengerType.id, yourNoc))?.name ||
+                (await getPassengerTypeById(matchingJson.passengerType.id, product.nocCode))?.name ||
+                (await getGroupPassengerTypeById(matchingJson.passengerType.id, product.nocCode))?.name ||
                 '';
 
             for (const innerProduct of matchingJson.products) {
