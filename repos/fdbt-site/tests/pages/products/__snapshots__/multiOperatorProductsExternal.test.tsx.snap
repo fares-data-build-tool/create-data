@@ -25,12 +25,13 @@ exports[`multiOperatorProductsExternal page renders correctly 1`] = `
     <div
       className="govuk-grid-column-one-third"
     >
-      <button
+      <a
         className="govuk-button"
-        type="submit"
+        data-module="govuk-button"
+        href="/fareType"
       >
         Create new product
-      </button>
+      </a>
       <button
         className="govuk-button govuk-button--secondary"
         type="submit"

@@ -45,7 +45,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             userDataJson = getSingleTicketJson(req, res);
         } else if (fareType === 'return') {
             userDataJson = getReturnTicketJson(req, res);
-        } else if (['period', 'multiOperator', 'flatFare'].includes(fareType)) {
+        } else if (['period', 'multiOperator', 'multiOperatorExt', 'flatFare'].includes(fareType)) {
             switch (ticketType) {
                 case 'geoZone':
                 case 'geoZoneFlatFareMultiOperator':

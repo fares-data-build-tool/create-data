@@ -261,7 +261,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
             const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
-            if (fareType === 'multiOperator' || isSchemeOperator(req, res)) {
+            if (fareType === 'multiOperator' || fareType === 'multiOperatorExt' || isSchemeOperator(req, res)) {
                 redirectTo(res, '/reuseOperatorGroup');
                 return;
             }

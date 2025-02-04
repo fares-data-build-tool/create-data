@@ -23,7 +23,7 @@ import { getCsrfToken, sentenceCaseString, getAndValidateNoc } from '../utils';
 import { getPassengerTypeNameByIdAndNoc } from '../data/auroradb';
 import { PassengerType } from '../interfaces/dbTypes';
 import { CompanionInfo, FullTimeRestriction } from '../interfaces/matchingJsonTypes';
-import { fareTypes } from 'src/constants';
+import { fareTypes } from '../constants';
 
 const title = 'Fare Confirmation - Create Fares Data Service';
 const description = 'Fare Confirmation page of the Create Fares Data Service';

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
-import React, { Dispatch, ReactElement, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react';
 import BackButton from '../components/BackButton';
 import CsrfForm from '../components/CsrfForm';
 import ErrorSummary from '../components/ErrorSummary';
@@ -151,14 +151,9 @@ const addServiceToOperator = (
     service: ServiceWithOriginAndDestination,
     order: string[],
 ): void => {
-    const currentStateOfOperators = operators;
-    const thisOperator = currentStateOfOperators.find(
-        (operator) => operator.nocCode === activeOperator.nocCode,
-    ) as MultiOperatorInfo;
-
     const remadeOperators = [
-        ...currentStateOfOperators.filter((operator) => operator.nocCode !== thisOperator.nocCode),
-        { ...thisOperator, selectedServices: [...activeOperator.selectedServices, service] },
+        ...operators.filter((operator) => operator.nocCode !== activeOperator.nocCode),
+        { ...activeOperator, selectedServices: [...activeOperator.selectedServices, service] },
     ];
     const sortedOperators = sortOperators(remadeOperators, order);
     setOperators(sortedOperators);
@@ -173,19 +168,9 @@ const MultiOperatorsServiceList = ({
     const order = getOrderOfOperators(multiOperatorData);
     const [activeOperatorNoc, setActiveOperatorNoc] = useState(multiOperatorData[0].nocCode);
     const [operators, setOperators] = useState(multiOperatorData);
-    const [numberOfOperatorsWithSelectedServices, setNumberOfOperatorsWithSelectedServices] = useState(0);
-    const [dataSourceText, setDataSourceText] = useState(bodsDataSourceHtml);
-
-    useEffect(() => {
-        const activeOperatorDataSource = getActiveOperator(activeOperatorNoc, operators).dataSource;
-        const dataSourceText = activeOperatorDataSource === 'bods' ? bodsDataSourceHtml : tndsDataSourceHtml;
-        setDataSourceText(dataSourceText);
-    }, [activeOperatorNoc]);
-
-    useEffect(() => {
-        const count = getNumberOfOperatorsWithSelectedServices(operators);
-        setNumberOfOperatorsWithSelectedServices(count);
-    }, [operators]);
+    const operator = getActiveOperator(activeOperatorNoc, operators);
+    const numberOfOperatorsWithSelectedServices = getNumberOfOperatorsWithSelectedServices(operators);
+    const dataSourceText = operator.dataSource === 'bods' ? bodsDataSourceHtml : tndsDataSourceHtml;
 
     return (
         <BaseLayout title={pageTitle} description={pageDescription}>
@@ -195,9 +180,7 @@ const MultiOperatorsServiceList = ({
                 <div>
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
                         <h1 className="govuk-heading-l" id="service-list-page-heading">
-                            {`Select all services that apply for ${
-                                getActiveOperator(activeOperatorNoc, operators).name
-                            }`}
+                            {`Select all services that apply for ${operator.name}`}
                         </h1>
                     </legend>
 
@@ -209,20 +192,12 @@ const MultiOperatorsServiceList = ({
                     <div className="govuk-grid-column-two-thirds">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                             <h1 className="govuk-heading-m govuk-!-margin-top-3" id="service-list-page-heading">
-                                {`${getActiveOperator(activeOperatorNoc, operators).name}`}
+                                {`${operator.name}`}
                             </h1>
                         </legend>
-                        {getActiveOperator(activeOperatorNoc, operators).selectedServices.length !==
-                        getActiveOperator(activeOperatorNoc, operators).services.length ? (
+                        {operator.selectedServices.length !== operator.services.length ? (
                             <button
-                                onClick={() =>
-                                    addAllServices(
-                                        operators,
-                                        getActiveOperator(activeOperatorNoc, operators),
-                                        order,
-                                        setOperators,
-                                    )
-                                }
+                                onClick={() => addAllServices(operators, operator, order, setOperators)}
                                 id="select-all-button"
                                 className="govuk-button govuk-button--secondary"
                             >
@@ -233,11 +208,8 @@ const MultiOperatorsServiceList = ({
                         )}
 
                         <div className="govuk-checkboxes" data-module="govuk-checkboxes">
-                            {getActiveOperator(activeOperatorNoc, operators).services.map((service, index) => {
-                                const serviceIsAlreadySelected = !!getActiveOperator(
-                                    activeOperatorNoc,
-                                    operators,
-                                ).selectedServices.find(
+                            {operator.services.map((service, index) => {
+                                const serviceIsAlreadySelected = !!operator.selectedServices.find(
                                     (selectedService) =>
                                         service.lineId === selectedService.lineId &&
                                         service.startDate === selectedService.startDate,
@@ -254,21 +226,18 @@ const MultiOperatorsServiceList = ({
                                         className="govuk-checkboxes__item dft-padding-left"
                                         key={`checkbox-item-${index}`}
                                     >
+                                        <input
+                                            id={`add-operator-checkbox-${index}`}
+                                            className="govuk-checkboxes__input"
+                                            type="checkbox"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                addServiceToOperator(operator, operators, setOperators, service, order);
+                                            }}
+                                        />
                                         <label
-                                            id={`service-to-add-${index}`}
-                                            // eslint-disable-next-line jsx-a11y/aria-role, jsx-a11y/no-noninteractive-element-to-interactive-role
-                                            role="button"
                                             className="govuk-label govuk-checkboxes__label"
                                             htmlFor={`add-operator-checkbox-${index}`}
-                                            onClick={() =>
-                                                addServiceToOperator(
-                                                    getActiveOperator(activeOperatorNoc, operators),
-                                                    operators,
-                                                    setOperators,
-                                                    service,
-                                                    order,
-                                                )
-                                            }
                                         >
                                             {checkboxTitles}
                                         </label>
@@ -289,8 +258,7 @@ const MultiOperatorsServiceList = ({
                                             scope="col"
                                             className="govuk-!-padding-left-2 govuk-table__header govuk-table__caption--s govuk-!-font-size-16"
                                         >
-                                            {getActiveOperator(activeOperatorNoc, operators).selectedServices.length}{' '}
-                                            added
+                                            {operator.selectedServices.length} added
                                         </th>
                                         <th scope="col" className="govuk-table__header text-align-right"></th>
                                     </tr>
@@ -349,11 +317,8 @@ const MultiOperatorsServiceList = ({
                                                             } - ${service.destination || 'N/A'}`;
 
                                                             return (
-                                                                <>
-                                                                    <div
-                                                                        className="govuk-grid-row govuk-!-margin-bottom-2"
-                                                                        key={index}
-                                                                    >
+                                                                <React.Fragment key={index}>
+                                                                    <div className="govuk-grid-row govuk-!-margin-bottom-2">
                                                                         <div className="govuk-grid-column-three-quarters govuk-!-margin-top-2">
                                                                             {checkboxTitles}
                                                                         </div>
@@ -364,10 +329,7 @@ const MultiOperatorsServiceList = ({
                                                                                 onClick={() =>
                                                                                     removeService(
                                                                                         operators,
-                                                                                        getActiveOperator(
-                                                                                            activeOperatorNoc,
-                                                                                            operators,
-                                                                                        ),
+                                                                                        operator,
                                                                                         order,
                                                                                         setOperators,
                                                                                         service,
@@ -380,7 +342,7 @@ const MultiOperatorsServiceList = ({
                                                                         </div>
                                                                     </div>
                                                                     <hr className="govuk-section-break govuk-section-break--visible" />
-                                                                </>
+                                                                </React.Fragment>
                                                             );
                                                         })}
                                                     </div>

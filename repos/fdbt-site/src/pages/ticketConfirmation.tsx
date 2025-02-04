@@ -525,6 +525,9 @@ export const buildTicketConfirmationElements = (
         case 'multiOperator':
             confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
             break;
+        case 'multiOperatorExt':
+            confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
+            break;
         case 'schoolService':
             confirmationElements = buildSchoolTicketConfirmationElements(ctx);
             break;

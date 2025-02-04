@@ -86,7 +86,7 @@ export const getProductsByValues = (
     multipleProductAttribute: MultipleProductAttribute | MultipleProductAttributeWithErrors | undefined,
     pricePerDistanceName: string,
 ): ProductInfo[] => {
-    // for 'period', 'multiOperator', 'flatFare' that have multiple products
+    // for 'period', 'multiOperator', 'multiOperatorExt', 'flatFare' that have multiple products
     if (multipleProductAttribute) {
         return multipleProductAttribute.products;
     }

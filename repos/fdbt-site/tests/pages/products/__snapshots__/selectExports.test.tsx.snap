@@ -207,7 +207,7 @@ exports[`selectExports renders fully when the user has products they can export 
                     className="govuk-tabs__tab"
                     href="#multi-operator-products"
                   >
-                    Multi operator products
+                    Multi-operator products
                   </a>
                 </li>
                 <li
@@ -630,7 +630,7 @@ exports[`selectExports renders fully when the user has products they can export,
                     className="govuk-tabs__tab"
                     href="#multi-operator-products"
                   >
-                    Multi operator products
+                    Multi-operator products
                   </a>
                 </li>
                 <li

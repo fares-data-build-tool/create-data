@@ -8,7 +8,7 @@ import { getTag } from './services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
-import { fareTypes } from 'src/constants';
+import { fareTypes } from '../../constants';
 
 const title = 'Multi-operator products (internal) - Create Fares Data Service';
 const description = 'View and access your multi-operator products (internal) in one place.';

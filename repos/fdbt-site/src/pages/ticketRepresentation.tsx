@@ -173,7 +173,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             showHybrid: fareType === 'period' && !isScheme,
             showPointToPoint: (fareType === 'period' && !isCarnet && !isScheme) || fareType === 'schoolService',
             showFlatFlare: fareType === 'flatFare' && !isScheme && !isCarnet,
-            showMultiOperator: fareType === 'multiOperator',
+            showMultiOperator: fareType === 'multiOperator' || fareType === 'multiOperatorExt',
             showGeoZone: fareType !== 'schoolService',
             stage: STAGE || 'dev',
         },

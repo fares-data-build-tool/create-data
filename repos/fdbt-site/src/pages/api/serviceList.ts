@@ -252,7 +252,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const ticketType = (getSessionAttribute(req, TICKET_REPRESENTATION_ATTRIBUTE) as TicketRepresentationAttribute)
             .name;
 
-        if (fareType === 'multiOperator') {
+        if (fareType === 'multiOperator' || fareType === 'multiOperatorExt') {
             redirectTo(res, '/reuseOperatorGroup');
             return;
         }

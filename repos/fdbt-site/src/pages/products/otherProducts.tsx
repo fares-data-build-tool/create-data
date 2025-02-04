@@ -9,7 +9,7 @@ import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
 import { FlatFareByDistanceProduct, Product } from 'src/interfaces/matchingJsonTypes';
-import { fareTypes } from 'src/constants';
+import { fareTypes } from '../../constants';
 
 const title = 'Other products - Create Fares Data Service';
 const description = 'View and access your other products in one place.';
@@ -218,7 +218,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         )
     ).flat();
 
-    const otherProducts = allOtherProducts.filter((product) => product.type !== 'multiOperator');
+    const otherProducts = allOtherProducts.filter(
+        (product) => product.type !== 'multiOperator' && product.type !== 'multiOperatorExt',
+    );
     return { props: { otherProducts, csrfToken: getCsrfToken(ctx) } };
 };
 

@@ -18,7 +18,7 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     exemptedServices?: SelectedService[];
 }
 
-export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator'> {
+export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator' | 'multiOperatorExt'> {
     operatorName: string;
     products: ProductDetails[];
     fareDayEnd?: string;

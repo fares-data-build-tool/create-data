@@ -693,6 +693,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         ? `/products/pointToPointProducts?serviceId=${serviceId}`
         : ticket.type === 'multiOperator'
         ? '/products/multiOperatorProducts'
+        : ticket.type === 'multiOperatorExt'
+        ? '/products/multiOperatorProductsExternal'
         : '/products/otherProducts';
 
     const lineId =

@@ -65,10 +65,9 @@ const MultiOperatorProducts = ({
                     </p>
                 </div>
                 <div className="govuk-grid-column-one-third">
-                    {/*TODO: add link to multiop external flow*/}
-                    <button type="submit" className="govuk-button">
+                    <a href="/fareType" className="govuk-button" data-module="govuk-button">
                         Create new product
-                    </button>
+                    </a>
                     {/*TODO: add link to exporter*/}
                     <button type="submit" className="govuk-button govuk-button--secondary">
                         Export all products
