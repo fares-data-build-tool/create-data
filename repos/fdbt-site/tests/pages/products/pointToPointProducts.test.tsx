@@ -101,6 +101,7 @@ describe('myfares pages', () => {
                 [
                     {
                         id: 1,
+                        nocCode: 'TEST',
                         lineId: 'wefawefa',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2018',
@@ -109,6 +110,7 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 2,
+                        nocCode: 'TEST',
                         lineId: 'wefawefa',
                         matchingJsonLink: '/path/to/json',
                         startDate: '01/01/2021',
@@ -117,6 +119,7 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 3,
+                        nocCode: 'TEST',
                         lineId: 'wefawefa',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2020',
@@ -125,6 +128,7 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 4,
+                        nocCode: 'TEST',
                         lineId: 'wefawefa',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2020',
@@ -137,6 +141,7 @@ describe('myfares pages', () => {
                 {
                     endDate: '04/04/2021',
                     id: 2,
+                    nocCode: 'TEST',
                     lineId: 'wefawefa',
                     matchingJsonLink: '/path/to/json',
                     startDate: '01/01/2021',
@@ -159,6 +164,7 @@ describe('myfares pages', () => {
                 [
                     {
                         id: 1,
+                        nocCode: 'TEST',
                         lineId: 'blah1',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2012',
@@ -167,6 +173,7 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 2,
+                        nocCode: 'TEST',
                         lineId: 'blah2',
                         matchingJsonLink: '/path/to/json',
                         startDate: '01/01/2014',
@@ -175,6 +182,7 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 3,
+                        nocCode: 'TEST',
                         lineId: 'blah3',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2022',
@@ -183,6 +191,7 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 4,
+                        nocCode: 'TEST',
                         lineId: 'blah4',
                         matchingJsonLink: '/path/to/json',
                         startDate: '12/12/2021',

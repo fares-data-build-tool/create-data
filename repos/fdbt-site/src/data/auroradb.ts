@@ -2097,6 +2097,31 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
     }
 };
 
+export const getMultiOperatorExternalProducts = async (): Promise<MyFaresOtherProduct[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting multi-operator external products',
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, nocCode, matchingJsonLink, startDate, endDate
+            FROM products
+            WHERE fareType = 'multiOperatorExt'
+        `;
+
+        const queryResults = await executeQuery<MyFaresOtherProduct[]>(queryInput, []);
+
+        return queryResults.map((result) => ({
+            ...result,
+            startDate: convertDateFormat(result.startDate),
+            endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+        }));
+    } catch (error) {
+        throw new Error(`Could not retrieve multi-operator external products from AuroraDB: ${error.stack}`);
+    }
+};
+
 export const getProductById = async (nocCode: string, productId: string): Promise<MyFaresProduct> => {
     logger.info('', {
         context: 'data.auroradb',
