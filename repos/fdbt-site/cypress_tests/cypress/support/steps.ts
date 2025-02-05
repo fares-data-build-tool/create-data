@@ -44,6 +44,7 @@ export type FareType =
     | 'return'
     | 'flatFare'
     | 'multiOperator'
+    | 'multiOperatorExt'
     | 'schoolService'
     | 'carnet'
     | 'carnetFlatFare'
@@ -373,7 +374,7 @@ export const completeMyFaresMultiOperatorProductsPages = (): void => {
         clickRandomElementInTable('govuk-table__body', 'product-link');
         getElementById('product-name').should('not.be.empty');
         getElementById('product-status').should('not.be.empty');
-        getElementById('fare-type').should('not.be.empty').should('have.text', 'Multi operator');
+        getElementById('fare-type').should('not.be.empty').should('have.text', 'Multi-operator');
         clickElementByText('Back');
     }
 };

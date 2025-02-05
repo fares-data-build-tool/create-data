@@ -755,7 +755,7 @@ describe('myfares pages', () => {
             });
         });
 
-        it('correctly returns the elements which should be displayed on the page for a Multi Operator GeoZone Ticket with Multiple Products', async () => {
+        it('correctly returns the elements which should be displayed on the page for a Multi-operator GeoZone Ticket with Multiple Products', async () => {
             (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
                 ...expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
             });
@@ -768,7 +768,7 @@ describe('myfares pages', () => {
                     startDate: '17/12/2020',
                     endDate: '18/12/2020',
                     productDetailsElements: [
-                        { name: 'Fare type', id: 'fare-type', content: ['Multi operator'] },
+                        { name: 'Fare type', id: 'fare-type', content: ['Multi-operator (internal)'] },
                         { id: 'zone', name: 'Zone', content: ['Green Lane Shops'], editLink: '/csvZoneUpload' },
                         {
                             id: 'stops',

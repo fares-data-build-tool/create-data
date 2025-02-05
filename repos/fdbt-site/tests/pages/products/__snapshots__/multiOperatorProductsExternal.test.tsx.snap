@@ -25,12 +25,23 @@ exports[`multiOperatorProductsExternal page renders correctly 1`] = `
     <div
       className="govuk-grid-column-one-third"
     >
-      <button
-        className="govuk-button"
-        type="submit"
+      <CsrfForm
+        action="/api/fareType"
+        csrfToken=""
+        method="post"
       >
-        Create new product
-      </button>
+        <input
+          name="fareType"
+          type="hidden"
+          value="multiOperatorExt"
+        />
+        <button
+          className="govuk-button"
+          type="submit"
+        >
+          Create new product
+        </button>
+      </CsrfForm>
       <button
         className="govuk-button govuk-button--secondary"
         type="submit"

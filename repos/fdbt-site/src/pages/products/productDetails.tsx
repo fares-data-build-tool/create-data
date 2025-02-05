@@ -35,7 +35,7 @@ import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { Stop, TicketWithIds } from '../../interfaces/matchingJsonTypes';
 import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
-import { STAGE } from '../../constants';
+import { fareTypes, STAGE } from '../../constants';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -243,7 +243,7 @@ const createProductDetails = async (
         name: 'Fare type',
         id: 'fare-type',
         content: [
-            `${sentenceCaseString(ticket.type)}${ticket.carnet ? ' (carnet)' : ''}${
+            `${fareTypes[ticket.type]}${ticket.carnet ? ' (carnet)' : ''}${
                 'termTime' in ticket && !!ticket.termTime ? ' (academic)' : ''
             }${'return' in ticket ? ' return' : ''}`,
         ],
@@ -638,8 +638,8 @@ const createProductDetails = async (
         'productName' in product
             ? product.productName
             : isSchoolTicket
-            ? `${passengerTypeName} - ${sentenceCaseString(ticket.type)} (school)`
-            : `${passengerTypeName} - ${sentenceCaseString(ticket.type)}`;
+            ? `${passengerTypeName} - ${fareTypes[ticket.type]} (school)`
+            : `${passengerTypeName} - ${fareTypes[ticket.type]}`;
 
     return {
         productDetailsElements,
@@ -693,6 +693,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         ? `/products/pointToPointProducts?serviceId=${serviceId}`
         : ticket.type === 'multiOperator'
         ? '/products/multiOperatorProducts'
+        : ticket.type === 'multiOperatorExt'
+        ? '/products/multiOperatorProductsExternal'
         : '/products/otherProducts';
 
     const lineId =

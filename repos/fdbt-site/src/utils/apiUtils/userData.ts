@@ -253,7 +253,7 @@ export const getBaseTicketAttributes = <T extends TicketType>(
 export const getBasePeriodTicketAttributes = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-    ticketType: 'period' | 'multiOperator',
+    ticketType: 'period' | 'multiOperator' | 'multiOperatorExt',
 ): WithIds<BasePeriodTicket> => {
     const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
     const baseTicketAttributes = getBaseTicketAttributes(req, res, ticketType);
@@ -439,12 +439,17 @@ export const getGeoZoneTicketJson = async (
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
     const additionalNocs =
-        basePeriodTicketAttributes.type === 'multiOperator' && multiOpAttribute
+        (basePeriodTicketAttributes.type === 'multiOperator' ||
+            basePeriodTicketAttributes.type === 'multiOperatorExt') &&
+        multiOpAttribute
             ? multiOpAttribute.selectedOperators.map((operator) => operator.nocCode)
             : undefined;
 
     const operatorGroupId =
-        basePeriodTicketAttributes.type === 'multiOperator' && multiOpAttribute && multiOpAttribute.id
+        (basePeriodTicketAttributes.type === 'multiOperator' ||
+            basePeriodTicketAttributes.type === 'multiOperatorExt') &&
+        multiOpAttribute &&
+        multiOpAttribute.id
             ? multiOpAttribute.id
             : undefined;
 
@@ -540,7 +545,7 @@ export const getMultipleServicesTicketJson = (
     }
     const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
 
-    if (basePeriodTicketAttributes.type === 'multiOperator') {
+    if (basePeriodTicketAttributes.type === 'multiOperator' || basePeriodTicketAttributes.type === 'multiOperatorExt') {
         const additionalOperators = getSessionAttribute(
             req,
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,

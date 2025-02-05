@@ -13,6 +13,7 @@ import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
 import { getGroupPassengerTypeById, getMultiOperatorExternalProducts, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
+import CsrfForm from '../../components/CsrfForm';
 
 const title = 'Multi-operator products - Create Fares Data Service';
 const description = 'View and access your multi-operator products in one place.';
@@ -65,10 +66,12 @@ const MultiOperatorProducts = ({
                     </p>
                 </div>
                 <div className="govuk-grid-column-one-third">
-                    {/*TODO: add link to multiop external flow*/}
-                    <button type="submit" className="govuk-button">
-                        Create new product
-                    </button>
+                    <CsrfForm action="/api/fareType" method="post" csrfToken={csrfToken}>
+                        <input type="hidden" name="fareType" value="multiOperatorExt" />
+                        <button type="submit" className="govuk-button">
+                            Create new product
+                        </button>
+                    </CsrfForm>
                     {/*TODO: add link to exporter*/}
                     <button type="submit" className="govuk-button govuk-button--secondary">
                         Export all products
