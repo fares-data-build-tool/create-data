@@ -29,6 +29,7 @@ import {
 } from '../constants/attributes';
 import {
     ConfirmationElement,
+    FareType,
     MultipleOperatorsAttribute,
     MultipleProductAttribute,
     MultiProduct,
@@ -352,6 +353,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
     ).name;
     const serviceInformation = getSessionAttribute(ctx.req, SERVICE_LIST_ATTRIBUTE) as ServiceListAttribute;
     const multiOpAttribute = getSessionAttribute(ctx.req, MULTIPLE_OPERATOR_ATTRIBUTE) as MultipleOperatorsAttribute;
+    const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
     const multiOpServices = getSessionAttribute(ctx.req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE) as AdditionalOperator[];
     const fileName = getSessionAttribute(ctx.req, CSV_ZONE_FILE_NAME);
     const exemptedServiceAttribute = getSessionAttribute(
@@ -411,7 +413,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
         );
     }
 
-    if (multiOpAttribute) {
+    if (multiOpAttribute && fareType === 'multiOperator') {
         const additionalOperators = multiOpAttribute.selectedOperators;
         confirmationElements.push({
             name: 'Additional operators',
