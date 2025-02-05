@@ -1,0 +1,58 @@
+{
+  "nocCode": "BLAC",
+  "type": "multiOperatorExt",
+  "passengerType": {
+    "id": 3
+  },
+  "email": "test@example.com",
+  "uuid": "BLACc90fe5a8",
+  "ticketPeriod": {
+    "startDate": "2025-01-01T00:00:00.000Z"
+  },
+  "operatorName": "Test Operator",
+  "products": [
+    {
+      "productName": "MOBE-services-1",
+      "productPrice": "1.23",
+      "salesOfferPackages": [
+        {
+          "id": 1,
+          "price": "1.23"
+        }
+      ]
+    }
+  ],
+  "selectedServices": [
+    {
+      "lineName": "1",
+      "lineId": "4YyoI0",
+      "serviceCode": "NW_05_BLAC_1_1",
+      "serviceDescription": "FLEETWOOD - BLACKPOOL via Promenade"
+    },
+    {
+      "lineName": "2",
+      "lineId": "YpQjUw",
+      "serviceCode": "NW_05_BLAC_2_1",
+      "serviceDescription": "POULTON - BLACKPOOL via Victoria Hospital Outpatients"
+    },
+    {
+      "lineName": "2C",
+      "lineId": "vySmfewe0",
+      "serviceCode": "NW_05_BLAC_2C_1",
+      "serviceDescription": "KNOTT END - POULTON - BLACKPOOL"
+    }
+  ],
+  "additionalOperators": [
+    {
+      "nocCode": "LNUD",
+      "selectedServices": []
+    },
+    {
+      "nocCode": "NWBT",
+      "selectedServices": []
+    }
+  ],
+  "termTime": false,
+  "operatorGroupId": 1,
+  "carnet": false
+}
