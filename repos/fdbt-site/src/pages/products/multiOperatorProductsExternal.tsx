@@ -226,24 +226,17 @@ export const getServerSideProps = async (
 
     for (const product of multiOperatorProductsFromDb) {
         const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
-
         const additionalOperators = 'additionalOperators' in matchingJson ? matchingJson.additionalOperators : [];
         const additionalNocs = 'additionalNocs' in matchingJson ? matchingJson.additionalNocs : [];
         const isFareZoneType = 'zoneName' in matchingJson;
-
-        const secondaryOperatorsNocs = isFareZoneType ? additionalNocs : additionalOperators.map((op) => op.nocCode);
-        const isSharedProduct = secondaryOperatorsNocs.includes(yourNoc);
+        const secondaryOperatorNocs = isFareZoneType ? additionalNocs : additionalOperators.map((op) => op.nocCode);
+        const isSharedProduct = secondaryOperatorNocs.includes(yourNoc);
 
         if (product.nocCode === yourNoc || isSharedProduct) {
-            let isIncomplete = false;
-
-            for (const noc of secondaryOperatorsNocs) {
-                isIncomplete = await checkIfMultiOperatorProductIsIncomplete(product.matchingJsonLink, noc);
-
-                if (isIncomplete) {
-                    break;
-                }
-            }
+            const isIncomplete = await checkIfMultiOperatorProductIsIncomplete(
+                product.matchingJsonLink,
+                secondaryOperatorNocs,
+            );
 
             const startDate = matchingJson.ticketPeriod.startDate
                 ? convertDateFormat(matchingJson.ticketPeriod.startDate)

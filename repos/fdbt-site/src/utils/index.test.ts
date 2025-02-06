@@ -11,7 +11,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
     it('should return true if secondaryOperatorFareInfo has no stops', async () => {
         (getProductsSecondaryOperatorInfo as jest.Mock).mockResolvedValue({ stops: [] });
 
-        const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, 'NOC');
+        const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, ['NOC']);
 
         expect(result).toBe(true);
     });
@@ -19,7 +19,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
     it('should return true if secondaryOperatorFareInfo has no selectedServices', async () => {
         (getProductsSecondaryOperatorInfo as jest.Mock).mockResolvedValue({ selectedServices: [] });
 
-        const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, 'NOC');
+        const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, ['NOC']);
 
         expect(result).toBe(true);
     });
@@ -41,7 +41,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
             ],
         });
 
-        const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, 'NOC');
+        const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, ['NOC']);
 
         expect(result).toBe(false);
     });
@@ -73,7 +73,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
             ],
         });
 
-        const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, 'NOC');
+        const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, ['NOC']);
 
         expect(result).toBe(false);
     });
@@ -81,7 +81,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
     it('should log an error and return true if an exception is thrown', async () => {
         (getProductsSecondaryOperatorInfo as jest.Mock).mockRejectedValue(new Error('Test error'));
 
-        const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, 'NOC');
+        const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, ['NOC']);
 
         expect(logger.error).toHaveBeenCalledWith(`Couldn't get additional operator info for noc: NOC`);
         expect(result).toBe(true);

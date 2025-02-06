@@ -91,11 +91,6 @@ const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
             hint: 'A ticket that covers more than one NOC in your organisation',
         },
         {
-            value: 'multiOperatorExt',
-            label: 'Multi-operator',
-            hint: 'A ticket that covers multiple collaborating operators',
-        },
-        {
             value: 'schoolService',
             label: 'Academic term/year ticket',
             hint: 'A ticket available to pupils in full-time education',

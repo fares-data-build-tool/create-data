@@ -9,6 +9,7 @@ import {
     getTimeRestrictionByIdAndNoc,
     getServiceByIdAndDataSource,
     getCaps,
+    getProductByIdAndAdditionalNoc,
 } from '../../../src/data/auroradb';
 import { getProductsMatchingJson } from '../../../src/data/s3';
 import ProductDetails, { getServerSideProps } from '../../../src/pages/products/productDetails';
@@ -17,6 +18,7 @@ import {
     expectedFlatFareGeoZoneTicketWithExemptions,
     expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
+    expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperatorsExt,
     expectedPointToPointPeriodTicket,
     expectedReturnTicketWithAdditionalService,
     expectedSchemeOperatorAfterFlatFareAdjustmentTicket,
@@ -24,7 +26,9 @@ import {
     expectedSingleTicket,
     getMockContext,
     mockRawService,
+    mockSchemOpIdToken,
 } from '../../testData/mockData';
+import { OPERATOR_ATTRIBUTE } from '../../../src/constants/attributes';
 
 jest.mock('../../../src/data/auroradb');
 jest.mock('../../../src/data/s3');
@@ -90,6 +94,8 @@ describe('myfares pages', () => {
                     cannotGenerateReturn={false}
                     passengerTypeId={2}
                     csrfToken=""
+                    isOwnProduct
+                    isIncomplete={false}
                 />,
             );
 
@@ -154,11 +160,14 @@ describe('myfares pages', () => {
                     cannotGenerateReturn={false}
                     passengerTypeId={2}
                     csrfToken=""
+                    isOwnProduct
+                    isIncomplete={false}
                 />,
             );
 
             expect(tree).toMatchSnapshot();
         });
+
         it('should render correctly while the cannot generate return popup is open', () => {
             const tree = shallow(
                 <ProductDetails
@@ -212,12 +221,115 @@ describe('myfares pages', () => {
                     cannotGenerateReturn
                     passengerTypeId={2}
                     csrfToken=""
+                    isOwnProduct
+                    isIncomplete={false}
                 />,
             );
 
             expect(tree).toMatchSnapshot();
         });
+
         it('should render correctly for a fare triangle modified product', () => {
+            const tree = shallow(
+                <ProductDetails
+                    requiresAttention={false}
+                    backHref={'/products/multiOperatorProductsExternal'}
+                    productName={'Weekly Ticket'}
+                    startDate={'17/12/2020'}
+                    endDate={'18/12/2020'}
+                    productDetailsElements={[
+                        { name: 'Fare type', id: 'fare-type', content: ['Multi-operator'] },
+                        {
+                            id: 'selected-services',
+                            name: 'TEST Services',
+                            content: ['12A, 6, 101'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'exempt-stops',
+                            name: 'Exempt stops',
+                            content: ['N/A'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'passenger-type',
+                            name: 'Passenger type',
+                            content: ['Test Passenger Type'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'time-restriction',
+                            name: 'Time restriction',
+                            content: ['Test Time Restriction'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'additional-operators-services',
+                            name: 'WBTR Services',
+                            content: [''],
+                            editLink: '',
+                        },
+                        {
+                            id: 'additional-operators-services',
+                            name: 'BLAC Services',
+                            content: [''],
+                            editLink: '',
+                        },
+                        {
+                            id: 'additional-operators-services',
+                            name: 'TESTSCHEME Services',
+                            content: [''],
+                            editLink: '/multiOperatorServiceList',
+                        },
+                        {
+                            id: 'period-duration',
+                            name: 'Period duration',
+                            content: ['5 weeks'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['Fare day end'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'purchase-methods',
+                            name: 'Purchase methods',
+                            content: ['SOP 2', 'SOP 1'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'start-date',
+                            name: 'Start date',
+                            content: ['17/12/2020'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'end-date',
+                            name: 'End date',
+                            content: ['18/12/2020'],
+                            editLink: '',
+                        },
+                    ]}
+                    productId={'1'}
+                    serviceId={''}
+                    copiedProduct={false}
+                    cannotGenerateReturn={false}
+                    isSingle={false}
+                    lineId={''}
+                    passengerTypeId={9}
+                    csrfToken={''}
+                    fareTriangleModified={undefined}
+                    isOwnProduct={false}
+                    isIncomplete={true}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for a multi-operator product shared with you', () => {
             const tree = shallow(
                 <ProductDetails
                     requiresAttention={true}
@@ -276,6 +388,8 @@ describe('myfares pages', () => {
                     passengerTypeId={2}
                     csrfToken=""
                     fareTriangleModified={'18/10/2021'}
+                    isOwnProduct={false}
+                    isIncomplete
                 />,
             );
 
@@ -293,7 +407,7 @@ describe('myfares pages', () => {
                 startDate: 'A date',
                 endDate: 'Another date',
             });
-            (getProductById as jest.Mock).mockResolvedValueOnce('path');
+            (getProductById as jest.Mock).mockResolvedValueOnce({ nocCode: 'TEST', matchingJsonLink: 'test' });
             (getPassengerTypeNameByIdAndNoc as jest.Mock).mockResolvedValue('Test Passenger Type');
 
             (getSalesOfferPackageByIdAndNoc as jest.Mock).mockResolvedValueOnce({
@@ -383,6 +497,8 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
+                    isIncomplete: false,
                 },
             });
         });
@@ -464,6 +580,8 @@ describe('myfares pages', () => {
                     lineId: 'q2gv2ve',
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
+                    isIncomplete: false,
                 },
             });
         });
@@ -551,6 +669,8 @@ describe('myfares pages', () => {
                     lineId: 'q2gv2ve',
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
+                    isIncomplete: false,
                 },
             });
         });
@@ -668,6 +788,8 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
+                    isIncomplete: false,
                 },
             });
         });
@@ -751,6 +873,8 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
+                    isIncomplete: false,
                 },
             });
         });
@@ -840,6 +964,8 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
+                    isIncomplete: false,
                 },
             });
         });
@@ -915,6 +1041,8 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
+                    isIncomplete: false,
                 },
             });
         });
@@ -957,7 +1085,12 @@ describe('myfares pages', () => {
                             content: ['Test Time Restriction'],
                             editLink: '/selectTimeRestrictions',
                         },
-                        { id: 'multi-operator-group', name: 'Multi Operator Group', content: ['MCTR, WBTR, BLAC'] },
+                        {
+                            id: 'multi-operator-group',
+                            name: 'Multi Operator Group',
+                            content: ['MCTR, WBTR, BLAC'],
+                            editLink: '',
+                        },
                         {
                             id: 'period-duration',
                             name: 'Period duration',
@@ -998,12 +1131,17 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
+                    isIncomplete: false,
                 },
             });
         });
         it('correctly returns the elements which should be displayed on the page when fare triangle is modified', async () => {
             (getProductById as jest.Mock).mockReset();
-            (getProductById as jest.Mock).mockResolvedValue({ fareTriangleModified: '2021-12-17T00:00:00.000Z' });
+            (getProductById as jest.Mock).mockResolvedValue({
+                nocCode: 'TEST',
+                fareTriangleModified: '2021-12-17T00:00:00.000Z',
+            });
             (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedSingleTicket);
             const ctx = getMockContext({ query: { productId: '1', serviceId: '2' } });
             expect(await getServerSideProps(ctx)).toStrictEqual({
@@ -1070,6 +1208,8 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: '2021-12-17T00:00:00.000Z',
+                    isOwnProduct: true,
+                    isIncomplete: false,
                 },
             });
         });
@@ -1142,6 +1282,128 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
+                    isIncomplete: false,
+                },
+            });
+        });
+
+        it('hides edit links when displaying a products shared with you', async () => {
+            (getProductById as jest.Mock).mockRejectedValueOnce(new Error('Product not found'));
+            (getProductByIdAndAdditionalNoc as jest.Mock).mockResolvedValueOnce({
+                nocCode: 'TEST',
+                matchingJsonLink: 'test',
+            });
+            (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
+                ...expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperatorsExt,
+            });
+
+            const ctx = getMockContext({
+                query: { productId: '1' },
+                cookies: {
+                    idToken: mockSchemOpIdToken,
+                },
+                session: {
+                    [OPERATOR_ATTRIBUTE]: {
+                        name: 'SCHEME_OPERATOR',
+                        region: 'SCHEME_REGION',
+                        nocCode: 'TESTSCHEME',
+                    },
+                },
+            });
+            expect(await getServerSideProps(ctx)).toStrictEqual({
+                props: {
+                    requiresAttention: false,
+                    backHref: '/products/multiOperatorProductsExternal',
+                    productName: 'Weekly Ticket',
+                    startDate: '17/12/2020',
+                    endDate: '18/12/2020',
+                    productDetailsElements: [
+                        { name: 'Fare type', id: 'fare-type', content: ['Multi-operator'] },
+                        {
+                            id: 'selected-services',
+                            name: 'TEST Services',
+                            content: ['12A, 6, 101'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'exempt-stops',
+                            name: 'Exempt stops',
+                            content: ['N/A'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'passenger-type',
+                            name: 'Passenger type',
+                            content: ['Test Passenger Type'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'time-restriction',
+                            name: 'Time restriction',
+                            content: ['Test Time Restriction'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'additional-operators-services',
+                            name: 'WBTR Services',
+                            content: [''],
+                            editLink: '',
+                        },
+                        {
+                            id: 'additional-operators-services',
+                            name: 'BLAC Services',
+                            content: [''],
+                            editLink: '',
+                        },
+                        {
+                            id: 'additional-operators-services',
+                            name: 'TESTSCHEME Services',
+                            content: [''],
+                            editLink: '/multiOperatorServiceList',
+                        },
+                        {
+                            id: 'period-duration',
+                            name: 'Period duration',
+                            content: ['5 weeks'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['Fare day end'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'purchase-methods',
+                            name: 'Purchase methods',
+                            content: ['SOP 2', 'SOP 1'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'start-date',
+                            name: 'Start date',
+                            content: ['17/12/2020'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'end-date',
+                            name: 'End date',
+                            content: ['18/12/2020'],
+                            editLink: '',
+                        },
+                    ],
+                    productId: '1',
+                    serviceId: '',
+                    copiedProduct: false,
+                    cannotGenerateReturn: false,
+                    isSingle: false,
+                    lineId: '',
+                    passengerTypeId: 9,
+                    csrfToken: '',
+                    fareTriangleModified: undefined,
+                    isOwnProduct: false,
+                    isIncomplete: true,
                 },
             });
         });

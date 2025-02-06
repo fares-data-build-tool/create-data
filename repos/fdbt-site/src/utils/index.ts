@@ -283,27 +283,32 @@ export const removeDuplicateServices = <T>(services: T[]): T[] => {
 
 export const checkIfMultiOperatorProductIsIncomplete = async (
     productMatchingJsonLink: string,
-    noc: string,
+    nocs: string[],
 ): Promise<boolean> => {
-    const secondaryOperatorFareInfoPath = `${productMatchingJsonLink.substring(
-        0,
-        productMatchingJsonLink.lastIndexOf('.json'),
-    )}_${noc}.json`;
+    for (const noc of nocs) {
+        const secondaryOperatorFareInfoPath = `${productMatchingJsonLink.substring(
+            0,
+            productMatchingJsonLink.lastIndexOf('.json'),
+        )}_${noc}.json`;
 
-    try {
-        const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(secondaryOperatorFareInfoPath);
+        try {
+            const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(secondaryOperatorFareInfoPath);
 
-        // Check for stop info for fareZone type multi-operator fares
-        const hasNoStops = 'stops' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.stops.length === 0;
+            // Check for stop info for fareZone type multi-operator fares
+            const hasNoStops = 'stops' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.stops.length === 0;
 
-        // Check for service info for service type multi-operator fares
-        const hasNoSelectedServices =
-            'selectedServices' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.selectedServices.length === 0;
+            // Check for service info for service type multi-operator fares
+            const hasNoSelectedServices =
+                'selectedServices' in secondaryOperatorFareInfo &&
+                secondaryOperatorFareInfo.selectedServices.length === 0;
 
-        return hasNoStops || hasNoSelectedServices;
-    } catch (e) {
-        logger.error(`Couldn't get additional operator info for noc: ${noc}`);
-        return true;
+            if (hasNoStops || hasNoSelectedServices) {
+                return true;
+            }
+        } catch (e) {
+            logger.error(`Couldn't get additional operator info for noc: ${noc}`);
+            return true;
+        }
     }
 
     return false;

@@ -2947,6 +2947,113 @@ export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultiple
         ],
     };
 
+export const expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperatorsExt: WithIds<MultiOperatorMultipleServicesTicket> =
+    {
+        operatorName: 'test',
+        type: 'multiOperatorExt',
+        nocCode: 'TEST',
+        uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+        email: 'test@example.com',
+        passengerType: { id: 9 },
+        termTime: false,
+        timeRestriction: { id: 2 },
+        ticketPeriod: {
+            startDate: '2020-12-17T09:30:46.0Z',
+            endDate: '2020-12-18T09:30:46.0Z',
+        },
+        operatorGroupId: 1,
+        products: [
+            {
+                productName: 'Weekly Ticket',
+                productPrice: '50',
+                productDuration: '5 weeks',
+                productValidity: 'fareDayEnd',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
+                carnetDetails: undefined,
+            },
+            {
+                productName: 'Day Ticket',
+                productPrice: '2.50',
+                productDuration: '1 year',
+                productValidity: 'fareDayEnd',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
+                carnetDetails: undefined,
+            },
+            {
+                productName: 'Monthly Ticket',
+                productPrice: '200',
+                productDuration: '28 months',
+                productValidity: 'fareDayEnd',
+                salesOfferPackages: [
+                    {
+                        id: 1,
+                        price: undefined,
+                    },
+                    {
+                        id: 2,
+                        price: undefined,
+                    },
+                ],
+                carnetDetails: undefined,
+            },
+        ],
+        selectedServices: [
+            {
+                lineName: '12A',
+                lineId: '3h3vb32ik',
+                serviceCode: 'NW_05_BLAC_12A_1',
+                startDate: '13/05/2020',
+                serviceDescription: 'Infinity Works, Leeds - Infinity Works, Manchester',
+            },
+            {
+                lineName: '6',
+                lineId: '3h3vb32ik',
+                serviceCode: 'NW_05_BLAC_6_1',
+                startDate: '08/05/2020',
+                serviceDescription: 'Infinity Works, Edinburgh - Infinity Works, London',
+            },
+            {
+                lineName: '101',
+                lineId: '3h3vb32ik',
+                serviceCode: 'NW_05_BLAC_101_1',
+                startDate: '06/05/2020',
+                serviceDescription: 'Infinity Works, Boston - Infinity Works, Berlin',
+            },
+        ],
+        additionalOperators: [
+            {
+                nocCode: 'WBTR',
+                selectedServices: [],
+            },
+            {
+                nocCode: 'BLAC',
+                selectedServices: [],
+            },
+            {
+                nocCode: 'TESTSCHEME',
+                selectedServices: [],
+            },
+        ],
+    };
+
 export const expectedFlatFareTicket = {
     operatorName: 'test',
     passengerType: { id: 9 },

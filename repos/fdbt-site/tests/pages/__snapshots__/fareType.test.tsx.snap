@@ -77,11 +77,6 @@ exports[`pages fareType should render correctly 1`] = `
                   "value": "multiOperator",
                 },
                 Object {
-                  "hint": "A ticket that covers multiple collaborating operators",
-                  "label": "Multi-operator",
-                  "value": "multiOperatorExt",
-                },
-                Object {
                   "hint": "A ticket available to pupils in full-time education",
                   "label": "Academic term/year ticket",
                   "value": "schoolService",
@@ -280,11 +275,6 @@ exports[`pages fareType should render error messaging when errors are passed to 
                   "hint": "A ticket that covers more than one NOC in your organisation",
                   "label": "Multi-operator (internal)",
                   "value": "multiOperator",
-                },
-                Object {
-                  "hint": "A ticket that covers multiple collaborating operators",
-                  "label": "Multi-operator",
-                  "value": "multiOperatorExt",
                 },
                 Object {
                   "hint": "A ticket available to pupils in full-time education",
