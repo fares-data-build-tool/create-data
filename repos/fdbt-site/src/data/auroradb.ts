@@ -82,6 +82,12 @@ interface RawOperatorGroup {
     id: number;
 }
 
+export class MultipleResultsError extends Error {
+    constructor(message: string, options?: ErrorOptions) {
+        super(message, options);
+    }
+}
+
 export const getAuroraDBClient = (): Pool => {
     let client: Pool;
 
@@ -368,7 +374,9 @@ export const getServiceByNocAndId = async (
             dataSource,
         ]);
         if (queryResults.length !== 1) {
-            throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
+            throw new MultipleResultsError(
+                `Expected one service to be returned, ${queryResults.length} results received.`,
+            );
         }
 
         return {
@@ -377,6 +385,10 @@ export const getServiceByNocAndId = async (
             endDate: queryResults[0].endDate ? convertDateFormat(queryResults[0].endDate) : undefined,
         };
     } catch (error) {
+        if (error instanceof MultipleResultsError) {
+            throw error;
+        }
+
         throw new Error(`Could not retrieve individual service from AuroraDB: ${error.stack}`);
     }
 };
@@ -406,13 +418,19 @@ export const getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource = asy
             { inboundDirectionDescription: string; outboundDirectionDescription: string }[]
         >(queryInput, [nocCodeParameter, serviceId, dataSource]);
         if (queryResults.length !== 1) {
-            throw new Error(`Expected one service to be returned, ${queryResults.length} results received.`);
+            throw new MultipleResultsError(
+                `Expected one service to be returned, ${queryResults.length} results received.`,
+            );
         }
         return {
             inboundDirectionDescription: queryResults[0].inboundDirectionDescription,
             outboundDirectionDescription: queryResults[0].outboundDirectionDescription,
         };
     } catch (error) {
+        if (error instanceof MultipleResultsError) {
+            throw error;
+        }
+
         throw new Error(`Could not retrieve individual service direction descriptions from AuroraDB: ${error.stack}`);
     }
 };
@@ -755,7 +773,7 @@ export const getSalesOfferPackageByIdAndNoc = async (
         const queryResults = await executeQuery<RawSalesOfferPackage[]>(queryInput, [nocCode, id]);
 
         if (queryResults.length !== 1) {
-            throw new Error(`Expected one sop to be returned, ${queryResults.length} results received.`);
+            throw new MultipleResultsError(`Expected one sop to be returned, ${queryResults.length} results received.`);
         }
 
         const item = queryResults[0];
@@ -769,6 +787,10 @@ export const getSalesOfferPackageByIdAndNoc = async (
             isCapped: item.isCapped,
         };
     } catch (error) {
+        if (error instanceof MultipleResultsError) {
+            throw error;
+        }
+
         throw new Error(`Could not retrieve sales offer packages from AuroraDB: ${error.stack}`);
     }
 };
@@ -893,7 +915,7 @@ export const updateOperatorGroup = async (
     const contents = JSON.stringify(operators);
 
     const updateQuery = `UPDATE operatorGroup
-                        SET name = ?, 
+                        SET name = ?,
                         contents = ?
                         WHERE id = ? AND nocCode = ?; `;
     try {
@@ -1123,13 +1145,17 @@ export const getTimeRestrictionByIdAndNoc = async (id: number, nocCode: string):
         const queryResult = await executeQuery<RawTimeRestriction[]>(queryInput, [nocCode, id]);
 
         if (queryResult.length !== 1) {
-            throw new Error(
+            throw new MultipleResultsError(
                 `Could not find time restriction with id: ${id} or more than one time restriction was returned`,
             );
         }
 
         return { ...queryResult[0], contents: JSON.parse(queryResult[0].contents) };
     } catch (error) {
+        if (error instanceof MultipleResultsError) {
+            throw error;
+        }
+
         throw new Error(`Could not retrieve time restriction by nocCode from AuroraDB: ${error.stack}`);
     }
 };
@@ -1383,13 +1409,17 @@ export const getPassengerTypeNameByIdAndNoc = async (id: number, noc: string): P
         const queryResults = await executeQuery<{ name: string }[]>(queryInput, [id, noc]);
 
         if (queryResults.length !== 1) {
-            throw new Error(
+            throw new MultipleResultsError(
                 `Could not find a passenger type with id: ${id}, or more than one passenger type was returned`,
             );
         }
 
         return queryResults[0].name;
     } catch (error) {
+        if (error instanceof MultipleResultsError) {
+            throw error;
+        }
+
         throw new Error(`Could not retrieve passenger type by id from AuroraDB: ${error}`);
     }
 };
@@ -2132,7 +2162,7 @@ export const getProductById = async (nocCode: string, productId: string): Promis
 
     try {
         const queryInput = `
-            SELECT id, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified
+            SELECT id, nocCode, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified
             FROM products
             WHERE id = ?
             AND nocCode = ?
@@ -2141,12 +2171,55 @@ export const getProductById = async (nocCode: string, productId: string): Promis
         const queryResults = await executeQuery<MyFaresProduct[]>(queryInput, [productId, nocCode]);
 
         if (queryResults.length !== 1) {
-            throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
+            throw new MultipleResultsError(
+                `Expected one product to be returned, ${queryResults.length} results recevied.`,
+            );
         }
 
         return queryResults[0];
     } catch (error) {
+        if (error instanceof MultipleResultsError) {
+            throw error;
+        }
+
         throw new Error(`Could not retrieve product matchingJsonLinks by nocCode from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getProductByIdAndAdditionalNoc = async (nocCode: string, productId: string): Promise<MyFaresProduct> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting product matching json link for given additional noc and productId',
+        nocCode,
+        productId,
+    });
+
+    try {
+        const queryInput = `
+            SELECT products.id, nocCode, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified
+            FROM products
+            JOIN productAdditionalNocs ON productAdditionalNocs.productId = products.id
+            WHERE products.id = ?
+            AND productAdditionalNocs.additionalNocCode = ?
+        `;
+
+        const queryResults = await executeQuery<MyFaresProduct[]>(queryInput, [productId, nocCode]);
+
+        if (queryResults.length !== 1) {
+            throw new MultipleResultsError(
+                `Expected one product to be returned, ${queryResults.length} results recevied.`,
+            );
+        }
+
+        return queryResults[0];
+    } catch (error) {
+        if (error instanceof MultipleResultsError) {
+            throw error;
+        }
+
+        throw new Error(
+            `Could not retrieve product matchingJsonLinks by additional nocCode from AuroraDB: ${error.stack}`,
+        );
     }
 };
 
@@ -2169,11 +2242,17 @@ export const getProductIdByMatchingJsonLink = async (nocCode: string, jsonLink: 
         const queryResults = await executeQuery<{ id: string }[]>(queryInput, [jsonLink, nocCode]);
 
         if (queryResults.length !== 1) {
-            throw new Error(`Expected one product to be returned, ${queryResults.length} results recevied.`);
+            throw new MultipleResultsError(
+                `Expected one product to be returned, ${queryResults.length} results recevied.`,
+            );
         }
 
         return queryResults[0].id;
     } catch (error) {
+        if (error instanceof MultipleResultsError) {
+            throw error;
+        }
+
         throw new Error(
             `Could not retrieve product id by nocCode and matchingJsonLink created from AuroraDB: ${error.stack}`,
         );
