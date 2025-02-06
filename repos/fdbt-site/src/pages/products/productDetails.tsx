@@ -60,6 +60,7 @@ interface ProductDetailsProps {
     cannotGenerateReturn: boolean;
     csrfToken: string;
     fareTriangleModified?: string;
+    isOwnProduct: boolean;
     isIncomplete: boolean;
 }
 
@@ -87,6 +88,7 @@ const ProductDetails = ({
     isSingle,
     cannotGenerateReturn,
     csrfToken,
+    isOwnProduct,
     isIncomplete,
 }: ProductDetailsProps): ReactElement => {
     const [editNamePopupOpen, setEditNamePopupOpen] = useState(false);
@@ -116,14 +118,15 @@ const ProductDetails = ({
                 <h1 className="govuk-heading-l" id="product-name-header">
                     {productName}
                 </h1>
-
-                <button
-                    id="edit-product-name"
-                    className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
-                    onClick={() => setEditNamePopupOpen(true)}
-                >
-                    Edit
-                </button>
+                {isOwnProduct && (
+                    <button
+                        id="edit-product-name"
+                        className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
+                        onClick={() => setEditNamePopupOpen(true)}
+                    >
+                        Edit
+                    </button>
+                )}
             </div>
 
             <div id="product-status" className="govuk-hint">
@@ -768,6 +771,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             cannotGenerateReturn,
             csrfToken,
             fareTriangleModified,
+            isOwnProduct,
             isIncomplete,
         },
     };

@@ -94,6 +94,7 @@ describe('myfares pages', () => {
                     cannotGenerateReturn={false}
                     passengerTypeId={2}
                     csrfToken=""
+                    isOwnProduct
                     isIncomplete={false}
                 />,
             );
@@ -159,6 +160,7 @@ describe('myfares pages', () => {
                     cannotGenerateReturn={false}
                     passengerTypeId={2}
                     csrfToken=""
+                    isOwnProduct
                     isIncomplete={false}
                 />,
             );
@@ -218,6 +220,7 @@ describe('myfares pages', () => {
                     cannotGenerateReturn
                     passengerTypeId={2}
                     csrfToken=""
+                    isOwnProduct
                     isIncomplete={false}
                 />,
             );
@@ -283,6 +286,7 @@ describe('myfares pages', () => {
                     passengerTypeId={2}
                     csrfToken=""
                     fareTriangleModified={'18/10/2021'}
+                    isOwnProduct
                     isIncomplete={false}
                 />,
             );
@@ -391,6 +395,7 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
                     isIncomplete: false,
                 },
             });
@@ -473,6 +478,7 @@ describe('myfares pages', () => {
                     lineId: 'q2gv2ve',
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
                     isIncomplete: false,
                 },
             });
@@ -561,6 +567,7 @@ describe('myfares pages', () => {
                     lineId: 'q2gv2ve',
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
                     isIncomplete: false,
                 },
             });
@@ -679,6 +686,7 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
                     isIncomplete: false,
                 },
             });
@@ -763,6 +771,7 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
                     isIncomplete: false,
                 },
             });
@@ -853,6 +862,7 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
                     isIncomplete: false,
                 },
             });
@@ -929,6 +939,7 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
                     isIncomplete: false,
                 },
             });
@@ -1018,6 +1029,7 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
                     isIncomplete: false,
                 },
             });
@@ -1094,6 +1106,7 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: '2021-12-17T00:00:00.000Z',
+                    isOwnProduct: true,
                     isIncomplete: false,
                 },
             });
@@ -1167,6 +1180,7 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: true,
                     isIncomplete: false,
                 },
             });
@@ -1286,6 +1300,7 @@ describe('myfares pages', () => {
                     passengerTypeId: 9,
                     csrfToken: '',
                     fareTriangleModified: undefined,
+                    isOwnProduct: false,
                     isIncomplete: true,
                 },
             });
