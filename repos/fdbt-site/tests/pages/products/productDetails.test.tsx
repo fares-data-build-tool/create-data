@@ -1347,19 +1347,19 @@ describe('myfares pages', () => {
                         {
                             id: 'additional-operators-services',
                             name: 'WBTR Services',
-                            content: [''],
+                            content: ['N/A'],
                             editLink: '',
                         },
                         {
                             id: 'additional-operators-services',
                             name: 'BLAC Services',
-                            content: [''],
+                            content: ['N/A'],
                             editLink: '',
                         },
                         {
                             id: 'additional-operators-services',
                             name: 'TESTSCHEME Services',
-                            content: [''],
+                            content: ['N/A'],
                             editLink: '/multiOperatorServiceList',
                         },
                         {
