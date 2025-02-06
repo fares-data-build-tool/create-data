@@ -1,5 +1,75 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pages productCreated should render correctly for multi-operator external products 1`] = `
+<TwoThirdsLayout
+  description="Product created page for the Create Fares Data Service"
+  title="Product Created - Create Fares Data Service"
+>
+  <div
+    className="govuk-panel govuk-panel--confirmation"
+  >
+    <h1
+      className="govuk-panel__title"
+      data-test-id="final-page-banner"
+      id="thank-you-page-heading"
+    >
+      Product created
+    </h1>
+  </div>
+  <h2
+    className="govuk-heading-m"
+  >
+    What happens next
+  </h2>
+  <p
+    className="govuk-body"
+  >
+    Your product has now been stored in the system.
+  </p>
+  <p
+    className="govuk-body"
+  >
+    To view, manage or export your multi-operator products go to
+     
+    <a
+      href="/products/multiOperatorProductsExternal"
+    >
+      view and manage my multi-operator fares
+    </a>
+    .
+  </p>
+  <p
+    className="govuk-body"
+  >
+    <a
+      aria-label="Provide feedback on this service"
+      className="govuk-link"
+      href="/feedback"
+    >
+      What did you think of this service?
+    </a>
+  </p>
+  <br />
+  <CsrfForm
+    action="/api/fareType"
+    csrfToken="test"
+    method="post"
+  >
+    <input
+      name="fareType"
+      type="hidden"
+      value="multiOperatorExt"
+    />
+    <button
+      className="govuk-button"
+      type="submit"
+    >
+      Add another multi-operator fare
+    </button>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
 exports[`pages productCreated should render correctly for multi-operator products 1`] = `
 <TwoThirdsLayout
   description="Product created page for the Create Fares Data Service"
@@ -67,6 +137,106 @@ exports[`pages productCreated should render correctly for multi-operator product
       Add another multi-operator fare
     </button>
   </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages productCreated should render correctly for products that are not multi-operator external products 1`] = `
+<TwoThirdsLayout
+  description="Product created page for the Create Fares Data Service"
+  title="Product Created - Create Fares Data Service"
+>
+  <div
+    className="govuk-panel govuk-panel--confirmation"
+  >
+    <h1
+      className="govuk-panel__title"
+      data-test-id="final-page-banner"
+      id="thank-you-page-heading"
+    >
+      Product created
+    </h1>
+  </div>
+  <h2
+    className="govuk-heading-m"
+  >
+    What happens next
+  </h2>
+  <p
+    className="govuk-body"
+  >
+    Your product has now been stored in the system.
+  </p>
+  <p
+    className="govuk-body"
+  >
+    To continue creating more products go to 
+    <a
+      href="/products/services"
+    >
+      view and manage my fares
+    </a>
+    .
+  </p>
+  <p
+    className="govuk-body"
+  >
+    Once you have finished creating products you can navigate to
+     
+    <a
+      aria-label="Export your data"
+      className="govuk-link"
+      href="/products/exports"
+    >
+      Export your data
+    </a>
+    , to export and download NeTEx for this product and all other active products in the system.
+  </p>
+  <p
+    className="govuk-body"
+  >
+     
+    Once downloaded you should upload your fares data to
+     
+    <a
+      aria-label="Bus open data service"
+      className="govuk-link"
+      href="https://publish.bus-data.dft.gov.uk/"
+    >
+      BODS
+    </a>
+    .
+  </p>
+  <p
+    className="govuk-body"
+  >
+    <a
+      aria-label="Provide feedback on this service"
+      className="govuk-link"
+      href="/feedback"
+    >
+      What did you think of this service?
+    </a>
+  </p>
+  <br />
+  <a
+    className="govuk-button"
+    data-module="govuk-button"
+    draggable="false"
+    href="/fareType"
+    role="button"
+  >
+    Add another fare
+  </a>
+  <a
+    aria-label="Export your products"
+    className="govuk-button govuk-button--secondary govuk-!-margin-left-3"
+    data-module="govuk-button"
+    draggable="false"
+    href="/products/exports"
+    role="button"
+  >
+    Export your products
+  </a>
 </TwoThirdsLayout>
 `;
 
