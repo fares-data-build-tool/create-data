@@ -47,7 +47,7 @@ jobs:
     - name: test
       run: |
         echo "Running tests"
-        npm run test:ci
+        npm run test:ci -- -u
 
     - name: lint
       run: |
