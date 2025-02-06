@@ -1,6 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages productCreated should render correctly 1`] = `
+exports[`pages productCreated should render correctly for multi-operator products 1`] = `
+<TwoThirdsLayout
+  description="Product created page for the Create Fares Data Service"
+  title="Product Created - Create Fares Data Service"
+>
+  <div
+    className="govuk-panel govuk-panel--confirmation"
+  >
+    <h1
+      className="govuk-panel__title"
+      data-test-id="final-page-banner"
+      id="thank-you-page-heading"
+    >
+      Product created
+    </h1>
+  </div>
+  <h2
+    className="govuk-heading-m"
+  >
+    What happens next
+  </h2>
+  <p
+    className="govuk-body"
+  >
+    Your product has now been stored in the system.
+  </p>
+  <p
+    className="govuk-body"
+  >
+    To view, manage or export your multi-operator products go to
+     
+    <a
+      href="/products/multiOperatorProductsExternal"
+    >
+      view and manage my multi-operator fares
+    </a>
+    .
+  </p>
+  <p
+    className="govuk-body"
+  >
+    <a
+      aria-label="Provide feedback on this service"
+      className="govuk-link"
+      href="/feedback"
+    >
+      What did you think of this service?
+    </a>
+  </p>
+  <br />
+  <CsrfForm
+    action="/api/fareType"
+    csrfToken="test"
+    method="post"
+  >
+    <input
+      name="fareType"
+      type="hidden"
+      value="multiOperatorExt"
+    />
+    <button
+      className="govuk-button"
+      type="submit"
+    >
+      Add another multi-operator fare
+    </button>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages productCreated should render correctly for products that are not multi-operator products 1`] = `
 <TwoThirdsLayout
   description="Product created page for the Create Fares Data Service"
   title="Product Created - Create Fares Data Service"

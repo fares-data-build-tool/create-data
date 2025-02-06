@@ -12,8 +12,13 @@ import { OperatorAttribute } from '../../src/interfaces';
 
 describe('pages', () => {
     describe('productCreated', () => {
-        it('should render correctly', () => {
-            const tree = shallow(<ProductCreated />);
+        it('should render correctly for products that are not multi-operator products', () => {
+            const tree = shallow(<ProductCreated csrfToken={'test'} isMultiOperatorExternalProduct={false} />);
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for multi-operator products', () => {
+            const tree = shallow(<ProductCreated csrfToken={'test'} isMultiOperatorExternalProduct={true} />);
             expect(tree).toMatchSnapshot();
         });
     });

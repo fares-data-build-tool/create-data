@@ -91,7 +91,12 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 });
             }
 
-            redirectTo(res, '/productCreated');
+            const isMultiOperatorExternalProduct = fareType === 'multiOperatorExt';
+
+            redirectTo(
+                res,
+                isMultiOperatorExternalProduct ? '/productCreated?isMultiOperatorExternal=true' : '/productCreated',
+            );
             return;
         }
 
