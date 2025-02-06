@@ -95,6 +95,7 @@ import {
     Ticket,
     AdditionalOperator,
     FlatFareMultipleServices,
+    SecondaryOperatorFareInfo,
 } from '../../interfaces/matchingJsonTypes';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
@@ -184,7 +185,7 @@ export const putUserDataInProductsBucket = async (
 };
 
 export const putUserDataInProductsBucketWithFilePath = async (
-    data: WithIds<Ticket>,
+    data: WithIds<Ticket> | SecondaryOperatorFareInfo,
     filePath: string,
 ): Promise<string> => {
     await putStringInS3(PRODUCTS_DATA_BUCKET_NAME, filePath, JSON.stringify(data), 'application/json; charset=utf-8');

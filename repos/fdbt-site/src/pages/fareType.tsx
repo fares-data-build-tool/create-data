@@ -140,12 +140,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error('Could not extract the necessary operator info for the fareType page.');
     }
     const operatorName = operatorAttribute.name || '';
-    const uuid = buildUuid(nocCode);
-
-    updateSessionAttribute(ctx.req, OPERATOR_ATTRIBUTE, {
-        ...operatorAttribute,
-        uuid,
-    });
 
     if (schemeOp || nocCode !== INTERNAL_NOC) {
         logger.info('', {

@@ -426,7 +426,7 @@ export const buildPeriodOrMultiOpTicketConfirmationElements = (
                 confirmationElements.push({
                     name: `${
                         additionalOperators.find((operator) => operator.nocCode === serviceInfo.nocCode)?.name
-                    } Services`,
+                    } services`,
                     content: `${serviceInfo.selectedServices.map((service) => service.lineName).join(', ')}`,
                     href: 'searchOperators',
                 });

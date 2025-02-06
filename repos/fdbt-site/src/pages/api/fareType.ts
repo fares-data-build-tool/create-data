@@ -7,10 +7,12 @@ import {
     CARNET_FARE_TYPE_ATTRIBUTE,
     TXC_SOURCE_ATTRIBUTE,
     MULTI_MODAL_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
 } from '../../constants/attributes';
 import { ErrorInfo, NextApiRequestWithSession } from '../../interfaces';
 import { getAllServicesByNocCode } from '../../data/auroradb';
 import { SCHOOL_FARE_TYPE_ATTRIBUTE } from '../../constants/attributes';
+import { buildUuid } from '../fareType';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
@@ -61,6 +63,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     schoolFareType: 'period',
                 });
             }
+
+            const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
+            const uuid = buildUuid(nocCode);
+            updateSessionAttribute(req, OPERATOR_ATTRIBUTE, { ...operatorAttribute, uuid });
 
             redirectTo(res, '/selectPassengerType');
             return;

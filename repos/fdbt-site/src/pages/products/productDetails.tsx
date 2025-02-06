@@ -276,7 +276,7 @@ const createProductDetails = async (
                 id: 'selected-services',
                 name:
                     'additionalNocs' in ticket || 'additionalOperators' in ticket
-                        ? `${productNoc} Services`
+                        ? `${productNoc} services`
                         : 'Services',
                 content: [
                     ticket.selectedServices
@@ -290,7 +290,7 @@ const createProductDetails = async (
             },
             {
                 id: 'exempt-stops',
-                name: 'Exempt stops',
+                name: `${productNoc} exempt stops`,
                 content: [
                     'exemptStops' in ticket
                         ? (ticket.exemptStops as Stop[]).map((stop) => `${stop.atcoCode} - ${stop.stopName}`).join(', ')
@@ -550,6 +550,7 @@ const createProductDetails = async (
         for await (const additionalOperator of ticket.additionalOperators) {
             if (isMultiOperatorExt) {
                 let selectedServices: string[] = [];
+                let exemptStops: string[] = [];
 
                 const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
                     matchingJsonLink,
@@ -564,20 +565,32 @@ const createProductDetails = async (
                     if ('selectedServices' in secondaryOperatorFareInfo) {
                         selectedServices = secondaryOperatorFareInfo.selectedServices.map(({ lineName }) => lineName);
                     }
+
+                    if ('exemptStops' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.exemptStops) {
+                        exemptStops = secondaryOperatorFareInfo.exemptStops.map(
+                            (stop) => `${stop.atcoCode} - ${stop.stopName}`,
+                        );
+                    }
                 } catch (error) {
                     logger.warn(`Couldn't get additional operator info for noc: ${additionalOperator.nocCode}`);
                 }
 
                 productDetailsElements.push({
                     id: 'additional-operators-services',
-                    name: `${additionalOperator.nocCode} Services`,
+                    name: `${additionalOperator.nocCode} services`,
                     content: [selectedServices.length > 0 ? selectedServices.join(', ') : 'N/A'],
-                    editLink: additionalOperator.nocCode === yourNoc ? '/multiOperatorServiceList' : '',
+                    editLink: additionalOperator.nocCode === yourNoc ? '/serviceList' : '',
+                });
+                productDetailsElements.push({
+                    id: 'exempt-stops',
+                    name: `${additionalOperator.nocCode} exempt stops`,
+                    content: [exemptStops.length > 0 ? exemptStops.join(', ') : 'N/A'],
+                    editLink: isOwnProduct ? '/serviceList' : '',
                 });
             } else {
                 productDetailsElements.push({
                     id: 'additional-operators-services',
-                    name: `${additionalOperator.nocCode} Services`,
+                    name: `${additionalOperator.nocCode} services`,
                     content: [additionalOperator.selectedServices.map(({ lineName }) => lineName).join(', ')],
                     editLink: '/multiOperatorServiceList',
                 });

@@ -141,6 +141,7 @@ export interface AdditionalOperator {
 export type SecondaryOperatorFareInfo =
     | {
           selectedServices: SelectedService[];
+          exemptStops?: Stop[];
       }
     | {
           zoneName: string;
