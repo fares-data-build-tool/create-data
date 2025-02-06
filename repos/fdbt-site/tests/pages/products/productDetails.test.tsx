@@ -167,6 +167,7 @@ describe('myfares pages', () => {
 
             expect(tree).toMatchSnapshot();
         });
+
         it('should render correctly while the cannot generate return popup is open', () => {
             const tree = shallow(
                 <ProductDetails
@@ -227,7 +228,108 @@ describe('myfares pages', () => {
 
             expect(tree).toMatchSnapshot();
         });
+
         it('should render correctly for a fare triangle modified product', () => {
+            const tree = shallow(
+                <ProductDetails
+                    requiresAttention={false}
+                    backHref={'/products/multiOperatorProductsExternal'}
+                    productName={'Weekly Ticket'}
+                    startDate={'17/12/2020'}
+                    endDate={'18/12/2020'}
+                    productDetailsElements={[
+                        { name: 'Fare type', id: 'fare-type', content: ['Multi-operator'] },
+                        {
+                            id: 'selected-services',
+                            name: 'TEST Services',
+                            content: ['12A, 6, 101'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'exempt-stops',
+                            name: 'Exempt stops',
+                            content: ['N/A'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'passenger-type',
+                            name: 'Passenger type',
+                            content: ['Test Passenger Type'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'time-restriction',
+                            name: 'Time restriction',
+                            content: ['Test Time Restriction'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'additional-operators-services',
+                            name: 'WBTR Services',
+                            content: [''],
+                            editLink: '',
+                        },
+                        {
+                            id: 'additional-operators-services',
+                            name: 'BLAC Services',
+                            content: [''],
+                            editLink: '',
+                        },
+                        {
+                            id: 'additional-operators-services',
+                            name: 'TESTSCHEME Services',
+                            content: [''],
+                            editLink: '/multiOperatorServiceList',
+                        },
+                        {
+                            id: 'period-duration',
+                            name: 'Period duration',
+                            content: ['5 weeks'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'product-expiry',
+                            name: 'Product expiry',
+                            content: ['Fare day end'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'purchase-methods',
+                            name: 'Purchase methods',
+                            content: ['SOP 2', 'SOP 1'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'start-date',
+                            name: 'Start date',
+                            content: ['17/12/2020'],
+                            editLink: '',
+                        },
+                        {
+                            id: 'end-date',
+                            name: 'End date',
+                            content: ['18/12/2020'],
+                            editLink: '',
+                        },
+                    ]}
+                    productId={'1'}
+                    serviceId={''}
+                    copiedProduct={false}
+                    cannotGenerateReturn={false}
+                    isSingle={false}
+                    lineId={''}
+                    passengerTypeId={9}
+                    csrfToken={''}
+                    fareTriangleModified={undefined}
+                    isOwnProduct={false}
+                    isIncomplete={true}
+                />,
+            );
+
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly for a multi-operator product shared with you', () => {
             const tree = shallow(
                 <ProductDetails
                     requiresAttention={true}
@@ -286,8 +388,8 @@ describe('myfares pages', () => {
                     passengerTypeId={2}
                     csrfToken=""
                     fareTriangleModified={'18/10/2021'}
-                    isOwnProduct
-                    isIncomplete={false}
+                    isOwnProduct={false}
+                    isIncomplete
                 />,
             );
 
