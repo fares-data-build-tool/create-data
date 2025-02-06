@@ -1,11 +1,8 @@
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { AdminGetUserResponse, AttributeListType } from 'aws-sdk/clients/cognitoidentityserviceprovider';
-
 import { MAIN_USER_POOL_PREFIX } from '../constants';
 import { getCognitoClient, getUserPoolList } from '../data/cognito';
-
+import {  AdminGetUserResponse, AttributeType,  CognitoIdentityProviderClient } from'@aws-sdk/client-cognito-identity-provider';
 interface CognitoClientAndUserPool {
-    client: CognitoIdentityServiceProvider;
+    client: CognitoIdentityProviderClient;
     userPoolId: string;
 }
 
@@ -38,7 +35,7 @@ export const htmlFormatNocs = (nocs: string): string =>
         .map((noc) => noc.trim())
         .join(', ');
 
-export const parseUserAttributes = (key: string, attributes: AttributeListType | undefined): string => {
+export const parseUserAttributes = (key: string, attributes: AttributeType[] | undefined): string => {
     const attribute = attributes?.find((attr) => attr.Name === key);
     return attribute?.Value || 'Loading...';
 };
