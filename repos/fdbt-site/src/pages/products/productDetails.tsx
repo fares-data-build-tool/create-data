@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import {
+    checkIfMultiOperatorProductIsIncomplete,
     convertDateFormat,
     fareTypeIsAllowedToAddACap,
     getAndValidateNoc,
@@ -11,12 +12,14 @@ import {
     getServiceByNocAndId,
     getPassengerTypeNameByIdAndNoc,
     getProductById,
+    getProductByIdAndAdditionalNoc,
     getSalesOfferPackageByIdAndNoc,
     getTimeRestrictionByIdAndNoc,
     getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource,
     getServiceByIdAndDataSource,
     getCapByNocAndId,
     getCaps,
+    MultipleResultsError,
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation, Cap } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
@@ -35,7 +38,8 @@ import ProductNamePopup from '../../components/ProductNamePopup';
 import GenerateReturnPopup from '../../components/GenerateReturnPopup';
 import { Stop, TicketWithIds } from '../../interfaces/matchingJsonTypes';
 import { isGeoZoneTicket } from '../../../src/interfaces/typeGuards';
-import { STAGE } from '../../constants';
+import { fareTypes, STAGE } from '../../constants';
+import { MyFaresProduct } from 'src/interfaces/dbTypes';
 
 const title = 'Product Details - Create Fares Data Service';
 const description = 'Product Details page of the Create Fares Data Service';
@@ -56,6 +60,8 @@ interface ProductDetailsProps {
     cannotGenerateReturn: boolean;
     csrfToken: string;
     fareTriangleModified?: string;
+    isOwnProduct: boolean;
+    isIncomplete: boolean;
 }
 
 const createGenerateReturnUrl = (
@@ -82,6 +88,8 @@ const ProductDetails = ({
     isSingle,
     cannotGenerateReturn,
     csrfToken,
+    isOwnProduct,
+    isIncomplete,
 }: ProductDetailsProps): ReactElement => {
     const [editNamePopupOpen, setEditNamePopupOpen] = useState(false);
     const [generateReturnPopupOpen, setGenerateReturnPopupOpen] = useState(cannotGenerateReturn);
@@ -94,6 +102,12 @@ const ProductDetails = ({
         setGenerateReturnPopupOpen(false);
     };
 
+    const statusTag = isIncomplete ? (
+        <strong className="govuk-tag govuk-tag--yellow">Incomplete</strong>
+    ) : (
+        getTag(startDate, endDate, false)
+    );
+
     return (
         <TwoThirdsLayout title={title} description={description} errors={[]}>
             <BackButton href={backHref} />
@@ -104,18 +118,19 @@ const ProductDetails = ({
                 <h1 className="govuk-heading-l" id="product-name-header">
                     {productName}
                 </h1>
-
-                <button
-                    id="edit-product-name"
-                    className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
-                    onClick={() => setEditNamePopupOpen(true)}
-                >
-                    Edit
-                </button>
+                {isOwnProduct && (
+                    <button
+                        id="edit-product-name"
+                        className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
+                        onClick={() => setEditNamePopupOpen(true)}
+                    >
+                        Edit
+                    </button>
+                )}
             </div>
 
             <div id="product-status" className="govuk-hint">
-                Product status: {getTag(startDate, endDate, false)}
+                Product status: {statusTag}
                 {requiresAttention && (
                     <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">Needs attention</strong>
                 )}
@@ -223,13 +238,15 @@ const getEditableValue = (element: ProductDetailsElement) => {
 
 const createProductDetails = async (
     ticket: TicketWithIds,
-    noc: string,
+    yourNoc: string,
+    productNoc: string,
     servicesRequiringAttention: string[] | undefined,
     serviceId: string | string[] | undefined,
     ctx: NextPageContextWithSession,
     fareTriangleModified: string | undefined,
     dataSource: string,
     stage: string,
+    isOwnProduct: boolean,
 ): Promise<{
     productDetailsElements: ProductDetailsElement[];
     productName: string;
@@ -243,7 +260,7 @@ const createProductDetails = async (
         name: 'Fare type',
         id: 'fare-type',
         content: [
-            `${sentenceCaseString(ticket.type)}${ticket.carnet ? ' (carnet)' : ''}${
+            `${fareTypes[ticket.type]}${ticket.carnet ? ' (carnet)' : ''}${
                 'termTime' in ticket && !!ticket.termTime ? ' (academic)' : ''
             }${'return' in ticket ? ' return' : ''}`,
         ],
@@ -253,7 +270,10 @@ const createProductDetails = async (
         productDetailsElements.push(
             {
                 id: 'selected-services',
-                name: 'additionalNocs' in ticket || 'additionalOperators' in ticket ? `${noc} Services` : 'Services',
+                name:
+                    'additionalNocs' in ticket || 'additionalOperators' in ticket
+                        ? `${productNoc} Services`
+                        : 'Services',
                 content: [
                     ticket.selectedServices
                         .map((service) => {
@@ -262,7 +282,7 @@ const createProductDetails = async (
 
                         .join(', '),
                 ],
-                editLink: '/serviceList',
+                editLink: isOwnProduct ? '/serviceList' : '',
             },
             {
                 id: 'exempt-stops',
@@ -272,7 +292,7 @@ const createProductDetails = async (
                         ? (ticket.exemptStops as Stop[]).map((stop) => `${stop.atcoCode} - ${stop.stopName}`).join(', ')
                         : 'N/A',
                 ],
-                editLink: '/serviceList',
+                editLink: isOwnProduct ? '/serviceList' : '',
             },
         );
 
@@ -293,11 +313,11 @@ const createProductDetails = async (
             throw new Error(`Expected string type for serviceId, received: ${serviceId}`);
         }
 
-        const pointToPointService = await getServiceByNocAndId(noc, serviceId, dataSource);
+        const pointToPointService = await getServiceByNocAndId(productNoc, serviceId, dataSource);
 
         const additionalService =
             isReturnTicket(ticket) && ticket.additionalServices && ticket.additionalServices.length > 0
-                ? await getServiceByNocAndId(noc, ticket.additionalServices[0].serviceId.toString(), dataSource)
+                ? await getServiceByNocAndId(productNoc, ticket.additionalServices[0].serviceId.toString(), dataSource)
                 : undefined;
 
         productDetailsElements.push({
@@ -307,7 +327,9 @@ const createProductDetails = async (
                 `${pointToPointService.lineName} - ${pointToPointService.origin} to ${pointToPointService.destination}`,
             ],
             editLink:
-                isReturnTicket(ticket) && !additionalService ? `/returnService?selectedServiceId=${serviceId}` : '',
+                isOwnProduct && isReturnTicket(ticket) && !additionalService
+                    ? `/returnService?selectedServiceId=${serviceId}`
+                    : '',
             editLabel: isReturnTicket(ticket) && !additionalService ? 'Add service' : '',
         });
 
@@ -327,7 +349,7 @@ const createProductDetails = async (
 
         if ('journeyDirection' in ticket && ticket.journeyDirection) {
             const { inboundDirectionDescription, outboundDirectionDescription } =
-                await getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource(noc, serviceId, dataSource);
+                await getServiceDirectionDescriptionsByNocAndServiceIdAndDataSource(productNoc, serviceId, dataSource);
 
             productDetailsElements.push({
                 id: 'journey-direction',
@@ -348,13 +370,13 @@ const createProductDetails = async (
             id: 'zone',
             name: 'Zone',
             content: [ticket.zoneName],
-            editLink: '/csvZoneUpload',
+            editLink: isOwnProduct ? '/csvZoneUpload' : '',
         });
         productDetailsElements.push({
             id: 'stops',
             name: 'Number of stops',
             content: [ticket.stops.length.toString()],
-            editLink: '/csvZoneUpload',
+            editLink: isOwnProduct ? '/csvZoneUpload' : '',
         });
         productDetailsElements.push({
             id: 'exempted-services',
@@ -363,43 +385,43 @@ const createProductDetails = async (
                 ticket.exemptedServices && ticket.exemptedServices.length > 0
                     ? [ticket.exemptedServices.map((service) => service.lineName).join(', ')]
                     : ['N/A'],
-            editLink: '/csvZoneUpload',
+            editLink: isOwnProduct ? '/csvZoneUpload' : '',
         });
     }
 
-    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, noc);
+    const passengerTypeName = await getPassengerTypeNameByIdAndNoc(ticket.passengerType.id, productNoc);
 
     productDetailsElements.push({
         id: 'passenger-type',
         name: 'Passenger type',
         content: [passengerTypeName],
-        editLink: '/selectPassengerType',
+        editLink: isOwnProduct ? '/selectPassengerType' : '',
     });
 
     const isSchoolTicket = 'termTime' in ticket && ticket.termTime;
 
     if (!isSchoolTicket) {
         const timeRestriction = ticket.timeRestriction
-            ? (await getTimeRestrictionByIdAndNoc(ticket.timeRestriction.id, noc)).name
+            ? (await getTimeRestrictionByIdAndNoc(ticket.timeRestriction.id, productNoc)).name
             : 'N/A';
 
         productDetailsElements.push({
             id: 'time-restriction',
             name: 'Time restriction',
             content: [timeRestriction],
-            editLink: '/selectTimeRestrictions',
+            editLink: isOwnProduct ? '/selectTimeRestrictions' : '',
         });
     } else {
         productDetailsElements.push({ id: 'time-restriction', name: 'Only valid during term time', content: ['Yes'] });
     }
 
-    const hasCaps = (await getCaps(noc)).length > 0;
+    const hasCaps = (await getCaps(productNoc)).length > 0;
 
     if (fareTypeIsAllowedToAddACap(ticket.type) && hasCaps && !ticket.carnet) {
         let capContent = 'N/A';
         if ('caps' in ticket && ticket.caps) {
             const caps = await Promise.all(
-                (ticket.caps as (Cap & { id: number })[]).map(async (c) => await getCapByNocAndId(noc, c.id)),
+                (ticket.caps as (Cap & { id: number })[]).map(async (c) => await getCapByNocAndId(productNoc, c.id)),
             );
 
             capContent =
@@ -414,7 +436,7 @@ const createProductDetails = async (
             id: 'caps',
             name: 'Caps',
             content: [capContent],
-            editLink: '/selectCaps',
+            editLink: isOwnProduct ? '/selectCaps' : '',
         });
     }
 
@@ -428,7 +450,7 @@ const createProductDetails = async (
                     ? `Updated: ${convertDateFormat(fareTriangleModified)}`
                     : 'You created a fare triangle',
             ],
-            editLink: '/csvUpload',
+            editLink: isOwnProduct ? '/csvUpload' : '',
         });
 
         if (isReturnTicket(ticket)) {
@@ -442,7 +464,7 @@ const createProductDetails = async (
                 id: 'outbound-fare-stage-matching',
                 name: 'Outbound fare stages and stops',
                 content: [`${outboundStopCounter} bus stops across ${ticket.outboundFareZones.length} fare stages`],
-                editLink: '/editFareStageMatching',
+                editLink: isOwnProduct ? '/editFareStageMatching' : '',
             });
 
             let inboundStopCounter = 0;
@@ -455,7 +477,7 @@ const createProductDetails = async (
                 id: 'inbound-fare-stage-matching',
                 name: 'Inbound fare stages and stops',
                 content: [`${inboundStopCounter} bus stops across ${ticket.inboundFareZones.length} fare stages`],
-                editLink: '/editFareStageMatching',
+                editLink: isOwnProduct ? '/editFareStageMatching' : '',
             });
         } else if (ticket.type === 'single') {
             let stopCounter = 0;
@@ -468,7 +490,7 @@ const createProductDetails = async (
                 id: 'fare-stage-matching',
                 name: 'Fare stages and stops',
                 content: [`${stopCounter} bus stops across ${ticket.fareZones.length} fare stages`],
-                editLink: '/editFareStageMatching',
+                editLink: isOwnProduct ? '/editFareStageMatching' : '',
             });
         }
     }
@@ -478,9 +500,11 @@ const createProductDetails = async (
             id: 'multi-operator-group',
             name: `Multi Operator Group`,
             content: [ticket.additionalNocs.join(', ')],
-            ...(!('schemeOperatorName' in ticket) && { editLink: '/reuseOperatorGroup' }),
+            editLink: !('schemeOperatorName' in ticket) && isOwnProduct ? '/reuseOperatorGroup' : '',
         });
     }
+
+    const isMultiOperatorExt = ticket.type === 'multiOperatorExt';
 
     if ('additionalOperators' in ticket) {
         ticket.additionalOperators.forEach((additionalOperator) => {
@@ -490,7 +514,8 @@ const createProductDetails = async (
                 content: [
                     additionalOperator.selectedServices.map((selectedService) => selectedService.lineName).join(', '),
                 ],
-                editLink: '/multiOperatorServiceList',
+                editLink:
+                    !isMultiOperatorExt || additionalOperator.nocCode === yourNoc ? '/multiOperatorServiceList' : '',
             });
         });
     }
@@ -502,7 +527,7 @@ const createProductDetails = async (
             id: 'quantity-in-bundle',
             name: 'Quantity in bundle',
             content: [product.carnetDetails.quantity],
-            editLink: '/editCarnetProperties',
+            editLink: isOwnProduct ? '/editCarnetProperties' : '',
         });
 
         productDetailsElements.push({
@@ -513,7 +538,7 @@ const createProductDetails = async (
                     ? 'No expiry'
                     : `${product.carnetDetails.expiryTime} ${product.carnetDetails.expiryUnit}(s)`,
             ],
-            editLink: '/editCarnetProperties',
+            editLink: isOwnProduct ? '/editCarnetProperties' : '',
         });
     }
 
@@ -527,7 +552,7 @@ const createProductDetails = async (
             id: 'return-ticket-validity',
             name: 'Return ticket validity',
             content: [content],
-            editLink: '/returnValidity',
+            editLink: isOwnProduct ? '/returnValidity' : '',
         });
     }
 
@@ -536,7 +561,7 @@ const createProductDetails = async (
             id: 'period-duration',
             name: 'Period duration',
             content: [product.productDuration],
-            editLink: '/editPeriodDuration',
+            editLink: isOwnProduct ? '/editPeriodDuration' : '',
         });
     }
 
@@ -545,7 +570,7 @@ const createProductDetails = async (
             id: 'product-expiry',
             name: 'Product expiry',
             content: [sentenceCaseString(product.productValidity)],
-            editLink: '/selectPeriodValidity',
+            editLink: isOwnProduct ? '/selectPeriodValidity' : '',
         });
     }
 
@@ -559,7 +584,7 @@ const createProductDetails = async (
                 `Min price - £${pricingByDistance.minimumPrice}`,
                 `Max price - £${pricingByDistance.maximumPrice}`,
             ],
-            editLink: '/definePricingPerDistance',
+            editLink: isOwnProduct ? '/definePricingPerDistance' : '',
         });
 
         pricingByDistance.distanceBands.forEach((capDistance, index) => {
@@ -572,7 +597,7 @@ const createProductDetails = async (
                             : `${capDistance.distanceTo} km`
                     }, Price - £${capDistance.pricePerKm} per km`,
                 ],
-                editLink: '/definePricingPerDistance',
+                editLink: isOwnProduct ? '/definePricingPerDistance' : '',
                 id: `pricing-by-distance-band-${index}`,
             });
         });
@@ -583,7 +608,7 @@ const createProductDetails = async (
         name: 'Purchase methods',
         content: await Promise.all(
             product.salesOfferPackages.map(async (sop) => {
-                const fullSop = await getSalesOfferPackageByIdAndNoc(sop.id, noc);
+                const fullSop = await getSalesOfferPackageByIdAndNoc(sop.id, productNoc);
 
                 let content = fullSop.name;
 
@@ -594,7 +619,7 @@ const createProductDetails = async (
                 return content;
             }),
         ),
-        editLink: '/selectPurchaseMethods',
+        editLink: isOwnProduct ? '/selectPurchaseMethods' : '',
     });
 
     const startDate = convertDateFormat(ticket.ticketPeriod.startDate);
@@ -624,22 +649,22 @@ const createProductDetails = async (
         id: 'start-date',
         name: 'Start date',
         content: [startDate],
-        editLink: '/productDateInformation',
+        editLink: isOwnProduct ? '/productDateInformation' : '',
     });
 
     productDetailsElements.push({
         id: 'end-date',
         name: 'End date',
         content: [endDate ?? '-'],
-        editLink: '/productDateInformation',
+        editLink: isOwnProduct ? '/productDateInformation' : '',
     });
 
     const productName =
         'productName' in product
             ? product.productName
             : isSchoolTicket
-            ? `${passengerTypeName} - ${sentenceCaseString(ticket.type)} (school)`
-            : `${passengerTypeName} - ${sentenceCaseString(ticket.type)}`;
+            ? `${passengerTypeName} - ${fareTypes[ticket.type]} (school)`
+            : `${passengerTypeName} - ${fareTypes[ticket.type]}`;
 
     return {
         productDetailsElements,
@@ -652,7 +677,7 @@ const createProductDetails = async (
 
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: ProductDetailsProps }> => {
     const csrfToken = getCsrfToken(ctx);
-    const noc = getAndValidateNoc(ctx);
+    const yourNoc = getAndValidateNoc(ctx);
 
     const serviceId = ctx.query?.serviceId;
     const productId = ctx.query?.productId;
@@ -662,7 +687,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         throw new Error(`Expected string type for productID, received: ${productId}`);
     }
 
-    const { matchingJsonLink, servicesRequiringAttention, fareTriangleModified } = await getProductById(noc, productId);
+    let product: MyFaresProduct;
+
+    try {
+        product = await getProductById(yourNoc, productId);
+    } catch (error) {
+        if (error instanceof MultipleResultsError) {
+            product = await getProductByIdAndAdditionalNoc(yourNoc, productId);
+        } else {
+            throw error;
+        }
+    }
+
+    const { nocCode: noc, matchingJsonLink, servicesRequiringAttention, fareTriangleModified } = product;
+
+    const isOwnProduct = noc === yourNoc;
 
     const ticket = await getProductsMatchingJson(matchingJsonLink);
 
@@ -680,6 +719,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const productDetails = await createProductDetails(
         ticket,
+        yourNoc,
         noc,
         servicesRequiringAttention,
         serviceId,
@@ -687,18 +727,32 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         fareTriangleModified,
         dataSource,
         STAGE,
+        isOwnProduct,
     );
 
     const backHref = serviceId
         ? `/products/pointToPointProducts?serviceId=${serviceId}`
         : ticket.type === 'multiOperator'
         ? '/products/multiOperatorProducts'
+        : ticket.type === 'multiOperatorExt'
+        ? '/products/multiOperatorProductsExternal'
         : '/products/otherProducts';
 
     const lineId =
         typeof serviceId === 'string'
             ? (await getServiceByIdAndDataSource(noc, Number(serviceId), dataSource)).lineId
             : '';
+
+    let isIncomplete = false;
+
+    if (ticket.type === 'multiOperatorExt') {
+        const additionalOperators = 'additionalOperators' in ticket ? ticket.additionalOperators : [];
+        const additionalNocs = 'additionalNocs' in ticket ? ticket.additionalNocs : [];
+        const isFareZoneType = 'zoneName' in ticket;
+        const secondaryOperatorNocs = isFareZoneType ? additionalNocs : additionalOperators.map((op) => op.nocCode);
+
+        isIncomplete = await checkIfMultiOperatorProductIsIncomplete(product.matchingJsonLink, secondaryOperatorNocs);
+    }
 
     return {
         props: {
@@ -717,6 +771,8 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             cannotGenerateReturn,
             csrfToken,
             fareTriangleModified,
+            isOwnProduct,
+            isIncomplete,
         },
     };
 };

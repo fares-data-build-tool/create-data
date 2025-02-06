@@ -24,6 +24,7 @@ export interface PassengerType {
 
 export interface MyFaresProduct {
     id: number;
+    nocCode: string;
     lineId: string;
     matchingJsonLink: string;
     startDate: string;

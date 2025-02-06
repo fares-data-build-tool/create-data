@@ -82,7 +82,15 @@ export const INTERNAL_NOC = 'IWBusCo';
 
 export const CREATED_FILES_NUM_PER_PAGE = 10;
 
-export const validFareTypes = ['single', 'period', 'return', 'flatFare', 'multiOperator', 'schoolService'];
+export const fareTypes: Record<string, string> = {
+    single: 'Single',
+    period: 'Period',
+    return: 'Return',
+    flatFare: 'Flat fare',
+    multiOperator: 'Multi-operator (internal)',
+    multiOperatorExt: 'Multi-operator',
+    schoolService: 'School service',
+};
 
 export const purchaseMethodsValuesMap: { [key: string]: string } = {
     agency: 'Travel Shop',

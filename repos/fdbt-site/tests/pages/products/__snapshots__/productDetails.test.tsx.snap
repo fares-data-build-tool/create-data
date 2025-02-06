@@ -657,6 +657,374 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
   title="Product Details - Create Fares Data Service"
 >
   <BackButton
+    href="/products/multiOperatorProductsExternal"
+  />
+  <div
+    className="dft-flex"
+  >
+    <h1
+      className="govuk-heading-l"
+      id="product-name-header"
+    >
+      Weekly Ticket
+    </h1>
+  </div>
+  <div
+    className="govuk-hint"
+    id="product-status"
+  >
+    Product status: 
+    <strong
+      className="govuk-tag govuk-tag--yellow"
+    >
+      Incomplete
+    </strong>
+  </div>
+  <dl
+    className="govuk-summary-list"
+    key="Fare type"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Fare type"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Fare type
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="fare-type"
+          key="Multi-operator"
+        >
+          Multi-operator
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="TEST Services"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="TEST Services"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        TEST Services
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="selected-services"
+          key="12A, 6, 101"
+        >
+          12A, 6, 101
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Exempt stops"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Exempt stops"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Exempt stops
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="exempt-stops"
+          key="N/A"
+        >
+          N/A
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Passenger type"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Passenger type"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Passenger type
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="passenger-type"
+          key="Test Passenger Type"
+        >
+          Test Passenger Type
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Time restriction"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Time restriction"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Time restriction
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="time-restriction"
+          key="Test Time Restriction"
+        >
+          Test Time Restriction
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="WBTR Services"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="WBTR Services"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        WBTR Services
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="additional-operators-services"
+          key=""
+        />
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="BLAC Services"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="BLAC Services"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        BLAC Services
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="additional-operators-services"
+          key=""
+        />
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="TESTSCHEME Services"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="TESTSCHEME Services"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        TESTSCHEME Services
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <div
+          className="dft-flex dft-flex-justify-space-between"
+        >
+          <span
+            id="additional-operators-services"
+            key=""
+          />
+          <a
+            href="/multiOperatorServiceList"
+            id="additional-operators-services-link"
+          >
+            Edit
+          </a>
+        </div>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Period duration"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Period duration"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Period duration
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="period-duration"
+          key="5 weeks"
+        >
+          5 weeks
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Product expiry"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Product expiry"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Product expiry
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="product-expiry"
+          key="Fare day end"
+        >
+          Fare day end
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Purchase methods"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Purchase methods"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Purchase methods
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="purchase-methods"
+          key="SOP 2"
+        >
+          SOP 2
+        </span>
+        <span
+          id="purchase-methods"
+          key="SOP 1"
+        >
+          SOP 1
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="Start date"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="Start date"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        Start date
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="start-date"
+          key="17/12/2020"
+        >
+          17/12/2020
+        </span>
+      </dd>
+    </div>
+  </dl>
+  <dl
+    className="govuk-summary-list"
+    key="End date"
+  >
+    <div
+      className="govuk-summary-list__row"
+      key="End date"
+    >
+      <dt
+        className="govuk-summary-list__key"
+      >
+        End date
+      </dt>
+      <dd
+        className="govuk-summary-list__value"
+      >
+        <span
+          id="end-date"
+          key="18/12/2020"
+        >
+          18/12/2020
+        </span>
+      </dd>
+    </div>
+  </dl>
+</TwoThirdsLayout>
+`;
+
+exports[`myfares pages productDetails should render correctly for a multi-operator product shared with you 1`] = `
+<TwoThirdsLayout
+  description="Product Details page of the Create Fares Data Service"
+  errors={Array []}
+  title="Product Details - Create Fares Data Service"
+>
+  <BackButton
     href="/products/pointToPointProducts?serviceId=1"
   />
   <InformationSummary
@@ -671,13 +1039,6 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
     >
       Carnet Return Test
     </h1>
-    <button
-      className="govuk-link govuk-body align-top button-link govuk-!-margin-left-2"
-      id="edit-product-name"
-      onClick={[Function]}
-    >
-      Edit
-    </button>
   </div>
   <div
     className="govuk-hint"
@@ -685,9 +1046,9 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
   >
     Product status: 
     <strong
-      className="govuk-tag govuk-tag--turquoise"
+      className="govuk-tag govuk-tag--yellow"
     >
-      Active
+      Incomplete
     </strong>
     <strong
       className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2"

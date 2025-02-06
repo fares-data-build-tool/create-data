@@ -85,7 +85,7 @@ export interface DistancePricingData {
 
 export type FromDb<T> = T & { id: number };
 
-export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
+export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'multiOperatorExt' | 'schoolService' | 'single' | 'return';
 
 export type Ticket =
     | PointToPointTicket

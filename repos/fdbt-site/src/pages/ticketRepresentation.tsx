@@ -12,9 +12,9 @@ import {
 import { ErrorInfo, FareType, NextPageContextWithSession } from '../interfaces';
 import { isTicketRepresentationWithErrors } from '../interfaces/typeGuards';
 import TwoThirdsLayout from '../layout/Layout';
-import { getCsrfToken, isSchemeOperator, sentenceCaseString } from '../utils';
+import { getCsrfToken, isSchemeOperator } from '../utils';
 import { getSessionAttribute } from '../utils/sessions';
-import { STAGE } from '../constants';
+import { fareTypes, STAGE } from '../constants';
 
 const title = 'Ticket Representation - Create Fares Data Service';
 const description = 'Ticket Representation selection page of the Create Fares Data Service';
@@ -30,17 +30,6 @@ interface TicketRepresentationProps {
     showGeoZone: boolean;
     stage?: string;
 }
-
-const getFareTypeDesc = (fareType: TicketType) => {
-    switch (fareType) {
-        case 'multiOperator':
-            return 'multi-operator';
-        case 'flatFare':
-            return 'flat fare';
-        default:
-            return fareType;
-    }
-};
 
 const getFareTypeHint = (fareType: TicketType) => {
     switch (fareType) {
@@ -73,7 +62,6 @@ const TicketRepresentation = ({
     showGeoZone,
     stage,
 }: TicketRepresentationProps): ReactElement => {
-    const fareTypeDesc = getFareTypeDesc(fareType);
     const fareTypeHint = getFareTypeHint(fareType);
 
     return (
@@ -85,7 +73,7 @@ const TicketRepresentation = ({
                         <fieldset className="govuk-fieldset" aria-describedby="ticket-representation-page-heading">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 className="govuk-fieldset__heading" id="ticket-representation-page-heading">
-                                    {`Select a type of ${sentenceCaseString(fareTypeDesc).toLowerCase()} ticket`}
+                                    {`Select a type of ${fareTypes[fareType].toLowerCase()} ticket`}
                                 </h1>
                             </legend>
                             <FormElementWrapper errors={errors} errorId="geo-zone" errorClass="govuk-radios--errors">
@@ -185,7 +173,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ti
             showHybrid: fareType === 'period' && !isScheme,
             showPointToPoint: (fareType === 'period' && !isCarnet && !isScheme) || fareType === 'schoolService',
             showFlatFlare: fareType === 'flatFare' && !isScheme && !isCarnet,
-            showMultiOperator: fareType === 'multiOperator',
+            showMultiOperator: fareType === 'multiOperator' || fareType === 'multiOperatorExt',
             showGeoZone: fareType !== 'schoolService',
             stage: STAGE || 'dev',
         },

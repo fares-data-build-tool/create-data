@@ -1,0 +1,14 @@
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+LOCK TABLES `productAdditionalNocs` WRITE;
+
+TRUNCATE TABLE `productAdditionalNocs`;
+
+INSERT INTO `productAdditionalNocs` (productId,additionalNocCode)
+VALUES
+(7, 'LNUD'),
+(7, 'NWBT'),
+(8, 'LNUD'),
+(8, 'NWBT');
+
+UNLOCK TABLES;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

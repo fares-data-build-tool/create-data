@@ -32,14 +32,30 @@ const Home = ({ csrfToken, showDeleteProductsLink }: HomeProps): ReactElement =>
                 </div>
 
                 <div className="govuk-!-margin-top-7">
-                    <h2 className="govuk-heading-s">
-                        <strong className="govuk-tag new-tag">New</strong>
-                        Manage fares
-                    </h2>
+                    <h2 className="govuk-heading-s">Manage fares</h2>
                     <p className="govuk-body">View and manage all of your products and services in one place.</p>
 
                     <a href="/products/services" className="govuk-link govuk-!-font-size-19" id="manage-fares-link">
                         {'View and manage fares'}
+                    </a>
+                </div>
+
+                <div className="govuk-!-margin-top-7">
+                    <h2 className="govuk-heading-s">
+                        <strong className="govuk-tag new-tag">New</strong>
+                        Multi-operator fares
+                    </h2>
+                    <p className="govuk-body">
+                        This is where operators can collaborate with other operators to define and export multi-operator
+                        products.
+                    </p>
+
+                    <a
+                        href={'/products/multiOperatorProductsExternal'}
+                        className="govuk-link govuk-!-font-size-19"
+                        id="account-link"
+                    >
+                        {'View and manage multi-operator fares'}
                     </a>
                 </div>
 

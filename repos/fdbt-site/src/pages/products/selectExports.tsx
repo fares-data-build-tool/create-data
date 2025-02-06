@@ -220,7 +220,7 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                             </li>
                                             <li className="govuk-tabs__list-item">
                                                 <a className="govuk-tabs__tab" href="#multi-operator-products">
-                                                    Multi operator products
+                                                    Multi-operator products
                                                 </a>
                                             </li>
                                             <li className="govuk-tabs__list-item">

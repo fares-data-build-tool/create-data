@@ -8,9 +8,10 @@ import { getTag } from './services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
+import { fareTypes } from '../../constants';
 
-const title = 'Multi-operator products - Create Fares Data Service';
-const description = 'View and access your multi-operator products in one place.';
+const title = 'Multi-operator products (internal) - Create Fares Data Service';
+const description = 'View and access your multi-operator products (internal) in one place.';
 
 interface MultiOperatorProductsProps {
     multiOperatorProducts: MyFaresOtherFaresProduct[];
@@ -40,7 +41,9 @@ const MultiOperatorProducts = ({ multiOperatorProducts, csrfToken }: MultiOperat
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
-                            <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Multi-operator Products</h1>
+                            <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">
+                                Multi-operator products (internal)
+                            </h1>
 
                             <a href="/fareType" className="govuk-button" data-module="govuk-button">
                                 Create new product
@@ -122,7 +125,7 @@ const MultiOperatorProductsTable = (
                                           {product.productDescription}
                                       </a>
                                   </td>
-                                  <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
+                                  <td className="govuk-table__cell">{fareTypes[product.type]}</td>
                                   <td className="govuk-table__cell">{product.duration}</td>
                                   <td className="govuk-table__cell dft-table-wrap-anywhere">
                                       {sentenceCaseString(product.passengerType)}
@@ -161,7 +164,7 @@ const MultiOperatorProductsTable = (
             </table>
             {multiOperatorProducts.length === 0 ? (
                 <span className="govuk-body">
-                    <i>You currently have no multi-operator products</i>
+                    <i>You currently have no multi-operator products (internal)</i>
                 </span>
             ) : null}
         </div>

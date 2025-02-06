@@ -87,8 +87,8 @@ const buildRadioProps = (schemeOp: boolean): RadioOption[] => {
         },
         {
             value: 'multiOperator',
-            label: 'Multi-operator',
-            hint: 'A ticket that covers more than one operator',
+            label: 'Multi-operator (internal)',
+            hint: 'A ticket that covers more than one NOC in your organisation',
         },
         {
             value: 'schoolService',

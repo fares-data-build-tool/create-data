@@ -97,7 +97,7 @@ export const typesOfProductsCreated = (products: ObjectList): FareTypeCount => {
 };
 
 export const createGraphData = (fareTypeCount: FareTypeCount): GraphData[] => {
-    const fareTypes = ['single', 'return', 'flatFare', 'period', 'multiOperator'];
+    const fareTypes = ['single', 'return', 'flatFare', 'period', 'multiOperator', 'multiOperatorExt'];
     const colours = ['#196f3d', '#a93226', '#1f618d', '#2e4053', '#d35400'];
 
     return fareTypes.map((fareType, index) => {
