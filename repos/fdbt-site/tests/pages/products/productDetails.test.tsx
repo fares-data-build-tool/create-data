@@ -818,7 +818,7 @@ describe('myfares pages', () => {
                         {
                             id: 'exempted-services',
                             name: 'Exempt services',
-                            content: ['N/A'],
+                            content: ['None'],
                             editLink: '/csvZoneUpload',
                         },
                         {
@@ -903,7 +903,7 @@ describe('myfares pages', () => {
                         {
                             id: 'exempted-services',
                             name: 'Exempt services',
-                            content: ['N/A'],
+                            content: ['None'],
                             editLink: '/csvZoneUpload',
                         },
                         {
@@ -1070,7 +1070,7 @@ describe('myfares pages', () => {
                         {
                             id: 'exempted-services',
                             name: 'Exempt services',
-                            content: ['N/A'],
+                            content: ['None'],
                             editLink: '/csvZoneUpload',
                         },
                         {
@@ -1329,7 +1329,7 @@ describe('myfares pages', () => {
                         {
                             id: 'exempt-stops',
                             name: 'TEST exempt stops',
-                            content: ['N/A'],
+                            content: ['None'],
                             editLink: '',
                         },
                         {
@@ -1347,37 +1347,37 @@ describe('myfares pages', () => {
                         {
                             id: 'additional-operators-services',
                             name: 'WBTR services',
-                            content: ['N/A'],
+                            content: ['None'],
                             editLink: '',
                         },
                         {
                             id: 'exempt-stops',
                             name: 'WBTR exempt stops',
-                            content: ['N/A'],
+                            content: ['None'],
                             editLink: '',
                         },
                         {
                             id: 'additional-operators-services',
                             name: 'BLAC services',
-                            content: ['N/A'],
+                            content: ['None'],
                             editLink: '',
                         },
                         {
                             id: 'exempt-stops',
                             name: 'BLAC exempt stops',
-                            content: ['N/A'],
+                            content: ['None'],
                             editLink: '',
                         },
                         {
                             id: 'additional-operators-services',
                             name: 'TESTSCHEME services',
-                            content: ['N/A'],
+                            content: ['None'],
                             editLink: '/serviceList',
                         },
                         {
                             id: 'exempt-stops',
                             name: 'TESTSCHEME exempt stops',
-                            content: ['N/A'],
+                            content: ['None'],
                             editLink: '/serviceList',
                         },
                         {

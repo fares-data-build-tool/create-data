@@ -259,17 +259,17 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: De
         errors = pricingPerDistanceData.errors;
     }
 
-    const ticketJson = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
     let backHref = '';
-    if (ticketJson && matchingJsonMetaData) {
+    if (ticket && matchingJsonMetaData) {
         backHref = `/products/productDetails?productId=${matchingJsonMetaData?.productId}${
             matchingJsonMetaData.serviceId ? `&serviceId=${matchingJsonMetaData?.serviceId}` : ''
         }`;
 
         if (!pricingPerDistanceData) {
-            const product = ticketJson.products[0] as PriceByDistanceProduct;
+            const product = ticket.products[0] as PriceByDistanceProduct;
             pricingPerDistanceData = product.pricingByDistance;
         }
     }
