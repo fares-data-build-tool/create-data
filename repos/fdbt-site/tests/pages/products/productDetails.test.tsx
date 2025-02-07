@@ -1378,7 +1378,7 @@ describe('myfares pages', () => {
                             id: 'exempt-stops',
                             name: 'TESTSCHEME exempt stops',
                             content: ['N/A'],
-                            editLink: '',
+                            editLink: '/serviceList',
                         },
                         {
                             id: 'period-duration',
