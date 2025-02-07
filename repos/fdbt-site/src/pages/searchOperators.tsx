@@ -211,15 +211,13 @@ export const renderSearchBox = (
                 {selectedOperators.map((operator, index) => {
                     const { nocCode, name } = operator;
                     return (
-                        <>
-                            <input
-                                id={`add-operator-${index}`}
-                                name="userSelectedOperators"
-                                type="hidden"
-                                value={`${nocCode}#${name}`}
-                                key={`input-${nocCode}`}
-                            />
-                        </>
+                        <input
+                            id={`add-operator-${index}`}
+                            name="userSelectedOperators"
+                            type="hidden"
+                            value={`${nocCode}#${name}`}
+                            key={`input-${nocCode}`}
+                        />
                     );
                 })}
                 <input
@@ -375,14 +373,13 @@ const SearchOperators = ({
                             {selectedOperators.map((operator, index) => {
                                 const { nocCode, name } = operator;
                                 return (
-                                    <>
-                                        <input
-                                            id={`add-operator-${index}`}
-                                            name="userSelectedOperators"
-                                            type="hidden"
-                                            value={`${nocCode}#${name}`}
-                                        />
-                                    </>
+                                    <input
+                                        key={`selected-${nocCode}`}
+                                        id={`add-operator-${index}`}
+                                        name="userSelectedOperators"
+                                        type="hidden"
+                                        value={`${nocCode}#${name}`}
+                                    />
                                 );
                             })}
                             <input

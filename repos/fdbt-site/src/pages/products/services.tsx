@@ -22,22 +22,20 @@ interface ServicesProps {
 
 const Services = ({ servicesAndProducts }: ServicesProps): ReactElement => {
     return (
-        <>
-            <BaseLayout title={title} description={description} showNavigation>
-                <div className="govuk-grid-row">
-                    <div className="govuk-grid-column-full">
-                        <div className="dft-flex dft-flex-justify-space-between">
-                            <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Services</h1>
+        <BaseLayout title={title} description={description} showNavigation>
+            <div className="govuk-grid-row">
+                <div className="govuk-grid-column-full">
+                    <div className="dft-flex dft-flex-justify-space-between">
+                        <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Services</h1>
 
-                            <a href="/fareType" className="govuk-button" data-module="govuk-button">
-                                Create new product
-                            </a>
-                        </div>
-                        {ServicesTable(servicesAndProducts)}
+                        <a href="/fareType" className="govuk-button" data-module="govuk-button">
+                            Create new product
+                        </a>
                     </div>
+                    {ServicesTable(servicesAndProducts)}
                 </div>
-            </BaseLayout>
-        </>
+            </div>
+        </BaseLayout>
     );
 };
 
@@ -67,17 +65,17 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
             </thead>
 
             <tbody className="govuk-table__body">
-                {services.map((service, index) => (
-                    <tr key={index} className="govuk-table__row">
+                {services.map((service) => (
+                    <tr key={service.id} className="govuk-table__row">
                         <td className="govuk-table__cell">
                             <a
                                 href={`/products/pointToPointProducts?serviceId=${service.id}`}
-                                id={`service-link-${index}`}
+                                id={`service-link-${service.id}`}
                             >
                                 {service.lineName} - {service.origin} to {service.destination}
                             </a>
                         </td>
-                        <td id={`active-products-${index}`} className="govuk-table__cell dft-text-align-centre">
+                        <td id={`active-products-${service.id}`} className="govuk-table__cell dft-text-align-centre">
                             {service.products}
                         </td>
                         <td className="govuk-table__cell dft-text-align-centre">{service.startDate}</td>

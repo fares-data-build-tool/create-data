@@ -67,11 +67,13 @@ const OperatorGroupCard = ({
                 {operatorGroup.operators.map(
                     (operator, idx) =>
                         idx < 5 && (
-                            <>
-                                <p id={`operator-${idx}`} className="govuk-body-s govuk-!-margin-bottom-2">
-                                    {operator.name} - {operator.nocCode}
-                                </p>
-                            </>
+                            <p
+                                key={`operator-${idx}`}
+                                id={`operator-${idx}`}
+                                className="govuk-body-s govuk-!-margin-bottom-2"
+                            >
+                                {operator.name} - {operator.nocCode}
+                            </p>
                         ),
                 )}
                 {operatorGroup.operators.length > 5 && (
