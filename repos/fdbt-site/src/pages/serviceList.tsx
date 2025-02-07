@@ -17,13 +17,15 @@ import {
 } from '../constants/attributes';
 import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, ServicesInfo, FareType, TxcSourceAttribute } from '../interfaces';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getAdditionalNocMatchingJsonLink, getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
 import { redirectTo } from '../utils/apiUtils';
 import BackButton from '../components/BackButton';
 import FileAttachment from '../components/FileAttachment';
 import { isExemptStopsAttributeWithErrors, isServiceListAttributeWithErrors } from '../interfaces/typeGuards';
+import { getProductsSecondaryOperatorInfo } from '../data/s3';
+import logger from '../utils/logger';
 
 const pageTitle = 'Service List - Create Fares Data Service';
 const pageDescription = 'Service List selection page of the Create Fares Data Service';
@@ -169,9 +171,6 @@ const ServiceList = ({
                                                     type="checkbox"
                                                     value={checkBoxValues}
                                                     defaultChecked={checked}
-                                                    checked={
-                                                        !!checkedServices.find((service) => service.lineId === lineId)
-                                                    }
                                                     onChange={(e) => updateCheckedServiceList(e, lineId)}
                                                 />
                                                 <label
@@ -432,10 +431,36 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         const backHref = `/products/productDetails?productId=${matchingJsonMetaData?.productId}`;
 
         let services: string[] = [];
-        if ('selectedServices' in ticketJson) {
-            services = ticketJson.selectedServices.map((service) => {
-                return service.lineName;
-            });
+        let exemptStops: string[] = [];
+
+        if ('nocCode' in ticketJson && ticketJson.nocCode !== nocCode && ticketJson.type === 'multiOperatorExt') {
+            try {
+                const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
+                    matchingJsonMetaData.matchingJsonLink,
+                    nocCode,
+                );
+                const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(additionalNocMatchingJsonLink);
+
+                if ('selectedServices' in secondaryOperatorFareInfo) {
+                    services = secondaryOperatorFareInfo.selectedServices.map(({ lineName }) => lineName);
+                }
+
+                if ('exemptStops' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.exemptStops) {
+                    exemptStops = secondaryOperatorFareInfo.exemptStops.map(
+                        (stop) => `${stop.atcoCode} - ${stop.stopName}`,
+                    );
+                }
+            } catch (error) {
+                logger.warn(`Couldn't get additional operator info for noc: ${nocCode}`);
+            }
+        } else {
+            if ('selectedServices' in ticketJson) {
+                services = ticketJson.selectedServices.map(({ lineName }) => lineName);
+            }
+
+            if ('exemptStops' in ticketJson && ticketJson.exemptStops) {
+                exemptStops = ticketJson.exemptStops.map((stop) => `${stop.atcoCode} - ${stop.stopName}`);
+            }
         }
 
         let serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
@@ -453,11 +478,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             );
         }
 
-        const exemptStops: string =
-            'exemptStops' in ticketJson && !!ticketJson.exemptStops
-                ? ticketJson.exemptStops.map((stop) => `${stop.atcoCode} - ${stop.stopName}`).join(', ')
-                : '';
-
         return {
             props: {
                 serviceList: serviceListEdit,
@@ -473,7 +493,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     containsErrorForExempt(serviceListAttribute.errors)
                         ? true
                         : false,
-                exemptStops,
+                exemptStops: exemptStops.join(', '),
                 isEditMode: true,
             },
         };

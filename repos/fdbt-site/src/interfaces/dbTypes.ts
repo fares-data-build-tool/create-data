@@ -1,4 +1,4 @@
-import { CompanionInfo, DbTimeBand, TimeRestrictionDay } from './matchingJsonTypes';
+import { CompanionInfo, DbTimeBand, TicketType, TimeRestrictionDay } from './matchingJsonTypes';
 
 export interface FullGroupPassengerType {
     id: number;
@@ -26,6 +26,7 @@ export interface MyFaresProduct {
     id: number;
     nocCode: string;
     lineId: string;
+    fareType: string;
     matchingJsonLink: string;
     startDate: string;
     endDate?: string;
@@ -41,6 +42,7 @@ export interface DbProduct {
     id: string;
     matchingJsonLink: string;
     lineId: string;
+    fareType: TicketType;
     startDate: string;
     endDate?: string;
 }

@@ -281,18 +281,17 @@ export const removeDuplicateServices = <T>(services: T[]): T[] => {
     );
 };
 
+export const getAdditionalNocMatchingJsonLink = (matchingJsonLink: string, noc: string): string =>
+    `${matchingJsonLink.substring(0, matchingJsonLink.lastIndexOf('.json'))}_${noc}.json`;
+
 export const checkIfMultiOperatorProductIsIncomplete = async (
     productMatchingJsonLink: string,
     nocs: string[],
 ): Promise<boolean> => {
     for (const noc of nocs) {
-        const secondaryOperatorFareInfoPath = `${productMatchingJsonLink.substring(
-            0,
-            productMatchingJsonLink.lastIndexOf('.json'),
-        )}_${noc}.json`;
-
         try {
-            const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(secondaryOperatorFareInfoPath);
+            const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(productMatchingJsonLink, noc);
+            const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(additionalNocMatchingJsonLink);
 
             // Check for stop info for fareZone type multi-operator fares
             const hasNoStops = 'stops' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.stops.length === 0;
@@ -306,7 +305,7 @@ export const checkIfMultiOperatorProductIsIncomplete = async (
                 return true;
             }
         } catch (e) {
-            logger.error(`Couldn't get additional operator info for noc: ${noc}`);
+            logger.warn(`Couldn't get additional operator info for noc: ${noc}`);
             return true;
         }
     }

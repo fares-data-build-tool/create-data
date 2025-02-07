@@ -6,7 +6,7 @@ import {
     TicketRepresentationAttribute,
     UserFareZone,
 } from '../../interfaces/index';
-import { getFareTypeFromFromAttributes, redirectTo, redirectToError } from '../../utils/apiUtils';
+import { getAndValidateNoc, getFareTypeFromFromAttributes, redirectTo, redirectToError } from '../../utils/apiUtils';
 import { putUserDataInProductsBucketWithFilePath } from '../../../src/utils/apiUtils/userData';
 import {
     MATCHING_JSON_ATTRIBUTE,
@@ -16,13 +16,14 @@ import {
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { getSessionAttribute, updateSessionAttribute } from '../../utils/sessions';
-import { SelectedService, Stop } from '../../interfaces/matchingJsonTypes';
+import { SecondaryOperatorFareInfo, SelectedService, Stop } from '../../interfaces/matchingJsonTypes';
 import { FileData, getServiceListFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
 import uniq from 'lodash/uniq';
 import { batchGetStopsByAtcoCode } from '../../data/auroradb';
 import { csvParser, getAtcoCodesForStops } from './csvZoneUpload';
 import logger from '../../utils/logger';
 import { STAGE } from '../../constants';
+import { getAdditionalNocMatchingJsonLink } from '../../utils';
 
 // The below 'config' needs to be exported for the formidable library to work.
 export const config = {
@@ -152,6 +153,7 @@ export const processServices = (
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
+        const noc = getAndValidateNoc(req, res);
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
         const inEditMode = !!ticket && !!matchingJsonMetaData;
@@ -217,21 +219,34 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (inEditMode && 'selectedServices' in ticket) {
-            let updatedTicket = {
-                ...ticket,
-                selectedServices,
-                ...(exemptStops.length > 0 && { exemptStops }),
-            };
-
-            if (!clickedYes) {
-                updatedTicket = {
-                    ...updatedTicket,
-                    exemptStops: undefined,
+            if (ticket.type === 'multiOperatorExt') {
+                const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
+                    matchingJsonMetaData.matchingJsonLink,
+                    noc,
+                );
+                const secondaryOperatorFareInfo: SecondaryOperatorFareInfo = {
+                    selectedServices,
+                    ...(exemptStops.length > 0 && { exemptStops }),
                 };
+                await putUserDataInProductsBucketWithFilePath(secondaryOperatorFareInfo, additionalNocMatchingJsonLink);
+            } else {
+                let updatedTicket = {
+                    ...ticket,
+                    selectedServices,
+                    ...(exemptStops.length > 0 && { exemptStops }),
+                };
+
+                if (!clickedYes) {
+                    updatedTicket = {
+                        ...updatedTicket,
+                        exemptStops: undefined,
+                    };
+                }
+
+                // put the now updated matching json into s3
+                await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
             }
 
-            // put the now updated matching json into s3
-            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
             updateSessionAttribute(req, SERVICE_LIST_ATTRIBUTE, undefined);
             updateSessionAttribute(req, STOPS_EXEMPTION_ATTRIBUTE, undefined);
 

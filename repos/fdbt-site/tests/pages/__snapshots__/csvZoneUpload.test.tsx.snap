@@ -130,7 +130,6 @@ exports[`pages csvzoneupload should render correctly 1`] = `
                           key="checkbox-item-123"
                         >
                           <input
-                            checked={false}
                             className="govuk-checkboxes__input"
                             defaultChecked={false}
                             id="checkbox-0"
