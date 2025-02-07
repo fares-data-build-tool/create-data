@@ -83,7 +83,7 @@ describe('checkIfMultiOperatorProductIsIncomplete', () => {
 
         const result = await checkIfMultiOperatorProductIsIncomplete(mockProductMatchingJsonLink, ['NOC']);
 
-        expect(logger.error).toHaveBeenCalledWith(`Couldn't get additional operator info for noc: NOC`);
+        expect(logger.warn).toHaveBeenCalledWith(`Couldn't get additional operator info for noc: NOC`);
         expect(result).toBe(true);
     });
 });

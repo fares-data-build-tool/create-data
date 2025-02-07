@@ -707,16 +707,16 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
   </dl>
   <dl
     className="govuk-summary-list"
-    key="TEST Services"
+    key="TEST services"
   >
     <div
       className="govuk-summary-list__row"
-      key="TEST Services"
+      key="TEST services"
     >
       <dt
         className="govuk-summary-list__key"
       >
-        TEST Services
+        TEST services
       </dt>
       <dd
         className="govuk-summary-list__value"
@@ -807,16 +807,16 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
   </dl>
   <dl
     className="govuk-summary-list"
-    key="WBTR Services"
+    key="WBTR services"
   >
     <div
       className="govuk-summary-list__row"
-      key="WBTR Services"
+      key="WBTR services"
     >
       <dt
         className="govuk-summary-list__key"
       >
-        WBTR Services
+        WBTR services
       </dt>
       <dd
         className="govuk-summary-list__value"
@@ -830,16 +830,16 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
   </dl>
   <dl
     className="govuk-summary-list"
-    key="BLAC Services"
+    key="BLAC services"
   >
     <div
       className="govuk-summary-list__row"
-      key="BLAC Services"
+      key="BLAC services"
     >
       <dt
         className="govuk-summary-list__key"
       >
-        BLAC Services
+        BLAC services
       </dt>
       <dd
         className="govuk-summary-list__value"
@@ -853,16 +853,16 @@ exports[`myfares pages productDetails should render correctly for a fare triangl
   </dl>
   <dl
     className="govuk-summary-list"
-    key="TESTSCHEME Services"
+    key="TESTSCHEME services"
   >
     <div
       className="govuk-summary-list__row"
-      key="TESTSCHEME Services"
+      key="TESTSCHEME services"
     >
       <dt
         className="govuk-summary-list__key"
       >
-        TESTSCHEME Services
+        TESTSCHEME services
       </dt>
       <dd
         className="govuk-summary-list__value"

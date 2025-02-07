@@ -209,11 +209,6 @@ const CsvZoneUpload = ({
                                                                         name={`${lineName}#${lineId}#${serviceCode}`}
                                                                         type="checkbox"
                                                                         value={checkBoxValues}
-                                                                        checked={
-                                                                            !!checkedServices.find(
-                                                                                (service) => service.lineId === lineId,
-                                                                            )
-                                                                        }
                                                                         defaultChecked={checked}
                                                                         onChange={(e) =>
                                                                             updateCheckedServiceList(e, lineId)
