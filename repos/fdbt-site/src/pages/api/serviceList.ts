@@ -153,7 +153,7 @@ export const processServices = (
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const noc = getAndValidateNoc(req, res);
+        const nocCode = getAndValidateNoc(req, res);
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
         const inEditMode = !!ticket && !!matchingJsonMetaData;
@@ -219,31 +219,36 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (inEditMode && 'selectedServices' in ticket) {
-            if (ticket.type === 'multiOperatorExt') {
+            const isNonLeadOperatorEditing =
+                'nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt';
+
+            if (isNonLeadOperatorEditing) {
                 const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
                     matchingJsonMetaData.matchingJsonLink,
-                    noc,
+                    nocCode,
                 );
+
                 const secondaryOperatorFareInfo: SecondaryOperatorFareInfo = {
                     selectedServices,
                     ...(exemptStops.length > 0 && { exemptStops }),
                 };
+
+                if (!clickedYes) {
+                    secondaryOperatorFareInfo.exemptStops = undefined;
+                }
+
                 await putUserDataInProductsBucketWithFilePath(secondaryOperatorFareInfo, additionalNocMatchingJsonLink);
             } else {
-                let updatedTicket = {
+                const updatedTicket = {
                     ...ticket,
                     selectedServices,
                     ...(exemptStops.length > 0 && { exemptStops }),
                 };
 
                 if (!clickedYes) {
-                    updatedTicket = {
-                        ...updatedTicket,
-                        exemptStops: undefined,
-                    };
+                    updatedTicket.exemptStops = undefined;
                 }
 
-                // put the now updated matching json into s3
                 await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
             }
 
