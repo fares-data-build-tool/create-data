@@ -294,7 +294,7 @@ const createProductDetails = async (
                 content: [
                     'exemptStops' in ticket
                         ? (ticket.exemptStops as Stop[]).map((stop) => `${stop.atcoCode} - ${stop.stopName}`).join(', ')
-                        : 'N/A',
+                        : 'None',
                 ],
                 editLink: isOwnProduct ? '/serviceList' : '',
             },
@@ -388,7 +388,7 @@ const createProductDetails = async (
             content:
                 ticket.exemptedServices && ticket.exemptedServices.length > 0
                     ? [ticket.exemptedServices.map((service) => service.lineName).join(', ')]
-                    : ['N/A'],
+                    : ['None'],
             editLink: isOwnProduct ? '/csvZoneUpload' : '',
         });
     }
@@ -516,7 +516,7 @@ const createProductDetails = async (
                         stopsCount = secondaryOperatorFareInfo.stops.length;
                     }
 
-                    if ('exemptedServices' in secondaryOperatorFareInfo) {
+                    if ('exemptedServices' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.exemptedServices) {
                         exemptedServices = secondaryOperatorFareInfo.exemptedServices.map(({ lineName }) => lineName);
                     }
                 } catch (error) {
@@ -532,7 +532,7 @@ const createProductDetails = async (
                 productDetailsElements.push({
                     id: 'exempted-services',
                     name: `${additionalNoc} exempt services`,
-                    content: [exemptedServices.length > 0 ? exemptedServices.join(', ') : 'N/A'],
+                    content: [exemptedServices.length > 0 ? exemptedServices.join(', ') : 'None'],
                     editLink: additionalNoc === yourNoc ? '/csvZoneUpload' : '',
                 });
             }
@@ -578,13 +578,13 @@ const createProductDetails = async (
                 productDetailsElements.push({
                     id: 'additional-operators-services',
                     name: `${additionalOperator.nocCode} services`,
-                    content: [selectedServices.length > 0 ? selectedServices.join(', ') : 'N/A'],
+                    content: [selectedServices.length > 0 ? selectedServices.join(', ') : 'None'],
                     editLink: additionalOperator.nocCode === yourNoc ? '/serviceList' : '',
                 });
                 productDetailsElements.push({
                     id: 'exempt-stops',
                     name: `${additionalOperator.nocCode} exempt stops`,
-                    content: [exemptStops.length > 0 ? exemptStops.join(', ') : 'N/A'],
+                    content: [exemptStops.length > 0 ? exemptStops.join(', ') : 'None'],
                     editLink: additionalOperator.nocCode === yourNoc ? '/serviceList' : '',
                 });
             } else {

@@ -146,7 +146,7 @@ export type SecondaryOperatorFareInfo =
     | {
           zoneName: string;
           stops: Stop[];
-          exemptedServices: SelectedService[];
+          exemptedServices?: SelectedService[];
       };
 
 export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {

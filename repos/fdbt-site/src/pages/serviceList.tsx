@@ -26,6 +26,7 @@ import FileAttachment from '../components/FileAttachment';
 import { isExemptStopsAttributeWithErrors, isServiceListAttributeWithErrors } from '../interfaces/typeGuards';
 import { getProductsSecondaryOperatorInfo } from '../data/s3';
 import logger from '../utils/logger';
+import { SelectedService, Stop } from '../interfaces/matchingJsonTypes';
 
 const pageTitle = 'Service List - Create Fares Data Service';
 const pageDescription = 'Service List selection page of the Create Fares Data Service';
@@ -415,7 +416,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         );
     }
 
-    const ticketJson = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
     const errors = [
@@ -427,13 +428,16 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             : []),
     ];
 
-    if (ticketJson && matchingJsonMetaData) {
+    if (ticket && matchingJsonMetaData) {
         const backHref = `/products/productDetails?productId=${matchingJsonMetaData?.productId}`;
 
-        let services: string[] = [];
-        let exemptStops: string[] = [];
+        let selectedServices: SelectedService[] = [];
+        let exemptStops: Stop[] = [];
+        let exemptedServices: SelectedService[] = [];
+        const isNonLeadOperatorEditing =
+            'nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt';
 
-        if ('nocCode' in ticketJson && ticketJson.nocCode !== nocCode && ticketJson.type === 'multiOperatorExt') {
+        if (isNonLeadOperatorEditing) {
             try {
                 const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
                     matchingJsonMetaData.matchingJsonLink,
@@ -442,41 +446,42 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(additionalNocMatchingJsonLink);
 
                 if ('selectedServices' in secondaryOperatorFareInfo) {
-                    services = secondaryOperatorFareInfo.selectedServices.map(({ lineName }) => lineName);
+                    selectedServices = secondaryOperatorFareInfo.selectedServices;
                 }
 
                 if ('exemptStops' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.exemptStops) {
-                    exemptStops = secondaryOperatorFareInfo.exemptStops.map(
-                        (stop) => `${stop.atcoCode} - ${stop.stopName}`,
-                    );
+                    exemptStops = secondaryOperatorFareInfo.exemptStops;
+                }
+
+                if ('exemptedServices' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.exemptedServices) {
+                    exemptedServices = secondaryOperatorFareInfo.exemptedServices;
                 }
             } catch (error) {
                 logger.warn(`Couldn't get additional operator info for noc: ${nocCode}`);
             }
         } else {
-            if ('selectedServices' in ticketJson) {
-                services = ticketJson.selectedServices.map(({ lineName }) => lineName);
+            if ('selectedServices' in ticket) {
+                selectedServices = ticket.selectedServices;
             }
 
-            if ('exemptStops' in ticketJson && ticketJson.exemptStops) {
-                exemptStops = ticketJson.exemptStops.map((stop) => `${stop.atcoCode} - ${stop.stopName}`);
+            if ('exemptStops' in ticket && ticket.exemptStops) {
+                exemptStops = ticket.exemptStops;
+            }
+
+            if ('exemptedServices' in ticket && ticket.exemptedServices) {
+                exemptedServices = ticket.exemptedServices;
             }
         }
 
-        let serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
-            return {
+        const services = selectedServices.map(({ lineName }) => lineName);
+
+        const serviceListEdit: ServicesInfo[] = chosenDataSourceServices
+            .map((service) => ({
                 ...service,
                 checked: services.includes(service.lineName),
-            };
-        });
-
-        if ('exemptedServices' in ticketJson && !!ticketJson.exemptedServices) {
-            const { exemptedServices } = ticketJson;
+            }))
             // removing the services which the user has selected as exempted
-            serviceListEdit = serviceListEdit.filter(
-                (service) => !exemptedServices.find((exemptService) => exemptService.lineId === service.lineId),
-            );
-        }
+            .filter((service) => !exemptedServices.find((exemptService) => exemptService.lineId === service.lineId));
 
         return {
             props: {
@@ -493,7 +498,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                     containsErrorForExempt(serviceListAttribute.errors)
                         ? true
                         : false,
-                exemptStops: exemptStops.join(', '),
+                exemptStops: exemptStops.map((stop) => `${stop.atcoCode} - ${stop.stopName}`).join(', '),
                 isEditMode: true,
             },
         };
@@ -502,8 +507,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const { fareType } = getSessionAttribute(ctx.req, FARE_TYPE_ATTRIBUTE) as FareType;
     const multiOperator = fareType === 'multiOperator';
 
-    const ticket = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
-    const additional = !!ticket && 'name' in ticket && ticket.name === 'hybrid';
+    const ticketRepresentation = getSessionAttribute(ctx.req, TICKET_REPRESENTATION_ATTRIBUTE);
+    const additional =
+        !!ticketRepresentation && 'name' in ticketRepresentation && ticketRepresentation.name === 'hybrid';
 
     const checkForSelectedServices =
         serviceListAttribute && !isServiceListAttributeWithErrors(serviceListAttribute)
