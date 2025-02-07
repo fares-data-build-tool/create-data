@@ -282,7 +282,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/multipleProducts');
             return;
         } else {
-            if (ticket.type === 'multiOperatorExt') {
+            if ('nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt') {
                 const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
                     matchingJsonMetaData.matchingJsonLink,
                     nocCode,
