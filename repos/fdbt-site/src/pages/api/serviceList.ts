@@ -219,7 +219,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
 
         if (inEditMode && 'selectedServices' in ticket) {
-            if ('nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt') {
+            const isNonLeadOperatorEditing =
+                'nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt';
+
+            if (isNonLeadOperatorEditing) {
                 const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
                     matchingJsonMetaData.matchingJsonLink,
                     nocCode,

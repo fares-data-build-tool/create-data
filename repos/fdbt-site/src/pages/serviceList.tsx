@@ -434,8 +434,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         let selectedServices: SelectedService[] = [];
         let exemptStops: Stop[] = [];
         let exemptedServices: SelectedService[] = [];
+        const isNonLeadOperatorEditing =
+            'nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt';
 
-        if ('nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt') {
+        if (isNonLeadOperatorEditing) {
             try {
                 const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
                     matchingJsonMetaData.matchingJsonLink,
