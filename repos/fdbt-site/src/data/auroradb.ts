@@ -2321,3 +2321,30 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
     }
 };
+
+export const getAllMultiOperatorProductsByNoc = async (noc: string): Promise<DbProduct[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting multi-operator external products for a given noc',
+        noc: noc,
+    });
+
+    const query = `
+            SELECT id, matchingJsonLink, lineId, fareType, startDate, endDate
+            FROM products
+            WHERE nocCode = ?
+            AND fareType = 'multiOperatorExt'
+        `;
+
+    try {
+        const result = await executeQuery<DbProduct[]>(query, [noc]);
+
+        return result.map((result) => ({
+            ...result,
+            startDate: convertDateFormat(result.startDate),
+            endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
+        }));
+    } catch (error) {
+        throw new Error(`Could not fetch products from the products table. ${error.stack}`);
+    }
+};

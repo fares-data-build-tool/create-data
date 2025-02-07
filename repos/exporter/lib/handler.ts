@@ -10,6 +10,7 @@ import {
     ProductDetails,
     BaseSchemeOperatorTicket,
     SelectedService,
+    Stop,
 } from 'fdbt-types/matchingJsonTypes';
 import {
     getFareDayEnd,
@@ -63,33 +64,76 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
             const ticketWithIds = JSON.parse(object.Body.toString('utf-8')) as TicketWithIds;
 
-            if (path.includes('multiOperatorExternal') && 'additionalOperators' in ticketWithIds) {
-                for await (const operator of ticketWithIds.additionalOperators) {
-                    const additionalPath = `${path.substring(0, path.lastIndexOf('.json'))}_${operator.nocCode}.json`;
+            if (
+                path.includes('multiOperatorExt') &&
+                ('additionalOperators' in ticketWithIds || 'additionalNocs' in ticketWithIds)
+            ) {
+                // add secondary operator product information for service type tickets
+                if ('additionalOperators' in ticketWithIds) {
+                    const additionalOperatorsExemptStops: Stop[] = [];
 
-                    try {
-                        const additionalServicesObject = await s3
-                            .getObject({ Key: additionalPath, Bucket: PRODUCTS_BUCKET })
-                            .promise();
+                    for await (const operator of ticketWithIds.additionalOperators) {
+                        const additionalPath = `${path.substring(0, path.lastIndexOf('.json'))}_${
+                            operator.nocCode
+                        }.json`;
 
-                        if (additionalServicesObject.Body) {
-                            const additionalServices = JSON.parse(additionalServicesObject.Body.toString('utf-8')) as {
-                                nocCode: string;
-                                selectedServices: SelectedService[];
-                            };
+                        try {
+                            const additionalServicesObject = await s3
+                                .getObject({ Key: additionalPath, Bucket: PRODUCTS_BUCKET })
+                                .promise();
 
-                            operator.selectedServices = additionalServices.selectedServices;
-                        }
-                    } catch (error) {
-                        if ((error as AWSError).code === 'NoSuchKey') {
-                            console.log(`No additional services found for ${operator.nocCode}`);
+                            if (additionalServicesObject.Body) {
+                                const additionalServices = JSON.parse(
+                                    additionalServicesObject.Body.toString('utf-8'),
+                                ) as {
+                                    nocCode: string;
+                                    selectedServices: SelectedService[];
+                                    exemptStops?: Stop[];
+                                };
+
+                                operator.selectedServices = additionalServices.selectedServices;
+                                ticketWithIds.exemptStops.concat(additionalServices.exemptStops ?? []);
+                            }
+                        } catch (error) {
+                            if ((error as AWSError).code === 'NoSuchKey') {
+                                console.log(`No additional services found for ${operator.nocCode}`);
+                            }
                         }
                     }
+
+                    ticketWithIds.additionalOperators = ticketWithIds.additionalOperators.filter(
+                        (operator) => operator.selectedServices.length > 0,
+                    );
+                    //TODO add exempt stops
                 }
 
-                ticketWithIds.additionalOperators = ticketWithIds.additionalOperators.filter(
-                    (operator) => operator.selectedServices.length > 0,
-                );
+                // add secondary operator product information for fareZone type tickets
+                if ('additionalNocs' in ticketWithIds) {
+                    for await (const nocCode of ticketWithIds.additionalNocs) {
+                        const additionalPath = `${path.substring(0, path.lastIndexOf('.json'))}_${nocCode}.json`;
+
+                        try {
+                            const additionalStopsObject = await s3
+                                .getObject({ Key: additionalPath, Bucket: PRODUCTS_BUCKET })
+                                .promise();
+
+                            if (additionalStopsObject.Body) {
+                                const additionalStops = JSON.parse(additionalStopsObject.Body.toString('utf-8')) as {
+                                    stops: Stop[];
+                                };
+
+                                ticketWithIds.stops.concat(additionalStops.stops);
+                            }
+                            //TODO add exempt services
+                        } catch (error) {
+                            if ((error as AWSError).code === 'NoSuchKey') {
+                                console.log(`No additional services found for ${nocCode}`);
+                            }
+                        }
+                    }
+
+                    //TODO handle duplicate stops here
+                }
             }
 
             const singleOrGroupPassengerType = await getPassengerTypeById(ticketWithIds.passengerType.id, noc);
