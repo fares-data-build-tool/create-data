@@ -784,9 +784,37 @@ export const insertDataToProductsBucketAndProductsTable = async (
         const dateTime = moment().toDate();
         const { startDate, endDate } = userDataJson.ticketPeriod;
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
+        const additionalNocs = getAdditionalNocsFromTicket(userDataJson);
 
-        await insertProducts(nocCode, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);
+        await insertProducts(
+            nocCode,
+            filePath,
+            dateTime,
+            userDataJson.type,
+            lineId,
+            additionalNocs,
+            startDate,
+            endDate,
+        );
     }
 
     return filePath;
+};
+
+export const getAdditionalNocsFromTicket = (ticket: TicketWithIds): string[] => {
+    const additionalNocs = new Set<string>();
+
+    if ('additionalNocs' in ticket) {
+        for (const additionalNoc of ticket.additionalNocs) {
+            additionalNocs.add(additionalNoc);
+        }
+    }
+
+    if ('additionalOperators' in ticket) {
+        for (const additionalOperator of ticket.additionalOperators) {
+            additionalNocs.add(additionalOperator.nocCode);
+        }
+    }
+
+    return Array.from(additionalNocs);
 };

@@ -14,6 +14,7 @@ GRANT INSERT, UPDATE, DELETE ON fdbt.operatorGroup TO 'fdbt_site'@'%';
 GRANT INSERT, UPDATE, DELETE ON fdbt.passengerType TO 'fdbt_site'@'%';
 GRANT INSERT, UPDATE, DELETE ON fdbt.fareDayEnd TO 'fdbt_site'@'%';
 GRANT INSERT, UPDATE, DELETE ON fdbt.products TO 'fdbt_site'@'%';
+GRANT INSERT, UPDATE, DELETE ON fdbt.productAdditionalNocs TO 'fdbt_site'@'%';
 GRANT INSERT, UPDATE, DELETE ON fdbt.operatorDetails TO 'fdbt_site'@'%';
 GRANT INSERT, UPDATE, DELETE ON fdbt.caps TO 'fdbt_site'@'%';
 

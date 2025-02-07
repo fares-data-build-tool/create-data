@@ -125,11 +125,20 @@ export const replaceInternalNocCode = (nocCode: string): string => {
 
 let connectionPool: Pool;
 
-const executeQuery = async <T>(query: string, values: (string | boolean | number | Date)[]): Promise<T> => {
+const executeQuery = async <T>(
+    query: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- reuse type from mysql2 library
+    values: any | any[] | { [param: string]: any },
+    insertMultiple?: boolean,
+): Promise<T> => {
     if (!connectionPool) {
         connectionPool = getAuroraDBClient();
     }
-    const [rows] = await connectionPool.execute(query, values);
+
+    const [rows] = await (insertMultiple
+        ? connectionPool.query(query, [values])
+        : connectionPool.execute(query, values));
+
     return JSON.parse(JSON.stringify(rows)) as T;
 };
 
@@ -1845,6 +1854,7 @@ export const insertProducts = async (
     dateModified: Date,
     fareType: string,
     lineId: string | undefined,
+    additionalNocs: string[],
     startDate: string,
     endDate?: string,
 ): Promise<void> => {
@@ -1856,11 +1866,12 @@ export const insertProducts = async (
         matchingJsonLink,
     });
 
-    const insertQuery = `INSERT INTO products
-    (nocCode, matchingJsonLink, dateModified, fareType, lineId, startDate, endDate)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`;
     try {
-        await executeQuery(insertQuery, [
+        const insertQuery = `INSERT INTO products
+        (nocCode, matchingJsonLink, dateModified, fareType, lineId, startDate, endDate)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+        const { insertId: productId } = await executeQuery<ResultSetHeader>(insertQuery, [
             nocCode,
             matchingJsonLink,
             dateModified,
@@ -1869,6 +1880,25 @@ export const insertProducts = async (
             startDate,
             endDate || '',
         ]);
+
+        if (additionalNocs) {
+            logger.info('', {
+                context: 'data.auroradb',
+                message: 'inserting product additional NOCs for given noc',
+                noc: nocCode,
+                productId,
+                additionalNocs: additionalNocs.join(', '),
+            });
+
+            const insertAdditionalNocsQuery =
+                'INSERT INTO productAdditionalNocs (productId, additionalNocCode) VALUES ?';
+
+            await executeQuery(
+                insertAdditionalNocsQuery,
+                additionalNocs.map((additionalNoc) => [productId, additionalNoc]),
+                true,
+            );
+        }
     } catch (error) {
         throw new Error(`Could not insert products into the products table. ${error.stack}`);
     }
