@@ -2162,7 +2162,7 @@ export const getProductById = async (nocCode: string, productId: string): Promis
 
     try {
         const queryInput = `
-            SELECT id, nocCode, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified
+            SELECT id, nocCode, lineId, fareType, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified
             FROM products
             WHERE id = ?
             AND nocCode = ?
@@ -2274,7 +2274,7 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
     });
 
     const query = `
-            SELECT id, matchingJsonLink, lineId, startDate, endDate
+            SELECT id, matchingJsonLink, lineId, fareType, startDate, endDate
             FROM products
             WHERE nocCode = ?
         `;
