@@ -61,8 +61,8 @@ const MultiOperatorProducts = ({
                 <div className="govuk-grid-column-two-thirds">
                     <h1 className="govuk-heading-xl">Multi-operator products</h1>
                     <p className="govuk-body-m ">
-                        This is where operators can collaborate with other operators to define and export multi-operator
-                        products.
+                        This is where operators can collaborate with other operators to define and export your active
+                        multi-operator products.
                     </p>
                 </div>
                 <div className="govuk-grid-column-one-third">

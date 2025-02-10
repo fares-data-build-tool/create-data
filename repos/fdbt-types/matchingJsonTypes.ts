@@ -112,6 +112,11 @@ export type TicketWithIds =
     | WithIds<PointToPointPeriodTicket>
     | WithIds<PeriodHybridTicket>;
 
+export type SecondaryOperatorServices = {
+                                    selectedServices: SelectedService[];
+                                    exemptStops?: Stop[];
+                                };
+
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}

@@ -8,6 +8,7 @@ import {
     BaseSchemeOperatorTicket,
     SelectedService,
     Stop,
+    SecondaryOperatorServices,
 } from 'fdbt-types/matchingJsonTypes';
 import {
     getFareDayEnd,
@@ -85,10 +86,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                             if (additionalServicesObject.Body) {
                                 const additionalServices = JSON.parse(
                                     additionalServicesObject.Body.toString('utf-8'),
-                                ) as {
-                                    selectedServices: SelectedService[];
-                                    exemptStops?: Stop[];
-                                };
+                                ) as SecondaryOperatorServices;
 
                                 operator.selectedServices = additionalServices.selectedServices;
 
@@ -104,10 +102,6 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                             }
                         }
                     }
-
-                    ticketWithIds.additionalOperators = ticketWithIds.additionalOperators.filter(
-                        (operator) => operator.selectedServices.length > 0,
-                    );
 
                     ticketWithIds.exemptStops = removeDuplicates(ticketWithIds.exemptStops ?? [], 'atcoCode');
                 }
@@ -128,13 +122,17 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                                     stops: Stop[];
                                     exemptedServices?: SelectedService[];
                                 };
+                                console.log('additionalStops', additionalStops);
+                                console.log('ticketWithIds', ticketWithIds);
 
                                 ticketWithIds.stops.concat(additionalStops.stops);
 
+                                console.log('ticketWithIdsAfterConcat', ticketWithIds);
+
                                 if (additionalStops.exemptedServices && additionalStops.exemptedServices.length > 0) {
-                                    ticketWithIds.exemptedServices = ticketWithIds.exemptedServices
-                                        ? ticketWithIds.exemptedServices.concat(additionalStops.exemptedServices)
-                                        : additionalStops.exemptedServices;
+                                    ticketWithIds.exemptedServices = (ticketWithIds.exemptedServices || []).concat(
+                                        additionalStops.exemptedServices,
+                                    );
                                 }
                             }
                         } catch (error) {
@@ -145,6 +143,8 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                     }
 
                     ticketWithIds.stops = removeDuplicates(ticketWithIds.stops, 'atcoCode');
+
+                    console.log('afterRemoveDuplictaes', ticketWithIds.stops);
                 }
             }
 
