@@ -125,7 +125,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                                 console.log('additionalStops', additionalStops);
                                 console.log('ticketWithIds', ticketWithIds);
 
-                                ticketWithIds.stops.concat(additionalStops.stops);
+                                ticketWithIds.stops = ticketWithIds.stops.concat(additionalStops.stops);
 
                                 console.log('ticketWithIdsAfterConcat', ticketWithIds);
 
