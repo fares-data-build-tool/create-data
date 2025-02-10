@@ -66,11 +66,9 @@ const SelectPassengerType = ({
                         </div>
 
                         {savedPassengerTypes.length === 0 ? (
-                            <>
-                                <span className="govuk-body">
-                                    <i>You currently have no saved passenger types</i>
-                                </span>
-                            </>
+                            <span className="govuk-body">
+                                <i>You currently have no saved passenger types</i>
+                            </span>
                         ) : (
                             <>
                                 <h3 className="govuk-heading-m">Individuals</h3>

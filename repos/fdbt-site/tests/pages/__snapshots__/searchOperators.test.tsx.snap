@@ -486,18 +486,21 @@ exports[`pages searchOperator should render a selection error when the user trie
         <div>
           <input
             id="add-operator-0"
+            key="selected-WBTR"
             name="userSelectedOperators"
             type="hidden"
             value="WBTR#Warrington's Own Buses"
           />
           <input
             id="add-operator-1"
+            key="selected-BLAC"
             name="userSelectedOperators"
             type="hidden"
             value="BLAC#Blackpool Transport"
           />
           <input
             id="add-operator-2"
+            key="selected-IWBusCo"
             name="userSelectedOperators"
             type="hidden"
             value="IWBusCo#IW Bus Co"
@@ -1194,18 +1197,21 @@ exports[`pages searchOperator should render the page in edit mode 1`] = `
         <div>
           <input
             id="add-operator-0"
+            key="selected-WBTR"
             name="userSelectedOperators"
             type="hidden"
             value="WBTR#Warrington's Own Buses"
           />
           <input
             id="add-operator-1"
+            key="selected-BLAC"
             name="userSelectedOperators"
             type="hidden"
             value="BLAC#Blackpool Transport"
           />
           <input
             id="add-operator-2"
+            key="selected-IWBusCo"
             name="userSelectedOperators"
             type="hidden"
             value="IWBusCo#IW Bus Co"
@@ -1483,18 +1489,21 @@ exports[`pages searchOperator should render the search input and a list of selec
         <div>
           <input
             id="add-operator-0"
+            key="selected-WBTR"
             name="userSelectedOperators"
             type="hidden"
             value="WBTR#Warrington's Own Buses"
           />
           <input
             id="add-operator-1"
+            key="selected-BLAC"
             name="userSelectedOperators"
             type="hidden"
             value="BLAC#Blackpool Transport"
           />
           <input
             id="add-operator-2"
+            key="selected-IWBusCo"
             name="userSelectedOperators"
             type="hidden"
             value="IWBusCo#IW Bus Co"
@@ -2073,18 +2082,21 @@ exports[`pages searchOperator should render the search input, search results and
         <div>
           <input
             id="add-operator-0"
+            key="selected-WBTR"
             name="userSelectedOperators"
             type="hidden"
             value="WBTR#Warrington's Own Buses"
           />
           <input
             id="add-operator-1"
+            key="selected-BLAC"
             name="userSelectedOperators"
             type="hidden"
             value="BLAC#Blackpool Transport"
           />
           <input
             id="add-operator-2"
+            key="selected-IWBusCo"
             name="userSelectedOperators"
             type="hidden"
             value="IWBusCo#IW Bus Co"

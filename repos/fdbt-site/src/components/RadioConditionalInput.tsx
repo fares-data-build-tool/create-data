@@ -197,13 +197,13 @@ const renderConditionalDateInputs = (radio: RadioWithConditionalInputs): ReactEl
             className={`govuk-radios__conditional ${error ? '' : 'govuk-radios__conditional--hidden'}`}
             id={radio.dataAriaControls}
         >
-            {(radio.inputs as BaseReactElement[]).map((input, index) => {
+            {(radio.inputs as BaseReactElement[]).map((input) => {
                 const inputGroupError = radio.inputErrors.find(({ id }) => {
                     return id.includes(input.id);
                 });
 
                 return (
-                    <div className="govuk-form-group" key={index}>
+                    <div className="govuk-form-group" key={input.id}>
                         <fieldset className="govuk-fieldset" role="group">
                             <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">{input.label}</legend>
                             <div className={`govuk-form-group${inputGroupError ? ' govuk-form-group--error' : ''}`}>
@@ -319,7 +319,7 @@ const renderConditionalDropdown = (radio: RadioWithConditionalInputs): ReactElem
                                 Select One
                             </option>
                             {(radio.inputs as BaseReactElement[]).map((input) => (
-                                <option key={`${input.name}`} value={`${input.name}`} className="govuk-select">
+                                <option key={input.name} value={input.name} className="govuk-select">
                                     {input.name}
                                 </option>
                             ))}
@@ -452,9 +452,7 @@ const RadioConditionalInput = ({ fieldset }: RadioConditionalInputProps): ReactE
                     errorClass="govuk-radios--error"
                 >
                     <div className="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-                        {fieldset.radios.map((radio) => {
-                            return renderRadioButtonSet(radio);
-                        })}
+                        {fieldset.radios.map(renderRadioButtonSet)}
                     </div>
                 </FormElementWrapper>
             </fieldset>
