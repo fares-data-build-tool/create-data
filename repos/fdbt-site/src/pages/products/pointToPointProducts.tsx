@@ -129,8 +129,8 @@ const PointToPointProductsTable = (
 
                 <tbody className="govuk-table__body">
                     {products.length > 0
-                        ? products.map((product, index) => (
-                              <tr key={index} className="govuk-table__row">
+                        ? products.map((product) => (
+                              <tr key={product.id} className="govuk-table__row">
                                   <td className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell">
                                       <a
                                           href={`/products/productDetails?productId=${product.id}&serviceId=${service.id}`}

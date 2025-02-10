@@ -151,81 +151,77 @@ exports[`pages time restrictions inner component renders normally when time rest
 `;
 
 exports[`pages view time restrictions should render correctly when no time restrictions 1`] = `
-<Fragment>
-  <GlobalSettingsViewPage
-    CardBody={[Function]}
-    csrfToken=""
-    description="Define certain days and time periods that your tickets can be used within."
-    entities={Array []}
-    entityDescription="time restriction"
-    errors={Array []}
-    referer={null}
-    title="Time restrictions"
-  />
-</Fragment>
+<GlobalSettingsViewPage
+  CardBody={[Function]}
+  csrfToken=""
+  description="Define certain days and time periods that your tickets can be used within."
+  entities={Array []}
+  entityDescription="time restriction"
+  errors={Array []}
+  referer={null}
+  title="Time restrictions"
+/>
 `;
 
 exports[`pages view time restrictions should render correctly when time restrictions exist 1`] = `
-<Fragment>
-  <GlobalSettingsViewPage
-    CardBody={[Function]}
-    csrfToken=""
-    description="Define certain days and time periods that your tickets can be used within."
-    entities={
-      Array [
-        Object {
-          "contents": Array [
-            Object {
-              "day": "monday",
-              "timeBands": Array [
-                Object {
-                  "endTime": "2300",
-                  "startTime": "0400",
-                },
-              ],
-            },
-            Object {
-              "day": "tuesday",
-              "timeBands": Array [
-                Object {
-                  "endTime": "",
-                  "startTime": "0400",
-                },
-              ],
-            },
-          ],
-          "id": 1,
-          "name": "Restriction 1",
-        },
-        Object {
-          "contents": Array [
-            Object {
-              "day": "bankHoliday",
-              "timeBands": Array [],
-            },
-            Object {
-              "day": "sunday",
-              "timeBands": Array [
-                Object {
-                  "endTime": "1200",
-                  "startTime": "0400",
-                },
-                Object {
-                  "endTime": "2200",
-                  "startTime": "1300",
-                },
-              ],
-            },
-          ],
-          "id": 2,
-          "name": "Restriction 2",
-        },
-      ]
-    }
-    entityDescription="time restriction"
-    errors={Array []}
-    referer="hello"
-    title="Time restrictions"
-  />
-</Fragment>
+<GlobalSettingsViewPage
+  CardBody={[Function]}
+  csrfToken=""
+  description="Define certain days and time periods that your tickets can be used within."
+  entities={
+    Array [
+      Object {
+        "contents": Array [
+          Object {
+            "day": "monday",
+            "timeBands": Array [
+              Object {
+                "endTime": "2300",
+                "startTime": "0400",
+              },
+            ],
+          },
+          Object {
+            "day": "tuesday",
+            "timeBands": Array [
+              Object {
+                "endTime": "",
+                "startTime": "0400",
+              },
+            ],
+          },
+        ],
+        "id": 1,
+        "name": "Restriction 1",
+      },
+      Object {
+        "contents": Array [
+          Object {
+            "day": "bankHoliday",
+            "timeBands": Array [],
+          },
+          Object {
+            "day": "sunday",
+            "timeBands": Array [
+              Object {
+                "endTime": "1200",
+                "startTime": "0400",
+              },
+              Object {
+                "endTime": "2200",
+                "startTime": "1300",
+              },
+            ],
+          },
+        ],
+        "id": 2,
+        "name": "Restriction 2",
+      },
+    ]
+  }
+  entityDescription="time restriction"
+  errors={Array []}
+  referer="hello"
+  title="Time restrictions"
+/>
 `;

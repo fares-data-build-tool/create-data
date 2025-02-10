@@ -317,7 +317,7 @@ const MultiOperatorsServiceList = ({
                                                             } - ${service.destination || 'N/A'}`;
 
                                                             return (
-                                                                <React.Fragment key={index}>
+                                                                <React.Fragment key={service.lineName}>
                                                                     <div className="govuk-grid-row govuk-!-margin-bottom-2">
                                                                         <div className="govuk-grid-column-three-quarters govuk-!-margin-top-2">
                                                                             {checkboxTitles}

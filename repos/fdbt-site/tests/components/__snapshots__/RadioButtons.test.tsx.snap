@@ -1,192 +1,190 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FareTypeRadios should render a set of radio buttons the fares provided 1`] = `
-<Fragment>
+<div
+  className="govuk-radios"
+>
   <div
-    className="govuk-radios"
+    className="govuk-radios__item"
+    key="single"
   >
-    <div
-      className="govuk-radios__item"
-      key="single"
+    <input
+      className="govuk-radios__input"
+      id="radio-option-single"
+      name="helloANDhi"
+      type="radio"
+      value="single"
+    />
+    <label
+      className="govuk-label govuk-radios__label"
+      htmlFor="radio-option-single"
     >
-      <input
-        className="govuk-radios__input"
-        id="radio-option-single"
-        name="helloANDhi"
-        type="radio"
-        value="single"
-      />
-      <label
-        className="govuk-label govuk-radios__label"
-        htmlFor="radio-option-single"
-      >
-        <b>
-          Single ticket
-        </b>
-      </label>
-      <div
-        className="govuk-hint govuk-radios__hint"
-        id="single-hint"
-      >
-        A ticket for a point to point journey
-      </div>
-    </div>
+      <b>
+        Single ticket
+      </b>
+    </label>
     <div
-      className="govuk-radios__item"
-      key="return"
+      className="govuk-hint govuk-radios__hint"
+      id="single-hint"
     >
-      <input
-        className="govuk-radios__input"
-        id="radio-option-return"
-        name="helloANDhi"
-        type="radio"
-        value="return"
-      />
-      <label
-        className="govuk-label govuk-radios__label"
-        htmlFor="radio-option-return"
-      >
-        <b>
-          Return ticket
-        </b>
-      </label>
-      <div
-        className="govuk-hint govuk-radios__hint"
-        id="return-hint"
-      >
-        An inbound and outbound ticket for the same service
-      </div>
-    </div>
-    <div
-      className="govuk-radios__item"
-      key="flatFare"
-    >
-      <input
-        className="govuk-radios__input"
-        id="radio-option-flatFare"
-        name="helloANDhi"
-        type="radio"
-        value="flatFare"
-      />
-      <label
-        className="govuk-label govuk-radios__label"
-        htmlFor="radio-option-flatFare"
-      >
-        <b>
-          Flat fare ticket
-        </b>
-      </label>
-      <div
-        className="govuk-hint govuk-radios__hint"
-        id="flatFare-hint"
-      >
-        A fixed fee ticket for a single journey
-      </div>
-    </div>
-    <div
-      className="govuk-radios__item"
-      key="period"
-    >
-      <input
-        className="govuk-radios__input"
-        id="radio-option-period"
-        name="helloANDhi"
-        type="radio"
-        value="period"
-      />
-      <label
-        className="govuk-label govuk-radios__label"
-        htmlFor="radio-option-period"
-      >
-        <b>
-          Period ticket
-        </b>
-      </label>
-      <div
-        className="govuk-hint govuk-radios__hint"
-        id="period-hint"
-      >
-        A ticket valid for a number of days, weeks, months or years
-      </div>
-    </div>
-    <div
-      className="govuk-radios__item"
-      key="carnet"
-    >
-      <input
-        className="govuk-radios__input"
-        id="radio-option-carnet"
-        name="helloANDhi"
-        type="radio"
-        value="carnet"
-      />
-      <label
-        className="govuk-label govuk-radios__label"
-        htmlFor="radio-option-carnet"
-      >
-        <b>
-          Carnet ticket
-        </b>
-      </label>
-      <div
-        className="govuk-hint govuk-radios__hint"
-        id="carnet-hint"
-      >
-        A bundle of pre-paid tickets
-      </div>
-    </div>
-    <div
-      className="govuk-radios__item"
-      key="multiOperator"
-    >
-      <input
-        className="govuk-radios__input"
-        id="radio-option-multiOperator"
-        name="helloANDhi"
-        type="radio"
-        value="multiOperator"
-      />
-      <label
-        className="govuk-label govuk-radios__label"
-        htmlFor="radio-option-multiOperator"
-      >
-        <b>
-          Multi-operator
-        </b>
-      </label>
-      <div
-        className="govuk-hint govuk-radios__hint"
-        id="multiOperator-hint"
-      >
-        A ticket that covers more than one operator
-      </div>
-    </div>
-    <div
-      className="govuk-radios__item"
-      key="schoolService"
-    >
-      <input
-        className="govuk-radios__input"
-        id="radio-option-schoolService"
-        name="helloANDhi"
-        type="radio"
-        value="schoolService"
-      />
-      <label
-        className="govuk-label govuk-radios__label"
-        htmlFor="radio-option-schoolService"
-      >
-        <b>
-          School service
-        </b>
-      </label>
-      <div
-        className="govuk-hint govuk-radios__hint"
-        id="schoolService-hint"
-      >
-        A ticket available to pupils in full-time education
-      </div>
+      A ticket for a point to point journey
     </div>
   </div>
-</Fragment>
+  <div
+    className="govuk-radios__item"
+    key="return"
+  >
+    <input
+      className="govuk-radios__input"
+      id="radio-option-return"
+      name="helloANDhi"
+      type="radio"
+      value="return"
+    />
+    <label
+      className="govuk-label govuk-radios__label"
+      htmlFor="radio-option-return"
+    >
+      <b>
+        Return ticket
+      </b>
+    </label>
+    <div
+      className="govuk-hint govuk-radios__hint"
+      id="return-hint"
+    >
+      An inbound and outbound ticket for the same service
+    </div>
+  </div>
+  <div
+    className="govuk-radios__item"
+    key="flatFare"
+  >
+    <input
+      className="govuk-radios__input"
+      id="radio-option-flatFare"
+      name="helloANDhi"
+      type="radio"
+      value="flatFare"
+    />
+    <label
+      className="govuk-label govuk-radios__label"
+      htmlFor="radio-option-flatFare"
+    >
+      <b>
+        Flat fare ticket
+      </b>
+    </label>
+    <div
+      className="govuk-hint govuk-radios__hint"
+      id="flatFare-hint"
+    >
+      A fixed fee ticket for a single journey
+    </div>
+  </div>
+  <div
+    className="govuk-radios__item"
+    key="period"
+  >
+    <input
+      className="govuk-radios__input"
+      id="radio-option-period"
+      name="helloANDhi"
+      type="radio"
+      value="period"
+    />
+    <label
+      className="govuk-label govuk-radios__label"
+      htmlFor="radio-option-period"
+    >
+      <b>
+        Period ticket
+      </b>
+    </label>
+    <div
+      className="govuk-hint govuk-radios__hint"
+      id="period-hint"
+    >
+      A ticket valid for a number of days, weeks, months or years
+    </div>
+  </div>
+  <div
+    className="govuk-radios__item"
+    key="carnet"
+  >
+    <input
+      className="govuk-radios__input"
+      id="radio-option-carnet"
+      name="helloANDhi"
+      type="radio"
+      value="carnet"
+    />
+    <label
+      className="govuk-label govuk-radios__label"
+      htmlFor="radio-option-carnet"
+    >
+      <b>
+        Carnet ticket
+      </b>
+    </label>
+    <div
+      className="govuk-hint govuk-radios__hint"
+      id="carnet-hint"
+    >
+      A bundle of pre-paid tickets
+    </div>
+  </div>
+  <div
+    className="govuk-radios__item"
+    key="multiOperator"
+  >
+    <input
+      className="govuk-radios__input"
+      id="radio-option-multiOperator"
+      name="helloANDhi"
+      type="radio"
+      value="multiOperator"
+    />
+    <label
+      className="govuk-label govuk-radios__label"
+      htmlFor="radio-option-multiOperator"
+    >
+      <b>
+        Multi-operator
+      </b>
+    </label>
+    <div
+      className="govuk-hint govuk-radios__hint"
+      id="multiOperator-hint"
+    >
+      A ticket that covers more than one operator
+    </div>
+  </div>
+  <div
+    className="govuk-radios__item"
+    key="schoolService"
+  >
+    <input
+      className="govuk-radios__input"
+      id="radio-option-schoolService"
+      name="helloANDhi"
+      type="radio"
+      value="schoolService"
+    />
+    <label
+      className="govuk-label govuk-radios__label"
+      htmlFor="radio-option-schoolService"
+    >
+      <b>
+        School service
+      </b>
+    </label>
+    <div
+      className="govuk-hint govuk-radios__hint"
+      id="schoolService-hint"
+    >
+      A ticket available to pupils in full-time education
+    </div>
+  </div>
+</div>
 `;

@@ -37,7 +37,7 @@ const MultipleOperators = ({ operatorsAndNocs, errors = [], csrfToken }: Multipl
                             </option>
                             {operatorsAndNocs.map((operatorAndNoc: Operator) => (
                                 <option
-                                    key="operator"
+                                    key={`${operatorAndNoc.name}|${operatorAndNoc.nocCode}`}
                                     value={`${operatorAndNoc.name}|${operatorAndNoc.nocCode}`}
                                     className="service-option"
                                 >

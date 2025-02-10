@@ -278,14 +278,7 @@ const createProductDetails = async (
                     'additionalNocs' in ticket || 'additionalOperators' in ticket
                         ? `${productNoc} services`
                         : 'Services',
-                content: [
-                    ticket.selectedServices
-                        .map((service) => {
-                            return service.lineName;
-                        })
-
-                        .join(', '),
-                ],
+                content: [ticket.selectedServices.map((service) => service.lineName).join(', ')],
                 editLink: isOwnProduct ? '/serviceList' : '',
             },
             {
