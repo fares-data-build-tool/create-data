@@ -94,7 +94,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
                                 if (additionalServices.exemptStops && additionalServices.exemptStops.length > 0) {
                                     ticketWithIds.exemptStops = ticketWithIds.exemptStops
-                                        ? (ticketWithIds.exemptStops as Stop[]).concat(additionalServices.exemptStops)
+                                        ? ticketWithIds.exemptStops.concat(additionalServices.exemptStops)
                                         : additionalServices.exemptStops;
                                 }
                             }
@@ -133,9 +133,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
                                 if (additionalStops.exemptedServices && additionalStops.exemptedServices.length > 0) {
                                     ticketWithIds.exemptedServices = ticketWithIds.exemptedServices
-                                        ? (ticketWithIds.exemptedServices as SelectedService[]).concat(
-                                              additionalStops.exemptedServices,
-                                          )
+                                        ? ticketWithIds.exemptedServices.concat(additionalStops.exemptedServices)
                                         : additionalStops.exemptedServices;
                                 }
                             }
