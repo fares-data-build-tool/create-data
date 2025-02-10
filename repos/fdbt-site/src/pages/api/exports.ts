@@ -10,8 +10,9 @@ import { DbProduct } from '../../interfaces/dbTypes';
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const noc = getAndValidateNoc(req, res);
     const products = await getAllProductsByNoc(noc);
-    // 1. filter out expired products
-    const nonExpiredProducts = getNonExpiredProducts(products);
+    // 1. filter out multi-operator 'external' and expired products
+    const productsWithoutMultiOperatorExternal = products.filter((product) => product.fareType !== 'multiOperatorExt');
+    const nonExpiredProducts = getNonExpiredProducts(productsWithoutMultiOperatorExternal);
 
     // 2. figure out the name of the file
     const [date] = new Date().toISOString().split('T');

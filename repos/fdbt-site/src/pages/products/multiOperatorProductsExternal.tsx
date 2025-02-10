@@ -72,10 +72,11 @@ const MultiOperatorProducts = ({
                             Create new product
                         </button>
                     </CsrfForm>
-                    {/*TODO: add link to exporter*/}
-                    <button type="submit" className="govuk-button govuk-button--secondary">
-                        Export all products
-                    </button>
+                    <CsrfForm action="/api/exportMultiOperatorExternal" method="post" csrfToken={csrfToken}>
+                        <button type="submit" className="govuk-button govuk-button--secondary">
+                            Export all products
+                        </button>
+                    </CsrfForm>
                 </div>
             </div>
             <div className="govuk-grid-row">

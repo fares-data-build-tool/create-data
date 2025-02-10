@@ -5,9 +5,6 @@ import {
     FullTimeRestriction,
     TicketWithIds,
     Ticket,
-    WithIds,
-    BasePeriodTicket,
-    ProductDetails,
     BaseSchemeOperatorTicket,
     SelectedService,
     Stop,
@@ -42,6 +39,11 @@ const PRODUCTS_BUCKET = process.env.PRODUCTS_BUCKET;
 const MATCHING_DATA_BUCKET = process.env.MATCHING_DATA_BUCKET;
 const EXPORT_METADATA_BUCKET = process.env.EXPORT_METADATA_BUCKET;
 
+const removeDuplicates = <T, K extends keyof T>(arrayToRemoveDuplicates: T[], key: K): T[] =>
+    arrayToRemoveDuplicates.filter(
+        (value, index, self) => index === self.findIndex((item) => item[key] === value[key]),
+    );
+
 export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPrefix }) => {
     // populate the values from global settings using the IDs and write to matching data bucket
 
@@ -70,8 +72,6 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             ) {
                 // add secondary operator product information for service type tickets
                 if ('additionalOperators' in ticketWithIds) {
-                    const additionalOperatorsExemptStops: Stop[] = [];
-
                     for await (const operator of ticketWithIds.additionalOperators) {
                         const additionalPath = `${path.substring(0, path.lastIndexOf('.json'))}_${
                             operator.nocCode
@@ -86,13 +86,17 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                                 const additionalServices = JSON.parse(
                                     additionalServicesObject.Body.toString('utf-8'),
                                 ) as {
-                                    nocCode: string;
                                     selectedServices: SelectedService[];
                                     exemptStops?: Stop[];
                                 };
 
                                 operator.selectedServices = additionalServices.selectedServices;
-                                ticketWithIds.exemptStops.concat(additionalServices.exemptStops ?? []);
+
+                                if (additionalServices.exemptStops && additionalServices.exemptStops.length > 0) {
+                                    ticketWithIds.exemptStops = ticketWithIds.exemptStops
+                                        ? (ticketWithIds.exemptStops as Stop[]).concat(additionalServices.exemptStops)
+                                        : additionalServices.exemptStops;
+                                }
                             }
                         } catch (error) {
                             if ((error as AWSError).code === 'NoSuchKey') {
@@ -104,7 +108,8 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                     ticketWithIds.additionalOperators = ticketWithIds.additionalOperators.filter(
                         (operator) => operator.selectedServices.length > 0,
                     );
-                    //TODO add exempt stops
+
+                    ticketWithIds.exemptStops = removeDuplicates(ticketWithIds.exemptStops ?? [], 'atcoCode');
                 }
 
                 // add secondary operator product information for fareZone type tickets
@@ -119,12 +124,21 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
                             if (additionalStopsObject.Body) {
                                 const additionalStops = JSON.parse(additionalStopsObject.Body.toString('utf-8')) as {
+                                    zoneName: string;
                                     stops: Stop[];
+                                    exemptedServices?: SelectedService[];
                                 };
 
                                 ticketWithIds.stops.concat(additionalStops.stops);
+
+                                if (additionalStops.exemptedServices && additionalStops.exemptedServices.length > 0) {
+                                    ticketWithIds.exemptedServices = ticketWithIds.exemptedServices
+                                        ? (ticketWithIds.exemptedServices as SelectedService[]).concat(
+                                              additionalStops.exemptedServices,
+                                          )
+                                        : additionalStops.exemptedServices;
+                                }
                             }
-                            //TODO add exempt services
                         } catch (error) {
                             if ((error as AWSError).code === 'NoSuchKey') {
                                 console.log(`No additional services found for ${nocCode}`);
@@ -132,7 +146,7 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                         }
                     }
 
-                    //TODO handle duplicate stops here
+                    ticketWithIds.stops = removeDuplicates(ticketWithIds.stops, 'atcoCode');
                 }
             }
 
@@ -251,6 +265,3 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
     console.log(`completed ${paths.length} files.`);
 };
-
-export const isBasePeriodTicket = (ticket: WithIds<Ticket>): ticket is WithIds<BasePeriodTicket> =>
-    !!(ticket.products[0] as ProductDetails)?.productValidity;
