@@ -42,12 +42,18 @@ exports[`multiOperatorProductsExternal page renders correctly 1`] = `
           Create new product
         </button>
       </CsrfForm>
-      <button
-        className="govuk-button govuk-button--secondary"
-        type="submit"
+      <CsrfForm
+        action="/api/exportMultiOperatorExternal"
+        csrfToken=""
+        method="post"
       >
-        Export all products
-      </button>
+        <button
+          className="govuk-button govuk-button--secondary"
+          type="submit"
+        >
+          Export all products
+        </button>
+      </CsrfForm>
     </div>
   </div>
   <div
