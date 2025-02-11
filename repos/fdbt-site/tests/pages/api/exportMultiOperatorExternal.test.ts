@@ -1,24 +1,24 @@
 import { NextApiResponse } from 'next';
-import exports from '../../../src/pages/api/exports';
+import exportMultiOperatorExternal from '../../../src/pages/api/exportMultiOperatorExternal';
 import * as exportUtils from '../../../src/utils/apiUtils/export';
 import { NextApiRequestWithSession } from '../../../src/interfaces';
 import * as aurora from '../../../src/data/auroradb';
 import { getMockRequestAndResponse } from '../../testData/mockData';
 import { DbProduct } from '../../../src/interfaces/dbTypes';
-import * as index from '../../../src/utils/apiUtils';
+import * as apiUtils from '../../../src/utils/apiUtils';
 import * as s3 from '../../../src/data/s3';
 
 const mockProducts: DbProduct[] = [
     {
         id: '1',
-        lineId: '231yevgy',
+        lineId: 'multiOperatorExt',
         fareType: 'single',
         matchingJsonLink: '/matching/json/link/1',
         startDate: '01/02/2022',
     },
     {
         id: '2',
-        lineId: 'refg4q3g43',
+        lineId: 'multiOperatorExt',
         fareType: 'single',
         matchingJsonLink: '/matching/json/link/2',
         startDate: '01/02/2022',
@@ -29,40 +29,32 @@ const mockProducts: DbProduct[] = [
         fareType: 'multiOperatorExt',
         matchingJsonLink: '/matching/json/link/3',
         startDate: '01/02/2022',
-    },
-    {
-        id: '4',
-        lineId: 'q34t4tq234',
-        fareType: 'multiOperatorExt',
-        matchingJsonLink: '/matching/json/link/4',
-        startDate: '01/02/2022',
         endDate: '01/02/2023',
     },
 ];
 
-describe('exportHandler', () => {
+describe('exportMultiOperatorExternal', () => {
     const triggerExportSpy = jest.spyOn(exportUtils, 'triggerExport').mockResolvedValue();
-    const getAllProductsByNocSpy = jest.spyOn(aurora, 'getAllProductsByNoc');
+    const getAllMultiOperatorProductsByNocSpy = jest.spyOn(aurora, 'getAllMultiOperatorProductsByNoc');
     const noc = 'testNoc';
-    jest.spyOn(index, 'getAndValidateNoc').mockReturnValue(noc);
+    jest.spyOn(apiUtils, 'getAndValidateNoc').mockReturnValue(noc);
     jest.spyOn(s3, 'getS3Exports').mockResolvedValue(['aaaa', 'wwww']);
+    const redirectToSpy = jest.spyOn(apiUtils, 'redirectTo');
 
-    it('should trigger an export of all products excluding multi-operator external products', async () => {
-        getAllProductsByNocSpy.mockResolvedValue(mockProducts);
+    it('should trigger an export of all valid multi-operator external products', async () => {
+        getAllMultiOperatorProductsByNocSpy.mockResolvedValue(mockProducts);
 
         const { req, res } = getMockRequestAndResponse({
             body: {},
         });
 
-        await exports(
-            req as NextApiRequestWithSession,
-            { ...res, status: jest.fn().mockReturnThis(), send: jest.fn() } as NextApiResponse,
-        );
+        await exportMultiOperatorExternal(req as NextApiRequestWithSession, res as NextApiResponse);
 
         expect(triggerExportSpy).toHaveBeenCalledWith({
             noc,
             paths: ['/matching/json/link/1', '/matching/json/link/2'],
-            exportPrefix: expect.any(String),
+            exportPrefix: expect.stringMatching(/MULTIOPERATOR/),
         });
+        expect(redirectToSpy).toHaveBeenCalledWith(res, '/products/exports?exportStarted=true');
     });
 });
