@@ -138,16 +138,18 @@ export interface AdditionalOperator {
     selectedServices: SelectedService[];
 }
 
-export type SecondaryOperatorFareInfo =
-    | {
-          selectedServices: SelectedService[];
-          exemptStops?: Stop[];
-      }
-    | {
-          zoneName: string;
-          stops: Stop[];
-          exemptedServices?: SelectedService[];
-      };
+export interface SecondaryOperatorServices {
+    selectedServices: SelectedService[];
+    exemptStops?: Stop[];
+}
+
+export interface SecondaryOperatorFareZone {
+    zoneName: string;
+    stops: Stop[];
+    exemptedServices?: SelectedService[];
+}
+
+export type SecondaryOperatorFareInfo = SecondaryOperatorServices | SecondaryOperatorFareZone;
 
 export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
     type: 'flatFare';

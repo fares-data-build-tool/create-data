@@ -10,7 +10,7 @@ import { getProductsMatchingJson } from '../../data/s3';
 import { MyFaresService, NextPageContextWithSession, ProductToDisplay, ServiceToDisplay } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
-import { getNonExpiredProducts } from '../api/exports';
+import { getNonExpiredProducts } from '../../utils/apiUtils/export';
 
 const title = 'Select Exports';
 const description = 'Export selected products into NeTEx.';
