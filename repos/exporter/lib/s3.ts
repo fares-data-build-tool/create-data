@@ -1,4 +1,6 @@
-import { S3 } from 'aws-sdk';
+import { AWSError, S3 } from 'aws-sdk';
+import { PromiseResult } from 'aws-sdk/lib/request';
+import { GetObjectOutput, PutObjectOutput } from 'aws-sdk/clients/s3';
 const getS3Client = (): S3 => {
     let options: S3.ClientConfiguration = {
         region: 'eu-west-2',
@@ -19,7 +21,7 @@ const getS3Client = (): S3 => {
 
 const s3 = getS3Client();
 
-export const getS3Object = (key: string, bucketName: string) => {
+export const getS3Object = (key: string, bucketName: string): Promise<PromiseResult<GetObjectOutput, AWSError>> => {
     try {
         return s3.getObject({ Key: key, Bucket: bucketName }).promise();
     } catch (e) {
@@ -27,7 +29,11 @@ export const getS3Object = (key: string, bucketName: string) => {
     }
 };
 
-export const putS3Object = (key: string, bucketName: string, body: string) => {
+export const putS3Object = (
+    key: string,
+    bucketName: string,
+    body: string,
+): Promise<PromiseResult<PutObjectOutput, AWSError>> => {
     try {
         return s3.putObject({ Key: key, Bucket: bucketName, Body: body }).promise();
     } catch (e) {

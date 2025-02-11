@@ -1,7 +1,6 @@
 import { processSecondaryOperatorFareZone, processSecondaryOperatorServices, removeDuplicates } from '../lib/handler';
 import { SelectedService, Stop } from 'fdbt-types/matchingJsonTypes';
 import * as s3 from '../lib/s3';
-import { PromiseResult } from 'aws-sdk/lib/request';
 import { AWSError } from 'aws-sdk';
 import { GetObjectOutput } from 'aws-sdk/clients/s3';
 import resetAllMocks = jest.resetAllMocks;

@@ -19,7 +19,7 @@ exports[`multiOperatorProductsExternal page renders correctly 1`] = `
       <p
         className="govuk-body-m "
       >
-        This is where operators can collaborate with other operators to define and export multi-operator products.
+        This is where operators can collaborate with other operators to define and export your active multi-operator products.
       </p>
     </div>
     <div

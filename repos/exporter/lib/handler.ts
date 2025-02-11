@@ -1,5 +1,5 @@
 import { Handler } from 'aws-lambda';
-import { AWSError, S3 } from 'aws-sdk';
+import { AWSError } from 'aws-sdk';
 import {
     BaseTicket,
     FullTimeRestriction,
@@ -10,6 +10,7 @@ import {
     SecondaryOperatorServices,
     SecondaryOperatorFareZone,
     SelectedService,
+    AdditionalOperator,
 } from 'fdbt-types/matchingJsonTypes';
 import {
     getFareDayEnd,
@@ -33,7 +34,14 @@ export const removeDuplicates = <T, K extends keyof T>(arrayToRemoveDuplicates: 
         (value, index, self) => index === self.findIndex((item) => item[key] === value[key]),
     );
 
-export const processSecondaryOperatorServices = async (nocCodes: string[], path: string, productsBucket: string) => {
+export const processSecondaryOperatorServices = async (
+    nocCodes: string[],
+    path: string,
+    productsBucket: string,
+): Promise<{
+    additionalOperators: AdditionalOperator[];
+    exemptStops: Stop[];
+}> => {
     const additionalOperators = [];
     const exemptStops: Stop[] = [];
 
@@ -66,7 +74,11 @@ export const processSecondaryOperatorServices = async (nocCodes: string[], path:
     return { additionalOperators, exemptStops };
 };
 
-export const processSecondaryOperatorFareZone = async (nocCodes: string[], path: string, productsBucket: string) => {
+export const processSecondaryOperatorFareZone = async (
+    nocCodes: string[],
+    path: string,
+    productsBucket: string,
+): Promise<{ secondaryOperatorStops: Stop[]; exemptedServices: SelectedService[] }> => {
     const secondaryOperatorStops: Stop[] = [];
     const exemptedServices: SelectedService[] = [];
     for await (const nocCode of nocCodes) {
