@@ -7,8 +7,8 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { searchInputId } from '../searchOperators';
 import {
-    getMultiOperatorExternalProducts,
     getOperatorGroupsByNameAndNoc,
+    getOtherProductsByNoc,
     insertOperatorGroup,
     operatorHasBodsServices,
     operatorHasFerryOrTramServices,
@@ -55,14 +55,11 @@ export const isSearchInputValid = (searchText: string): boolean => {
 };
 
 export const updateAssociatedProducts = async (nocCode: string, operatorGroupNocs: string[]): Promise<void> => {
-    const multiOperatorProductsFromDb = await getMultiOperatorExternalProducts(nocCode);
+    const multiOperatorProductsFromDb = await getOtherProductsByNoc(nocCode);
 
     for await (const product of multiOperatorProductsFromDb) {
-        const ticket = await getProductsMatchingJson(product.matchingJsonLink);
-
-        if (ticket.type === 'multiOperatorExt') {
-            await updateProductAdditionalNocs(product.id, operatorGroupNocs);
-
+        if (product.fareType === 'multiOperator' || product.fareType === 'multiOperatorExt') {
+            const ticket = await getProductsMatchingJson(product.matchingJsonLink);
             let removedNocs: string[] = [];
 
             if ('additionalNocs' in ticket) {
@@ -75,17 +72,23 @@ export const updateAssociatedProducts = async (nocCode: string, operatorGroupNoc
 
                 ticket.additionalOperators = operatorGroupNocs.map((nocCode) => ({
                     nocCode,
-                    selectedServices: [],
+                    selectedServices:
+                        ticket.additionalOperators.find((operator) => operator.nocCode === nocCode)?.selectedServices ||
+                        [],
                 }));
             }
 
             await putUserDataInProductsBucketWithFilePath(ticket, product.matchingJsonLink);
 
-            if (removedNocs.length > 0) {
-                const matchingJsonLinks = removedNocs.map((noc) =>
-                    getAdditionalNocMatchingJsonLink(product.matchingJsonLink, noc),
-                );
-                await deleteMultipleObjectsFromS3(matchingJsonLinks, PRODUCTS_DATA_BUCKET_NAME);
+            if (product.fareType === 'multiOperatorExt') {
+                await updateProductAdditionalNocs(product.id, operatorGroupNocs);
+
+                if (removedNocs.length > 0) {
+                    const matchingJsonLinks = removedNocs.map((noc) =>
+                        getAdditionalNocMatchingJsonLink(product.matchingJsonLink, noc),
+                    );
+                    await deleteMultipleObjectsFromS3(matchingJsonLinks, PRODUCTS_DATA_BUCKET_NAME);
+                }
             }
         }
     }

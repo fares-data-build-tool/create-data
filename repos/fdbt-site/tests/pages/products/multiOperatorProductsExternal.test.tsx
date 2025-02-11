@@ -5,7 +5,7 @@ import { getMultiOperatorExternalProducts, getPassengerTypeById } from '../../..
 import { expectedSchemeOperatorMultiServicesTicket, getMockContext } from '../../testData/mockData';
 import MultiOperatorProducts, {
     getServerSideProps,
-    MultiOperatorProduct,
+    MultiOperatorProductExternal,
 } from '../../../src/pages/products/multiOperatorProductsExternal';
 import * as utils from '../../../src/utils';
 
@@ -59,7 +59,7 @@ jest.mock('../../../src/data/s3');
 });
 
 describe('multiOperatorProductsExternal page', () => {
-    const ownedProducts: MultiOperatorProduct[] = [
+    const ownedProducts: MultiOperatorProductExternal[] = [
         {
             id: 1,
             isIncomplete: false,
@@ -79,7 +79,7 @@ describe('multiOperatorProductsExternal page', () => {
             passengerType: 'My best passenger',
         },
     ];
-    const sharedProducts: MultiOperatorProduct[] = [
+    const sharedProducts: MultiOperatorProductExternal[] = [
         {
             id: 3,
             isIncomplete: true,

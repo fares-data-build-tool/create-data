@@ -3,6 +3,7 @@ import {
     expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
     expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperatorsExt,
+    expectedSingleTicket,
     getMockRequestAndResponse,
 } from '../../testData/mockData';
 import searchOperators, {
@@ -60,8 +61,8 @@ describe('searchOperators', () => {
     });
 
     describe('updateAssociatedProducts', () => {
-        it('updates each product in the database and matching JSON files (multiOperatorExt fare zone)', async () => {
-            const getMultiOperatorExternalProductsMock = jest.spyOn(auroradb, 'getMultiOperatorExternalProducts');
+        it('updates each product in the database and matching JSON files (fare zone variation)', async () => {
+            const getOtherProductsByNocMock = jest.spyOn(auroradb, 'getOtherProductsByNoc');
             const getProductsMatchingJsonMock = jest.spyOn(s3, 'getProductsMatchingJson');
             const updateProductAdditionalNocsMock = jest.spyOn(auroradb, 'updateProductAdditionalNocs');
             const putUserDataInProductsBucketWithFilePathMock = jest.spyOn(
@@ -85,20 +86,33 @@ describe('searchOperators', () => {
                     matchingJsonLink: 'TEST-2',
                     startDate: '2021-01-01',
                 },
+                {
+                    id: 3,
+                    nocCode: 'TEST',
+                    fareType: 'single',
+                    matchingJsonLink: 'TEST-3',
+                    startDate: '2021-01-01',
+                },
             ];
             const selectedOperatorNocs = ['BLAC', 'ABCD'];
 
-            const updatedTicket: WithIds<MultiOperatorGeoZoneTicket> = {
+            const updatedTicketMultiOperatorExt: WithIds<MultiOperatorGeoZoneTicket> = {
                 ...expectedMultiOperatorExtGeoZoneTicketWithMultipleProducts,
-                additionalNocs: ['BLAC', 'ABCD'],
+                additionalNocs: selectedOperatorNocs,
             };
 
-            getMultiOperatorExternalProductsMock.mockResolvedValue(multiOperatorProductsFromDb);
+            const updatedTicketMultiOperator: WithIds<MultiOperatorGeoZoneTicket> = {
+                ...expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
+                additionalNocs: selectedOperatorNocs,
+            };
+
+            getOtherProductsByNocMock.mockResolvedValue(multiOperatorProductsFromDb);
             updateProductAdditionalNocsMock.mockResolvedValue(void 0);
             getProductsMatchingJsonMock.mockResolvedValueOnce(
                 expectedMultiOperatorExtGeoZoneTicketWithMultipleProducts,
             );
             getProductsMatchingJsonMock.mockResolvedValueOnce(expectedMultiOperatorGeoZoneTicketWithMultipleProducts);
+            getProductsMatchingJsonMock.mockResolvedValueOnce(expectedSingleTicket);
             putUserDataInProductsBucketWithFilePathMock.mockResolvedValue('');
             deleteMultipleObjectsFromS3Mock.mockResolvedValue(void 0);
 
@@ -115,10 +129,16 @@ describe('searchOperators', () => {
             );
             expect(updateProductAdditionalNocsMock).toHaveBeenCalledTimes(1);
             expect(updateProductAdditionalNocsMock).toHaveBeenCalledWith(1, selectedOperatorNocs);
-            expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenCalledTimes(1);
-            expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenCalledWith(
-                updatedTicket,
+            expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenCalledTimes(2);
+            expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenNthCalledWith(
+                1,
+                updatedTicketMultiOperatorExt,
                 multiOperatorProductsFromDb[0].matchingJsonLink,
+            );
+            expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenNthCalledWith(
+                2,
+                updatedTicketMultiOperator,
+                multiOperatorProductsFromDb[1].matchingJsonLink,
             );
             expect(deleteMultipleObjectsFromS3Mock).toHaveBeenCalledTimes(1);
             expect(deleteMultipleObjectsFromS3Mock).toHaveBeenCalledWith(
@@ -127,8 +147,8 @@ describe('searchOperators', () => {
             );
         });
 
-        it('updates each product in the database and matching JSON files (multiOperatorExt selected services)', async () => {
-            const getMultiOperatorExternalProductsMock = jest.spyOn(auroradb, 'getMultiOperatorExternalProducts');
+        it('updates each product in the database and matching JSON files (selected services variation)', async () => {
+            const getOtherProductsByNocMock = jest.spyOn(auroradb, 'getOtherProductsByNoc');
             const getProductsMatchingJsonMock = jest.spyOn(s3, 'getProductsMatchingJson');
             const updateProductAdditionalNocsMock = jest.spyOn(auroradb, 'updateProductAdditionalNocs');
             const putUserDataInProductsBucketWithFilePathMock = jest.spyOn(
@@ -152,10 +172,17 @@ describe('searchOperators', () => {
                     matchingJsonLink: 'TEST-2',
                     startDate: '2021-01-01',
                 },
+                {
+                    id: 3,
+                    nocCode: 'TEST',
+                    fareType: 'single',
+                    matchingJsonLink: 'TEST-3',
+                    startDate: '2021-01-01',
+                },
             ];
             const selectedOperatorNocs = ['BLAC', 'ABCD'];
 
-            const updatedTicket: WithIds<MultiOperatorMultipleServicesTicket> = {
+            const updatedTicketMultiOperatorExt: WithIds<MultiOperatorMultipleServicesTicket> = {
                 ...expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperatorsExt,
                 additionalOperators: [
                     {
@@ -169,7 +196,23 @@ describe('searchOperators', () => {
                 ],
             };
 
-            getMultiOperatorExternalProductsMock.mockResolvedValue(multiOperatorProductsFromDb);
+            const updatedTicketMultiOperator: WithIds<MultiOperatorMultipleServicesTicket> = {
+                ...expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
+                additionalOperators: [
+                    {
+                        nocCode: 'BLAC',
+                        selectedServices:
+                            expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators
+                                .additionalOperators[1].selectedServices,
+                    },
+                    {
+                        nocCode: 'ABCD',
+                        selectedServices: [],
+                    },
+                ],
+            };
+
+            getOtherProductsByNocMock.mockResolvedValue(multiOperatorProductsFromDb);
             updateProductAdditionalNocsMock.mockResolvedValue(void 0);
             getProductsMatchingJsonMock.mockResolvedValueOnce(
                 expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperatorsExt,
@@ -177,6 +220,7 @@ describe('searchOperators', () => {
             getProductsMatchingJsonMock.mockResolvedValueOnce(
                 expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
             );
+            getProductsMatchingJsonMock.mockResolvedValueOnce(expectedSingleTicket);
             putUserDataInProductsBucketWithFilePathMock.mockResolvedValue('');
             deleteMultipleObjectsFromS3Mock.mockResolvedValue(void 0);
 
@@ -193,10 +237,16 @@ describe('searchOperators', () => {
             );
             expect(updateProductAdditionalNocsMock).toHaveBeenCalledTimes(1);
             expect(updateProductAdditionalNocsMock).toHaveBeenCalledWith(1, selectedOperatorNocs);
-            expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenCalledTimes(1);
-            expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenCalledWith(
-                updatedTicket,
+            expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenCalledTimes(2);
+            expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenNthCalledWith(
+                1,
+                updatedTicketMultiOperatorExt,
                 multiOperatorProductsFromDb[0].matchingJsonLink,
+            );
+            expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenNthCalledWith(
+                2,
+                updatedTicketMultiOperator,
+                multiOperatorProductsFromDb[1].matchingJsonLink,
             );
             expect(deleteMultipleObjectsFromS3Mock).toHaveBeenCalledTimes(1);
             expect(deleteMultipleObjectsFromS3Mock).toHaveBeenCalledWith(
@@ -434,7 +484,7 @@ describe('searchOperators', () => {
         jest.spyOn(auroradb, 'operatorHasFerryOrTramServices').mockResolvedValue(false);
         jest.spyOn(auroradb, 'updateOperatorGroup').mockResolvedValue();
         jest.spyOn(auroradb, 'getOperatorGroupsByNameAndNoc').mockResolvedValue(undefined);
-        jest.spyOn(auroradb, 'getMultiOperatorExternalProducts').mockResolvedValue([]);
+        jest.spyOn(auroradb, 'getOtherProductsByNoc').mockResolvedValue([]);
 
         const mockSelectedOperators: Operator[] = [
             { nocCode: 'BLACK', name: 'Blackpool Transport' },

@@ -18,7 +18,7 @@ import CsrfForm from '../../components/CsrfForm';
 const title = 'Multi-operator products - Create Fares Data Service';
 const description = 'View and access your multi-operator products in one place.';
 
-export type MultiOperatorProduct = {
+export type MultiOperatorProductExternal = {
     id: number;
     isIncomplete: boolean;
     productDescription: string;
@@ -29,8 +29,8 @@ export type MultiOperatorProduct = {
 };
 
 export interface MultiOperatorProductsProps {
-    ownedProducts: MultiOperatorProduct[];
-    sharedProducts: MultiOperatorProduct[];
+    ownedProducts: MultiOperatorProductExternal[];
+    sharedProducts: MultiOperatorProductExternal[];
     csrfToken: string;
 }
 
@@ -127,7 +127,7 @@ const MultiOperatorProducts = ({
 };
 
 const MultiOperatorProductsTable = (
-    multiOperatorProducts: MultiOperatorProduct[],
+    multiOperatorProducts: MultiOperatorProductExternal[],
     noProductsMessage: string,
     deleteActionHandler?: (productId: number, name: string) => void,
 ): React.ReactElement => {
@@ -221,8 +221,8 @@ export const getServerSideProps = async (
     const yourNoc = getAndValidateNoc(ctx);
     const multiOperatorProductsFromDb: MyFaresOtherProduct[] = await getMultiOperatorExternalProducts();
 
-    const ownedProducts: MultiOperatorProduct[] = [];
-    const sharedProducts: MultiOperatorProduct[] = [];
+    const ownedProducts: MultiOperatorProductExternal[] = [];
+    const sharedProducts: MultiOperatorProductExternal[] = [];
 
     for (const product of multiOperatorProductsFromDb) {
         const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
