@@ -2322,7 +2322,7 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
     }
 };
 
-export const getAllMultiOperatorProductsByNoc = async (noc: string): Promise<DbProduct[]> => {
+export const getMultiOperatorExternalProductsByNoc = async (noc: string): Promise<DbProduct[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'getting multi-operator external products for a given noc',

@@ -35,14 +35,14 @@ const mockProducts: DbProduct[] = [
 
 describe('exportMultiOperatorExternal', () => {
     const triggerExportSpy = jest.spyOn(exportUtils, 'triggerExport').mockResolvedValue();
-    const getAllMultiOperatorProductsByNocSpy = jest.spyOn(aurora, 'getAllMultiOperatorProductsByNoc');
+    const getMultiOperatorExternalProductsByNocSpy = jest.spyOn(aurora, 'getMultiOperatorExternalProductsByNoc');
     const noc = 'testNoc';
     jest.spyOn(apiUtils, 'getAndValidateNoc').mockReturnValue(noc);
     jest.spyOn(s3, 'getS3Exports').mockResolvedValue(['aaaa', 'wwww']);
     const redirectToSpy = jest.spyOn(apiUtils, 'redirectTo');
 
     it('should trigger an export of all valid multi-operator external products', async () => {
-        getAllMultiOperatorProductsByNocSpy.mockResolvedValue(mockProducts);
+        getMultiOperatorExternalProductsByNocSpy.mockResolvedValue(mockProducts);
 
         const { req, res } = getMockRequestAndResponse({
             body: {},

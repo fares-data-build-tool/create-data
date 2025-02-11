@@ -2,14 +2,14 @@ import { NextApiResponse } from 'next';
 import { getAndValidateNoc, redirectTo } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { getS3Exports } from '../../data/s3';
-import { getAllMultiOperatorProductsByNoc } from '../../data/auroradb';
+import { getMultiOperatorExternalProductsByNoc } from '../../data/auroradb';
 import { getNonExpiredProducts, triggerExport } from '../../utils/apiUtils/export';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const noc = getAndValidateNoc(req, res);
 
     //TODO - filter out incomplete products
-    const products = await getAllMultiOperatorProductsByNoc(noc);
+    const products = await getMultiOperatorExternalProductsByNoc(noc);
     // 1. filter out expired products
     const nonExpiredProducts = getNonExpiredProducts(products);
 
