@@ -133,7 +133,7 @@ describe('pages', () => {
                 const ctx = getMockContext({
                     session: {
                         [FARE_TYPE_ATTRIBUTE]: {
-                            fareType: 'multioperator',
+                            fareType: 'multiOperator',
                         },
                         [NUMBER_OF_PRODUCTS_ATTRIBUTE]: undefined,
                         [TICKET_REPRESENTATION_ATTRIBUTE]: { name: 'multipleServicesFlatFareMultiOperator' },
