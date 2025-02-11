@@ -9,6 +9,7 @@ import {
     SelectedService,
     Stop,
     SecondaryOperatorServices,
+    SecondaryOperatorFareZone,
 } from 'fdbt-types/matchingJsonTypes';
 import {
     getFareDayEnd,
@@ -21,6 +22,7 @@ import {
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
 import { DbCap, DbTimeRestriction } from 'fdbt-types/dbTypes';
+import { Secondary } from 'aws-sdk/clients/eventbridge';
 
 const s3: S3 = new S3(
     process.env.NODE_ENV === 'development'
@@ -91,9 +93,9 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                                 operator.selectedServices = additionalServices.selectedServices;
 
                                 if (additionalServices.exemptStops && additionalServices.exemptStops.length > 0) {
-                                    ticketWithIds.exemptStops = ticketWithIds.exemptStops
-                                        ? ticketWithIds.exemptStops.concat(additionalServices.exemptStops)
-                                        : additionalServices.exemptStops;
+                                    ticketWithIds.exemptStops = (ticketWithIds.exemptStops || []).concat(
+                                        additionalServices.exemptStops,
+                                    );
                                 }
                             }
                         } catch (error) {
@@ -117,17 +119,11 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                                 .promise();
 
                             if (additionalStopsObject.Body) {
-                                const additionalStops = JSON.parse(additionalStopsObject.Body.toString('utf-8')) as {
-                                    zoneName: string;
-                                    stops: Stop[];
-                                    exemptedServices?: SelectedService[];
-                                };
-                                console.log('additionalStops', additionalStops);
-                                console.log('ticketWithIds', ticketWithIds);
+                                const additionalStops = JSON.parse(
+                                    additionalStopsObject.Body.toString('utf-8'),
+                                ) as SecondaryOperatorFareZone;
 
                                 ticketWithIds.stops = ticketWithIds.stops.concat(additionalStops.stops);
-
-                                console.log('ticketWithIdsAfterConcat', ticketWithIds);
 
                                 if (additionalStops.exemptedServices && additionalStops.exemptedServices.length > 0) {
                                     ticketWithIds.exemptedServices = (ticketWithIds.exemptedServices || []).concat(
@@ -143,8 +139,6 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                     }
 
                     ticketWithIds.stops = removeDuplicates(ticketWithIds.stops, 'atcoCode');
-
-                    console.log('afterRemoveDuplictaes', ticketWithIds.stops);
                 }
             }
 

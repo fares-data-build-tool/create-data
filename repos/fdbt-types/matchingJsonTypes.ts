@@ -113,9 +113,15 @@ export type TicketWithIds =
     | WithIds<PeriodHybridTicket>;
 
 export type SecondaryOperatorServices = {
-                                    selectedServices: SelectedService[];
-                                    exemptStops?: Stop[];
-                                };
+    selectedServices: SelectedService[];
+    exemptStops?: Stop[];
+};
+
+export type SecondaryOperatorFareZone = {
+    zoneName: string;
+    stops: Stop[];
+    exemptedServices?: SelectedService[];
+}
 
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 

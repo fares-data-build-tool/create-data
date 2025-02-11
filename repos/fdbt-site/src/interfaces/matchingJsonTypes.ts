@@ -143,13 +143,13 @@ export interface SecondaryOperatorServices {
     exemptStops?: Stop[];
 }
 
-export interface SecondaryOperatorStops {
+export interface SecondaryOperatorFareZone {
     zoneName: string;
     stops: Stop[];
     exemptedServices?: SelectedService[];
 }
 
-export type SecondaryOperatorFareInfo = SecondaryOperatorServices | SecondaryOperatorStops;
+export type SecondaryOperatorFareInfo = SecondaryOperatorServices | SecondaryOperatorFareZone;
 
 export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
     type: 'flatFare';

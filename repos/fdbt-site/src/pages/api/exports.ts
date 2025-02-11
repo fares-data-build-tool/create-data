@@ -1,11 +1,9 @@
 import { NextApiResponse } from 'next';
 import { getAndValidateNoc } from '../../utils/apiUtils';
-import { NextApiRequestWithSession, EntityStatus } from '../../interfaces';
+import { NextApiRequestWithSession } from '../../interfaces';
 import { getS3Exports } from '../../data/s3';
 import { getAllProductsByNoc } from '../../data/auroradb';
-import { triggerExport } from '../../utils/apiUtils/export';
-import { getEntityStatus } from '../products/services';
-import { DbProduct } from '../../interfaces/dbTypes';
+import { getNonExpiredProducts, triggerExport } from '../../utils/apiUtils/export';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const noc = getAndValidateNoc(req, res);
@@ -33,23 +31,4 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
 
     res.status(204).send('');
-};
-
-/**
- * Filters out expired product and returns only the non-expired products.
- *
- * @param products the unfiltered products list
- *
- * @returns only non-expired products are an array.
- */
-export const getNonExpiredProducts = (products: DbProduct[]): DbProduct[] => {
-    return products.filter((product) => {
-        const status = getEntityStatus(product.startDate, product.endDate);
-
-        if (status !== EntityStatus.Expired) {
-            return true;
-        }
-
-        return false;
-    });
 };
