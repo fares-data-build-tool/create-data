@@ -1,9 +1,10 @@
-import { processSecondaryOperatorServices, removeDuplicates } from '../lib/handler';
+import { processSecondaryOperatorFareZone, processSecondaryOperatorServices, removeDuplicates } from '../lib/handler';
 import { SelectedService, Stop } from 'fdbt-types/matchingJsonTypes';
 import * as s3 from '../lib/s3';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import { AWSError } from 'aws-sdk';
 import { GetObjectOutput } from 'aws-sdk/clients/s3';
+import resetAllMocks = jest.resetAllMocks;
 
 const mockStops: Partial<Stop>[] = [
     {
@@ -21,6 +22,23 @@ const mockStops: Partial<Stop>[] = [
     {
         stopName: 'Broadway',
         atcoCode: '445566',
+    },
+];
+
+const mockServices: SelectedService[] = [
+    {
+        lineName: 'Route 1',
+        lineId: 'R1',
+        serviceCode: 'SC123',
+        startDate: '2023-01-01',
+        serviceDescription: 'Main route from downtown to uptown',
+    },
+    {
+        lineName: 'Route 2',
+        lineId: 'R2',
+        serviceCode: 'SC456',
+        startDate: '2023-01-01',
+        serviceDescription: 'Main route from station to town hall',
     },
 ];
 
@@ -54,40 +72,27 @@ describe('processSecondaryOperatorServices', () => {
     const mockNocCodes = ['TEST1', 'TEST2', 'TEST3'];
     const getObjectSpy = jest.spyOn(s3, 'getS3Object');
 
-    const mockServiceData: SelectedService[] = [
-        {
-            lineName: 'Route 1',
-            lineId: 'R1',
-            serviceCode: 'SC123',
-            startDate: '2023-01-01',
-            serviceDescription: 'Main route from downtown to uptown',
-        },
-        {
-            lineName: 'Route 2',
-            lineId: 'R2',
-            serviceCode: 'SC456',
-            startDate: '2023-01-01',
-            serviceDescription: 'Main route from station to town hall',
-        },
-    ];
+    afterEach(() => {
+        resetAllMocks();
+    });
 
     it('should return process additionalOperators and exempt stops if they exist', async () => {
         getObjectSpy.mockResolvedValueOnce({
             Body: JSON.stringify({
                 nocCode: 'TEST1',
-                selectedServices: mockServiceData,
+                selectedServices: mockServices,
                 exemptStops: mockStops.slice(0, 2),
             }),
             $response: {} as AWS.Response<GetObjectOutput, AWSError>,
         });
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({ nocCode: 'TEST2', selectedServices: mockServiceData }),
+            Body: JSON.stringify({ nocCode: 'TEST2', selectedServices: mockServices }),
             $response: {} as AWS.Response<GetObjectOutput, AWSError>,
         });
         getObjectSpy.mockResolvedValueOnce({
             Body: JSON.stringify({
                 nocCode: 'TEST3',
-                selectedServices: mockServiceData,
+                selectedServices: mockServices,
                 exemptStops: mockStops.slice(2, 4),
             }),
             $response: {} as AWS.Response<GetObjectOutput, AWSError>,
@@ -102,15 +107,15 @@ describe('processSecondaryOperatorServices', () => {
             additionalOperators: [
                 {
                     nocCode: 'TEST1',
-                    selectedServices: mockServiceData,
+                    selectedServices: mockServices,
                 },
                 {
                     nocCode: 'TEST2',
-                    selectedServices: mockServiceData,
+                    selectedServices: mockServices,
                 },
                 {
                     nocCode: 'TEST3',
-                    selectedServices: mockServiceData,
+                    selectedServices: mockServices,
                 },
             ],
             exemptStops: mockStops,
@@ -132,14 +137,14 @@ describe('processSecondaryOperatorServices', () => {
     it('should handle if one operator had not provided info but the other operators have', async () => {
         getObjectSpy.mockRejectedValueOnce(new Error());
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({ nocCode: 'TEST2', selectedServices: mockServiceData }),
+            Body: JSON.stringify({ nocCode: 'TEST2', selectedServices: mockServices }),
             $response: {} as AWS.Response<GetObjectOutput, AWSError>,
         });
 
         getObjectSpy.mockResolvedValueOnce({
             Body: JSON.stringify({
                 nocCode: 'TEST3',
-                selectedServices: mockServiceData,
+                selectedServices: mockServices,
                 exemptStops: mockStops.slice(2, 4),
             }),
             $response: {} as AWS.Response<GetObjectOutput, AWSError>,
@@ -153,14 +158,100 @@ describe('processSecondaryOperatorServices', () => {
             additionalOperators: [
                 {
                     nocCode: 'TEST2',
-                    selectedServices: mockServiceData,
+                    selectedServices: mockServices,
                 },
                 {
                     nocCode: 'TEST3',
-                    selectedServices: mockServiceData,
+                    selectedServices: mockServices,
                 },
             ],
             exemptStops: mockStops.slice(2, 4),
+        });
+        expect(getObjectSpy).toBeCalledTimes(3);
+    });
+});
+
+describe('processSecondaryOperatorFareZone', () => {
+    const mockNocCodes = ['TEST1', 'TEST2', 'TEST3'];
+    const getObjectSpy = jest.spyOn(s3, 'getS3Object');
+
+    afterEach(() => {
+        resetAllMocks();
+    });
+
+    it('should return stops and exemptedServices if they exist', async () => {
+        getObjectSpy.mockResolvedValueOnce({
+            Body: JSON.stringify({
+                nocCode: 'TEST1',
+                stops: mockStops,
+                exemptedServices: mockServices.slice(0, 1),
+            }),
+            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
+        });
+        getObjectSpy.mockResolvedValueOnce({
+            Body: JSON.stringify({
+                nocCode: 'TEST2',
+                stops: mockStops,
+            }),
+            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
+        });
+        getObjectSpy.mockResolvedValueOnce({
+            Body: JSON.stringify({
+                nocCode: 'TEST3',
+                stops: mockStops,
+                exemptedServices: mockServices.slice(1, 2),
+            }),
+            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
+        });
+        const result = await processSecondaryOperatorFareZone(
+            mockNocCodes,
+            'testMatchingJson/link',
+            'TEST_PRODUCT_BUCKET',
+        );
+
+        expect(result).toEqual({
+            secondaryOperatorStops: [...mockStops, ...mockStops, ...mockStops],
+            exemptedServices: mockServices,
+        });
+        expect(getObjectSpy).toBeCalledTimes(3);
+    });
+
+    it('should return an empty array for additionalOperators and exemptStops if there is no S3 file for a secondary operator', async () => {
+        getObjectSpy.mockRejectedValueOnce(new Error());
+        const result = await processSecondaryOperatorFareZone(
+            [mockNocCodes[0]],
+            'testMatchingJson/link',
+            'TEST_PRODUCT_BUCKET',
+        );
+        expect(result).toEqual({ secondaryOperatorStops: [], exemptedServices: [] });
+        expect(getObjectSpy).toBeCalledTimes(1);
+    });
+
+    it('should handle if one operator had not provided info but the other operators have', async () => {
+        getObjectSpy.mockRejectedValueOnce(new Error());
+        getObjectSpy.mockResolvedValueOnce({
+            Body: JSON.stringify({
+                nocCode: 'TEST2',
+                stops: mockStops,
+            }),
+            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
+        });
+        getObjectSpy.mockResolvedValueOnce({
+            Body: JSON.stringify({
+                nocCode: 'TEST3',
+                stops: mockStops,
+                exemptedServices: mockServices.slice(1, 2),
+            }),
+            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
+        });
+        const result = await processSecondaryOperatorFareZone(
+            mockNocCodes,
+            'testMatchingJson/link',
+            'TEST_PRODUCT_BUCKET',
+        );
+        expect(result).toEqual({
+            secondaryOperatorStops: [...mockStops, ...mockStops],
+            exemptedServices: mockServices.slice(1, 2),
         });
         expect(getObjectSpy).toBeCalledTimes(3);
     });
