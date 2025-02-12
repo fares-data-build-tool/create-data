@@ -66,6 +66,7 @@ describe('searchOperators', () => {
             const getProductsMatchingJsonMock = jest.spyOn(s3, 'getProductsMatchingJson');
             const insertProductAdditionalNocsMock = jest.spyOn(auroradb, 'insertProductAdditionalNocs');
             const deleteProductAdditionalNocsMock = jest.spyOn(auroradb, 'deleteProductAdditionalNocs');
+            const updateProductIncompleteStatusMock = jest.spyOn(auroradb, 'updateProductIncompleteStatus');
             const putUserDataInProductsBucketWithFilePathMock = jest.spyOn(
                 userDataFunctions,
                 'putUserDataInProductsBucketWithFilePath',
@@ -113,6 +114,7 @@ describe('searchOperators', () => {
             getOtherProductsByNocMock.mockResolvedValue(multiOperatorProductsFromDb);
             insertProductAdditionalNocsMock.mockResolvedValue(void 0);
             deleteProductAdditionalNocsMock.mockResolvedValue(void 0);
+            updateProductIncompleteStatusMock.mockResolvedValue(void 0);
             getProductsMatchingJsonMock.mockResolvedValueOnce(
                 expectedMultiOperatorExtGeoZoneTicketWithMultipleProducts,
             );
@@ -136,6 +138,8 @@ describe('searchOperators', () => {
             expect(insertProductAdditionalNocsMock).toHaveBeenCalledWith(1, ['ABCD']);
             expect(deleteProductAdditionalNocsMock).toHaveBeenCalledTimes(1);
             expect(deleteProductAdditionalNocsMock).toHaveBeenCalledWith(1, ['MCTR', 'WBTR']);
+            expect(updateProductIncompleteStatusMock).toHaveBeenCalledTimes(1);
+            expect(updateProductIncompleteStatusMock).toHaveBeenCalledWith(2, true);
             expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenCalledTimes(2);
             expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenNthCalledWith(
                 1,
@@ -159,6 +163,7 @@ describe('searchOperators', () => {
             const getProductsMatchingJsonMock = jest.spyOn(s3, 'getProductsMatchingJson');
             const insertProductAdditionalNocsMock = jest.spyOn(auroradb, 'insertProductAdditionalNocs');
             const deleteProductAdditionalNocsMock = jest.spyOn(auroradb, 'deleteProductAdditionalNocs');
+            const updateProductIncompleteStatusMock = jest.spyOn(auroradb, 'updateProductIncompleteStatus');
             const putUserDataInProductsBucketWithFilePathMock = jest.spyOn(
                 userDataFunctions,
                 'putUserDataInProductsBucketWithFilePath',
@@ -226,6 +231,7 @@ describe('searchOperators', () => {
             getOtherProductsByNocMock.mockResolvedValue(multiOperatorProductsFromDb);
             insertProductAdditionalNocsMock.mockResolvedValue(void 0);
             deleteProductAdditionalNocsMock.mockResolvedValue(void 0);
+            updateProductIncompleteStatusMock.mockResolvedValue(void 0);
             getProductsMatchingJsonMock.mockResolvedValueOnce(
                 expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperatorsExt,
             );
@@ -251,6 +257,8 @@ describe('searchOperators', () => {
             expect(insertProductAdditionalNocsMock).toHaveBeenCalledWith(1, ['ABCD']);
             expect(deleteProductAdditionalNocsMock).toHaveBeenCalledTimes(1);
             expect(deleteProductAdditionalNocsMock).toHaveBeenCalledWith(1, ['WBTR', 'TESTSCHEME']);
+            expect(updateProductIncompleteStatusMock).toHaveBeenCalledTimes(1);
+            expect(updateProductIncompleteStatusMock).toHaveBeenCalledWith(2, true);
             expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenCalledTimes(2);
             expect(putUserDataInProductsBucketWithFilePathMock).toHaveBeenNthCalledWith(
                 1,
