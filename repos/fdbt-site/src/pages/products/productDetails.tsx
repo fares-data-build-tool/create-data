@@ -817,7 +817,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     let isIncomplete = false;
 
-    if (ticket.type === 'multiOperatorExt') {
+    if (ticket.type === 'multiOperator') {
+        if ('additionalOperators' in ticket) {
+            isIncomplete = ticket.additionalOperators.some((operator) => operator.selectedServices.length === 0);
+        }
+    } else if (ticket.type === 'multiOperatorExt') {
         const additionalOperators = 'additionalOperators' in ticket ? ticket.additionalOperators : [];
         const additionalNocs = 'additionalNocs' in ticket ? ticket.additionalNocs : [];
         const isFareZoneType = 'zoneName' in ticket;

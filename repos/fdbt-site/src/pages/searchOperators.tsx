@@ -65,7 +65,10 @@ export const showSelectedOperators = (
             const newSelectedOperators = selectedOperators.filter((operator) => operator.nocCode !== nocCode);
             const operatorToRemove = databaseSearchResults.find((operator) => operator.nocCode === nocCode) as Operator;
             setSelectedOperators(newSelectedOperators);
-            setSearchResults(alphabetiseOperatorList([...searchResults, operatorToRemove]));
+
+            if (operatorToRemove) {
+                setSearchResults(alphabetiseOperatorList([...searchResults, operatorToRemove]));
+            }
         }
         if (event) {
             event.preventDefault();

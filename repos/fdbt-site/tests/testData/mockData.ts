@@ -2580,6 +2580,77 @@ export const expectedMultiOperatorGeoZoneTicketWithMultipleProducts: WithIds<Mul
     operatorGroupId: 1,
 };
 
+export const expectedMultiOperatorExtGeoZoneTicketWithMultipleProducts: WithIds<MultiOperatorGeoZoneTicket> = {
+    operatorName: 'test',
+    type: 'multiOperatorExt',
+    nocCode: 'TEST',
+    uuid: '1e0459b3-082e-4e70-89db-96e8ae173e10',
+    email: 'test@example.com',
+    zoneName: 'Green Lane Shops',
+    stops: zoneStops,
+    passengerType: { id: 9 },
+    timeRestriction: { id: 2 },
+    ticketPeriod: {
+        startDate: '2020-12-17T09:30:46.0Z',
+        endDate: '2020-12-18T09:30:46.0Z',
+    },
+    products: [
+        {
+            productName: 'Weekly Ticket',
+            productPrice: '50',
+            productDuration: '5 weeks',
+            productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
+            carnetDetails: undefined,
+        },
+        {
+            productName: 'Day Ticket',
+            productPrice: '2.50',
+            productDuration: '1 year',
+            productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
+            carnetDetails: undefined,
+        },
+        {
+            productName: 'Monthly Ticket',
+            productPrice: '200',
+            productDuration: '28 months',
+            productValidity: '24hr',
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: undefined,
+                },
+                {
+                    id: 2,
+                    price: undefined,
+                },
+            ],
+            carnetDetails: undefined,
+        },
+    ],
+    additionalNocs: ['MCTR', 'WBTR', 'BLAC'],
+    operatorGroupId: 1,
+};
+
 export const expectedPeriodMultipleServicesTicketWithMultipleProducts: WithIds<PeriodMultipleServicesTicket> = {
     operatorName: 'test',
     type: 'period',

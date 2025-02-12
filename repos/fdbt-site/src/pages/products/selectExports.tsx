@@ -406,7 +406,7 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                             {otherProducts.length > 0 ? (
                                                 <div>
                                                     <h2 className="govuk-heading-m govuk-!-margin-bottom-6">
-                                                        Multioperator products
+                                                        Multi-operator (internal) products
                                                     </h2>
 
                                                     {formattedProducts.multiOperatorProducts.length > 0 ? (
@@ -421,8 +421,8 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                                     ) : (
                                                         <p className="govuk-body-m govuk-!-margin-top-5">
                                                             <em>
-                                                                You currently have no multioperator products that can be
-                                                                exported.
+                                                                You currently have no multi-operator products that can
+                                                                be exported.
                                                             </em>
                                                         </p>
                                                     )}

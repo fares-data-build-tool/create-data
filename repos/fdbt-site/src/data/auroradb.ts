@@ -1882,25 +1882,33 @@ export const insertProducts = async (
         ]);
 
         if (additionalNocs) {
-            logger.info('', {
-                context: 'data.auroradb',
-                message: 'inserting product additional NOCs for given noc',
-                noc: nocCode,
-                productId,
-                additionalNocs: additionalNocs.join(', '),
-            });
-
-            const insertAdditionalNocsQuery =
-                'INSERT INTO productAdditionalNocs (productId, additionalNocCode) VALUES ?';
-
-            await executeQuery(
-                insertAdditionalNocsQuery,
-                additionalNocs.map((additionalNoc) => [productId, additionalNoc]),
-                true,
-            );
+            await updateProductAdditionalNocs(productId, additionalNocs);
         }
     } catch (error) {
         throw new Error(`Could not insert products into the products table. ${error.stack}`);
+    }
+};
+
+export const updateProductAdditionalNocs = async (productId: number, nocCodes: string[]): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'updating product additional NOCSs for given product ID',
+        productId,
+    });
+
+    try {
+        const removeOldAdditionalNocsQuery = 'DELETE FROM productAdditionalNocs WHERE productId = ?';
+        await executeQuery(removeOldAdditionalNocsQuery, [productId]);
+
+        const insertAdditionalNocsQuery = 'INSERT INTO productAdditionalNocs (productId, additionalNocCode) VALUES ?';
+
+        await executeQuery(
+            insertAdditionalNocsQuery,
+            nocCodes.map((additionalNoc) => [productId, additionalNoc]),
+            true,
+        );
+    } catch (error) {
+        throw new Error(`Could not update product additional NOCS in the productAdditionalNocs table. ${error}`);
     }
 };
 
@@ -2139,7 +2147,7 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
 
     try {
         const queryInput = `
-            SELECT id, matchingJsonLink, startDate, endDate
+            SELECT id, matchingJsonLink, startDate, endDate, fareType
             FROM products
             WHERE lineId = ''
             AND nocCode = ?

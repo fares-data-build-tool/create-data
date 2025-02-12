@@ -72,7 +72,7 @@ const ViewOperatorGroups = ({
                 <div className="govuk-grid-column-three-quarters">
                     <h1 className="govuk-heading-xl">Operator Groups</h1>
                     <p className="govuk-body govuk-!-margin-bottom-8">
-                        Define a group of operators for use in a multioperator product.
+                        Define a group of operators for use in a multi-operator product.
                     </p>
 
                     <div>
