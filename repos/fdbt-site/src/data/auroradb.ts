@@ -1881,7 +1881,7 @@ export const insertProducts = async (
             endDate || '',
         ]);
 
-        if (additionalNocs) {
+        if (additionalNocs.length > 0) {
             await updateProductAdditionalNocs(productId, additionalNocs);
         }
     } catch (error) {
