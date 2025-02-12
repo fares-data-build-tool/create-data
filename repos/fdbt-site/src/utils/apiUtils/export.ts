@@ -1,8 +1,7 @@
 import { Lambda } from 'aws-sdk';
 import { ExportLambdaBody, ZipperLambdaBody } from '../../interfaces/integrationTypes';
-import { getEntityStatus } from '../../pages/products/services';
+import { getProductStatus } from '../../pages/products/services';
 import { DbProduct } from '../../interfaces/dbTypes';
-import { EntityStatus } from '../../interfaces';
 
 const lambda = new Lambda({ region: 'eu-west-2' });
 
@@ -29,14 +28,9 @@ export const triggerZipper = async (params: ZipperLambdaBody): Promise<void> => 
  *
  * @returns only non-expired products are an array.
  */
-export const getNonExpiredProducts = (products: DbProduct[]): DbProduct[] => {
+export const getActiveOrPendingProducts = (products: DbProduct[]): DbProduct[] => {
     return products.filter((product) => {
-        const status = getEntityStatus(product.startDate, product.endDate);
-
-        if (status !== EntityStatus.Expired) {
-            return true;
-        }
-
-        return false;
+        const status = getProductStatus(product.incomplete, product.startDate, product.endDate);
+        return status === 'active' || status === 'pending';
     });
 };

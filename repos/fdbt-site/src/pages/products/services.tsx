@@ -3,7 +3,7 @@ import {
     MyFaresService,
     MyFaresServiceWithProductCount,
     NextPageContextWithSession,
-    EntityStatus,
+    ProductStatus,
 } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
 import { getPointToPointProducts, getBodsOrTndsServicesByNoc } from '../../data/auroradb';
@@ -81,7 +81,7 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
                         <td className="govuk-table__cell dft-text-align-centre">{service.startDate}</td>
                         <td className="govuk-table__cell dft-text-align-centre">{service.endDate || '-'}</td>
                         <td className="govuk-table__cell dft-text-align-centre">
-                            {getTag(service.startDate, service.endDate, true)}
+                            {getProductStatusTag(false, service.startDate, service.endDate, true)}
                             {service.requiresAttention === true ? (
                                 <strong className="govuk-tag govuk-tag--yellow dft-table-tag">Needs attention</strong>
                             ) : null}
@@ -93,36 +93,48 @@ const ServicesTable = (services: MyFaresServiceWithProductCount[]): ReactElement
     );
 };
 
-export const getEntityStatus = (startDate: string, endDate: string | undefined): EntityStatus => {
+export const getProductStatus = (
+    incomplete: boolean,
+    startDate: string,
+    endDate: string | undefined,
+): ProductStatus => {
+    if (incomplete) {
+        return 'incomplete';
+    }
+
     const today = moment.utc().startOf('day').valueOf();
     const startDateAsUnixTime = moment.utc(startDate, 'DD/MM/YYYY').valueOf();
     const endDateAsUnixTime = endDate ? moment.utc(endDate, 'DD/MM/YYYY').valueOf() : undefined;
 
     if (startDateAsUnixTime <= today && (!endDateAsUnixTime || endDateAsUnixTime >= today)) {
-        return EntityStatus.Active;
+        return 'active';
     } else if (startDateAsUnixTime > today) {
-        return EntityStatus.Pending;
-    } else {
-        return EntityStatus.Expired;
+        return 'pending';
     }
+
+    return 'expired';
 };
 
-export const getTag = (startDate: string, endDate: string | undefined, isWithinATable: boolean): JSX.Element => {
-    const status = getEntityStatus(startDate, endDate);
+export const getProductStatusTag = (
+    incomplete: boolean,
+    startDate: string,
+    endDate: string | undefined,
+    isWithinATable: boolean,
+): JSX.Element => {
+    const status = getProductStatus(incomplete, startDate, endDate);
+    const isWithinATableClass = isWithinATable ? ' dft-table-tag' : '';
 
-    if (status === EntityStatus.Active) {
-        return (
-            <strong className={`govuk-tag govuk-tag--turquoise${isWithinATable ? ' dft-table-tag' : ''}`}>
-                Active
-            </strong>
-        );
-    } else if (status === EntityStatus.Pending) {
-        return (
-            <strong className={`govuk-tag govuk-tag--blue${isWithinATable ? ' dft-table-tag' : ''}`}>Pending</strong>
-        );
-    } else {
-        return <strong className={`govuk-tag govuk-tag--red${isWithinATable ? ' dft-table-tag' : ''}`}>Expired</strong>;
-    }
+    return status === 'active' ? (
+        <strong className={`govuk-tag govuk-tag--turquoise${isWithinATableClass}`}>Active</strong>
+    ) : status === 'pending' ? (
+        <strong className={`govuk-tag govuk-tag--blue${isWithinATableClass}`}>Pending</strong>
+    ) : status === 'expired' ? (
+        <strong className={`govuk-tag govuk-tag--red${isWithinATableClass}`}>Expired</strong>
+    ) : status === 'incomplete' ? (
+        <strong className={`govuk-tag govuk-tag--yellow${isWithinATableClass}`}>Incomplete</strong>
+    ) : (
+        <strong className={`govuk-tag govuk-tag--grey${isWithinATableClass}`}>Unknown</strong>
+    );
 };
 
 export const showProductAgainstService = (

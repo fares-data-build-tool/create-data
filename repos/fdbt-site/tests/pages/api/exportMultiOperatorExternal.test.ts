@@ -15,6 +15,7 @@ const mockProducts: DbProduct[] = [
         fareType: 'single',
         matchingJsonLink: '/matching/json/link/1',
         startDate: '01/02/2022',
+        incomplete: false,
     },
     {
         id: '2',
@@ -22,6 +23,7 @@ const mockProducts: DbProduct[] = [
         fareType: 'single',
         matchingJsonLink: '/matching/json/link/2',
         startDate: '01/02/2022',
+        incomplete: false,
     },
     {
         id: '3',
@@ -30,6 +32,7 @@ const mockProducts: DbProduct[] = [
         matchingJsonLink: '/matching/json/link/3',
         startDate: '01/02/2022',
         endDate: '01/02/2023',
+        incomplete: false,
     },
 ];
 

@@ -36,11 +36,7 @@ export type DocumentContextWithSession = DocumentContext & {
     req: Session;
 };
 
-export enum EntityStatus {
-    Active,
-    Expired,
-    Pending,
-}
+export type ProductStatus = 'active' | 'pending' | 'expired' | 'incomplete';
 
 export type IncomingMessageWithSession = IncomingMessage & Session;
 

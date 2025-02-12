@@ -9,6 +9,7 @@ import { NextApiRequestWithSession } from '../../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../../../src/utils/sessions';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 import { AdditionalOperator, SelectedService } from '../../interfaces/matchingJsonTypes';
+import { updateProductIncompleteStatus } from '../../data/auroradb';
 
 export const getMultiOperatorsDataFromRequest = (requestBody: {
     [key: string]: string | string[];
@@ -90,9 +91,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 additionalOperators: listOfMultiOperatorsData,
             };
 
-            // put the now updated matching json into s3
-            // overriding the existing object
             await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            await updateProductIncompleteStatus(matchingJsonMetaData.productId, false);
             updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, undefined);
 
             redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData.productId}`);

@@ -1,14 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 import { NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
-import {
-    checkIfMultiOperatorProductIsIncomplete,
-    convertDateFormat,
-    getAndValidateNoc,
-    getCsrfToken,
-    sentenceCaseString,
-} from '../../utils';
-import { getTag } from './services';
+import { convertDateFormat, getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../../utils';
+import { getProductStatusTag } from './services';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
 import { getGroupPassengerTypeById, getMultiOperatorExternalProducts, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
@@ -20,7 +14,7 @@ const description = 'View and access your multi-operator products in one place.'
 
 export type MultiOperatorProductExternal = {
     id: number;
-    isIncomplete: boolean;
+    incomplete: boolean;
     productDescription: string;
     duration: string;
     startDate: string;
@@ -181,12 +175,11 @@ const MultiOperatorProductsTable = (
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
                                   <td className="govuk-table__cell">
-                                      {product.isIncomplete ? (
-                                          <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
-                                              Incomplete
-                                          </strong>
-                                      ) : (
-                                          getTag(product.startDate, product.endDate, true)
+                                      {getProductStatusTag(
+                                          product.incomplete,
+                                          product.startDate,
+                                          product.endDate,
+                                          true,
                                       )}
                                   </td>
                                   {deleteActionHandler ? (
@@ -234,11 +227,6 @@ export const getServerSideProps = async (
         const isSharedProduct = secondaryOperatorNocs.includes(yourNoc);
 
         if (product.nocCode === yourNoc || isSharedProduct) {
-            const isIncomplete = await checkIfMultiOperatorProductIsIncomplete(
-                product.matchingJsonLink,
-                secondaryOperatorNocs,
-            );
-
             const startDate = matchingJson.ticketPeriod.startDate
                 ? convertDateFormat(matchingJson.ticketPeriod.startDate)
                 : '-';
@@ -257,7 +245,7 @@ export const getServerSideProps = async (
 
                 const productData = {
                     id: product.id,
-                    isIncomplete,
+                    incomplete: product.incomplete,
                     productDescription,
                     duration,
                     startDate,

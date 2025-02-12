@@ -785,10 +785,12 @@ export const insertDataToProductsBucketAndProductsTable = async (
         const { startDate, endDate } = userDataJson.ticketPeriod;
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
         const additionalNocs = getAdditionalNocsFromTicket(userDataJson);
+        const incomplete = userDataJson.type === 'multiOperatorExt';
 
         await insertProducts(
             nocCode,
             filePath,
+            incomplete,
             dateTime,
             userDataJson.type,
             lineId,

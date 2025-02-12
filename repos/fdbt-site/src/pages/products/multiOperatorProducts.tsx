@@ -4,7 +4,7 @@ import { BaseLayout } from '../../layout/Layout';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString, getCsrfToken } from '../../utils';
 import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
-import { getTag } from './services';
+import { getProductStatusTag } from './services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
@@ -15,7 +15,7 @@ const description = 'View and access your multi-operator products (internal) in 
 
 export type MultiOperatorProduct = {
     id: number;
-    isIncomplete: boolean;
+    incomplete: boolean;
     type: string;
     productDescription: string;
     duration: string;
@@ -144,12 +144,11 @@ const MultiOperatorProductsTable = (
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
                                   <td className="govuk-table__cell">
-                                      {product.isIncomplete ? (
-                                          <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
-                                              Incomplete
-                                          </strong>
-                                      ) : (
-                                          getTag(product.startDate, product.endDate, true)
+                                      {getProductStatusTag(
+                                          product.incomplete,
+                                          product.startDate,
+                                          product.endDate,
+                                          true,
                                       )}
                                   </td>
                                   <td className="govuk-table__cell">
@@ -216,7 +215,7 @@ export const getServerSideProps = async (
                                   (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
                                   (await getGroupPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
                                   '';
-                              const { id } = product;
+                              const { id, incomplete } = product;
 
                               const startDate = matchingJson.ticketPeriod.startDate
                                   ? convertDateFormat(matchingJson.ticketPeriod.startDate)
@@ -224,13 +223,6 @@ export const getServerSideProps = async (
                               const endDate = matchingJson.ticketPeriod.endDate
                                   ? convertDateFormat(matchingJson.ticketPeriod.endDate)
                                   : '-';
-                              let isIncomplete = false;
-
-                              if ('additionalOperators' in matchingJson) {
-                                  isIncomplete = matchingJson.additionalOperators.some(
-                                      (operator) => operator.selectedServices.length === 0,
-                                  );
-                              }
 
                               return {
                                   productDescription,
@@ -240,7 +232,7 @@ export const getServerSideProps = async (
                                   startDate,
                                   endDate,
                                   id,
-                                  isIncomplete,
+                                  incomplete,
                               };
                           })
                         : [],

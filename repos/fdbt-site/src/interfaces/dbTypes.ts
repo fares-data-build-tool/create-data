@@ -32,6 +32,7 @@ export interface MyFaresProduct {
     endDate?: string;
     servicesRequiringAttention?: string[];
     fareTriangleModified?: string;
+    incomplete: boolean;
 }
 
 export type RawMyFaresProduct = Omit<MyFaresProduct, 'servicesRequiringAttention'> & {
@@ -41,6 +42,7 @@ export type RawMyFaresProduct = Omit<MyFaresProduct, 'servicesRequiringAttention
 export interface DbProduct {
     id: string;
     matchingJsonLink: string;
+    incomplete: boolean;
     lineId: string;
     fareType: TicketType;
     startDate: string;

@@ -13,6 +13,7 @@ CREATE TABLE products(
     `endDate` datetime NOT NULL,
     `servicesRequiringAttention` varchar(1000),
     `fareTriangleModified` DATETIME DEFAULT NULL,
+    `incomplete` BOOLEAN NOT NULL,
     INDEX idx_nocCode (nocCode),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
