@@ -13,8 +13,11 @@ CREATE TABLE products(
     `endDate` datetime NOT NULL,
     `servicesRequiringAttention` varchar(1000),
     `fareTriangleModified` DATETIME DEFAULT NULL,
+    `operatorGroupId` int(11),
     INDEX idx_nocCode (nocCode),
-    PRIMARY KEY (`id`)
+    INDEX idx_operatorGroupId (operatorGroupId),
+    PRIMARY KEY (`id`),
+    CONSTRAINT fk_products_operatorGroup_id FOREIGN KEY (operatorGroupId) REFERENCES operatorGroup(id)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
 
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -97,7 +97,8 @@ export const getServerSideProps = async (
     const noc = getAndValidateNoc(ctx);
     const operatorGroups = await getOperatorGroupsByNoc(noc);
 
-    const errors = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE) || [];
+    const operatorGroupAttribute = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE);
+    const errors = operatorGroupAttribute && 'errors' in operatorGroupAttribute ? operatorGroupAttribute.errors : [];
 
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);

@@ -8,7 +8,7 @@ import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { searchInputId } from '../searchOperators';
 import {
     getOperatorGroupsByNameAndNoc,
-    getOtherProductsByNoc,
+    getProductsByOperatorGroupId,
     insertOperatorGroup,
     operatorHasBodsServices,
     operatorHasFerryOrTramServices,
@@ -54,8 +54,12 @@ export const isSearchInputValid = (searchText: string): boolean => {
     return searchRegex.test(searchText);
 };
 
-export const updateAssociatedProducts = async (nocCode: string, operatorGroupNocs: string[]): Promise<void> => {
-    const multiOperatorProductsFromDb = await getOtherProductsByNoc(nocCode);
+export const updateAssociatedProducts = async (
+    nocCode: string,
+    operatorGroupId: number,
+    operatorGroupNocs: string[],
+): Promise<void> => {
+    const multiOperatorProductsFromDb = await getProductsByOperatorGroupId(nocCode, operatorGroupId);
 
     for await (const product of multiOperatorProductsFromDb) {
         if (product.fareType === 'multiOperator' || product.fareType === 'multiOperatorExt') {
@@ -191,7 +195,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             if (isInEditMode) {
                 await updateOperatorGroup(id, noc, selectedOperators, refinedGroupName);
                 const operatorGroupNocs = selectedOperators.map((operator) => operator.nocCode);
-                await updateAssociatedProducts(noc, operatorGroupNocs);
+                await updateAssociatedProducts(noc, id, operatorGroupNocs);
             } else {
                 await insertOperatorGroup(noc, selectedOperators, refinedGroupName);
             }

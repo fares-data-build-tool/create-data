@@ -17,18 +17,18 @@ import { AdditionalOperator } from 'src/interfaces/matchingJsonTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const selectedOperatorGroup = Number(req.body.operatorGroupId);
+        const operatorGroupId = Number(req.body.operatorGroupId);
         const noc = getAndValidateNoc(req, res);
 
-        if (!selectedOperatorGroup) {
-            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
-                { errorMessage: 'Choose an operator group from the options below', id: 'operatorGroup' },
-            ]);
+        if (!operatorGroupId) {
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, {
+                errors: [{ errorMessage: 'Choose an operator group from the options below', id: 'operatorGroup' }],
+            });
             redirectTo(res, '/reuseOperatorGroup');
             return;
         }
 
-        const multipleOperators = await getOperatorGroupByNocAndId(selectedOperatorGroup, noc);
+        const multipleOperators = await getOperatorGroupByNocAndId(operatorGroupId, noc);
 
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
@@ -63,11 +63,11 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 selectedOperators: multipleOperators.operators,
                 id: multipleOperators.id,
             });
-            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, { operatorGroupId });
         } else {
-            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
-                { errorMessage: 'Select a valid operator group', id: 'operatorGroup' },
-            ]);
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, {
+                errors: [{ errorMessage: 'Select a valid operator group', id: 'operatorGroup' }],
+            });
             redirectTo(res, '/reuseOperatorGroup');
             return;
         }
