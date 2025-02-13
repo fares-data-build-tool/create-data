@@ -77,12 +77,15 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
             className="govuk-checkboxes__item dft-padding-left"
             key="checkbox-item-0"
           >
+            <input
+              className="govuk-checkboxes__input"
+              id="add-operator-checkbox-0"
+              onClick={[Function]}
+              type="checkbox"
+            />
             <label
               className="govuk-label govuk-checkboxes__label"
               htmlFor="add-operator-checkbox-0"
-              id="service-to-add-0"
-              onClick={[Function]}
-              role="button"
             >
               1 Fleetwood - Blackpool
             </label>
@@ -91,12 +94,15 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
             className="govuk-checkboxes__item dft-padding-left"
             key="checkbox-item-1"
           >
+            <input
+              className="govuk-checkboxes__input"
+              id="add-operator-checkbox-1"
+              onClick={[Function]}
+              type="checkbox"
+            />
             <label
               className="govuk-label govuk-checkboxes__label"
               htmlFor="add-operator-checkbox-1"
-              id="service-to-add-1"
-              onClick={[Function]}
-              role="button"
             >
               2 Poulton - Blackpool
             </label>
@@ -124,8 +130,7 @@ exports[`pages multipleOperatorsServiceList should render correctly with errors 
                   scope="col"
                 >
                   0
-                   
-                  added
+                   added
                 </th>
                 <th
                   className="govuk-table__header text-align-right"
@@ -325,12 +330,15 @@ exports[`pages multipleOperatorsServiceList should render the multiOperatorData 
             className="govuk-checkboxes__item dft-padding-left"
             key="checkbox-item-0"
           >
+            <input
+              className="govuk-checkboxes__input"
+              id="add-operator-checkbox-0"
+              onClick={[Function]}
+              type="checkbox"
+            />
             <label
               className="govuk-label govuk-checkboxes__label"
               htmlFor="add-operator-checkbox-0"
-              id="service-to-add-0"
-              onClick={[Function]}
-              role="button"
             >
               1 Fleetwood - Blackpool
             </label>
@@ -339,12 +347,15 @@ exports[`pages multipleOperatorsServiceList should render the multiOperatorData 
             className="govuk-checkboxes__item dft-padding-left"
             key="checkbox-item-1"
           >
+            <input
+              className="govuk-checkboxes__input"
+              id="add-operator-checkbox-1"
+              onClick={[Function]}
+              type="checkbox"
+            />
             <label
               className="govuk-label govuk-checkboxes__label"
               htmlFor="add-operator-checkbox-1"
-              id="service-to-add-1"
-              onClick={[Function]}
-              role="button"
             >
               2 Poulton - Blackpool
             </label>
@@ -372,8 +383,7 @@ exports[`pages multipleOperatorsServiceList should render the multiOperatorData 
                   scope="col"
                 >
                   0
-                   
-                  added
+                   added
                 </th>
                 <th
                   className="govuk-table__header text-align-right"

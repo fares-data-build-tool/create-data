@@ -18,7 +18,7 @@ export interface PeriodGeoZoneTicket extends BasePeriodTicket {
     exemptedServices?: SelectedService[];
 }
 
-export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator'> {
+export interface BasePeriodTicket extends BaseTicket<'period' | 'multiOperator' | 'multiOperatorExt'> {
     operatorName: string;
     products: ProductDetails[];
     fareDayEnd?: string;
@@ -87,7 +87,14 @@ export interface CapStartInfo {
 
 export type FromDb<T> = T & { id: number };
 
-export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
+export type TicketType =
+    | 'flatFare'
+    | 'period'
+    | 'multiOperator'
+    | 'multiOperatorExt'
+    | 'schoolService'
+    | 'single'
+    | 'return';
 
 export type Ticket =
     | PointToPointTicket
@@ -130,6 +137,19 @@ export interface AdditionalOperator {
     nocCode: string;
     selectedServices: SelectedService[];
 }
+
+export interface SecondaryOperatorServices {
+    selectedServices: SelectedService[];
+    exemptStops?: Stop[];
+}
+
+export interface SecondaryOperatorFareZone {
+    zoneName: string;
+    stops: Stop[];
+    exemptedServices?: SelectedService[];
+}
+
+export type SecondaryOperatorFareInfo = SecondaryOperatorServices | SecondaryOperatorFareZone;
 
 export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
     type: 'flatFare';

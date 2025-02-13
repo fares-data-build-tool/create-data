@@ -3,9 +3,9 @@
 exports[`myfares pages multiOperatorProducts should render correctly when no non-Point-to-Point products exist 1`] = `
 <Fragment>
   <BaseLayout
-    description="View and access your multi-operator products in one place."
+    description="View and access your multi-operator products (internal) in one place."
     showNavigation={true}
-    title="Multi-operator products - Create Fares Data Service"
+    title="Multi-operator products (internal) - Create Fares Data Service"
   >
     <div
       className="govuk-grid-row"
@@ -19,7 +19,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when no non
           <h1
             className="govuk-heading-xl govuk-!-margin-bottom-3"
           >
-            Multi-operator Products
+            Multi-operator products (internal)
           </h1>
           <a
             className="govuk-button"
@@ -112,7 +112,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when no non
             className="govuk-body"
           >
             <i>
-              You currently have no multi-operator products
+              You currently have no multi-operator products (internal)
             </i>
           </span>
         </div>
@@ -125,9 +125,9 @@ exports[`myfares pages multiOperatorProducts should render correctly when no non
 exports[`myfares pages multiOperatorProducts should render correctly when some non-Point-to-Point products exist 1`] = `
 <Fragment>
   <BaseLayout
-    description="View and access your multi-operator products in one place."
+    description="View and access your multi-operator products (internal) in one place."
     showNavigation={true}
-    title="Multi-operator products - Create Fares Data Service"
+    title="Multi-operator products (internal) - Create Fares Data Service"
   >
     <div
       className="govuk-grid-row"
@@ -141,7 +141,7 @@ exports[`myfares pages multiOperatorProducts should render correctly when some n
           <h1
             className="govuk-heading-xl govuk-!-margin-bottom-3"
           >
-            Multi-operator Products
+            Multi-operator products (internal)
           </h1>
           <a
             className="govuk-button"

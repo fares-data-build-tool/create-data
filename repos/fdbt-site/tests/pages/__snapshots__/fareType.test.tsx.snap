@@ -72,8 +72,8 @@ exports[`pages fareType should render correctly 1`] = `
                   "value": "carnet",
                 },
                 Object {
-                  "hint": "A ticket that covers more than one operator",
-                  "label": "Multi-operator",
+                  "hint": "A ticket that covers more than one NOC in your organisation",
+                  "label": "Multi-operator (internal)",
                   "value": "multiOperator",
                 },
                 Object {
@@ -272,8 +272,8 @@ exports[`pages fareType should render error messaging when errors are passed to 
                   "value": "carnet",
                 },
                 Object {
-                  "hint": "A ticket that covers more than one operator",
-                  "label": "Multi-operator",
+                  "hint": "A ticket that covers more than one NOC in your organisation",
+                  "label": "Multi-operator (internal)",
                   "value": "multiOperator",
                 },
                 Object {

@@ -21,7 +21,7 @@ import {
     TxcSourceAttribute,
 } from '../interfaces';
 import { getSessionAttribute, updateSessionAttribute } from '../utils/sessions';
-import { getAndValidateNoc, getCsrfToken } from '../utils';
+import { getAdditionalNocMatchingJsonLink, getAndValidateNoc, getCsrfToken } from '../utils';
 import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
 import { redirectTo } from '../utils/apiUtils';
 import FormElementWrapper from '../components/FormElementWrapper';
@@ -34,6 +34,9 @@ import CsrfForm from '../components/CsrfForm';
 import { isServiceListAttributeWithErrors } from '../interfaces/typeGuards';
 import AccessibilityDetails from '../components/AccessibilityDetails';
 import { SUPPORT_EMAIL_ADDRESS } from '../constants';
+import { SelectedService } from '../interfaces/matchingJsonTypes';
+import logger from '../utils/logger';
+import { getProductsSecondaryOperatorInfo } from '../data/s3';
 
 const title = 'CSV Zone Upload - Create Fares Data Service';
 const description = 'CSV Zone Upload page of the Create Fares Data Service';
@@ -209,11 +212,6 @@ const CsvZoneUpload = ({
                                                                         name={`${lineName}#${lineId}#${serviceCode}`}
                                                                         type="checkbox"
                                                                         value={checkBoxValues}
-                                                                        checked={
-                                                                            !!checkedServices.find(
-                                                                                (service) => service.lineId === lineId,
-                                                                            )
-                                                                        }
                                                                         defaultChecked={checked}
                                                                         onChange={(e) =>
                                                                             updateCheckedServiceList(e, lineId)
@@ -361,28 +359,48 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     };
 
     if (ticket && matchingJsonMetaData) {
-        let services: string[] = [];
-        if ('exemptedServices' in ticket && ticket.exemptedServices) {
-            services = ticket.exemptedServices.map((service) => {
-                return service.lineId;
-            });
+        let exemptedServices: SelectedService[] = [];
+        let selectedServices: SelectedService[] = [];
+        const isNonLeadOperatorEditing =
+            'nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt';
+
+        if (isNonLeadOperatorEditing) {
+            try {
+                const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
+                    matchingJsonMetaData.matchingJsonLink,
+                    nocCode,
+                );
+                const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(additionalNocMatchingJsonLink);
+
+                if ('exemptedServices' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.exemptedServices) {
+                    exemptedServices = secondaryOperatorFareInfo.exemptedServices;
+                }
+
+                if ('selectedServices' in secondaryOperatorFareInfo) {
+                    selectedServices = secondaryOperatorFareInfo.selectedServices;
+                }
+            } catch (error) {
+                logger.warn(`Couldn't get additional operator info for noc: ${nocCode}`);
+            }
+        } else {
+            if ('exemptedServices' in ticket && ticket.exemptedServices) {
+                exemptedServices = ticket.exemptedServices;
+            }
+
+            if ('selectedServices' in ticket && ticket.selectedServices) {
+                selectedServices = ticket.selectedServices;
+            }
         }
 
-        let serviceListEdit: ServicesInfo[] = chosenDataSourceServices.map((service) => {
-            return {
+        const services: string[] = exemptedServices.map((service) => service.lineId);
+
+        const serviceListEdit: ServicesInfo[] = chosenDataSourceServices
+            .map((service) => ({
                 ...service,
                 checked: services.includes(service.lineId),
-            };
-        });
-
-        // ensuring that they cannot exempt a service which has already been selected for the ticket
-        if ('selectedServices' in ticket) {
-            const { selectedServices } = ticket;
-
-            serviceListEdit = serviceListEdit.filter(
-                (exemptService) => !selectedServices.find((service) => exemptService.lineId === service.lineId),
-            );
-        }
+            }))
+            // ensuring that they cannot exempt a service which has already been selected for the ticket
+            .filter((exemptService) => !selectedServices.find((service) => exemptService.lineId === service.lineId));
 
         return {
             props: {

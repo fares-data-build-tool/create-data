@@ -101,7 +101,9 @@ describe('myfares pages', () => {
                 [
                     {
                         id: 1,
+                        nocCode: 'TEST',
                         lineId: 'wefawefa',
+                        fareType: 'single',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2018',
                         endDate: '10/04/2019',
@@ -109,7 +111,9 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 2,
+                        nocCode: 'TEST',
                         lineId: 'wefawefa',
+                        fareType: 'single',
                         matchingJsonLink: '/path/to/json',
                         startDate: '01/01/2021',
                         endDate: '04/04/2021',
@@ -117,7 +121,9 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 3,
+                        nocCode: 'TEST',
                         lineId: 'wefawefa',
+                        fareType: 'single',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2020',
                         endDate: '10/04/2020',
@@ -125,7 +131,9 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 4,
+                        nocCode: 'TEST',
                         lineId: 'wefawefa',
+                        fareType: 'single',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2020',
                         endDate: '10/04/2020',
@@ -137,7 +145,9 @@ describe('myfares pages', () => {
                 {
                     endDate: '04/04/2021',
                     id: 2,
+                    nocCode: 'TEST',
                     lineId: 'wefawefa',
+                    fareType: 'single',
                     matchingJsonLink: '/path/to/json',
                     startDate: '01/01/2021',
                     servicesRequiringAttention: [],
@@ -159,7 +169,9 @@ describe('myfares pages', () => {
                 [
                     {
                         id: 1,
+                        nocCode: 'TEST',
                         lineId: 'blah1',
+                        fareType: 'single',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2012',
                         endDate: '10/04/2012',
@@ -167,7 +179,9 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 2,
+                        nocCode: 'TEST',
                         lineId: 'blah2',
+                        fareType: 'single',
                         matchingJsonLink: '/path/to/json',
                         startDate: '01/01/2014',
                         endDate: '04/04/2015',
@@ -175,7 +189,9 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 3,
+                        nocCode: 'TEST',
                         lineId: 'blah3',
+                        fareType: 'single',
                         matchingJsonLink: '/path/to/json',
                         startDate: '05/04/2022',
                         endDate: '10/04/2022',
@@ -183,7 +199,9 @@ describe('myfares pages', () => {
                     },
                     {
                         id: 4,
+                        nocCode: 'TEST',
                         lineId: 'blah4',
+                        fareType: 'single',
                         matchingJsonLink: '/path/to/json',
                         startDate: '12/12/2021',
                         endDate: '10/04/2023',

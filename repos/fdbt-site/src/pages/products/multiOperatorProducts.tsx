@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { MyFaresOtherFaresProduct, NextPageContextWithSession } from '../../interfaces/index';
+import { NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString, getCsrfToken } from '../../utils';
 import { getGroupPassengerTypeById, getOtherProductsByNoc, getPassengerTypeById } from '../../data/auroradb';
@@ -8,12 +8,24 @@ import { getTag } from './services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
+import { fareTypes } from '../../constants';
 
-const title = 'Multi-operator products - Create Fares Data Service';
-const description = 'View and access your multi-operator products in one place.';
+const title = 'Multi-operator products (internal) - Create Fares Data Service';
+const description = 'View and access your multi-operator products (internal) in one place.';
+
+export type MultiOperatorProduct = {
+    id: number;
+    isIncomplete: boolean;
+    type: string;
+    productDescription: string;
+    duration: string;
+    startDate: string;
+    endDate: string;
+    passengerType: string;
+};
 
 interface MultiOperatorProductsProps {
-    multiOperatorProducts: MyFaresOtherFaresProduct[];
+    multiOperatorProducts: MultiOperatorProduct[];
     csrfToken: string;
 }
 
@@ -40,7 +52,9 @@ const MultiOperatorProducts = ({ multiOperatorProducts, csrfToken }: MultiOperat
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
-                            <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">Multi-operator Products</h1>
+                            <h1 className="govuk-heading-xl govuk-!-margin-bottom-3">
+                                Multi-operator products (internal)
+                            </h1>
 
                             <a href="/fareType" className="govuk-button" data-module="govuk-button">
                                 Create new product
@@ -72,7 +86,7 @@ export const buildDeleteUrl = (idToDelete: number, csrfToken: string): string =>
 };
 
 const MultiOperatorProductsTable = (
-    multiOperatorProducts: MyFaresOtherFaresProduct[],
+    multiOperatorProducts: MultiOperatorProduct[],
     deleteActionHandler: (productId: number, name: string) => void,
     csrfToken: string,
 ): React.ReactElement => {
@@ -122,7 +136,7 @@ const MultiOperatorProductsTable = (
                                           {product.productDescription}
                                       </a>
                                   </td>
-                                  <td className="govuk-table__cell">{sentenceCaseString(product.type)}</td>
+                                  <td className="govuk-table__cell">{fareTypes[product.type]}</td>
                                   <td className="govuk-table__cell">{product.duration}</td>
                                   <td className="govuk-table__cell dft-table-wrap-anywhere">
                                       {sentenceCaseString(product.passengerType)}
@@ -130,7 +144,13 @@ const MultiOperatorProductsTable = (
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
                                   <td className="govuk-table__cell">
-                                      {getTag(product.startDate, product.endDate, true)}
+                                      {product.isIncomplete ? (
+                                          <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
+                                              Incomplete
+                                          </strong>
+                                      ) : (
+                                          getTag(product.startDate, product.endDate, true)
+                                      )}
                                   </td>
                                   <td className="govuk-table__cell">
                                       <form>
@@ -161,7 +181,7 @@ const MultiOperatorProductsTable = (
             </table>
             {multiOperatorProducts.length === 0 ? (
                 <span className="govuk-body">
-                    <i>You currently have no multi-operator products</i>
+                    <i>You currently have no multi-operator products (internal)</i>
                 </span>
             ) : null}
         </div>
@@ -181,43 +201,56 @@ export const getServerSideProps = async (
         });
     }
 
-    const otherProducts: MyFaresOtherFaresProduct[] = (
+    const otherProducts = (
         await Promise.all(
             multiOperatorProductsFromDb.map(async (product) => {
                 const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
                 return Promise.all(
-                    matchingJson.products?.map(async (innerProduct) => {
-                        const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
-                        const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
-                        const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
-                        const passengerType =
-                            (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
-                            (await getGroupPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
-                            '';
-                        const { id } = product;
+                    matchingJson.products
+                        ? matchingJson.products.map(async (innerProduct) => {
+                              const productDescription = 'productName' in innerProduct ? innerProduct.productName : '';
+                              const duration =
+                                  'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
+                              const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
+                              const passengerType =
+                                  (await getPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
+                                  (await getGroupPassengerTypeById(matchingJson.passengerType.id, noc))?.name ||
+                                  '';
+                              const { id } = product;
 
-                        const startDate = matchingJson.ticketPeriod.startDate
-                            ? convertDateFormat(matchingJson.ticketPeriod.startDate)
-                            : '-';
-                        const endDate = matchingJson.ticketPeriod.endDate
-                            ? convertDateFormat(matchingJson.ticketPeriod.endDate)
-                            : '-';
-                        return {
-                            productDescription,
-                            type,
-                            duration,
-                            passengerType,
-                            startDate,
-                            endDate,
-                            id,
-                        };
-                    }),
+                              const startDate = matchingJson.ticketPeriod.startDate
+                                  ? convertDateFormat(matchingJson.ticketPeriod.startDate)
+                                  : '-';
+                              const endDate = matchingJson.ticketPeriod.endDate
+                                  ? convertDateFormat(matchingJson.ticketPeriod.endDate)
+                                  : '-';
+                              let isIncomplete = false;
+
+                              if ('additionalOperators' in matchingJson) {
+                                  isIncomplete = matchingJson.additionalOperators.some(
+                                      (operator) => operator.selectedServices.length === 0,
+                                  );
+                              }
+
+                              return {
+                                  productDescription,
+                                  type,
+                                  duration,
+                                  passengerType,
+                                  startDate,
+                                  endDate,
+                                  id,
+                                  isIncomplete,
+                              };
+                          })
+                        : [],
                 );
             }),
         )
     ).flat();
 
     const multiOperatorProducts = otherProducts.filter((product) => product.type === 'multiOperator');
+
     return { props: { multiOperatorProducts, csrfToken: getCsrfToken(ctx) } };
 };
 

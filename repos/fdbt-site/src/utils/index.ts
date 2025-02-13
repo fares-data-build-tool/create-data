@@ -26,6 +26,8 @@ import {
 } from '../interfaces';
 import dateFormat from 'dateformat';
 import { Stop, Ticket, TicketWithIds, ReturnTicket } from '../interfaces/matchingJsonTypes';
+import { getProductsSecondaryOperatorInfo } from '../data/s3';
+import logger from './logger';
 
 export const formatFailedFileNames = (failedExportFileNames: string[]): string => {
     // example filename
@@ -277,4 +279,36 @@ export const removeDuplicateServices = <T>(services: T[]): T[] => {
                     service[endDate] === value[endDate],
             ),
     );
+};
+
+export const getAdditionalNocMatchingJsonLink = (matchingJsonLink: string, noc: string): string =>
+    `${matchingJsonLink.substring(0, matchingJsonLink.lastIndexOf('.json'))}_${noc}.json`;
+
+export const checkIfMultiOperatorProductIsIncomplete = async (
+    productMatchingJsonLink: string,
+    nocs: string[],
+): Promise<boolean> => {
+    for (const noc of nocs) {
+        try {
+            const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(productMatchingJsonLink, noc);
+            const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(additionalNocMatchingJsonLink);
+
+            // Check for stop info for fareZone type multi-operator fares
+            const hasNoStops = 'stops' in secondaryOperatorFareInfo && secondaryOperatorFareInfo.stops.length === 0;
+
+            // Check for service info for service type multi-operator fares
+            const hasNoSelectedServices =
+                'selectedServices' in secondaryOperatorFareInfo &&
+                secondaryOperatorFareInfo.selectedServices.length === 0;
+
+            if (hasNoStops || hasNoSelectedServices) {
+                return true;
+            }
+        } catch (e) {
+            logger.warn(`Couldn't get additional operator info for noc: ${noc}`);
+            return true;
+        }
+    }
+
+    return false;
 };

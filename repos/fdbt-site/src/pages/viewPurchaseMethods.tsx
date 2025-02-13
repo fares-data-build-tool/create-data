@@ -156,7 +156,7 @@ const PurchaseMethods = ({
                         isCapped={isCapped}
                         index={index}
                         deleteActionHandler={deleteActionHandler}
-                        key={index}
+                        key={purchaseMethod.id.toString()}
                     />
                 ))}
             </div>

@@ -6,32 +6,43 @@ import {
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
     MULTIPLE_OPERATOR_ATTRIBUTE,
+    MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
     REUSE_OPERATOR_GROUP_ATTRIBUTE,
     TICKET_REPRESENTATION_ATTRIBUTE,
 } from '../../constants/attributes';
 import { NextApiRequestWithSession, TicketRepresentationAttribute, FareType } from '../../interfaces';
 import { updateSessionAttribute, getSessionAttribute } from '../../utils/sessions';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
+import { AdditionalOperator } from 'src/interfaces/matchingJsonTypes';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
-        const selectedOperatorGroup = Number(req.body.operatorGroupId);
+        const operatorGroupId = Number(req.body.operatorGroupId);
         const noc = getAndValidateNoc(req, res);
 
-        if (!selectedOperatorGroup) {
-            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
-                { errorMessage: 'Choose an operator group from the options below', id: 'operatorGroup' },
-            ]);
+        if (!operatorGroupId) {
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, {
+                errors: [{ errorMessage: 'Choose an operator group from the options below', id: 'operatorGroup' }],
+            });
             redirectTo(res, '/reuseOperatorGroup');
             return;
         }
 
-        const multipleOperators = await getOperatorGroupByNocAndId(selectedOperatorGroup, noc);
+        const multipleOperators = await getOperatorGroupByNocAndId(operatorGroupId, noc);
 
         const ticket = getSessionAttribute(req, MATCHING_JSON_ATTRIBUTE);
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
+        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
         if (multipleOperators) {
+            if (fareType === 'multiOperatorExt') {
+                const multiOperatorsData: AdditionalOperator[] = multipleOperators.operators.map((operator) => ({
+                    nocCode: operator.nocCode,
+                    selectedServices: [],
+                }));
+                updateSessionAttribute(req, MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE, multiOperatorsData);
+            }
+
             if (ticket && matchingJsonMetaData) {
                 // edit mode
                 const updatedTicket = {
@@ -52,16 +63,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 selectedOperators: multipleOperators.operators,
                 id: multipleOperators.id,
             });
-            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, { operatorGroupId });
         } else {
-            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
-                { errorMessage: 'Select a valid operator group', id: 'operatorGroup' },
-            ]);
+            updateSessionAttribute(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, {
+                errors: [{ errorMessage: 'Select a valid operator group', id: 'operatorGroup' }],
+            });
             redirectTo(res, '/reuseOperatorGroup');
             return;
         }
-
-        const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
         if (isSchemeOperator(req, res) && fareType === 'flatFare') {
             redirectTo(res, '/multiOperatorServiceList');
@@ -72,8 +81,9 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         ).name;
         redirectTo(
             res,
-            ticketRepresentation === 'multipleServices' ||
-                ticketRepresentation === 'multipleServicesFlatFareMultiOperator'
+            (ticketRepresentation === 'multipleServices' ||
+                ticketRepresentation === 'multipleServicesFlatFareMultiOperator') &&
+                fareType !== 'multiOperatorExt'
                 ? '/multiOperatorServiceList'
                 : '/multipleProducts',
         );

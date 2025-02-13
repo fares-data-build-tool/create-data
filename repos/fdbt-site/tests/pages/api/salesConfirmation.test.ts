@@ -7,6 +7,7 @@ import {
 } from '../../../src/constants/attributes';
 import { SessionAttributeTypes } from '../../../src/utils/sessions';
 import {
+    expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
     expectedSingleTicket,
     getMockRequestAndResponse,
@@ -22,6 +23,13 @@ describe('salesConfirmation', () => {
     const getReturnTicketJsonSpy = jest.spyOn(userData, 'getReturnTicketJson');
     const getGeoZoneTicketJsonSpy = jest.spyOn(userData, 'getGeoZoneTicketJson');
     const getMultipleServicesTicketJsonSpy = jest.spyOn(userData, 'getMultipleServicesTicketJson');
+    const redirectToSpy = jest.spyOn(index, 'redirectTo');
+    const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInProductsBucket');
+    const insertDataToProductsBucketAndProductsTableSpy = jest.spyOn(
+        userData,
+        'insertDataToProductsBucketAndProductsTable',
+    );
+    const isSchemeOperatorSpy = jest.spyOn(index, 'isSchemeOperator');
 
     beforeEach(() => {
         process.env.STAGE = 'dev';
@@ -29,7 +37,6 @@ describe('salesConfirmation', () => {
     });
 
     it('gets scheme operator json for a scheme operator', async () => {
-        const isSchemeOperatorSpy = jest.spyOn(index, 'isSchemeOperator');
         isSchemeOperatorSpy.mockImplementation(() => true);
         const { req, res } = getMockRequestAndResponse({
             body: {},
@@ -194,13 +201,40 @@ describe('salesConfirmation', () => {
         expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
     });
 
+    it('gets geoZone json for a multi operator external geoZone ticket', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {},
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperatorExt' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'geoZone',
+                },
+            },
+        });
+
+        await salesConfirmation(req, res);
+
+        expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
+    });
+
+    it('gets geoZone json for a multi operator external flat fare geoZone ticket', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            body: {},
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperatorExt' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'geoZone',
+                },
+            },
+        });
+
+        await salesConfirmation(req, res);
+
+        expect(getGeoZoneTicketJsonSpy).toBeCalledWith(req, res);
+    });
+
     it('creates a group definition for a group ticket with one product and adds to user json object', async () => {
-        const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInProductsBucket');
         putUserDataInS3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
-        const insertDataToProductsBucketAndProductsTableSpy = jest.spyOn(
-            userData,
-            'insertDataToProductsBucketAndProductsTable',
-        );
         insertDataToProductsBucketAndProductsTableSpy.mockImplementationOnce(() => Promise.resolve('pathOne'));
         getSingleTicketJsonSpy.mockImplementation(() => {
             return expectedSingleTicket;
@@ -231,14 +265,31 @@ describe('salesConfirmation', () => {
         );
     });
 
-    it('creates multiple matching jsons for a matching json with multiple products, and adds them individually to the products table and bucket', async () => {
-        const putUserDataInS3Spy = jest.spyOn(userData, 'putUserDataInProductsBucket');
-        const splitUserDataJsonByProductsSpy = jest.spyOn(userData, 'splitUserDataJsonByProducts');
+    it('should redirect to /productCreated?isMultiOperatorExternal=true if fare type is multiOperatorExt', async () => {
         putUserDataInS3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
-        const insertDataToProductsBucketAndProductsTableSpy = jest.spyOn(
-            userData,
-            'insertDataToProductsBucketAndProductsTable',
-        );
+
+        const { req, res } = getMockRequestAndResponse({
+            body: {},
+            session: {
+                [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperatorExt' },
+                [TICKET_REPRESENTATION_ATTRIBUTE]: {
+                    name: 'geoZone',
+                },
+            },
+        });
+        getGeoZoneTicketJsonSpy.mockResolvedValue({
+            ...expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
+            type: 'multiOperatorExt',
+        });
+
+        await salesConfirmation(req, res);
+        expect(redirectToSpy).toBeCalledWith(res, '/productCreated?isMultiOperatorExternal=true');
+    });
+
+    it('creates multiple matching jsons for a matching json with multiple products, and adds them individually to the products table and bucket', async () => {
+        putUserDataInS3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
+        const splitUserDataJsonByProductsSpy = jest.spyOn(userData, 'splitUserDataJsonByProducts');
+
         getGeoZoneTicketJsonSpy.mockResolvedValue(expectedPeriodGeoZoneTicketWithMultipleProducts);
         const { req, res } = getMockRequestAndResponse({
             body: {},
@@ -257,5 +308,6 @@ describe('salesConfirmation', () => {
         expect(splitUserDataJsonByProductsSpy.mock.results[0].value[2]).toEqual(mockDataSplitOutProducts[2]);
 
         expect(insertDataToProductsBucketAndProductsTableSpy).toBeCalledTimes(3);
+        expect(redirectToSpy).toBeCalledWith(res, '/productCreated');
     });
 });

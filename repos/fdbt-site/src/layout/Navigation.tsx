@@ -40,9 +40,9 @@ const Navigation = (): ReactElement => (
                 <a
                     className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
                     href="/products/multiOperatorProducts"
-                    data-topnav="Multi-operator Products"
+                    data-topnav="Multi-operator products (internal)"
                 >
-                    Multi-operator products
+                    Multi-operator products (internal)
                 </a>
             </li>
 

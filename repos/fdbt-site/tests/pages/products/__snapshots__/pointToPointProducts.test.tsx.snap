@@ -202,7 +202,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
           >
             <tr
               className="govuk-table__row"
-              key="0"
+              key="1"
             >
               <td
                 className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell"
@@ -387,7 +387,7 @@ exports[`myfares pages pointToPointProducts should render correctly when product
           >
             <tr
               className="govuk-table__row"
-              key="0"
+              key="1"
             >
               <td
                 className="govuk-table__cell dft-table-wrap-anywhere dft-table-fixed-width-cell"
