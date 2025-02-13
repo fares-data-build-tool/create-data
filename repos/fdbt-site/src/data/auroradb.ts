@@ -1858,6 +1858,7 @@ export const insertProducts = async (
     additionalNocs: string[],
     startDate: string,
     endDate?: string,
+    operatorGroupId?: number,
 ): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
@@ -1869,8 +1870,8 @@ export const insertProducts = async (
 
     try {
         const insertQuery = `INSERT INTO products
-        (nocCode, matchingJsonLink, dateModified, fareType, lineId, startDate, endDate, incomplete)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        (nocCode, matchingJsonLink, dateModified, fareType, lineId, startDate, endDate, incomplete, operatorGroupId)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         const { insertId: productId } = await executeQuery<ResultSetHeader>(insertQuery, [
             nocCode,
@@ -1881,6 +1882,7 @@ export const insertProducts = async (
             startDate,
             endDate || '',
             incomplete,
+            operatorGroupId || null,
         ]);
 
         if (additionalNocs.length > 0) {
@@ -2276,6 +2278,30 @@ export const getMultiOperatorExternalProducts = async (): Promise<MyFaresOtherPr
         }));
     } catch (error) {
         throw new Error(`Could not retrieve multi-operator external products from AuroraDB: ${error.stack}`);
+    }
+};
+
+export const getProductsByOperatorGroupId = async (
+    nocCode: string,
+    operatorGroupId: number,
+): Promise<MyFaresOtherProduct[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting products by NOC and operator group ID',
+        nocCode,
+        operatorGroupId,
+    });
+
+    try {
+        const queryInput = `
+            SELECT id, nocCode, matchingJsonLink, fareType
+            FROM products
+            WHERE nocCode = ? AND operatorGroupId = ?
+        `;
+
+        return await executeQuery<MyFaresOtherProduct[]>(queryInput, [nocCode, operatorGroupId]);
+    } catch (error) {
+        throw new Error(`Could not retrieve products by operator group ID from AuroraDB: ${error.stack}`);
     }
 };
 

@@ -217,7 +217,7 @@ export interface SessionAttributeTypes {
     [OPERATOR_ATTRIBUTE]: OperatorAttribute | WithErrors<OperatorAttribute>;
     [TXC_SOURCE_ATTRIBUTE]: TxcSourceAttribute;
     [MULTI_OP_TXC_SOURCE_ATTRIBUTE]: TxcSourceAttribute;
-    [REUSE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
+    [REUSE_OPERATOR_GROUP_ATTRIBUTE]: { operatorGroupId: number } | { errors: ErrorInfo[] };
     [SAVE_OPERATOR_GROUP_ATTRIBUTE]: ErrorInfo[];
     [CARNET_FARE_TYPE_ATTRIBUTE]: boolean;
     [SAVED_PASSENGER_GROUPS_ATTRIBUTE]: GroupPassengerType[];

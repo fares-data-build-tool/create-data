@@ -32,6 +32,7 @@ import {
     STOPS_EXEMPTION_ATTRIBUTE,
     CAPS_DEFINITION_ATTRIBUTE,
     FLAT_FARE_RETURN_ATTRIBUTE,
+    REUSE_OPERATOR_GROUP_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
     batchGetStopsByAtcoCode,
@@ -786,6 +787,11 @@ export const insertDataToProductsBucketAndProductsTable = async (
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
         const additionalNocs = getAdditionalNocsFromTicket(userDataJson);
         const incomplete = userDataJson.type === 'multiOperatorExt';
+        const operatorGroupAttribute = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE);
+        const operatorGroupId =
+            operatorGroupAttribute && 'operatorGroupId' in operatorGroupAttribute
+                ? operatorGroupAttribute.operatorGroupId
+                : undefined;
 
         await insertProducts(
             nocCode,
@@ -797,6 +803,7 @@ export const insertDataToProductsBucketAndProductsTable = async (
             additionalNocs,
             startDate,
             endDate,
+            operatorGroupId,
         );
     }
 
