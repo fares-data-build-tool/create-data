@@ -58,24 +58,20 @@ const ReuseOperatorGroup = ({
                         </div>
                     </fieldset>
                     {operatorGroups.length === 0 ? (
-                        <>
-                            <span className="govuk-body">
-                                <i>You currently have no operator group</i>
-                            </span>
-                        </>
+                        <span className="govuk-body">
+                            <i>You currently have no operator group</i>
+                        </span>
                     ) : (
-                        <>
-                            <div className="card-row" id="individual-passengers">
-                                {operatorGroups.map((operatorGroup, index) => (
-                                    <OperatorGroupCard
-                                        index={index}
-                                        operatorGroup={operatorGroup}
-                                        key={operatorGroup.id.toString()}
-                                        defaultChecked={false}
-                                    />
-                                ))}
-                            </div>
-                        </>
+                        <div className="card-row" id="individual-passengers">
+                            {operatorGroups.map((operatorGroup, index) => (
+                                <OperatorGroupCard
+                                    index={index}
+                                    operatorGroup={operatorGroup}
+                                    key={operatorGroup.id.toString()}
+                                    defaultChecked={false}
+                                />
+                            ))}
+                        </div>
                     )}
                 </div>
                 {!!operatorGroups.length && (
@@ -101,7 +97,8 @@ export const getServerSideProps = async (
     const noc = getAndValidateNoc(ctx);
     const operatorGroups = await getOperatorGroupsByNoc(noc);
 
-    const errors = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE) || [];
+    const operatorGroupAttribute = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE);
+    const errors = operatorGroupAttribute && 'errors' in operatorGroupAttribute ? operatorGroupAttribute.errors : [];
 
     const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
     const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);

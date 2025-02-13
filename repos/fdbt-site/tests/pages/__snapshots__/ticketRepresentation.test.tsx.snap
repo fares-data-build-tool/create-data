@@ -28,7 +28,7 @@ exports[`pages ticketRepresentation price per distance radio not show when in te
             className="govuk-fieldset__heading"
             id="ticket-representation-page-heading"
           >
-            Select a type of multi operator ticket
+            Select a type of multi-operator (internal) ticket
           </h1>
         </legend>
         <FormElementWrapper
@@ -114,7 +114,7 @@ exports[`pages ticketRepresentation should render correctly when the fare type i
             className="govuk-fieldset__heading"
             id="ticket-representation-page-heading"
           >
-            Select a type of multi operator ticket
+            Select a type of multi-operator (internal) ticket
           </h1>
         </legend>
         <FormElementWrapper

@@ -3763,6 +3763,7 @@ export const periodGeoZoneTicketWithNoType = {
 };
 
 export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
+    nocCode: 'TEST',
     schemeOperatorName: 'IW Buses',
     schemeOperatorRegionCode: 'Y',
     additionalNocs: ['WBTR', 'DCCL', 'HCTY'],
@@ -4025,6 +4026,7 @@ export const schemeOperatorGeoZoneTicket: SchemeOperatorGeoZoneTicket = {
 };
 
 export const schemeOperatorFlatFareTicket: SchemeOperatorFlatFareTicket = {
+    nocCode: 'TEST',
     schemeOperatorName: 'IW Buses',
     schemeOperatorRegionCode: 'Y',
     type: 'flatFare',

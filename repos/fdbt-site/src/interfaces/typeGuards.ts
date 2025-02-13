@@ -29,7 +29,7 @@ import {
     TicketRepresentationAttributeWithErrors,
     WithErrors,
 } from '.';
-import { validFareTypes } from '../constants';
+import { fareTypes } from '../constants';
 import { PassengerType } from './dbTypes';
 import {
     Ticket,
@@ -62,7 +62,7 @@ export const isFareTypeAttributeWithErrors = (
 export const isFareType = (fareType: FareType | FareTypeWithErrors | undefined): fareType is FareType =>
     fareType !== undefined &&
     (fareType as FareType).fareType !== undefined &&
-    validFareTypes.includes((fareType as FareType).fareType);
+    Object.hasOwn(fareTypes, (fareType as FareType).fareType);
 
 export const inputMethodErrorsExist = (
     inputMethodAttribute: InputMethodInfo | ErrorInfo | undefined,

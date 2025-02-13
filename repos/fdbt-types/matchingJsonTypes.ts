@@ -85,7 +85,7 @@ export interface DistancePricingData {
 
 export type FromDb<T> = T & { id: number };
 
-export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'schoolService' | 'single' | 'return';
+export type TicketType = 'flatFare' | 'period' | 'multiOperator' | 'multiOperatorExt' | 'schoolService' | 'single' | 'return';
 
 export type Ticket =
     | PointToPointTicket
@@ -112,6 +112,17 @@ export type TicketWithIds =
     | WithIds<PointToPointPeriodTicket>
     | WithIds<PeriodHybridTicket>;
 
+export type SecondaryOperatorServices = {
+    selectedServices: SelectedService[];
+    exemptStops?: Stop[];
+};
+
+export type SecondaryOperatorFareZone = {
+    zoneName: string;
+    stops: Stop[];
+    exemptedServices?: SelectedService[];
+}
+
 export type GeoZoneTicket = PeriodGeoZoneTicket | MultiOperatorGeoZoneTicket;
 
 export interface PeriodHybridTicket extends PeriodGeoZoneTicket, PeriodMultipleServicesTicket {}
@@ -121,6 +132,7 @@ export interface SchemeOperatorGeoZoneTicket extends BaseSchemeOperatorTicket {
     stops: Stop[];
     products: ProductDetails[];
     additionalNocs: string[];
+    exemptedServices?: SelectedService[];
 }
 
 export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
@@ -130,6 +142,7 @@ export interface SchemeOperatorFlatFareTicket extends BaseSchemeOperatorTicket {
         nocCode: string;
         selectedServices: SelectedService[];
     }[];
+    exemptStops?: Stop[];
 }
 
 export interface SchemeOperatorMultiServiceTicket extends BaseSchemeOperatorTicket {
@@ -139,6 +152,7 @@ export interface SchemeOperatorMultiServiceTicket extends BaseSchemeOperatorTick
         nocCode: string;
         selectedServices: SelectedService[];
     }[];
+    exemptStops?: Stop[];
 }
 
 export interface MultiOperatorGeoZoneTicket extends PeriodGeoZoneTicket {
@@ -214,7 +228,7 @@ export interface UnassignedStops {
     inboundUnassignedStops?: UnassignedStop[];
 }
 
-export interface BaseSchemeOperatorTicket extends Omit<BaseTicket, 'nocCode'> {
+export interface BaseSchemeOperatorTicket extends BaseTicket {
     schemeOperatorName: string;
     schemeOperatorRegionCode: string;
 }
@@ -385,4 +399,9 @@ export interface OperatorDetails {
     town: string;
     county: string;
     postcode: string;
+}
+
+export interface AdditionalOperator {
+    nocCode: string;
+    selectedServices: SelectedService[];
 }

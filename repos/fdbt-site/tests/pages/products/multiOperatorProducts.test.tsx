@@ -2,14 +2,16 @@ import { shallow } from 'enzyme';
 import * as React from 'react';
 import { getProductsMatchingJson } from '../../../src/data/s3';
 import { getOtherProductsByNoc, getPassengerTypeById } from '../../../src/data/auroradb';
-import { MyFaresOtherFaresProduct } from '../../../src/interfaces';
 import {
     expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
     expectedPeriodGeoZoneTicketWithMultipleProducts,
     expectedPeriodMultipleServicesTicketWithMultipleProducts,
     getMockContext,
 } from '../../testData/mockData';
-import MultiOperatorProducts, { getServerSideProps } from '../../../src/pages/products/multiOperatorProducts';
+import MultiOperatorProducts, {
+    getServerSideProps,
+    MultiOperatorProduct,
+} from '../../../src/pages/products/multiOperatorProducts';
 
 jest.mock('../../../src/data/auroradb');
 jest.mock('../../../src/data/s3');
@@ -59,11 +61,12 @@ jest.mock('../../../src/data/s3');
     },
 });
 
-const testProducts: MyFaresOtherFaresProduct[] = [
+const testProducts: MultiOperatorProduct[] = [
     {
         productDescription: 'First product',
         type: 'flatFare',
         id: 1,
+        isIncomplete: false,
         duration: '1 trip',
         passengerType: 'infant',
         startDate: '11/04/2020',
@@ -73,6 +76,7 @@ const testProducts: MyFaresOtherFaresProduct[] = [
         productDescription: 'The greatest product eveer!',
         type: 'period',
         id: 2,
+        isIncomplete: false,
         duration: '3 days',
         passengerType: 'infant',
         startDate: '11/12/2021',
@@ -82,6 +86,7 @@ const testProducts: MyFaresOtherFaresProduct[] = [
         productDescription: 'The greatest product eveer!',
         type: 'period',
         id: 3,
+        isIncomplete: false,
         duration: '3 days',
         passengerType: 'adult',
         startDate: '11/12/2021',
@@ -115,6 +120,7 @@ describe('myfares pages', () => {
                         {
                             duration: '5 weeks',
                             id: 2,
+                            isIncomplete: false,
                             endDate: '18/12/2020',
                             passengerType: '',
                             productDescription: 'Weekly Ticket',
@@ -125,6 +131,7 @@ describe('myfares pages', () => {
                             duration: '1 year',
                             endDate: '18/12/2020',
                             id: 2,
+                            isIncomplete: false,
                             passengerType: '',
                             productDescription: 'Day Ticket',
                             startDate: '17/12/2020',
@@ -135,6 +142,7 @@ describe('myfares pages', () => {
                             endDate: '18/12/2020',
                             passengerType: '',
                             id: 2,
+                            isIncomplete: false,
                             productDescription: 'Monthly Ticket',
                             startDate: '17/12/2020',
                             type: 'multiOperator',

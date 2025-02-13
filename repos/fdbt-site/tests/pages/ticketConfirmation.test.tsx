@@ -258,6 +258,7 @@ describe('pages', () => {
                             selectedOperators: mockAdditionalOperators,
                         },
                         [SERVICE_LIST_EXEMPTION_ATTRIBUTE]: undefined,
+                        [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
                     },
                 });
                 const confirmationElements = buildPeriodOrMultiOpTicketConfirmationElements(ctx);
@@ -349,6 +350,7 @@ describe('pages', () => {
                             hasBods: true,
                             hasTnds: true,
                         },
+                        [FARE_TYPE_ATTRIBUTE]: { fareType: 'multiOperator' },
                     },
                 });
                 const numberOfElementsDueToProducts = ctx.req.session[MULTIPLE_PRODUCT_ATTRIBUTE].products.length;

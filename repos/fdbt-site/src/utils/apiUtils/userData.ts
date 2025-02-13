@@ -32,6 +32,7 @@ import {
     STOPS_EXEMPTION_ATTRIBUTE,
     CAPS_DEFINITION_ATTRIBUTE,
     FLAT_FARE_RETURN_ATTRIBUTE,
+    REUSE_OPERATOR_GROUP_ATTRIBUTE,
 } from '../../constants/attributes';
 import {
     batchGetStopsByAtcoCode,
@@ -95,6 +96,7 @@ import {
     Ticket,
     AdditionalOperator,
     FlatFareMultipleServices,
+    SecondaryOperatorFareInfo,
 } from '../../interfaces/matchingJsonTypes';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
@@ -184,7 +186,7 @@ export const putUserDataInProductsBucket = async (
 };
 
 export const putUserDataInProductsBucketWithFilePath = async (
-    data: WithIds<Ticket>,
+    data: WithIds<Ticket> | SecondaryOperatorFareInfo,
     filePath: string,
 ): Promise<string> => {
     await putStringInS3(PRODUCTS_DATA_BUCKET_NAME, filePath, JSON.stringify(data), 'application/json; charset=utf-8');
@@ -253,7 +255,7 @@ export const getBaseTicketAttributes = <T extends TicketType>(
 export const getBasePeriodTicketAttributes = (
     req: NextApiRequestWithSession,
     res: NextApiResponse,
-    ticketType: 'period' | 'multiOperator',
+    ticketType: 'period' | 'multiOperator' | 'multiOperatorExt',
 ): WithIds<BasePeriodTicket> => {
     const operatorAttribute = getSessionAttribute(req, OPERATOR_ATTRIBUTE);
     const baseTicketAttributes = getBaseTicketAttributes(req, res, ticketType);
@@ -439,12 +441,17 @@ export const getGeoZoneTicketJson = async (
     const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
 
     const additionalNocs =
-        basePeriodTicketAttributes.type === 'multiOperator' && multiOpAttribute
+        (basePeriodTicketAttributes.type === 'multiOperator' ||
+            basePeriodTicketAttributes.type === 'multiOperatorExt') &&
+        multiOpAttribute
             ? multiOpAttribute.selectedOperators.map((operator) => operator.nocCode)
             : undefined;
 
     const operatorGroupId =
-        basePeriodTicketAttributes.type === 'multiOperator' && multiOpAttribute && multiOpAttribute.id
+        (basePeriodTicketAttributes.type === 'multiOperator' ||
+            basePeriodTicketAttributes.type === 'multiOperatorExt') &&
+        multiOpAttribute &&
+        multiOpAttribute.id
             ? multiOpAttribute.id
             : undefined;
 
@@ -540,7 +547,7 @@ export const getMultipleServicesTicketJson = (
     }
     const basePeriodTicketAttributes = getBasePeriodTicketAttributes(req, res, 'period');
 
-    if (basePeriodTicketAttributes.type === 'multiOperator') {
+    if (basePeriodTicketAttributes.type === 'multiOperator' || basePeriodTicketAttributes.type === 'multiOperatorExt') {
         const additionalOperators = getSessionAttribute(
             req,
             MULTIPLE_OPERATORS_SERVICES_ATTRIBUTE,
@@ -778,9 +785,43 @@ export const insertDataToProductsBucketAndProductsTable = async (
         const dateTime = moment().toDate();
         const { startDate, endDate } = userDataJson.ticketPeriod;
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
+        const additionalNocs = getAdditionalNocsFromTicket(userDataJson);
+        const operatorGroupAttribute = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE);
+        const operatorGroupId =
+            operatorGroupAttribute && 'operatorGroupId' in operatorGroupAttribute
+                ? operatorGroupAttribute.operatorGroupId
+                : undefined;
 
-        await insertProducts(nocCode, filePath, dateTime, userDataJson.type, lineId, startDate, endDate);
+        await insertProducts(
+            nocCode,
+            filePath,
+            dateTime,
+            userDataJson.type,
+            lineId,
+            additionalNocs,
+            startDate,
+            endDate,
+            operatorGroupId,
+        );
     }
 
     return filePath;
+};
+
+export const getAdditionalNocsFromTicket = (ticket: TicketWithIds): string[] => {
+    const additionalNocs = new Set<string>();
+
+    if ('additionalNocs' in ticket) {
+        for (const additionalNoc of ticket.additionalNocs) {
+            additionalNocs.add(additionalNoc);
+        }
+    }
+
+    if ('additionalOperators' in ticket) {
+        for (const additionalOperator of ticket.additionalOperators) {
+            additionalNocs.add(additionalOperator.nocCode);
+        }
+    }
+
+    return Array.from(additionalNocs);
 };

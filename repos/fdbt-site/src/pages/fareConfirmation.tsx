@@ -23,6 +23,7 @@ import { getCsrfToken, sentenceCaseString, getAndValidateNoc } from '../utils';
 import { getPassengerTypeNameByIdAndNoc } from '../data/auroradb';
 import { PassengerType } from '../interfaces/dbTypes';
 import { CompanionInfo, FullTimeRestriction } from '../interfaces/matchingJsonTypes';
+import { fareTypes } from '../constants';
 
 const title = 'Fare Confirmation - Create Fares Data Service';
 const description = 'Fare Confirmation page of the Create Fares Data Service';
@@ -52,7 +53,7 @@ export const buildFareConfirmationElements = (
     const confirmationElements: ConfirmationElement[] = [
         {
             name: 'Fare type',
-            content: carnet ? 'Carnet' : sentenceCaseString(fareType),
+            content: carnet ? 'Carnet' : fareTypes[fareType],
             href: 'fareType',
         },
         {
@@ -65,7 +66,7 @@ export const buildFareConfirmationElements = (
     if (carnet) {
         confirmationElements.splice(1, 0, {
             name: 'Carnet type',
-            content: sentenceCaseString(fareType),
+            content: fareTypes[fareType],
             href: 'carnetFareType',
         });
     }

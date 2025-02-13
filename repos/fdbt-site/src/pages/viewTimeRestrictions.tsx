@@ -54,18 +54,16 @@ const ViewTimeRestrictions = ({
     viewTimeRestrictionErrors,
 }: TimeRestrictionProps): ReactElement => {
     return (
-        <>
-            <GlobalSettingsViewPage
-                entities={timeRestrictions}
-                entityDescription="time restriction"
-                referer={referer}
-                csrfToken={csrfToken}
-                title={title}
-                description={description}
-                CardBody={TimeRestrictionCardBody}
-                errors={viewTimeRestrictionErrors}
-            />
-        </>
+        <GlobalSettingsViewPage
+            entities={timeRestrictions}
+            entityDescription="time restriction"
+            referer={referer}
+            csrfToken={csrfToken}
+            title={title}
+            description={description}
+            CardBody={TimeRestrictionCardBody}
+            errors={viewTimeRestrictionErrors}
+        />
     );
 };
 

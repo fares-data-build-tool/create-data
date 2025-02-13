@@ -8,11 +8,17 @@ import { removeExcessWhiteSpace } from '../../utils/apiUtils/validator';
 import { searchInputId } from '../searchOperators';
 import {
     getOperatorGroupsByNameAndNoc,
+    getProductsByOperatorGroupId,
     insertOperatorGroup,
     operatorHasBodsServices,
     operatorHasFerryOrTramServices,
     updateOperatorGroup,
+    updateProductAdditionalNocs,
 } from '../../data/auroradb';
+import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
+import { getAdditionalNocMatchingJsonLink } from '../../utils';
+import { PRODUCTS_DATA_BUCKET_NAME } from '../../constants';
+import { deleteMultipleObjectsFromS3, getProductsMatchingJson } from '../../data/s3';
 
 export const replaceSelectedOperatorsWithUserSelectedOperators = (rawList: string[]): Operator[] => {
     if (rawList.length === 0) {
@@ -25,6 +31,7 @@ export const replaceSelectedOperatorsWithUserSelectedOperators = (rawList: strin
     const updatedList = uniqBy(formattedRawList, 'nocCode');
     return updatedList;
 };
+
 export const getOperatorsWithoutServices = async (selectedOperators: Operator[]): Promise<string[]> => {
     const operatorNamesWithoutServices: string[] = [];
 
@@ -45,6 +52,50 @@ export const getOperatorsWithoutServices = async (selectedOperators: Operator[])
 export const isSearchInputValid = (searchText: string): boolean => {
     const searchRegex = new RegExp(/^[a-zA-Z0-9\-:\s]+$/g);
     return searchRegex.test(searchText);
+};
+
+export const updateAssociatedProducts = async (
+    nocCode: string,
+    operatorGroupId: number,
+    operatorGroupNocs: string[],
+): Promise<void> => {
+    const multiOperatorProductsFromDb = await getProductsByOperatorGroupId(nocCode, operatorGroupId);
+
+    for await (const product of multiOperatorProductsFromDb) {
+        if (product.fareType === 'multiOperator' || product.fareType === 'multiOperatorExt') {
+            const ticket = await getProductsMatchingJson(product.matchingJsonLink);
+            let removedNocs: string[] = [];
+
+            if ('additionalNocs' in ticket) {
+                removedNocs = ticket.additionalNocs.filter((noc) => !operatorGroupNocs.includes(noc));
+                ticket.additionalNocs = operatorGroupNocs;
+            } else if ('additionalOperators' in ticket) {
+                removedNocs = ticket.additionalOperators
+                    .filter((noc) => !operatorGroupNocs.includes(noc.nocCode))
+                    .map((noc) => noc.nocCode);
+
+                ticket.additionalOperators = operatorGroupNocs.map((nocCode) => ({
+                    nocCode,
+                    selectedServices:
+                        ticket.additionalOperators.find((operator) => operator.nocCode === nocCode)?.selectedServices ||
+                        [],
+                }));
+            }
+
+            await putUserDataInProductsBucketWithFilePath(ticket, product.matchingJsonLink);
+
+            if (product.fareType === 'multiOperatorExt') {
+                await updateProductAdditionalNocs(product.id, operatorGroupNocs);
+
+                if (removedNocs.length > 0) {
+                    const matchingJsonLinks = removedNocs.map((noc) =>
+                        getAdditionalNocMatchingJsonLink(product.matchingJsonLink, noc),
+                    );
+                    await deleteMultipleObjectsFromS3(matchingJsonLinks, PRODUCTS_DATA_BUCKET_NAME);
+                }
+            }
+        }
+    }
 };
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
@@ -143,6 +194,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             if (isInEditMode) {
                 await updateOperatorGroup(id, noc, selectedOperators, refinedGroupName);
+                const operatorGroupNocs = selectedOperators.map((operator) => operator.nocCode);
+                await updateAssociatedProducts(noc, id, operatorGroupNocs);
             } else {
                 await insertOperatorGroup(noc, selectedOperators, refinedGroupName);
             }

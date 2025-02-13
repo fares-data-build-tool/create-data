@@ -154,11 +154,9 @@ const createSalesOffer = (
                         errorClass=""
                     >
                         {purchaseMethodsList.length === 0 ? (
-                            <>
-                                <span className="govuk-body">
-                                    <i>You currently have no {isCapped ? 'capped' : ''} saved purchase methods</i>
-                                </span>
-                            </>
+                            <span className="govuk-body">
+                                <i>You currently have no {isCapped ? 'capped' : ''} saved purchase methods</i>
+                            </span>
                         ) : (
                             <div className="govuk-checkboxes">
                                 {generateCheckbox(purchaseMethodsList, productName, selected, productPrice, errors)}

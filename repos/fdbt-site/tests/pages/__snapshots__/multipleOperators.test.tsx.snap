@@ -46,7 +46,7 @@ exports[`pages multipleOperators should render correctly with multiple operator 
           </option>
           <option
             className="service-option"
-            key="operator"
+            key="test|testNoc"
             value="test|testNoc"
           >
             test
@@ -55,7 +55,7 @@ exports[`pages multipleOperators should render correctly with multiple operator 
           </option>
           <option
             className="service-option"
-            key="operator"
+            key="test2|testNoc2"
             value="test2|testNoc2"
           >
             test2
@@ -64,7 +64,7 @@ exports[`pages multipleOperators should render correctly with multiple operator 
           </option>
           <option
             className="service-option"
-            key="operator"
+            key="test3|testNoc3"
             value="test3|testNoc3"
           >
             test3
@@ -136,7 +136,7 @@ exports[`pages multipleOperators should render correctly with one operator NOC p
           </option>
           <option
             className="service-option"
-            key="operator"
+            key="test|testNoc"
             value="test|testNoc"
           >
             test
@@ -229,7 +229,7 @@ exports[`pages multipleOperators should render errors correctly 1`] = `
           </option>
           <option
             className="service-option"
-            key="operator"
+            key="test|testNoc"
             value="test|testNoc"
           >
             test
@@ -238,7 +238,7 @@ exports[`pages multipleOperators should render errors correctly 1`] = `
           </option>
           <option
             className="service-option"
-            key="operator"
+            key="test2|testNoc2"
             value="test2|testNoc2"
           >
             test2
@@ -247,7 +247,7 @@ exports[`pages multipleOperators should render errors correctly 1`] = `
           </option>
           <option
             className="service-option"
-            key="operator"
+            key="test3|testNoc3"
             value="test3|testNoc3"
           >
             test3

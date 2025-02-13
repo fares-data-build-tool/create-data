@@ -10,7 +10,7 @@ import { getProductsMatchingJson } from '../../data/s3';
 import { MyFaresService, NextPageContextWithSession, ProductToDisplay, ServiceToDisplay } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
-import { getNonExpiredProducts } from '../api/exports';
+import { getNonExpiredProducts } from '../../utils/apiUtils/export';
 
 const title = 'Select Exports';
 const description = 'Export selected products into NeTEx.';
@@ -220,7 +220,7 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                             </li>
                                             <li className="govuk-tabs__list-item">
                                                 <a className="govuk-tabs__tab" href="#multi-operator-products">
-                                                    Multi operator products
+                                                    Multi-operator products
                                                 </a>
                                             </li>
                                             <li className="govuk-tabs__list-item">
@@ -406,7 +406,7 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                             {otherProducts.length > 0 ? (
                                                 <div>
                                                     <h2 className="govuk-heading-m govuk-!-margin-bottom-6">
-                                                        Multioperator products
+                                                        Multi-operator (internal) products
                                                     </h2>
 
                                                     {formattedProducts.multiOperatorProducts.length > 0 ? (
@@ -421,8 +421,8 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                                     ) : (
                                                         <p className="govuk-body-m govuk-!-margin-top-5">
                                                             <em>
-                                                                You currently have no multioperator products that can be
-                                                                exported.
+                                                                You currently have no multi-operator products that can
+                                                                be exported.
                                                             </em>
                                                         </p>
                                                     )}

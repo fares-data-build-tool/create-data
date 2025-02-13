@@ -207,7 +207,7 @@ exports[`selectExports renders fully when the user has products they can export 
                     className="govuk-tabs__tab"
                     href="#multi-operator-products"
                   >
-                    Multi operator products
+                    Multi-operator products
                   </a>
                 </li>
                 <li
@@ -449,7 +449,7 @@ exports[`selectExports renders fully when the user has products they can export 
                   <h2
                     className="govuk-heading-m govuk-!-margin-bottom-6"
                   >
-                    Multioperator products
+                    Multi-operator (internal) products
                   </h2>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"
@@ -630,7 +630,7 @@ exports[`selectExports renders fully when the user has products they can export,
                     className="govuk-tabs__tab"
                     href="#multi-operator-products"
                   >
-                    Multi operator products
+                    Multi-operator products
                   </a>
                 </li>
                 <li
@@ -739,7 +739,7 @@ exports[`selectExports renders fully when the user has products they can export,
                   <h2
                     className="govuk-heading-m govuk-!-margin-bottom-6"
                   >
-                    Multioperator products
+                    Multi-operator (internal) products
                   </h2>
                   <div
                     className="govuk-checkboxes__item govuk-checkboxes--small govuk-!-margin-top-2 govuk-!-margin-left-4"

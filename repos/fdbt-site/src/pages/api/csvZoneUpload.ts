@@ -24,8 +24,9 @@ import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
 import uniq from 'lodash/uniq';
 import { isArray } from 'lodash';
-import { SelectedService, Stop } from '../../interfaces/matchingJsonTypes';
+import { SecondaryOperatorFareInfo, SelectedService, Stop } from '../../interfaces/matchingJsonTypes';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
+import { getAdditionalNocMatchingJsonLink } from '../../utils';
 
 export interface FareZoneWithErrors {
     errors: ErrorInfo[];
@@ -196,6 +197,7 @@ export const processServices = (
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     try {
+        const nocCode = getAndValidateNoc(req, res);
         const formData = await getFormData(req);
         const { serviceErrors, selectedServices, clickedYes } = processServices(formData);
         const { fileContents, fileError } = await processFileUpload(formData, 'csv-upload');
@@ -252,7 +254,6 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, { selectedServices });
             }
 
-            const nocCode = getAndValidateNoc(req, res);
             if (!nocCode) {
                 throw new Error('Could not retrieve nocCode from ID_TOKEN_COOKIE');
             }
@@ -261,7 +262,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             updateSessionAttribute(req, FARE_ZONE_ATTRIBUTE, fareZoneName);
             const { fareType } = getSessionAttribute(req, FARE_TYPE_ATTRIBUTE) as FareType;
 
-            if (fareType === 'multiOperator' || isSchemeOperator(req, res)) {
+            if (fareType === 'multiOperator' || fareType === 'multiOperatorExt' || isSchemeOperator(req, res)) {
                 redirectTo(res, '/reuseOperatorGroup');
                 return;
             }
@@ -281,17 +282,37 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/multipleProducts');
             return;
         } else {
-            // is in edit mode
-            const updatedTicket = {
-                ...ticket,
-                zoneName: fareZoneName,
-                stops,
-                ...(selectedServices.length > 0
-                    ? { exemptedServices: selectedServices }
-                    : { exemptedServices: undefined }),
-            };
-            // put the now updated matching json into s3
-            await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            const isNonLeadOperatorEditing =
+                'nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt';
+
+            if (isNonLeadOperatorEditing) {
+                const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
+                    matchingJsonMetaData.matchingJsonLink,
+                    nocCode,
+                );
+
+                const secondaryOperatorFareInfo: SecondaryOperatorFareInfo = {
+                    zoneName: fareZoneName,
+                    stops,
+                    ...(selectedServices.length > 0
+                        ? { exemptedServices: selectedServices }
+                        : { exemptedServices: undefined }),
+                };
+
+                await putUserDataInProductsBucketWithFilePath(secondaryOperatorFareInfo, additionalNocMatchingJsonLink);
+            } else {
+                const updatedTicket = {
+                    ...ticket,
+                    zoneName: fareZoneName,
+                    stops,
+                    ...(selectedServices.length > 0
+                        ? { exemptedServices: selectedServices }
+                        : { exemptedServices: undefined }),
+                };
+
+                await putUserDataInProductsBucketWithFilePath(updatedTicket, matchingJsonMetaData.matchingJsonLink);
+            }
+
             updateSessionAttribute(req, SERVICE_LIST_EXEMPTION_ATTRIBUTE, undefined);
             redirectTo(res, `/products/productDetails?productId=${matchingJsonMetaData?.productId}`);
             return;

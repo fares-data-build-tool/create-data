@@ -1,0 +1,422 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`multiOperatorProductsExternal page renders correctly 1`] = `
+<BaseLayout
+  description="View and access your multi-operator products in one place."
+  title="Multi-operator products - Create Fares Data Service"
+>
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-two-thirds"
+    >
+      <h1
+        className="govuk-heading-xl"
+      >
+        Multi-operator products
+      </h1>
+      <p
+        className="govuk-body-m "
+      >
+        This is where operators can collaborate with other operators to define and export your active multi-operator products.
+      </p>
+    </div>
+    <div
+      className="govuk-grid-column-one-third"
+    >
+      <CsrfForm
+        action="/api/fareType"
+        csrfToken=""
+        method="post"
+      >
+        <input
+          name="fareType"
+          type="hidden"
+          value="multiOperatorExt"
+        />
+        <button
+          className="govuk-button"
+          type="submit"
+        >
+          Create new product
+        </button>
+      </CsrfForm>
+      <CsrfForm
+        action="/api/exportMultiOperatorExternal"
+        csrfToken=""
+        method="post"
+      >
+        <button
+          className="govuk-button govuk-button--secondary"
+          type="submit"
+        >
+          Export all products
+        </button>
+      </CsrfForm>
+    </div>
+  </div>
+  <div
+    className="govuk-grid-row"
+  >
+    <div
+      className="govuk-grid-column-full"
+    >
+      <div
+        className="govuk-tabs"
+        data-module="govuk-tabs"
+      >
+        <h2
+          className="govuk-tabs__title"
+        >
+          Multi-operator products
+        </h2>
+        <ul
+          className="govuk-tabs__list"
+        >
+          <li
+            className="govuk-tabs__list-item govuk-tabs__list-item--selected"
+          >
+            <a
+              className="govuk-tabs__tab"
+              href="#fares-you-own"
+            >
+              Fares you own
+            </a>
+          </li>
+          <li
+            className="govuk-tabs__list-item"
+          >
+            <a
+              className="govuk-tabs__tab"
+              href="#fares-awaiting-your-input"
+            >
+              Fares shared with you
+            </a>
+          </li>
+        </ul>
+        <div
+          className="govuk-tabs__panel"
+          id="fares-you-own"
+        >
+          <table
+            className="govuk-table"
+            data-card-count={2}
+          >
+            <thead
+              className="govuk-table__head"
+            >
+              <tr
+                className="govuk-table__row"
+              >
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Product description
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Duration
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Passenger type
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Start date
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  End date
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Product status
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            >
+              <tr
+                className="govuk-table__row"
+                key="product-0"
+              >
+                <td
+                  className="govuk-table__cell dft-table-wrap-anywhere"
+                >
+                  <a
+                    href="/products/productDetails?productId=1"
+                    id="product-link-0"
+                  >
+                    product one
+                  </a>
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  2 weeks
+                </td>
+                <td
+                  className="govuk-table__cell dft-table-wrap-anywhere"
+                >
+                  My best passenger
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  17/12/2020
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  18/12/2020
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  <strong
+                    className="govuk-tag govuk-tag--red dft-table-tag"
+                  >
+                    Expired
+                  </strong>
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  <button
+                    className="govuk-link govuk-body button-link"
+                    id="delete-0"
+                    onClick={[Function]}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="product-1"
+              >
+                <td
+                  className="govuk-table__cell dft-table-wrap-anywhere"
+                >
+                  <a
+                    href="/products/productDetails?productId=1"
+                    id="product-link-1"
+                  >
+                    product two
+                  </a>
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  5 days
+                </td>
+                <td
+                  className="govuk-table__cell dft-table-wrap-anywhere"
+                >
+                  My best passenger
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  17/12/2020
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  18/12/2020
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  <strong
+                    className="govuk-tag govuk-tag--red dft-table-tag"
+                  >
+                    Expired
+                  </strong>
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  <button
+                    className="govuk-link govuk-body button-link"
+                    id="delete-1"
+                    onClick={[Function]}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          className="govuk-tabs__panel"
+          id="fares-awaiting-your-input"
+        >
+          <table
+            className="govuk-table"
+            data-card-count={2}
+          >
+            <thead
+              className="govuk-table__head"
+            >
+              <tr
+                className="govuk-table__row"
+              >
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Product description
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Duration
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Passenger type
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Start date
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  End date
+                </th>
+                <th
+                  className="govuk-table__header"
+                  scope="col"
+                >
+                  Product status
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="govuk-table__body"
+            >
+              <tr
+                className="govuk-table__row"
+                key="product-0"
+              >
+                <td
+                  className="govuk-table__cell dft-table-wrap-anywhere"
+                >
+                  <a
+                    href="/products/productDetails?productId=3"
+                    id="product-link-0"
+                  >
+                    product one
+                  </a>
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  2 weeks
+                </td>
+                <td
+                  className="govuk-table__cell dft-table-wrap-anywhere"
+                >
+                  My best passenger
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  17/12/2020
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  18/12/2020
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  <strong
+                    className="govuk-tag govuk-tag--yellow dft-table-tag"
+                  >
+                    Incomplete
+                  </strong>
+                </td>
+              </tr>
+              <tr
+                className="govuk-table__row"
+                key="product-1"
+              >
+                <td
+                  className="govuk-table__cell dft-table-wrap-anywhere"
+                >
+                  <a
+                    href="/products/productDetails?productId=3"
+                    id="product-link-1"
+                  >
+                    product two
+                  </a>
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  5 days
+                </td>
+                <td
+                  className="govuk-table__cell dft-table-wrap-anywhere"
+                >
+                  My best passenger
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  17/12/2020
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  18/12/2020
+                </td>
+                <td
+                  className="govuk-table__cell"
+                >
+                  <strong
+                    className="govuk-tag govuk-tag--yellow dft-table-tag"
+                  >
+                    Incomplete
+                  </strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+`;

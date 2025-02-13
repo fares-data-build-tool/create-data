@@ -33,9 +33,9 @@ describe('reuseOperatorGroup', () => {
         });
         await reuseOperatorGroup(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
-            { errorMessage: 'Choose an operator group from the options below', id: 'operatorGroup' },
-        ]);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, {
+            errors: [{ errorMessage: 'Choose an operator group from the options below', id: 'operatorGroup' }],
+        });
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/reuseOperatorGroup' });
     });
 
@@ -49,9 +49,9 @@ describe('reuseOperatorGroup', () => {
         });
         await reuseOperatorGroup(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, [
-            { errorMessage: 'Select a valid operator group', id: 'operatorGroup' },
-        ]);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, {
+            errors: [{ errorMessage: 'Select a valid operator group', id: 'operatorGroup' }],
+        });
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/reuseOperatorGroup' });
     });
 
@@ -71,20 +71,21 @@ describe('reuseOperatorGroup', () => {
                 nocCode: 'BOS',
             },
         ];
+        const operatorGroupId = 1;
 
         getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue({
-            id: 1,
+            id: operatorGroupId,
             name: 'Best Ops',
             operators: testOperators,
         });
         const { req, res } = getMockRequestAndResponse({
-            body: { operatorGroupId: '1' },
+            body: { operatorGroupId },
             mockWriteHeadFn: writeHeadMock,
         });
         await reuseOperatorGroup(req, res);
 
         expect(getOperatorGroupByNocAndId).toBeCalledWith(1, 'TEST');
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, { operatorGroupId });
         expect(updateSessionAttributeSpy).toBeCalledWith(req, MULTIPLE_OPERATOR_ATTRIBUTE, {
             selectedOperators: testOperators,
             id: 1,
@@ -108,16 +109,17 @@ describe('reuseOperatorGroup', () => {
                 nocCode: 'BOS',
             },
         ];
+        const operatorGroupId = 1;
 
         getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue({
-            id: 1,
+            id: operatorGroupId,
             name: 'Best Ops',
             operators: testOperators,
         });
         const isSchemeOperatorSpy = jest.spyOn(index, 'isSchemeOperator');
         isSchemeOperatorSpy.mockImplementation(() => true);
         const { req, res } = getMockRequestAndResponse({
-            body: { operatorGroupId: '1' },
+            body: { operatorGroupId },
             session: {
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'multipleServices',
@@ -130,7 +132,7 @@ describe('reuseOperatorGroup', () => {
         });
         await reuseOperatorGroup(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, { operatorGroupId });
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/multiOperatorServiceList' });
     });
 
@@ -150,16 +152,17 @@ describe('reuseOperatorGroup', () => {
                 nocCode: 'BOS',
             },
         ];
+        const operatorGroupId = 1;
 
         getOperatorGroupByNocAndId.mockImplementation().mockResolvedValue({
-            id: 1,
+            id: operatorGroupId,
             name: 'Best Ops',
             operators: testOperators,
         });
         const isSchemeOperatorSpy = jest.spyOn(index, 'isSchemeOperator');
         isSchemeOperatorSpy.mockImplementation(() => true);
         const { req, res } = getMockRequestAndResponse({
-            body: { operatorGroupId: '1' },
+            body: { operatorGroupId },
             session: {
                 [TICKET_REPRESENTATION_ATTRIBUTE]: {
                     name: 'multipleServicesFlatFareMultiOperator',
@@ -172,7 +175,7 @@ describe('reuseOperatorGroup', () => {
         });
         await reuseOperatorGroup(req, res);
 
-        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, []);
+        expect(updateSessionAttributeSpy).toBeCalledWith(req, REUSE_OPERATOR_GROUP_ATTRIBUTE, { operatorGroupId });
         expect(writeHeadMock).toBeCalledWith(302, { Location: '/multiOperatorServiceList' });
     });
 

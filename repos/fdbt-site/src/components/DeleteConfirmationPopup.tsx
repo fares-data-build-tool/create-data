@@ -24,11 +24,9 @@ const DeleteConfirmationPopup = ({
 
                     <span className="govuk-hint" id="delete-hint">
                         {hintText && (
-                            <>
-                                <span className="govuk-hint" id="delete-hint">
-                                    {hintText}
-                                </span>
-                            </>
+                            <span className="govuk-hint" id="delete-hint">
+                                {hintText}
+                            </span>
                         )}
                     </span>
 

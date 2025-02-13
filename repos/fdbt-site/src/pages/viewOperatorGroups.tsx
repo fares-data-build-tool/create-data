@@ -72,7 +72,7 @@ const ViewOperatorGroups = ({
                 <div className="govuk-grid-column-three-quarters">
                     <h1 className="govuk-heading-xl">Operator Groups</h1>
                     <p className="govuk-body govuk-!-margin-bottom-8">
-                        Define a group of operators for use in a multioperator product.
+                        Define a group of operators for use in a multi-operator product.
                     </p>
 
                     <div>
@@ -92,15 +92,13 @@ const ViewOperatorGroups = ({
                             <div>
                                 <div className="card-row">
                                     {operatorGroups.map((operatorGroup, index) => (
-                                        <>
-                                            <OperatorGroupCard
-                                                index={index}
-                                                operatorGroup={operatorGroup}
-                                                key={operatorGroup.id.toString()}
-                                                defaultChecked={false}
-                                                deleteActionHandler={deleteActionHandler}
-                                            />
-                                        </>
+                                        <OperatorGroupCard
+                                            index={index}
+                                            operatorGroup={operatorGroup}
+                                            key={operatorGroup.id.toString()}
+                                            defaultChecked={false}
+                                            deleteActionHandler={deleteActionHandler}
+                                        />
                                     ))}
                                 </div>
                                 <a className="govuk-button" data-module="govuk-button" href="/searchOperators">
@@ -126,11 +124,9 @@ const ViewOperatorGroups = ({
 
 const NoOperatorGroups = (): ReactElement => {
     return (
-        <>
-            <p className="govuk-body">
-                <em>You currently have no operator groups saved.</em>
-            </p>
-        </>
+        <p className="govuk-body">
+            <em>You currently have no operator groups saved.</em>
+        </p>
     );
 };
 
