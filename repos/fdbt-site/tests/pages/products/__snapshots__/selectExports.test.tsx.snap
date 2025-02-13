@@ -54,7 +54,7 @@ exports[`selectExports renders appropriately when the user has no products 1`] =
                 <p
                   className="govuk-body-m govuk-!-margin-bottom-5"
                 >
-                  This page will export all of the products you select. Expired products, or products for expired services, will not be included in the list below.
+                  This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
                 </p>
               </div>
               <button
@@ -135,7 +135,7 @@ exports[`selectExports renders fully when the user has products they can export 
                 <p
                   className="govuk-body-m govuk-!-margin-bottom-5"
                 >
-                  This page will export all of the products you select. Expired products, or products for expired services, will not be included in the list below.
+                  This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
                 </p>
               </div>
               <button
@@ -558,7 +558,7 @@ exports[`selectExports renders fully when the user has products they can export,
                 <p
                   className="govuk-body-m govuk-!-margin-bottom-5"
                 >
-                  This page will export all of the products you select. Expired products, or products for expired services, will not be included in the list below.
+                  This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
                 </p>
               </div>
               <button

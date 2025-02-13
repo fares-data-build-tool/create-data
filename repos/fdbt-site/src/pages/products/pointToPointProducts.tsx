@@ -11,7 +11,7 @@ import { getProductsMatchingJson } from '../../data/s3';
 import { convertDateFormat, getAndValidateNoc, getCsrfToken } from '../../utils';
 import moment from 'moment';
 import { isArray } from 'lodash';
-import { getTag } from './services';
+import { getProductStatusTag } from './services';
 import BackButton from '../../components/BackButton';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import { buildDeleteUrl } from './otherProducts';
@@ -73,7 +73,7 @@ const PointToPointProducts = ({
                             {service.lineName} - {service.origin} to {service.destination}
                         </h1>
                         <h1 className="govuk-heading-s govuk-!-margin-bottom-8" id="service-status">
-                            Service status: {getTag(service.startDate, service.endDate, false)}
+                            Service status: {getProductStatusTag(false, service.startDate, service.endDate, false)}
                         </h1>
                         <h1 className="govuk-heading-l govuk-!-margin-bottom-4">Products</h1>
                         {PointToPointProductsTable(products, service, deleteActionHandler, csrfToken)}
@@ -145,7 +145,7 @@ const PointToPointProductsTable = (
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate ?? '-'}</td>
                                   <td className="govuk-table__cell">
-                                      {getTag(product.startDate, product.endDate, true)}
+                                      {getProductStatusTag(false, product.startDate, product.endDate, true)}
                                       {product.requiresAttention ? (
                                           <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
                                               Needs attention
@@ -215,7 +215,7 @@ export const getServerSideProps = async (
     const products = await getPointToPointProductsByLineId(noc, service.lineId);
     const productsToDisplay = filterProductsNotToDisplay(service, products);
 
-    const formattedProducts = await Promise.all(
+    const formattedProducts: MyFaresPointToPointProduct[] = await Promise.all(
         productsToDisplay.map(async (product) => {
             const matchingJson = await getProductsMatchingJson(product.matchingJsonLink);
 

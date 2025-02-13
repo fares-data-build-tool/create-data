@@ -786,6 +786,7 @@ export const insertDataToProductsBucketAndProductsTable = async (
         const { startDate, endDate } = userDataJson.ticketPeriod;
         const lineId = 'lineId' in userDataJson ? userDataJson.lineId : undefined;
         const additionalNocs = getAdditionalNocsFromTicket(userDataJson);
+        const incomplete = userDataJson.type === 'multiOperatorExt';
         const operatorGroupAttribute = getSessionAttribute(ctx.req, REUSE_OPERATOR_GROUP_ATTRIBUTE);
         const operatorGroupId =
             operatorGroupAttribute && 'operatorGroupId' in operatorGroupAttribute
@@ -795,6 +796,7 @@ export const insertDataToProductsBucketAndProductsTable = async (
         await insertProducts(
             nocCode,
             filePath,
+            incomplete,
             dateTime,
             userDataJson.type,
             lineId,

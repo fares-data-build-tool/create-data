@@ -10,6 +10,7 @@ import {
     getServiceByIdAndDataSource,
     getCaps,
     getProductByIdAndAdditionalNoc,
+    MultipleResultsError,
 } from '../../../src/data/auroradb';
 import { getProductsMatchingJson } from '../../../src/data/s3';
 import ProductDetails, { getServerSideProps } from '../../../src/pages/products/productDetails';
@@ -95,7 +96,7 @@ describe('myfares pages', () => {
                     passengerTypeId={2}
                     csrfToken=""
                     isOwnProduct
-                    isIncomplete={false}
+                    incomplete={false}
                 />,
             );
 
@@ -161,7 +162,7 @@ describe('myfares pages', () => {
                     passengerTypeId={2}
                     csrfToken=""
                     isOwnProduct
-                    isIncomplete={false}
+                    incomplete={false}
                 />,
             );
 
@@ -222,7 +223,7 @@ describe('myfares pages', () => {
                     passengerTypeId={2}
                     csrfToken=""
                     isOwnProduct
-                    isIncomplete={false}
+                    incomplete={false}
                 />,
             );
 
@@ -322,7 +323,7 @@ describe('myfares pages', () => {
                     csrfToken={''}
                     fareTriangleModified={undefined}
                     isOwnProduct={false}
-                    isIncomplete={true}
+                    incomplete={true}
                 />,
             );
 
@@ -389,7 +390,7 @@ describe('myfares pages', () => {
                     csrfToken=""
                     fareTriangleModified={'18/10/2021'}
                     isOwnProduct={false}
-                    isIncomplete
+                    incomplete
                 />,
             );
 
@@ -407,7 +408,11 @@ describe('myfares pages', () => {
                 startDate: 'A date',
                 endDate: 'Another date',
             });
-            (getProductById as jest.Mock).mockResolvedValueOnce({ nocCode: 'TEST', matchingJsonLink: 'test' });
+            (getProductById as jest.Mock).mockResolvedValueOnce({
+                nocCode: 'TEST',
+                matchingJsonLink: 'test',
+                incomplete: false,
+            });
             (getPassengerTypeNameByIdAndNoc as jest.Mock).mockResolvedValue('Test Passenger Type');
 
             (getSalesOfferPackageByIdAndNoc as jest.Mock).mockResolvedValueOnce({
@@ -498,7 +503,7 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: undefined,
                     isOwnProduct: true,
-                    isIncomplete: false,
+                    incomplete: false,
                 },
             });
         });
@@ -581,7 +586,7 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: undefined,
                     isOwnProduct: true,
-                    isIncomplete: false,
+                    incomplete: false,
                 },
             });
         });
@@ -670,7 +675,7 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: undefined,
                     isOwnProduct: true,
-                    isIncomplete: false,
+                    incomplete: false,
                 },
             });
         });
@@ -789,7 +794,7 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: undefined,
                     isOwnProduct: true,
-                    isIncomplete: false,
+                    incomplete: false,
                 },
             });
         });
@@ -874,7 +879,7 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: undefined,
                     isOwnProduct: true,
-                    isIncomplete: false,
+                    incomplete: false,
                 },
             });
         });
@@ -965,7 +970,7 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: undefined,
                     isOwnProduct: true,
-                    isIncomplete: false,
+                    incomplete: false,
                 },
             });
         });
@@ -1042,7 +1047,7 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: undefined,
                     isOwnProduct: true,
-                    isIncomplete: false,
+                    incomplete: false,
                 },
             });
         });
@@ -1132,7 +1137,7 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: undefined,
                     isOwnProduct: true,
-                    isIncomplete: false,
+                    incomplete: false,
                 },
             });
         });
@@ -1141,6 +1146,7 @@ describe('myfares pages', () => {
             (getProductById as jest.Mock).mockResolvedValue({
                 nocCode: 'TEST',
                 fareTriangleModified: '2021-12-17T00:00:00.000Z',
+                incomplete: false,
             });
             (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedSingleTicket);
             const ctx = getMockContext({ query: { productId: '1', serviceId: '2' } });
@@ -1209,7 +1215,7 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: '2021-12-17T00:00:00.000Z',
                     isOwnProduct: true,
-                    isIncomplete: false,
+                    incomplete: false,
                 },
             });
         });
@@ -1283,16 +1289,18 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: undefined,
                     isOwnProduct: true,
-                    isIncomplete: false,
+                    incomplete: false,
                 },
             });
         });
 
         it('hides edit links when displaying a products shared with you', async () => {
-            (getProductById as jest.Mock).mockRejectedValueOnce(new Error('Product not found'));
+            (getProductById as jest.Mock).mockReset();
+            (getProductById as jest.Mock).mockRejectedValueOnce(new MultipleResultsError('Product not found'));
             (getProductByIdAndAdditionalNoc as jest.Mock).mockResolvedValueOnce({
                 nocCode: 'TEST',
                 matchingJsonLink: 'test',
+                incomplete: true,
             });
             (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce({
                 ...expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperatorsExt,
@@ -1421,7 +1429,7 @@ describe('myfares pages', () => {
                     csrfToken: '',
                     fareTriangleModified: undefined,
                     isOwnProduct: false,
-                    isIncomplete: true,
+                    incomplete: true,
                 },
             });
         });

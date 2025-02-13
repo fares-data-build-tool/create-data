@@ -18,7 +18,7 @@ import {
     isSchemeOperator,
 } from '../../utils/apiUtils';
 import { putDataInS3 } from '../../data/s3';
-import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode } from '../../data/auroradb';
+import { getAtcoCodesByNaptanCodes, batchGetStopsByAtcoCode, updateProductAdditionalNoc } from '../../data/auroradb';
 import { FileData, getFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
 import logger from '../../utils/logger';
 import { ErrorInfo, NextApiRequestWithSession, UserFareZone, FareType } from '../../interfaces';
@@ -300,6 +300,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 };
 
                 await putUserDataInProductsBucketWithFilePath(secondaryOperatorFareInfo, additionalNocMatchingJsonLink);
+                await updateProductAdditionalNoc(matchingJsonMetaData.productId, nocCode, stops.length === 0);
             } else {
                 const updatedTicket = {
                     ...ticket,

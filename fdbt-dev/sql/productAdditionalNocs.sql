@@ -3,12 +3,12 @@ LOCK TABLES `productAdditionalNocs` WRITE;
 
 TRUNCATE TABLE `productAdditionalNocs`;
 
-INSERT INTO `productAdditionalNocs` (productId,additionalNocCode)
+INSERT INTO `productAdditionalNocs` (productId,additionalNocCode,incomplete)
 VALUES
-(7, 'LNUD'),
-(7, 'NWBT'),
-(8, 'LNUD'),
-(8, 'NWBT');
+(7, 'LNUD', true),
+(7, 'NWBT', true),
+(8, 'LNUD', false),
+(8, 'NWBT', false);
 
 UNLOCK TABLES;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

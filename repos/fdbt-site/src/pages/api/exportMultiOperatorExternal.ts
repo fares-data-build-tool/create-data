@@ -3,15 +3,13 @@ import { getAndValidateNoc, redirectTo } from '../../utils/apiUtils';
 import { NextApiRequestWithSession } from '../../interfaces';
 import { getS3Exports } from '../../data/s3';
 import { getMultiOperatorExternalProductsByNoc } from '../../data/auroradb';
-import { getNonExpiredProducts, triggerExport } from '../../utils/apiUtils/export';
+import { getActiveOrPendingProducts, triggerExport } from '../../utils/apiUtils/export';
 
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const noc = getAndValidateNoc(req, res);
 
-    //TODO - filter out incomplete products
     const products = await getMultiOperatorExternalProductsByNoc(noc);
-    // 1. filter out expired products
-    const nonExpiredProducts = getNonExpiredProducts(products);
+    const activeOrPendingProducts = getActiveOrPendingProducts(products);
 
     // 2. figure out the name of the file
     const [date] = new Date().toISOString().split('T');
@@ -27,7 +25,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         exportName = exportNameBase + '_' + i;
     }
 
-    const links = nonExpiredProducts.map((product) => product.matchingJsonLink);
+    const links = activeOrPendingProducts.map((product) => product.matchingJsonLink);
 
     await triggerExport({ noc, paths: links, exportPrefix: exportName });
 
