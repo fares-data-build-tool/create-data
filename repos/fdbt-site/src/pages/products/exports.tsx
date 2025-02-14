@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { NextPageContextWithSession } from '../../interfaces';
+import { ErrorInfo, NextPageContextWithSession } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { formatFailedFileNames, getAndValidateNoc, getCsrfToken } from '../../utils';
 import CsrfForm from '../../components/CsrfForm';
@@ -8,6 +8,8 @@ import { getAllProductsByNoc as getAllProductsByNoc } from '../../data/auroradb'
 import useSWR from 'swr';
 import { Export } from '../api/getExportProgress';
 import InfoPopup from '../../components/InfoPopup';
+import ErrorSummary from '../../components/ErrorSummary';
+import InformationSummary from '../../components/InformationSummary';
 
 const title = 'Exports';
 const description = 'Export your products into NeTEx.';
@@ -56,8 +58,8 @@ const getTag = (exportDetails: Export): ReactElement => {
 const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSettingsProps): ReactElement => {
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
-    const [buttonClicked, setButtonClicked] = useState(false);
     const [timeOutPassed, setTimeOutPassed] = useState(false);
+    const [exportErrorState, setExportErrorState] = useState<ErrorInfo | undefined>(undefined);
 
     useEffect(() => {
         if (!initialExportStarted) {
@@ -81,47 +83,87 @@ const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSett
         : undefined;
 
     const anExportIsInProgress = !!exportInProgress;
-    const exportAllowed: boolean =
-        operatorHasProducts && !anExportIsInProgress && !!exports && !buttonClicked && !!timeOutPassed;
     const showCancelButton: boolean = anExportIsInProgress && !!exportInProgress?.exportFailed;
     const failedExport: Export | undefined =
         anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
+
+    const exportButtonActionHandler = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        isExportInProgress: boolean,
+        buttonId: 'export-all-button' | 'select-exports-button',
+    ): void => {
+        if (isExportInProgress && !timeOutPassed) {
+            e.preventDefault();
+            setExportErrorState({
+                id: buttonId,
+                errorMessage:
+                    'A new export cannot be started until the current export has finished. Please wait and try again later.',
+            });
+        } else {
+            if (buttonId === 'export-all-button') {
+                setShowExportPopup(true);
+            }
+        }
+    };
 
     return (
         <>
             <BaseLayout title={title} description={description} showNavigation>
                 <div className="govuk-grid-row">
+                    {!!exportErrorState && (
+                        <>
+                            <ErrorSummary
+                                errors={[
+                                    {
+                                        id: exportErrorState.id,
+                                        errorMessage: exportErrorState.errorMessage,
+                                    },
+                                ]}
+                            />
+                        </>
+                    )}
+                    {anExportIsInProgress && <InformationSummary informationText={'Export in progress.'} />}
                     <div className="govuk-grid-column-full">
                         <div className="dft-flex dft-flex-justify-space-between">
                             <h1 className="govuk-heading-xl">Export your data</h1>{' '}
                             <div>
-                                {!anExportIsInProgress ? (
-                                    <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
-                                        <button
-                                            type="submit"
-                                            className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
-                                            onClick={() => {
-                                                setShowExportPopup(true);
-                                                setButtonClicked(true);
-                                            }}
-                                        >
-                                            Export all fares
-                                        </button>
-                                    </CsrfForm>
-                                ) : showCancelButton ? (
+                                {showCancelButton ? (
                                     <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
                                         <input type="hidden" name="exportName" value={exportInProgress?.name} />
                                         <button type="submit" className="govuk-button govuk-button--warning">
                                             Cancel export in progress
                                         </button>
                                     </CsrfForm>
-                                ) : null}
-                                <a
-                                    href="/products/selectExports"
-                                    className={`govuk-button${!exportAllowed ? ' govuk-visually-hidden' : ''}`}
-                                    data-module="govuk-button"
-                                >
-                                    Select products to export
+                                ) : (
+                                    <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
+                                        <button
+                                            id="export-all-button"
+                                            type="submit"
+                                            className={`govuk-button${
+                                                !operatorHasProducts ? ' govuk-visually-hidden' : ''
+                                            }`}
+                                            onClick={(e) =>
+                                                exportButtonActionHandler(e, anExportIsInProgress, 'export-all-button')
+                                            }
+                                        >
+                                            Export all fares
+                                        </button>
+                                    </CsrfForm>
+                                )}
+
+                                <a href="/products/selectExports">
+                                    <button
+                                        id="select-exports-button"
+                                        type="button"
+                                        className={`govuk-button${
+                                            !operatorHasProducts ? ' govuk-visually-hidden' : ''
+                                        }`}
+                                        onClick={(e) =>
+                                            exportButtonActionHandler(e, anExportIsInProgress, 'select-exports-button')
+                                        }
+                                    >
+                                        Select products to export
+                                    </button>
                                 </a>
                             </div>
                         </div>

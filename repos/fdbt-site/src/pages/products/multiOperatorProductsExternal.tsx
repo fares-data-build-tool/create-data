@@ -47,6 +47,7 @@ const MultiOperatorProducts = ({
         name: string;
         productId: number;
     }>();
+    const [exportErrorState, setExportErrorState] = useState<boolean>(false);
 
     const deleteActionHandler = (productId: number, name: string): void => {
         setPopUpState({
@@ -54,8 +55,6 @@ const MultiOperatorProducts = ({
             productId,
         });
     };
-
-    const [exportErrorState, setExportErrorState] = useState<boolean>(false);
 
     const exportButtonActionHandler = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
