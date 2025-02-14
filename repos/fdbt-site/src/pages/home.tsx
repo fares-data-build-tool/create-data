@@ -28,7 +28,7 @@ const Home = ({
             <InformationSummary
                 informationText={`You have ${multiOperatorFaresRequiringAttentionCount} multi-operator fare${
                     multiOperatorFaresRequiringAttentionCount > 1 ? 's ' : ' '
-                }that requires your attention.`}
+                }that require${multiOperatorFaresRequiringAttentionCount > 1 ? ' ' : 's '}your attention.`}
                 informationLinkText={'View here'}
                 informationLinkHref={'products/multiOperatorProductsExternal#fares-awaiting-your-input'}
             />

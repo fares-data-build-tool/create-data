@@ -311,7 +311,7 @@ exports[`pages home page should render with a information banner if user has mor
   <InformationSummary
     informationLinkHref="products/multiOperatorProductsExternal#fares-awaiting-your-input"
     informationLinkText="View here"
-    informationText="You have 2 multi-operator fares that requires your attention."
+    informationText="You have 2 multi-operator fares that require your attention."
   />
   <h1
     className="govuk-heading-xl"
