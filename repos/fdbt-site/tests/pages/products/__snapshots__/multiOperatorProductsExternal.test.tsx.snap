@@ -49,7 +49,8 @@ exports[`multiOperatorProductsExternal page renders correctly 1`] = `
       >
         <button
           className="govuk-button govuk-button--secondary"
-          type="submit"
+          id="export-button"
+          onClick={[Function]}
         >
           Export all products
         </button>
