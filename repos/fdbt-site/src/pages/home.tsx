@@ -5,7 +5,9 @@ import { checkIfMultipleOperators, getCsrfToken } from '../utils';
 import { getSessionAttribute, regenerateSession, updateSessionAttribute } from '../utils/sessions';
 import { MULTI_MODAL_ATTRIBUTE, OPERATOR_ATTRIBUTE } from '../constants/attributes';
 import { redirectTo } from '../utils/apiUtils';
-import { getAllServicesByNocCode } from '../data/auroradb';
+import { getAllServicesByNocCode, getIncompleteMultiOperatorExternalProductsByNoc } from '../data/auroradb';
+import { ProductAdditionaNocs } from '../interfaces/dbTypes';
+import InformationSummary from '../components/InformationSummary';
 
 const title = 'Create Fares Data';
 const description = 'Create Fares Data is a service that allows you to generate data in NeTEx format';
@@ -13,10 +15,24 @@ const description = 'Create Fares Data is a service that allows you to generate 
 interface HomeProps {
     csrfToken: string;
     showDeleteProductsLink: boolean;
+    multiOperatorFaresRequiringAttentionCount: number;
 }
 
-const Home = ({ csrfToken, showDeleteProductsLink }: HomeProps): ReactElement => (
+const Home = ({
+    csrfToken,
+    showDeleteProductsLink,
+    multiOperatorFaresRequiringAttentionCount,
+}: HomeProps): ReactElement => (
     <BaseLayout title={title} description={description}>
+        {multiOperatorFaresRequiringAttentionCount > 0 && (
+            <InformationSummary
+                informationText={`You have ${multiOperatorFaresRequiringAttentionCount} multi-operator fare${
+                    multiOperatorFaresRequiringAttentionCount > 1 ? 's ' : ' '
+                }that requires your attention.`}
+                informationLinkText={'View here'}
+                informationLinkHref={'products/multiOperatorProductsExternal#fares-awaiting-your-input'}
+            />
+        )}
         <h1 className="govuk-heading-xl">Create fares data</h1>
         <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
@@ -124,6 +140,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const showDeleteProductsLink = process.env.NODE_ENV === 'development' || process.env.STAGE === 'test';
 
     let uniqueModes: string[] = [];
+    let multiOperatorFaresRequiringAttentionCount = 0;
 
     if (sessionNoc) {
         const services = await getAllServicesByNocCode(sessionNoc);
@@ -139,6 +156,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
             uniqueModes = Array.from(new Set(modes));
         }
+
+        const multiOperatorProductsRequiringAttention: ProductAdditionaNocs[] =
+            await getIncompleteMultiOperatorExternalProductsByNoc(sessionNoc);
+        multiOperatorFaresRequiringAttentionCount = multiOperatorProductsRequiringAttention.length;
     }
     updateSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE, uniqueModes.length > 0 ? { modes: uniqueModes } : undefined);
 
@@ -146,6 +167,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         props: {
             csrfToken,
             showDeleteProductsLink,
+            multiOperatorFaresRequiringAttentionCount,
         },
     };
 };

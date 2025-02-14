@@ -144,3 +144,10 @@ export interface GroupOfProductsDb {
     products: string;
     name: string;
 }
+
+export interface ProductAdditionaNocs {
+    id: number;
+    nocCode: string;
+    productId: string;
+    incomplete: boolean;
+}

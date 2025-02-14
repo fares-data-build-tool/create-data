@@ -2,9 +2,15 @@ import React, { ReactElement } from 'react';
 
 interface InformationSummaryProps {
     informationText: string;
+    informationLinkText?: string;
+    informationLinkHref?: string;
 }
 
-const InformationSummary = ({ informationText }: InformationSummaryProps): ReactElement => {
+const InformationSummary = ({
+    informationText,
+    informationLinkText,
+    informationLinkHref,
+}: InformationSummaryProps): ReactElement => {
     return (
         <div
             className="govuk-notification-banner"
@@ -18,6 +24,11 @@ const InformationSummary = ({ informationText }: InformationSummaryProps): React
             </div>
             <div className="govuk-notification-banner__content">
                 <p className="govuk-notification-banner__heading">{informationText}</p>
+                {informationLinkText && informationLinkHref && (
+                    <a className="govuk-link" href={informationLinkHref}>
+                        {informationLinkText}
+                    </a>
+                )}
             </div>
         </div>
     );
