@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { ErrorInfo, NextPageContextWithSession } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { formatFailedFileNames, getAndValidateNoc, getCsrfToken } from '../../utils';
@@ -17,7 +17,6 @@ const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).th
 
 interface GlobalSettingsProps {
     csrf: string;
-    initialExportStarted: boolean;
     operatorHasProducts: boolean;
 }
 
@@ -55,35 +54,23 @@ const getTag = (exportDetails: Export): ReactElement => {
     );
 };
 
-const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSettingsProps): ReactElement => {
+const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
     const [showExportPopup, setShowExportPopup] = useState(false);
     const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
-    const [timeOutPassed, setTimeOutPassed] = useState(false);
     const [exportErrorState, setExportErrorState] = useState<ErrorInfo | undefined>(undefined);
 
-    useEffect(() => {
-        if (!initialExportStarted) {
-            setTimeOutPassed(true);
-        } else if (!timeOutPassed) {
-            const timerFunc = setTimeout(() => {
-                setTimeOutPassed(true);
-            }, 2000);
-
-            return () => clearTimeout(timerFunc);
-        }
-        return;
-    }, [timeOutPassed]);
-
-    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000, refreshWhenHidden: true });
+    const { data } = useSWR('/api/getExportProgress', fetcher, {
+        refreshInterval: 3000,
+        refreshWhenHidden: true,
+    });
 
     const exports: Export[] | undefined = data?.exports;
 
     const exportInProgress: Export | undefined = !!exports
-        ? exports.find((exportDetails) => !exportDetails.signedUrl)
+        ? exports.find((exportDetails) => !exportDetails.signedUrl && !exportDetails.exportFailed)
         : undefined;
 
     const anExportIsInProgress = !!exportInProgress;
-    const showCancelButton: boolean = anExportIsInProgress && !!exportInProgress?.exportFailed;
     const failedExport: Export | undefined =
         anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
 
@@ -92,7 +79,7 @@ const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSett
         isExportInProgress: boolean,
         buttonId: 'export-all-button' | 'select-exports-button',
     ): void => {
-        if (isExportInProgress && !timeOutPassed) {
+        if (isExportInProgress) {
             e.preventDefault();
             setExportErrorState({
                 id: buttonId,
@@ -127,30 +114,20 @@ const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSett
                         <div className="dft-flex dft-flex-justify-space-between">
                             <h1 className="govuk-heading-xl">Export your data</h1>{' '}
                             <div>
-                                {showCancelButton ? (
-                                    <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
-                                        <input type="hidden" name="exportName" value={exportInProgress?.name} />
-                                        <button type="submit" className="govuk-button govuk-button--warning">
-                                            Cancel export in progress
-                                        </button>
-                                    </CsrfForm>
-                                ) : (
-                                    <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
-                                        <button
-                                            id="export-all-button"
-                                            type="submit"
-                                            className={`govuk-button${
-                                                !operatorHasProducts ? ' govuk-visually-hidden' : ''
-                                            }`}
-                                            onClick={(e) =>
-                                                exportButtonActionHandler(e, anExportIsInProgress, 'export-all-button')
-                                            }
-                                        >
-                                            Export all fares
-                                        </button>
-                                    </CsrfForm>
-                                )}
-
+                                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/exports'}>
+                                    <button
+                                        id="export-all-button"
+                                        type="submit"
+                                        className={`govuk-button${
+                                            !operatorHasProducts ? ' govuk-visually-hidden' : ''
+                                        }`}
+                                        onClick={(e) =>
+                                            exportButtonActionHandler(e, anExportIsInProgress, 'export-all-button')
+                                        }
+                                    >
+                                        Export all fares
+                                    </button>
+                                </CsrfForm>
                                 <a href="/products/selectExports">
                                     <button
                                         id="select-exports-button"
@@ -187,7 +164,7 @@ const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSett
 
                         <h2 className="govuk-heading-m govuk-!-margin-bottom-6">Previously exported fares</h2>
 
-                        {!exports || !timeOutPassed ? (
+                        {!exports ? (
                             <LoadingSpinner />
                         ) : exports.length === 0 ? (
                             <p className="govuk-body-m">
@@ -282,13 +259,11 @@ const Exports = ({ csrf, operatorHasProducts, initialExportStarted }: GlobalSett
 export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: GlobalSettingsProps }> => {
     const noc = getAndValidateNoc(ctx);
     const operatorHasProducts = (await getAllProductsByNoc(noc)).length > 0;
-    const exportStartedQueryString = ctx.query.exportStarted;
 
     return {
         props: {
             csrf: getCsrfToken(ctx),
             operatorHasProducts,
-            initialExportStarted: !!exportStartedQueryString && exportStartedQueryString === 'true',
         },
     };
 };
