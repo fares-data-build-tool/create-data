@@ -327,7 +327,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 );
             }
 
-            if (serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint.length === 0) {
+            if (serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint?.length === 0) {
                 serviceFrameToUpdate.scheduledStopPoints = undefined;
             }
 
@@ -409,7 +409,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             return networkFareFrameToUpdate;
         }
 
-        if (networkFareFrameToUpdate.fareZones.FareZone.length === 0) {
+        if (networkFareFrameToUpdate.fareZones.FareZone?.length === 0) {
             networkFareFrameToUpdate.fareZones = undefined;
         }
 
@@ -435,7 +435,7 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             zoneFareFrameToUpdate.fareZones.FareZone = fareZoneList;
         }
 
-        if (zoneFareFrameToUpdate.fareZones.FareZone.length === 0) {
+        if (zoneFareFrameToUpdate.fareZones.FareZone?.length === 0) {
             zoneFareFrameToUpdate.fareZones = undefined;
         }
 
