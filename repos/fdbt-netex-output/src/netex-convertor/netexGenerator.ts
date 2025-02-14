@@ -51,7 +51,7 @@ import {
 import {
     convertJsonToXml,
     getCoreData,
-    getFareStructuresElements,
+    getFareStructureElements,
     getNetexMode,
     getNetexTemplateAsJson,
     getTimeRestrictions,
@@ -327,6 +327,10 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
                 );
             }
 
+            if (serviceFrameToUpdate.scheduledStopPoints.ScheduledStopPoint.length === 0) {
+                serviceFrameToUpdate.scheduledStopPoints = undefined;
+            }
+
             return serviceFrameToUpdate;
         }
 
@@ -405,6 +409,10 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             return networkFareFrameToUpdate;
         }
 
+        if (networkFareFrameToUpdate.fareZones.FareZone.length === 0) {
+            networkFareFrameToUpdate.fareZones = undefined;
+        }
+
         return null;
     };
 
@@ -427,6 +435,10 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             zoneFareFrameToUpdate.fareZones.FareZone = fareZoneList;
         }
 
+        if (zoneFareFrameToUpdate.fareZones.FareZone.length === 0) {
+            zoneFareFrameToUpdate.fareZones = undefined;
+        }
+
         return zoneFareFrameToUpdate;
     };
 
@@ -447,13 +459,18 @@ const netexGenerator = async (ticket: Ticket, operatorData: Operator[]): Promise
             : `op:Tariff@${coreData.placeholderGroupOfProductsName}`;
         tariff.Name.$t = `Tariff for ${coreData.productNameForPlainText}`;
 
-        const fareStructuresElements = getFareStructuresElements(
+        const fareStructuresElements = getFareStructureElements(
             ticket,
             coreData,
             'exemptedServices' in ticket,
             'exemptStops' in ticket,
         );
-        tariff.fareStructureElements.FareStructureElement = fareStructuresElements;
+
+        if (fareStructuresElements.length > 0) {
+            tariff.fareStructureElements.FareStructureElement = fareStructuresElements;
+        } else {
+            tariff.fareStructureElements = undefined;
+        }
 
         if (isFlatFareType(ticket) || isMultiOpFlatFareType(ticket)) {
             const typeOfTariffRef = isPricedByDistance ? 'fxc:Distance_kilometers' : 'fxc:flat';
