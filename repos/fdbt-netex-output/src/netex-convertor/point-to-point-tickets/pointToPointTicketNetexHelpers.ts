@@ -62,7 +62,11 @@ export const hasDuplicatesAcrossFareZones = (fareZones: FareZone[]): boolean => 
     return hasDuplicateStops;
 };
 
-export const getPointToPointScheduledStopPointsList = (fareZones: FareZone[]): ScheduledStopPoints[] => {
+export const getPointToPointScheduledStopPointsList = (fareZones?: FareZone[]): ScheduledStopPoints[] => {
+    if (!fareZones) {
+        return [];
+    }
+
     let stops = getStops(fareZones);
 
     if (stops.length !== 0) {
@@ -147,8 +151,12 @@ export const getPriceGroups = (matchingData: PointToPointTicket | PointToPointPe
     return priceGroups;
 };
 
-export const getFareZoneList = (fareZones: FareZone[]): FareZoneList[] =>
-    fareZones.map(zone => ({
+export const getFareZoneList = (fareZones?: FareZone[]): FareZoneList[] => {
+    if (!fareZones) {
+        return [];
+    }
+
+    return fareZones.map(zone => ({
         version: '1.0',
         id: `fs@${getIdName(zone.name)}`,
         Name: { $t: zone.name },
@@ -160,6 +168,7 @@ export const getFareZoneList = (fareZones: FareZone[]): FareZoneList[] =>
             })),
         },
     }));
+};
 
 export const getDistanceMatrixElements = (fareZones: FareZone[]): {}[] =>
     fareZones.flatMap(zone =>
