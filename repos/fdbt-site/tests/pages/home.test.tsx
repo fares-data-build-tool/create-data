@@ -51,6 +51,10 @@ const multiModalServices = [
 describe('pages', () => {
     describe('home page', () => {
         const checkForServicesSpy = jest.spyOn(aurora, 'getAllServicesByNocCode');
+        const getIncompleteMultiOperatorExternalProductsByNocSpy = jest.spyOn(
+            aurora,
+            'getIncompleteMultiOperatorExternalProductsByNoc',
+        );
 
         it('should render correctly', () => {
             const tree = shallow(
@@ -94,6 +98,7 @@ describe('pages', () => {
                     [OPERATOR_ATTRIBUTE]: operatorData,
                 },
             });
+            getIncompleteMultiOperatorExternalProductsByNocSpy.mockResolvedValueOnce([]);
 
             await getServerSideProps(ctx);
 
@@ -130,6 +135,7 @@ describe('pages', () => {
                     [OPERATOR_ATTRIBUTE]: operatorData,
                 },
             });
+            getIncompleteMultiOperatorExternalProductsByNocSpy.mockResolvedValueOnce([]);
 
             await getServerSideProps(ctx);
 
@@ -179,6 +185,7 @@ describe('pages', () => {
                     [OPERATOR_ATTRIBUTE]: operatorData,
                 },
             });
+            getIncompleteMultiOperatorExternalProductsByNocSpy.mockResolvedValueOnce([]);
 
             await getServerSideProps(ctx);
 
@@ -200,6 +207,7 @@ describe('pages', () => {
                     [OPERATOR_ATTRIBUTE]: operatorData,
                 },
             });
+            getIncompleteMultiOperatorExternalProductsByNocSpy.mockResolvedValueOnce([]);
 
             await getServerSideProps(ctx);
 
