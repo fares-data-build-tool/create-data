@@ -11,6 +11,8 @@ import { MyFaresService, NextPageContextWithSession, ProductToDisplay, ServiceTo
 import { BaseLayout } from '../../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
 import { getActiveOrPendingProducts } from '../../utils/apiUtils/export';
+import { getAllExports } from '../api/getExportProgress';
+import { GetServerSidePropsResult } from 'next';
 
 const title = 'Select Exports';
 const description = 'Export selected products into NeTEx.';
@@ -471,8 +473,23 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SelectExportsProps }> => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<GetServerSidePropsResult<SelectExportsProps>> => {
     const noc = getAndValidateNoc(ctx);
+    const exports = await getAllExports(noc);
+
+    const isExportInProgress = !!exports && exports.some((exportDetails) => !exportDetails.signedUrl);
+
+    if (isExportInProgress) {
+        return {
+            redirect: {
+                destination: '/products/exports',
+                permanent: false,
+            },
+        };
+    }
+
     const products = await getAllProductsByNoc(noc);
     const activeOrPendingProducts = getActiveOrPendingProducts(products);
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
