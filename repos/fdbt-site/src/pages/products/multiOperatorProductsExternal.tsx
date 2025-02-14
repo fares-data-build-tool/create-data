@@ -76,17 +76,15 @@ const MultiOperatorProducts = ({
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
                 {!!exportErrorState && (
-                    <>
-                        <ErrorSummary
-                            errors={[
-                                {
-                                    id: 'export-button',
-                                    errorMessage:
-                                        'A new export cannot be started until the current export has finished. Please wait and try again later.',
-                                },
-                            ]}
-                        />
-                    </>
+                    <ErrorSummary
+                        errors={[
+                            {
+                                id: 'export-button',
+                                errorMessage:
+                                    'A new export cannot be started until the current export has finished. Please wait and try again later.',
+                            },
+                        ]}
+                    />
                 )}
                 {isExportInProgress && <InformationSummary informationText={'Export in progress.'} />}
                 <div className="govuk-grid-column-two-thirds">
