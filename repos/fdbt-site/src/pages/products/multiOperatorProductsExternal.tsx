@@ -8,9 +8,15 @@ import { getGroupPassengerTypeById, getMultiOperatorExternalProducts, getPasseng
 import { getProductsMatchingJson } from '../../data/s3';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import CsrfForm from '../../components/CsrfForm';
+import InformationSummary from '../../components/InformationSummary';
+import ErrorSummary from '../../components/ErrorSummary';
+import useSWR from 'swr';
+import { Export } from '../api/getExportProgress';
 
 const title = 'Multi-operator products - Create Fares Data Service';
 const description = 'View and access your multi-operator products in one place.';
+
+const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).then((res) => res.json());
 
 export type MultiOperatorProductExternal = {
     id: number;
@@ -49,11 +55,44 @@ const MultiOperatorProducts = ({
         });
     };
 
+    const [exportErrorState, setExportErrorState] = useState<boolean>(false);
+
+    const exportButtonActionHandler = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        isExportInProgress: boolean,
+    ): void => {
+        if (isExportInProgress) {
+            e.preventDefault();
+            setExportErrorState(true);
+        }
+    };
+
+    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000, refreshWhenHidden: true });
+
+    const exports: Export[] | undefined = data?.exports;
+
+    const isExportInProgress: boolean = !!exports && exports.some((exportDetails) => !exportDetails.signedUrl);
+
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
+                {!!exportErrorState && (
+                    <>
+                        <ErrorSummary
+                            errors={[
+                                {
+                                    id: 'export-button',
+                                    errorMessage:
+                                        'A new export cannot be started until the current export has finished. Please wait and try again later.',
+                                },
+                            ]}
+                        />
+                    </>
+                )}
+                {isExportInProgress && <InformationSummary informationText={'Export in progress.'} />}
                 <div className="govuk-grid-column-two-thirds">
                     <h1 className="govuk-heading-xl">Multi-operator products</h1>
+
                     <p className="govuk-body-m ">
                         This is where operators can collaborate with other operators to define and export your active
                         multi-operator products.
@@ -67,7 +106,11 @@ const MultiOperatorProducts = ({
                         </button>
                     </CsrfForm>
                     <CsrfForm action="/api/exportMultiOperatorExternal" method="post" csrfToken={csrfToken}>
-                        <button type="submit" className="govuk-button govuk-button--secondary">
+                        <button
+                            id={'export-button'}
+                            className="govuk-button govuk-button--secondary"
+                            onClick={(e) => exportButtonActionHandler(e, isExportInProgress)}
+                        >
                             Export all products
                         </button>
                     </CsrfForm>
