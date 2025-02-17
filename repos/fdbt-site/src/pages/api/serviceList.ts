@@ -238,11 +238,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
 
                 await putUserDataInProductsBucketWithFilePath(secondaryOperatorFareInfo, additionalNocMatchingJsonLink);
-                await updateProductAdditionalNoc(
-                    matchingJsonMetaData.productId,
-                    nocCode,
-                    selectedServices.length === 0,
-                );
+
+                if (ticket.type === 'multiOperatorExt') {
+                    await updateProductAdditionalNoc(
+                        matchingJsonMetaData.productId,
+                        nocCode,
+                        selectedServices.length === 0,
+                    );
+                }
             } else {
                 const updatedTicket = {
                     ...ticket,
