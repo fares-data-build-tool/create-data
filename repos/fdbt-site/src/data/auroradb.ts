@@ -1856,7 +1856,7 @@ export const insertProducts = async (
     dateModified: Date,
     fareType: string,
     lineId: string | undefined,
-    additionalNocs: string[],
+    multiOperatorExtAdditionalNocs: string[],
     startDate: string,
     endDate?: string,
     operatorGroupId?: number,
@@ -1886,8 +1886,8 @@ export const insertProducts = async (
             operatorGroupId || null,
         ]);
 
-        if (additionalNocs.length > 0) {
-            await insertProductAdditionalNocs(productId, additionalNocs);
+        if (multiOperatorExtAdditionalNocs.length > 0) {
+            await insertProductAdditionalNocs(productId, multiOperatorExtAdditionalNocs);
         }
     } catch (error) {
         throw new Error(`Could not insert products into the products table. ${error.stack}`);
