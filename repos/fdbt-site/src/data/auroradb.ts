@@ -30,6 +30,7 @@ import {
     RawMyFaresProduct,
     MyFaresOtherProduct,
     DbProduct,
+    ProductAdditionaNocs,
 } from '../interfaces/dbTypes';
 import { Stop, FromDb, SalesOfferPackage, CompanionInfo, OperatorDetails } from '../interfaces/matchingJsonTypes';
 
@@ -2467,6 +2468,29 @@ export const getMultiOperatorExternalProductsByNoc = async (noc: string): Promis
             startDate: convertDateFormat(result.startDate),
             endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
         }));
+    } catch (error) {
+        throw new Error(`Could not fetch products from the products table. ${error.stack}`);
+    }
+};
+
+export const getIncompleteMultiOperatorExternalProductsByNoc = async (noc: string): Promise<ProductAdditionaNocs[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting multi-operator external products that require attention for a given noc',
+        noc: noc,
+    });
+
+    const query = `
+            SELECT *
+            FROM productAdditionalNocs
+            WHERE additionalNocCode = ?
+            AND incomplete = true
+        `;
+
+    try {
+        const result = await executeQuery<ProductAdditionaNocs[]>(query, [noc]);
+
+        return result;
     } catch (error) {
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
     }

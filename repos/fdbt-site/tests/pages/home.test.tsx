@@ -51,14 +51,36 @@ const multiModalServices = [
 describe('pages', () => {
     describe('home page', () => {
         const checkForServicesSpy = jest.spyOn(aurora, 'getAllServicesByNocCode');
+        const getIncompleteMultiOperatorExternalProductsByNocSpy = jest.spyOn(
+            aurora,
+            'getIncompleteMultiOperatorExternalProductsByNoc',
+        );
 
         it('should render correctly', () => {
-            const tree = shallow(<Home csrfToken="" showDeleteProductsLink />);
+            const tree = shallow(
+                <Home csrfToken="" showDeleteProductsLink multiOperatorFaresRequiringAttentionCount={0} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
         it('should render correctly for prod environment', () => {
-            const tree = shallow(<Home csrfToken="" showDeleteProductsLink={false} />);
+            const tree = shallow(
+                <Home csrfToken="" showDeleteProductsLink={false} multiOperatorFaresRequiringAttentionCount={0} />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render with a information banner if user has one multi-operator product that require their attention', () => {
+            const tree = shallow(
+                <Home csrfToken="" showDeleteProductsLink={false} multiOperatorFaresRequiringAttentionCount={1} />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render with a information banner if user has more than one multi-operator product that require their attention', () => {
+            const tree = shallow(
+                <Home csrfToken="" showDeleteProductsLink={false} multiOperatorFaresRequiringAttentionCount={2} />,
+            );
             expect(tree).toMatchSnapshot();
         });
 
@@ -76,6 +98,7 @@ describe('pages', () => {
                     [OPERATOR_ATTRIBUTE]: operatorData,
                 },
             });
+            getIncompleteMultiOperatorExternalProductsByNocSpy.mockResolvedValueOnce([]);
 
             await getServerSideProps(ctx);
 
@@ -112,6 +135,7 @@ describe('pages', () => {
                     [OPERATOR_ATTRIBUTE]: operatorData,
                 },
             });
+            getIncompleteMultiOperatorExternalProductsByNocSpy.mockResolvedValueOnce([]);
 
             await getServerSideProps(ctx);
 
@@ -161,6 +185,7 @@ describe('pages', () => {
                     [OPERATOR_ATTRIBUTE]: operatorData,
                 },
             });
+            getIncompleteMultiOperatorExternalProductsByNocSpy.mockResolvedValueOnce([]);
 
             await getServerSideProps(ctx);
 
@@ -182,6 +207,7 @@ describe('pages', () => {
                     [OPERATOR_ATTRIBUTE]: operatorData,
                 },
             });
+            getIncompleteMultiOperatorExternalProductsByNocSpy.mockResolvedValueOnce([]);
 
             await getServerSideProps(ctx);
 
