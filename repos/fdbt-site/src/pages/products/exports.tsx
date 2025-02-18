@@ -54,9 +54,48 @@ const getTag = (exportDetails: Export): ReactElement => {
     );
 };
 
+const getExportAction = (
+    exportDetails: Export,
+    setFailedFilesPopup: React.Dispatch<React.SetStateAction<{ failedValidationFilenames: string[] } | undefined>>,
+    csrf: string,
+) => {
+    if (exportDetails.signedUrl && !exportDetails.exportFailed) {
+        return <a href={exportDetails.signedUrl}>Download file</a>;
+    }
+    if (exportDetails.failedValidationFilenames.length > 0) {
+        return (
+            <button
+                className="govuk-button margin-bottom-0"
+                onClick={() => {
+                    setFailedFilesPopup({
+                        failedValidationFilenames: exportDetails.failedValidationFilenames,
+                    });
+                }}
+            >
+                {' '}
+                View failure details
+            </button>
+        );
+    }
+    if (!exportDetails.signedUrl && !exportDetails.exportFailed) {
+        return (
+            <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
+                <input type="hidden" name="exportName" value={exportDetails.name} />
+                <button type="submit" className="govuk-button govuk-button--warning">
+                    Cancel export in progress
+                </button>
+            </CsrfForm>
+        );
+    } else {
+        return null;
+    }
+};
+
 const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
     const [showExportPopup, setShowExportPopup] = useState(false);
-    const [showFailedFilesPopup, setShowFailedFilesPopup] = useState(false);
+    const [failedFilesPopup, setFailedFilesPopup] = useState<{ failedValidationFilenames: string[] } | undefined>(
+        undefined,
+    );
     const [exportErrorState, setExportErrorState] = useState<ErrorInfo | undefined>(undefined);
 
     const { data } = useSWR('/api/getExportProgress', fetcher, {
@@ -71,8 +110,6 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
         : undefined;
 
     const anExportIsInProgress = !!exportInProgress;
-    const failedExport: Export | undefined =
-        anExportIsInProgress && exportInProgress?.exportFailed ? exportInProgress : undefined;
 
     const exportButtonActionHandler = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -193,19 +230,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                                 <td className="govuk-table__cell">{exportDetails.name}</td>
                                                 <td className="govuk-table__cell">{getTag(exportDetails)}</td>
                                                 <td className="govuk-table__cell">
-                                                    {exportDetails.signedUrl && !exportDetails.exportFailed ? (
-                                                        <a href={exportDetails.signedUrl}>Download file</a>
-                                                    ) : !!exportDetails.exportFailed &&
-                                                      exportDetails.failedValidationFilenames.length > 0 ? (
-                                                        <button
-                                                            className="govuk-button margin-bottom-0"
-                                                            onClick={() => {
-                                                                setShowFailedFilesPopup(true);
-                                                            }}
-                                                        >
-                                                            View failure details
-                                                        </button>
-                                                    ) : null}
+                                                    {getExportAction(exportDetails, setFailedFilesPopup, csrf)}
                                                 </td>
                                             </tr>
                                         );
@@ -223,7 +248,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                             />
                         )}
 
-                        {showFailedFilesPopup && !!failedExport && (
+                        {!!failedFilesPopup && (
                             <div className="popup">
                                 <div className="popup__content">
                                     <h1 className="govuk-heading-m govuk-!-margin-bottom-8">
@@ -231,7 +256,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                     </h1>
 
                                     <p className="govuk-body-m govuk-!-margin-bottom-8">
-                                        {formatFailedFileNames(failedExport.failedValidationFilenames)}
+                                        {formatFailedFileNames(failedFilesPopup.failedValidationFilenames)}
                                     </p>
 
                                     <span className="govuk-hint" id="info-hint">
@@ -243,7 +268,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                         &apos;Select products to export&apos; button to exclude the failing products.
                                     </span>
 
-                                    <button className="govuk-button" onClick={() => setShowFailedFilesPopup(false)}>
+                                    <button className="govuk-button" onClick={() => setFailedFilesPopup(undefined)}>
                                         Ok
                                     </button>
                                 </div>

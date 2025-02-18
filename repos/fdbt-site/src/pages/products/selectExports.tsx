@@ -479,7 +479,8 @@ export const getServerSideProps = async (
     const noc = getAndValidateNoc(ctx);
     const exports = await getAllExports(noc);
 
-    const isExportInProgress = !!exports && exports.some((exportDetails) => !exportDetails.signedUrl);
+    const isExportInProgress =
+        !!exports && exports.some((exportDetails) => !exportDetails.signedUrl && !exportDetails.exportFailed);
 
     if (isExportInProgress) {
         return {
