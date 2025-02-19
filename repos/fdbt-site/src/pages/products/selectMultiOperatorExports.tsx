@@ -37,125 +37,117 @@ const SelectMultiOperatorExports = ({ productsToDisplay, csrf }: SelectMultiOper
     };
 
     return (
-        <>
-            <BaseLayout title={title} description={description}>
-                <ErrorSummary errors={errors} />
-                <BackButton href="/products/multiOperatorProductsExternal" />
-                <CsrfForm onSubmit={handleSubmit} csrfToken={csrf} method={'post'} action={'/api/selectExports'}>
-                    <div className="govuk-grid-row">
-                        <div className="govuk-grid-column-two-thirds">
-                            <h1 className="govuk-heading-xl">Export your selected multi-operator products</h1>
-                            <p className="govuk-body-m govuk-!-margin-bottom-5">
-                                This page will export all of the products you select. Incomplete products, expired
-                                products, or products for expired services will not be included in the list below.
-                            </p>
-                        </div>
-                        <div className="govuk-grid-column-one-third">
-                            <button
-                                type="submit"
-                                id="export-selected-products"
-                                className={`govuk-button`}
-                                disabled={isSubmitting}
-                                onClick={(e) => {
-                                    if (productsToDisplay.length === 0) {
-                                        e.preventDefault();
-                                        setErrors([
-                                            {
-                                                id: 'export-selected-products',
-                                                errorMessage: 'You have no multi-operator products to export.',
-                                            },
-                                        ]);
-                                        return;
-                                    }
-
-                                    if (productsSelected.length === 0) {
-                                        e.preventDefault();
-                                        setErrors([
-                                            {
-                                                id: 'export-selected-products',
-                                                errorMessage: 'Select at least one product to export.',
-                                            },
-                                        ]);
-                                        return;
-                                    }
-                                }}
-                            >
-                                Export selected products
-                            </button>
-                            <button
-                                id="select-all"
-                                className={`govuk-button govuk-button--secondary${
-                                    productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
-                                }`}
-                                data-module="govuk-button"
-                                onClick={(e) => {
+        <BaseLayout title={title} description={description}>
+            <ErrorSummary errors={errors} />
+            <BackButton href="/products/multiOperatorProductsExternal" />
+            <CsrfForm onSubmit={handleSubmit} csrfToken={csrf} method={'post'} action={'/api/selectExports'}>
+                <div className="govuk-grid-row">
+                    <div className="govuk-grid-column-two-thirds">
+                        <h1 className="govuk-heading-xl">Export your selected multi-operator products</h1>
+                        <p className="govuk-body-m govuk-!-margin-bottom-5">
+                            This page will export all of the products you select. Incomplete products, expired products,
+                            or products for expired services will not be included in the list below.
+                        </p>
+                    </div>
+                    <div className="govuk-grid-column-one-third">
+                        <button
+                            type="submit"
+                            id="export-selected-products"
+                            className={`govuk-button`}
+                            disabled={isSubmitting}
+                            onClick={(e) => {
+                                if (productsToDisplay.length === 0) {
                                     e.preventDefault();
-                                    const productsAreAllSelected = productsSelected.length === productsToDisplay.length;
+                                    setErrors([
+                                        {
+                                            id: 'export-selected-products',
+                                            errorMessage: 'You have no multi-operator products to export.',
+                                        },
+                                    ]);
+                                    return;
+                                }
 
-                                    if (productsAreAllSelected) {
-                                        setProductsSelected([]);
-                                    } else {
-                                        setProductsSelected(productsToDisplay.map((product) => product.id));
-                                    }
-                                }}
-                            >
-                                {productsSelected.length === productsToDisplay.length ? 'Unselect all' : 'Select all'}
-                            </button>
-                        </div>
+                                if (productsSelected.length === 0) {
+                                    e.preventDefault();
+                                    setErrors([
+                                        {
+                                            id: 'export-selected-products',
+                                            errorMessage: 'Select at least one product to export.',
+                                        },
+                                    ]);
+                                    return;
+                                }
+                            }}
+                        >
+                            Export selected products
+                        </button>
+                        <button
+                            id="select-all"
+                            className={`govuk-button govuk-button--secondary${
+                                productsToDisplay.length === 0 ? ' govuk-visually-hidden' : ''
+                            }`}
+                            data-module="govuk-button"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                const productsAreAllSelected = productsSelected.length === productsToDisplay.length;
+
+                                if (productsAreAllSelected) {
+                                    setProductsSelected([]);
+                                } else {
+                                    setProductsSelected(productsToDisplay.map((product) => product.id));
+                                }
+                            }}
+                        >
+                            {productsSelected.length === productsToDisplay.length ? 'Unselect all' : 'Select all'}
+                        </button>
                     </div>
-                    <div className="govuk-grid-row">
-                        <div className="govuk-grid-column-full">
-                            <strong
-                                id="products-selected"
-                                className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
-                            >
-                                {productsSelected.length} / {productsToDisplay.length} selected
-                            </strong>
-                            <div className="govuk-summary-card govuk-!-padding-4">
-                                {productsToDisplay.length === 0 ? (
-                                    <p className="govuk-body-m govuk-!-margin-top-5">
-                                        <em>You currently have no products that can be exported.</em>
-                                    </p>
-                                ) : (
-                                    <div className="govuk-checkboxes">
-                                        {productsToDisplay.map((product, index) => {
-                                            const checkboxTitles = `${product.productDescription} | ${product.startDate}`;
-                                            return (
-                                                <div
-                                                    className="govuk-checkboxes__item"
-                                                    key={`checkbox-item-${product.id}`}
+                </div>
+                <div className="govuk-grid-row">
+                    <div className="govuk-grid-column-full">
+                        <strong id="products-selected" className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4">
+                            {productsSelected.length} / {productsToDisplay.length} selected
+                        </strong>
+                        <div className="govuk-summary-card govuk-!-padding-4">
+                            {productsToDisplay.length === 0 ? (
+                                <p className="govuk-body-m govuk-!-margin-top-5">
+                                    <em>You currently have no products that can be exported.</em>
+                                </p>
+                            ) : (
+                                <div className="govuk-checkboxes">
+                                    {productsToDisplay.map((product, index) => {
+                                        const checkboxTitles = `${product.productDescription} | ${product.startDate}`;
+                                        return (
+                                            <div className="govuk-checkboxes__item" key={`checkbox-item-${product.id}`}>
+                                                <input
+                                                    className="govuk-checkboxes__input"
+                                                    id={`checkbox-${index}`}
+                                                    name="productsToExport"
+                                                    type="checkbox"
+                                                    value={product.id}
+                                                    defaultChecked={
+                                                        !!productsSelected.find(
+                                                            (productSelected) => productSelected === product.id,
+                                                        )
+                                                    }
+                                                    onChange={(e) => updateSelectedProducts(e, product.id)}
+                                                />
+                                                <label
+                                                    className="govuk-label govuk-checkboxes__label"
+                                                    htmlFor={`checkbox-${index}`}
                                                 >
-                                                    <input
-                                                        className="govuk-checkboxes__input"
-                                                        id={`checkbox-${index}`}
-                                                        name="productsToExport"
-                                                        type="checkbox"
-                                                        value={product.id}
-                                                        defaultChecked={
-                                                            !!productsSelected.find(
-                                                                (productSelected) => productSelected === product.id,
-                                                            )
-                                                        }
-                                                        onChange={(e) => updateSelectedProducts(e, product.id)}
-                                                    />
-                                                    <label
-                                                        className="govuk-label govuk-checkboxes__label"
-                                                        htmlFor={`checkbox-${index}`}
-                                                    >
-                                                        {checkboxTitles}
-                                                    </label>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div>
+                                                    {checkboxTitles}
+                                                </label>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
                     </div>
-                    <input type="hidden" name="isMultiOperatorExternal" value="true" />
-                </CsrfForm>
-            </BaseLayout>
-        </>
+                </div>
+                <input type="hidden" name="isMultiOperatorExternal" value="true" />
+            </CsrfForm>
+        </BaseLayout>
     );
 };
 

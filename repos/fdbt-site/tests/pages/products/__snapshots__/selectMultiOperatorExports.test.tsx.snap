@@ -1,400 +1,394 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`selectMultiOperatorExports renders appropriately when the user has no products 1`] = `
-<Fragment>
-  <BaseLayout
-    description="Export selected multi-operator products into NeTEx."
-    title="Select Multi-Operator Exports"
+<BaseLayout
+  description="Export selected multi-operator products into NeTEx."
+  title="Select Multi-Operator Exports"
+>
+  <ErrorSummary
+    errors={Array []}
+  />
+  <BackButton
+    href="/products/multiOperatorProductsExternal"
+  />
+  <CsrfForm
+    action="/api/selectExports"
+    csrfToken=""
+    method="post"
+    onSubmit={[Function]}
   >
-    <ErrorSummary
-      errors={Array []}
-    />
-    <BackButton
-      href="/products/multiOperatorProductsExternal"
-    />
-    <CsrfForm
-      action="/api/selectExports"
-      csrfToken=""
-      method="post"
-      onSubmit={[Function]}
+    <div
+      className="govuk-grid-row"
     >
       <div
-        className="govuk-grid-row"
+        className="govuk-grid-column-two-thirds"
       >
-        <div
-          className="govuk-grid-column-two-thirds"
+        <h1
+          className="govuk-heading-xl"
         >
-          <h1
-            className="govuk-heading-xl"
-          >
-            Export your selected multi-operator products
-          </h1>
-          <p
-            className="govuk-body-m govuk-!-margin-bottom-5"
-          >
-            This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
-          </p>
-        </div>
-        <div
-          className="govuk-grid-column-one-third"
+          Export your selected multi-operator products
+        </h1>
+        <p
+          className="govuk-body-m govuk-!-margin-bottom-5"
         >
-          <button
-            className="govuk-button"
-            disabled={false}
-            id="export-selected-products"
-            onClick={[Function]}
-            type="submit"
-          >
-            Export selected products
-          </button>
-          <button
-            className="govuk-button govuk-button--secondary govuk-visually-hidden"
-            data-module="govuk-button"
-            id="select-all"
-            onClick={[Function]}
-          >
-            Unselect all
-          </button>
-        </div>
+          This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
+        </p>
       </div>
       <div
-        className="govuk-grid-row"
+        className="govuk-grid-column-one-third"
       >
-        <div
-          className="govuk-grid-column-full"
+        <button
+          className="govuk-button"
+          disabled={false}
+          id="export-selected-products"
+          onClick={[Function]}
+          type="submit"
         >
-          <strong
-            className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
-            id="products-selected"
+          Export selected products
+        </button>
+        <button
+          className="govuk-button govuk-button--secondary govuk-visually-hidden"
+          data-module="govuk-button"
+          id="select-all"
+          onClick={[Function]}
+        >
+          Unselect all
+        </button>
+      </div>
+    </div>
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <strong
+          className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
+          id="products-selected"
+        >
+          0
+           / 
+          0
+           selected
+        </strong>
+        <div
+          className="govuk-summary-card govuk-!-padding-4"
+        >
+          <p
+            className="govuk-body-m govuk-!-margin-top-5"
           >
-            0
-             / 
-            0
-             selected
-          </strong>
-          <div
-            className="govuk-summary-card govuk-!-padding-4"
-          >
-            <p
-              className="govuk-body-m govuk-!-margin-top-5"
-            >
-              <em>
-                You currently have no products that can be exported.
-              </em>
-            </p>
-          </div>
+            <em>
+              You currently have no products that can be exported.
+            </em>
+          </p>
         </div>
       </div>
-      <input
-        name="isMultiOperatorExternal"
-        type="hidden"
-        value="true"
-      />
-    </CsrfForm>
-  </BaseLayout>
-</Fragment>
+    </div>
+    <input
+      name="isMultiOperatorExternal"
+      type="hidden"
+      value="true"
+    />
+  </CsrfForm>
+</BaseLayout>
 `;
 
 exports[`selectMultiOperatorExports renders appropriately when the user has products 1`] = `
-<Fragment>
-  <BaseLayout
-    description="Export selected multi-operator products into NeTEx."
-    title="Select Multi-Operator Exports"
+<BaseLayout
+  description="Export selected multi-operator products into NeTEx."
+  title="Select Multi-Operator Exports"
+>
+  <ErrorSummary
+    errors={Array []}
+  />
+  <BackButton
+    href="/products/multiOperatorProductsExternal"
+  />
+  <CsrfForm
+    action="/api/selectExports"
+    csrfToken=""
+    method="post"
+    onSubmit={[Function]}
   >
-    <ErrorSummary
-      errors={Array []}
-    />
-    <BackButton
-      href="/products/multiOperatorProductsExternal"
-    />
-    <CsrfForm
-      action="/api/selectExports"
-      csrfToken=""
-      method="post"
-      onSubmit={[Function]}
+    <div
+      className="govuk-grid-row"
     >
       <div
-        className="govuk-grid-row"
+        className="govuk-grid-column-two-thirds"
       >
-        <div
-          className="govuk-grid-column-two-thirds"
+        <h1
+          className="govuk-heading-xl"
         >
-          <h1
-            className="govuk-heading-xl"
-          >
-            Export your selected multi-operator products
-          </h1>
-          <p
-            className="govuk-body-m govuk-!-margin-bottom-5"
-          >
-            This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
-          </p>
-        </div>
-        <div
-          className="govuk-grid-column-one-third"
+          Export your selected multi-operator products
+        </h1>
+        <p
+          className="govuk-body-m govuk-!-margin-bottom-5"
         >
-          <button
-            className="govuk-button"
-            disabled={false}
-            id="export-selected-products"
-            onClick={[Function]}
-            type="submit"
-          >
-            Export selected products
-          </button>
-          <button
-            className="govuk-button govuk-button--secondary"
-            data-module="govuk-button"
-            id="select-all"
-            onClick={[Function]}
-          >
-            Select all
-          </button>
-        </div>
+          This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
+        </p>
       </div>
       <div
-        className="govuk-grid-row"
+        className="govuk-grid-column-one-third"
       >
-        <div
-          className="govuk-grid-column-full"
+        <button
+          className="govuk-button"
+          disabled={false}
+          id="export-selected-products"
+          onClick={[Function]}
+          type="submit"
         >
-          <strong
-            className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
-            id="products-selected"
-          >
-            0
-             / 
-            3
-             selected
-          </strong>
+          Export selected products
+        </button>
+        <button
+          className="govuk-button govuk-button--secondary"
+          data-module="govuk-button"
+          id="select-all"
+          onClick={[Function]}
+        >
+          Select all
+        </button>
+      </div>
+    </div>
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <strong
+          className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
+          id="products-selected"
+        >
+          0
+           / 
+          3
+           selected
+        </strong>
+        <div
+          className="govuk-summary-card govuk-!-padding-4"
+        >
           <div
-            className="govuk-summary-card govuk-!-padding-4"
+            className="govuk-checkboxes"
           >
             <div
-              className="govuk-checkboxes"
+              className="govuk-checkboxes__item"
+              key="checkbox-item-1"
             >
-              <div
-                className="govuk-checkboxes__item"
-                key="checkbox-item-1"
+              <input
+                className="govuk-checkboxes__input"
+                defaultChecked={false}
+                id="checkbox-0"
+                name="productsToExport"
+                onChange={[Function]}
+                type="checkbox"
+                value={1}
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="checkbox-0"
               >
-                <input
-                  className="govuk-checkboxes__input"
-                  defaultChecked={false}
-                  id="checkbox-0"
-                  name="productsToExport"
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={1}
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="checkbox-0"
-                >
-                  Best product | 01/02/2022
-                </label>
-              </div>
-              <div
-                className="govuk-checkboxes__item"
-                key="checkbox-item-2"
+                Best product | 01/02/2022
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="checkbox-item-2"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                defaultChecked={false}
+                id="checkbox-1"
+                name="productsToExport"
+                onChange={[Function]}
+                type="checkbox"
+                value={2}
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="checkbox-1"
               >
-                <input
-                  className="govuk-checkboxes__input"
-                  defaultChecked={false}
-                  id="checkbox-1"
-                  name="productsToExport"
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={2}
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="checkbox-1"
-                >
-                  Super product | 02/02/2022
-                </label>
-              </div>
-              <div
-                className="govuk-checkboxes__item"
-                key="checkbox-item-3"
+                Super product | 02/02/2022
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="checkbox-item-3"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                defaultChecked={false}
+                id="checkbox-2"
+                name="productsToExport"
+                onChange={[Function]}
+                type="checkbox"
+                value={3}
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="checkbox-2"
               >
-                <input
-                  className="govuk-checkboxes__input"
-                  defaultChecked={false}
-                  id="checkbox-2"
-                  name="productsToExport"
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={3}
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="checkbox-2"
-                >
-                  Saver product | 01/01/2022
-                </label>
-              </div>
+                Saver product | 01/01/2022
+              </label>
             </div>
           </div>
         </div>
       </div>
-      <input
-        name="isMultiOperatorExternal"
-        type="hidden"
-        value="true"
-      />
-    </CsrfForm>
-  </BaseLayout>
-</Fragment>
+    </div>
+    <input
+      name="isMultiOperatorExternal"
+      type="hidden"
+      value="true"
+    />
+  </CsrfForm>
+</BaseLayout>
 `;
 
 exports[`selectMultiOperatorExports selects all the checkboxes when the select all button is clicked, and unselects them properly also 1`] = `
-<Fragment>
-  <BaseLayout
-    description="Export selected multi-operator products into NeTEx."
-    title="Select Multi-Operator Exports"
+<BaseLayout
+  description="Export selected multi-operator products into NeTEx."
+  title="Select Multi-Operator Exports"
+>
+  <ErrorSummary
+    errors={Array []}
+  />
+  <BackButton
+    href="/products/multiOperatorProductsExternal"
+  />
+  <CsrfForm
+    action="/api/selectExports"
+    csrfToken=""
+    method="post"
+    onSubmit={[Function]}
   >
-    <ErrorSummary
-      errors={Array []}
-    />
-    <BackButton
-      href="/products/multiOperatorProductsExternal"
-    />
-    <CsrfForm
-      action="/api/selectExports"
-      csrfToken=""
-      method="post"
-      onSubmit={[Function]}
+    <div
+      className="govuk-grid-row"
     >
       <div
-        className="govuk-grid-row"
+        className="govuk-grid-column-two-thirds"
       >
-        <div
-          className="govuk-grid-column-two-thirds"
+        <h1
+          className="govuk-heading-xl"
         >
-          <h1
-            className="govuk-heading-xl"
-          >
-            Export your selected multi-operator products
-          </h1>
-          <p
-            className="govuk-body-m govuk-!-margin-bottom-5"
-          >
-            This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
-          </p>
-        </div>
-        <div
-          className="govuk-grid-column-one-third"
+          Export your selected multi-operator products
+        </h1>
+        <p
+          className="govuk-body-m govuk-!-margin-bottom-5"
         >
-          <button
-            className="govuk-button"
-            disabled={false}
-            id="export-selected-products"
-            onClick={[Function]}
-            type="submit"
-          >
-            Export selected products
-          </button>
-          <button
-            className="govuk-button govuk-button--secondary"
-            data-module="govuk-button"
-            id="select-all"
-            onClick={[Function]}
-          >
-            Select all
-          </button>
-        </div>
+          This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
+        </p>
       </div>
       <div
-        className="govuk-grid-row"
+        className="govuk-grid-column-one-third"
       >
-        <div
-          className="govuk-grid-column-full"
+        <button
+          className="govuk-button"
+          disabled={false}
+          id="export-selected-products"
+          onClick={[Function]}
+          type="submit"
         >
-          <strong
-            className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
-            id="products-selected"
-          >
-            0
-             / 
-            3
-             selected
-          </strong>
+          Export selected products
+        </button>
+        <button
+          className="govuk-button govuk-button--secondary"
+          data-module="govuk-button"
+          id="select-all"
+          onClick={[Function]}
+        >
+          Select all
+        </button>
+      </div>
+    </div>
+    <div
+      className="govuk-grid-row"
+    >
+      <div
+        className="govuk-grid-column-full"
+      >
+        <strong
+          className="govuk-tag govuk-tag--blue govuk-!-margin-bottom-4"
+          id="products-selected"
+        >
+          0
+           / 
+          3
+           selected
+        </strong>
+        <div
+          className="govuk-summary-card govuk-!-padding-4"
+        >
           <div
-            className="govuk-summary-card govuk-!-padding-4"
+            className="govuk-checkboxes"
           >
             <div
-              className="govuk-checkboxes"
+              className="govuk-checkboxes__item"
+              key="checkbox-item-1"
             >
-              <div
-                className="govuk-checkboxes__item"
-                key="checkbox-item-1"
+              <input
+                className="govuk-checkboxes__input"
+                defaultChecked={false}
+                id="checkbox-0"
+                name="productsToExport"
+                onChange={[Function]}
+                type="checkbox"
+                value={1}
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="checkbox-0"
               >
-                <input
-                  className="govuk-checkboxes__input"
-                  defaultChecked={false}
-                  id="checkbox-0"
-                  name="productsToExport"
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={1}
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="checkbox-0"
-                >
-                  Best product | 01/02/2022
-                </label>
-              </div>
-              <div
-                className="govuk-checkboxes__item"
-                key="checkbox-item-2"
+                Best product | 01/02/2022
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="checkbox-item-2"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                defaultChecked={false}
+                id="checkbox-1"
+                name="productsToExport"
+                onChange={[Function]}
+                type="checkbox"
+                value={2}
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="checkbox-1"
               >
-                <input
-                  className="govuk-checkboxes__input"
-                  defaultChecked={false}
-                  id="checkbox-1"
-                  name="productsToExport"
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={2}
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="checkbox-1"
-                >
-                  Super product | 02/02/2022
-                </label>
-              </div>
-              <div
-                className="govuk-checkboxes__item"
-                key="checkbox-item-3"
+                Super product | 02/02/2022
+              </label>
+            </div>
+            <div
+              className="govuk-checkboxes__item"
+              key="checkbox-item-3"
+            >
+              <input
+                className="govuk-checkboxes__input"
+                defaultChecked={false}
+                id="checkbox-2"
+                name="productsToExport"
+                onChange={[Function]}
+                type="checkbox"
+                value={3}
+              />
+              <label
+                className="govuk-label govuk-checkboxes__label"
+                htmlFor="checkbox-2"
               >
-                <input
-                  className="govuk-checkboxes__input"
-                  defaultChecked={false}
-                  id="checkbox-2"
-                  name="productsToExport"
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={3}
-                />
-                <label
-                  className="govuk-label govuk-checkboxes__label"
-                  htmlFor="checkbox-2"
-                >
-                  Saver product | 01/01/2022
-                </label>
-              </div>
+                Saver product | 01/01/2022
+              </label>
             </div>
           </div>
         </div>
       </div>
-      <input
-        name="isMultiOperatorExternal"
-        type="hidden"
-        value="true"
-      />
-    </CsrfForm>
-  </BaseLayout>
-</Fragment>
+    </div>
+    <input
+      name="isMultiOperatorExternal"
+      type="hidden"
+      value="true"
+    />
+  </CsrfForm>
+</BaseLayout>
 `;
