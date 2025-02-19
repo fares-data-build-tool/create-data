@@ -40,7 +40,8 @@ export type RawMyFaresProduct = Omit<MyFaresProduct, 'servicesRequiringAttention
 };
 
 export interface DbProduct {
-    id: string;
+    id: number;
+    nocCode: string;
     matchingJsonLink: string;
     incomplete: boolean;
     lineId: string;

@@ -715,7 +715,7 @@ export interface TxcSourceAttribute {
 }
 
 export interface ProductToDisplay {
-    id: string;
+    id: number;
     productName: string;
     startDate: string;
     endDate?: string;
