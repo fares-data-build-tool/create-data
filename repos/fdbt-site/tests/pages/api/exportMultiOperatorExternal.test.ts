@@ -10,7 +10,8 @@ import * as s3 from '../../../src/data/s3';
 
 const mockProducts: DbProduct[] = [
     {
-        id: '1',
+        id: 1,
+        nocCode: 'TEST',
         lineId: 'multiOperatorExt',
         fareType: 'single',
         matchingJsonLink: '/matching/json/link/1',
@@ -18,7 +19,8 @@ const mockProducts: DbProduct[] = [
         incomplete: false,
     },
     {
-        id: '2',
+        id: 2,
+        nocCode: 'TEST',
         lineId: 'multiOperatorExt',
         fareType: 'single',
         matchingJsonLink: '/matching/json/link/2',
@@ -26,7 +28,8 @@ const mockProducts: DbProduct[] = [
         incomplete: false,
     },
     {
-        id: '3',
+        id: 3,
+        nocCode: 'TEST',
         lineId: 'q34t4tq234',
         fareType: 'multiOperatorExt',
         matchingJsonLink: '/matching/json/link/3',

@@ -59,6 +59,7 @@ import {
 
 import { MatchingFareZones } from '../../src/interfaces/matchingInterface';
 import { SessionAttributeTypes } from '../../src/utils/sessions';
+import { MultiOperatorProductExternal } from '../../src/pages/products/multiOperatorProductsExternal';
 
 interface GetMockContextInput {
     session?: { [key: string]: any };
@@ -6497,7 +6498,7 @@ export const mockServicesToDisplay: ServiceToDisplay[] = [
 
 export const mockPointToPointProducts: ProductToDisplay[] = [
     {
-        id: '4',
+        id: 4,
         productName: 'Adult single',
         startDate: '01/02/2022',
         fareType: 'single',
@@ -6506,7 +6507,7 @@ export const mockPointToPointProducts: ProductToDisplay[] = [
         direction: 'outbound',
     },
     {
-        id: '5',
+        id: 5,
         productName: 'Student return',
         startDate: '02/02/2022',
         fareType: 'return',
@@ -6515,7 +6516,7 @@ export const mockPointToPointProducts: ProductToDisplay[] = [
         direction: 'inbound',
     },
     {
-        id: '6',
+        id: 6,
         productName: 'Saver ticket',
         startDate: '02/02/2022',
         fareType: 'single',
@@ -6527,7 +6528,7 @@ export const mockPointToPointProducts: ProductToDisplay[] = [
 
 export const mockOtherProducts: ProductToDisplay[] = [
     {
-        id: '1',
+        id: 1,
         productName: 'Best product',
         startDate: '01/02/2022',
         fareType: 'period',
@@ -6536,7 +6537,7 @@ export const mockOtherProducts: ProductToDisplay[] = [
         direction: null,
     },
     {
-        id: '2',
+        id: 2,
         productName: 'Super product',
         startDate: '02/02/2022',
         fareType: 'flatFare',
@@ -6545,12 +6546,39 @@ export const mockOtherProducts: ProductToDisplay[] = [
         direction: null,
     },
     {
-        id: '3',
+        id: 3,
         productName: 'Super product',
         startDate: '02/02/2022',
         fareType: 'multiOperator',
         schoolTicket: false,
         serviceLineId: null,
         direction: null,
+    },
+];
+
+export const mockMultiOperatorExtProducts: Omit<MultiOperatorProductExternal, 'passengerType'>[] = [
+    {
+        id: 1,
+        incomplete: false,
+        productDescription: 'Best product',
+        duration: '1 month',
+        startDate: '01/02/2022',
+        endDate: '01/03/2022',
+    },
+    {
+        id: 2,
+        incomplete: false,
+        productDescription: 'Super product',
+        duration: '1 week',
+        startDate: '02/02/2022',
+        endDate: '09/02/2022',
+    },
+    {
+        id: 3,
+        incomplete: false,
+        productDescription: 'Saver product',
+        duration: '1 year',
+        startDate: '01/01/2022',
+        endDate: '01/01/2023',
     },
 ];

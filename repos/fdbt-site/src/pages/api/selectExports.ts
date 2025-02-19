@@ -8,8 +8,14 @@ import { triggerExport } from '../../utils/apiUtils/export';
 export default async (req: NextApiRequestWithSession, res: NextApiResponse): Promise<void> => {
     const noc = getAndValidateNoc(req, res);
     const productIdsFromReq: string[] | undefined | string = req.body.productsToExport;
+    const isMultiOperatorExternal: string | undefined = req.body.isMultiOperatorExternal;
 
     if (!productIdsFromReq || productIdsFromReq.length === 0) {
+        if (isMultiOperatorExternal === 'true') {
+            redirectTo(res, '/products/selectMultiOperatorExports');
+            return;
+        }
+
         redirectTo(res, '/products/selectExports');
         return;
     }
