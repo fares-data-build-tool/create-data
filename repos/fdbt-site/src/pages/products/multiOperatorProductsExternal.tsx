@@ -70,7 +70,8 @@ const MultiOperatorProducts = ({
 
     const exports: Export[] | undefined = data?.exports;
 
-    const isExportInProgress: boolean = !!exports && exports.some((exportDetails) => !exportDetails.signedUrl);
+    const isExportInProgress: boolean =
+        !!exports && exports.some((exportDetails) => !exportDetails.signedUrl && !exportDetails.exportFailed);
 
     return (
         <BaseLayout title={title} description={description}>
