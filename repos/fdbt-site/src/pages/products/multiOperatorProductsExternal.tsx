@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { NextPageContextWithSession } from '../../interfaces/index';
+import { ErrorInfo, NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
 import { convertDateFormat, getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../../utils';
 import { getProductStatusTag } from './services';
@@ -47,7 +47,7 @@ const MultiOperatorProducts = ({
         name: string;
         productId: number;
     }>();
-    const [exportErrorState, setExportErrorState] = useState<boolean>(false);
+    const [errors, setErrors] = useState<ErrorInfo[]>([]);
 
     const deleteActionHandler = (productId: number, name: string): void => {
         setPopUpState({
@@ -59,10 +59,17 @@ const MultiOperatorProducts = ({
     const exportButtonActionHandler = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
         isExportInProgress: boolean,
+        buttonId: 'select-exports' | 'export-all',
     ): void => {
         if (isExportInProgress) {
             e.preventDefault();
-            setExportErrorState(true);
+            setErrors([
+                {
+                    id: buttonId,
+                    errorMessage:
+                        'A new export cannot be started until the current export has finished. Please wait and try again later.',
+                },
+            ]);
         }
     };
 
@@ -75,17 +82,7 @@ const MultiOperatorProducts = ({
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
-                {!!exportErrorState && (
-                    <ErrorSummary
-                        errors={[
-                            {
-                                id: 'export-button',
-                                errorMessage:
-                                    'A new export cannot be started until the current export has finished. Please wait and try again later.',
-                            },
-                        ]}
-                    />
-                )}
+                <ErrorSummary errors={errors} />
                 {isExportInProgress && <InformationSummary informationText={'Export in progress.'} />}
                 <div className="govuk-grid-column-two-thirds">
                     <h1 className="govuk-heading-xl">Multi-operator products</h1>
@@ -104,13 +101,22 @@ const MultiOperatorProducts = ({
                     </CsrfForm>
                     <CsrfForm action="/api/exportMultiOperatorExternal" method="post" csrfToken={csrfToken}>
                         <button
-                            id={'export-button'}
+                            id={'export-all'}
                             className="govuk-button govuk-button--secondary"
-                            onClick={(e) => exportButtonActionHandler(e, isExportInProgress)}
+                            onClick={(e) => exportButtonActionHandler(e, isExportInProgress, 'export-all')}
                         >
                             Export all products
                         </button>
                     </CsrfForm>
+                    <a href="/products/selectMultiOperatorExports">
+                        <button
+                            id={'select-exports'}
+                            className="govuk-button govuk-button--secondary"
+                            onClick={(e) => exportButtonActionHandler(e, isExportInProgress, 'select-exports')}
+                        >
+                            Select products to export
+                        </button>
+                    </a>
                 </div>
             </div>
             <div className="govuk-grid-row">
