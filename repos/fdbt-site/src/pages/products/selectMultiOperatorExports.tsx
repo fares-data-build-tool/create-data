@@ -124,7 +124,7 @@ const SelectMultiOperatorExports = ({ productsToDisplay, csrf }: SelectMultiOper
                                                     name="productsToExport"
                                                     type="checkbox"
                                                     value={product.id}
-                                                    defaultChecked={
+                                                    checked={
                                                         !!productsSelected.find(
                                                             (productSelected) => productSelected === product.id,
                                                         )

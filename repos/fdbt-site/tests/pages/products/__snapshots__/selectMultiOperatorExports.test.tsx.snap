@@ -175,8 +175,8 @@ exports[`selectMultiOperatorExports renders appropriately when the user has prod
               key="checkbox-item-1"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
-                defaultChecked={false}
                 id="checkbox-0"
                 name="productsToExport"
                 onChange={[Function]}
@@ -195,8 +195,8 @@ exports[`selectMultiOperatorExports renders appropriately when the user has prod
               key="checkbox-item-2"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
-                defaultChecked={false}
                 id="checkbox-1"
                 name="productsToExport"
                 onChange={[Function]}
@@ -215,8 +215,8 @@ exports[`selectMultiOperatorExports renders appropriately when the user has prod
               key="checkbox-item-3"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
-                defaultChecked={false}
                 id="checkbox-2"
                 name="productsToExport"
                 onChange={[Function]}
@@ -325,8 +325,8 @@ exports[`selectMultiOperatorExports selects all the checkboxes when the select a
               key="checkbox-item-1"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
-                defaultChecked={false}
                 id="checkbox-0"
                 name="productsToExport"
                 onChange={[Function]}
@@ -345,8 +345,8 @@ exports[`selectMultiOperatorExports selects all the checkboxes when the select a
               key="checkbox-item-2"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
-                defaultChecked={false}
                 id="checkbox-1"
                 name="productsToExport"
                 onChange={[Function]}
@@ -365,8 +365,8 @@ exports[`selectMultiOperatorExports selects all the checkboxes when the select a
               key="checkbox-item-3"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
-                defaultChecked={false}
                 id="checkbox-2"
                 name="productsToExport"
                 onChange={[Function]}
