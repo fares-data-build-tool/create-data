@@ -28,7 +28,7 @@ exports[`ExpirySelector should render the selector for a carnet 1`] = `
   >
     <select
       aria-labelledby=""
-      className="govuk-select govuk-select--width-3 expiry-selector-units"
+      className="govuk-select expiry-selector-units"
       defaultValue=""
       id="test-unit-id"
       name="testUnitName"
@@ -109,7 +109,7 @@ exports[`ExpirySelector should render the selector for a non-carnet 1`] = `
   >
     <select
       aria-labelledby=""
-      className="govuk-select govuk-select--width-3 expiry-selector-units"
+      className="govuk-select expiry-selector-units"
       defaultValue=""
       id="test-unit-id"
       name="testUnitName"
@@ -184,7 +184,7 @@ exports[`ExpirySelector should render the selector for a school ticket 1`] = `
   >
     <select
       aria-labelledby=""
-      className="govuk-select govuk-select--width-3 expiry-selector-units"
+      className="govuk-select expiry-selector-units"
       defaultValue=""
       id="test-unit-id"
       name="testUnitName"

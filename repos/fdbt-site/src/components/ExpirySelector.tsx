@@ -62,7 +62,7 @@ const ExpirySelector = ({
                 </FormElementWrapper>
                 <FormElementWrapper errors={errors || []} errorId={unitId} errorClass="govuk-select--error" hideText>
                     <select
-                        className="govuk-select govuk-select--width-3 expiry-selector-units"
+                        className="govuk-select expiry-selector-units"
                         name={unitName}
                         id={unitId}
                         aria-labelledby={hintId || ''}
