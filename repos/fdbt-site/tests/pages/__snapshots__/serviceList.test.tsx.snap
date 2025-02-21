@@ -338,6 +338,7 @@ exports[`pages serviceList should render correctly for multiOperator 1`] = `
               key="checkbox-item-123"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
@@ -612,6 +613,7 @@ exports[`pages serviceList should render correctly when in edit mode 1`] = `
               key="checkbox-item-123"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"
@@ -943,6 +945,7 @@ exports[`pages serviceList should render correctly with bods data source 1`] = `
               key="checkbox-item-123"
             >
               <input
+                checked={false}
                 className="govuk-checkboxes__input"
                 defaultChecked={false}
                 id="checkbox-0"

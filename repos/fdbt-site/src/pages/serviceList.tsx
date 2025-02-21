@@ -172,6 +172,9 @@ const ServiceList = ({
                                                     type="checkbox"
                                                     value={checkBoxValues}
                                                     defaultChecked={checked}
+                                                    checked={
+                                                        !!checkedServices.find((service) => service.lineId === lineId)
+                                                    }
                                                     onChange={(e) => updateCheckedServiceList(e, lineId)}
                                                 />
                                                 <label
