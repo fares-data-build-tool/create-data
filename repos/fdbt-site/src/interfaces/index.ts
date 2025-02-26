@@ -320,6 +320,7 @@ export interface CognitoIdToken {
     'custom:contactable': string;
     'custom:schemeOperator': string;
     'custom:schemeRegionCode': string;
+    'custom:multiOpEmailPref': boolean;
 }
 
 export type PeriodTicket = PeriodGeoZoneTicket | PeriodMultipleServicesTicket;

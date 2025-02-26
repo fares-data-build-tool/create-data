@@ -5,6 +5,9 @@ exports[`pages account should render correctly 1`] = `
   description="Account Details page of the Create Fares Data Service"
   title="Account Details - Create Fares Data Service"
 >
+  <ErrorSummary
+    errors={Array []}
+  />
   <div
     className="account-details-page"
   >
@@ -101,6 +104,66 @@ exports[`pages account should render correctly 1`] = `
         FaBusCo, foo, bar
       </p>
     </div>
+    <fieldset
+      className="govuk-fieldset"
+    >
+      <legend
+        className="govuk-fieldset__legend govuk-fieldset__legend--l"
+      >
+        <p
+          className="govuk-heading-m"
+        >
+          Email notifications
+        </p>
+        <p
+          className="govuk-heading-s"
+        >
+          Multi-operator fare alerts
+        </p>
+      </legend>
+      <div
+        className="govuk-radios govuk-radios--inline ml-auto"
+        data-module="govuk-radios"
+      >
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            className="govuk-radios__input"
+            id="multiOpEmailPref-on"
+            name="multiOpEmailPref"
+            onChange={[Function]}
+            type="radio"
+            value="on"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="multiOpEmailPref-on"
+          >
+            On
+          </label>
+        </div>
+        <div
+          className="govuk-radios__item"
+        >
+          <input
+            checked={true}
+            className="govuk-radios__input"
+            id="multiOpEmailPref-off"
+            name="multiOpEmailPref"
+            onChange={[Function]}
+            type="radio"
+            value="off"
+          />
+          <label
+            className="govuk-label govuk-radios__label"
+            htmlFor="multiOpEmailPref-off"
+          >
+            Off
+          </label>
+        </div>
+      </div>
+    </fieldset>
   </div>
   <a
     className="govuk-button"
