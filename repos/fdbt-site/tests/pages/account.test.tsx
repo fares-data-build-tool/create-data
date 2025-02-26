@@ -7,7 +7,12 @@ describe('pages', () => {
     describe('account', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <AccountDetails emailAddress="joseppo.bloggo@somefakebuscompany.com" nocCode="FaBusCo|foo|bar" />,
+                <AccountDetails
+                    emailAddress="joseppo.bloggo@somefakebuscompany.com"
+                    nocCode="FaBusCo|foo|bar"
+                    csrfToken="token"
+                    multiOperatorEmailPreference={false}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });

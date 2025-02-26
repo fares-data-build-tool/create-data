@@ -48,7 +48,7 @@ const AccountDetails = ({
                   }
                 : { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                attributeName: 'custom:multiOpEmailPref',
+                attributeName: 'custom:multiOpEmailEnabled',
                 attributeValue: emailPreference ? 'true' : 'false',
             }),
         });

@@ -129,6 +129,7 @@ exports[`pages account should render correctly 1`] = `
           className="govuk-radios__item"
         >
           <input
+            checked={false}
             className="govuk-radios__input"
             id="multiOpEmailPref-on"
             name="multiOpEmailPref"

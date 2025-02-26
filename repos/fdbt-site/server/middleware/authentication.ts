@@ -110,7 +110,7 @@ export const setDisableAuthParameters = (server: Express): void => {
                             'custom:noc': 'TESTSE',
                             'custom:schemeOperator': 'Test Scheme Op',
                             'custom:schemeRegionCode': 'SE',
-                            'custom:multiOpEmailPref': true,
+                            'custom:multiOpEmailEnabled': true,
                             email: 'test@example.com',
                         },
                         'test',
@@ -129,7 +129,7 @@ export const setDisableAuthParameters = (server: Express): void => {
                     const jwtToken = sign(
                         {
                             'custom:noc': nocs.join('|'),
-                            'custom:multiOpEmailPref': true,
+                            'custom:multiOpEmailEnabled': true,
                             email: 'test@example.com',
                         },
                         'test',
