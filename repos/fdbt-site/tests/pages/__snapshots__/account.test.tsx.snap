@@ -91,7 +91,7 @@ exports[`pages account should render correctly 1`] = `
       </span>
     </div>
     <div
-      className="content-wrapper"
+      className="content-wrapper govuk-!-margin-bottom-8"
     >
       <p
         className="govuk-body govuk-!-font-weight-bold content-one-quarter"
