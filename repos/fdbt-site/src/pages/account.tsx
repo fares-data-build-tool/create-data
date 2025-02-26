@@ -159,7 +159,7 @@ export const getServerSideProps = (ctx: NextPageContext): { props: AccountDetail
     }
     const noc = getNocFromIdToken(ctx);
     const email = getAttributeFromIdToken(ctx, 'email');
-    const multiOperatorEmailPreference = getAttributeFromIdToken(ctx, 'custom:multiOpEmailPref');
+    const multiOperatorEmailPreference = getAttributeFromIdToken(ctx, 'custom:multiOpEmailEnabled');
 
     if (!email || !noc) {
         throw new Error('Could not extract the user email address and/or noc code from their ID token');
