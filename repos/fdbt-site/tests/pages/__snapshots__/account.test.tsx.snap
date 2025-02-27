@@ -5,176 +5,415 @@ exports[`pages account should render correctly 1`] = `
   description="Account Details page of the Create Fares Data Service"
   title="Account Details - Create Fares Data Service"
 >
-  <ErrorSummary
-    errors={Array []}
-  />
-  <div
-    className="account-details-page"
+  <CsrfForm
+    action="/api/updateEmailPreference"
+    csrfToken="token"
+    method="post"
   >
-    <h1
-      className="govuk-heading-xl"
-    >
-      Account Details
-    </h1>
+    <ErrorSummary
+      errors={Array []}
+    />
     <div
-      className="content-wrapper"
+      className="account-details-page"
     >
-      <p
-        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+      <BackButton
+        href="/home"
+      />
+      <h1
+        className="govuk-heading-xl"
       >
-        Email Address
-      </p>
-      <p
-        className="govuk-body email-content content-three-quarters"
-      >
-        joseppo.bloggo@somefakebuscompany.com
-      </p>
-    </div>
-    <div
-      className="content-wrapper"
-    >
-      <p
-        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
-      >
-        Password
-      </p>
-      <span
-        className="password-dots"
-      >
-        <span
-          className="dot"
-          key="0"
-        />
-        <span
-          className="dot"
-          key="1"
-        />
-        <span
-          className="dot"
-          key="2"
-        />
-        <span
-          className="dot"
-          key="3"
-        />
-        <span
-          className="dot"
-          key="4"
-        />
-        <span
-          className="dot"
-          key="5"
-        />
-        <span
-          className="dot"
-          key="6"
-        />
-        <span
-          className="dot"
-          key="7"
-        />
-      </span>
-      <span
-        className="change-password"
-      >
-        <a
-          aria-label="change password"
-          className="govuk-button"
-          data-module="govuk-button"
-          draggable="false"
-          href="/changePassword"
-          id="change-password-button"
-          role="button"
-        >
-          Change
-        </a>
-      </span>
-    </div>
-    <div
-      className="content-wrapper govuk-!-margin-bottom-8"
-    >
-      <p
-        className="govuk-body govuk-!-font-weight-bold content-one-quarter"
-      >
-        Operator
-      </p>
-      <p
-        className="govuk-body content-three-quarters"
-      >
-        FaBusCo, foo, bar
-      </p>
-    </div>
-    <fieldset
-      className="govuk-fieldset"
-    >
-      <legend
-        className="govuk-fieldset__legend govuk-fieldset__legend--l"
-      >
-        <p
-          className="govuk-heading-m"
-        >
-          Email notifications
-        </p>
-        <p
-          className="govuk-heading-s"
-        >
-          Multi-operator fare alerts
-        </p>
-      </legend>
+        Account Details
+      </h1>
       <div
-        className="govuk-radios govuk-radios--inline ml-auto"
-        data-module="govuk-radios"
+        className="content-wrapper"
       >
-        <div
-          className="govuk-radios__item"
+        <p
+          className="govuk-body govuk-!-font-weight-bold content-one-quarter"
         >
-          <input
-            checked={false}
-            className="govuk-radios__input"
-            id="multiOpEmailPref-on"
-            name="multiOpEmailPref"
-            onChange={[Function]}
-            type="radio"
-            value="on"
-          />
-          <label
-            className="govuk-label govuk-radios__label"
-            htmlFor="multiOpEmailPref-on"
-          >
-            On
-          </label>
-        </div>
-        <div
-          className="govuk-radios__item"
+          Email Address
+        </p>
+        <p
+          className="govuk-body email-content content-three-quarters"
         >
-          <input
-            checked={true}
-            className="govuk-radios__input"
-            id="multiOpEmailPref-off"
-            name="multiOpEmailPref"
-            onChange={[Function]}
-            type="radio"
-            value="off"
-          />
-          <label
-            className="govuk-label govuk-radios__label"
-            htmlFor="multiOpEmailPref-off"
-          >
-            Off
-          </label>
-        </div>
+          joseppo.bloggo@somefakebuscompany.com
+        </p>
       </div>
-    </fieldset>
-  </div>
-  <a
-    className="govuk-button"
-    data-module="govuk-button"
-    draggable="false"
-    href="/home"
-    id="home-button"
-    role="button"
+      <div
+        className="content-wrapper"
+      >
+        <p
+          className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+        >
+          Password
+        </p>
+        <span
+          className="password-dots"
+        >
+          <span
+            className="dot"
+            key="0"
+          />
+          <span
+            className="dot"
+            key="1"
+          />
+          <span
+            className="dot"
+            key="2"
+          />
+          <span
+            className="dot"
+            key="3"
+          />
+          <span
+            className="dot"
+            key="4"
+          />
+          <span
+            className="dot"
+            key="5"
+          />
+          <span
+            className="dot"
+            key="6"
+          />
+          <span
+            className="dot"
+            key="7"
+          />
+        </span>
+        <span
+          className="change-password"
+        >
+          <a
+            aria-label="change password"
+            className="govuk-button"
+            data-module="govuk-button"
+            draggable="false"
+            href="/changePassword"
+            id="change-password-button"
+            role="button"
+          >
+            Change
+          </a>
+        </span>
+      </div>
+      <div
+        className="content-wrapper govuk-!-margin-bottom-8"
+      >
+        <p
+          className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+        >
+          Operator
+        </p>
+        <p
+          className="govuk-body content-three-quarters"
+        >
+          FaBusCo, foo, bar
+        </p>
+      </div>
+      <fieldset
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <p
+            className="govuk-heading-m"
+          >
+            Email notifications
+          </p>
+          <p
+            className="govuk-heading-s"
+          >
+            Multi-operator fare alerts
+          </p>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="radio-multi-op-email-pref"
+          errors={Array []}
+        >
+          <div
+            className="govuk-radios govuk-radios--inline ml-auto"
+            data-module="govuk-radios"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                checked={false}
+                className="govuk-radios__input"
+                id="multiOpEmailPref-on"
+                name="multiOpEmailPref"
+                onChange={[Function]}
+                type="radio"
+                value="true"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="multiOpEmailPref-on"
+              >
+                On
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                checked={true}
+                className="govuk-radios__input"
+                id="multiOpEmailPref-off"
+                name="multiOpEmailPref"
+                onChange={[Function]}
+                type="radio"
+                value="false"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="multiOpEmailPref-off"
+              >
+                Off
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button govuk-!-margin-right-4"
+      data-module="govuk-button"
+      id="save-changes-button"
+      name="saveChanges"
+      type="submit"
+      value="Save changes"
+    />
+    <a
+      className="govuk-button govuk-button--secondary"
+      data-module="govuk-button"
+      draggable="false"
+      href="/home"
+      id="cancel-button"
+      role="button"
+    >
+      Cancel changes
+    </a>
+  </CsrfForm>
+</TwoThirdsLayout>
+`;
+
+exports[`pages account should render correctly with errors 1`] = `
+<TwoThirdsLayout
+  description="Account Details page of the Create Fares Data Service"
+  title="Account Details - Create Fares Data Service"
+>
+  <CsrfForm
+    action="/api/updateEmailPreference"
+    csrfToken="token"
+    method="post"
   >
-    Home
-  </a>
+    <ErrorSummary
+      errors={
+        Array [
+          Object {
+            "errorMessage": "There was a problem updating email preference",
+            "id": "radio-multi-op-email-pref",
+          },
+        ]
+      }
+    />
+    <div
+      className="account-details-page"
+    >
+      <BackButton
+        href="/home"
+      />
+      <h1
+        className="govuk-heading-xl"
+      >
+        Account Details
+      </h1>
+      <div
+        className="content-wrapper"
+      >
+        <p
+          className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+        >
+          Email Address
+        </p>
+        <p
+          className="govuk-body email-content content-three-quarters"
+        >
+          joseppo.bloggo@somefakebuscompany.com
+        </p>
+      </div>
+      <div
+        className="content-wrapper"
+      >
+        <p
+          className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+        >
+          Password
+        </p>
+        <span
+          className="password-dots"
+        >
+          <span
+            className="dot"
+            key="0"
+          />
+          <span
+            className="dot"
+            key="1"
+          />
+          <span
+            className="dot"
+            key="2"
+          />
+          <span
+            className="dot"
+            key="3"
+          />
+          <span
+            className="dot"
+            key="4"
+          />
+          <span
+            className="dot"
+            key="5"
+          />
+          <span
+            className="dot"
+            key="6"
+          />
+          <span
+            className="dot"
+            key="7"
+          />
+        </span>
+        <span
+          className="change-password"
+        >
+          <a
+            aria-label="change password"
+            className="govuk-button"
+            data-module="govuk-button"
+            draggable="false"
+            href="/changePassword"
+            id="change-password-button"
+            role="button"
+          >
+            Change
+          </a>
+        </span>
+      </div>
+      <div
+        className="content-wrapper govuk-!-margin-bottom-8"
+      >
+        <p
+          className="govuk-body govuk-!-font-weight-bold content-one-quarter"
+        >
+          Operator
+        </p>
+        <p
+          className="govuk-body content-three-quarters"
+        >
+          FaBusCo, foo, bar
+        </p>
+      </div>
+      <fieldset
+        className="govuk-fieldset"
+      >
+        <legend
+          className="govuk-fieldset__legend govuk-fieldset__legend--l"
+        >
+          <p
+            className="govuk-heading-m"
+          >
+            Email notifications
+          </p>
+          <p
+            className="govuk-heading-s"
+          >
+            Multi-operator fare alerts
+          </p>
+        </legend>
+        <FormElementWrapper
+          errorClass="govuk-radios--error"
+          errorId="radio-multi-op-email-pref"
+          errors={
+            Array [
+              Object {
+                "errorMessage": "There was a problem updating email preference",
+                "id": "radio-multi-op-email-pref",
+              },
+            ]
+          }
+        >
+          <div
+            className="govuk-radios govuk-radios--inline ml-auto"
+            data-module="govuk-radios"
+          >
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                checked={false}
+                className="govuk-radios__input"
+                id="multiOpEmailPref-on"
+                name="multiOpEmailPref"
+                onChange={[Function]}
+                type="radio"
+                value="true"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="multiOpEmailPref-on"
+              >
+                On
+              </label>
+            </div>
+            <div
+              className="govuk-radios__item"
+            >
+              <input
+                checked={true}
+                className="govuk-radios__input"
+                id="multiOpEmailPref-off"
+                name="multiOpEmailPref"
+                onChange={[Function]}
+                type="radio"
+                value="false"
+              />
+              <label
+                className="govuk-label govuk-radios__label"
+                htmlFor="multiOpEmailPref-off"
+              >
+                Off
+              </label>
+            </div>
+          </div>
+        </FormElementWrapper>
+      </fieldset>
+    </div>
+    <input
+      className="govuk-button govuk-!-margin-right-4"
+      data-module="govuk-button"
+      id="save-changes-button"
+      name="saveChanges"
+      type="submit"
+      value="Save changes"
+    />
+    <a
+      className="govuk-button govuk-button--secondary"
+      data-module="govuk-button"
+      draggable="false"
+      href="/home"
+      id="cancel-button"
+      role="button"
+    >
+      Cancel changes
+    </a>
+  </CsrfForm>
 </TwoThirdsLayout>
 `;
