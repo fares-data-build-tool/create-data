@@ -33,8 +33,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
             if (!email) {
                 logger.error('email not found in ID token', {
-                    context: 'api.updateUserAttribute',
-                    message: 'update for user attribute failed',
+                    context: 'api.updateEmailPreference',
+                    message: 'update for user email preference failed',
                 });
                 setAttributeAndRedirect(req, res);
                 return;
@@ -45,8 +45,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             redirectTo(res, '/home');
 
             logger.info('', {
-                context: 'api.updateUserAttribute',
-                message: 'update for user attribute successful',
+                context: 'api.updateEmailPreference',
+                message: 'update for user email preference successful',
             });
             return;
         } else {
@@ -55,8 +55,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         }
     } catch (error) {
         logger.error(error, {
-            context: 'api.updateUserAttribute',
-            message: 'update for user attribute failed',
+            context: 'api.updateEmailPreference',
+            message: 'update for user email preference failed',
         });
         setAttributeAndRedirect(req, res);
         return;
