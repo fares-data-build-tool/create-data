@@ -389,8 +389,13 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
     const exemptServicesAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
 
+    const additionalOperatorNoc =
+        typeof ctx.query?.editAdditionalOperator === 'string' ? ctx.query.editAdditionalOperator : null;
+
+    console.log(additionalOperatorNoc);
+
     if (!dataSourceAttribute) {
-        const services = await getAllServicesByNocCode(nocCode);
+        const services = await getAllServicesByNocCode(additionalOperatorNoc ?? nocCode);
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
 
         if (!hasBodsServices && !modesAttribute) {
@@ -409,7 +414,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }
 
-    let chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    //TODO check with Steve
+    let chosenDataSourceServices = await getServicesByNocCodeAndDataSource(
+        additionalOperatorNoc ?? nocCode,
+        dataSourceAttribute.source,
+    );
 
     if (!!exemptServicesAttribute && !isServiceListAttributeWithErrors(exemptServicesAttribute)) {
         const exemptServices = exemptServicesAttribute.selectedServices;

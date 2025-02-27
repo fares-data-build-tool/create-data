@@ -565,7 +565,12 @@ const createProductDetails = async (
                     id: 'additional-operators-services',
                     name: `${additionalOperator.nocCode} services`,
                     content: [selectedServices.length > 0 ? selectedServices.join(', ') : 'None'],
-                    editLink: additionalOperator.nocCode === yourNoc ? '/serviceList' : '',
+                    editLink:
+                        additionalOperator.nocCode === yourNoc
+                            ? '/serviceList'
+                            : isOwnProduct
+                            ? `/serviceList?editAdditionalOperator=${additionalOperator.nocCode}`
+                            : '',
                 });
                 productDetailsElements.push({
                     id: 'exempt-stops',
