@@ -1,10 +1,12 @@
 import * as cognito from '../../../src/data/cognito';
 import { getMockRequestAndResponse } from '../../testData/mockData';
-import updateUserAttribute from '../../../src/pages/api/updateUserAttribute';
+import updateUserAttribute from '../../../src/pages/api/updateEmailPreference';
 import { NextApiResponse } from 'next';
+import * as apiUtils from '../../../src/utils/apiUtils';
 
 describe('updateUserAttribute', () => {
     const updateUserAttributesSpy = jest.spyOn(cognito, 'updateUserAttributes');
+    const redirectToSpy = jest.spyOn(apiUtils, 'redirectTo');
 
     afterEach(() => {
         jest.resetAllMocks();
@@ -15,12 +17,9 @@ describe('updateUserAttribute', () => {
             body: {},
         });
 
-        await updateUserAttribute(req, {
-            ...res,
-            status: jest.fn().mockReturnThis(),
-            json: jest.fn(),
-        } as NextApiResponse);
+        await updateUserAttribute(req, res);
         expect(updateUserAttributesSpy).not.toHaveBeenCalled();
+        expect(redirectToSpy).toBeCalledWith(res, '/home');
     });
 
     it.each([{ attributeName: 'test' }, { attributeValue: 'test' }])(

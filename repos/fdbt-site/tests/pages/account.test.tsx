@@ -12,6 +12,7 @@ describe('pages', () => {
                     nocCode="FaBusCo|foo|bar"
                     csrfToken="token"
                     multiOperatorEmailPreference={false}
+                    errors={[]}
                 />,
             );
             expect(tree).toMatchSnapshot();
