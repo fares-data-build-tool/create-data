@@ -23,6 +23,7 @@ This repo contains all the components of for the Create Fares Data Service.
 - [FDBT-AWS](./fdbt-aws/README.md)
 - [FDBT-Dev](./fdbt-dev/README.md)
 - [FDBT-NeTEX-Output](./repos/fdbt-netex-output/README.md)
+- [FDBT-Multi-Operator-Emailer](./repos/fdbt-multi-operator-emailer/README.md)
 - [FDBT-Reference-Data-Service](./repos/fdbt-reference-data-service/README.md)
 - [FDBT-Site](./repos/fdbt-site/README.md)
 - [FDBT-Types](./repos/fdbt-types/README.md)

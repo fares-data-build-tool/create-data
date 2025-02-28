@@ -18,6 +18,7 @@ install: ## Install all node modules
 	cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/retrievers && npm i
 	cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders && npm i
 	cd ${FDBT_ROOT}/repos/exporter && npm i
+	cd ${FDBT_ROOT}/repos/fdbt-multi-operator-emailer && npm i
 	pip3 install \
     -r ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/retrievers/requirements.txt \
     -r ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders/requirements.txt \
@@ -31,6 +32,7 @@ audit-fix: ## Fix all npm audit issues
 	cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/retrievers && npm audit fix
 	cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders && npm audit fix
 	cd ${FDBT_ROOT}/repos/exporter && npm audit fix
+	cd ${FDBT_ROOT}/repos/fdbt-multi-operator-emailer && npm audit fix
 
 cypress: ## Open cypress console to run UI tests
 	cd repos/fdbt-site && $(MAKE) open-cypress
