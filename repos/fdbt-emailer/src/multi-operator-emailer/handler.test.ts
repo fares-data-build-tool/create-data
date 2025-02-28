@@ -1,19 +1,20 @@
 import { handler } from './handler';
 import { Context } from 'aws-lambda';
-import { ListUsersResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import CognitoIdentityServiceProvider, { ListUsersResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as cognitoFunctions from './cognito';
 import * as databaseFunctions from './database';
 import * as emailFunctions from './email';
-import { Pool } from 'mysql2';
+import { SES } from 'aws-sdk';
 
 describe('fdbt-multi-operator-emailer handler', () => {
     const mockEvent = {};
     const mockContext = {} as Context;
     const mockCallback = vi.fn();
 
+    vi.mock('mysql2/promise');
+
     const getCognitoClientMock = vi.spyOn(cognitoFunctions, 'getCognitoClient');
-    const getAuroraDBClientMock = vi.spyOn(databaseFunctions, 'getAuroraDBClient');
     const getIncompleteMultiOperatorProductsMock = vi.spyOn(databaseFunctions, 'getIncompleteMultiOperatorProducts');
     const getSesClientMock = vi.spyOn(emailFunctions, 'getSesClient');
     const sendEmailsMock = vi.spyOn(emailFunctions, 'sendEmails');
@@ -77,17 +78,14 @@ describe('fdbt-multi-operator-emailer handler', () => {
             { productId: 'Product 4', nocCode: 'NOC4' },
         ];
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore allow partial mock in test
         getCognitoClientMock.mockReturnValue({
             listUsers: vi.fn().mockReturnValue({
                 promise: vi.fn().mockResolvedValue(mockListUsersResponse),
             }),
-        });
+        } as unknown as CognitoIdentityServiceProvider);
 
-        getAuroraDBClientMock.mockResolvedValueOnce(undefined as any);
         getIncompleteMultiOperatorProductsMock.mockResolvedValueOnce(mockProducts);
-        getSesClientMock.mockReturnValue(undefined as any);
+        getSesClientMock.mockReturnValue(undefined as unknown as SES);
         sendEmailsMock.mockResolvedValueOnce(undefined);
 
         await handler(mockEvent, mockContext, mockCallback);
