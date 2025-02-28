@@ -25,10 +25,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         const multiOpEmailPreference = req.body?.multiOpEmailPref;
 
-        if (
-            (typeof multiOpEmailPreference === 'string' && multiOpEmailPreference === 'true') ||
-            multiOpEmailPreference === 'false'
-        ) {
+        if (multiOpEmailPreference === 'true' || multiOpEmailPreference === 'false') {
             const email: string | null = getAttributeFromIdToken(req, res, 'email');
 
             if (!email) {
