@@ -1,8 +1,10 @@
 import { SSM } from 'aws-sdk';
 
-const client = new SSM({ region: 'eu-west-2' });
+export const getSsmClient = (): SSM => {
+    return new SSM({ region: 'eu-west-2' });
+};
 
-export const getSsmValue = async (parameter: string): Promise<string> => {
+export const getSsmValue = async (client: SSM, parameter: string): Promise<string> => {
     const parameterResult = await client
         .getParameter({
             Name: parameter,

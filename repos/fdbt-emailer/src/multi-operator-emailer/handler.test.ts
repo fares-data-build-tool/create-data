@@ -1,16 +1,22 @@
 import { handler } from './handler';
 import { Context } from 'aws-lambda';
+import { ListUsersResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import * as cognitoFunctions from './cognito';
+import * as databaseFunctions from './database';
+import * as emailFunctions from './email';
+import { Pool } from 'mysql2';
 
 describe('fdbt-multi-operator-emailer handler', () => {
     const mockEvent = {};
     const mockContext = {} as Context;
     const mockCallback = vi.fn();
 
-    vi.mock('../src/cognito');
-    vi.mock('../src/database');
-    vi.mock('../src/email');
-    vi.mock('../src/ssm');
+    const getCognitoClientMock = vi.spyOn(cognitoFunctions, 'getCognitoClient');
+    const getAuroraDBClientMock = vi.spyOn(databaseFunctions, 'getAuroraDBClient');
+    const getIncompleteMultiOperatorProductsMock = vi.spyOn(databaseFunctions, 'getIncompleteMultiOperatorProducts');
+    const getSesClientMock = vi.spyOn(emailFunctions, 'getSesClient');
+    const sendEmailsMock = vi.spyOn(emailFunctions, 'sendEmails');
 
     beforeEach(() => {
         vi.resetAllMocks();
@@ -32,7 +38,63 @@ describe('fdbt-multi-operator-emailer handler', () => {
         },
     );
 
-    // test: combo of users with incomplete/complete products but not opted in
-    // test: combo of users with incomplete/complete products and opted in
-    // test: users with multiple nocs
+    it('sends emails to users who have opted in and have incomplete products', async () => {
+        const mockListUsersResponse: ListUsersResponse = {
+            Users: [
+                {
+                    Attributes: [
+                        { Name: 'email', Value: 'user1@example.com' },
+                        { Name: 'custom:noc', Value: 'NOC1' },
+                    ],
+                },
+                {
+                    Attributes: [
+                        { Name: 'email', Value: 'user1@example.com' },
+                        { Name: 'custom:noc', Value: 'NOC2' },
+                        { Name: 'custom:multiOpEmailEnabled', Value: 'false' },
+                    ],
+                },
+                {
+                    Attributes: [
+                        { Name: 'email', Value: 'user3@example.com' },
+                        { Name: 'custom:noc', Value: 'NOC3' },
+                        { Name: 'custom:multiOpEmailEnabled', Value: 'true' },
+                    ],
+                },
+                {
+                    Attributes: [
+                        { Name: 'email', Value: 'user4@example.com' },
+                        { Name: 'custom:noc', Value: 'NOC1|NOC4' },
+                        { Name: 'custom:multiOpEmailEnabled', Value: 'true' },
+                    ],
+                },
+            ],
+        } as ListUsersResponse;
+
+        const mockProducts: databaseFunctions.Product[] = [
+            { productId: 'Product 1', nocCode: 'NOC1' },
+            { productId: 'Product 3', nocCode: 'NOC3' },
+            { productId: 'Product 4', nocCode: 'NOC4' },
+        ];
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore allow partial mock in test
+        getCognitoClientMock.mockReturnValue({
+            listUsers: vi.fn().mockReturnValue({
+                promise: vi.fn().mockResolvedValue(mockListUsersResponse),
+            }),
+        });
+
+        getAuroraDBClientMock.mockResolvedValueOnce(undefined as any);
+        getIncompleteMultiOperatorProductsMock.mockResolvedValueOnce(mockProducts);
+        getSesClientMock.mockReturnValue(undefined as any);
+        sendEmailsMock.mockResolvedValueOnce(undefined);
+
+        await handler(mockEvent, mockContext, mockCallback);
+
+        expect(sendEmailsMock).toHaveBeenCalledWith(undefined, 'mock-service-domain', 'mock-service-address', [
+            'user3@example.com',
+            'user4@example.com',
+        ]);
+    });
 });

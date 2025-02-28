@@ -5,9 +5,14 @@ type User = {
     nocs: string[];
 };
 
-const client = new CognitoIdentityServiceProvider({ region: 'eu-west-2' });
+export const getCognitoClient = (): CognitoIdentityServiceProvider => {
+    return new CognitoIdentityServiceProvider({ region: 'eu-west-2' });
+};
 
-export const getUsersOptedIntoMultiOperatorEmails = async (userPoolId: string): Promise<User[]> => {
+export const getUsersOptedIntoMultiOperatorEmails = async (
+    client: CognitoIdentityServiceProvider,
+    userPoolId: string,
+): Promise<User[]> => {
     const users: User[] = [];
     let paginationToken: string | undefined = undefined;
 

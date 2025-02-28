@@ -1,8 +1,8 @@
 import 'source-map-support/register';
 import { Handler } from 'aws-lambda';
-import { getUsersOptedIntoMultiOperatorEmails } from './cognito';
+import { getCognitoClient, getUsersOptedIntoMultiOperatorEmails } from './cognito';
 import { getAuroraDBClient, getIncompleteMultiOperatorProducts } from './database';
-import { sendEmails } from './email';
+import { getSesClient, sendEmails } from './email';
 
 export const handler: Handler = async () => {
     const { RDS_HOST, SERVICE_EMAIL_ADDRESS, SERVICE_DOMAIN, USER_POOL_ID } = process.env;
@@ -13,10 +13,11 @@ export const handler: Handler = async () => {
         );
     }
 
+    const cognitoClient = getCognitoClient();
     const dbClient = await getAuroraDBClient(RDS_HOST);
 
     const [users, products] = await Promise.all([
-        getUsersOptedIntoMultiOperatorEmails(USER_POOL_ID),
+        getUsersOptedIntoMultiOperatorEmails(cognitoClient, USER_POOL_ID),
         getIncompleteMultiOperatorProducts(dbClient),
     ]);
 
@@ -24,5 +25,6 @@ export const handler: Handler = async () => {
         .filter((user) => user.nocs.some((noc) => products.some((product) => product.nocCode === noc)))
         .map((user) => user.emailAddress);
 
-    await sendEmails(SERVICE_DOMAIN, SERVICE_EMAIL_ADDRESS, emailAddresses);
+    const sesClient = getSesClient();
+    await sendEmails(sesClient, SERVICE_DOMAIN, SERVICE_EMAIL_ADDRESS, emailAddresses);
 };

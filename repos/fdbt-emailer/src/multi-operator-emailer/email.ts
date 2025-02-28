@@ -2,8 +2,9 @@ import { SES } from 'aws-sdk';
 import nodemailer from 'nodemailer';
 import { Options } from 'nodemailer/lib/mailer';
 
-const client = new SES({ region: 'eu-west-2' });
-const mailTransporter = nodemailer.createTransport({ SES: client });
+export const getSesClient = (): SES => {
+    return new SES({ region: 'eu-west-2' });
+};
 
 const generateEmailTemplate = (serviceDomain: string): string => {
     return `<!DOCTYPE html>
@@ -68,10 +69,13 @@ const generateEmailTemplate = (serviceDomain: string): string => {
 };
 
 export const sendEmails = async (
+    client: SES,
     serviceDomain: string,
     serviceEmailAddress: string,
     emailAddresses: string[],
 ): Promise<void> => {
+    const mailTransporter = nodemailer.createTransport({ SES: client });
+
     const mailOptions: Options[] = emailAddresses.map((emailAddress) => ({
         from: serviceEmailAddress,
         to: emailAddress,

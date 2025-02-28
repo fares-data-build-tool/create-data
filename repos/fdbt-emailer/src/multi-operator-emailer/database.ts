@@ -1,32 +1,34 @@
 import { createPool, Pool, PoolOptions } from 'mysql2/promise';
-import { getSsmValue } from './ssm';
+import { getSsmClient, getSsmValue } from './ssm';
 
-type Product = {
+export type Product = {
     productId: string;
     nocCode: string;
 };
 
 export const getAuroraDBClient = async (rdsHost: string): Promise<Pool> => {
-    const clientOptions: PoolOptions =
-        process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test'
-            ? {
-                  host: 'localhost',
-                  user: 'fdbt_site',
-                  password: 'password',
-                  database: 'fdbt',
-                  waitForConnections: true,
-                  connectionLimit: 5,
-                  queueLimit: 0,
-              }
-            : {
-                  host: rdsHost,
-                  user: await getSsmValue('fdbt-rds-netex-output-username'),
-                  password: await getSsmValue('fdbt-rds-netex-output-password'),
-                  database: 'fdbt',
-                  waitForConnections: true,
-                  connectionLimit: 5,
-                  queueLimit: 0,
-              };
+    const clientOptions: PoolOptions = {
+        host: 'localhost',
+        user: 'fdbt_site',
+        password: 'password',
+        database: 'fdbt',
+        waitForConnections: true,
+        connectionLimit: 5,
+        queueLimit: 0,
+    };
+
+    if (process.env.NODE_ENV === 'production') {
+        const ssmClient = getSsmClient();
+
+        const [username, password] = await Promise.all([
+            getSsmValue(ssmClient, 'fdbt-rds-netex-output-username'),
+            getSsmValue(ssmClient, 'fdbt-rds-netex-output-password'),
+        ]);
+
+        clientOptions.host = rdsHost;
+        clientOptions.user = username;
+        clientOptions.password = password;
+    }
 
     return createPool(clientOptions);
 };
