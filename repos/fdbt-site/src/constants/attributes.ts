@@ -167,3 +167,5 @@ export const STOPS_EXEMPTION_ATTRIBUTE = 'fdbt-exemption-stops';
 export const FLAT_FARE_RETURN_ATTRIBUTE = 'fdbt-flat-fare-return-attribute';
 
 export const MISSING_STOPS_ATTRIBUTE = 'fdbt-missing-stops-attribute';
+
+export const ACCOUNT_PAGE_ERROR = 'fdbt-account-page-error';

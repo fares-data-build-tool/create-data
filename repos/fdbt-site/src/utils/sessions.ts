@@ -81,6 +81,7 @@ import {
     VIEW_CAP_ERRORS,
     FLAT_FARE_RETURN_ATTRIBUTE,
     MISSING_STOPS_ATTRIBUTE,
+    ACCOUNT_PAGE_ERROR,
 } from '../constants/attributes';
 import {
     CsvUploadAttributeWithErrors,
@@ -253,6 +254,7 @@ export interface SessionAttributeTypes {
     [STOPS_EXEMPTION_ATTRIBUTE]: ExemptedStopsAttribute | { errors: ErrorInfo[] };
     [FLAT_FARE_RETURN_ATTRIBUTE]: boolean;
     [MISSING_STOPS_ATTRIBUTE]: string[];
+    [ACCOUNT_PAGE_ERROR]: ErrorInfo[];
 }
 
 export type SessionAttribute<T extends string> = T extends keyof SessionAttributeTypes
