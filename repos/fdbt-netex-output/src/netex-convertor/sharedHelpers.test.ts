@@ -281,7 +281,7 @@ describe('Shared Helpers', () => {
         const geoUserPeriodTicket: GeoZoneTicket = periodGeoZoneTicket;
         const placeHolderText = `${geoUserPeriodTicket.nocCode}_products`;
 
-        it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Eligibility and Conditions of Travel', () => {
+        it('returns 3 FareStructureElement for each product in the products array for multiService; Access Zones, Eligibility and Conditions of Travel', () => {
             const expectedLength = flatFareTicket.products.length * 3;
             const coreData = {
                 isCarnet: false,
@@ -290,7 +290,7 @@ describe('Shared Helpers', () => {
                 operatorIdentifier: '',
             } as CoreData;
 
-            const result = sharedHelpers.getFareStructuresElements(flatFareTicket, coreData, false, false);
+            const result = sharedHelpers.getFareStructureElements(flatFareTicket, coreData, false, false);
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
             });
@@ -308,7 +308,7 @@ describe('Shared Helpers', () => {
             expect(result.length).toBe(expectedLength);
         });
 
-        it('returns 3 fareSructureElements for each product in the products array for multiService; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
+        it('returns 3 FareStructureElement for each product in the products array for multiService; Access Zones, Durations and Conditions of Travel and 1 for eligibility', () => {
             const expectedLength = periodMultipleServicesTicket.products.length * 3 + 2;
             const coreData = {
                 isCarnet: false,
@@ -317,12 +317,7 @@ describe('Shared Helpers', () => {
                 operatorIdentifier: '',
             } as CoreData;
 
-            const result = sharedHelpers.getFareStructuresElements(
-                periodMultipleServicesTicket,
-                coreData,
-                false,
-                false,
-            );
+            const result = sharedHelpers.getFareStructureElements(periodMultipleServicesTicket, coreData, false, false);
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
             });
@@ -350,7 +345,7 @@ describe('Shared Helpers', () => {
                 operatorIdentifier: '',
             } as CoreData;
 
-            const result = sharedHelpers.getFareStructuresElements(geoUserPeriodTicket, coreData, false, false);
+            const result = sharedHelpers.getFareStructureElements(geoUserPeriodTicket, coreData, false, false);
             const namesOfTypesOfFareStructureElements: string[] = result.map(element => {
                 return element.Name.$t;
             });
@@ -376,7 +371,7 @@ describe('Shared Helpers', () => {
                 operatorIdentifier: '',
             } as CoreData;
 
-            const geoResult = sharedHelpers.getFareStructuresElements(geoUserPeriodTicket, coreData, false, false);
+            const geoResult = sharedHelpers.getFareStructureElements(geoUserPeriodTicket, coreData, false, false);
 
             const expectedAccessZonesFareStructureElement = {
                 version: '1.0',

@@ -10,7 +10,9 @@ import { getProductsMatchingJson } from '../../data/s3';
 import { MyFaresService, NextPageContextWithSession, ProductToDisplay, ServiceToDisplay } from '../../interfaces';
 import { BaseLayout } from '../../layout/Layout';
 import { getAndValidateNoc, getCsrfToken } from '../../utils';
-import { getNonExpiredProducts } from '../../utils/apiUtils/export';
+import { getActiveOrPendingProducts } from '../../utils/apiUtils/export';
+import { getAllExports } from '../api/getExportProgress';
+import { GetServerSidePropsResult } from 'next';
 
 const title = 'Select Exports';
 const description = 'Export selected products into NeTEx.';
@@ -153,8 +155,9 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
                                 <div className="dft-flex dft-flex-justify-space-between">
                                     <div className="govuk-grid-column-two-thirds">
                                         <p className="govuk-body-m govuk-!-margin-bottom-5">
-                                            This page will export all of the products you select. Expired products, or
-                                            products for expired services, will not be included in the list below.
+                                            This page will export all of the products you select. Incomplete products,
+                                            expired products, or products for expired services will not be included in
+                                            the list below.
                                         </p>
                                     </div>
                                     <button
@@ -470,10 +473,26 @@ const SelectExports = ({ productsToDisplay, servicesToDisplay, csrf }: SelectExp
     );
 };
 
-export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: SelectExportsProps }> => {
+export const getServerSideProps = async (
+    ctx: NextPageContextWithSession,
+): Promise<GetServerSidePropsResult<SelectExportsProps>> => {
     const noc = getAndValidateNoc(ctx);
+    const exports = await getAllExports(noc);
+
+    const isExportInProgress =
+        !!exports && exports.some((exportDetails) => !exportDetails.signedUrl && !exportDetails.exportFailed);
+
+    if (isExportInProgress) {
+        return {
+            redirect: {
+                destination: '/products/exports',
+                permanent: false,
+            },
+        };
+    }
+
     const products = await getAllProductsByNoc(noc);
-    const nonExpiredProducts = getNonExpiredProducts(products);
+    const activeOrPendingProducts = getActiveOrPendingProducts(products);
     const allPassengerTypes = await getAllPassengerTypesByNoc(noc);
 
     const multiModalAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
@@ -481,7 +500,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const allBodsServices = await getBodsOrTndsServicesByNoc(noc, dataSource);
     const allServicesWithMatchingLineIds: Record<string, MyFaresService> = {};
 
-    const validProducts = nonExpiredProducts.filter((product) => {
+    const validProducts = activeOrPendingProducts.filter((product) => {
         if (!product.lineId) {
             return true;
         }

@@ -13,6 +13,7 @@ CREATE TABLE products(
     `endDate` datetime NOT NULL,
     `servicesRequiringAttention` varchar(1000),
     `fareTriangleModified` DATETIME DEFAULT NULL,
+    `incomplete` BOOLEAN NOT NULL,
     `operatorGroupId` int(11),
     INDEX idx_nocCode (nocCode),
     INDEX idx_operatorGroupId (operatorGroupId),

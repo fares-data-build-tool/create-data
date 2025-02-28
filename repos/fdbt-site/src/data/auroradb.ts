@@ -30,6 +30,7 @@ import {
     RawMyFaresProduct,
     MyFaresOtherProduct,
     DbProduct,
+    ProductAdditionaNocs,
 } from '../interfaces/dbTypes';
 import { Stop, FromDb, SalesOfferPackage, CompanionInfo, OperatorDetails } from '../interfaces/matchingJsonTypes';
 
@@ -1851,10 +1852,11 @@ export const deleteCap = async (id: number, nocCode: string): Promise<void> => {
 export const insertProducts = async (
     nocCode: string,
     matchingJsonLink: string,
+    incomplete: boolean,
     dateModified: Date,
     fareType: string,
     lineId: string | undefined,
-    additionalNocs: string[],
+    multiOperatorExtAdditionalNocs: string[],
     startDate: string,
     endDate?: string,
     operatorGroupId?: number,
@@ -1869,8 +1871,8 @@ export const insertProducts = async (
 
     try {
         const insertQuery = `INSERT INTO products
-        (nocCode, matchingJsonLink, dateModified, fareType, lineId, startDate, endDate, operatorGroupId)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        (nocCode, matchingJsonLink, dateModified, fareType, lineId, startDate, endDate, incomplete, operatorGroupId)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         const { insertId: productId } = await executeQuery<ResultSetHeader>(insertQuery, [
             nocCode,
@@ -1880,37 +1882,127 @@ export const insertProducts = async (
             lineId || '',
             startDate,
             endDate || '',
+            incomplete,
             operatorGroupId || null,
         ]);
 
-        if (additionalNocs.length > 0) {
-            await updateProductAdditionalNocs(productId, additionalNocs);
+        if (multiOperatorExtAdditionalNocs.length > 0) {
+            await insertProductAdditionalNocs(productId, multiOperatorExtAdditionalNocs);
         }
     } catch (error) {
         throw new Error(`Could not insert products into the products table. ${error.stack}`);
     }
 };
 
-export const updateProductAdditionalNocs = async (productId: number, nocCodes: string[]): Promise<void> => {
+export const insertProductAdditionalNocs = async (productId: number | string, nocCodes: string[]): Promise<void> => {
     logger.info('', {
         context: 'data.auroradb',
-        message: 'updating product additional NOCSs for given product ID',
+        message: 'inserting product additional NOCSs for given product ID',
         productId,
     });
 
     try {
-        const removeOldAdditionalNocsQuery = 'DELETE FROM productAdditionalNocs WHERE productId = ?';
-        await executeQuery(removeOldAdditionalNocsQuery, [productId]);
-
-        const insertAdditionalNocsQuery = 'INSERT INTO productAdditionalNocs (productId, additionalNocCode) VALUES ?';
+        const insertQuery = 'INSERT INTO productAdditionalNocs (productId, additionalNocCode, incomplete) VALUES ?';
 
         await executeQuery(
-            insertAdditionalNocsQuery,
-            nocCodes.map((additionalNoc) => [productId, additionalNoc]),
+            insertQuery,
+            nocCodes.map((additionalNoc) => [productId, additionalNoc, true]),
             true,
         );
     } catch (error) {
-        throw new Error(`Could not update product additional NOCS in the productAdditionalNocs table. ${error}`);
+        throw new Error(`Could not insert product additional NOCS in the productAdditionalNocs table. ${error}`);
+    }
+
+    const productAdditionalNocs = await getProductAddtionalNocsByProductId(productId);
+
+    await updateProductIncompleteStatus(
+        productId,
+        productAdditionalNocs.some((n) => n.incomplete),
+    );
+};
+
+export const updateProductAdditionalNoc = async (
+    productId: number | string,
+    nocCode: string,
+    incomplete: boolean,
+): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'update product additional NOCS for given product ID and NOC code',
+        productId,
+        nocCode,
+    });
+
+    try {
+        const updateProductAdditionalNocsQuery =
+            'UPDATE productAdditionalNocs SET incomplete = ? WHERE productId = ? AND additionalNocCode = ?';
+
+        await executeQuery(updateProductAdditionalNocsQuery, [incomplete, productId, nocCode]);
+    } catch (error) {
+        throw new Error(`Could not update product additional NOC in the productAdditionalNocs table. ${error}`);
+    }
+
+    const productAdditionalNocs = await getProductAddtionalNocsByProductId(productId);
+
+    await updateProductIncompleteStatus(
+        productId,
+        productAdditionalNocs.some((n) => n.incomplete),
+    );
+};
+
+export const deleteProductAdditionalNocs = async (productId: number | string, nocCodes: string[]): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'deleting product additional NOCSs for given product ID',
+        productId,
+    });
+
+    try {
+        const deleteQuery = `DELETE FROM productAdditionalNocs
+            WHERE productId = ?
+            AND additionalNocCode IN (${nocCodes.map(() => '?').join(', ')})
+        `;
+
+        await executeQuery(deleteQuery, [productId, ...nocCodes]);
+    } catch (error) {
+        throw new Error(`Could not delete product additional NOCS in the productAdditionalNocs table. ${error}`);
+    }
+
+    const productAdditionalNocs = await getProductAddtionalNocsByProductId(productId);
+
+    await updateProductIncompleteStatus(
+        productId,
+        productAdditionalNocs.some((n) => n.incomplete),
+    );
+};
+
+const getProductAddtionalNocsByProductId = async (productId: number | string) => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'get product additional NOCs for given product ID',
+        productId,
+    });
+
+    try {
+        const queryInput = 'SELECT incomplete FROM productAdditionalNocs WHERE productId = ?';
+        return await executeQuery<{ incomplete: boolean }[]>(queryInput, [productId]);
+    } catch (error) {
+        throw new Error(`Could not get product additional NOCS from the productAdditionalNocs table. ${error}`);
+    }
+};
+
+export const updateProductIncompleteStatus = async (productId: number | string, incomplete: boolean): Promise<void> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'update product incomplete status for given product ID',
+        productId,
+    });
+
+    try {
+        const updateProductsQuery = 'UPDATE products SET incomplete = ? WHERE id = ?';
+        await executeQuery<ResultSetHeader>(updateProductsQuery, [incomplete, productId]);
+    } catch (error) {
+        throw new Error(`Could not update product incomplete status in the products table. ${error}`);
     }
 };
 
@@ -1963,9 +2055,7 @@ export const deleteProductsByNocCode = async (nocCode: string): Promise<void> =>
         nocCode,
     });
 
-    const deleteQuery = `
-            DELETE FROM products
-            WHERE  nocCode = ?`;
+    const deleteQuery = `DELETE FROM products WHERE nocCode = ?`;
 
     await executeQuery(deleteQuery, [nocCode]);
 };
@@ -2149,7 +2239,7 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
 
     try {
         const queryInput = `
-            SELECT id, matchingJsonLink, startDate, endDate, fareType
+            SELECT id, matchingJsonLink, startDate, endDate, fareType, incomplete
             FROM products
             WHERE lineId = ''
             AND nocCode = ?
@@ -2175,7 +2265,7 @@ export const getMultiOperatorExternalProducts = async (): Promise<MyFaresOtherPr
 
     try {
         const queryInput = `
-            SELECT id, nocCode, matchingJsonLink, startDate, endDate
+            SELECT id, nocCode, matchingJsonLink, startDate, endDate, incomplete
             FROM products
             WHERE fareType = 'multiOperatorExt'
         `;
@@ -2226,7 +2316,7 @@ export const getProductById = async (nocCode: string, productId: string): Promis
 
     try {
         const queryInput = `
-            SELECT id, nocCode, lineId, fareType, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified
+            SELECT id, nocCode, lineId, fareType, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified, incomplete
             FROM products
             WHERE id = ?
             AND nocCode = ?
@@ -2260,7 +2350,7 @@ export const getProductByIdAndAdditionalNoc = async (nocCode: string, productId:
 
     try {
         const queryInput = `
-            SELECT products.id, nocCode, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified
+            SELECT products.id, nocCode, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified, products.incomplete
             FROM products
             JOIN productAdditionalNocs ON productAdditionalNocs.productId = products.id
             WHERE products.id = ?
@@ -2338,7 +2428,7 @@ export const getAllProductsByNoc = async (noc: string): Promise<DbProduct[]> => 
     });
 
     const query = `
-            SELECT id, matchingJsonLink, lineId, fareType, startDate, endDate
+            SELECT id, matchingJsonLink, lineId, fareType, startDate, endDate, incomplete
             FROM products
             WHERE nocCode = ?
         `;
@@ -2364,7 +2454,7 @@ export const getMultiOperatorExternalProductsByNoc = async (noc: string): Promis
     });
 
     const query = `
-            SELECT id, matchingJsonLink, lineId, fareType, startDate, endDate
+            SELECT id, matchingJsonLink, lineId, fareType, startDate, endDate, incomplete
             FROM products
             WHERE nocCode = ?
             AND fareType = 'multiOperatorExt'
@@ -2378,6 +2468,29 @@ export const getMultiOperatorExternalProductsByNoc = async (noc: string): Promis
             startDate: convertDateFormat(result.startDate),
             endDate: result.endDate ? convertDateFormat(result.endDate) : undefined,
         }));
+    } catch (error) {
+        throw new Error(`Could not fetch products from the products table. ${error.stack}`);
+    }
+};
+
+export const getIncompleteMultiOperatorExternalProductsByNoc = async (noc: string): Promise<ProductAdditionaNocs[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting multi-operator external products that require attention for a given noc',
+        noc: noc,
+    });
+
+    const query = `
+            SELECT *
+            FROM productAdditionalNocs
+            WHERE additionalNocCode = ?
+            AND incomplete = true
+        `;
+
+    try {
+        const result = await executeQuery<ProductAdditionaNocs[]>(query, [noc]);
+
+        return result;
     } catch (error) {
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
     }

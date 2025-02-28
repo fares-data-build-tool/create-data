@@ -1,26 +1,26 @@
 import React, { ReactElement, useState } from 'react';
-import { NextPageContextWithSession } from '../../interfaces/index';
+import { ErrorInfo, NextPageContextWithSession } from '../../interfaces/index';
 import { BaseLayout } from '../../layout/Layout';
-import {
-    checkIfMultiOperatorProductIsIncomplete,
-    convertDateFormat,
-    getAndValidateNoc,
-    getCsrfToken,
-    sentenceCaseString,
-} from '../../utils';
-import { getTag } from './services';
+import { convertDateFormat, getAndValidateNoc, getCsrfToken, sentenceCaseString } from '../../utils';
+import { getProductStatusTag } from './services';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
 import { getGroupPassengerTypeById, getMultiOperatorExternalProducts, getPassengerTypeById } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import CsrfForm from '../../components/CsrfForm';
+import InformationSummary from '../../components/InformationSummary';
+import ErrorSummary from '../../components/ErrorSummary';
+import useSWR from 'swr';
+import { Export } from '../api/getExportProgress';
 
 const title = 'Multi-operator products - Create Fares Data Service';
 const description = 'View and access your multi-operator products in one place.';
 
+const fetcher = (input: RequestInfo, init: RequestInit) => fetch(input, init).then((res) => res.json());
+
 export type MultiOperatorProductExternal = {
     id: number;
-    isIncomplete: boolean;
+    incomplete: boolean;
     productDescription: string;
     duration: string;
     startDate: string;
@@ -47,6 +47,7 @@ const MultiOperatorProducts = ({
         name: string;
         productId: number;
     }>();
+    const [errors, setErrors] = useState<ErrorInfo[]>([]);
 
     const deleteActionHandler = (productId: number, name: string): void => {
         setPopUpState({
@@ -55,11 +56,38 @@ const MultiOperatorProducts = ({
         });
     };
 
+    const exportButtonActionHandler = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        isExportInProgress: boolean,
+        buttonId: 'select-exports' | 'export-all',
+    ): void => {
+        if (isExportInProgress) {
+            e.preventDefault();
+            setErrors([
+                {
+                    id: buttonId,
+                    errorMessage:
+                        'A new export cannot be started until the current export has finished. Please wait and try again later.',
+                },
+            ]);
+        }
+    };
+
+    const { data } = useSWR('/api/getExportProgress', fetcher, { refreshInterval: 3000, refreshWhenHidden: true });
+
+    const exports: Export[] | undefined = data?.exports;
+
+    const isExportInProgress: boolean =
+        !!exports && exports.some((exportDetails) => !exportDetails.signedUrl && !exportDetails.exportFailed);
+
     return (
         <BaseLayout title={title} description={description}>
             <div className="govuk-grid-row">
+                <ErrorSummary errors={errors} />
+                {isExportInProgress && <InformationSummary informationText={'Export in progress.'} />}
                 <div className="govuk-grid-column-two-thirds">
                     <h1 className="govuk-heading-xl">Multi-operator products</h1>
+
                     <p className="govuk-body-m ">
                         This is where operators can collaborate with other operators to define and export your active
                         multi-operator products.
@@ -73,10 +101,23 @@ const MultiOperatorProducts = ({
                         </button>
                     </CsrfForm>
                     <CsrfForm action="/api/exportMultiOperatorExternal" method="post" csrfToken={csrfToken}>
-                        <button type="submit" className="govuk-button govuk-button--secondary">
+                        <button
+                            id={'export-all'}
+                            className="govuk-button govuk-button--secondary"
+                            onClick={(e) => exportButtonActionHandler(e, isExportInProgress, 'export-all')}
+                        >
                             Export all products
                         </button>
                     </CsrfForm>
+                    <a href="/products/selectMultiOperatorExports">
+                        <button
+                            id={'select-exports'}
+                            className="govuk-button govuk-button--secondary"
+                            onClick={(e) => exportButtonActionHandler(e, isExportInProgress, 'select-exports')}
+                        >
+                            Select products to export
+                        </button>
+                    </a>
                 </div>
             </div>
             <div className="govuk-grid-row">
@@ -181,12 +222,11 @@ const MultiOperatorProductsTable = (
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
                                   <td className="govuk-table__cell">
-                                      {product.isIncomplete ? (
-                                          <strong className="govuk-tag govuk-tag--yellow dft-table-tag">
-                                              Incomplete
-                                          </strong>
-                                      ) : (
-                                          getTag(product.startDate, product.endDate, true)
+                                      {getProductStatusTag(
+                                          product.incomplete,
+                                          product.startDate,
+                                          product.endDate,
+                                          true,
                                       )}
                                   </td>
                                   {deleteActionHandler ? (
@@ -234,11 +274,6 @@ export const getServerSideProps = async (
         const isSharedProduct = secondaryOperatorNocs.includes(yourNoc);
 
         if (product.nocCode === yourNoc || isSharedProduct) {
-            const isIncomplete = await checkIfMultiOperatorProductIsIncomplete(
-                product.matchingJsonLink,
-                secondaryOperatorNocs,
-            );
-
             const startDate = matchingJson.ticketPeriod.startDate
                 ? convertDateFormat(matchingJson.ticketPeriod.startDate)
                 : '-';
@@ -257,7 +292,7 @@ export const getServerSideProps = async (
 
                 const productData = {
                     id: product.id,
-                    isIncomplete,
+                    incomplete: product.incomplete,
                     productDescription,
                     duration,
                     startDate,

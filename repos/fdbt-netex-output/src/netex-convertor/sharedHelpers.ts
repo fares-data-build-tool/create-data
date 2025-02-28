@@ -399,7 +399,7 @@ export const getCarnetElement = (ticket: Ticket): NetexObject => {
     };
 };
 
-export const getFareStructuresElements = (
+export const getFareStructureElements = (
     ticket: Ticket,
     coreData: CoreData,
     hasExemptServices: boolean,

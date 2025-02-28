@@ -148,9 +148,13 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
                     ticketWithIds.additionalOperators =
                         additionalOperators.length > 0 ? additionalOperators : ticketWithIds.additionalOperators;
-                    ticketWithIds.exemptStops = ticketWithIds.exemptStops?.concat(exemptStops) ?? exemptStops;
 
+                    ticketWithIds.exemptStops = ticketWithIds.exemptStops?.concat(exemptStops) ?? exemptStops;
                     ticketWithIds.exemptStops = removeDuplicates(ticketWithIds.exemptStops ?? [], 'atcoCode');
+
+                    if (ticketWithIds.exemptStops.length === 0) {
+                        ticketWithIds.exemptStops = undefined;
+                    }
                 }
 
                 // add secondary operator product information for fareZone type tickets
@@ -166,6 +170,10 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
                     ticketWithIds.stops = removeDuplicates(ticketWithIds.stops, 'atcoCode');
                     ticketWithIds.exemptedServices =
                         ticketWithIds.exemptedServices?.concat(exemptedServices) ?? exemptedServices;
+
+                    if (ticketWithIds.exemptedServices.length === 0) {
+                        ticketWithIds.exemptedServices = undefined;
+                    }
                 }
             }
 

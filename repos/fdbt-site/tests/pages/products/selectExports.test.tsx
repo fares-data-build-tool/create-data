@@ -1,7 +1,13 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import SelectExports from '../../../src/pages/products/selectExports';
-import { mockOtherProducts, mockPointToPointProducts, mockServicesToDisplay } from '../../testData/mockData';
+import SelectExports, { getServerSideProps } from '../../../src/pages/products/selectExports';
+import {
+    getMockContext,
+    mockOtherProducts,
+    mockPointToPointProducts,
+    mockServicesToDisplay,
+} from '../../testData/mockData';
+import * as getExportProgress from '../../../src/pages/api/getExportProgress';
 
 describe('selectExports', () => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -101,5 +107,23 @@ describe('selectExports', () => {
         tree.find('#select-all').simulate('click', event);
 
         expect(tree.find('#products-selected').text()).toEqual('6 / 6 selected');
+    });
+
+    it('should redirect if an export is in progress', async () => {
+        const getAllExportsSpy = jest.spyOn(getExportProgress, 'getAllExports');
+        getAllExportsSpy.mockResolvedValueOnce([
+            {
+                name: 'mockExport',
+                numberOfFilesExpected: 10,
+                netexCount: 10,
+                exportFailed: false,
+                failedValidationFilenames: [],
+            },
+        ]);
+        const ctx = getMockContext();
+
+        const result = await getServerSideProps(ctx);
+
+        expect(result).toEqual({ redirect: { destination: '/products/exports', permanent: false } });
     });
 });

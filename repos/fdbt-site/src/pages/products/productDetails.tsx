@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from 'react';
 import {
-    checkIfMultiOperatorProductIsIncomplete,
     convertDateFormat,
     fareTypeIsAllowedToAddACap,
     getAdditionalNocMatchingJsonLink,
@@ -24,7 +23,7 @@ import {
 } from '../../data/auroradb';
 import { ProductDetailsElement, NextPageContextWithSession, ProductDateInformation, Cap } from '../../interfaces';
 import TwoThirdsLayout from '../../layout/Layout';
-import { getTag } from './services';
+import { getProductStatusTag } from './services';
 import { getProductsSecondaryOperatorInfo, getProductsMatchingJson } from '../../data/s3';
 import BackButton from '../../components/BackButton';
 import InformationSummary from '../../components/InformationSummary';
@@ -63,7 +62,7 @@ interface ProductDetailsProps {
     csrfToken: string;
     fareTriangleModified?: string;
     isOwnProduct: boolean;
-    isIncomplete: boolean;
+    incomplete: boolean;
 }
 
 const createGenerateReturnUrl = (
@@ -91,7 +90,7 @@ const ProductDetails = ({
     cannotGenerateReturn,
     csrfToken,
     isOwnProduct,
-    isIncomplete,
+    incomplete,
 }: ProductDetailsProps): ReactElement => {
     const [editNamePopupOpen, setEditNamePopupOpen] = useState(false);
     const [generateReturnPopupOpen, setGenerateReturnPopupOpen] = useState(cannotGenerateReturn);
@@ -103,12 +102,6 @@ const ProductDetails = ({
     const generateReturnCancelActionHandler = (): void => {
         setGenerateReturnPopupOpen(false);
     };
-
-    const statusTag = isIncomplete ? (
-        <strong className="govuk-tag govuk-tag--yellow">Incomplete</strong>
-    ) : (
-        getTag(startDate, endDate, false)
-    );
 
     return (
         <TwoThirdsLayout title={title} description={description} errors={[]}>
@@ -132,7 +125,7 @@ const ProductDetails = ({
             </div>
 
             <div id="product-status" className="govuk-hint">
-                Product status: {statusTag}
+                Product status: {getProductStatusTag(incomplete, startDate, endDate, false)}
                 {requiresAttention && (
                     <strong className="govuk-tag govuk-tag--yellow govuk-!-margin-left-2">Needs attention</strong>
                 )}
@@ -815,21 +808,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             ? (await getServiceByIdAndDataSource(noc, Number(serviceId), dataSource)).lineId
             : '';
 
-    let isIncomplete = false;
-
-    if (ticket.type === 'multiOperator') {
-        if ('additionalOperators' in ticket) {
-            isIncomplete = ticket.additionalOperators.some((operator) => operator.selectedServices.length === 0);
-        }
-    } else if (ticket.type === 'multiOperatorExt') {
-        const additionalOperators = 'additionalOperators' in ticket ? ticket.additionalOperators : [];
-        const additionalNocs = 'additionalNocs' in ticket ? ticket.additionalNocs : [];
-        const isFareZoneType = 'zoneName' in ticket;
-        const secondaryOperatorNocs = isFareZoneType ? additionalNocs : additionalOperators.map((op) => op.nocCode);
-
-        isIncomplete = await checkIfMultiOperatorProductIsIncomplete(product.matchingJsonLink, secondaryOperatorNocs);
-    }
-
     return {
         props: {
             backHref,
@@ -848,7 +826,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
             csrfToken,
             fareTriangleModified,
             isOwnProduct,
-            isIncomplete,
+            incomplete: product.incomplete,
         },
     };
 };

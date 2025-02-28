@@ -30,6 +30,7 @@ exports[`pages exports should render correctly without data when operator has no
             >
               <button
                 className="govuk-button govuk-visually-hidden"
+                id="export-all-button"
                 onClick={[Function]}
                 type="submit"
               >
@@ -37,11 +38,16 @@ exports[`pages exports should render correctly without data when operator has no
               </button>
             </CsrfForm>
             <a
-              className="govuk-button govuk-visually-hidden"
-              data-module="govuk-button"
               href="/products/selectExports"
             >
-              Select products to export
+              <button
+                className="govuk-button govuk-visually-hidden"
+                id="select-exports-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Select products to export
+              </button>
             </a>
           </div>
         </div>
@@ -59,7 +65,7 @@ exports[`pages exports should render correctly without data when operator has no
             <p
               className="govuk-body-m govuk-!-margin-bottom-9"
             >
-              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or products for expired services, will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
+              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Incomplete products, expired products, or products for expired services will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
                
               <a
                 href="https://publish.bus-data.dft.gov.uk/"
@@ -111,7 +117,8 @@ exports[`pages exports should render the export button correctly when operator h
               method="post"
             >
               <button
-                className="govuk-button govuk-visually-hidden"
+                className="govuk-button"
+                id="export-all-button"
                 onClick={[Function]}
                 type="submit"
               >
@@ -119,11 +126,16 @@ exports[`pages exports should render the export button correctly when operator h
               </button>
             </CsrfForm>
             <a
-              className="govuk-button govuk-visually-hidden"
-              data-module="govuk-button"
               href="/products/selectExports"
             >
-              Select products to export
+              <button
+                className="govuk-button"
+                id="select-exports-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Select products to export
+              </button>
             </a>
           </div>
         </div>
@@ -136,7 +148,7 @@ exports[`pages exports should render the export button correctly when operator h
             <p
               className="govuk-body-m govuk-!-margin-bottom-9"
             >
-              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or products for expired services, will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
+              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Incomplete products, expired products, or products for expired services will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
                
               <a
                 href="https://publish.bus-data.dft.gov.uk/"
@@ -188,7 +200,8 @@ exports[`pages exports should render the export button correctly when operator h
               method="post"
             >
               <button
-                className="govuk-button govuk-visually-hidden"
+                className="govuk-button"
+                id="export-all-button"
                 onClick={[Function]}
                 type="submit"
               >
@@ -196,11 +209,16 @@ exports[`pages exports should render the export button correctly when operator h
               </button>
             </CsrfForm>
             <a
-              className="govuk-button govuk-visually-hidden"
-              data-module="govuk-button"
               href="/products/selectExports"
             >
-              Select products to export
+              <button
+                className="govuk-button"
+                id="select-exports-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Select products to export
+              </button>
             </a>
           </div>
         </div>
@@ -213,7 +231,7 @@ exports[`pages exports should render the export button correctly when operator h
             <p
               className="govuk-body-m govuk-!-margin-bottom-9"
             >
-              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Expired products or products for expired services, will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
+              This will export all of your current active products and any pending products. Any products flagged with ‘Needs Attention’ will be exported but may not be correct. Incomplete products, expired products, or products for expired services will not be included in the export. Once your export is complete, it will appear in the list below and you can download this and upload it to
                
               <a
                 href="https://publish.bus-data.dft.gov.uk/"

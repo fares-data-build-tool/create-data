@@ -13,7 +13,9 @@ import {
     operatorHasBodsServices,
     operatorHasFerryOrTramServices,
     updateOperatorGroup,
-    updateProductAdditionalNocs,
+    insertProductAdditionalNocs,
+    deleteProductAdditionalNocs,
+    updateProductIncompleteStatus,
 } from '../../data/auroradb';
 import { putUserDataInProductsBucketWithFilePath } from '../../utils/apiUtils/userData';
 import { getAdditionalNocMatchingJsonLink } from '../../utils';
@@ -64,12 +66,16 @@ export const updateAssociatedProducts = async (
     for await (const product of multiOperatorProductsFromDb) {
         if (product.fareType === 'multiOperator' || product.fareType === 'multiOperatorExt') {
             const ticket = await getProductsMatchingJson(product.matchingJsonLink);
+            let newNocs: string[] = [];
             let removedNocs: string[] = [];
 
             if ('additionalNocs' in ticket) {
+                newNocs = operatorGroupNocs.filter((noc) => !ticket.additionalNocs.includes(noc));
                 removedNocs = ticket.additionalNocs.filter((noc) => !operatorGroupNocs.includes(noc));
                 ticket.additionalNocs = operatorGroupNocs;
             } else if ('additionalOperators' in ticket) {
+                const ticketAdditionalOperatorNocs = ticket.additionalOperators.map((operator) => operator.nocCode);
+                newNocs = operatorGroupNocs.filter((noc) => !ticketAdditionalOperatorNocs.includes(noc));
                 removedNocs = ticket.additionalOperators
                     .filter((noc) => !operatorGroupNocs.includes(noc.nocCode))
                     .map((noc) => noc.nocCode);
@@ -84,10 +90,18 @@ export const updateAssociatedProducts = async (
 
             await putUserDataInProductsBucketWithFilePath(ticket, product.matchingJsonLink);
 
-            if (product.fareType === 'multiOperatorExt') {
-                await updateProductAdditionalNocs(product.id, operatorGroupNocs);
+            if (product.fareType === 'multiOperator') {
+                if (newNocs.length > 0) {
+                    await updateProductIncompleteStatus(product.id, true);
+                }
+            } else if (product.fareType === 'multiOperatorExt') {
+                if (newNocs.length > 0) {
+                    await insertProductAdditionalNocs(product.id, newNocs);
+                }
 
                 if (removedNocs.length > 0) {
+                    await deleteProductAdditionalNocs(product.id, removedNocs);
+
                     const matchingJsonLinks = removedNocs.map((noc) =>
                         getAdditionalNocMatchingJsonLink(product.matchingJsonLink, noc),
                     );

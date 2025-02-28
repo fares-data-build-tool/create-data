@@ -9,27 +9,30 @@ import { MyFaresProduct } from '../../../src/interfaces/dbTypes';
 const mockProducts: MyFaresProduct[] = [
     {
         id: 1,
-        nocCode: 'TEST',
         lineId: '231yevgy',
-        fareType: 'single',
         matchingJsonLink: '/matching/json/link/1',
         startDate: '01/02/2022',
+        nocCode: 'TEST',
+        fareType: 'single',
+        incomplete: false,
     },
     {
         id: 2,
-        nocCode: 'TEST',
         lineId: 'refg4q3g43',
-        fareType: 'single',
         matchingJsonLink: '/matching/json/link/2',
         startDate: '01/02/2022',
+        nocCode: 'TEST',
+        fareType: 'single',
+        incomplete: false,
     },
     {
         id: 3,
-        nocCode: 'TEST',
         lineId: 'q34t4tq234',
-        fareType: 'single',
         matchingJsonLink: '/matching/json/link/3',
         startDate: '01/02/2022',
+        nocCode: 'TEST',
+        fareType: 'single',
+        incomplete: false,
     },
 ];
 

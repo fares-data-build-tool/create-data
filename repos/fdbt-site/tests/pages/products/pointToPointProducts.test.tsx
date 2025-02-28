@@ -108,6 +108,7 @@ describe('myfares pages', () => {
                         startDate: '05/04/2018',
                         endDate: '10/04/2019',
                         servicesRequiringAttention: [],
+                        incomplete: false,
                     },
                     {
                         id: 2,
@@ -118,6 +119,7 @@ describe('myfares pages', () => {
                         startDate: '01/01/2021',
                         endDate: '04/04/2021',
                         servicesRequiringAttention: [],
+                        incomplete: false,
                     },
                     {
                         id: 3,
@@ -128,6 +130,7 @@ describe('myfares pages', () => {
                         startDate: '05/04/2020',
                         endDate: '10/04/2020',
                         servicesRequiringAttention: [],
+                        incomplete: false,
                     },
                     {
                         id: 4,
@@ -138,6 +141,7 @@ describe('myfares pages', () => {
                         startDate: '05/04/2020',
                         endDate: '10/04/2020',
                         servicesRequiringAttention: [],
+                        incomplete: false,
                     },
                 ],
             );
@@ -151,6 +155,7 @@ describe('myfares pages', () => {
                     matchingJsonLink: '/path/to/json',
                     startDate: '01/01/2021',
                     servicesRequiringAttention: [],
+                    incomplete: false,
                 },
             ]);
         });
@@ -176,6 +181,7 @@ describe('myfares pages', () => {
                         startDate: '05/04/2012',
                         endDate: '10/04/2012',
                         servicesRequiringAttention: [],
+                        incomplete: false,
                     },
                     {
                         id: 2,
@@ -186,6 +192,7 @@ describe('myfares pages', () => {
                         startDate: '01/01/2014',
                         endDate: '04/04/2015',
                         servicesRequiringAttention: [],
+                        incomplete: false,
                     },
                     {
                         id: 3,
@@ -196,6 +203,7 @@ describe('myfares pages', () => {
                         startDate: '05/04/2022',
                         endDate: '10/04/2022',
                         servicesRequiringAttention: [],
+                        incomplete: false,
                     },
                     {
                         id: 4,
@@ -206,6 +214,7 @@ describe('myfares pages', () => {
                         startDate: '12/12/2021',
                         endDate: '10/04/2023',
                         servicesRequiringAttention: [],
+                        incomplete: false,
                     },
                 ],
             );

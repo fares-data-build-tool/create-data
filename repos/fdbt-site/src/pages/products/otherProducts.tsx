@@ -4,7 +4,7 @@ import { BaseLayout } from '../../layout/Layout';
 import { convertDateFormat, getAndValidateNoc, sentenceCaseString, getCsrfToken } from '../../utils';
 import { getOtherProductsByNoc, getPassengerTypeNameByIdAndNoc } from '../../data/auroradb';
 import { getProductsMatchingJson } from '../../data/s3';
-import { getTag } from '../products/services';
+import { getProductStatusTag } from '../products/services';
 import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 import logger from '../../utils/logger';
 import { MyFaresOtherProduct } from '../../interfaces/dbTypes';
@@ -139,7 +139,7 @@ const otherProductsTable = (
                                   <td className="govuk-table__cell">{product.startDate}</td>
                                   <td className="govuk-table__cell">{product.endDate}</td>
                                   <td className="govuk-table__cell">
-                                      {getTag(product.startDate, product.endDate, true)}
+                                      {getProductStatusTag(false, product.startDate, product.endDate, true)}
                                   </td>
                                   <td className="govuk-table__cell">
                                       <form>
@@ -197,7 +197,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                         const duration = 'productDuration' in innerProduct ? innerProduct.productDuration : '1 trip';
                         const type = `${matchingJson.type}${matchingJson.carnet ? ' carnet' : ''}`;
                         const passengerType = await getPassengerTypeNameByIdAndNoc(matchingJson.passengerType.id, noc);
-                        const { id } = product;
+                        const { id, incomplete } = product;
 
                         const startDate = convertDateFormat(matchingJson.ticketPeriod.startDate);
                         const endDate = matchingJson.ticketPeriod.endDate
@@ -211,6 +211,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                             startDate,
                             endDate,
                             id,
+                            incomplete,
                         };
                     }),
                 );

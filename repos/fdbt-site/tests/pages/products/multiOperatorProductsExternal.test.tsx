@@ -19,6 +19,7 @@ jest.mock('../../../src/data/s3');
         nocCode: 'TEST',
         startDate: '17/12/2020',
         endDate: '18/12/2020',
+        incomplete: false,
     },
     {
         matchingJsonLink: 'path2',
@@ -26,6 +27,7 @@ jest.mock('../../../src/data/s3');
         nocCode: 'LNUD',
         startDate: '17/12/2020',
         endDate: '18/12/2020',
+        incomplete: false,
     },
     {
         matchingJsonLink: 'path3',
@@ -33,6 +35,7 @@ jest.mock('../../../src/data/s3');
         nocCode: 'ABCD',
         startDate: '17/12/2020',
         endDate: '18/12/2020',
+        incomplete: false,
     },
 ]);
 (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedSchemeOperatorMultiServicesTicket);
@@ -62,7 +65,7 @@ describe('multiOperatorProductsExternal page', () => {
     const ownedProducts: MultiOperatorProductExternal[] = [
         {
             id: 1,
-            isIncomplete: false,
+            incomplete: false,
             productDescription: 'product one',
             duration: '2 weeks',
             startDate: '17/12/2020',
@@ -71,7 +74,7 @@ describe('multiOperatorProductsExternal page', () => {
         },
         {
             id: 1,
-            isIncomplete: false,
+            incomplete: false,
             productDescription: 'product two',
             duration: '5 days',
             startDate: '17/12/2020',
@@ -82,7 +85,7 @@ describe('multiOperatorProductsExternal page', () => {
     const sharedProducts: MultiOperatorProductExternal[] = [
         {
             id: 3,
-            isIncomplete: true,
+            incomplete: true,
             productDescription: 'product one',
             duration: '2 weeks',
             startDate: '17/12/2020',
@@ -91,7 +94,7 @@ describe('multiOperatorProductsExternal page', () => {
         },
         {
             id: 3,
-            isIncomplete: true,
+            incomplete: true,
             productDescription: 'product two',
             duration: '5 days',
             startDate: '17/12/2020',
@@ -124,14 +127,13 @@ describe('multiOperatorProductsExternal page', () => {
     describe('getServerSideProps', () => {
         jest.spyOn(utils, 'getAndValidateNoc').mockReturnValue('TEST');
         it('sorts multi-operator products by owned and shared product lists', async () => {
-            jest.spyOn(utils, 'checkIfMultiOperatorProductIsIncomplete').mockReturnValue(Promise.resolve(false));
             const ctx = getMockContext();
             const result = await getServerSideProps(ctx);
 
             expect(result.props.ownedProducts).toEqual([
                 {
                     id: 1,
-                    isIncomplete: false,
+                    incomplete: false,
                     productDescription: 'product one',
                     duration: '2 weeks',
                     startDate: '17/12/2020',
@@ -140,7 +142,7 @@ describe('multiOperatorProductsExternal page', () => {
                 },
                 {
                     id: 1,
-                    isIncomplete: false,
+                    incomplete: false,
                     productDescription: 'product two',
                     duration: '5 days',
                     startDate: '17/12/2020',
@@ -151,7 +153,7 @@ describe('multiOperatorProductsExternal page', () => {
             expect(result.props.sharedProducts).toEqual([
                 {
                     id: 3,
-                    isIncomplete: false,
+                    incomplete: false,
                     productDescription: 'product one',
                     duration: '2 weeks',
                     startDate: '17/12/2020',
@@ -160,7 +162,7 @@ describe('multiOperatorProductsExternal page', () => {
                 },
                 {
                     id: 3,
-                    isIncomplete: false,
+                    incomplete: false,
                     productDescription: 'product two',
                     duration: '5 days',
                     startDate: '17/12/2020',

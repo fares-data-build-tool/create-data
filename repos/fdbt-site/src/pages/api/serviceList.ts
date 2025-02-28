@@ -19,7 +19,7 @@ import { getSessionAttribute, updateSessionAttribute } from '../../utils/session
 import { SecondaryOperatorFareInfo, SelectedService, Stop } from '../../interfaces/matchingJsonTypes';
 import { FileData, getServiceListFormData, processFileUpload } from '../../utils/apiUtils/fileUpload';
 import uniq from 'lodash/uniq';
-import { batchGetStopsByAtcoCode } from '../../data/auroradb';
+import { batchGetStopsByAtcoCode, updateProductAdditionalNoc } from '../../data/auroradb';
 import { csvParser, getAtcoCodesForStops } from './csvZoneUpload';
 import logger from '../../utils/logger';
 import { STAGE } from '../../constants';
@@ -238,6 +238,14 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                 }
 
                 await putUserDataInProductsBucketWithFilePath(secondaryOperatorFareInfo, additionalNocMatchingJsonLink);
+
+                if (ticket.type === 'multiOperatorExt') {
+                    await updateProductAdditionalNoc(
+                        matchingJsonMetaData.productId,
+                        nocCode,
+                        selectedServices.length === 0,
+                    );
+                }
             } else {
                 const updatedTicket = {
                     ...ticket,

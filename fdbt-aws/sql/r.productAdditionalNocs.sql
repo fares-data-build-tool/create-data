@@ -6,6 +6,7 @@ CREATE TABLE productAdditionalNocs(
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `productId` int(11) NOT NULL,
     `additionalNocCode` varchar(10) NOT NULL,
+    `incomplete` BOOLEAN NOT NULL,
     INDEX idx_additionalNocCode (additionalNocCode),
     PRIMARY KEY (`id`),
     CONSTRAINT fk_productAdditionalNocs_products_id FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE

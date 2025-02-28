@@ -19,18 +19,21 @@ jest.mock('../../../src/data/s3');
         id: 1,
         startDate: '17/12/2020',
         endDate: '18/12/2020',
+        incomplete: false,
     },
     {
         matchingJsonLink: 'path2',
         id: 2,
         startDate: '17/12/2020',
         endDate: '18/12/2020',
+        incomplete: false,
     },
     {
         matchingJsonLink: 'path3',
         id: 3,
         startDate: '17/12/2020',
         endDate: '18/12/2020',
+        incomplete: false,
     },
 ]);
 (getProductsMatchingJson as jest.Mock).mockResolvedValueOnce(expectedFlatFareTicket);
@@ -109,6 +112,7 @@ describe('myfares pages', () => {
                             productDescription: 'Weekly Rider',
                             startDate: '17/12/2020',
                             type: 'flatFare',
+                            incomplete: false,
                         },
                         {
                             duration: '5 weeks',
@@ -118,6 +122,7 @@ describe('myfares pages', () => {
                             productDescription: 'Weekly Ticket',
                             startDate: '17/12/2020',
                             type: 'period',
+                            incomplete: false,
                         },
                         {
                             duration: '1 year',
@@ -127,6 +132,7 @@ describe('myfares pages', () => {
                             productDescription: 'Day Ticket',
                             startDate: '17/12/2020',
                             type: 'period',
+                            incomplete: false,
                         },
                     ],
                 },

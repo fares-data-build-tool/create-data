@@ -8,6 +8,9 @@ exports[`multiOperatorProductsExternal page renders correctly 1`] = `
   <div
     className="govuk-grid-row"
   >
+    <ErrorSummary
+      errors={Array []}
+    />
     <div
       className="govuk-grid-column-two-thirds"
     >
@@ -49,11 +52,23 @@ exports[`multiOperatorProductsExternal page renders correctly 1`] = `
       >
         <button
           className="govuk-button govuk-button--secondary"
-          type="submit"
+          id="export-all"
+          onClick={[Function]}
         >
           Export all products
         </button>
       </CsrfForm>
+      <a
+        href="/products/selectMultiOperatorExports"
+      >
+        <button
+          className="govuk-button govuk-button--secondary"
+          id="select-exports"
+          onClick={[Function]}
+        >
+          Select products to export
+        </button>
+      </a>
     </div>
   </div>
   <div

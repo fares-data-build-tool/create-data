@@ -54,7 +54,7 @@ exports[`selectExports renders appropriately when the user has no products 1`] =
                 <p
                   className="govuk-body-m govuk-!-margin-bottom-5"
                 >
-                  This page will export all of the products you select. Expired products, or products for expired services, will not be included in the list below.
+                  This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
                 </p>
               </div>
               <button
@@ -135,7 +135,7 @@ exports[`selectExports renders fully when the user has products they can export 
                 <p
                   className="govuk-body-m govuk-!-margin-bottom-5"
                 >
-                  This page will export all of the products you select. Expired products, or products for expired services, will not be included in the list below.
+                  This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
                 </p>
               </div>
               <button
@@ -270,7 +270,7 @@ exports[`selectExports renders fully when the user has products they can export 
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
-                      value="4"
+                      value={4}
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
@@ -314,7 +314,7 @@ exports[`selectExports renders fully when the user has products they can export 
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
-                      value="5"
+                      value={5}
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
@@ -358,7 +358,7 @@ exports[`selectExports renders fully when the user has products they can export 
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
-                      value="6"
+                      value={6}
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
@@ -393,7 +393,7 @@ exports[`selectExports renders fully when the user has products they can export 
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
-                      value="1"
+                      value={1}
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
@@ -428,7 +428,7 @@ exports[`selectExports renders fully when the user has products they can export 
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
-                      value="2"
+                      value={2}
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
@@ -463,7 +463,7 @@ exports[`selectExports renders fully when the user has products they can export 
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
-                      value="3"
+                      value={3}
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
@@ -558,7 +558,7 @@ exports[`selectExports renders fully when the user has products they can export,
                 <p
                   className="govuk-body-m govuk-!-margin-bottom-5"
                 >
-                  This page will export all of the products you select. Expired products, or products for expired services, will not be included in the list below.
+                  This page will export all of the products you select. Incomplete products, expired products, or products for expired services will not be included in the list below.
                 </p>
               </div>
               <button
@@ -683,7 +683,7 @@ exports[`selectExports renders fully when the user has products they can export,
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
-                      value="1"
+                      value={1}
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
@@ -718,7 +718,7 @@ exports[`selectExports renders fully when the user has products they can export,
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
-                      value="2"
+                      value={2}
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
@@ -753,7 +753,7 @@ exports[`selectExports renders fully when the user has products they can export,
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
-                      value="3"
+                      value={3}
                     />
                     <label
                       className="govuk-label govuk-checkboxes__label"
