@@ -5,14 +5,14 @@ on:
     - '!develop'
     - '!master'
     paths:
-    - repos/fdbt-multi-operator-emailer/**
+    - repos/fdbt-emailer/**
   workflow_dispatch:
 
-name: 'fdbt-multi-operator-emailer-check'
+name: 'fdbt-emailer-check'
 
 defaults:
   run:
-    working-directory: ./repos/fdbt-multi-operator-emailer
+    working-directory: ./repos/fdbt-emailer
 
 jobs:
 
@@ -40,4 +40,4 @@ jobs:
       run: npm run test:ci
 
     - name: Build
-      run: npm run build-${{ env.WORKSPACE }}
+      run: npm run build-multi-operator-emailer-${{ env.WORKSPACE }}

@@ -2,39 +2,32 @@
     "name": "multi-operator-emailer",
     "version": "0.1.0",
     "scripts": {
-        "build-test": "esbuild src/handler.ts --bundle --sourcemap --platform=node --target=es2020 --outfile=dist/multi-operator-emailer-test/index.js",
-        "build-preprod": "esbuild src/handler.ts --bundle --sourcemap --platform=node --target=es2020 --outfile=dist/multi-operator-emailer-preprod/index.js",
-        "build-prod": "esbuild src/handler.ts --bundle --sourcemap --platform=node --target=es2020 --outfile=dist/multi-operator-emailer-prod/index.js",
-        "test": "jest",
-        "test:ci": "CI=true jest",
+        "build-multi-operator-emailer-test": "esbuild src/multi-operator-emailer/handler.ts --bundle --sourcemap --platform=node --target=es2020 --outfile=dist/multi-operator-emailer-test/index.js",
+        "build-multi-operator-emailer-preprod": "esbuild src/multi-operator-emailer/handler.ts --bundle --sourcemap --platform=node --target=es2020 --outfile=dist/multi-operator-emailer-preprod/index.js",
+        "build-multi-operator-emailer-prod": "esbuild src/multi-operator-emailer/handler.ts --bundle --sourcemap --platform=node --target=es2020 --outfile=dist/multi-operator-emailer-prod/index.js",
+        "test": "vitest",
+        "test:ci": "CI=true vitest run",
         "lint": "eslint . --ext .ts --max-warnings 0",
         "lint:fix": "eslint --fix . --ext .ts --max-warnings 0"
     },
-    "jest": {
-        "collectCoverageFrom": [
-            "lib/**/*.{js,jsx,ts,tsx}"
-        ]
-    },
     "devDependencies": {
         "@types/aws-lambda": "^8.10.83",
-        "@types/jest": "^27.0.2",
         "@types/node": "18.17.0",
         "@types/nodemailer": "^6.4.17",
         "@typescript-eslint/eslint-plugin": "^4.31.2",
         "@typescript-eslint/parser": "^4.31.2",
+        "@vitest/coverage-v8": "^3.0.7",
         "constructs": "10.2.69",
         "esbuild": "^0.25.0",
         "eslint": "7.32.0",
         "eslint-config-prettier": "^5.0.0",
         "eslint-plugin-import": "^2.24.2",
-        "eslint-plugin-jest": "^24.3.6",
         "eslint-plugin-prettier": "^4.0.0",
         "fdbt-types": "file:../fdbt-types",
-        "jest": "^27.2.1",
         "prettier": "^2.4.1",
-        "ts-jest": "^27.0.5",
         "ts-node": "^10.2.1",
-        "typescript": "4.3.5"
+        "typescript": "4.3.5",
+        "vitest": "^3.0.7"
     },
     "dependencies": {
         "aws-sdk": "^2.991.0",

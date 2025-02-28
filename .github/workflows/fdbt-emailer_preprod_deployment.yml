@@ -3,14 +3,14 @@ on:
     branches:
       - "master"
     paths:
-      - repos/fdbt-multi-operator-emailer/**
+      - repos/fdbt-emailer/**
   workflow_dispatch:
 
-name: "fdbt-multi-operator-emailer-preprod"
+name: "fdbt-emailer-preprod"
 
 defaults:
   run:
-    working-directory: ./repos/fdbt-multi-operator-emailer
+    working-directory: ./repos/fdbt-emailer
 
 jobs:
   deploy:
@@ -39,7 +39,7 @@ jobs:
         run: npm run test:ci
 
       - name: Build
-        run: npm run build-${{ env.WORKSPACE }}
+        run: npm run build-multi-operator-emailer-${{ env.WORKSPACE }}
 
       - name: Archive build
         run: zip package.zip *
@@ -52,5 +52,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
-      - name: Deploy Lambda
-        run: aws lambda update-function-code --function-name fdbt-multi-operator-emailer-${{ env.WORKSPACE }} --zip-file fileb://dist/multi-operator-emailer-${{ env.WORKSPACE }}/package.zip
+      - name: Update multi-operator-emailer lambda
+        uses: "./.github/workflows/templates/update_lambda"
+        with:
+          repo: fdbt-emailer
+          lambda: multi-operator-emailer
+          environment: ${{ env.WORKSPACE }}

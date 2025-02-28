@@ -2,7 +2,6 @@ module.exports = {
   env: {
       es6: true,
       node: true,
-      jest: true,
   },
   extends: [
       'plugin:@typescript-eslint/recommended',
@@ -22,11 +21,8 @@ module.exports = {
       tsconfigRootDir: __dirname,
       project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint', 'jest'],
+  plugins: ['@typescript-eslint'],
   rules: {
-      'jest/no-disabled-tests': 'error',
-      'jest/no-identical-title': 'error',
-      'jest/valid-expect': 'error',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/ban-types': 'off',
