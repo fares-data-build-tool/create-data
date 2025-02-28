@@ -7,7 +7,31 @@ describe('pages', () => {
     describe('account', () => {
         it('should render correctly', () => {
             const tree = shallow(
-                <AccountDetails emailAddress="joseppo.bloggo@somefakebuscompany.com" nocCode="FaBusCo|foo|bar" />,
+                <AccountDetails
+                    emailAddress="joseppo.bloggo@somefakebuscompany.com"
+                    nocCode="FaBusCo|foo|bar"
+                    csrfToken="token"
+                    multiOperatorEmailPreference={false}
+                    errors={[]}
+                />,
+            );
+            expect(tree).toMatchSnapshot();
+        });
+
+        it('should render correctly with errors', () => {
+            const tree = shallow(
+                <AccountDetails
+                    emailAddress="joseppo.bloggo@somefakebuscompany.com"
+                    nocCode="FaBusCo|foo|bar"
+                    csrfToken="token"
+                    multiOperatorEmailPreference={false}
+                    errors={[
+                        {
+                            id: 'radio-multi-op-email-pref',
+                            errorMessage: 'There was a problem updating email preference',
+                        },
+                    ]}
+                />,
             );
             expect(tree).toMatchSnapshot();
         });
