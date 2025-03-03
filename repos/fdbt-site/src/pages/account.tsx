@@ -10,6 +10,7 @@ import CsrfForm from '../components/CsrfForm';
 import FormElementWrapper from '../components/FormElementWrapper';
 import { getSessionAttribute } from '../utils/sessions';
 import { ACCOUNT_PAGE_ERROR } from '../constants/attributes';
+import { getUserAttribute } from '../data/cognito';
 
 const title = 'Account Details - Create Fares Data Service';
 const description = 'Account Details page of the Create Fares Data Service';
@@ -134,18 +135,21 @@ const AccountDetails = ({
     );
 };
 
-export const getServerSideProps = (ctx: NextPageContextWithSession): { props: AccountDetailsProps } => {
+export const getServerSideProps = async (ctx: NextPageContextWithSession): Promise<{ props: AccountDetailsProps }> => {
     const cookies = parseCookies(ctx);
     if (!cookies[ID_TOKEN_COOKIE]) {
         throw new Error('Necessary attributes not found to show account details');
     }
     const noc = getNocFromIdToken(ctx);
     const email = getAttributeFromIdToken(ctx, 'email');
-    const multiOperatorEmailPreference = getAttributeFromIdToken(ctx, 'custom:multiOpEmailEnabled');
 
     if (!email || !noc) {
         throw new Error('Could not extract the user email address and/or noc code from their ID token');
     }
+
+    const host = ctx.req.headers.host;
+    const multiOperatorEmailPreference =
+        host && host.startsWith('localhost') ? 'false' : await getUserAttribute(email, 'custom:multiOpEmailEnabled');
 
     const errors = getSessionAttribute(ctx.req, ACCOUNT_PAGE_ERROR);
 
@@ -154,7 +158,7 @@ export const getServerSideProps = (ctx: NextPageContextWithSession): { props: Ac
             emailAddress: email,
             nocCode: noc,
             csrfToken: getCsrfToken(ctx),
-            multiOperatorEmailPreference: multiOperatorEmailPreference ?? false,
+            multiOperatorEmailPreference: multiOperatorEmailPreference === 'true' ?? false,
             errors: errors ?? [],
         },
     };
