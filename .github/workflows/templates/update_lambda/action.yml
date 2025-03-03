@@ -2,7 +2,9 @@ name: update_lambda
 
 # Were we can define the inputs that our action will accept
 inputs:
-  lambda: 
+  repo:
+    required: true
+  lambda:
     required: true
   environment:
     required: true
@@ -14,11 +16,11 @@ runs:
   - name: Zip folder
     shell: bash
     run: |
-      cd repos/exporter/dist/${{ inputs.lambda }}-${{ inputs.environment }}
+      cd repos/${{ inputs.repo }}/dist/${{ inputs.lambda }}-${{ inputs.environment }}
       zip -r ${{ inputs.lambda }}-${{ inputs.environment }}.zip index.js*
 
   - name: Push up zip file to Lambda
     shell: bash
     run: |
-      cd repos/exporter/dist/${{ inputs.lambda }}-${{ inputs.environment }}
+      cd repos/${{ inputs.repo }}/dist/${{ inputs.lambda }}-${{ inputs.environment }}
       aws lambda update-function-code --function-name ${{ inputs.lambda }}-${{ inputs.environment }} --zip-file fileb://${{ inputs.lambda }}-${{ inputs.environment }}.zip

@@ -33,6 +33,7 @@ import {
     ProductAdditionaNocs,
 } from '../interfaces/dbTypes';
 import { Stop, FromDb, SalesOfferPackage, CompanionInfo, OperatorDetails } from '../interfaces/matchingJsonTypes';
+import moment from 'moment';
 
 interface ServiceQueryData {
     operatorShortName: string;
@@ -1999,8 +2000,9 @@ export const updateProductIncompleteStatus = async (productId: number | string, 
     });
 
     try {
-        const updateProductsQuery = 'UPDATE products SET incomplete = ? WHERE id = ?';
-        await executeQuery<ResultSetHeader>(updateProductsQuery, [incomplete, productId]);
+        const dateTime = moment().toDate();
+        const updateProductsQuery = 'UPDATE products SET incomplete = ?, dateModified = ? WHERE id = ?';
+        await executeQuery<ResultSetHeader>(updateProductsQuery, [incomplete, dateTime, productId]);
     } catch (error) {
         throw new Error(`Could not update product incomplete status in the products table. ${error}`);
     }
@@ -2018,11 +2020,12 @@ export const updateProductDates = async (
     });
 
     try {
+        const dateTime = moment().toDate();
         const updateQuery = `UPDATE products
-                             SET startDate = ?, endDate = ?
+                             SET startDate = ?, endDate = ?, dateModified = ?
                              WHERE id = ?`;
 
-        const meta = await executeQuery<ResultSetHeader>(updateQuery, [startDate, endDate, productId]);
+        const meta = await executeQuery<ResultSetHeader>(updateQuery, [startDate, endDate, dateTime, productId]);
 
         if (meta.affectedRows > 1) {
             throw new Error(`Updated too many rows when updating product dates ${meta}`);
@@ -2072,13 +2075,14 @@ export const updateProductFareTriangleModifiedByNocCodeAndId = async (
         nocCode,
     });
 
-    const updateQuery = `
-            UPDATE products
-            SET fareTriangleModified = ?
-            WHERE id = ?
-            AND nocCode = ?`;
     try {
-        await executeQuery(updateQuery, [fareTriangleModified, id, nocCode]);
+        const dateTime = moment().toDate();
+        const updateQuery = `
+                UPDATE products
+                SET fareTriangleModified = ?, dateModified = ?
+                WHERE id = ?
+                AND nocCode = ?`;
+        await executeQuery(updateQuery, [fareTriangleModified, dateTime, id, nocCode]);
     } catch (error) {
         throw new Error(`Could not update fareTriangleModified into the products table. ${error.stack}`);
     }

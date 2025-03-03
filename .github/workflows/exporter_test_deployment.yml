@@ -62,29 +62,34 @@ jobs:
       - name: Update atco code checker
         uses: "./.github/workflows/templates/update_lambda"
         with:
+          repo: exporter
           lambda: atco-code-checker
           environment: ${{ env.WORKSPACE }}
 
       - name: Update exporter lambda
         uses: "./.github/workflows/templates/update_lambda"
         with:
+          repo: exporter
           lambda: exporter
           environment: ${{ env.WORKSPACE }}
 
       - name: Update zipper lambda
         uses: "./.github/workflows/templates/update_lambda"
         with:
+          repo: exporter
           lambda: zipper
           environment: ${{ env.WORKSPACE }}
 
       - name: Update bastion terminator lambda
         uses: "./.github/workflows/templates/update_lambda"
         with:
+          repo: exporter
           lambda: bastion-terminator
           environment: ${{ env.WORKSPACE }}
 
       - name: Update table rename lambda
         uses: "./.github/workflows/templates/update_lambda"
         with:
+          repo: exporter
           lambda: table-rename
           environment: ${{ env.WORKSPACE }}

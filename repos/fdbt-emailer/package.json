@@ -1,0 +1,38 @@
+{
+    "name": "multi-operator-emailer",
+    "version": "0.1.0",
+    "scripts": {
+        "build-multi-operator-emailer-test": "esbuild src/multi-operator-emailer/handler.ts --bundle --sourcemap --platform=node --target=es2020 --outfile=dist/multi-operator-emailer-test/index.js",
+        "build-multi-operator-emailer-preprod": "esbuild src/multi-operator-emailer/handler.ts --bundle --sourcemap --platform=node --target=es2020 --outfile=dist/multi-operator-emailer-preprod/index.js",
+        "build-multi-operator-emailer-prod": "esbuild src/multi-operator-emailer/handler.ts --bundle --sourcemap --platform=node --target=es2020 --outfile=dist/multi-operator-emailer-prod/index.js",
+        "test": "vitest",
+        "test:ci": "CI=true vitest run",
+        "lint": "eslint . --ext .ts --max-warnings 0",
+        "lint:fix": "eslint --fix . --ext .ts --max-warnings 0"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.83",
+        "@types/node": "18.17.0",
+        "@types/nodemailer": "^6.4.17",
+        "@typescript-eslint/eslint-plugin": "^4.31.2",
+        "@typescript-eslint/parser": "^4.31.2",
+        "@vitest/coverage-v8": "^3.0.7",
+        "constructs": "10.2.69",
+        "esbuild": "^0.25.0",
+        "eslint": "7.32.0",
+        "eslint-config-prettier": "^5.0.0",
+        "eslint-plugin-import": "^2.24.2",
+        "eslint-plugin-prettier": "^4.0.0",
+        "fdbt-types": "file:../fdbt-types",
+        "prettier": "^2.4.1",
+        "ts-node": "^10.2.1",
+        "typescript": "4.3.5",
+        "vitest": "^3.0.7"
+    },
+    "dependencies": {
+        "aws-sdk": "^2.991.0",
+        "mysql2": "^3.9.7",
+        "nodemailer": "^6.10.0",
+        "source-map-support": "^0.5.20"
+    }
+}
