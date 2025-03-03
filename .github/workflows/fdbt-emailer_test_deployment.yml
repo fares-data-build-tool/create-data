@@ -43,7 +43,7 @@ jobs:
 
       - name: Archive build
         run: zip package.zip *
-        working-directory: ./dist/multi-operator-emailer-${{ env.WORKSPACE }}
+        working-directory: dist/multi-operator-emailer-${{ env.WORKSPACE }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
