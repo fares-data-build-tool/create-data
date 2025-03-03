@@ -68,16 +68,11 @@ const generateEmailTemplate = (serviceDomain: string): string => {
 `;
 };
 
-export const sendEmails = async (
-    client: SES,
-    serviceDomain: string,
-    serviceEmailAddress: string,
-    emailAddresses: string[],
-): Promise<void> => {
+export const sendEmails = async (client: SES, serviceDomain: string, emailAddresses: string[]): Promise<void> => {
     const mailTransporter = nodemailer.createTransport({ SES: client });
 
     const mailOptions: Options[] = emailAddresses.map((emailAddress) => ({
-        from: serviceEmailAddress,
+        from: `no-reply@${serviceDomain}`,
         to: emailAddress,
         subject: 'One or more multi-operator products require your attention',
         text: 'One or more multi-operator products require your attention',

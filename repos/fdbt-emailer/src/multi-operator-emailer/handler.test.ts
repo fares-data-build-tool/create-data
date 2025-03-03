@@ -23,18 +23,17 @@ describe('fdbt-multi-operator-emailer handler', () => {
         vi.resetAllMocks();
 
         process.env.RDS_HOST = 'mock-host';
-        process.env.SERVICE_EMAIL_ADDRESS = 'mock-service-address';
         process.env.SERVICE_DOMAIN = 'mock-service-domain';
         process.env.USER_POOL_ID = 'mock-user-pool-id';
     });
 
-    it.each(['RDS_HOST', 'SERVICE_EMAIL_ADDRESS', 'SERVICE_DOMAIN', 'USER_POOL_ID'])(
+    it.each(['RDS_HOST', 'SERVICE_DOMAIN', 'USER_POOL_ID'])(
         'throws an error when the required env var %s is missing',
         async (input) => {
             process.env[input] = '';
 
             await expect(handler(mockEvent, mockContext, mockCallback)).rejects.toThrow(
-                'Missing env vars - RDS_HOST, SERVICE_EMAIL_ADDRESS, SERVICE_DOMAIN and USER_POOL_ID must be set',
+                'Missing env vars - RDS_HOST, SERVICE_DOMAIN and USER_POOL_ID must be set',
             );
         },
     );
@@ -90,7 +89,7 @@ describe('fdbt-multi-operator-emailer handler', () => {
 
         await handler(mockEvent, mockContext, mockCallback);
 
-        expect(sendEmailsMock).toHaveBeenCalledWith(undefined, 'mock-service-domain', 'mock-service-address', [
+        expect(sendEmailsMock).toHaveBeenCalledWith(undefined, 'mock-service-domain', [
             'user3@example.com',
             'user4@example.com',
         ]);

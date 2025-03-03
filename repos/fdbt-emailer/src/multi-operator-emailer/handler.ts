@@ -5,12 +5,10 @@ import { getAuroraDBClient, getIncompleteMultiOperatorProducts } from './databas
 import { getSesClient, sendEmails } from './email';
 
 export const handler: Handler = async () => {
-    const { RDS_HOST, SERVICE_EMAIL_ADDRESS, SERVICE_DOMAIN, USER_POOL_ID } = process.env;
+    const { RDS_HOST, SERVICE_DOMAIN, USER_POOL_ID } = process.env;
 
-    if (!RDS_HOST || !SERVICE_EMAIL_ADDRESS || !SERVICE_DOMAIN || !USER_POOL_ID) {
-        throw new Error(
-            'Missing env vars - RDS_HOST, SERVICE_EMAIL_ADDRESS, SERVICE_DOMAIN and USER_POOL_ID must be set',
-        );
+    if (!RDS_HOST || !SERVICE_DOMAIN || !USER_POOL_ID) {
+        throw new Error('Missing env vars - RDS_HOST, SERVICE_DOMAIN and USER_POOL_ID must be set');
     }
 
     const cognitoClient = getCognitoClient();
@@ -26,5 +24,5 @@ export const handler: Handler = async () => {
         .map((user) => user.emailAddress);
 
     const sesClient = getSesClient();
-    await sendEmails(sesClient, SERVICE_DOMAIN, SERVICE_EMAIL_ADDRESS, emailAddresses);
+    await sendEmails(sesClient, SERVICE_DOMAIN, emailAddresses);
 };
