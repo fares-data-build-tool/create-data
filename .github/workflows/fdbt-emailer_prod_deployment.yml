@@ -1,7 +1,7 @@
 on:
   push:
-    branches:
-      - "master"
+    tags:
+      - 'v*'
     paths:
       - repos/fdbt-emailer/**
   workflow_dispatch:
