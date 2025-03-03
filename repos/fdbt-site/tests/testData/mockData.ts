@@ -71,6 +71,7 @@ interface GetMockContextInput {
     mockEndFn?: jest.Mock<any, any>;
     isLoggedin?: boolean;
     query?: any;
+    requestHeaders?: any;
 }
 
 interface GetMockRequestAndResponse {
@@ -247,6 +248,7 @@ export const getMockContext = ({
     isLoggedin = true,
     url = null,
     query = '',
+    requestHeaders = {},
 }: GetMockContextInput = {}): NextPageContextWithSession => {
     const { req, res } = getMockRequestAndResponse({
         session,
@@ -255,7 +257,7 @@ export const getMockContext = ({
         uuid,
         mockWriteHeadFn,
         mockEndFn,
-        requestHeaders: {},
+        requestHeaders,
         isLoggedin,
         url,
     });
