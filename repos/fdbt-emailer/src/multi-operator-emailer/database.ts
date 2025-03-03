@@ -9,7 +9,7 @@ export type Product = {
 export const getAuroraDBClient = async (rdsHost: string): Promise<Pool> => {
     const clientOptions: PoolOptions = {
         host: 'localhost',
-        user: 'fdbt_site',
+        user: 'fdbt_emailer',
         password: 'password',
         database: 'fdbt',
         waitForConnections: true,
@@ -21,8 +21,8 @@ export const getAuroraDBClient = async (rdsHost: string): Promise<Pool> => {
         const ssmClient = getSsmClient();
 
         const [username, password] = await Promise.all([
-            getSsmValue(ssmClient, 'fdbt-rds-netex-output-username'),
-            getSsmValue(ssmClient, 'fdbt-rds-netex-output-password'),
+            getSsmValue(ssmClient, 'fdbt-rds-emailer-username'),
+            getSsmValue(ssmClient, 'fdbt-rds-emailer-password'),
         ]);
 
         clientOptions.host = rdsHost;
