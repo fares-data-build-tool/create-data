@@ -38,6 +38,83 @@ describe('fdbt-multi-operator-emailer handler', () => {
         },
     );
 
+    it('returns early if there are no incomplete products', async () => {
+        getIncompleteMultiOperatorProductsMock.mockResolvedValueOnce([]);
+        getSesClientMock.mockReturnValue(undefined as unknown as SES);
+        sendEmailsMock.mockResolvedValueOnce(undefined);
+
+        await handler(mockEvent, mockContext, mockCallback);
+
+        expect(getIncompleteMultiOperatorProductsMock).toHaveBeenCalled();
+        expect(getCognitoClientMock).not.toHaveBeenCalled();
+    });
+
+    it('returns early if there are no users opted in to email notifications', async () => {
+        const mockListUsersResponse: ListUsersResponse = {
+            Users: [],
+        } as ListUsersResponse;
+
+        const mockProducts: databaseFunctions.Product[] = [
+            { productId: 'Product 1', nocCode: 'NOC1' },
+            { productId: 'Product 3', nocCode: 'NOC3' },
+            { productId: 'Product 4', nocCode: 'NOC4' },
+        ];
+
+        getCognitoClientMock.mockReturnValue({
+            listUsers: vi.fn().mockReturnValue({
+                promise: vi.fn().mockResolvedValue(mockListUsersResponse),
+            }),
+        } as unknown as CognitoIdentityServiceProvider);
+
+        getIncompleteMultiOperatorProductsMock.mockResolvedValueOnce(mockProducts);
+
+        await handler(mockEvent, mockContext, mockCallback);
+
+        expect(getIncompleteMultiOperatorProductsMock).toHaveBeenCalled();
+        expect(getCognitoClientMock).toHaveBeenCalled();
+        expect(getSesClientMock).not.toHaveBeenCalled();
+    });
+
+    it('returns early if there are no email addresses matched up to incomplete products', async () => {
+        const mockListUsersResponse: ListUsersResponse = {
+            Users: [
+                {
+                    Attributes: [
+                        { Name: 'email', Value: 'user1@example.com' },
+                        { Name: 'custom:noc', Value: 'NOC1' },
+                    ],
+                },
+                {
+                    Attributes: [
+                        { Name: 'email', Value: 'user1@example.com' },
+                        { Name: 'custom:noc', Value: 'NOC2' },
+                        { Name: 'custom:multiOpEmailEnabled', Value: 'false' },
+                    ],
+                },
+            ],
+        } as ListUsersResponse;
+
+        const mockProducts: databaseFunctions.Product[] = [
+            { productId: 'Product 1', nocCode: 'NOC1' },
+            { productId: 'Product 3', nocCode: 'NOC3' },
+            { productId: 'Product 4', nocCode: 'NOC4' },
+        ];
+
+        getCognitoClientMock.mockReturnValue({
+            listUsers: vi.fn().mockReturnValue({
+                promise: vi.fn().mockResolvedValue(mockListUsersResponse),
+            }),
+        } as unknown as CognitoIdentityServiceProvider);
+
+        getIncompleteMultiOperatorProductsMock.mockResolvedValueOnce(mockProducts);
+
+        await handler(mockEvent, mockContext, mockCallback);
+
+        expect(getIncompleteMultiOperatorProductsMock).toHaveBeenCalled();
+        expect(getCognitoClientMock).toHaveBeenCalled();
+        expect(getSesClientMock).not.toHaveBeenCalled();
+    });
+
     it('sends emails to users who have opted in and have incomplete products', async () => {
         const mockListUsersResponse: ListUsersResponse = {
             Users: [
@@ -88,6 +165,10 @@ describe('fdbt-multi-operator-emailer handler', () => {
         sendEmailsMock.mockResolvedValueOnce(undefined);
 
         await handler(mockEvent, mockContext, mockCallback);
+
+        expect(getIncompleteMultiOperatorProductsMock).toHaveBeenCalled();
+        expect(getCognitoClientMock).toHaveBeenCalled();
+        expect(getSesClientMock).toHaveBeenCalled();
 
         expect(sendEmailsMock).toHaveBeenCalledWith(undefined, 'mock-service-domain', [
             'user3@example.com',
