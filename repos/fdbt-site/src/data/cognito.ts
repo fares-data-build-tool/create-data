@@ -219,7 +219,7 @@ export const updateUserPassword = async (newPassword: string, username: string):
 export const getUserAttribute = async (username: string, attribute: string): Promise<string | null> => {
     logger.info('', {
         context: 'data.cognito',
-        message: 'retrieving user attributes',
+        message: 'retrieving user attribute',
     });
 
     const params: CognitoIdentityServiceProvider.AdminGetUserRequest = {
@@ -232,11 +232,7 @@ export const getUserAttribute = async (username: string, attribute: string): Pro
 
         const userAttributes = response.UserAttributes;
 
-        if (!userAttributes || userAttributes?.length === 0) {
-            return null;
-        }
-
-        const filteredAttribute = userAttributes.find((attr) => attr.Name === attribute);
+        const filteredAttribute = userAttributes?.find((attr) => attr.Name === attribute);
 
         return filteredAttribute?.Value ?? null;
     } catch (error) {

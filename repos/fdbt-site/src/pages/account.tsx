@@ -148,8 +148,9 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     }
 
     const host = ctx.req.headers.host;
-    const multiOperatorEmailPreference =
-        host && host.startsWith('localhost') ? 'false' : await getUserAttribute(email, 'custom:multiOpEmailEnabled');
+    const multiOperatorEmailPreference = host?.startsWith('localhost')
+        ? 'false'
+        : await getUserAttribute(email, 'custom:multiOpEmailEnabled');
 
     const errors = getSessionAttribute(ctx.req, ACCOUNT_PAGE_ERROR);
 

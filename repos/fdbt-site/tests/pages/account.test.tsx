@@ -83,5 +83,21 @@ describe('pages', () => {
             });
             expect(getUserAttributeSpy).toBeCalledWith('test@example.com', 'custom:multiOpEmailEnabled');
         });
+
+        it('returns email preference as false if attribute does not exist', async () => {
+            getUserAttributeSpy.mockResolvedValueOnce(Promise.resolve(null));
+            const ctx = getMockContext({ requestHeaders: { host: 'www.test.com' } });
+
+            await expect(getServerSideProps(ctx)).resolves.toEqual({
+                props: {
+                    csrfToken: '',
+                    emailAddress: 'test@example.com',
+                    errors: [],
+                    multiOperatorEmailPreference: false,
+                    nocCode: 'TEST',
+                },
+            });
+            expect(getUserAttributeSpy).toBeCalledWith('test@example.com', 'custom:multiOpEmailEnabled');
+        });
     });
 });
