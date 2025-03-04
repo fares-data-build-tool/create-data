@@ -576,7 +576,12 @@ const createProductDetails = async (
                     id: 'exempt-stops',
                     name: `${additionalOperator.nocCode} exempt stops`,
                     content: [exemptStops.length > 0 ? exemptStops.join(', ') : 'None'],
-                    editLink: additionalOperator.nocCode === yourNoc ? '/serviceList' : '',
+                    editLink:
+                        additionalOperator.nocCode === yourNoc
+                            ? '/serviceList'
+                            : isOwnProduct
+                            ? `/serviceList?editAdditionalOperator=${additionalOperator.nocCode}`
+                            : '',
                 });
             } else {
                 productDetailsElements.push({

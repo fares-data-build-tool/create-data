@@ -118,6 +118,7 @@ describe('pages', () => {
                     selectedYesToExempt={false}
                     exemptStops=""
                     isEditMode={false}
+                    secondaryOperatorNoc={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -140,6 +141,7 @@ describe('pages', () => {
                     selectedYesToExempt={false}
                     exemptStops=""
                     isEditMode={false}
+                    secondaryOperatorNoc={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -162,6 +164,7 @@ describe('pages', () => {
                     selectedYesToExempt={false}
                     exemptStops=""
                     isEditMode={false}
+                    secondaryOperatorNoc={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -184,6 +187,7 @@ describe('pages', () => {
                     selectedYesToExempt={false}
                     exemptStops=""
                     isEditMode
+                    secondaryOperatorNoc={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
