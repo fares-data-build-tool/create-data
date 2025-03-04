@@ -110,6 +110,7 @@ export const setDisableAuthParameters = (server: Express): void => {
                             'custom:noc': 'TESTSE',
                             'custom:schemeOperator': 'Test Scheme Op',
                             'custom:schemeRegionCode': 'SE',
+                            'custom:multiOpEmailEnabled': false,
                             email: 'test@example.com',
                         },
                         'test',
@@ -128,10 +129,12 @@ export const setDisableAuthParameters = (server: Express): void => {
                     const jwtToken = sign(
                         {
                             'custom:noc': nocs.join('|'),
+                            'custom:multiOpEmailEnabled': false,
                             email: 'test@example.com',
                         },
                         'test',
                     );
+
                     setCookieOnResponseObject(ID_TOKEN_COOKIE, jwtToken, req, res);
 
                     if (req?.session && nocs.length === 1) {

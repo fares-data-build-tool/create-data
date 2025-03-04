@@ -215,3 +215,27 @@ export const updateUserPassword = async (newPassword: string, username: string):
         throw new Error(`Failed to update user password: ${error.stack}`);
     }
 };
+
+export const getUserAttribute = async (username: string, attribute: string): Promise<string | null> => {
+    logger.info('', {
+        context: 'data.cognito',
+        message: 'retrieving user attribute',
+    });
+
+    const params: CognitoIdentityServiceProvider.AdminGetUserRequest = {
+        UserPoolId: userPoolId,
+        Username: username,
+    };
+
+    try {
+        const response = await cognito.adminGetUser(params).promise();
+
+        const userAttributes = response.UserAttributes;
+
+        const filteredAttribute = userAttributes?.find((attr) => attr.Name === attribute);
+
+        return filteredAttribute?.Value ?? null;
+    } catch (error) {
+        throw new Error(`Failed to get user attribute (${attribute}): ${error.stack}`);
+    }
+};
