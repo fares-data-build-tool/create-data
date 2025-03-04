@@ -42,6 +42,7 @@ interface ServiceListProps {
     selectedYesToExempt: boolean;
     exemptStops: string;
     isEditMode: boolean;
+    secondaryOperatorNoc: string | null;
 }
 
 const containsErrorForServices = (errors: ErrorInfo[]): boolean => !!errors.find((error) => error.id === 'checkbox-0');
@@ -59,6 +60,7 @@ const ServiceList = ({
     selectedYesToExempt,
     exemptStops,
     isEditMode,
+    secondaryOperatorNoc,
 }: ServiceListProps): ReactElement => {
     const seen: string[] = [];
     const uniqueServiceList =
@@ -373,6 +375,7 @@ const ServiceList = ({
                             </fieldset>
                         </div>
                     </div>
+                    <input type="hidden" name="secondary-operator-noc" value={secondaryOperatorNoc ?? undefined} />
                     <input type="submit" value="Continue" id="continue-button" className="govuk-button" />
                 </>
             </CsrfForm>
@@ -389,8 +392,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
     const exemptServicesAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
 
+    const secondaryOperatorNoc =
+        typeof ctx.query?.editAdditionalOperator === 'string' ? ctx.query.editAdditionalOperator : null;
+
     if (!dataSourceAttribute) {
-        const services = await getAllServicesByNocCode(nocCode);
+        const services = await getAllServicesByNocCode(secondaryOperatorNoc ?? nocCode);
         const hasBodsServices = services.some((service) => service.dataSource && service.dataSource === 'bods');
 
         if (!hasBodsServices && !modesAttribute) {
@@ -409,7 +415,10 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE) as TxcSourceAttribute;
     }
 
-    let chosenDataSourceServices = await getServicesByNocCodeAndDataSource(nocCode, dataSourceAttribute.source);
+    let chosenDataSourceServices = await getServicesByNocCodeAndDataSource(
+        secondaryOperatorNoc ?? nocCode,
+        dataSourceAttribute.source,
+    );
 
     if (!!exemptServicesAttribute && !isServiceListAttributeWithErrors(exemptServicesAttribute)) {
         const exemptServices = exemptServicesAttribute.selectedServices;
@@ -440,11 +449,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         const isNonLeadOperatorEditing =
             'nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt';
 
-        if (isNonLeadOperatorEditing) {
+        if (isNonLeadOperatorEditing || secondaryOperatorNoc) {
             try {
                 const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
                     matchingJsonMetaData.matchingJsonLink,
-                    nocCode,
+                    secondaryOperatorNoc ?? nocCode,
                 );
                 const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(additionalNocMatchingJsonLink);
 
@@ -503,6 +512,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                         : false,
                 exemptStops: exemptStops.map((stop) => `${stop.atcoCode} - ${stop.stopName}`).join(', '),
                 isEditMode: true,
+                secondaryOperatorNoc,
             },
         };
     }
@@ -540,6 +550,7 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
                 exemptStopsAttribute && isExemptStopsAttributeWithErrors(exemptStopsAttribute) ? true : false,
             exemptStops: '',
             isEditMode: false,
+            secondaryOperatorNoc,
         },
     };
 };
