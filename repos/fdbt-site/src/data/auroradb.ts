@@ -2499,3 +2499,25 @@ export const getIncompleteMultiOperatorExternalProductsByNoc = async (noc: strin
         throw new Error(`Could not fetch products from the products table. ${error.stack}`);
     }
 };
+
+export const getAdditionalNocsForMultiOpExtProduct = async (id: number): Promise<string[]> => {
+    logger.info('', {
+        context: 'data.auroradb',
+        message: 'getting additional operators for multi-operator external product',
+        productId: id,
+    });
+
+    const query = `
+            SELECT *
+            FROM productAdditionalNocs
+            WHERE productId = ?
+        `;
+
+    try {
+        const result = await executeQuery<ProductAdditionaNocs[]>(query, [id]);
+
+        return result.map((product) => product.additionalNocCode);
+    } catch (error) {
+        throw new Error(`Could not fetch additional operators from the productAdditionalNocs table. ${error.stack}`);
+    }
+};

@@ -148,7 +148,7 @@ export interface GroupOfProductsDb {
 
 export interface ProductAdditionaNocs {
     id: number;
-    nocCode: string;
+    additionalNocCode: string;
     productId: string;
     incomplete: boolean;
 }

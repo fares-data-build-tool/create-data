@@ -15,7 +15,11 @@ import {
     STOPS_EXEMPTION_ATTRIBUTE,
     SERVICE_LIST_EXEMPTION_ATTRIBUTE,
 } from '../constants/attributes';
-import { getAllServicesByNocCode, getServicesByNocCodeAndDataSource } from '../data/auroradb';
+import {
+    getAdditionalNocsForMultiOpExtProduct,
+    getAllServicesByNocCode,
+    getServicesByNocCodeAndDataSource,
+} from '../data/auroradb';
 import { ErrorInfo, NextPageContextWithSession, ServicesInfo, FareType, TxcSourceAttribute } from '../interfaces';
 import { getAdditionalNocMatchingJsonLink, getAndValidateNoc, getCsrfToken } from '../utils';
 import CsrfForm from '../components/CsrfForm';
@@ -391,9 +395,21 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
     let dataSourceAttribute = getSessionAttribute(ctx.req, TXC_SOURCE_ATTRIBUTE);
     const modesAttribute = getSessionAttribute(ctx.req, MULTI_MODAL_ATTRIBUTE);
     const exemptServicesAttribute = getSessionAttribute(ctx.req, SERVICE_LIST_EXEMPTION_ATTRIBUTE);
+    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
+    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
 
     const secondaryOperatorNoc =
         typeof ctx.query?.editAdditionalOperator === 'string' ? ctx.query.editAdditionalOperator : null;
+
+    if (!ticket && !matchingJsonMetaData && secondaryOperatorNoc) {
+        throw new Error('The editAdditionalOperator query parameter can not be provided for a new ticket');
+    }
+
+    if (ticket?.type !== 'multiOperatorExt' && secondaryOperatorNoc) {
+        throw new Error(
+            'The editAdditionalOperator query parameter provided for a ticket that is not a multiOperatorExt ticket',
+        );
+    }
 
     if (!dataSourceAttribute) {
         const services = await getAllServicesByNocCode(secondaryOperatorNoc ?? nocCode);
@@ -428,9 +444,6 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
         );
     }
 
-    const ticket = getSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE);
-    const matchingJsonMetaData = getSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE);
-
     const errors = [
         ...(!!serviceListAttribute && isServiceListAttributeWithErrors(serviceListAttribute)
             ? serviceListAttribute.errors
@@ -442,6 +455,16 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     if (ticket && matchingJsonMetaData) {
         const backHref = `/products/productDetails?productId=${matchingJsonMetaData?.productId}`;
+
+        if (secondaryOperatorNoc) {
+            const additionalNocCodesForTicket = await getAdditionalNocsForMultiOpExtProduct(
+                parseInt(matchingJsonMetaData?.productId),
+            );
+
+            if (secondaryOperatorNoc && !additionalNocCodesForTicket.find((prod) => prod === secondaryOperatorNoc)) {
+                throw new Error('The secondary operator noc code provided is not valid for the ticket');
+            }
+        }
 
         let selectedServices: SelectedService[] = [];
         let exemptStops: Stop[] = [];
