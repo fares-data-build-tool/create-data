@@ -22,7 +22,7 @@ import {
     SingleTicket,
     Stop,
 } from '../../src/interfaces/matchingJsonTypes';
-import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
+import { COOKIES_POLICY_COOKIE, fareTypes, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     DURATION_VALID_ATTRIBUTE,
@@ -6584,3 +6584,67 @@ export const mockMultiOperatorExtProducts: Omit<MultiOperatorProductExternal, 'p
         endDate: '01/01/2023',
     },
 ];
+
+export const mockMultiOperatorExternalPeriodServicesProduct: WithIds<MultiOperatorMultipleServicesTicket> = {
+    additionalOperators: [
+        {
+            nocCode: 'TEST',
+            selectedServices: [],
+        },
+        {
+            nocCode: 'NWBT',
+            selectedServices: [],
+        },
+    ],
+    carnet: false,
+    email: 'test@example.com',
+    nocCode: 'BLAC',
+    operatorGroupId: 1,
+    operatorName: 'Test Operator',
+    passengerType: {
+        id: 3,
+    },
+    products: [
+        {
+            productName: 'MOBE-services-1',
+            productPrice: '1.23',
+            productDuration: '1 month',
+            productValidity: '1 month',
+            salesOfferPackages: [
+                {
+                    id: 1,
+                    price: '1.23',
+                },
+            ],
+        },
+    ],
+    selectedServices: [
+        {
+            lineId: '4YyoI0',
+            lineName: '1',
+            serviceCode: 'NW_05_BLAC_1_1',
+            serviceDescription: 'FLEETWOOD - BLACKPOOL via Promenade',
+            startDate: '01-01-2025',
+        },
+        {
+            lineId: 'YpQjUw',
+            lineName: '2',
+            serviceCode: 'NW_05_BLAC_2_1',
+            serviceDescription: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
+            startDate: '01-01-2025',
+        },
+        {
+            lineId: 'vySmfewe0',
+            lineName: '2C',
+            serviceCode: 'NW_05_BLAC_2C_1',
+            serviceDescription: 'KNOTT END - POULTON - BLACKPOOL',
+            startDate: '01-01-2025',
+        },
+    ],
+    termTime: false,
+    ticketPeriod: {
+        startDate: '2025-01-01T00:00:00.000Z',
+    },
+    type: 'multiOperatorExt',
+    uuid: 'BLACc90fe5a8',
+};

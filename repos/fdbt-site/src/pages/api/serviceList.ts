@@ -24,7 +24,7 @@ import { csvParser, getAtcoCodesForStops } from './csvZoneUpload';
 import logger from '../../utils/logger';
 import { STAGE } from '../../constants';
 import { getAdditionalNocMatchingJsonLink } from '../../utils';
-import { getProductsMatchingJson } from '../../data/s3';
+import { getProductsSecondaryOperatorInfo } from '../../data/s3';
 
 // The below 'config' needs to be exported for the formidable library to work.
 export const config = {
@@ -236,7 +236,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     isLeadOpEditingSecondaryOp ? secondaryOperatorNoc : nocCode,
                 );
 
-                const secondaryOperatorFareInfo = await getProductsMatchingJson(additionalNocMatchingJsonLink);
+                const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(additionalNocMatchingJsonLink);
 
                 const updatedSecondaryOperatorFareInfo: SecondaryOperatorFareInfo = {
                     ...secondaryOperatorFareInfo,
