@@ -24,6 +24,7 @@ import { csvParser, getAtcoCodesForStops } from './csvZoneUpload';
 import logger from '../../utils/logger';
 import { STAGE } from '../../constants';
 import { getAdditionalNocMatchingJsonLink } from '../../utils';
+import { getProductsSecondaryOperatorInfo } from '../../data/s3';
 
 // The below 'config' needs to be exported for the formidable library to work.
 export const config = {
@@ -103,6 +104,7 @@ export const processServices = (
     selectedServices: SelectedService[];
     clickedYes: boolean;
     wantsToEditExemptStops: boolean;
+    secondaryOperatorNoc?: string;
 } => {
     const fields = formData.fields;
 
@@ -111,10 +113,12 @@ export const processServices = (
     }
     const clickedYes = 'exempt' in fields && fields['exempt'] === 'yes';
     const wantsToEditExemptStops = 'edit-exempt' in fields && fields['edit-exempt'] === 'yes';
+    const secondaryOperatorNoc = fields['secondary-operator-noc'] as string;
 
     const dataFields: { [key: string]: string | string[] } = fields;
     delete dataFields['exempt'];
     delete dataFields['edit-exempt'];
+    delete dataFields['secondary-operator-noc'];
 
     const selectedServices: SelectedService[] = [];
 
@@ -140,13 +144,14 @@ export const processServices = (
     });
 
     if (selectedServices.length !== 0) {
-        return { selectedServices, clickedYes, wantsToEditExemptStops, serviceErrors: [] };
+        return { selectedServices, clickedYes, wantsToEditExemptStops, secondaryOperatorNoc, serviceErrors: [] };
     }
 
     return {
         selectedServices,
         clickedYes,
         wantsToEditExemptStops,
+        secondaryOperatorNoc,
         serviceErrors: [{ id: 'checkbox-0', errorMessage: 'Choose at least one service from the options' }],
     };
 };
@@ -158,7 +163,10 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const matchingJsonMetaData = getSessionAttribute(req, MATCHING_JSON_META_DATA_ATTRIBUTE);
         const inEditMode = !!ticket && !!matchingJsonMetaData;
         const formData = await getServiceListFormData(req);
-        const { serviceErrors, selectedServices, clickedYes, wantsToEditExemptStops } = processServices(formData);
+        const { serviceErrors, selectedServices, clickedYes, wantsToEditExemptStops, secondaryOperatorNoc } =
+            processServices(formData);
+
+        const isLeadOpEditingSecondaryOp = !!secondaryOperatorNoc && secondaryOperatorNoc !== nocCode;
 
         const errors: ErrorInfo[] = serviceErrors;
         let exemptStops: Stop[] = [];
@@ -222,27 +230,33 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
             const isNonLeadOperatorEditing =
                 'nocCode' in ticket && ticket.nocCode !== nocCode && ticket.type === 'multiOperatorExt';
 
-            if (isNonLeadOperatorEditing) {
+            if (isLeadOpEditingSecondaryOp || isNonLeadOperatorEditing) {
                 const additionalNocMatchingJsonLink = getAdditionalNocMatchingJsonLink(
                     matchingJsonMetaData.matchingJsonLink,
-                    nocCode,
+                    isLeadOpEditingSecondaryOp ? secondaryOperatorNoc : nocCode,
                 );
 
-                const secondaryOperatorFareInfo: SecondaryOperatorFareInfo = {
+                const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(additionalNocMatchingJsonLink);
+
+                const updatedSecondaryOperatorFareInfo: SecondaryOperatorFareInfo = {
+                    ...secondaryOperatorFareInfo,
                     selectedServices,
                     ...(exemptStops.length > 0 && { exemptStops }),
                 };
 
                 if (!clickedYes) {
-                    secondaryOperatorFareInfo.exemptStops = undefined;
+                    updatedSecondaryOperatorFareInfo.exemptStops = undefined;
                 }
 
-                await putUserDataInProductsBucketWithFilePath(secondaryOperatorFareInfo, additionalNocMatchingJsonLink);
+                await putUserDataInProductsBucketWithFilePath(
+                    updatedSecondaryOperatorFareInfo,
+                    additionalNocMatchingJsonLink,
+                );
 
                 if (ticket.type === 'multiOperatorExt') {
                     await updateProductAdditionalNoc(
                         matchingJsonMetaData.productId,
-                        nocCode,
+                        isLeadOpEditingSecondaryOp ? secondaryOperatorNoc : nocCode,
                         selectedServices.length === 0,
                     );
                 }
