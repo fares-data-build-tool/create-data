@@ -28,6 +28,7 @@ describe('serviceList', () => {
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
     const batchGetStopsByAtcoCodeSpy = jest.spyOn(auroradb, 'batchGetStopsByAtcoCode');
     const getProductsSecondaryOperatorInfoSpy = jest.spyOn(s3, 'getProductsSecondaryOperatorInfo');
+    const updateProductAdditionalNocSpy = jest.spyOn(auroradb, 'updateProductAdditionalNoc');
 
     const file = {
         'csv-upload': {
@@ -348,6 +349,8 @@ describe('serviceList', () => {
             ],
         });
 
+        updateProductAdditionalNocSpy.mockResolvedValue(undefined);
+
         await serviceList(req, res);
 
         expect(putUserDataInProductsBucketWithFilePathSpy).toBeCalledWith(
@@ -374,6 +377,7 @@ describe('serviceList', () => {
             },
             'test/path_TEST.json',
         );
+        expect(updateProductAdditionalNocSpy).toBeCalledWith('2', 'TEST', false);
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/products/productDetails?productId=2',
         });
@@ -433,6 +437,8 @@ describe('serviceList', () => {
             ],
         });
 
+        updateProductAdditionalNocSpy.mockResolvedValue(undefined);
+
         await serviceList(req, res);
 
         expect(putUserDataInProductsBucketWithFilePathSpy).toBeCalledWith(
@@ -459,6 +465,7 @@ describe('serviceList', () => {
             },
             'test/path_NWBT.json',
         );
+        expect(updateProductAdditionalNocSpy).toBeCalledWith('2', 'NWBT', false);
         expect(res.writeHead).toBeCalledWith(302, {
             Location: '/products/productDetails?productId=2',
         });
