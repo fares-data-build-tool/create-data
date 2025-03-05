@@ -22,7 +22,7 @@ import {
     SingleTicket,
     Stop,
 } from '../../src/interfaces/matchingJsonTypes';
-import { COOKIES_POLICY_COOKIE, fareTypes, ID_TOKEN_COOKIE } from '../../src/constants';
+import { COOKIES_POLICY_COOKIE, ID_TOKEN_COOKIE } from '../../src/constants';
 import {
     DEFINE_PASSENGER_TYPE_ERRORS_ATTRIBUTE,
     DURATION_VALID_ATTRIBUTE,

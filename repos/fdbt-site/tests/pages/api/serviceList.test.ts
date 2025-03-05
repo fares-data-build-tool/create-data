@@ -1,7 +1,5 @@
 import {
-    expectedMultiOperatorExtGeoZoneTicketWithMultipleProducts,
     expectedPeriodMultipleServicesTicketWithMultipleProducts,
-    expectedPeriodMultipleServicesTicketWithMultipleProductsAndMultipleOperators,
     getMockRequestAndResponse,
     mockMultiOperatorExternalPeriodServicesProduct,
     zoneStops,
@@ -11,7 +9,6 @@ import {
     FARE_TYPE_ATTRIBUTE,
     MATCHING_JSON_ATTRIBUTE,
     MATCHING_JSON_META_DATA_ATTRIBUTE,
-    OPERATOR_ATTRIBUTE,
     SERVICE_LIST_ATTRIBUTE,
     STOPS_EXEMPTION_ATTRIBUTE,
 } from '../../../src/constants/attributes';
@@ -22,7 +19,6 @@ import * as virusCheck from '../../../src/utils/apiUtils/virusScan';
 import * as auroradb from '../../../src/data/auroradb';
 import { secondTestCsv } from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
-import { getProductsSecondaryOperatorInfo } from '../../../src/data/s3';
 
 describe('serviceList', () => {
     const writeHeadMock = jest.fn();
