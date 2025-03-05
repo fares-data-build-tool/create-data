@@ -25,6 +25,7 @@ import logger from '../../utils/logger';
 import { STAGE } from '../../constants';
 import { getAdditionalNocMatchingJsonLink } from '../../utils';
 import { getProductsSecondaryOperatorInfo } from '../../data/s3';
+import { AWSError } from 'aws-sdk';
 
 // The below 'config' needs to be exported for the formidable library to work.
 export const config = {
@@ -236,10 +237,25 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
                     isLeadOpEditingSecondaryOp ? secondaryOperatorNoc : nocCode,
                 );
 
-                const secondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(additionalNocMatchingJsonLink);
+                let existingSecondaryOperatorFareInfo: SecondaryOperatorFareInfo | undefined = undefined;
+
+                try {
+                    existingSecondaryOperatorFareInfo = await getProductsSecondaryOperatorInfo(
+                        additionalNocMatchingJsonLink,
+                    );
+                } catch (error) {
+                    if ((error as AWSError).code === 'NoSuchKey') {
+                        existingSecondaryOperatorFareInfo = undefined;
+                    } else {
+                        logger.warn(error, {
+                            context: 'api.serviceList',
+                            message: 'failed to get secondary operator fare info',
+                        });
+                    }
+                }
 
                 const updatedSecondaryOperatorFareInfo: SecondaryOperatorFareInfo = {
-                    ...secondaryOperatorFareInfo,
+                    ...existingSecondaryOperatorFareInfo,
                     selectedServices,
                     ...(exemptStops.length > 0 && { exemptStops }),
                 };
