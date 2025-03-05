@@ -7,27 +7,33 @@ export type Product = {
 };
 
 export const getAuroraDBClient = async (rdsHost: string): Promise<Pool> => {
-    const clientOptions: PoolOptions = {
-        host: 'localhost',
-        user: 'fdbt_emailer',
-        password: 'password',
-        database: 'fdbt',
-        waitForConnections: true,
-        connectionLimit: 5,
-        queueLimit: 0,
-    };
-
-    if (process.env.NODE_ENV === 'production') {
+    let clientOptions: PoolOptions;
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+        clientOptions = {
+            host: 'localhost',
+            user: 'fdbt_emailer',
+            password: 'password',
+            database: 'fdbt',
+            waitForConnections: true,
+            connectionLimit: 5,
+            queueLimit: 0,
+        };
+    } else {
         const ssmClient = getSsmClient();
-
         const [username, password] = await Promise.all([
             getSsmValue(ssmClient, 'fdbt-rds-emailer-username'),
             getSsmValue(ssmClient, 'fdbt-rds-emailer-password'),
         ]);
 
-        clientOptions.host = rdsHost;
-        clientOptions.user = username;
-        clientOptions.password = password;
+        clientOptions = {
+            host: rdsHost,
+            user: username,
+            password: password,
+            database: 'fdbt',
+            waitForConnections: true,
+            connectionLimit: 5,
+            queueLimit: 0,
+        };
     }
 
     return createPool(clientOptions);

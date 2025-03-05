@@ -41,10 +41,6 @@ jobs:
       - name: Build
         run: npm run build-multi-operator-emailer-${{ env.WORKSPACE }}
 
-      - name: Archive build
-        run: zip package.zip *
-        working-directory: ./dist/multi-operator-emailer-${{ env.WORKSPACE }}
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -56,5 +52,5 @@ jobs:
         uses: "./.github/workflows/templates/update_lambda"
         with:
           repo: fdbt-emailer
-          lambda: multi-operator-emailer
+          lambda: fdbt-multi-operator-emailer
           environment: ${{ env.WORKSPACE }}
