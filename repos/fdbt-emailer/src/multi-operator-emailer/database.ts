@@ -8,7 +8,7 @@ export type Product = {
 
 export const getAuroraDBClient = async (rdsHost: string): Promise<Pool> => {
     let clientOptions: PoolOptions;
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
         clientOptions = {
             host: 'localhost',
             user: 'fdbt_emailer',
