@@ -19,6 +19,7 @@ import * as virusCheck from '../../../src/utils/apiUtils/virusScan';
 import * as auroradb from '../../../src/data/auroradb';
 import { secondTestCsv } from '../../testData/csvZoneData';
 import * as s3 from '../../../src/data/s3';
+import { AWSError } from 'aws-sdk';
 
 describe('serviceList', () => {
     const writeHeadMock = jest.fn();
@@ -453,6 +454,67 @@ describe('serviceList', () => {
                         parentLocalityName: 'Test parent locality',
                     },
                 ],
+                selectedServices: [
+                    {
+                        lineId: 'YpQjUw',
+                        lineName: '2',
+                        serviceCode: 'NW_05_BLAC_2_1',
+                        serviceDescription: 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
+                        startDate: '05/04/2020',
+                    },
+                ],
+            },
+            'test/path_NWBT.json',
+        );
+        expect(updateProductAdditionalNocSpy).toBeCalledWith('2', 'NWBT', false);
+        expect(res.writeHead).toBeCalledWith(302, {
+            Location: '/products/productDetails?productId=2',
+        });
+    });
+
+    it('should update the service list for multiOpExt when lead operator edits secondary op info when no info exists and redirect back to products/productDetails', async () => {
+        const { req, res } = getMockRequestAndResponse({
+            cookieValues: {},
+            body: {
+                '2#YpQjUw#NW_05_BLAC_2_1#05/04/2020': 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
+                'secondary-operator-noc': 'NWBT',
+            },
+            uuid: {},
+            session: {
+                [MATCHING_JSON_ATTRIBUTE]: {
+                    ...mockMultiOperatorExternalPeriodServicesProduct,
+                },
+                [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                    productId: '2',
+                    matchingJsonLink: 'test/path.json',
+                },
+            },
+            mockWriteHeadFn: writeHeadMock,
+        });
+
+        getServiceListFormDataSpy.mockImplementation().mockResolvedValue({
+            name: '',
+            files: file,
+            fileContents: '',
+            fields: {
+                exempt: 'yes',
+                'secondary-operator-noc': 'NWBT',
+                '2#YpQjUw#NW_05_BLAC_2_1#05/04/2020': 'POULTON - BLACKPOOL via Victoria Hospital Outpatients',
+            },
+        });
+
+        getProductsSecondaryOperatorInfoSpy.mockImplementation().mockRejectedValue({
+            name: 'AWSError',
+            message: 'No data found',
+            code: 'NoSuchKey',
+        } as AWSError);
+
+        updateProductAdditionalNocSpy.mockResolvedValue(undefined);
+
+        await serviceList(req, res);
+
+        expect(putUserDataInProductsBucketWithFilePathSpy).toBeCalledWith(
+            {
                 selectedServices: [
                     {
                         lineId: 'YpQjUw',
