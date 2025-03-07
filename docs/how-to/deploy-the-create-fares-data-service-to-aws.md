@@ -47,6 +47,8 @@
   - `fdbt-tnds-ftp-password` - Password for the TNDS FTP Server
   - `fdbt-rds-netex-output-username` - MySQL username for the NeTEx Output Service
   - `fdbt-rds-netex-output-password` - MySQL password for the NeTEx Output Service
+  - `fdbt-rds-emailer-username` - MySQL username for the Emailer Service
+  - `fdbt-rds-emailer-password` - MySQL password for the Emailer Service
   - `fdbt-rds-reference-data-username` - MySQL username for the Reference Data Service
   - `fdbt-rds-reference-data-password` - MySQL password for the Reference Data Service
   - `fdbt-rds-site-username` - MySQL username for the Site

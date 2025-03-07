@@ -1,13 +1,20 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import ServiceList, { getServerSideProps } from '../../src/pages/serviceList';
-import { getMockContext } from '../testData/mockData';
+import { expectedMultiOperatorGeoZoneTicketWithMultipleProducts, getMockContext } from '../testData/mockData';
 import {
     getServicesByNocCodeAndDataSource,
     getAllServicesByNocCode,
     getTndsServicesByNocAndModes,
+    getAdditionalNocsForMultiOpExtProduct,
 } from '../../src/data/auroradb';
-import { MULTI_MODAL_ATTRIBUTE, OPERATOR_ATTRIBUTE, SERVICE_LIST_ATTRIBUTE } from '../../src/constants/attributes';
+import {
+    MATCHING_JSON_ATTRIBUTE,
+    MATCHING_JSON_META_DATA_ATTRIBUTE,
+    MULTI_MODAL_ATTRIBUTE,
+    OPERATOR_ATTRIBUTE,
+    SERVICE_LIST_ATTRIBUTE,
+} from '../../src/constants/attributes';
 import { ErrorInfo, ServiceType, ServicesInfo } from '../../src/interfaces';
 
 jest.mock('../../src/data/auroradb');
@@ -118,6 +125,7 @@ describe('pages', () => {
                     selectedYesToExempt={false}
                     exemptStops=""
                     isEditMode={false}
+                    secondaryOperatorNoc={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -140,6 +148,7 @@ describe('pages', () => {
                     selectedYesToExempt={false}
                     exemptStops=""
                     isEditMode={false}
+                    secondaryOperatorNoc={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -162,6 +171,7 @@ describe('pages', () => {
                     selectedYesToExempt={false}
                     exemptStops=""
                     isEditMode={false}
+                    secondaryOperatorNoc={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -184,6 +194,7 @@ describe('pages', () => {
                     selectedYesToExempt={false}
                     exemptStops=""
                     isEditMode
+                    secondaryOperatorNoc={null}
                 />,
             );
             expect(tree).toMatchSnapshot();
@@ -242,6 +253,64 @@ describe('pages', () => {
                     isLoggedin: false,
                 });
                 await expect(getServerSideProps(ctx)).rejects.toThrow('invalid NOC set');
+            });
+
+            it('should throw an error if editAdditionalOperator query parameter is provided for a ticket that is not being edited', async () => {
+                const ctx = getMockContext({
+                    body: null,
+                    uuid: {},
+                    mockWriteHeadFn: jest.fn(),
+                    mockEndFn: jest.fn(),
+                    query: { editAdditionalOperator: 'TEST' },
+                });
+                await expect(getServerSideProps(ctx)).rejects.toThrow(
+                    'The editAdditionalOperator query parameter can not be provided for a new ticket',
+                );
+            });
+
+            it('should throw an error if editAdditionalOperator query parameter is provided for a ticket that is not a multiOperatorExt ticket', async () => {
+                const ctx = getMockContext({
+                    body: null,
+                    uuid: {},
+                    mockWriteHeadFn: jest.fn(),
+                    mockEndFn: jest.fn(),
+                    query: { editAdditionalOperator: 'TEST' },
+                    session: {
+                        [MATCHING_JSON_ATTRIBUTE]: {
+                            ...expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
+                        },
+                    },
+                });
+                await expect(getServerSideProps(ctx)).rejects.toThrow(
+                    'The editAdditionalOperator query parameter provided for a ticket that is not a multiOperatorExt ticket',
+                );
+            });
+
+            it('should throw an error if the NOC provided for editAdditionalOperator query param does not match the ticket', async () => {
+                const ctx = getMockContext({
+                    session: {
+                        [MULTI_MODAL_ATTRIBUTE]: {
+                            modes: ['ferry', 'tram', 'coach'],
+                        },
+                        [SERVICE_LIST_ATTRIBUTE]: undefined,
+                        [MATCHING_JSON_META_DATA_ATTRIBUTE]: {
+                            matchingJsonLink: 'test.json',
+                            productId: '1',
+                        },
+                        [MATCHING_JSON_ATTRIBUTE]: {
+                            ...expectedMultiOperatorGeoZoneTicketWithMultipleProducts,
+                            type: 'multiOperatorExt',
+                        },
+                    },
+                    query: { editAdditionalOperator: 'invalid' },
+                });
+                (getAllServicesByNocCode as jest.Mock).mockImplementation(() => []);
+                (getTndsServicesByNocAndModes as jest.Mock).mockImplementation(() => mockServices);
+                (getAdditionalNocsForMultiOpExtProduct as jest.Mock).mockImplementation(() => []);
+
+                await expect(getServerSideProps(ctx)).rejects.toThrow(
+                    'The secondary operator noc code provided is not valid for the ticket',
+                );
             });
         });
     });

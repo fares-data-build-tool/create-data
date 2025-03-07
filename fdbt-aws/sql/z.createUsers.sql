@@ -22,3 +22,8 @@ GRANT USAGE ON fdbt.* TO 'fdbt_netex'@'%' IDENTIFIED BY 'password';
 DROP USER 'fdbt_netex'@'%';
 CREATE USER 'fdbt_netex'@'%' IDENTIFIED BY '<INSERT PASSWORD>';
 GRANT SELECT ON fdbt.* TO 'fdbt_netex'@'%';
+
+GRANT USAGE ON fdbt.* TO 'fdbt_emailer'@'%' IDENTIFIED BY 'password';
+DROP USER 'fdbt_emailer'@'%';
+CREATE USER 'fdbt_emailer'@'%' IDENTIFIED BY '<INSERT PASSWORD>';
+GRANT SELECT ON fdbt.* TO 'fdbt_emailer'@'%';
