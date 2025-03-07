@@ -72,7 +72,7 @@ export const sendEmails = async (client: SES, serviceDomain: string, emailAddres
     const mailTransporter = nodemailer.createTransport({ SES: client });
 
     const mailOptions: Options[] = emailAddresses.map((emailAddress) => ({
-        from: `no-reply@${serviceDomain}`,
+        from: `"Create fares data service" <no-reply@${serviceDomain}>`,
         to: emailAddress,
         subject: 'One or more multi-operator products require your attention',
         text: 'One or more multi-operator products require your attention',
