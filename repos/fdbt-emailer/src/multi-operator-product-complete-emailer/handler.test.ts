@@ -7,7 +7,7 @@ import * as databaseFunctions from '../data/database';
 import * as emailFunctions from './email';
 import { SES } from 'aws-sdk';
 
-describe('fdbt-multi-operator-emailer handler', () => {
+describe('fdbt-multi-operator-product-complete-emailer handler', () => {
     const mockEvent = {};
     const mockContext = {} as Context;
     const mockCallback = vi.fn();
@@ -15,7 +15,7 @@ describe('fdbt-multi-operator-emailer handler', () => {
     vi.mock('mysql2/promise');
 
     const getCognitoClientMock = vi.spyOn(cognitoFunctions, 'getCognitoClient');
-    const getIncompleteMultiOperatorProductsMock = vi.spyOn(databaseFunctions, 'getIncompleteMultiOperatorProducts');
+    const getIncompleteMultiOperatorProductsMock = vi.spyOn(databaseFunctions, 'getCompleteMultiOperatorProducts');
     const getSesClientMock = vi.spyOn(emailFunctions, 'getSesClient');
     const sendEmailsMock = vi.spyOn(emailFunctions, 'sendEmails');
 
@@ -38,7 +38,7 @@ describe('fdbt-multi-operator-emailer handler', () => {
         },
     );
 
-    it('returns early if there are no incomplete products', async () => {
+    it('returns early if there are no complete products', async () => {
         getIncompleteMultiOperatorProductsMock.mockResolvedValueOnce([]);
         getSesClientMock.mockReturnValue(undefined as unknown as SES);
         sendEmailsMock.mockResolvedValueOnce(undefined);
@@ -75,7 +75,7 @@ describe('fdbt-multi-operator-emailer handler', () => {
         expect(getSesClientMock).not.toHaveBeenCalled();
     });
 
-    it('returns early if there are no email addresses matched up to incomplete products', async () => {
+    it('returns early if there are no email addresses matched up to complete products', async () => {
         const mockListUsersResponse: ListUsersResponse = {
             Users: [
                 {
@@ -88,7 +88,7 @@ describe('fdbt-multi-operator-emailer handler', () => {
                     Attributes: [
                         { Name: 'email', Value: 'user1@example.com' },
                         { Name: 'custom:noc', Value: 'NOC2' },
-                        { Name: 'custom:multiOpEmailEnabled', Value: 'false' },
+                        { Name: 'custom:multiOpEmailEnabled', Value: 'true' },
                     ],
                 },
             ],
@@ -115,7 +115,7 @@ describe('fdbt-multi-operator-emailer handler', () => {
         expect(getSesClientMock).not.toHaveBeenCalled();
     });
 
-    it('sends emails to users who have opted in and have incomplete products', async () => {
+    it('sends emails to users who have opted in and have complete products', async () => {
         const mockListUsersResponse: ListUsersResponse = {
             Users: [
                 {
