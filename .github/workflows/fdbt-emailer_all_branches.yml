@@ -40,4 +40,4 @@ jobs:
       run: npm run test:ci
 
     - name: Build
-      run: npm run build-multi-operator-emailer-${{ env.WORKSPACE }}
+      run: npm run build-all-functions-${{ env.WORKSPACE }}
