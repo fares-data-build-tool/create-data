@@ -7,7 +7,7 @@ import * as databaseFunctions from '../data/database';
 import * as emailFunctions from './email';
 import { SES } from 'aws-sdk';
 
-describe('fdbt-multi-operator-emailer handler', () => {
+describe('fdbt-multi-operator-action-required-emailer handler', () => {
     const mockEvent = {};
     const mockContext = {} as Context;
     const mockCallback = vi.fn();
