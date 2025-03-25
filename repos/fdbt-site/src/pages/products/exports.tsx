@@ -77,18 +77,17 @@ const getExportAction = (
             </button>
         );
     }
-    if (!exportDetails.signedUrl && !exportDetails.exportFailed) {
-        return (
-            <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
-                <input type="hidden" name="exportName" value={exportDetails.name} />
-                <button type="submit" className="govuk-button govuk-button--warning">
-                    Cancel export in progress
-                </button>
-            </CsrfForm>
-        );
-    } else {
-        return null;
-    }
+
+    return (
+        <CsrfForm csrfToken={csrf} method={'post'} action={'/api/deleteExport'}>
+            <input type="hidden" name="exportName" value={exportDetails.name} />
+            <button type="submit" className="govuk-button govuk-button--warning">
+                {!exportDetails.signedUrl && !exportDetails.exportFailed
+                    ? 'Cancel export in progress'
+                    : 'Delete export'}
+            </button>
+        </CsrfForm>
+    );
 };
 
 const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {

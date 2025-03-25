@@ -17,8 +17,8 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
         const { exportName } = req.body;
 
         logger.info('', {
-            context: 'cancelExport.ts',
-            message: `Cancelling export for ${exportName}`,
+            context: 'deleteExport.ts',
+            message: `Deleting export for ${exportName}`,
         });
 
         await deleteExport(exportName, MATCHING_DATA_BUCKET_NAME);
@@ -28,7 +28,7 @@ export default async (req: NextApiRequestWithSession, res: NextApiResponse): Pro
 
         redirectTo(res, '/products/exports');
     } catch (error) {
-        const message = 'There was a problem cancelling the export:';
-        redirectToError(res, message, 'api.cancelExport', error);
+        const message = 'There was a problem deleting the export:';
+        redirectToError(res, message, 'api.deleteExport', error);
     }
 };
