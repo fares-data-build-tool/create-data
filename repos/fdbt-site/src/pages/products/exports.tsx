@@ -60,7 +60,17 @@ const getExportAction = (
     csrf: string,
 ) => {
     if (exportDetails.signedUrl && !exportDetails.exportFailed) {
-        return <a href={exportDetails.signedUrl}>Download file</a>;
+        return (
+            <>
+                <a href={exportDetails.signedUrl}>Download file</a>
+                <CsrfForm csrfToken={csrf} method={'post'} action={'/api/deleteExport'}>
+                    <input type="hidden" name="exportName" value={exportDetails.name} />
+                    <button type="submit" className="govuk-button govuk-button--warning">
+                        Delete export
+                    </button>
+                </CsrfForm>
+            </>
+        );
     }
     if (exportDetails.failedValidationFilenames.length > 0) {
         return (
@@ -77,17 +87,18 @@ const getExportAction = (
             </button>
         );
     }
-
-    return (
-        <CsrfForm csrfToken={csrf} method={'post'} action={'/api/deleteExport'}>
-            <input type="hidden" name="exportName" value={exportDetails.name} />
-            <button type="submit" className="govuk-button govuk-button--warning">
-                {!exportDetails.signedUrl && !exportDetails.exportFailed
-                    ? 'Cancel export in progress'
-                    : 'Delete export'}
-            </button>
-        </CsrfForm>
-    );
+    if (!exportDetails.signedUrl && !exportDetails.exportFailed) {
+        return (
+            <CsrfForm csrfToken={csrf} method={'post'} action={'/api/deleteExport'}>
+                <input type="hidden" name="exportName" value={exportDetails.name} />
+                <button type="submit" className="govuk-button govuk-button--warning">
+                    Cancel export in progress
+                </button>
+            </CsrfForm>
+        );
+    } else {
+        return null;
+    }
 };
 
 const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
