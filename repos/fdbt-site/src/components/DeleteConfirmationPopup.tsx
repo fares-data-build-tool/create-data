@@ -32,7 +32,11 @@ const DeleteConfirmationPopup = ({
                         )}
                     </span>
 
-                    <button className="govuk-button govuk-button--secondary" onClick={cancelActionHandler}>
+                    <button
+                        type="button"
+                        className="govuk-button govuk-button--secondary"
+                        onClick={cancelActionHandler}
+                    >
                         Cancel
                     </button>
 

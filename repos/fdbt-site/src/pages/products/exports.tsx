@@ -314,7 +314,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                         {deletePopUpState && (
                             <DeleteConfirmationPopup
                                 entityName={deletePopUpState.name}
-                                deleteUrl={'/api/deleteExport'}
+                                deleteUrl={`/api/deleteExport?_csrf=${csrf}`}
                                 cancelActionHandler={(): void => {
                                     setDeletePopUpState(undefined);
                                 }}
