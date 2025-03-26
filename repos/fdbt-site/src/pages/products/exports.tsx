@@ -320,7 +320,7 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                 }}
                                 hintText="When you delete this export it will be removed from the system and will no longer be available to download."
                                 isOpen={!!deletePopUpState.name}
-                                hiddenInput={{ name: deletePopUpState.name, value: deletePopUpState.name }}
+                                hiddenInput={{ name: 'exportName', value: deletePopUpState.name }}
                             />
                         )}
                     </div>
