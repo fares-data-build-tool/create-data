@@ -52,3 +52,16 @@ export const getIncompleteMultiOperatorProducts = async (client: Pool): Promise<
     const [rows] = await client.execute(query, []);
     return rows as Product[];
 };
+
+export const getCompleteMultiOperatorProducts = async (client: Pool): Promise<Product[]> => {
+    const query = `
+        SELECT products.id AS productId, products.nocCode as nocCode
+        FROM products
+        WHERE products.incomplete = 0
+        AND products.fareType = 'multiOperatorExt'
+        AND products.dateModified > NOW() - INTERVAL 24 HOUR
+    `;
+
+    const [rows] = await client.execute(query, []);
+    return rows as Product[];
+};
