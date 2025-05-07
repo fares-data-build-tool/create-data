@@ -52,7 +52,7 @@ jobs:
         uses: "./.github/workflows/templates/update_lambda"
         with:
           repo: fdbt-emailer
-          lambda: fdbt-multi-operator-emailer
+          lambda: fdbt-multi-operator-action-required-emailer
           environment: ${{ env.WORKSPACE }}
 
       - name: Update multi-operator-product-complete-emailer lambda
