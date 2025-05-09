@@ -1,5 +1,4 @@
 import { Handler } from 'aws-lambda';
-import { AWSError } from 'aws-sdk';
 import {
     BaseTicket,
     FullTimeRestriction,
@@ -49,12 +48,11 @@ export const processSecondaryOperatorServices = async (
         const additionalPath = `${path.substring(0, path.lastIndexOf('.json'))}_${nocCode}.json`;
 
         try {
-            const additionalServicesObject = await getS3Object(additionalPath, productsBucket);
+            const additionalServicesObject = await getS3Object({ Key: additionalPath, Bucket: productsBucket });
+            const body = await additionalServicesObject.Body?.transformToString('utf-8');
 
-            if (additionalServicesObject.Body) {
-                const additionalServices = JSON.parse(
-                    additionalServicesObject.Body.toString('utf-8'),
-                ) as SecondaryOperatorServices;
+            if (body) {
+                const additionalServices = JSON.parse(body) as SecondaryOperatorServices;
 
                 additionalOperators.push({
                     nocCode: nocCode,
@@ -64,11 +62,11 @@ export const processSecondaryOperatorServices = async (
                 if (additionalServices.exemptStops && additionalServices.exemptStops.length > 0) {
                     exemptStops.push(...additionalServices.exemptStops);
                 }
+            } else {
+                throw new Error(`body was not present [${path}]`);
             }
         } catch (error) {
-            if ((error as AWSError).code === 'NoSuchKey') {
-                console.log(`No additional services found for ${nocCode}`);
-            }
+            console.log(`No additional services found for ${nocCode}`, error);
         }
     }
     return { additionalOperators, exemptStops };
@@ -85,23 +83,22 @@ export const processSecondaryOperatorFareZone = async (
         const additionalPath = `${path.substring(0, path.lastIndexOf('.json'))}_${nocCode}.json`;
 
         try {
-            const additionalStopsObject = await getS3Object(additionalPath, productsBucket);
+            const additionalStopsObject = await getS3Object({ Key: additionalPath, Bucket: productsBucket });
+            const body = await additionalStopsObject.Body?.transformToString('utf-8');
 
-            if (additionalStopsObject.Body) {
-                const additionalStops = JSON.parse(
-                    additionalStopsObject.Body.toString('utf-8'),
-                ) as SecondaryOperatorFareZone;
+            if (body) {
+                const additionalStops = JSON.parse(body) as SecondaryOperatorFareZone;
 
                 secondaryOperatorStops.push(...additionalStops.stops);
 
                 if (additionalStops.exemptedServices && additionalStops.exemptedServices.length > 0) {
                     exemptedServices.push(...additionalStops.exemptedServices);
                 }
+            } else {
+                throw new Error(`body was not present [${path}]`);
             }
         } catch (error) {
-            if ((error as AWSError).code === 'NoSuchKey') {
-                console.log(`No additional services found for ${nocCode}`);
-            }
+            console.log(`No additional services found for ${nocCode}`, error);
         }
     }
 
@@ -123,12 +120,14 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
 
     await Promise.all(
         paths.map(async (path) => {
-            const object = await getS3Object(path, PRODUCTS_BUCKET);
-            if (!object.Body) {
+            const object = await getS3Object({ Key: path, Bucket: PRODUCTS_BUCKET });
+            const body = await object.Body?.transformToString('utf-8');
+
+            if (!body) {
                 throw new Error(`body was not present [${path}]`);
             }
 
-            const ticketWithIds = JSON.parse(object.Body.toString('utf-8')) as TicketWithIds;
+            const ticketWithIds = JSON.parse(body) as TicketWithIds;
 
             if (
                 path.includes('multiOperatorExt') &&
@@ -266,7 +265,11 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
             const sections = path.split('/');
             const destPath = exportPrefix ? `${noc}/exports/${exportPrefix}/${sections[sections.length - 1]}` : path;
 
-            await putS3Object(destPath, MATCHING_DATA_BUCKET, JSON.stringify(fullTicket));
+            await putS3Object({
+                Key: destPath,
+                Bucket: MATCHING_DATA_BUCKET,
+                Body: JSON.stringify(fullTicket),
+            });
         }),
     );
 
@@ -280,7 +283,11 @@ export const handler: Handler<ExportLambdaBody> = async ({ paths, noc, exportPre
         } in metadata bucket: ${EXPORT_METADATA_BUCKET} key: ${noc}/exports/${exportPrefix}.json`,
     );
 
-    await putS3Object(`${noc}/exports/${exportPrefix}.json`, EXPORT_METADATA_BUCKET, JSON.stringify(metadata));
+    await putS3Object({
+        Key: `${noc}/exports/${exportPrefix}.json`,
+        Bucket: EXPORT_METADATA_BUCKET,
+        Body: JSON.stringify(metadata),
+    });
 
     console.log(`completed ${paths.length} files.`);
 };

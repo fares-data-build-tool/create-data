@@ -1,8 +1,6 @@
 import { processSecondaryOperatorFareZone, processSecondaryOperatorServices, removeDuplicates } from '../lib/handler';
 import { SelectedService, Stop } from 'fdbt-types/matchingJsonTypes';
 import * as s3 from '../lib/s3';
-import { AWSError } from 'aws-sdk';
-import { GetObjectOutput } from 'aws-sdk/clients/s3';
 import resetAllMocks = jest.resetAllMocks;
 
 const mockStops: Partial<Stop>[] = [
@@ -77,25 +75,30 @@ describe('processSecondaryOperatorServices', () => {
 
     it('should return process additionalOperators and exempt stops if they exist', async () => {
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({
-                nocCode: 'TEST1',
-                selectedServices: mockServices,
-                exemptStops: mockStops.slice(0, 2),
-            }),
-            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
-        });
+            Body: {
+                transformToString: () =>
+                    JSON.stringify({
+                        nocCode: 'TEST1',
+                        selectedServices: mockServices,
+                        exemptStops: mockStops.slice(0, 2),
+                    }),
+            },
+        } as unknown as ReturnType<typeof s3.getS3Object>);
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({ nocCode: 'TEST2', selectedServices: mockServices }),
-            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
-        });
+            Body: {
+                transformToString: () => JSON.stringify({ nocCode: 'TEST2', selectedServices: mockServices }),
+            },
+        } as unknown as ReturnType<typeof s3.getS3Object>);
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({
-                nocCode: 'TEST3',
-                selectedServices: mockServices,
-                exemptStops: mockStops.slice(2, 4),
-            }),
-            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
-        });
+            Body: {
+                transformToString: () =>
+                    JSON.stringify({
+                        nocCode: 'TEST3',
+                        selectedServices: mockServices,
+                        exemptStops: mockStops.slice(2, 4),
+                    }),
+            },
+        } as unknown as ReturnType<typeof s3.getS3Object>);
         const result = await processSecondaryOperatorServices(
             mockNocCodes,
             'testMatchingJson/link',
@@ -136,18 +139,21 @@ describe('processSecondaryOperatorServices', () => {
     it('should handle if one operator had not provided info but the other operators have', async () => {
         getObjectSpy.mockRejectedValueOnce(new Error());
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({ nocCode: 'TEST2', selectedServices: mockServices }),
-            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
-        });
+            Body: {
+                transformToString: () => JSON.stringify({ nocCode: 'TEST2', selectedServices: mockServices }),
+            },
+        } as unknown as ReturnType<typeof s3.getS3Object>);
 
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({
-                nocCode: 'TEST3',
-                selectedServices: mockServices,
-                exemptStops: mockStops.slice(2, 4),
-            }),
-            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
-        });
+            Body: {
+                transformToString: () =>
+                    JSON.stringify({
+                        nocCode: 'TEST3',
+                        selectedServices: mockServices,
+                        exemptStops: mockStops.slice(2, 4),
+                    }),
+            },
+        } as unknown as ReturnType<typeof s3.getS3Object>);
         const result = await processSecondaryOperatorServices(
             mockNocCodes,
             'testMatchingJson/link',
@@ -180,28 +186,34 @@ describe('processSecondaryOperatorFareZone', () => {
 
     it('should return stops and exemptedServices if they exist', async () => {
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({
-                nocCode: 'TEST1',
-                stops: mockStops,
-                exemptedServices: mockServices.slice(0, 1),
-            }),
-            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
-        });
+            Body: {
+                transformToString: () =>
+                    JSON.stringify({
+                        nocCode: 'TEST1',
+                        stops: mockStops,
+                        exemptedServices: mockServices.slice(0, 1),
+                    }),
+            },
+        } as unknown as ReturnType<typeof s3.getS3Object>);
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({
-                nocCode: 'TEST2',
-                stops: mockStops,
-            }),
-            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
-        });
+            Body: {
+                transformToString: () =>
+                    JSON.stringify({
+                        nocCode: 'TEST2',
+                        stops: mockStops,
+                    }),
+            },
+        } as unknown as ReturnType<typeof s3.getS3Object>);
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({
-                nocCode: 'TEST3',
-                stops: mockStops,
-                exemptedServices: mockServices.slice(1, 2),
-            }),
-            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
-        });
+            Body: {
+                transformToString: () =>
+                    JSON.stringify({
+                        nocCode: 'TEST3',
+                        stops: mockStops,
+                        exemptedServices: mockServices.slice(1, 2),
+                    }),
+            },
+        } as unknown as ReturnType<typeof s3.getS3Object>);
         const result = await processSecondaryOperatorFareZone(
             mockNocCodes,
             'testMatchingJson/link',
@@ -229,20 +241,24 @@ describe('processSecondaryOperatorFareZone', () => {
     it('should handle if one operator had not provided info but the other operators have', async () => {
         getObjectSpy.mockRejectedValueOnce(new Error());
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({
-                nocCode: 'TEST2',
-                stops: mockStops,
-            }),
-            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
-        });
+            Body: {
+                transformToString: () =>
+                    JSON.stringify({
+                        nocCode: 'TEST2',
+                        stops: mockStops,
+                    }),
+            },
+        } as unknown as ReturnType<typeof s3.getS3Object>);
         getObjectSpy.mockResolvedValueOnce({
-            Body: JSON.stringify({
-                nocCode: 'TEST3',
-                stops: mockStops,
-                exemptedServices: mockServices.slice(1, 2),
-            }),
-            $response: {} as AWS.Response<GetObjectOutput, AWSError>,
-        });
+            Body: {
+                transformToString: () =>
+                    JSON.stringify({
+                        nocCode: 'TEST3',
+                        stops: mockStops,
+                        exemptedServices: mockServices.slice(1, 2),
+                    }),
+            },
+        } as unknown as ReturnType<typeof s3.getS3Object>);
         const result = await processSecondaryOperatorFareZone(
             mockNocCodes,
             'testMatchingJson/link',

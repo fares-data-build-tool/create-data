@@ -1,5 +1,4 @@
 import { Handler } from 'aws-lambda';
-import { S3 } from 'aws-sdk';
 import { WithIds, ReturnTicket, SingleTicket, PointToPointPeriodTicket } from 'fdbt-types/matchingJsonTypes';
 import {
     saveIdsOfServicesRequiringAttentionInTheDb,
@@ -9,20 +8,7 @@ import {
 } from './database';
 import { ExportLambdaBody } from 'fdbt-types/integrationTypes';
 import { ServiceDetails } from 'fdbt-types/dbTypes';
-
-const s3: S3 = new S3(
-    process.env.NODE_ENV === 'development'
-        ? {
-              s3ForcePathStyle: true,
-              accessKeyId: 'S3RVER',
-              secretAccessKey: 'S3RVER',
-              endpoint: 'http://127.0.0.1:4566',
-              region: 'eu-west-2',
-          }
-        : {
-              region: 'eu-west-2',
-          },
-);
+import { getS3Object } from './s3';
 
 const PRODUCTS_BUCKET = process.env.PRODUCTS_BUCKET;
 
@@ -48,13 +34,14 @@ export const handler: Handler<ExportLambdaBody> = async () => {
         const productId: number = pointToPointProduct.id;
         const path = pointToPointProduct.matchingJsonLink;
 
-        const object = await s3.getObject({ Key: path, Bucket: PRODUCTS_BUCKET }).promise();
+        const object = await getS3Object({ Key: path, Bucket: PRODUCTS_BUCKET });
+        const body = await object.Body?.transformToString('utf-8');
 
-        if (!object.Body) {
+        if (!body) {
             throw new Error(`body was not present [${path}]`);
         }
 
-        const pointToPointTicket = JSON.parse(object.Body.toString('utf-8')) as
+        const pointToPointTicket = JSON.parse(body) as
             | WithIds<SingleTicket>
             | WithIds<ReturnTicket>
             | WithIds<PointToPointPeriodTicket>;

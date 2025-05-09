@@ -1,11 +1,11 @@
 import { createConnection, Connection } from 'mysql2/promise';
-import { getSsmValue } from '../ssm';
+import { getParameter } from '../ssm';
 
 export const getConnection = async (): Promise<Connection> =>
     await createConnection({
         host: process.env.RDS_HOST,
-        user: await getSsmValue('fdbt-rds-reference-data-username'),
-        password: await getSsmValue('fdbt-rds-reference-data-password'),
+        user: await getParameter('fdbt-rds-reference-data-username'),
+        password: await getParameter('fdbt-rds-reference-data-password'),
         database: 'fdbt',
         waitForConnections: true,
     });

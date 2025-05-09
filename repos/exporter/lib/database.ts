@@ -10,7 +10,7 @@ import {
     DbCap,
 } from 'fdbt-types/dbTypes';
 import { GroupDefinition, CompanionInfo, FromDb, SalesOfferPackage } from 'fdbt-types/matchingJsonTypes';
-import { getSsmValue } from './ssm';
+import { getParameter } from './ssm';
 
 const replaceInternalNocCode = (nocCode: string): string => {
     if (nocCode === 'IWBusCo') {
@@ -30,8 +30,8 @@ export const getConnectionPool = async (): Promise<Pool> =>
               }
             : {
                   host: process.env.RDS_HOST,
-                  user: await getSsmValue('fdbt-rds-site-username'),
-                  password: await getSsmValue('fdbt-rds-site-password'),
+                  user: await getParameter('fdbt-rds-site-username'),
+                  password: await getParameter('fdbt-rds-site-password'),
               }),
         database: 'fdbt',
         waitForConnections: true,

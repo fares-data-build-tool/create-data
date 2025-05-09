@@ -2,7 +2,7 @@ import { Handler } from 'aws-lambda';
 import { ZipperLambdaBody } from 'fdbt-types/integrationTypes';
 import 'source-map-support/register';
 import { getConnection, checkReferenceDataImportHasCompleted, deleteAndRenameTables } from './tableRenamer';
-import { getSsmValue, putParameter } from '../ssm';
+import { getParameter, putParameter } from '../ssm';
 
 export const handler: Handler<ZipperLambdaBody> = async () => {
     try {
@@ -10,16 +10,7 @@ export const handler: Handler<ZipperLambdaBody> = async () => {
 
         const connection = await getConnection();
 
-        let disableRenamer: string | undefined = 'true';
-        try {
-            disableRenamer = await getSsmValue('/scheduled/disable-table-renamer');
-        } catch (error) {
-            if (error instanceof Error) {
-                throw new Error(`Failed to get parameter from ssm: ${error.stack || ''}`);
-            }
-
-            throw error;
-        }
+        const disableRenamer = await getParameter('/scheduled/disable-table-renamer');
 
         if (disableRenamer === 'false') {
             await checkReferenceDataImportHasCompleted('txcOperatorLine', connection);
