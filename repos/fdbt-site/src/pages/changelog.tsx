@@ -7,7 +7,13 @@ const description = 'Changelog page for the Create Fares Data Service';
 const Changelog = (): ReactElement => (
     <TwoThirdsLayout title={title} description={description}>
         <h1 className="govuk-heading-xl">Service Changelog</h1>
-        <p className="govuk-body">Last updated: 07 March 2025</p>
+        <p className="govuk-body">Last updated: 12 May 2025</p>
+        <hr className="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+        <h2 className="govuk-heading-l">May 2025 (1.90.0)</h2>
+        <ul className="govuk-list govuk-list--bullet">
+            <li>Add functionality to delete completed exports</li>
+            <li>Add email alerts for completed multi-operator external products</li>
+        </ul>
         <hr className="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         <h2 className="govuk-heading-l">March 2025 (1.89.0)</h2>
         <ul className="govuk-list govuk-list--bullet">
