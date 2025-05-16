@@ -60,7 +60,7 @@ class MyDocument extends Document<DocumentProps> {
 
     render(): ReactElement {
         return (
-            <Html lang="en" className="govuk-template app-html-class flexbox no-flexboxtweener">
+            <Html lang="en" className="govuk-template--rebranded app-html-class flexbox no-flexboxtweener">
                 <Head nonce={this.props.nonce}>
                     {process.env.STAGE === 'prod' && (
                         <>
@@ -83,7 +83,7 @@ class MyDocument extends Document<DocumentProps> {
                         </>
                     )}
                 </Head>
-                <body className="govuk-template__body app-body-class">
+                <body className="govuk-template--rebranded__body app-body-class">
                     <a href="#main-content" className="govuk-skip-link">
                         Skip to main content
                     </a>

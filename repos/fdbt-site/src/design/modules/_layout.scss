@@ -128,27 +128,6 @@ main {
     }
 }
 
-@media (min-width: 40.0625em) {
-    .gem-c-organisation-logo__crest--single-identity,
-    .gem-c-organisation-logo__crest--eo,
-    .gem-c-organisation-logo__crest--org {
-        background: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_18px-7026afebba9918a0830ebf68cf496cbb0b81f3514b884dc2c32904780baa3368.png)
-            no-repeat 6px 0;
-        background-size: auto 26px;
-    }
-}
-
-@media only screen and (min-width: 40.0625em) and (-webkit-min-device-pixel-ratio: 2),
-    only screen and (min-width: 40.0625em) and (min-device-pixel-ratio: 2),
-    only screen and (min-width: 40.0625em) and (min-resolution: 192dpi),
-    only screen and (min-width: 40.0625em) and (min-resolution: 2dppx) {
-    .gem-c-organisation-logo__crest--single-identity,
-    .gem-c-organisation-logo__crest--eo,
-    .gem-c-organisation-logo__crest--org {
-        background-image: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_18px_x2-b4af7a6d71fbd9bfb3b9550bc0e1d856e01e5b388ad8e18717b4ad60e73705ff.png);
-    }
-}
-
 .brand--department-for-transport.brand__border-color,
 .brand--department-for-transport .brand__border-color {
     border-color: #006c56;
@@ -202,10 +181,6 @@ svg:not(:root) {
 
 .align-middle {
     align-self: center;
-}
-
-.govuk-footer__copyright-logo {
-    background-image: url('../../assets/images/govuk-crest-2x.png') !important;
 }
 
 .govuk-header__account-link {
