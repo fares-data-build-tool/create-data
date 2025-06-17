@@ -117,17 +117,6 @@ main {
     background-size: auto 20px;
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-    only screen and (min-device-pixel-ratio: 2),
-    only screen and (min-resolution: 192dpi),
-    only screen and (min-resolution: 2dppx) {
-    .gem-c-organisation-logo__crest--single-identity,
-    .gem-c-organisation-logo__crest--eo,
-    .gem-c-organisation-logo__crest--org {
-        background-image: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_13px_x2-24eb94ac833fa04e95dc43b876e6e78e502d1b8fdc4476f253faf8ea74ce1670.png);
-    }
-}
-
 .brand--department-for-transport.brand__border-color,
 .brand--department-for-transport .brand__border-color {
     border-color: #006c56;

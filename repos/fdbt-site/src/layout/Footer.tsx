@@ -103,10 +103,7 @@ const Footer = (): ReactElement => (
                     </span>
                 </div>
                 <div className="govuk-footer__meta-item">
-                    <a
-                        className="govuk-footer__link govuk-footer__copyright-logo"
-                        href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
-                    >
+                    <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">
                         © Crown copyright
                     </a>
                 </div>
