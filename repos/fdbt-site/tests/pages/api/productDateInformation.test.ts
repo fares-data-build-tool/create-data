@@ -8,16 +8,19 @@ import {
 import { expectedSingleTicket, getMockRequestAndResponse } from '../../testData/mockData';
 import * as userData from '../../../src/utils/apiUtils/userData';
 import * as aurora from '../../../src/data/auroradb';
+import * as s3 from '../../../src/data/s3';
 
 describe('productDataInformation', () => {
     const writeHeadMock = jest.fn();
     const updateSessionAttributeSpy = jest.spyOn(sessions, 'updateSessionAttribute');
-    const s3Spy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
+    const putUserDataInProductsBucketWithFilePathSpy = jest.spyOn(userData, 'putUserDataInProductsBucketWithFilePath');
+    const getProductsMatchingJsonSpy = jest.spyOn(s3, 'getProductsMatchingJson');
     const auroraSpy = jest.spyOn(aurora, 'updateProductDates');
-    s3Spy.mockImplementation(() => Promise.resolve('pathToFile'));
+    putUserDataInProductsBucketWithFilePathSpy.mockImplementation(() => Promise.resolve('pathToFile'));
     auroraSpy.mockImplementation(() => Promise.resolve());
     afterEach(() => {
         jest.resetAllMocks();
+        getProductsMatchingJsonSpy.mockImplementation(() => Promise.resolve(expectedSingleTicket));
     });
 
     it('it should add error to session if there is no start date entered', async () => {

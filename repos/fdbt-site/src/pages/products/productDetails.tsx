@@ -779,9 +779,11 @@ export const getServerSideProps = async (ctx: NextPageContextWithSession): Promi
 
     const ticket = await getProductsMatchingJson(matchingJsonLink);
 
+    const ticketWithoutStops = { stops: null, ...ticket };
+
     // store the ticket in the session so that it can be retrieved
     // on the edit pages.
-    updateSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE, ticket);
+    updateSessionAttribute(ctx.req, MATCHING_JSON_ATTRIBUTE, ticketWithoutStops);
 
     updateSessionAttribute(ctx.req, MATCHING_JSON_META_DATA_ATTRIBUTE, {
         productId,
