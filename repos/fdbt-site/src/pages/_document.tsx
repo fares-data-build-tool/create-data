@@ -83,7 +83,7 @@ class MyDocument extends Document<DocumentProps> {
                         </>
                     )}
                 </Head>
-                <body className="govuk-template--rebranded__body app-body-class">
+                <body className="govuk-template__body app-body-class">
                     <a href="#main-content" className="govuk-skip-link">
                         Skip to main content
                     </a>
