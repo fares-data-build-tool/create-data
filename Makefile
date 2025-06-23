@@ -18,7 +18,7 @@ install: ## Install all node modules
 	cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/retrievers && npm i
 	cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders && npm i
 	cd ${FDBT_ROOT}/repos/exporter && npm i
-	cd ${FDBT_ROOT}/repos/fdbt-multi-operator-emailer && npm i
+	cd ${FDBT_ROOT}/repos/fdbt-emailer && npm i
 	pip3 install \
     -r ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/retrievers/requirements.txt \
     -r ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders/requirements.txt \
