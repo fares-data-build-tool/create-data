@@ -9,7 +9,7 @@ exports[`_document should not show the cookie banner when the showCookieBanner a
     nonce=""
   />
   <body
-    className="govuk-template--rebranded__body app-body-class"
+    className="govuk-template__body app-body-class"
   >
     <a
       className="govuk-skip-link"
@@ -47,7 +47,7 @@ exports[`_document should render correctly 1`] = `
     nonce=""
   />
   <body
-    className="govuk-template--rebranded__body app-body-class"
+    className="govuk-template__body app-body-class"
   >
     <a
       className="govuk-skip-link"
