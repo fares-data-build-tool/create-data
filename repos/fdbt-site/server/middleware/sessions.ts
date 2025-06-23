@@ -1,5 +1,5 @@
 import { Express } from 'express';
-import session, { SessionOptions } from 'express-session';
+import * as session from 'express-session';
 import MySQLStore from 'express-mysql-session';
 import awsParamStore from 'aws-param-store';
 
@@ -48,15 +48,13 @@ const getOptions = () => {
 };
 
 export default (server: Express): void => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const Store = MySQLStore(session);
 
     const options = getOptions();
 
     const sessionStore = new Store(options);
 
-    const sessionOptions: SessionOptions = {
+    const sessionOptions: session.SessionOptions = {
         cookie: {
             sameSite: true,
             secure: process.env.NODE_ENV !== 'development',
@@ -68,5 +66,5 @@ export default (server: Express): void => {
         store: sessionStore,
     };
 
-    server.use(session(sessionOptions));
+    server.use(session.default(sessionOptions));
 };
