@@ -11,7 +11,7 @@ export const CookieBannerMessage = ({ handleClick }: CookieBannerMessageProps): 
         <div className="govuk-width-container">
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">
-                    <div className="cookie-banner__message">
+                    <div className="govuk-cookie-banner__content">
                         <h2 className="govuk-heading-m">Tell us whether you accept cookies</h2>
                         <p className="govuk-body">
                             We use&nbsp;
@@ -22,28 +22,26 @@ export const CookieBannerMessage = ({ handleClick }: CookieBannerMessageProps): 
                             website work as well as possible and to improve the service.
                         </p>
                     </div>
-                    {handleClick && (
-                        <div className="cookie-banner__button cookie-banner__accept-all">
-                            <button
-                                className="govuk-button cookie-banner__button--inline"
-                                id="accept-all-button"
-                                type="button"
-                                onClick={handleClick}
-                            >
-                                Accept All
-                            </button>
-                        </div>
-                    )}
+                    <div className="govuk-button-group">
+                        {handleClick && (
+                            <div>
+                                <button
+                                    className="govuk-button "
+                                    id="accept-all-button"
+                                    data-module="govuk-button"
+                                    type="button"
+                                    onClick={handleClick}
+                                >
+                                    Accept All
+                                </button>
+                            </div>
+                        )}
 
-                    <div className="cookie-banner__button">
-                        <a
-                            id="set-cookie-preferences-link"
-                            className="govuk-button cookie-banner__button--inline"
-                            role="button"
-                            href="/cookies"
-                        >
-                            Set cookie preferences
-                        </a>
+                        <div>
+                            <a id="set-cookie-preferences-link" className="govuk-button " role="button" href="/cookies">
+                                Set cookie preferences
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,18 +89,26 @@ const CookieBanner = (): ReactElement | null => {
 
     if (cookiesAccepted) {
         return (
-            <div id="cookies-accepted-message" className="cookie-banner" role="region" aria-label="cookie banner">
-                <div className="govuk-width-container">
-                    <p role="alert">
-                        You’ve accepted all cookies. You can{' '}
-                        <a className="govuk-link" href="/cookies">
-                            change your cookie settings
-                        </a>{' '}
-                        at any time.
-                    </p>
-                    <button className="govuk-link cookie-banner__hide" type="button" onClick={handleHideClick}>
-                        Hide
-                    </button>
+            <div id="cookies-accepted-message" className="govuk-cookie-banner" role="region" aria-label="cookie banner">
+                <div className="govuk-cookie-banner__message govuk-width-container">
+                    <div className="govuk-grid-row">
+                        <div className="govuk-grid-column-two-thirds">
+                            <div className="govuk-cookie-banner__content">
+                                <p className="govuk-body">
+                                    You’ve accepted all cookies. You can{' '}
+                                    <a className="govuk-link" href="/cookies">
+                                        change your cookie settings
+                                    </a>{' '}
+                                    at any time.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="govuk-button-group">
+                        <button className="govuk-button" type="button" onClick={handleHideClick}>
+                            Hide
+                        </button>
+                    </div>
                 </div>
             </div>
         );

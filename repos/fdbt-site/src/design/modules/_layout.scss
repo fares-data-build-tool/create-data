@@ -212,69 +212,6 @@ svg:not(:root) {
     margin: 0 5px -5px 0;
 }
 
-.cookie-banner {
-    background-color: #f3f2f1;
-    box-sizing: border-box;
-    display: block;
-    font-family: 'GDS Transport', Arial, sans-serif;
-    font-size: 19px;
-    font-weight: 400;
-    line-height: 20px;
-    padding: 20px 0 20px 0;
-    -webkit-font-smoothing: antialiased;
-
-    .govuk-width-container {
-        position: relative;
-    }
-
-    .cookie-banner__message {
-        display: inline-block;
-        line-height: 25px;
-        padding-bottom: 10px;
-        margin-bottom: 0;
-    }
-
-    .cookie-banner__button {
-        display: inline-block;
-        padding: 0;
-
-        .cookie-banner__button--inline {
-            margin-bottom: 5px;
-            margin-right: 10px;
-        }
-    }
-
-    .cookie-banner__hide {
-        outline: 0;
-        border: 0;
-        background: none;
-        text-decoration: underline;
-        color: #1d70b8;
-        padding: 0;
-        font-size: 19px;
-        position: absolute;
-        right: 0;
-        top: -1px;
-
-        &:hover {
-            color: #003078;
-            cursor: pointer;
-        }
-
-        &:focus {
-            outline: 3px solid transparent;
-            color: #0b0c0c;
-            background-color: #fd0;
-            box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
-            text-decoration: none;
-        }
-
-        @media (max-width: 769px) {
-            position: static;
-        }
-    }
-}
-
 .js-enabled {
     .no-js-cookie-banner {
         display: none;
