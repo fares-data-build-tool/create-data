@@ -260,7 +260,7 @@ export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: MultiOperatorProductsProps }> => {
     const yourNoc = getAndValidateNoc(ctx);
-    const multiOperatorProductsFromDb: MyFaresOtherProduct[] = await getMultiOperatorExternalProducts();
+    const multiOperatorProductsFromDb: MyFaresOtherProduct[] = await getMultiOperatorExternalProducts(yourNoc);
 
     const ownedProducts: MultiOperatorProductExternal[] = [];
     const sharedProducts: MultiOperatorProductExternal[] = [];
