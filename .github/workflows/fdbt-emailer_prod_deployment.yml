@@ -39,7 +39,7 @@ jobs:
         run: npm run test:ci
 
       - name: Build
-        run: npm run build-multi-operator-emailer-${{ env.WORKSPACE }}
+        run: npm run build-all-functions-${{ env.WORKSPACE }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -48,9 +48,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
-      - name: Update multi-operator-emailer lambda
+      - name: Update multi-operator-action-required-emailer lambda
         uses: "./.github/workflows/templates/update_lambda"
         with:
           repo: fdbt-emailer
-          lambda: fdbt-multi-operator-emailer
+          lambda: fdbt-multi-operator-action-required-emailer
+          environment: ${{ env.WORKSPACE }}
+
+      - name: Update multi-operator-product-complete-emailer lambda
+        uses: "./.github/workflows/templates/update_lambda"
+        with:
+          repo: fdbt-emailer
+          lambda: fdbt-multi-operator-product-complete-emailer
           environment: ${{ env.WORKSPACE }}

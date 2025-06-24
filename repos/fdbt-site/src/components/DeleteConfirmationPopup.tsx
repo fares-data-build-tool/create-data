@@ -7,6 +7,7 @@ interface PopUpProps {
     cancelActionHandler: React.MouseEventHandler<HTMLButtonElement>;
     hintText?: string;
     isOpen: boolean;
+    hiddenInput?: { name: string; value: string };
 }
 
 const DeleteConfirmationPopup = ({
@@ -15,6 +16,7 @@ const DeleteConfirmationPopup = ({
     cancelActionHandler,
     hintText,
     isOpen,
+    hiddenInput = undefined,
 }: PopUpProps): ReactElement | null => (
     <Trap active={isOpen}>
         <div className="popup">
@@ -30,7 +32,11 @@ const DeleteConfirmationPopup = ({
                         )}
                     </span>
 
-                    <button className="govuk-button govuk-button--secondary" onClick={cancelActionHandler}>
+                    <button
+                        type="button"
+                        className="govuk-button govuk-button--secondary"
+                        onClick={cancelActionHandler}
+                    >
                         Cancel
                     </button>
 
@@ -43,6 +49,7 @@ const DeleteConfirmationPopup = ({
                     >
                         Delete
                     </button>
+                    {hiddenInput ? <input type="hidden" name={hiddenInput.name} value={hiddenInput.value} /> : null}
                 </form>
             </div>
         </div>

@@ -10,6 +10,7 @@ import { Export } from '../api/getExportProgress';
 import InfoPopup from '../../components/InfoPopup';
 import ErrorSummary from '../../components/ErrorSummary';
 import InformationSummary from '../../components/InformationSummary';
+import DeleteConfirmationPopup from '../../components/DeleteConfirmationPopup';
 
 const title = 'Exports';
 const description = 'Export your products into NeTEx.';
@@ -58,9 +59,30 @@ const getExportAction = (
     exportDetails: Export,
     setFailedFilesPopup: React.Dispatch<React.SetStateAction<{ failedValidationFilenames: string[] } | undefined>>,
     csrf: string,
+    deleteActionHandler?: (name: string) => void,
 ) => {
     if (exportDetails.signedUrl && !exportDetails.exportFailed) {
-        return <a href={exportDetails.signedUrl}>Download file</a>;
+        return (
+            <>
+                <div>
+                    <a href={exportDetails.signedUrl} className="govuk-link govuk-body">
+                        Download file
+                    </a>
+                </div>
+                {deleteActionHandler ? (
+                    <div>
+                        <button
+                            type="button"
+                            id={`delete-${exportDetails.name}`}
+                            className="govuk-link govuk-body button-link"
+                            onClick={() => deleteActionHandler(exportDetails.name)}
+                        >
+                            Delete export
+                        </button>
+                    </div>
+                ) : null}
+            </>
+        );
     }
     if (exportDetails.failedValidationFilenames.length > 0) {
         return (
@@ -79,7 +101,7 @@ const getExportAction = (
     }
     if (!exportDetails.signedUrl && !exportDetails.exportFailed) {
         return (
-            <CsrfForm csrfToken={csrf} method={'post'} action={'/api/cancelExport'}>
+            <CsrfForm csrfToken={csrf} method={'post'} action={'/api/deleteExport'}>
                 <input type="hidden" name="exportName" value={exportDetails.name} />
                 <button type="submit" className="govuk-button govuk-button--warning">
                     Cancel export in progress
@@ -93,10 +115,19 @@ const getExportAction = (
 
 const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactElement => {
     const [showExportPopup, setShowExportPopup] = useState(false);
+    const [deletePopUpState, setDeletePopUpState] = useState<{
+        name: string;
+    }>();
     const [failedFilesPopup, setFailedFilesPopup] = useState<{ failedValidationFilenames: string[] } | undefined>(
         undefined,
     );
     const [exportErrorState, setExportErrorState] = useState<ErrorInfo | undefined>(undefined);
+
+    const deleteActionHandler = (exportName: string): void => {
+        setDeletePopUpState({
+            name: exportName,
+        });
+    };
 
     const { data } = useSWR('/api/getExportProgress', fetcher, {
         refreshInterval: 3000,
@@ -230,7 +261,12 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                                 <td className="govuk-table__cell">{exportDetails.name}</td>
                                                 <td className="govuk-table__cell">{getTag(exportDetails)}</td>
                                                 <td className="govuk-table__cell">
-                                                    {getExportAction(exportDetails, setFailedFilesPopup, csrf)}
+                                                    {getExportAction(
+                                                        exportDetails,
+                                                        setFailedFilesPopup,
+                                                        csrf,
+                                                        deleteActionHandler,
+                                                    )}
                                                 </td>
                                             </tr>
                                         );
@@ -273,6 +309,19 @@ const Exports = ({ csrf, operatorHasProducts }: GlobalSettingsProps): ReactEleme
                                     </button>
                                 </div>
                             </div>
+                        )}
+
+                        {deletePopUpState && (
+                            <DeleteConfirmationPopup
+                                entityName={deletePopUpState.name}
+                                deleteUrl={`/api/deleteExport?_csrf=${csrf}`}
+                                cancelActionHandler={(): void => {
+                                    setDeletePopUpState(undefined);
+                                }}
+                                hintText="When you delete this export it will be removed from the system and will no longer be available to download."
+                                isOpen={!!deletePopUpState.name}
+                                hiddenInput={{ name: 'exportName', value: deletePopUpState.name }}
+                            />
                         )}
                     </div>
                 </div>

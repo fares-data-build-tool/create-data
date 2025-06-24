@@ -117,38 +117,6 @@ main {
     background-size: auto 20px;
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-    only screen and (min-device-pixel-ratio: 2),
-    only screen and (min-resolution: 192dpi),
-    only screen and (min-resolution: 2dppx) {
-    .gem-c-organisation-logo__crest--single-identity,
-    .gem-c-organisation-logo__crest--eo,
-    .gem-c-organisation-logo__crest--org {
-        background-image: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_13px_x2-24eb94ac833fa04e95dc43b876e6e78e502d1b8fdc4476f253faf8ea74ce1670.png);
-    }
-}
-
-@media (min-width: 40.0625em) {
-    .gem-c-organisation-logo__crest--single-identity,
-    .gem-c-organisation-logo__crest--eo,
-    .gem-c-organisation-logo__crest--org {
-        background: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_18px-7026afebba9918a0830ebf68cf496cbb0b81f3514b884dc2c32904780baa3368.png)
-            no-repeat 6px 0;
-        background-size: auto 26px;
-    }
-}
-
-@media only screen and (min-width: 40.0625em) and (-webkit-min-device-pixel-ratio: 2),
-    only screen and (min-width: 40.0625em) and (min-device-pixel-ratio: 2),
-    only screen and (min-width: 40.0625em) and (min-resolution: 192dpi),
-    only screen and (min-width: 40.0625em) and (min-resolution: 2dppx) {
-    .gem-c-organisation-logo__crest--single-identity,
-    .gem-c-organisation-logo__crest--eo,
-    .gem-c-organisation-logo__crest--org {
-        background-image: url(https://assets.publishing.service.gov.uk/collections/govuk_publishing_components/crests/org_crest_18px_x2-b4af7a6d71fbd9bfb3b9550bc0e1d856e01e5b388ad8e18717b4ad60e73705ff.png);
-    }
-}
-
 .brand--department-for-transport.brand__border-color,
 .brand--department-for-transport .brand__border-color {
     border-color: #006c56;
@@ -204,10 +172,6 @@ svg:not(:root) {
     align-self: center;
 }
 
-.govuk-footer__copyright-logo {
-    background-image: url('../../assets/images/govuk-crest-2x.png') !important;
-}
-
 .govuk-header__account-link {
     @media (min-width: 401px) {
         position: absolute;
@@ -246,69 +210,6 @@ svg:not(:root) {
 
 .govuk-header__person-icon {
     margin: 0 5px -5px 0;
-}
-
-.cookie-banner {
-    background-color: #f3f2f1;
-    box-sizing: border-box;
-    display: block;
-    font-family: 'GDS Transport', Arial, sans-serif;
-    font-size: 19px;
-    font-weight: 400;
-    line-height: 20px;
-    padding: 20px 0 20px 0;
-    -webkit-font-smoothing: antialiased;
-
-    .govuk-width-container {
-        position: relative;
-    }
-
-    .cookie-banner__message {
-        display: inline-block;
-        line-height: 25px;
-        padding-bottom: 10px;
-        margin-bottom: 0;
-    }
-
-    .cookie-banner__button {
-        display: inline-block;
-        padding: 0;
-
-        .cookie-banner__button--inline {
-            margin-bottom: 5px;
-            margin-right: 10px;
-        }
-    }
-
-    .cookie-banner__hide {
-        outline: 0;
-        border: 0;
-        background: none;
-        text-decoration: underline;
-        color: #1d70b8;
-        padding: 0;
-        font-size: 19px;
-        position: absolute;
-        right: 0;
-        top: -1px;
-
-        &:hover {
-            color: #003078;
-            cursor: pointer;
-        }
-
-        &:focus {
-            outline: 3px solid transparent;
-            color: #0b0c0c;
-            background-color: #fd0;
-            box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
-            text-decoration: none;
-        }
-
-        @media (max-width: 769px) {
-            position: static;
-        }
-    }
 }
 
 .js-enabled {

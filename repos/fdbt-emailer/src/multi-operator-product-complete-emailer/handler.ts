@@ -1,7 +1,7 @@
 import 'source-map-support/register';
 import { Handler } from 'aws-lambda';
-import { getCognitoClient, getUsersOptedIntoMultiOperatorEmails } from './cognito';
-import { getAuroraDBClient, getIncompleteMultiOperatorProducts } from './database';
+import { getAuroraDBClient, getCompleteMultiOperatorProducts } from '../data/database';
+import { getCognitoClient, getUsersOptedIntoMultiOperatorEmails } from '../data/cognito';
 import { getSesClient, sendEmails } from './email';
 
 export const handler: Handler = async () => {
@@ -12,7 +12,7 @@ export const handler: Handler = async () => {
     }
 
     const dbClient = await getAuroraDBClient(RDS_HOST);
-    const products = await getIncompleteMultiOperatorProducts(dbClient);
+    const products = await getCompleteMultiOperatorProducts(dbClient);
 
     if (products.length === 0) {
         return;
