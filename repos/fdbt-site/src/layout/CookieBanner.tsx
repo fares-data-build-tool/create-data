@@ -7,7 +7,7 @@ interface CookieBannerMessageProps {
 }
 
 export const CookieBannerMessage = ({ handleClick }: CookieBannerMessageProps): ReactElement => (
-    <div id="global-cookie-message" className="cookie-banner" role="region" aria-label="cookie banner">
+    <div id="global-cookie-message" className="govuk-cookie-banner" role="region" aria-label="cookie banner">
         <div className="govuk-width-container">
             <div className="govuk-grid-row">
                 <div className="govuk-grid-column-two-thirds">

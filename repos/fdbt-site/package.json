@@ -53,7 +53,7 @@
         "file-loader": "^6.2.0",
         "focus-trap-react": "^10.2.3",
         "formidable": "1.2.2",
-        "govuk-frontend": "^5.10.2",
+        "govuk-frontend": "^5.11.0",
         "helmet": "^3.22.0",
         "jsdom-global": "^3.0.2",
         "jsonwebtoken": "^9.0.2",
