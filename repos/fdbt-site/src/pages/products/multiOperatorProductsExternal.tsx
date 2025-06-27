@@ -259,8 +259,8 @@ const MultiOperatorProductsTable = (
 export const getServerSideProps = async (
     ctx: NextPageContextWithSession,
 ): Promise<{ props: MultiOperatorProductsProps }> => {
-    const yourNoc = getAndValidateNoc(ctx);
-    const multiOperatorProductsFromDb: MyFaresOtherProduct[] = await getMultiOperatorExternalProducts(yourNoc);
+    const loggedInUserNoc = getAndValidateNoc(ctx);
+    const multiOperatorProductsFromDb: MyFaresOtherProduct[] = await getMultiOperatorExternalProducts(loggedInUserNoc);
 
     const ownedProducts: MultiOperatorProductExternal[] = [];
     const sharedProducts: MultiOperatorProductExternal[] = [];
@@ -271,9 +271,9 @@ export const getServerSideProps = async (
         const additionalNocs = 'additionalNocs' in matchingJson ? matchingJson.additionalNocs : [];
         const isFareZoneType = 'zoneName' in matchingJson;
         const secondaryOperatorNocs = isFareZoneType ? additionalNocs : additionalOperators.map((op) => op.nocCode);
-        const isSharedProduct = secondaryOperatorNocs.includes(yourNoc);
+        const isSharedProduct = secondaryOperatorNocs.includes(loggedInUserNoc);
 
-        if (product.nocCode === yourNoc || isSharedProduct) {
+        if (product.nocCode === loggedInUserNoc || isSharedProduct) {
             const startDate = matchingJson.ticketPeriod.startDate
                 ? convertDateFormat(matchingJson.ticketPeriod.startDate)
                 : '-';
@@ -300,7 +300,7 @@ export const getServerSideProps = async (
                     passengerType,
                 };
 
-                if (product.nocCode === yourNoc) {
+                if (product.nocCode === loggedInUserNoc) {
                     ownedProducts.push(productData);
                 } else if (isSharedProduct) {
                     sharedProducts.push(productData);
