@@ -2261,20 +2261,23 @@ export const getOtherProductsByNoc = async (nocCode: string): Promise<MyFaresOth
     }
 };
 
-export const getMultiOperatorExternalProducts = async (): Promise<MyFaresOtherProduct[]> => {
+export const getMultiOperatorExternalProducts = async (nocCode: string): Promise<MyFaresOtherProduct[]> => {
     logger.info('', {
         context: 'data.auroradb',
         message: 'getting multi-operator external products',
+        nocCode,
     });
 
     try {
         const queryInput = `
-            SELECT id, nocCode, matchingJsonLink, startDate, endDate, incomplete
+            SELECT products.id, nocCode, lineId, matchingJsonLink, startDate, endDate, servicesRequiringAttention, fareTriangleModified, products.incomplete
             FROM products
-            WHERE fareType = 'multiOperatorExt'
+            JOIN productAdditionalNocs ON productAdditionalNocs.productId = products.id
+            WHERE fareType = 'multiOperatorExt' AND (productAdditionalNocs.additionalNocCode = ? OR products.nocCode = ?)
+            GROUP BY products.id
         `;
 
-        const queryResults = await executeQuery<MyFaresOtherProduct[]>(queryInput, []);
+        const queryResults = await executeQuery<MyFaresOtherProduct[]>(queryInput, [nocCode, nocCode]);
 
         return queryResults.map((result) => ({
             ...result,
