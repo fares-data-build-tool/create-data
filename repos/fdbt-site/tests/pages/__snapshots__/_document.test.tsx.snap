@@ -31,7 +31,7 @@ exports[`_document should not show the cookie banner when the showCookieBanner a
     />
     <script
       nonce=""
-      src="/scripts/all.mjs"
+      src="/scripts/all.js"
       type="module"
     />
   </body>
