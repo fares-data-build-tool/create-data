@@ -75,7 +75,7 @@ exports[`_document should render correctly 1`] = `
     />
     <script
       nonce=""
-      src="/scripts/all.mjs"
+      src="/scripts/all.js"
       type="module"
     />
   </body>
