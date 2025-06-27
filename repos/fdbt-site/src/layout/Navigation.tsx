@@ -2,91 +2,99 @@ import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 
 const Navigation = (): ReactElement => (
-    <nav className="app-navigation govuk-clearfix">
-        <ul className="app-navigation__list app-width-container">
-            <li
-                className={`app-navigation__list-item ${
-                    isActivePage(['products/services']) ? 'app-navigation__list-item--current' : ''
-                }`}
-            >
-                <a
-                    className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
-                    href="/products/services"
-                    data-topnav="Services"
-                >
-                    Services
-                </a>
-            </li>
+    <div className="govuk-service-navigation" data-module="govuk-service-navigation">
+        <div className="govuk-width-container">
+            <div className="govuk-service-navigation__container">
+                <nav className="govuk-service-navigation__wrapper">
+                    <ul className="govuk-service-navigation__list">
+                        <li
+                            className={`govuk-service-navigation__item ${
+                                isActivePage(['products/services']) ? 'govuk-service-navigation__item--active' : ''
+                            }`}
+                        >
+                            <a
+                                className="govuk-service-navigation__link"
+                                href="/products/services"
+                                data-topnav="Services"
+                            >
+                                Services
+                            </a>
+                        </li>
 
-            <li
-                className={`app-navigation__list-item ${
-                    isActivePage(['products/otherProducts']) ? 'app-navigation__list-item--current' : ''
-                }`}
-            >
-                <a
-                    className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
-                    href="/products/otherProducts"
-                    data-topnav="Other Products"
-                >
-                    Other products
-                </a>
-            </li>
+                        <li
+                            className={`govuk-service-navigation__item ${
+                                isActivePage(['products/otherProducts']) ? 'govuk-service-navigation__item--active' : ''
+                            }`}
+                        >
+                            <a
+                                className="govuk-service-navigation__link"
+                                href="/products/otherProducts"
+                                data-topnav="Other Products"
+                            >
+                                Other products
+                            </a>
+                        </li>
 
-            <li
-                className={`app-navigation__list-item ${
-                    isActivePage(['/products/multiOperatorProducts']) ? 'app-navigation__list-item--current' : ''
-                }`}
-            >
-                <a
-                    className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
-                    href="/products/multiOperatorProducts"
-                    data-topnav="Multi-operator products (internal)"
-                >
-                    Multi-operator products (internal)
-                </a>
-            </li>
+                        <li
+                            className={`govuk-service-navigation__item ${
+                                isActivePage(['/products/multiOperatorProducts'])
+                                    ? 'govuk-service-navigation__item--active'
+                                    : ''
+                            }`}
+                        >
+                            <a
+                                className="govuk-service-navigation__link"
+                                href="/products/multiOperatorProducts"
+                                data-topnav="Multi-operator products (internal)"
+                            >
+                                Multi-operator products (internal)
+                            </a>
+                        </li>
 
-            <li
-                className={`app-navigation__list-item ${
-                    isActivePage(['products/exports']) ? 'app-navigation__list-item--current' : ''
-                }`}
-            >
-                <a
-                    className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
-                    href="/products/exports"
-                    data-topnav="Exports"
-                >
-                    Export your data
-                </a>
-            </li>
+                        <li
+                            className={`govuk-service-navigation__item ${
+                                isActivePage(['products/exports']) ? 'govuk-service-navigation__item--active' : ''
+                            }`}
+                        >
+                            <a
+                                className="govuk-service-navigation__link"
+                                href="/products/exports"
+                                data-topnav="Exports"
+                            >
+                                Export your data
+                            </a>
+                        </li>
 
-            <li
-                className={`app-navigation__list-item ${
-                    isActivePage([
-                        'globalSettings',
-                        'viewCaps',
-                        'viewPassengerTypes',
-                        'viewPurchaseMethods',
-                        'viewTimeRestrictions',
-                        'manageFareDayEnd',
-                        'manageOperatorDetails',
-                        'viewOperatorGroups',
-                        'viewProductGroups',
-                    ])
-                        ? 'app-navigation__list-item--current'
-                        : ''
-                }`}
-            >
-                <a
-                    className="govuk-link govuk-link--no-visited-state govuk-link--no-underline app-navigation__link"
-                    href="/globalSettings"
-                    data-topnav="Operator settings"
-                >
-                    Operator settings
-                </a>
-            </li>
-        </ul>
-    </nav>
+                        <li
+                            className={`govuk-service-navigation__item ${
+                                isActivePage([
+                                    'globalSettings',
+                                    'viewCaps',
+                                    'viewPassengerTypes',
+                                    'viewPurchaseMethods',
+                                    'viewTimeRestrictions',
+                                    'manageFareDayEnd',
+                                    'manageOperatorDetails',
+                                    'viewOperatorGroups',
+                                    'viewProductGroups',
+                                ])
+                                    ? 'govuk-service-navigation__item--active'
+                                    : ''
+                            }`}
+                        >
+                            <a
+                                className="govuk-service-navigation__link"
+                                href="/globalSettings"
+                                data-topnav="Operator settings"
+                            >
+                                Operator settings
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 );
 
 const isActivePage = (pages: string[]): boolean => {
