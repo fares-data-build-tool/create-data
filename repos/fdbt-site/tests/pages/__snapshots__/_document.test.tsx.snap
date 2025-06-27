@@ -31,7 +31,7 @@ exports[`_document should not show the cookie banner when the showCookieBanner a
     />
     <script
       nonce=""
-      src="/scripts/all.js"
+      src="/scripts/all.bundle.js"
       type="module"
     />
   </body>
@@ -75,7 +75,7 @@ exports[`_document should render correctly 1`] = `
     />
     <script
       nonce=""
-      src="/scripts/all.js"
+      src="/scripts/all.bundle.js"
       type="module"
     />
   </body>
