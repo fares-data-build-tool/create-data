@@ -2,7 +2,7 @@
 
 exports[`_document should not show the cookie banner when the showCookieBanner attribute is false 1`] = `
 <Html
-  className="govuk-template app-html-class flexbox no-flexboxtweener"
+  className="govuk-template--rebranded app-html-class flexbox no-flexboxtweener"
   lang="en"
 >
   <Head
@@ -40,7 +40,7 @@ exports[`_document should not show the cookie banner when the showCookieBanner a
 
 exports[`_document should render correctly 1`] = `
 <Html
-  className="govuk-template app-html-class flexbox no-flexboxtweener"
+  className="govuk-template--rebranded app-html-class flexbox no-flexboxtweener"
   lang="en"
 >
   <Head

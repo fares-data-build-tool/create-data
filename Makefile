@@ -32,7 +32,7 @@ audit-fix: ## Fix all npm audit issues
 	cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/retrievers && npm audit fix
 	cd ${FDBT_ROOT}/repos/fdbt-reference-data-service/src/uploaders && npm audit fix
 	cd ${FDBT_ROOT}/repos/exporter && npm audit fix
-	cd ${FDBT_ROOT}/repos/fdbt-multi-operator-emailer && npm audit fix
+	cd ${FDBT_ROOT}/repos/fdbt-emailer && npm audit fix
 
 cypress: ## Open cypress console to run UI tests
 	cd repos/fdbt-site && $(MAKE) open-cypress
