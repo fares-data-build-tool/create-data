@@ -1,36 +1,60 @@
-import AWS, { DynamoDB } from 'aws-sdk';
-import connectDynamoDb from 'connect-dynamodb';
 import { Express } from 'express';
-import session, { SessionOptions, Store } from 'express-session';
+import * as session from 'express-session';
+import MySQLStore from 'express-mysql-session';
+import awsParamStore from 'aws-param-store';
 
-interface DynamoDbOptions {
-    table: string;
-    AWSConfigJSON: {
-        region: string;
-    };
-    client?: DynamoDB;
-}
+const getOptions = () => {
+    let options;
 
-export default (server: Express): void => {
-    const DynamoDbStore: new (options: object) => Store = connectDynamoDb(session);
-
-    const dynamoDbOptions: DynamoDbOptions = {
-        table: 'sessions',
-        AWSConfigJSON: {
-            region: 'eu-west-2',
-        },
-    };
-
-    if (process.env.NODE_ENV === 'development') {
-        dynamoDbOptions.client = new AWS.DynamoDB({
-            endpoint: 'http://127.0.0.1:4566',
-            region: 'eu-west-2',
-            accessKeyId: 'DUMMY',
-            secretAccessKey: 'DUMMY',
-        });
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+        options = {
+            host: 'localhost',
+            port: 3306,
+            user: 'fdbt_site',
+            password: 'password',
+            database: 'fdbt',
+            createDatabaseTable: false,
+            charset: 'utf8mb4_bin',
+            schema: {
+                tableName: 'sessions',
+                columnNames: {
+                    session_id: 'session_id',
+                    expires: 'expires',
+                    data: 'data',
+                },
+            },
+        };
+    } else {
+        options = {
+            host: process.env.RDS_HOST,
+            port: 3306,
+            user: awsParamStore.getParameterSync('fdbt-rds-site-username', { region: 'eu-west-2' }).Value,
+            password: awsParamStore.getParameterSync('fdbt-rds-site-password', { region: 'eu-west-2' }).Value,
+            database: 'fdbt',
+            createDatabaseTable: false,
+            charset: 'utf8mb4_bin',
+            schema: {
+                tableName: 'sessions',
+                columnNames: {
+                    session_id: 'session_id',
+                    expires: 'expires',
+                    data: 'data',
+                },
+            },
+        };
     }
 
-    const sessionOptions: SessionOptions = {
+    return options;
+};
+
+export default (server: Express): void => {
+    const Store = MySQLStore(session);
+
+    const options = getOptions();
+
+    const sessionStore = new Store(options);
+
+    const sessionOptions: session.SessionOptions = {
         cookie: {
             sameSite: true,
             secure: process.env.NODE_ENV !== 'development',
@@ -39,8 +63,8 @@ export default (server: Express): void => {
         saveUninitialized: false,
         resave: false,
         secret: process.env.SESSION_SECRET || 'secret',
-        store: new DynamoDbStore(dynamoDbOptions),
+        store: sessionStore,
     };
 
-    server.use(session(sessionOptions));
+    server.use(session.default(sessionOptions));
 };
