@@ -103,7 +103,7 @@ class MyDocument extends Document<DocumentProps> {
                     />
                     <Main />
                     <NextScript nonce={this.props.nonce} />
-                    <script type="module" src="/scripts/all.mjs" nonce={this.props.nonce} />
+                    <script type="module" src="/scripts/all.bundle.js" nonce={this.props.nonce} />
                 </body>
             </Html>
         );
