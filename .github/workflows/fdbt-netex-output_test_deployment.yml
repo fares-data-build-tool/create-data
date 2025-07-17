@@ -15,7 +15,7 @@ defaults:
 jobs:
   fdbt-netex-output_deploy_to_test:
     name: "fdbt-netex-output_test"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       WORKSPACE: test
     environment:
