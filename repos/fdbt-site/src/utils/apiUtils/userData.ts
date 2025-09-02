@@ -98,6 +98,7 @@ import {
     FlatFareMultipleServices,
     SecondaryOperatorFareInfo,
 } from '../../interfaces/matchingJsonTypes';
+import uniq from 'lodash/uniq';
 
 export const isTermTime = (req: NextApiRequestWithSession): boolean => {
     const termTimeAttribute = getSessionAttribute(req, TERM_TIME_ATTRIBUTE);
@@ -438,7 +439,8 @@ export const getGeoZoneTicketJson = async (
     const atcoCodes: string[] = await getCsvZoneUploadData(
         `fare-zone/${basePeriodTicketAttributes.nocCode}/${basePeriodTicketAttributes.uuid}.json`,
     );
-    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+    const deduplicatedAtcoCodes = uniq(atcoCodes);
+    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
 
     const additionalNocs =
         (basePeriodTicketAttributes.type === 'multiOperator' ||
@@ -749,7 +751,8 @@ export const adjustSchemeOperatorJson = async (
 
     const nocCode = getAndValidateNoc(req, res);
     const atcoCodes: string[] = await getCsvZoneUploadData(`fare-zone/${nocCode}/${matchingJson.uuid}.json`);
-    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(atcoCodes);
+    const deduplicatedAtcoCodes = uniq(atcoCodes);
+    const zoneStops: Stop[] = await batchGetStopsByAtcoCode(deduplicatedAtcoCodes);
     const additionalNocs = multiOpAttribute.selectedOperators.map((operator) => operator.nocCode);
 
     if (zoneStops.length === 0) {
