@@ -118,6 +118,33 @@
 .selectedOperators-header-color {
     background-color: #dddde2;
 }
+
+.admin-user-count--completed {
+    color: #36b22e;
+}
+
+.admin-user-count--pending {
+    color: #ff6c00;
+}
+
+.admin-reporting-chart {
+    display: block;
+    width: 800px;
+    max-width: 100%;
+    height: auto;
+    font-family: inherit;
+    font-size: 16px;
+    fill: #0b0c0c;
+}
+
+.admin-reporting-chart__grid {
+    stroke: #b1b4b6;
+    stroke-dasharray: 3 3;
+}
+
+.admin-reporting-chart__tick {
+    font-size: 14px;
+}
 .selectedOperators-button {
     white-space: nowrap;
     background-color: #dddde2;
