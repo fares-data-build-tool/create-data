@@ -8,6 +8,10 @@ on:
 
 name: 'fdbt-reference-data-service_preprod'
 
+permissions:
+  id-token: write
+  contents: read
+
 defaults:
   run:
     working-directory: ./repos/fdbt-reference-data-service
@@ -43,7 +47,7 @@ jobs:
         node-version: 24.x
 
     - name: AWS Shared Services Authentication      # shared services, OIDC
-      uses: ./.github/actions/aws-auth
+      uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@main
       with:
         aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
         role_session_name: shared-services-session
@@ -51,7 +55,7 @@ jobs:
         role_chaining: "false"
 
     - name: AWS Environment Authentication     # chained into the environments account
-      uses: ./.github/actions/aws-auth
+      uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@main
       with:
         aws_role_to_assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}   
         role_session_name: ${{ github.job }}-deploy
