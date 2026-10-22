@@ -42,7 +42,7 @@ jobs:
         safety check -r requirements.txt
 
     - name: AWS Shared Services Authentication      # shared services, OIDC
-      uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@develop
+      uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@master
       with:
         aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
         role_session_name: shared-services-session
@@ -50,7 +50,7 @@ jobs:
         role_chaining: "false"
 
     - name: AWS Environment Authentication     # chained into the environments account
-      uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@develop
+      uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@master
       with:
         aws_role_to_assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}   
         role_session_name: ${{ github.job }}-deploy
