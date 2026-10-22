@@ -57,12 +57,13 @@ jobs:
 
       # build-and-push-image (tfn-fdbt-core)
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # 6.2.0
+      - name: AWS Management Authentication
+        uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@main
         with:
-          aws-access-key-id: ${{ secrets.CORE_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.CORE_AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-2
+          aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME_CFDS_MANAGEMENT }}
+          aws_region: eu-west-2
+          role_session_name: management-session
+          role_chaining: "false"
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -84,13 +85,23 @@ jobs:
         run: docker logout ${{ steps.login-ecr.outputs.registry }}
 
       # aws-ecs/deploy-service-update
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # 6.2.0
+      - name: AWS Shared Services Authentication      # shared services, OIDC
+        uses: ./.github/actions/aws-auth
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-2
+          aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role_session_name: shared-services-session
+          aws_region: eu-west-2
+          role_chaining: "false"
 
+      # ECR login, build, push
+
+      - name: AWS Environment Authentication     # chained into the environments account
+        uses: ./.github/actions/aws-auth
+        with:
+          aws_role_to_assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}   
+          role_session_name: ${{ github.job }}-deploy
+          aws_region: eu-west-2
+          role_chaining: "true"
       - name: Download task definition
         run: |
           aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > ${{ github.workspace }}/task-definition.json

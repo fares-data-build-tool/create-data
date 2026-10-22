@@ -1,0 +1,31 @@
+name: AWS Auth
+description: Action to authenticate with AWS using a role ARN to assume
+
+inputs:
+  aws_role_to_assume:
+    description: Role ARN used by Github in AWS Account
+  aws_region:
+    description: Region in AWS Account
+  role_session_name:
+    description: Session name
+    default: github-actions
+  role_chaining:
+    description: Assume the role using the credentials already in the job (no OIDC)
+    default: "false"
+
+permissions:
+  id-token: write
+  contents: read
+runs:
+  using: composite
+  steps:
+  - name: Configure AWS Authentication for Shared Services
+    uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
+    with:
+      aws-region: ${{ inputs.aws_region }}
+      role-to-assume: ${{ inputs.aws_role_to_assume }}
+      role-session-name: ${{ inputs.role_session_name }}
+      role-chaining: ${{ inputs.role_chaining }}
+      role-duration-seconds: 3600
+      role-skip-session-tagging: true
+      
