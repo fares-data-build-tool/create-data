@@ -64,7 +64,7 @@ jobs:
           ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
 
       - name: AWS Management Authentication
-        uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@main
+        uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@develop
         with:
           aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME_CFDS_MANAGEMENT }}
           aws_region: eu-west-2
@@ -91,7 +91,7 @@ jobs:
 
       # aws-ecs/deploy-service-update
       - name: AWS Shared Services Authentication      # shared services, OIDC
-        uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@main
+        uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@develop
         with:
           aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role_session_name: shared-services-session
@@ -101,7 +101,7 @@ jobs:
       # ECR login, build, push
 
       - name: AWS Environment Authentication     # chained into the environments account
-        uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@main
+        uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@develop
         with:
           aws_role_to_assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}   
           role_session_name: ${{ github.job }}-deploy
