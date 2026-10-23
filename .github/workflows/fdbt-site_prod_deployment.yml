@@ -8,6 +8,10 @@ on:
 
 name: "fdbt-site_prod"
 
+permissions:
+  id-token: write
+  contents: read
+
 defaults:
   run:
     working-directory: ./repos/fdbt-site
@@ -57,12 +61,15 @@ jobs:
 
       # build-and-push-image (tfn-fdbt-core)
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # 6.2.0
+      - name: Configure AWS Authentication for Management
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
         with:
-          aws-access-key-id: ${{ secrets.CORE_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.CORE_AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_CFDS_MANAGEMENT }}
+          role-session-name: management-session
+          role-chaining: "false"
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -84,13 +91,27 @@ jobs:
         run: docker logout ${{ steps.login-ecr.outputs.registry }}
 
       # aws-ecs/deploy-service-update
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # 6.2.0
+      - name: AWS Shared Services Authentication      # shared services, OIDC
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: shared-services-session
+          role-chaining: "false"
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
 
+      # ECR login, build, push
+
+      - name: AWS Environment Authentication     # chained into the environments account
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}   
+          role-session-name: ${{ github.job }}-deploy
+          aws-region: eu-west-2
+          role-chaining: "true"
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
       - name: Download task definition
         run: |
           aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > ${{ github.workspace }}/task-definition.json
