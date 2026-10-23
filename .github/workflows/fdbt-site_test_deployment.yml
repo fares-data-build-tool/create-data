@@ -63,13 +63,15 @@ jobs:
           echo "Compiling typescript for site"
           ./node_modules/.bin/tsc && ./node_modules/.bin/tsc --project tsconfig.server.json
 
-      - name: AWS Management Authentication
-        uses: ./.github/actions/aws-auth
+      - name: Configure AWS Authentication for Management
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
         with:
-          aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME_CFDS_MANAGEMENT }}
-          aws_region: eu-west-2
-          role_session_name: management-session
-          role_chaining: "false"
+          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_CFDS_MANAGEMENT }}
+          role-session-name: management-session
+          role-chaining: "false"
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -91,22 +93,26 @@ jobs:
 
       # aws-ecs/deploy-service-update
       - name: AWS Shared Services Authentication      # shared services, OIDC
-        uses: ./.github/actions/aws-auth
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
         with:
-          aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role_session_name: shared-services-session
-          aws_region: eu-west-2
-          role_chaining: "false"
+          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: shared-services-session
+          role-chaining: "false"
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
 
       # ECR login, build, push
 
       - name: AWS Environment Authentication     # chained into the environments account
-        uses: ./.github/actions/aws-auth
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
         with:
-          aws_role_to_assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}   
-          role_session_name: ${{ github.job }}-deploy
-          aws_region: eu-west-2
-          role_chaining: "true"
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}   
+          role-session-name: ${{ github.job }}-deploy
+          aws-region: eu-west-2
+          role-chaining: "true"
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
 
       - name: Download task definition
         run: |

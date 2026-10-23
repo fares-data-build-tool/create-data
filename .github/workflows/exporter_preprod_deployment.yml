@@ -58,20 +58,24 @@ jobs:
         npm run lint
 
     - name: AWS Shared Services Authentication      # shared services, OIDC
-      uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@master
+      uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
       with:
-        aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-        role_session_name: shared-services-session
-        aws_region: eu-west-2
-        role_chaining: "false"
+        aws-region: eu-west-2
+        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+        role-session-name: shared-services-session
+        role-chaining: "false"
+        role-duration-seconds: 3600
+        role-skip-session-tagging: true
 
     - name: AWS Environment Authentication     # chained into the environments account
-      uses: department-for-transport-BODS/create-data/.github/actions/aws-auth@master
+      uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
       with:
-        aws_role_to_assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
-        role_session_name: ${{ github.job }}-deploy
-        aws_region: eu-west-2
-        role_chaining: "true"
+        role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}   
+        role-session-name: ${{ github.job }}-deploy
+        aws-region: eu-west-2
+        role-chaining: "true"
+        role-duration-seconds: 3600
+        role-skip-session-tagging: true
 
     - name: Update atco code checker
       uses: "./.github/workflows/templates/update_lambda"
